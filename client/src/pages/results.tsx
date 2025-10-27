@@ -21,10 +21,10 @@ export default function ResultsPage() {
   const analyzeMutation = useMutation({
     mutationFn: async (data: { productType: string; imageData: string }) => {
       // First, extract text from image using OCR
-      const ocrResult = await apiRequest("POST", "/api/ocr", { imageData: data.imageData });
+      const ocrResult: any = await apiRequest("POST", "/api/ocr", { imageData: data.imageData });
       
       // Then analyze the extracted text
-      const analysisResult = await apiRequest("POST", "/api/analyze", {
+      const analysisResult: any = await apiRequest("POST", "/api/analyze", {
         productType: data.productType,
         ingredientsText: ocrResult.text,
         originalLanguage: ocrResult.language
@@ -102,6 +102,11 @@ export default function ResultsPage() {
   }
 
   if (analyzeMutation.isError) {
+    const errorMessage = (analyzeMutation.error as any)?.message || 'We couldn\'t analyze the image.';
+    
+    // Determine if this is an OCR error or analysis error
+    const isOCRError = errorMessage.includes('No text found') || errorMessage.includes('extract text');
+    
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <Card className="p-8 max-w-md w-full">
@@ -110,12 +115,31 @@ export default function ResultsPage() {
               <AlertCircle className="w-8 h-8 text-destructive" />
             </div>
             <div>
-              <h3 className="font-semibold text-xl mb-2">Analysis Failed</h3>
+              <h3 className="font-semibold text-xl mb-2">
+                {isOCRError ? 'Image Not Clear Enough' : 'Analysis Failed'}
+              </h3>
               <p className="text-sm text-muted-foreground mb-4">
-                We couldn't analyze the image. Please try again with a clearer photo of the ingredient list.
+                {isOCRError 
+                  ? 'We couldn\'t read the ingredient list in your image. Please try again with:'
+                  : errorMessage
+                }
               </p>
+              {isOCRError && (
+                <ul className="text-xs text-muted-foreground text-left mb-4 space-y-1">
+                  <li>• Better lighting</li>
+                  <li>• A closer photo of the ingredient list</li>
+                  <li>• A steady, focused shot</li>
+                  <li>• Clear, unobstructed text</li>
+                </ul>
+              )}
             </div>
-            <Button onClick={() => setLocation('/upload')} data-testid="button-try-again">
+            <Button 
+              onClick={() => {
+                sessionStorage.removeItem('pendingAnalysis');
+                setLocation('/upload');
+              }} 
+              data-testid="button-try-again"
+            >
               <Camera className="mr-2 h-4 w-4" />
               Try Again
             </Button>

@@ -1,5 +1,5 @@
 import { openai } from '../openai';
-import type { ProductType, AnalysisResult, RiskLevel } from '@shared/schema';
+import { analysisResultSchema, type ProductType, type AnalysisResult, type RiskLevel } from '@shared/schema';
 
 const PRODUCT_TYPE_CONTEXTS = {
   food: `Food products. Focus on:
@@ -107,18 +107,38 @@ Return your analysis as JSON with this structure:
       throw new Error('No response from AI');
     }
 
-    const analysis = JSON.parse(content);
+    let analysis;
+    try {
+      analysis = JSON.parse(content);
+    } catch (parseError) {
+      console.error('Failed to parse AI response:', content);
+      throw new Error('AI returned invalid response format');
+    }
     
-    return {
+    // Validate the analysis result against our schema
+    const validatedResult = analysisResultSchema.safeParse({
       productType,
       productName: analysis.productName || undefined,
       ingredients: analysis.ingredients || [],
       overallRisk: analysis.overallRisk || 'moderate',
       analyzedAt: new Date().toISOString(),
       originalText: ingredientsText
-    };
-  } catch (error) {
+    });
+    
+    if (!validatedResult.success) {
+      console.error('Validation failed:', validatedResult.error);
+      throw new Error('AI response did not match expected format');
+    }
+    
+    return validatedResult.data;
+  } catch (error: any) {
     console.error('Analysis failed:', error);
-    throw new Error('Failed to analyze ingredients');
+    
+    // Preserve meaningful error messages
+    if (error.message && (error.message.includes('invalid response') || error.message.includes('expected format'))) {
+      throw error;
+    }
+    
+    throw new Error('Failed to analyze ingredients. Please try again.');
   }
 }

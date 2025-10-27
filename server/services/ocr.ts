@@ -22,12 +22,25 @@ export async function extractTextFromImage(imageData: string): Promise<OCRResult
       }
     );
     
+    const extractedText = result.data.text.trim();
+    
+    // Handle empty OCR results
+    if (!extractedText || extractedText.length < 5) {
+      throw new Error('No text found in image. Please ensure the ingredient list is clearly visible and try again with better lighting or a closer photo.');
+    }
+    
     return {
-      text: result.data.text.trim(),
+      text: extractedText,
       language: 'en' // Tesseract doesn't provide reliable language detection
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error('OCR extraction failed:', error);
-    throw new Error('Failed to extract text from image');
+    
+    // Preserve meaningful error messages
+    if (error.message && error.message.includes('No text found')) {
+      throw error;
+    }
+    
+    throw new Error('Failed to extract text from image. Please try again with a clearer photo.');
   }
 }
