@@ -1,0 +1,175 @@
+Product Name: Auraly
+
+Goal: Build a mobile-friendly web MVP that allows users to scan or upload food, skincare, haircare, oral care, cosmetic, or fragrance product labels in any language. The app uses AI to extract and analyze ingredients, then highlights potential health risks and explains why — in clear, friendly language.
+
+The MVP should be structured so it can later be converted easily into a native iOS/Android app (using React Native or Capacitor).
+
+🔧 Core Features
+
+1. Landing Page
+Simple, modern, friendly interface with a large “Upload or Scan Label” button.
+
+
+Headline: “Know what’s in your food and products — instantly.”
+
+
+Subtext: “Auraly helps you understand ingredients in your food, skincare, and personal care products.”
+
+
+
+2. Product Type Selection
+After clicking “Upload or Scan Label,” prompt the user to select product type:
+
+
+🥗 Food
+
+
+💧 Skincare / Haircare
+
+
+🪥 Oral Care
+
+
+💄 Cosmetics / Fragrance
+
+
+This helps the AI choose the right safety criteria for analysis.
+
+
+
+3. Upload / Scan Page
+Allow users to upload a photo or use their camera directly (mobile-web compatible).
+
+
+Show progress while analyzing.
+
+
+Extract ingredient text via OCR (Google Vision API or Tesseract.js).
+
+
+
+4. AI Ingredient Analysis
+Send extracted text + product type to the AI analysis API.
+
+
+AI should:
+
+
+Parse ingredients line by line
+
+
+Identify known allergens, toxins, or irritants (based on product type)
+
+
+Classify each ingredient with risk levels:
+
+
+🟢 Low risk / safe
+
+
+🟡 Moderate risk / limited evidence
+
+
+🔴 High risk / potentially harmful
+
+
+Provide a short, readable explanation (e.g., “Parabens — preservatives that may disrupt hormones when used frequently.”)
+
+
+For food, flag additives, artificial sweeteners, and known health hazards.
+
+
+For personal care, flag ingredients linked to irritation, hormone disruption, or long-term exposure risks.
+
+
+
+5. Results Page
+Display analyzed ingredients grouped by risk color.
+
+
+Each ingredient card includes:
+
+
+Name
+
+
+Risk indicator color
+
+
+Explanation summary
+
+
+“Learn More” toggle for extended details.
+
+
+Option to search or filter ingredients.
+
+
+Option to rescan or analyze another product.
+
+
+
+6. Multi-language Support
+Auto-detect OCR language and translate text to English before analysis (using Google Translate API or mock translation function).
+
+
+Display original + translated text for clarity.
+
+
+
+7. Tech Stack
+Frontend: React + TailwindCSS (mobile-first responsive design)
+
+
+Backend: Node.js + Express (API endpoints for OCR, translation, AI analysis)
+
+
+AI Layer: OpenAI API (or mock JSON generator for MVP)
+
+
+Storage: Local browser storage for recent scans (no database required yet)
+
+
+
+8. Architecture
+Clean API service layer so backend logic can easily swap between mock and real AI APIs later.
+
+
+Components structured for reusability and native app conversion (React Native or Capacitor).
+
+
+
+🎨 UX & Design Notes
+Calm, trustworthy, wellness-inspired design (soft greens, creams, and pastels).
+
+
+Rounded corners, clean typography.
+
+
+Use subtle loading animations while scanning and analyzing.
+
+
+Show clear reassurance (“Your data stays private — images aren’t stored.”).
+
+
+
+✅ Deliverables
+Functional MVP deployed on Replit web server.
+
+
+Routes:
+
+
+/ — Landing page
+
+
+/upload — Upload or scan product label
+
+
+/results — Display AI ingredient analysis
+
+
+Mock endpoints for OCR, translation, and AI analysis.
+
+
+Include clear placeholder JSON format for AI analysis results (so future API integration is simple).
