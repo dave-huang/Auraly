@@ -21,14 +21,16 @@ export default function ResultsPage() {
   const analyzeMutation = useMutation({
     mutationFn: async (data: { productType: string; imageData: string }) => {
       // First, extract text from image using OCR
-      const ocrResult: any = await apiRequest("POST", "/api/ocr", { imageData: data.imageData });
+      const ocrResponse = await apiRequest("POST", "/api/ocr", { imageData: data.imageData });
+      const ocrResult: any = await ocrResponse.json();
       
       // Then analyze the extracted text
-      const analysisResult: any = await apiRequest("POST", "/api/analyze", {
+      const analysisResponse = await apiRequest("POST", "/api/analyze", {
         productType: data.productType,
         ingredientsText: ocrResult.text,
         originalLanguage: ocrResult.language
       });
+      const analysisResult: any = await analysisResponse.json();
       
       return analysisResult as AnalysisResult;
     },
