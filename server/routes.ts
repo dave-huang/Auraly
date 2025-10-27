@@ -1,13 +1,55 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { storage } from "./storage";
+import multer from "multer";
+import { extractTextFromImage } from "./services/ocr";
+import { analyzeIngredients } from "./services/analyzer";
+import { 
+  ocrRequestSchema, 
+  analysisRequestSchema,
+  type ProductType 
+} from "@shared/schema";
+
+// Configure multer for in-memory file uploads
+const upload = multer({ storage: multer.memoryStorage() });
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // put application routes here
-  // prefix all routes with /api
+  // OCR endpoint - extract text from image
+  app.post("/api/ocr", async (req, res) => {
+    try {
+      const { imageData } = ocrRequestSchema.parse(req.body);
+      
+      const result = await extractTextFromImage(imageData);
+      
+      res.json(result);
+    } catch (error: any) {
+      console.error('OCR error:', error);
+      res.status(400).json({ 
+        error: error.message || 'Failed to process image' 
+      });
+    }
+  });
 
-  // use storage to perform CRUD operations on the storage interface
-  // e.g. storage.insertUser(user) or storage.getUserByUsername(username)
+  // Analysis endpoint - analyze ingredients
+  app.post("/api/analyze", async (req, res) => {
+    try {
+      const { productType, ingredientsText } = analysisRequestSchema.parse(req.body);
+      
+      if (!ingredientsText || ingredientsText.trim().length < 10) {
+        return res.status(400).json({ 
+          error: 'Ingredient text is too short or empty. Please provide a clear image with visible ingredients.' 
+        });
+      }
+      
+      const result = await analyzeIngredients(productType as ProductType, ingredientsText);
+      
+      res.json(result);
+    } catch (error: any) {
+      console.error('Analysis error:', error);
+      res.status(500).json({ 
+        error: error.message || 'Failed to analyze ingredients' 
+      });
+    }
+  });
 
   const httpServer = createServer(app);
 
