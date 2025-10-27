@@ -1,0 +1,211 @@
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Sparkles, Shield, Zap, Camera, Globe, Lock } from "lucide-react";
+
+export default function Landing() {
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Background gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5" />
+        
+        {/* Decorative elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-1/2 -right-1/2 w-full h-full bg-primary/5 rounded-full blur-3xl" />
+          <div className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-accent/5 rounded-full blur-3xl" />
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10 max-w-6xl mx-auto px-4 py-20 text-center">
+          {/* Logo/Brand */}
+          <div className="mb-8">
+            <h1 className="font-serif text-4xl md:text-5xl font-bold text-foreground mb-2 tracking-tight">
+              Auraly
+            </h1>
+            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+              <Shield className="w-4 h-4" />
+              <span>Your ingredient guardian</span>
+            </div>
+          </div>
+
+          {/* Main headline */}
+          <h2 className="text-5xl md:text-6xl font-bold tracking-tight mb-6 bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">
+            Know what's in your food and products — instantly.
+          </h2>
+
+          {/* Subtext */}
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-12">
+            Auraly helps you understand ingredients in your food, skincare, and personal care products with AI-powered analysis in any language.
+          </p>
+
+          {/* CTA Button */}
+          <Link href="/upload" data-testid="link-upload">
+            <Button 
+              size="lg" 
+              className="rounded-full px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all"
+              data-testid="button-start-scanning"
+            >
+              <Camera className="mr-2 h-5 w-5" />
+              Start Scanning
+            </Button>
+          </Link>
+
+          {/* Trust indicators */}
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <Lock className="w-4 h-4 text-primary" />
+              <span>Privacy-first</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Zap className="w-4 h-4 text-primary" />
+              <span>No account needed</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-primary" />
+              <span>Instant results</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section className="py-20 bg-card">
+        <div className="max-w-6xl mx-auto px-4">
+          <h3 className="text-3xl md:text-4xl font-bold text-center mb-4">
+            How It Works
+          </h3>
+          <p className="text-center text-muted-foreground mb-16 max-w-2xl mx-auto">
+            Get ingredient insights in three simple steps
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Step 1 */}
+            <div className="text-center">
+              <div className="relative mb-6">
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                  <Camera className="w-8 h-8 text-primary" />
+                </div>
+                <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold mx-auto left-0 right-0 w-fit">
+                  1
+                </div>
+              </div>
+              <h4 className="text-xl font-semibold mb-3">Scan or Upload</h4>
+              <p className="text-muted-foreground">
+                Take a photo of any product label or upload an existing image
+              </p>
+            </div>
+
+            {/* Step 2 */}
+            <div className="text-center">
+              <div className="relative mb-6">
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                  <Sparkles className="w-8 h-8 text-primary" />
+                </div>
+                <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold mx-auto left-0 right-0 w-fit">
+                  2
+                </div>
+              </div>
+              <h4 className="text-xl font-semibold mb-3">AI Analysis</h4>
+              <p className="text-muted-foreground">
+                Our AI extracts and analyzes every ingredient for potential health risks
+              </p>
+            </div>
+
+            {/* Step 3 */}
+            <div className="text-center">
+              <div className="relative mb-6">
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                  <Shield className="w-8 h-8 text-primary" />
+                </div>
+                <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold mx-auto left-0 right-0 w-fit">
+                  3
+                </div>
+              </div>
+              <h4 className="text-xl font-semibold mb-3">Get Insights</h4>
+              <p className="text-muted-foreground">
+                Understand what's safe and what to watch out for in plain language
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-20">
+        <div className="max-w-6xl mx-auto px-4">
+          <h3 className="text-3xl md:text-4xl font-bold text-center mb-16">
+            Powerful Features
+          </h3>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Card className="p-6 hover-elevate transition-all">
+              <Globe className="w-10 h-10 text-primary mb-4" />
+              <h4 className="text-lg font-semibold mb-2">Multi-Language Support</h4>
+              <p className="text-sm text-muted-foreground">
+                Scan labels in any language. We'll automatically detect and translate for accurate analysis.
+              </p>
+            </Card>
+
+            <Card className="p-6 hover-elevate transition-all">
+              <Shield className="w-10 h-10 text-primary mb-4" />
+              <h4 className="text-lg font-semibold mb-2">Risk Assessment</h4>
+              <p className="text-sm text-muted-foreground">
+                Clear color-coded risk levels help you quickly identify safe and potentially harmful ingredients.
+              </p>
+            </Card>
+
+            <Card className="p-6 hover-elevate transition-all">
+              <Sparkles className="w-10 h-10 text-primary mb-4" />
+              <h4 className="text-lg font-semibold mb-2">Smart Analysis</h4>
+              <p className="text-sm text-muted-foreground">
+                Context-aware analysis tailored to product type — food, skincare, oral care, or cosmetics.
+              </p>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Privacy Section */}
+      <section className="py-16 bg-muted/30">
+        <div className="max-w-3xl mx-auto px-4 text-center">
+          <Lock className="w-12 h-12 text-primary mx-auto mb-4" />
+          <h3 className="text-2xl md:text-3xl font-bold mb-4">
+            Your Privacy Matters
+          </h3>
+          <p className="text-muted-foreground mb-6">
+            Your data stays private — images aren't stored on our servers. Analysis happens in real-time and results are only saved in your browser.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4 text-sm">
+            <div className="flex items-center gap-2 bg-background px-4 py-2 rounded-lg">
+              <div className="w-2 h-2 rounded-full bg-primary" />
+              <span>No account required</span>
+            </div>
+            <div className="flex items-center gap-2 bg-background px-4 py-2 rounded-lg">
+              <div className="w-2 h-2 rounded-full bg-primary" />
+              <span>Images not stored</span>
+            </div>
+            <div className="flex items-center gap-2 bg-background px-4 py-2 rounded-lg">
+              <div className="w-2 h-2 rounded-full bg-primary" />
+              <span>Local-only history</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-12 border-t">
+        <div className="max-w-6xl mx-auto px-4 text-center">
+          <p className="font-serif text-2xl font-bold mb-2">Auraly</p>
+          <p className="text-sm text-muted-foreground mb-4">
+            Know what's in your products, make informed choices
+          </p>
+          <p className="text-xs text-muted-foreground">
+            © 2025 Auraly. AI-powered ingredient analysis.
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
+}

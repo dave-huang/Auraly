@@ -1,0 +1,113 @@
+import { useState, useRef } from "react";
+import { useLocation } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { ArrowLeft, Upload, Camera, Loader2 } from "lucide-react";
+import { ProductTypeSelector } from "@/components/product-type-selector";
+import { ImageUploader } from "@/components/image-uploader";
+import type { ProductType } from "@shared/schema";
+
+export default function UploadPage() {
+  const [, setLocation] = useLocation();
+  const [selectedType, setSelectedType] = useState<ProductType | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const handleProductTypeSelect = (type: ProductType) => {
+    setSelectedType(type);
+  };
+
+  const handleImageCapture = async (imageData: string) => {
+    setIsProcessing(true);
+    
+    // Store the data for the results page
+    sessionStorage.setItem('pendingAnalysis', JSON.stringify({
+      productType: selectedType,
+      imageData: imageData
+    }));
+    
+    // Navigate to results page which will handle the actual analysis
+    setLocation('/results');
+  };
+
+  const handleBack = () => {
+    if (selectedType) {
+      setSelectedType(null);
+    } else {
+      setLocation('/');
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleBack}
+            data-testid="button-back"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back
+          </Button>
+          <h1 className="font-serif text-xl font-bold">Auraly</h1>
+          <div className="w-20" /> {/* Spacer for centering */}
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-4xl mx-auto px-4 py-12">
+        {!selectedType ? (
+          <div>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                What are you scanning?
+              </h2>
+              <p className="text-muted-foreground text-lg">
+                Select the product type for accurate analysis
+              </p>
+            </div>
+            
+            <ProductTypeSelector onSelect={handleProductTypeSelect} />
+          </div>
+        ) : (
+          <div>
+            <div className="text-center mb-8">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Upload or Scan Label
+              </h2>
+              <p className="text-muted-foreground text-lg">
+                Take a clear photo of the ingredient list
+              </p>
+            </div>
+
+            <ImageUploader 
+              onImageCapture={handleImageCapture}
+              isProcessing={isProcessing}
+            />
+
+            {isProcessing && (
+              <div className="mt-8">
+                <Card className="p-8">
+                  <div className="flex flex-col items-center gap-4 text-center">
+                    <Loader2 className="w-12 h-12 text-primary animate-spin" />
+                    <div>
+                      <h3 className="font-semibold text-lg mb-1">Analyzing Ingredients</h3>
+                      <p className="text-sm text-muted-foreground">
+                        Extracting text and identifying potential health risks...
+                      </p>
+                    </div>
+                    <div className="w-full max-w-xs bg-muted rounded-full h-2 overflow-hidden">
+                      <div className="h-full bg-primary rounded-full animate-pulse" style={{ width: '60%' }} />
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            )}
+          </div>
+        )}
+      </main>
+    </div>
+  );
+}
