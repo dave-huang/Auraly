@@ -5,94 +5,129 @@
   },
   "landing": {
     "hero": {
-      "title": "了解产品成分的真相",
-      "subtitle": "扫描任何食品、护肤品或个人护理产品，即时获得AI智能成分分析",
-      "cta": "开始扫描"
-    },
-    "features": {
-      "title": "为什么选择 Auraly？",
-      "instant": {
-        "title": "即时分析",
-        "description": "通过AI智能OCR和成分分析，几秒钟内获得结果"
-      },
-      "multilang": {
-        "title": "多语言支持",
-        "description": "扫描任何语言的产品 - 我们的AI都能理解"
-      },
-      "privacy": {
-        "title": "隐私优先",
-        "description": "无需注册账户。不存储图片。您的数据完全私密"
-      },
-      "science": {
-        "title": "科学依据",
-        "description": "基于研究和安全指南的风险评估"
+      "title": "了解您每天吃的和用的产品成分",
+      "subtitle": "Auraly 帮助您通过AI智能分析，理解食品、护肤品和个人护理产品中的成分，支持任何语言。",
+      "cta": "开始扫描",
+      "guardian": "您的成分守护者",
+      "trust": {
+        "privacy": "隐私优先",
+        "noAccount": "无需账户",
+        "instant": "即时结果"
       }
     },
     "howItWorks": {
       "title": "使用方法",
+      "subtitle": "三个简单步骤获取成分分析",
       "step1": {
-        "title": "选择产品类型",
-        "description": "选择食品、护肤品、口腔护理或化妆品"
+        "title": "扫描或上传",
+        "description": "拍摄任何产品标签照片或上传现有图片"
       },
       "step2": {
-        "title": "扫描或上传",
-        "description": "拍摄或上传成分列表的照片"
+        "title": "AI分析",
+        "description": "我们的AI提取并分析每种成分的潜在健康风险"
       },
       "step3": {
         "title": "获取分析",
-        "description": "查看颜色标记的风险等级和详细说明"
+        "description": "用简单的语言了解哪些成分安全，哪些需要注意"
       }
+    },
+    "features": {
+      "title": "强大功能",
+      "multilang": {
+        "title": "多语言支持",
+        "description": "扫描任何语言的标签。我们会自动检测并翻译以进行准确分析。"
+      },
+      "risk": {
+        "title": "风险评估",
+        "description": "清晰的颜色编码风险等级帮助您快速识别安全和潜在有害成分。"
+      },
+      "smart": {
+        "title": "智能分析",
+        "description": "针对产品类型的情境感知分析 — 食品、护肤品、口腔护理或化妆品。"
+      }
+    },
+    "privacy": {
+      "title": "您的隐私很重要",
+      "description": "您的数据保持私密 — 图片不会存储在我们的服务器上。分析实时进行，结果仅保存在您的浏览器中。",
+      "features": {
+        "noAccount": "无需账户",
+        "notStored": "不存储图片",
+        "localOnly": "仅本地历史记录"
+      }
+    },
+    "footer": {
+      "tagline": "了解产品成分，做出明智选择",
+      "copyright": "© 2025 Auraly. AI智能成分分析。"
     }
   },
   "upload": {
-    "title": "分析产品",
-    "selectType": "选择产品类型",
-    "productTypes": {
-      "food": "食品",
-      "skincare": "护肤/护发",
-      "oralCare": "口腔护理",
-      "cosmetics": "化妆品/香水"
+    "header": {
+      "title": "Auraly"
     },
-    "uploadImage": "上传产品图片",
-    "dragDrop": "拖放成分列表图片，或",
-    "selectFile": "选择文件",
-    "takePhoto": "拍照",
-    "analyzing": "正在分析成分...",
-    "analyzingDesc": "我们的AI正在读取标签并分析每种成分的潜在健康风险。",
-    "back": "返回"
+    "selectType": {
+      "title": "您要扫描什么？",
+      "subtitle": "选择产品类型以获得准确分析"
+    },
+    "uploadImage": {
+      "title": "上传或扫描标签",
+      "subtitle": "拍摄成分列表的清晰照片"
+    },
+    "productTypes": {
+      "food": {
+        "label": "食品",
+        "description": "零食、餐食、饮料"
+      },
+      "skincare": {
+        "label": "护肤 / 护发",
+        "description": "乳液、洗发水、精华液"
+      },
+      "oralCare": {
+        "label": "口腔护理",
+        "description": "牙膏、漱口水"
+      },
+      "cosmetics": {
+        "label": "化妆品 / 香水",
+        "description": "化妆品、香水"
+      }
+    },
+    "analyzing": {
+      "title": "正在分析成分",
+      "description": "正在提取文本并识别潜在健康风险..."
+    }
   },
   "results": {
-    "title": "分析结果",
-    "productName": "产品",
-    "overallRisk": "整体风险",
-    "riskLevels": {
-      "low": "低风险",
-      "moderate": "中等风险",
-      "high": "高风险"
+    "header": {
+      "home": "首页"
     },
-    "ingredientCount": {
-      "one": "已分析 {{count}} 种成分",
-      "other": "已分析 {{count}} 种成分"
-    },
-    "filters": {
-      "all": "所有成分",
-      "low": "低风险",
-      "moderate": "中等",
-      "high": "高风险"
-    },
+    "productType": "产品",
     "search": "搜索成分...",
-    "noResults": "没有符合筛选条件的成分",
-    "newScan": "新扫描",
-    "riskSummary": {
-      "title": "风险摘要",
+    "filters": {
+      "all": "全部",
       "low": "低",
       "moderate": "中",
       "high": "高"
     },
-    "ingredient": {
-      "whyFlagged": "标记原因",
-      "whatItIs": "成分说明",
-      "alternatives": "替代方案"
+    "noResults": "没有找到匹配的成分。",
+    "scanAnother": "扫描其他产品",
+    "analyzing": {
+      "title": "正在分析成分",
+      "description": "正在提取文本并识别潜在健康风险..."
+    },
+    "error": {
+      "ocr": {
+        "title": "图片不够清晰",
+        "description": "我们无法读取您图片中的成分列表。请使用以下方式重试：",
+        "tips": {
+          "lighting": "更好的照明",
+          "closer": "成分列表的特写照片",
+          "steady": "稳定、聚焦的镜头",
+          "clear": "清晰、无遮挡的文字"
+        }
+      },
+      "analysis": {
+        "title": "分析失败"
+      },
+      "tryAgain": "重试"
     }
   },
   "errors": {

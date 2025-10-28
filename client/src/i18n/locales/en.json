@@ -5,94 +5,129 @@
   },
   "landing": {
     "hero": {
-      "title": "Understand What's Really In Your Products",
-      "subtitle": "Scan any food, skincare, or personal care product to get instant AI-powered ingredient analysis",
-      "cta": "Start Scanning"
-    },
-    "features": {
-      "title": "Why Choose Auraly?",
-      "instant": {
-        "title": "Instant Analysis",
-        "description": "Get results in seconds with AI-powered OCR and ingredient analysis"
-      },
-      "multilang": {
-        "title": "Multi-Language",
-        "description": "Scan products in any language - our AI understands them all"
-      },
-      "privacy": {
-        "title": "Privacy First",
-        "description": "No accounts needed. Images aren't stored. Your data stays private"
-      },
-      "science": {
-        "title": "Science-Backed",
-        "description": "Risk assessments based on research and safety guidelines"
+      "title": "Clarity for what you eat and use, every day.",
+      "subtitle": "Auraly helps you understand ingredients in your food, skincare, and personal care products with AI-powered analysis in any language.",
+      "cta": "Start Scanning",
+      "guardian": "Your ingredient guardian",
+      "trust": {
+        "privacy": "Privacy-first",
+        "noAccount": "No account needed",
+        "instant": "Instant results"
       }
     },
     "howItWorks": {
       "title": "How It Works",
+      "subtitle": "Get ingredient insights in three simple steps",
       "step1": {
-        "title": "Choose Product Type",
-        "description": "Select food, skincare, oral care, or cosmetics"
+        "title": "Scan or Upload",
+        "description": "Take a photo of any product label or upload an existing image"
       },
       "step2": {
-        "title": "Scan or Upload",
-        "description": "Take a photo or upload an image of the ingredients list"
+        "title": "AI Analysis",
+        "description": "Our AI extracts and analyzes every ingredient for potential health risks"
       },
       "step3": {
         "title": "Get Insights",
-        "description": "See color-coded risk levels and detailed explanations"
+        "description": "Understand what's safe and what to watch out for in plain language"
       }
+    },
+    "features": {
+      "title": "Powerful Features",
+      "multilang": {
+        "title": "Multi-Language Support",
+        "description": "Scan labels in any language. We'll automatically detect and translate for accurate analysis."
+      },
+      "risk": {
+        "title": "Risk Assessment",
+        "description": "Clear color-coded risk levels help you quickly identify safe and potentially harmful ingredients."
+      },
+      "smart": {
+        "title": "Smart Analysis",
+        "description": "Context-aware analysis tailored to product type — food, skincare, oral care, or cosmetics."
+      }
+    },
+    "privacy": {
+      "title": "Your Privacy Matters",
+      "description": "Your data stays private — images aren't stored on our servers. Analysis happens in real-time and results are only saved in your browser.",
+      "features": {
+        "noAccount": "No account required",
+        "notStored": "Images not stored",
+        "localOnly": "Local-only history"
+      }
+    },
+    "footer": {
+      "tagline": "Know what's in your products, make informed choices",
+      "copyright": "© 2025 Auraly. AI-powered ingredient analysis."
     }
   },
   "upload": {
-    "title": "Analyze Product",
-    "selectType": "Select Product Type",
-    "productTypes": {
-      "food": "Food",
-      "skincare": "Skincare/Haircare",
-      "oralCare": "Oral Care",
-      "cosmetics": "Cosmetics/Fragrance"
+    "header": {
+      "title": "Auraly"
     },
-    "uploadImage": "Upload Product Image",
-    "dragDrop": "Drag and drop an image of the ingredients list, or",
-    "selectFile": "Select File",
-    "takePhoto": "Take Photo",
-    "analyzing": "Analyzing ingredients...",
-    "analyzingDesc": "Our AI is reading the label and analyzing each ingredient for potential health risks.",
-    "back": "Back"
+    "selectType": {
+      "title": "What are you scanning?",
+      "subtitle": "Select the product type for accurate analysis"
+    },
+    "uploadImage": {
+      "title": "Upload or Scan Label",
+      "subtitle": "Take a clear photo of the ingredient list"
+    },
+    "productTypes": {
+      "food": {
+        "label": "Food",
+        "description": "Snacks, meals, beverages"
+      },
+      "skincare": {
+        "label": "Skincare / Haircare",
+        "description": "Lotions, shampoos, serums"
+      },
+      "oralCare": {
+        "label": "Oral Care",
+        "description": "Toothpaste, mouthwash"
+      },
+      "cosmetics": {
+        "label": "Cosmetics / Fragrance",
+        "description": "Makeup, perfumes"
+      }
+    },
+    "analyzing": {
+      "title": "Analyzing Ingredients",
+      "description": "Extracting text and identifying potential health risks..."
+    }
   },
   "results": {
-    "title": "Analysis Results",
-    "productName": "Product",
-    "overallRisk": "Overall Risk",
-    "riskLevels": {
-      "low": "Low Risk",
-      "moderate": "Moderate Risk",
-      "high": "High Risk"
+    "header": {
+      "home": "Home"
     },
-    "ingredientCount": {
-      "one": "{{count}} ingredient analyzed",
-      "other": "{{count}} ingredients analyzed"
-    },
-    "filters": {
-      "all": "All Ingredients",
-      "low": "Low Risk",
-      "moderate": "Moderate",
-      "high": "High Risk"
-    },
+    "productType": "product",
     "search": "Search ingredients...",
-    "noResults": "No ingredients match your filters",
-    "newScan": "New Scan",
-    "riskSummary": {
-      "title": "Risk Summary",
+    "filters": {
+      "all": "All",
       "low": "Low",
       "moderate": "Moderate",
       "high": "High"
     },
-    "ingredient": {
-      "whyFlagged": "Why it's flagged",
-      "whatItIs": "What it is",
-      "alternatives": "Alternatives"
+    "noResults": "No ingredients found matching your search.",
+    "scanAnother": "Scan Another Product",
+    "analyzing": {
+      "title": "Analyzing Ingredients",
+      "description": "Extracting text and identifying potential health risks..."
+    },
+    "error": {
+      "ocr": {
+        "title": "Image Not Clear Enough",
+        "description": "We couldn't read the ingredient list in your image. Please try again with:",
+        "tips": {
+          "lighting": "Better lighting",
+          "closer": "A closer photo of the ingredient list",
+          "steady": "A steady, focused shot",
+          "clear": "Clear, unobstructed text"
+        }
+      },
+      "analysis": {
+        "title": "Analysis Failed"
+      },
+      "tryAgain": "Try Again"
     }
   },
   "errors": {

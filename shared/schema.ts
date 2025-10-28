@@ -30,6 +30,7 @@ export const analysisRequestSchema = z.object({
   productType: z.enum(productTypes),
   ingredientsText: z.string(),
   originalLanguage: z.string().optional(),
+  userLanguage: z.string().optional().default('en'),
 });
 
 export type AnalysisRequest = z.infer<typeof analysisRequestSchema>;

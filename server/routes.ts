@@ -32,7 +32,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Analysis endpoint - analyze ingredients
   app.post("/api/analyze", async (req, res) => {
     try {
-      const { productType, ingredientsText } = analysisRequestSchema.parse(req.body);
+      const { productType, ingredientsText, userLanguage } = analysisRequestSchema.parse(req.body);
       
       if (!ingredientsText || ingredientsText.trim().length < 10) {
         return res.status(400).json({ 
@@ -40,7 +40,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
       
-      const result = await analyzeIngredients(productType as ProductType, ingredientsText);
+      const result = await analyzeIngredients(productType as ProductType, ingredientsText, userLanguage);
       
       res.json(result);
     } catch (error: any) {

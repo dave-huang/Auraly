@@ -45,13 +45,22 @@ const PRODUCT_TYPE_CONTEXTS = {
     - Talc (asbestos contamination risk)`
 };
 
+const LANGUAGE_INSTRUCTIONS = {
+  'zh': 'IMPORTANT: Respond in Simplified Chinese (简体中文). All ingredient names, summaries, and explanations must be in Chinese.',
+  'en': 'Respond in English.',
+};
+
 export async function analyzeIngredients(
   productType: ProductType,
-  ingredientsText: string
+  ingredientsText: string,
+  userLanguage: string = 'en'
 ): Promise<AnalysisResult> {
   const context = PRODUCT_TYPE_CONTEXTS[productType];
+  const languageInstruction = LANGUAGE_INSTRUCTIONS[userLanguage as keyof typeof LANGUAGE_INSTRUCTIONS] || LANGUAGE_INSTRUCTIONS['en'];
   
   const prompt = `You are a health-focused ingredient analyst. Analyze the following ingredient list from a ${productType} product.
+
+${languageInstruction}
 
 Product Type Context: ${context}
 
@@ -59,10 +68,10 @@ Ingredient List:
 ${ingredientsText}
 
 For each ingredient, determine:
-1. The ingredient name (clean, standardized format)
+1. The ingredient name (clean, standardized format) - in the user's language
 2. Risk level: "low" (safe), "moderate" (limited evidence/moderate concern), or "high" (known health risks)
-3. A brief summary (1-2 sentences) explaining what it is and why it's flagged
-4. Detailed explanation (2-3 sentences) with more context about health impacts
+3. A brief summary (1-2 sentences) explaining what it is and why it's flagged - in the user's language
+4. Detailed explanation (2-3 sentences) with more context about health impacts - in the user's language
 
 Also:
 - Extract the product name if mentioned

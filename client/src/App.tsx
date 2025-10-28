@@ -7,6 +7,7 @@ import Landing from "@/pages/landing";
 import UploadPage from "@/pages/upload";
 import ResultsPage from "@/pages/results";
 import NotFound from "@/pages/not-found";
+import "./i18n/config";
 
 function Router() {
   return (

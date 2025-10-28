@@ -2,10 +2,19 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Sparkles, Shield, Zap, Camera, Globe, Lock } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { LanguageSwitcher } from "@/components/language-switcher";
 
 export default function Landing() {
+  const { t } = useTranslation();
+  
   return (
     <div className="min-h-screen bg-background">
+      {/* Language Switcher - Fixed position */}
+      <div className="fixed top-4 right-4 z-50">
+        <LanguageSwitcher />
+      </div>
+
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Background gradient */}
@@ -22,20 +31,20 @@ export default function Landing() {
           {/* Logo/Brand */}
           <div className="mb-8">
             <h1 className="font-serif text-4xl md:text-5xl font-bold text-foreground mb-2 tracking-tight">
-              Auraly
+              {t('app.title')}
             </h1>
             <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
               <Shield className="w-4 h-4" />
-              <span>Your ingredient guardian</span>
+              <span>{t('landing.hero.guardian')}</span>
             </div>
           </div>
 
           {/* Main headline */}
-          <h2 className="text-5xl md:text-6xl font-bold tracking-tight mb-6 bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">Clarity for what you eat and use, every day.</h2>
+          <h2 className="text-5xl md:text-6xl font-bold tracking-tight mb-6 bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">{t('landing.hero.title')}</h2>
 
           {/* Subtext */}
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-12">
-            Auraly helps you understand ingredients in your food, skincare, and personal care products with AI-powered analysis in any language.
+            {t('landing.hero.subtitle')}
           </p>
 
           {/* CTA Button */}
@@ -46,7 +55,7 @@ export default function Landing() {
               data-testid="button-start-scanning"
             >
               <Camera className="mr-2 h-5 w-5" />
-              Start Scanning
+              {t('landing.hero.cta')}
             </Button>
           </Link>
 
@@ -54,15 +63,15 @@ export default function Landing() {
           <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <Lock className="w-4 h-4 text-primary" />
-              <span>Privacy-first</span>
+              <span>{t('landing.hero.trust.privacy')}</span>
             </div>
             <div className="flex items-center gap-2">
               <Zap className="w-4 h-4 text-primary" />
-              <span>No account needed</span>
+              <span>{t('landing.hero.trust.noAccount')}</span>
             </div>
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-primary" />
-              <span>Instant results</span>
+              <span>{t('landing.hero.trust.instant')}</span>
             </div>
           </div>
         </div>
@@ -71,10 +80,10 @@ export default function Landing() {
       <section className="py-20 bg-card">
         <div className="max-w-6xl mx-auto px-4">
           <h3 className="text-3xl md:text-4xl font-bold text-center mb-4">
-            How It Works
+            {t('landing.howItWorks.title')}
           </h3>
           <p className="text-center text-muted-foreground mb-16 max-w-2xl mx-auto">
-            Get ingredient insights in three simple steps
+            {t('landing.howItWorks.subtitle')}
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -88,9 +97,9 @@ export default function Landing() {
                   1
                 </div>
               </div>
-              <h4 className="text-xl font-semibold mb-3">Scan or Upload</h4>
+              <h4 className="text-xl font-semibold mb-3">{t('landing.howItWorks.step1.title')}</h4>
               <p className="text-muted-foreground">
-                Take a photo of any product label or upload an existing image
+                {t('landing.howItWorks.step1.description')}
               </p>
             </div>
 
@@ -104,9 +113,9 @@ export default function Landing() {
                   2
                 </div>
               </div>
-              <h4 className="text-xl font-semibold mb-3">AI Analysis</h4>
+              <h4 className="text-xl font-semibold mb-3">{t('landing.howItWorks.step2.title')}</h4>
               <p className="text-muted-foreground">
-                Our AI extracts and analyzes every ingredient for potential health risks
+                {t('landing.howItWorks.step2.description')}
               </p>
             </div>
 
@@ -120,9 +129,9 @@ export default function Landing() {
                   3
                 </div>
               </div>
-              <h4 className="text-xl font-semibold mb-3">Get Insights</h4>
+              <h4 className="text-xl font-semibold mb-3">{t('landing.howItWorks.step3.title')}</h4>
               <p className="text-muted-foreground">
-                Understand what's safe and what to watch out for in plain language
+                {t('landing.howItWorks.step3.description')}
               </p>
             </div>
           </div>
@@ -132,31 +141,31 @@ export default function Landing() {
       <section className="py-20">
         <div className="max-w-6xl mx-auto px-4">
           <h3 className="text-3xl md:text-4xl font-bold text-center mb-16">
-            Powerful Features
+            {t('landing.features.title')}
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card className="p-6 hover-elevate transition-all">
               <Globe className="w-10 h-10 text-primary mb-4" />
-              <h4 className="text-lg font-semibold mb-2">Multi-Language Support</h4>
+              <h4 className="text-lg font-semibold mb-2">{t('landing.features.multilang.title')}</h4>
               <p className="text-sm text-muted-foreground">
-                Scan labels in any language. We'll automatically detect and translate for accurate analysis.
+                {t('landing.features.multilang.description')}
               </p>
             </Card>
 
             <Card className="p-6 hover-elevate transition-all">
               <Shield className="w-10 h-10 text-primary mb-4" />
-              <h4 className="text-lg font-semibold mb-2">Risk Assessment</h4>
+              <h4 className="text-lg font-semibold mb-2">{t('landing.features.risk.title')}</h4>
               <p className="text-sm text-muted-foreground">
-                Clear color-coded risk levels help you quickly identify safe and potentially harmful ingredients.
+                {t('landing.features.risk.description')}
               </p>
             </Card>
 
             <Card className="p-6 hover-elevate transition-all">
               <Sparkles className="w-10 h-10 text-primary mb-4" />
-              <h4 className="text-lg font-semibold mb-2">Smart Analysis</h4>
+              <h4 className="text-lg font-semibold mb-2">{t('landing.features.smart.title')}</h4>
               <p className="text-sm text-muted-foreground">
-                Context-aware analysis tailored to product type — food, skincare, oral care, or cosmetics.
+                {t('landing.features.smart.description')}
               </p>
             </Card>
           </div>
@@ -167,23 +176,23 @@ export default function Landing() {
         <div className="max-w-3xl mx-auto px-4 text-center">
           <Lock className="w-12 h-12 text-primary mx-auto mb-4" />
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
-            Your Privacy Matters
+            {t('landing.privacy.title')}
           </h3>
           <p className="text-muted-foreground mb-6">
-            Your data stays private — images aren't stored on our servers. Analysis happens in real-time and results are only saved in your browser.
+            {t('landing.privacy.description')}
           </p>
           <div className="flex flex-wrap justify-center gap-4 text-sm">
             <div className="flex items-center gap-2 bg-background px-4 py-2 rounded-lg">
               <div className="w-2 h-2 rounded-full bg-primary" />
-              <span>No account required</span>
+              <span>{t('landing.privacy.features.noAccount')}</span>
             </div>
             <div className="flex items-center gap-2 bg-background px-4 py-2 rounded-lg">
               <div className="w-2 h-2 rounded-full bg-primary" />
-              <span>Images not stored</span>
+              <span>{t('landing.privacy.features.notStored')}</span>
             </div>
             <div className="flex items-center gap-2 bg-background px-4 py-2 rounded-lg">
               <div className="w-2 h-2 rounded-full bg-primary" />
-              <span>Local-only history</span>
+              <span>{t('landing.privacy.features.localOnly')}</span>
             </div>
           </div>
         </div>
@@ -191,12 +200,12 @@ export default function Landing() {
       {/* Footer */}
       <footer className="py-12 border-t">
         <div className="max-w-6xl mx-auto px-4 text-center">
-          <p className="font-serif text-2xl font-bold mb-2">Auraly</p>
+          <p className="font-serif text-2xl font-bold mb-2">{t('app.title')}</p>
           <p className="text-sm text-muted-foreground mb-4">
-            Know what's in your products, make informed choices
+            {t('landing.footer.tagline')}
           </p>
           <p className="text-xs text-muted-foreground">
-            © 2025 Auraly. AI-powered ingredient analysis.
+            {t('landing.footer.copyright')}
           </p>
         </div>
       </footer>

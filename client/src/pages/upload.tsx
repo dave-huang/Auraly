@@ -5,9 +5,12 @@ import { Card } from "@/components/ui/card";
 import { ArrowLeft, Upload, Camera, Loader2 } from "lucide-react";
 import { ProductTypeSelector } from "@/components/product-type-selector";
 import { ImageUploader } from "@/components/image-uploader";
+import { LanguageSwitcher } from "@/components/language-switcher";
 import type { ProductType } from "@shared/schema";
+import { useTranslation } from "react-i18next";
 
 export default function UploadPage() {
+  const { t } = useTranslation();
   const [, setLocation] = useLocation();
   const [selectedType, setSelectedType] = useState<ProductType | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -49,10 +52,10 @@ export default function UploadPage() {
             data-testid="button-back"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back
+            {t('common.back')}
           </Button>
-          <h1 className="font-serif text-xl font-bold">Auraly</h1>
-          <div className="w-20" /> {/* Spacer for centering */}
+          <h1 className="font-serif text-xl font-bold">{t('upload.header.title')}</h1>
+          <LanguageSwitcher />
         </div>
       </header>
 
@@ -62,10 +65,10 @@ export default function UploadPage() {
           <div>
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                What are you scanning?
+                {t('upload.selectType.title')}
               </h2>
               <p className="text-muted-foreground text-lg">
-                Select the product type for accurate analysis
+                {t('upload.selectType.subtitle')}
               </p>
             </div>
             
@@ -75,10 +78,10 @@ export default function UploadPage() {
           <div>
             <div className="text-center mb-8">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Upload or Scan Label
+                {t('upload.uploadImage.title')}
               </h2>
               <p className="text-muted-foreground text-lg">
-                Take a clear photo of the ingredient list
+                {t('upload.uploadImage.subtitle')}
               </p>
             </div>
 
@@ -93,9 +96,9 @@ export default function UploadPage() {
                   <div className="flex flex-col items-center gap-4 text-center">
                     <Loader2 className="w-12 h-12 text-primary animate-spin" />
                     <div>
-                      <h3 className="font-semibold text-lg mb-1">Analyzing Ingredients</h3>
+                      <h3 className="font-semibold text-lg mb-1">{t('upload.analyzing.title')}</h3>
                       <p className="text-sm text-muted-foreground">
-                        Extracting text and identifying potential health risks...
+                        {t('upload.analyzing.description')}
                       </p>
                     </div>
                     <div className="w-full max-w-xs bg-muted rounded-full h-2 overflow-hidden">

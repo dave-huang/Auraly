@@ -7,11 +7,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Camera, Loader2, Search, AlertCircle } from "lucide-react";
 import { IngredientCard } from "@/components/ingredient-card";
 import { RiskSummary } from "@/components/risk-summary";
+import { LanguageSwitcher } from "@/components/language-switcher";
 import type { AnalysisResult, Ingredient, RiskLevel } from "@shared/schema";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
+import { useTranslation } from "react-i18next";
 
 export default function ResultsPage() {
+  const { t, i18n } = useTranslation();
   const [, setLocation] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedRisk, setSelectedRisk] = useState<RiskLevel | "all">("all");
@@ -24,11 +27,12 @@ export default function ResultsPage() {
       const ocrResponse = await apiRequest("POST", "/api/ocr", { imageData: data.imageData });
       const ocrResult: any = await ocrResponse.json();
       
-      // Then analyze the extracted text
+      // Then analyze the extracted text with user's language preference
       const analysisResponse = await apiRequest("POST", "/api/analyze", {
         productType: data.productType,
         ingredientsText: ocrResult.text,
-        originalLanguage: ocrResult.language
+        originalLanguage: ocrResult.language,
+        userLanguage: i18n.language
       });
       const analysisResult: any = await analysisResponse.json();
       
@@ -86,9 +90,9 @@ export default function ResultsPage() {
           <div className="flex flex-col items-center gap-4 text-center">
             <Loader2 className="w-16 h-16 text-primary animate-spin" />
             <div>
-              <h3 className="font-semibold text-xl mb-2">Analyzing Ingredients</h3>
+              <h3 className="font-semibold text-xl mb-2">{t('results.analyzing.title')}</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                Extracting text and identifying potential health risks...
+                {t('results.analyzing.description')}
               </p>
             </div>
             <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
@@ -118,20 +122,20 @@ export default function ResultsPage() {
             </div>
             <div>
               <h3 className="font-semibold text-xl mb-2">
-                {isOCRError ? 'Image Not Clear Enough' : 'Analysis Failed'}
+                {isOCRError ? t('results.error.ocr.title') : t('results.error.analysis.title')}
               </h3>
               <p className="text-sm text-muted-foreground mb-4">
                 {isOCRError 
-                  ? 'We couldn\'t read the ingredient list in your image. Please try again with:'
+                  ? t('results.error.ocr.description')
                   : errorMessage
                 }
               </p>
               {isOCRError && (
                 <ul className="text-xs text-muted-foreground text-left mb-4 space-y-1">
-                  <li>• Better lighting</li>
-                  <li>• A closer photo of the ingredient list</li>
-                  <li>• A steady, focused shot</li>
-                  <li>• Clear, unobstructed text</li>
+                  <li>• {t('results.error.ocr.tips.lighting')}</li>
+                  <li>• {t('results.error.ocr.tips.closer')}</li>
+                  <li>• {t('results.error.ocr.tips.steady')}</li>
+                  <li>• {t('results.error.ocr.tips.clear')}</li>
                 </ul>
               )}
             </div>
@@ -143,7 +147,7 @@ export default function ResultsPage() {
               data-testid="button-try-again"
             >
               <Camera className="mr-2 h-4 w-4" />
-              Try Again
+              {t('results.error.tryAgain')}
             </Button>
           </div>
         </Card>
@@ -167,10 +171,10 @@ export default function ResultsPage() {
             data-testid="button-home"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Home
+            {t('results.header.home')}
           </Button>
-          <h1 className="font-serif text-xl font-bold">Auraly</h1>
-          <div className="w-20" />
+          <h1 className="font-serif text-xl font-bold">{t('app.title')}</h1>
+          <LanguageSwitcher />
         </div>
       </header>
 
@@ -183,7 +187,7 @@ export default function ResultsPage() {
               {analysisResult.productName}
             </h2>
             <p className="text-sm text-muted-foreground capitalize">
-              {analysisResult.productType.replace('-', ' ')} product
+              {analysisResult.productType.replace('-', ' ')} {t('results.productType')}
             </p>
           </div>
         )}
@@ -200,7 +204,7 @@ export default function ResultsPage() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
-            placeholder="Search ingredients..."
+            placeholder={t('results.search')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10"
@@ -212,16 +216,16 @@ export default function ResultsPage() {
         <Tabs value={selectedRisk} onValueChange={(value) => setSelectedRisk(value as RiskLevel | "all")} className="mb-6">
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="all" data-testid="tab-all">
-              All ({analysisResult.ingredients.length})
+              {t('results.filters.all')} ({analysisResult.ingredients.length})
             </TabsTrigger>
             <TabsTrigger value="low" data-testid="tab-low">
-              Low ({riskCounts.low})
+              {t('results.filters.low')} ({riskCounts.low})
             </TabsTrigger>
             <TabsTrigger value="moderate" data-testid="tab-moderate">
-              Moderate ({riskCounts.moderate})
+              {t('results.filters.moderate')} ({riskCounts.moderate})
             </TabsTrigger>
             <TabsTrigger value="high" data-testid="tab-high">
-              High ({riskCounts.high})
+              {t('results.filters.high')} ({riskCounts.high})
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -231,7 +235,7 @@ export default function ResultsPage() {
           {filteredIngredients.length === 0 ? (
             <Card className="p-8 text-center">
               <p className="text-muted-foreground">
-                No ingredients found matching your search.
+                {t('results.noResults')}
               </p>
             </Card>
           ) : (
@@ -255,7 +259,7 @@ export default function ResultsPage() {
             data-testid="button-scan-another"
           >
             <Camera className="mr-2 h-5 w-5" />
-            Scan Another Product
+            {t('results.scanAnother')}
           </Button>
         </div>
       </div>
