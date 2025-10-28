@@ -3,16 +3,29 @@
 ## Overview
 Auraly is a mobile-friendly web application that helps users understand ingredients in their food, skincare, and personal care products. Users can scan or upload product labels in any language, and the app uses AI to extract and analyze ingredients, highlighting potential health risks with clear, friendly explanations.
 
-**Current State**: MVP complete and functional with enhanced OCR
+**Current State**: MVP complete and functional with enhanced OCR and full internationalization (i18n)
 - Landing page with wellness-inspired design
 - Product type selection (Food, Skincare/Haircare, Oral Care, Cosmetics)
 - Image upload and camera capture functionality
 - **Dual OCR system: Google Cloud Vision API (primary) with Tesseract.js fallback**
 - AI-powered ingredient analysis using GPT-5
+- **Full multi-language support: English and Chinese (both UI and AI analysis results)**
 - Risk-coded results with expandable ingredient details
 - Local scan history storage
+- Language preference persisted in localStorage
 
 ## Recent Changes (October 28, 2025)
+
+### Multi-Language Support (Latest)
+- **Implemented complete internationalization (i18n) with English and Chinese**
+- Installed and configured i18next and react-i18next
+- Created comprehensive translation files for all UI text
+- Built language switcher component (globe icon) on all pages
+- Updated backend analyzer to return ingredient analysis in user's preferred language
+- Language preference stored in localStorage and synced across sessions
+- AI now provides ingredient names, summaries, and details in the selected language
+
+### Google Cloud Vision OCR Integration
 - **Integrated Google Cloud Vision API for improved OCR accuracy**
 - Implemented intelligent fallback: Google Vision → Tesseract.js
 - Enhanced OCR handles curved text, poor lighting, and multiple languages
@@ -31,30 +44,42 @@ Auraly is a mobile-friendly web application that helps users understand ingredie
 
 ### Frontend (React + TypeScript)
 **Pages:**
-- `/` - Landing page with hero, features, and how-it-works sections
-- `/upload` - Two-step flow: product type selection → image upload/camera
-- `/results` - Analysis results with risk summary and ingredient cards
+- `/` - Landing page with hero, features, and how-it-works sections (fully translated)
+- `/upload` - Two-step flow: product type selection → image upload/camera (fully translated)
+- `/results` - Analysis results with risk summary and ingredient cards (fully translated)
 
 **Key Components:**
-- `ProductTypeSelector` - 4-card grid for product type selection
+- `ProductTypeSelector` - 4-card grid for product type selection (uses i18n translations)
 - `ImageUploader` - Drag-drop zone with camera/file upload buttons
 - `IngredientCard` - Risk-coded expandable card for each ingredient
 - `RiskSummary` - Overall risk assessment with color-coded breakdown
+- `LanguageSwitcher` - Globe icon dropdown to switch between English and Chinese
+
+**Internationalization:**
+- i18next configuration in `client/src/i18n/config.ts`
+- Translation files: `client/src/i18n/locales/{en,zh}.json`
+- Language preference stored in localStorage
+- All UI text supports English and Chinese
+- AI analysis results returned in user's preferred language
 
 **State Management:**
 - TanStack Query for API calls and mutations
 - sessionStorage for pending analysis data
-- localStorage for scan history (last 10 scans)
+- localStorage for scan history (last 10 scans) and language preference
 
 ### Backend (Node.js + Express)
 **API Endpoints:**
 - `POST /api/ocr` - Extract text from image using dual OCR system
-- `POST /api/analyze` - Analyze ingredients with OpenAI GPT-5
+- `POST /api/analyze` - Analyze ingredients with OpenAI GPT-5 in user's preferred language
+  - Accepts `userLanguage` parameter ('en' or 'zh')
+  - Returns ingredient names, summaries, and details in requested language
 
 **Services:**
 - `services/ocr.ts` - Dual OCR orchestrator (Google Vision → Tesseract fallback)
 - `services/googleVisionOcr.ts` - Google Cloud Vision API OCR implementation
-- `services/analyzer.ts` - GPT-5 ingredient analysis with schema validation
+- `services/analyzer.ts` - GPT-5 ingredient analysis with schema validation and multi-language support
+  - Language-specific prompts for English and Chinese
+  - Instructs AI to respond in user's preferred language
 - `openai.ts` - OpenAI client using Replit AI Integrations
 
 **Error Handling:**
@@ -89,8 +114,9 @@ Auraly is a mobile-friendly web application that helps users understand ingredie
 ## User Preferences
 - Privacy-focused: No user accounts, images not stored on server
 - Mobile-friendly: Optimized for on-the-go scanning
-- Multi-language support: OCR works with various languages (translated to English for analysis)
+- **Multi-language support**: Full English and Chinese UI, OCR works with various languages, AI analysis results in user's preferred language
 - Instant results: Real-time analysis without registration
+- Language preference: Stored locally in browser, persists across sessions
 
 ## Development Notes
 
@@ -101,10 +127,13 @@ npm run dev
 Server runs on port 5000 with Vite dev server for frontend.
 
 ### Key Files
-- `shared/schema.ts` - TypeScript types and Zod schemas shared between frontend/backend
+- `shared/schema.ts` - TypeScript types and Zod schemas shared between frontend/backend (includes `userLanguage` field)
 - `design_guidelines.md` - Comprehensive design system documentation
-- `server/services/analyzer.ts` - Product-type-specific health risk criteria
-- `client/src/pages/results.tsx` - Main results page with mutation handling
+- `server/services/analyzer.ts` - Product-type-specific health risk criteria with multi-language support
+- `client/src/pages/results.tsx` - Main results page with mutation handling and language-aware API calls
+- `client/src/i18n/config.ts` - i18next configuration with language detection and localStorage persistence
+- `client/src/i18n/locales/{en,zh}.json` - Translation files for English and Chinese
+- `client/src/components/language-switcher.tsx` - Language selection dropdown component
 
 ### Future Enhancements
 - User accounts with persistent scan history (Replit Auth)
