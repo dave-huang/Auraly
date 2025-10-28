@@ -95,6 +95,7 @@ Return your analysis as JSON with this structure:
 }`;
 
   try {
+    console.log('Sending request to OpenAI...');
     const response = await openai.chat.completions.create({
       model: "gpt-5", // the newest OpenAI model is "gpt-5" which was released August 7, 2025. do not change this unless explicitly requested by the user
       messages: [
@@ -111,8 +112,11 @@ Return your analysis as JSON with this structure:
       max_completion_tokens: 8192
     });
 
-    const content = response.choices[0].message.content;
+    console.log('OpenAI response received:', JSON.stringify(response, null, 2));
+    
+    const content = response.choices?.[0]?.message?.content;
     if (!content) {
+      console.error('Empty AI response. Full response:', JSON.stringify(response));
       throw new Error('No response from AI');
     }
 
