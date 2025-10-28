@@ -8,7 +8,7 @@ Auraly is a mobile-friendly web application that helps users understand ingredie
 - Product type selection (Food, Skincare/Haircare, Oral Care, Cosmetics)
 - Image upload and camera capture functionality
 - **Dual OCR system: Google Cloud Vision API (primary) with Tesseract.js fallback**
-- **AI-powered ingredient analysis using GPT-4-turbo (optimized for speed: 10-20s analysis time)**
+- **AI-powered ingredient analysis using GPT-4o (optimized for speed: 10-20s analysis time)**
 - **Full multi-language support: English and Chinese (both UI and AI analysis results)**
 - Risk-coded results with expandable ingredient details
 - Local scan history storage
@@ -18,9 +18,9 @@ Auraly is a mobile-friendly web application that helps users understand ingredie
 ## Recent Changes (October 28, 2025)
 
 ### Performance Optimization & Mobile Fix (Latest) ✅
-- **Switched from GPT-5 to GPT-4-turbo for 3-5x faster analysis**
+- **Switched from GPT-5 to GPT-4o for 3-5x faster analysis**
   - Reduced analysis time from 60-75 seconds to 10-20 seconds
-  - GPT-4-turbo avoids GPT-5's heavy reasoning token overhead (7,000+ tokens)
+  - GPT-4o avoids GPT-5's heavy reasoning token overhead (7,000+ tokens)
   - Maintains accuracy while dramatically improving user experience
 - **Added timeout support to prevent mobile failures**
   - Implemented AbortController with 2-minute default timeout
@@ -100,14 +100,14 @@ Auraly is a mobile-friendly web application that helps users understand ingredie
 ### Backend (Node.js + Express)
 **API Endpoints:**
 - `POST /api/ocr` - Extract text from image using dual OCR system (typically 1-2 seconds)
-- `POST /api/analyze` - Analyze ingredients with OpenAI GPT-4-turbo in user's preferred language (10-20 seconds)
+- `POST /api/analyze` - Analyze ingredients with OpenAI GPT-4o in user's preferred language (10-20 seconds)
   - Accepts `userLanguage` parameter ('en' or 'zh')
   - Returns ingredient names, summaries, and details in requested language
 
 **Services:**
 - `services/ocr.ts` - Dual OCR orchestrator (Google Vision → Tesseract fallback)
 - `services/googleVisionOcr.ts` - Google Cloud Vision API OCR implementation
-- `services/analyzer.ts` - GPT-4-turbo ingredient analysis with schema validation and multi-language support
+- `services/analyzer.ts` - GPT-4o ingredient analysis with schema validation and multi-language support
   - Language-specific prompts for English and Chinese
   - Instructs AI to respond in user's preferred language
   - Optimized for speed (10-20s vs GPT-5's 60-75s)

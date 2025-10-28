@@ -97,7 +97,7 @@ Return your analysis as JSON with this structure:
   try {
     console.log('Sending request to OpenAI...');
     const response = await openai.chat.completions.create({
-      model: "gpt-4-turbo", // Optimized for speed - 3-5x faster than GPT-5 (10-20s vs 60-75s)
+      model: "gpt-4o", // Optimized for speed - much faster than GPT-5 (10-20s vs 60-75s)
       messages: [
         {
           role: "system",
@@ -109,7 +109,7 @@ Return your analysis as JSON with this structure:
         }
       ],
       response_format: { type: "json_object" },
-      max_tokens: 4096 // Sufficient for ingredient analysis without the overhead of reasoning tokens
+      max_tokens: 4096 // Sufficient for ingredient analysis
     });
 
     console.log('OpenAI response received:', JSON.stringify(response, null, 2));
