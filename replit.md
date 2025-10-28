@@ -16,7 +16,25 @@ Auraly is a mobile-friendly web application that helps users understand ingredie
 
 ## Recent Changes (October 28, 2025)
 
-### Multi-Language Support (Latest)
+### Mobile-First UX Optimization (Latest) ✅
+- **Redesigned ImageUploader for mobile-first scanning experience**
+- Camera scanning is now the PRIMARY CTA with large, prominent card and button
+- File upload is SECONDARY with smaller drag-drop zone below divider
+- Restored drag-and-drop functionality for desktop users
+- Uses proper Button sizing without custom padding (follows design guidelines)
+- Clear visual hierarchy: "Scan with Camera" → "or" divider → "Upload from Files"
+- **Full keyboard accessibility**: Enter/Space keys, proper tabIndex and ARIA labels
+- **Screen reader support**: Descriptive aria-labels for all interactive elements
+- Updated translations for new UI text in both English and Chinese
+- **Tested and verified**: E2E tests confirm visual hierarchy, keyboard navigation, and mobile-first UX
+
+### Bug Fixes & Improvements
+- **Fixed GPT-5 token issue**: Increased max_completion_tokens to 16,384 to accommodate reasoning overhead
+- **Fixed language normalization**: Extract 'en' or 'zh' from browser locale codes before API calls
+- **Robust error handling**: Image validation, Tesseract worker management, 30-second timeouts
+- Global error handlers prevent server crashes
+
+### Multi-Language Support
 - **Implemented complete internationalization (i18n) with English and Chinese**
 - Installed and configured i18next and react-i18next
 - Created comprehensive translation files for all UI text
@@ -50,7 +68,7 @@ Auraly is a mobile-friendly web application that helps users understand ingredie
 
 **Key Components:**
 - `ProductTypeSelector` - 4-card grid for product type selection (uses i18n translations)
-- `ImageUploader` - Drag-drop zone with camera/file upload buttons
+- `ImageUploader` - Mobile-first design with camera scan as primary CTA (large card) and file upload as secondary (smaller drag-drop zone)
 - `IngredientCard` - Risk-coded expandable card for each ingredient
 - `RiskSummary` - Overall risk assessment with color-coded breakdown
 - `LanguageSwitcher` - Globe icon dropdown to switch between English and Chinese

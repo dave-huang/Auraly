@@ -69,8 +69,8 @@
       "subtitle": "Select the product type for accurate analysis"
     },
     "uploadImage": {
-      "title": "Upload or Scan Label",
-      "subtitle": "Take a clear photo of the ingredient list"
+      "title": "Scan Label",
+      "subtitle": "Point your camera at the ingredient list"
     },
     "productTypes": {
       "food": {
@@ -94,6 +94,17 @@
       "title": "Analyzing Ingredients",
       "description": "Extracting text and identifying potential health risks..."
     }
+  },
+  "imageUploader": {
+    "scanWithCamera": "Scan with Camera",
+    "scanDescription": "Point your camera at the ingredient list",
+    "openCamera": "Open Camera",
+    "uploadFromFiles": "Upload from Files",
+    "dragDropOrClick": "Drag and drop or click to browse",
+    "or": "or",
+    "supportedFormats": "Supports JPG, PNG, HEIC",
+    "imageSelected": "Image selected. Click the X to choose a different image.",
+    "clearImage": "Clear image and choose a different one"
   },
   "results": {
     "header": {

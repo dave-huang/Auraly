@@ -69,8 +69,8 @@
       "subtitle": "选择产品类型以获得准确分析"
     },
     "uploadImage": {
-      "title": "上传或扫描标签",
-      "subtitle": "拍摄成分列表的清晰照片"
+      "title": "扫描标签",
+      "subtitle": "将相机对准成分列表"
     },
     "productTypes": {
       "food": {
@@ -94,6 +94,17 @@
       "title": "正在分析成分",
       "description": "正在提取文本并识别潜在健康风险..."
     }
+  },
+  "imageUploader": {
+    "scanWithCamera": "用相机扫描",
+    "scanDescription": "将相机对准成分列表",
+    "openCamera": "打开相机",
+    "uploadFromFiles": "从文件上传",
+    "dragDropOrClick": "拖放或点击浏览",
+    "or": "或",
+    "supportedFormats": "支持 JPG、PNG、HEIC",
+    "imageSelected": "已选择图片。点击 X 选择其他图片。",
+    "clearImage": "清除图片并选择其他图片"
   },
   "results": {
     "header": {
