@@ -3,16 +3,22 @@
 ## Overview
 Auraly is a mobile-friendly web application that helps users understand ingredients in their food, skincare, and personal care products. Users can scan or upload product labels in any language, and the app uses AI to extract and analyze ingredients, highlighting potential health risks with clear, friendly explanations.
 
-**Current State**: MVP complete and functional
+**Current State**: MVP complete and functional with enhanced OCR
 - Landing page with wellness-inspired design
 - Product type selection (Food, Skincare/Haircare, Oral Care, Cosmetics)
 - Image upload and camera capture functionality
-- OCR text extraction using Tesseract.js
+- **Dual OCR system: Google Cloud Vision API (primary) with Tesseract.js fallback**
 - AI-powered ingredient analysis using GPT-5
 - Risk-coded results with expandable ingredient details
 - Local scan history storage
 
-## Recent Changes (October 27, 2025)
+## Recent Changes (October 28, 2025)
+- **Integrated Google Cloud Vision API for improved OCR accuracy**
+- Implemented intelligent fallback: Google Vision → Tesseract.js
+- Enhanced OCR handles curved text, poor lighting, and multiple languages
+- Fixed apiRequest response parsing (.json() call)
+
+## Previous Changes (October 27, 2025)
 - Initial MVP implementation completed
 - Implemented complete frontend with three pages (Landing, Upload, Results)
 - Built backend with OpenAI integration and Tesseract.js OCR
@@ -42,11 +48,12 @@ Auraly is a mobile-friendly web application that helps users understand ingredie
 
 ### Backend (Node.js + Express)
 **API Endpoints:**
-- `POST /api/ocr` - Extract text from image using Tesseract.js
+- `POST /api/ocr` - Extract text from image using dual OCR system
 - `POST /api/analyze` - Analyze ingredients with OpenAI GPT-5
 
 **Services:**
-- `services/ocr.ts` - Tesseract.js OCR with empty text validation
+- `services/ocr.ts` - Dual OCR orchestrator (Google Vision → Tesseract fallback)
+- `services/googleVisionOcr.ts` - Google Cloud Vision API OCR implementation
 - `services/analyzer.ts` - GPT-5 ingredient analysis with schema validation
 - `openai.ts` - OpenAI client using Replit AI Integrations
 
@@ -75,7 +82,7 @@ Auraly is a mobile-friendly web application that helps users understand ingredie
 ## Tech Stack
 - **Frontend**: React, TypeScript, Tailwind CSS, shadcn/ui, TanStack Query, Wouter
 - **Backend**: Node.js, Express, TypeScript
-- **AI/ML**: OpenAI GPT-5 (via Replit AI Integrations), Tesseract.js
+- **AI/ML**: OpenAI GPT-5 (via Replit AI Integrations), Google Cloud Vision API, Tesseract.js
 - **Storage**: In-memory (no database), localStorage for client-side history
 - **Deployment**: Replit
 
@@ -100,7 +107,6 @@ Server runs on port 5000 with Vite dev server for frontend.
 - `client/src/pages/results.tsx` - Main results page with mutation handling
 
 ### Future Enhancements
-- Google Cloud Vision API for improved OCR accuracy
 - User accounts with persistent scan history (Replit Auth)
 - Advanced filtering and search within results
 - Shareable product report permalinks
