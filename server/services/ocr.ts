@@ -7,9 +7,40 @@ export interface OCRResult {
 }
 
 /**
+ * Validate that the image data is valid base64
+ */
+function validateImageData(imageData: string): void {
+  // Remove the data URL prefix if present
+  const base64Data = imageData.replace(/^data:image\/\w+;base64,/, '');
+  
+  // Check if it's valid base64
+  if (!base64Data || !/^[A-Za-z0-9+/]+=*$/.test(base64Data)) {
+    throw new Error('Invalid image data format');
+  }
+  
+  // Check minimum size (at least 100 bytes for a valid image)
+  const buffer = Buffer.from(base64Data, 'base64');
+  if (buffer.length < 100) {
+    throw new Error('Image data too small - appears to be corrupted');
+  }
+  
+  // Check maximum size (10MB limit)
+  if (buffer.length > 10 * 1024 * 1024) {
+    throw new Error('Image too large - maximum size is 10MB');
+  }
+}
+
+/**
  * Extract text from image using Google Cloud Vision API with Tesseract.js as fallback
  */
 export async function extractTextFromImage(imageData: string): Promise<OCRResult> {
+  // Validate image data first
+  try {
+    validateImageData(imageData);
+  } catch (error: any) {
+    throw new Error(`Image validation failed: ${error.message}`);
+  }
+  
   // Try Google Cloud Vision first if API key is available
   if (process.env.GOOGLE_CLOUD_VISION_API_KEY) {
     try {
@@ -27,23 +58,31 @@ export async function extractTextFromImage(imageData: string): Promise<OCRResult
   }
   
   // Fallback to Tesseract.js
+  console.log('Using Tesseract.js for OCR...');
+  
+  let worker;
   try {
-    console.log('Using Tesseract.js for OCR...');
-    
     // Remove the data URL prefix if present
     const base64Data = imageData.replace(/^data:image\/\w+;base64,/, '');
     
     // Convert base64 to buffer
     const buffer = Buffer.from(base64Data, 'base64');
     
-    // Perform OCR
-    const result = await Tesseract.recognize(
-      buffer,
-      'eng', // Start with English, Tesseract will auto-detect
-      {
-        logger: () => {} // Suppress logging
+    // Create a worker with error handling
+    worker = await Tesseract.createWorker('eng', 1, {
+      logger: () => {}, // Suppress logging
+      errorHandler: (err: any) => {
+        console.error('Tesseract worker error:', err);
       }
+    });
+    
+    // Perform OCR with timeout
+    const recognizePromise = worker.recognize(buffer);
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('OCR timeout after 30 seconds')), 30000)
     );
+    
+    const result = await Promise.race([recognizePromise, timeoutPromise]) as Tesseract.RecognizeResult;
     
     const extractedText = result.data.text.trim();
     
@@ -58,13 +97,26 @@ export async function extractTextFromImage(imageData: string): Promise<OCRResult
       language: 'en' // Tesseract doesn't provide reliable language detection
     };
   } catch (error: any) {
-    console.error('OCR extraction failed:', error);
+    console.error('Tesseract OCR failed:', error);
     
     // Preserve meaningful error messages
     if (error.message && error.message.includes('No text found')) {
       throw error;
     }
     
-    throw new Error('Failed to extract text from image. Please try again with a clearer photo.');
+    if (error.message && error.message.includes('timeout')) {
+      throw new Error('OCR processing took too long. Please try with a smaller or clearer image.');
+    }
+    
+    throw new Error('Failed to extract text from image. The image may be corrupted or in an unsupported format. Please try again with a different photo.');
+  } finally {
+    // Always terminate the worker to prevent memory leaks
+    if (worker) {
+      try {
+        await worker.terminate();
+      } catch (e) {
+        // Ignore termination errors
+      }
+    }
   }
 }
