@@ -1,0 +1,110 @@
+{
+  "app": {
+    "title": "Auraly",
+    "tagline": "Understand What's Really In Your Products"
+  },
+  "landing": {
+    "hero": {
+      "title": "Understand What's Really In Your Products",
+      "subtitle": "Scan any food, skincare, or personal care product to get instant AI-powered ingredient analysis",
+      "cta": "Start Scanning"
+    },
+    "features": {
+      "title": "Why Choose Auraly?",
+      "instant": {
+        "title": "Instant Analysis",
+        "description": "Get results in seconds with AI-powered OCR and ingredient analysis"
+      },
+      "multilang": {
+        "title": "Multi-Language",
+        "description": "Scan products in any language - our AI understands them all"
+      },
+      "privacy": {
+        "title": "Privacy First",
+        "description": "No accounts needed. Images aren't stored. Your data stays private"
+      },
+      "science": {
+        "title": "Science-Backed",
+        "description": "Risk assessments based on research and safety guidelines"
+      }
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "step1": {
+        "title": "Choose Product Type",
+        "description": "Select food, skincare, oral care, or cosmetics"
+      },
+      "step2": {
+        "title": "Scan or Upload",
+        "description": "Take a photo or upload an image of the ingredients list"
+      },
+      "step3": {
+        "title": "Get Insights",
+        "description": "See color-coded risk levels and detailed explanations"
+      }
+    }
+  },
+  "upload": {
+    "title": "Analyze Product",
+    "selectType": "Select Product Type",
+    "productTypes": {
+      "food": "Food",
+      "skincare": "Skincare/Haircare",
+      "oralCare": "Oral Care",
+      "cosmetics": "Cosmetics/Fragrance"
+    },
+    "uploadImage": "Upload Product Image",
+    "dragDrop": "Drag and drop an image of the ingredients list, or",
+    "selectFile": "Select File",
+    "takePhoto": "Take Photo",
+    "analyzing": "Analyzing ingredients...",
+    "analyzingDesc": "Our AI is reading the label and analyzing each ingredient for potential health risks.",
+    "back": "Back"
+  },
+  "results": {
+    "title": "Analysis Results",
+    "productName": "Product",
+    "overallRisk": "Overall Risk",
+    "riskLevels": {
+      "low": "Low Risk",
+      "moderate": "Moderate Risk",
+      "high": "High Risk"
+    },
+    "ingredientCount": {
+      "one": "{{count}} ingredient analyzed",
+      "other": "{{count}} ingredients analyzed"
+    },
+    "filters": {
+      "all": "All Ingredients",
+      "low": "Low Risk",
+      "moderate": "Moderate",
+      "high": "High Risk"
+    },
+    "search": "Search ingredients...",
+    "noResults": "No ingredients match your filters",
+    "newScan": "New Scan",
+    "riskSummary": {
+      "title": "Risk Summary",
+      "low": "Low",
+      "moderate": "Moderate",
+      "high": "High"
+    },
+    "ingredient": {
+      "whyFlagged": "Why it's flagged",
+      "whatItIs": "What it is",
+      "alternatives": "Alternatives"
+    }
+  },
+  "errors": {
+    "analysisFailed": "Analysis Failed",
+    "tryAgain": "Try Again",
+    "generic": "Something went wrong. Please try again."
+  },
+  "common": {
+    "loading": "Loading...",
+    "back": "Back",
+    "close": "Close",
+    "search": "Search",
+    "filter": "Filter"
+  }
+}

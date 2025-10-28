@@ -1,0 +1,110 @@
+{
+  "app": {
+    "title": "Auraly",
+    "tagline": "了解产品成分的真相"
+  },
+  "landing": {
+    "hero": {
+      "title": "了解产品成分的真相",
+      "subtitle": "扫描任何食品、护肤品或个人护理产品，即时获得AI智能成分分析",
+      "cta": "开始扫描"
+    },
+    "features": {
+      "title": "为什么选择 Auraly？",
+      "instant": {
+        "title": "即时分析",
+        "description": "通过AI智能OCR和成分分析，几秒钟内获得结果"
+      },
+      "multilang": {
+        "title": "多语言支持",
+        "description": "扫描任何语言的产品 - 我们的AI都能理解"
+      },
+      "privacy": {
+        "title": "隐私优先",
+        "description": "无需注册账户。不存储图片。您的数据完全私密"
+      },
+      "science": {
+        "title": "科学依据",
+        "description": "基于研究和安全指南的风险评估"
+      }
+    },
+    "howItWorks": {
+      "title": "使用方法",
+      "step1": {
+        "title": "选择产品类型",
+        "description": "选择食品、护肤品、口腔护理或化妆品"
+      },
+      "step2": {
+        "title": "扫描或上传",
+        "description": "拍摄或上传成分列表的照片"
+      },
+      "step3": {
+        "title": "获取分析",
+        "description": "查看颜色标记的风险等级和详细说明"
+      }
+    }
+  },
+  "upload": {
+    "title": "分析产品",
+    "selectType": "选择产品类型",
+    "productTypes": {
+      "food": "食品",
+      "skincare": "护肤/护发",
+      "oralCare": "口腔护理",
+      "cosmetics": "化妆品/香水"
+    },
+    "uploadImage": "上传产品图片",
+    "dragDrop": "拖放成分列表图片，或",
+    "selectFile": "选择文件",
+    "takePhoto": "拍照",
+    "analyzing": "正在分析成分...",
+    "analyzingDesc": "我们的AI正在读取标签并分析每种成分的潜在健康风险。",
+    "back": "返回"
+  },
+  "results": {
+    "title": "分析结果",
+    "productName": "产品",
+    "overallRisk": "整体风险",
+    "riskLevels": {
+      "low": "低风险",
+      "moderate": "中等风险",
+      "high": "高风险"
+    },
+    "ingredientCount": {
+      "one": "已分析 {{count}} 种成分",
+      "other": "已分析 {{count}} 种成分"
+    },
+    "filters": {
+      "all": "所有成分",
+      "low": "低风险",
+      "moderate": "中等",
+      "high": "高风险"
+    },
+    "search": "搜索成分...",
+    "noResults": "没有符合筛选条件的成分",
+    "newScan": "新扫描",
+    "riskSummary": {
+      "title": "风险摘要",
+      "low": "低",
+      "moderate": "中",
+      "high": "高"
+    },
+    "ingredient": {
+      "whyFlagged": "标记原因",
+      "whatItIs": "成分说明",
+      "alternatives": "替代方案"
+    }
+  },
+  "errors": {
+    "analysisFailed": "分析失败",
+    "tryAgain": "重试",
+    "generic": "出错了，请重试。"
+  },
+  "common": {
+    "loading": "加载中...",
+    "back": "返回",
+    "close": "关闭",
+    "search": "搜索",
+    "filter": "筛选"
+  }
+}
