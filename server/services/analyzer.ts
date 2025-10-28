@@ -109,7 +109,7 @@ Return your analysis as JSON with this structure:
         }
       ],
       response_format: { type: "json_object" },
-      max_completion_tokens: 8192
+      max_completion_tokens: 16384 // Increased to account for GPT-5's reasoning tokens + actual output
     });
 
     console.log('OpenAI response received:', JSON.stringify(response, null, 2));
