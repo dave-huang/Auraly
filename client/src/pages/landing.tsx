@@ -31,7 +31,9 @@ export default function Landing() {
           </div>
 
           {/* Main headline */}
-          <h2 className="md:text-6xl font-bold tracking-tight mb-6 bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent text-[46px]">Clarity for what you eat and use, every day.</h2>
+          <h2 className="text-5xl md:text-6xl font-bold tracking-tight mb-6 bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">
+            Know what's in your food and products — instantly.
+          </h2>
 
           {/* Subtext */}
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-12">
@@ -67,6 +69,7 @@ export default function Landing() {
           </div>
         </div>
       </section>
+
       {/* How It Works Section */}
       <section className="py-20 bg-card">
         <div className="max-w-6xl mx-auto px-4">
@@ -128,6 +131,7 @@ export default function Landing() {
           </div>
         </div>
       </section>
+
       {/* Features Section */}
       <section className="py-20">
         <div className="max-w-6xl mx-auto px-4">
@@ -162,6 +166,7 @@ export default function Landing() {
           </div>
         </div>
       </section>
+
       {/* Privacy Section */}
       <section className="py-16 bg-muted/30">
         <div className="max-w-3xl mx-auto px-4 text-center">
@@ -188,6 +193,7 @@ export default function Landing() {
           </div>
         </div>
       </section>
+
       {/* Footer */}
       <footer className="py-12 border-t">
         <div className="max-w-6xl mx-auto px-4 text-center">
