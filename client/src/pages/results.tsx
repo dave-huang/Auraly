@@ -7,7 +7,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Camera, Loader2, Search, AlertCircle } from "lucide-react";
 import { IngredientCard } from "@/components/ingredient-card";
 import { RiskSummary } from "@/components/risk-summary";
-import { LanguageSwitcher } from "@/components/language-switcher";
 import type { AnalysisResult, Ingredient, RiskLevel } from "@shared/schema";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
@@ -177,7 +176,7 @@ export default function ResultsPage() {
             {t('results.header.home')}
           </Button>
           <h1 className="font-serif text-xl font-bold">{t('app.title')}</h1>
-          <LanguageSwitcher />
+          <div className="w-10" />
         </div>
       </header>
 

@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import type { Ingredient } from "@shared/schema";
+import { useTranslation } from "react-i18next";
 
 interface IngredientCardProps {
   ingredient: Ingredient;
@@ -13,26 +14,24 @@ const riskConfig = {
     color: "bg-emerald-500",
     bgColor: "bg-emerald-50 dark:bg-emerald-950/20",
     borderColor: "border-l-emerald-500",
-    label: "Low Risk",
     textColor: "text-emerald-700 dark:text-emerald-400"
   },
   moderate: {
     color: "bg-amber-500",
     bgColor: "bg-amber-50 dark:bg-amber-950/20",
     borderColor: "border-l-amber-500",
-    label: "Moderate Risk",
     textColor: "text-amber-700 dark:text-amber-400"
   },
   high: {
     color: "bg-red-500",
     bgColor: "bg-red-50 dark:bg-red-950/20",
     borderColor: "border-l-red-500",
-    label: "High Risk",
     textColor: "text-red-700 dark:text-red-400"
   }
 };
 
 export function IngredientCard({ ingredient }: IngredientCardProps) {
+  const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
   const config = riskConfig[ingredient.riskLevel];
 
@@ -49,7 +48,7 @@ export function IngredientCard({ ingredient }: IngredientCardProps) {
               className={`${config.bgColor} ${config.textColor} border-0 text-xs font-semibold`}
               data-testid={`badge-risk-${ingredient.riskLevel}`}
             >
-              {config.label}
+              {t(`results.riskLevels.${ingredient.riskLevel}`)}
             </Badge>
           </div>
           <div className={`w-3 h-3 rounded-full ${config.color} mt-1 flex-shrink-0`} />
@@ -71,12 +70,12 @@ export function IngredientCard({ ingredient }: IngredientCardProps) {
               {isExpanded ? (
                 <>
                   <ChevronUp className="w-4 h-4" />
-                  Show Less
+                  {t('results.ingredientCard.showLess')}
                 </>
               ) : (
                 <>
                   <ChevronDown className="w-4 h-4" />
-                  Learn More
+                  {t('results.ingredientCard.learnMore')}
                 </>
               )}
             </button>
