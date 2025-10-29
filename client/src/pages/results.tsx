@@ -26,8 +26,13 @@ export default function ResultsPage() {
       const ocrResponse = await apiRequest("POST", "/api/ocr", { imageData: data.imageData });
       const ocrResult: any = await ocrResponse.json();
       
-      // Normalize language code to 'en' or 'zh' (remove region codes like -US, -CN)
-      const userLanguage = i18n.language.startsWith('zh') ? 'zh' : 'en';
+      // Normalize language code to 'en', 'es', or 'zh' (remove region codes like -US, -CN)
+      let userLanguage = 'en';
+      if (i18n.language.startsWith('zh')) {
+        userLanguage = 'zh';
+      } else if (i18n.language.startsWith('es')) {
+        userLanguage = 'es';
+      }
       
       // Then analyze the extracted text with user's language preference
       const analysisResponse = await apiRequest("POST", "/api/analyze", {

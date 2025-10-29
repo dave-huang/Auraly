@@ -33,6 +33,13 @@ export function LanguageSwitcher() {
           English
         </DropdownMenuItem>
         <DropdownMenuItem
+          onClick={() => changeLanguage('es')}
+          className={i18n.language === 'es' ? 'bg-accent' : ''}
+          data-testid="menu-item-spanish"
+        >
+          Español
+        </DropdownMenuItem>
+        <DropdownMenuItem
           onClick={() => changeLanguage('zh')}
           className={i18n.language === 'zh' ? 'bg-accent' : ''}
           data-testid="menu-item-chinese"

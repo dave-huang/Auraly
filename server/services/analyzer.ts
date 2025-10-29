@@ -48,6 +48,7 @@ const PRODUCT_TYPE_CONTEXTS = {
 const LANGUAGE_INSTRUCTIONS = {
   'zh': 'CRITICAL INSTRUCTION: You MUST respond ONLY in Simplified Chinese (简体中文). ALL ingredient names, summaries, and detailed explanations MUST be written in Chinese, regardless of what language the input text is in.',
   'en': 'CRITICAL INSTRUCTION: You MUST respond ONLY in English. ALL ingredient names, summaries, and detailed explanations MUST be written in English, regardless of what language the input text is in (even if the ingredients are written in Chinese, Japanese, or any other language).',
+  'es': 'INSTRUCCIÓN CRÍTICA: Debes responder SOLO en español. TODOS los nombres de ingredientes, resúmenes y explicaciones detalladas DEBEN estar escritos en español, sin importar en qué idioma esté escrito el texto de entrada (incluso si los ingredientes están escritos en chino, japonés o cualquier otro idioma).',
 };
 
 export async function analyzeIngredients(
@@ -100,9 +101,12 @@ Return your analysis as JSON with this structure:
 
   try {
     console.log('Sending request to OpenAI...');
-    const systemMessage = userLanguage === 'zh' 
-      ? "You are a helpful health and wellness assistant that analyzes product ingredients. Always respond with valid JSON. CRITICAL: All text in your response must be in Simplified Chinese (简体中文), regardless of the input language."
-      : "You are a helpful health and wellness assistant that analyzes product ingredients. Always respond with valid JSON. CRITICAL: All text in your response must be in English, regardless of the input language.";
+    const systemMessages = {
+      'zh': "You are a helpful health and wellness assistant that analyzes product ingredients. Always respond with valid JSON. CRITICAL: All text in your response must be in Simplified Chinese (简体中文), regardless of the input language.",
+      'en': "You are a helpful health and wellness assistant that analyzes product ingredients. Always respond with valid JSON. CRITICAL: All text in your response must be in English, regardless of the input language.",
+      'es': "Eres un asistente de salud y bienestar que analiza ingredientes de productos. Siempre responde con JSON válido. CRÍTICO: Todo el texto en tu respuesta debe estar en español, sin importar el idioma de entrada."
+    };
+    const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
     
     const response = await openai.chat.completions.create({
       model: "gpt-4o", // Optimized for speed - much faster than GPT-5 (10-20s vs 60-75s)
