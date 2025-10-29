@@ -71,15 +71,22 @@ Ingredient List:
 ${ingredientsText}
 
 For each ingredient, determine:
-1. The ingredient name (clean, standardized format)
+1. The ingredient name (clean, standardized format) - MUST be in the user's language
 2. Risk level: "low" (safe), "moderate" (limited evidence/moderate concern), or "high" (known health risks)
-3. A brief summary (1-2 sentences) explaining what it is and why it's flagged
-4. Detailed explanation (2-3 sentences) with more context about health impacts
+3. A brief summary (1-2 sentences) explaining what it is and why it's flagged - MUST be in the user's language
+4. Detailed explanation (2-3 sentences) with more context about health impacts - MUST be in the user's language
 
-IMPORTANT NOTES:
-- Translate ingredient names to the user's language if needed
+CRITICAL REQUIREMENTS - INGREDIENT NAMES:
+- If the ingredient is "水" and the user's language is English, output "Water" NOT "水"
+- If the ingredient is "水" and the user's language is Spanish, output "Agua" NOT "水"
+- If the ingredient is "甘油" and the user's language is English, output "Glycerin" NOT "甘油"
+- If the ingredient is "甘油" and the user's language is Spanish, output "Glicerina" NOT "甘油"
+- ALWAYS translate/normalize ingredient names to the user's language
+- NEVER leave ingredient names in the original language from the label
+
+OTHER IMPORTANT NOTES:
 - ALL text output (name, summary, details) must be in the user's selected language
-- Extract the product name if mentioned
+- Extract the product name if mentioned (product name can stay in original language)
 - Determine overall product risk (low/moderate/high) based on the worst ingredients
 - Be friendly and clear in explanations, not alarmist
 - If an ingredient is generally safe, mark it as "low" risk
