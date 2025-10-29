@@ -9,7 +9,7 @@ Auraly is a mobile-friendly web application that helps users understand ingredie
 - Image upload and camera capture functionality
 - **Dual OCR system: Google Cloud Vision API (primary) with Tesseract.js fallback**
 - **AI-powered ingredient analysis using GPT-4o (optimized for speed: 10-20s analysis time)**
-- **Full multi-language support: English and Chinese (both UI and AI analysis results)**
+- **Full multi-language support: English, Spanish, and Chinese (both UI and AI analysis results)**
 - Risk-coded results with expandable ingredient details
 - Local scan history storage
 - Language preference persisted in localStorage
@@ -17,7 +17,23 @@ Auraly is a mobile-friendly web application that helps users understand ingredie
 
 ## Recent Changes (October 29, 2025)
 
-### Language Enforcement Fix ✅ (Latest)
+### Spanish Language Support ✅ (Latest)
+- **Added complete Spanish language support to Auraly**
+  - Created comprehensive Spanish translation file (client/src/i18n/locales/es.json)
+  - All UI text now available in Spanish: landing page, upload flow, results page
+  - Updated language switcher to include "Español" option
+  - Language order: English → Español → 中文
+- **Backend Spanish AI analysis support**
+  - Added Spanish language instructions to analyzer
+  - AI now responds in Spanish when user selects Spanish language
+  - Ingredient names translated to Spanish (e.g., "水" → "Agua", "甘油" → "Glicerina")
+- **Strengthened ingredient name translation**
+  - Added explicit translation requirements in AI prompts
+  - Provides concrete examples: "If ingredient is '水' and language is Spanish, output 'Agua' NOT '水'"
+  - Ensures ALL text (names, summaries, details) in user's selected language
+- **End-to-end tested**: Verified Spanish UI and Spanish ingredient analysis from Chinese product label
+
+### Language Enforcement Fix ✅
 - **CRITICAL FIX: AI now respects user's language preference regardless of scanned product language**
   - Fixed bug where AI returned analysis in the scanned product's language instead of user's selected language
   - Example: English-speaking user scanning Chinese product now gets English ingredient analysis
@@ -101,13 +117,13 @@ Auraly is a mobile-friendly web application that helps users understand ingredie
 - `ImageUploader` - Mobile-first design with camera scan as primary CTA (large card) and file upload as secondary (smaller drag-drop zone)
 - `IngredientCard` - Risk-coded expandable card for each ingredient
 - `RiskSummary` - Overall risk assessment with color-coded breakdown
-- `LanguageSwitcher` - Globe icon dropdown to switch between English and Chinese
+- `LanguageSwitcher` - Globe icon dropdown to switch between English, Spanish, and Chinese
 
 **Internationalization:**
 - i18next configuration in `client/src/i18n/config.ts`
-- Translation files: `client/src/i18n/locales/{en,zh}.json`
+- Translation files: `client/src/i18n/locales/{en,es,zh}.json`
 - Language preference stored in localStorage
-- All UI text supports English and Chinese
+- All UI text supports English, Spanish, and Chinese
 - AI analysis results returned in user's preferred language
 
 **State Management:**
@@ -119,15 +135,16 @@ Auraly is a mobile-friendly web application that helps users understand ingredie
 **API Endpoints:**
 - `POST /api/ocr` - Extract text from image using dual OCR system (typically 1-2 seconds)
 - `POST /api/analyze` - Analyze ingredients with OpenAI GPT-4o in user's preferred language (10-20 seconds)
-  - Accepts `userLanguage` parameter ('en' or 'zh')
+  - Accepts `userLanguage` parameter ('en', 'es', or 'zh')
   - Returns ingredient names, summaries, and details in requested language
 
 **Services:**
 - `services/ocr.ts` - Dual OCR orchestrator (Google Vision → Tesseract fallback)
 - `services/googleVisionOcr.ts` - Google Cloud Vision API OCR implementation
 - `services/analyzer.ts` - GPT-4o ingredient analysis with schema validation and multi-language support
-  - Language-specific prompts for English and Chinese
+  - Language-specific prompts for English, Spanish, and Chinese
   - Instructs AI to respond in user's preferred language
+  - Explicit ingredient name translation (e.g., "水" → "Water"/"Agua"/"水" based on language)
   - Optimized for speed (10-20s vs GPT-5's 60-75s)
 - `openai.ts` - OpenAI client using Replit AI Integrations
 
@@ -156,14 +173,14 @@ Auraly is a mobile-friendly web application that helps users understand ingredie
 ## Tech Stack
 - **Frontend**: React, TypeScript, Tailwind CSS, shadcn/ui, TanStack Query, Wouter
 - **Backend**: Node.js, Express, TypeScript
-- **AI/ML**: OpenAI GPT-5 (via Replit AI Integrations), Google Cloud Vision API, Tesseract.js
+- **AI/ML**: OpenAI GPT-4o (via Replit AI Integrations), Google Cloud Vision API, Tesseract.js
 - **Storage**: In-memory (no database), localStorage for client-side history
 - **Deployment**: Replit
 
 ## User Preferences
 - Privacy-focused: No user accounts, images not stored on server
 - Mobile-friendly: Optimized for on-the-go scanning
-- **Multi-language support**: Full English and Chinese UI, OCR works with various languages, AI analysis results in user's preferred language
+- **Multi-language support**: Full English, Spanish, and Chinese UI, OCR works with various languages, AI analysis results in user's preferred language
 - Instant results: Real-time analysis without registration
 - Language preference: Stored locally in browser, persists across sessions
 
@@ -178,10 +195,10 @@ Server runs on port 5000 with Vite dev server for frontend.
 ### Key Files
 - `shared/schema.ts` - TypeScript types and Zod schemas shared between frontend/backend (includes `userLanguage` field)
 - `design_guidelines.md` - Comprehensive design system documentation
-- `server/services/analyzer.ts` - Product-type-specific health risk criteria with multi-language support
+- `server/services/analyzer.ts` - Product-type-specific health risk criteria with multi-language support (English, Spanish, Chinese)
 - `client/src/pages/results.tsx` - Main results page with mutation handling and language-aware API calls
 - `client/src/i18n/config.ts` - i18next configuration with language detection and localStorage persistence
-- `client/src/i18n/locales/{en,zh}.json` - Translation files for English and Chinese
+- `client/src/i18n/locales/{en,es,zh}.json` - Translation files for English, Spanish, and Chinese
 - `client/src/components/language-switcher.tsx` - Language selection dropdown component
 
 ### Future Enhancements
