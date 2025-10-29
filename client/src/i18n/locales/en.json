@@ -118,6 +118,35 @@
       "moderate": "Moderate",
       "high": "High"
     },
+    "riskLevels": {
+      "low": "Low Risk",
+      "moderate": "Moderate Risk",
+      "high": "High Risk"
+    },
+    "riskSummary": {
+      "low": {
+        "label": "Low Risk",
+        "message": "This product contains mostly safe ingredients with minimal health concerns."
+      },
+      "moderate": {
+        "label": "Moderate Risk",
+        "message": "Some ingredients may have potential health concerns. Review the details below."
+      },
+      "high": {
+        "label": "High Risk",
+        "message": "This product contains ingredients with known health concerns. Consider alternatives."
+      },
+      "breakdown": {
+        "lowRisk": "Low Risk",
+        "moderate": "Moderate",
+        "highRisk": "High Risk"
+      },
+      "ingredientsAnalyzed": "{{count}} ingredients analyzed"
+    },
+    "ingredientCard": {
+      "learnMore": "Learn More",
+      "showLess": "Show Less"
+    },
     "noResults": "No ingredients found matching your search.",
     "scanAnother": "Scan Another Product",
     "analyzing": {

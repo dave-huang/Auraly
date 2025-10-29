@@ -118,6 +118,35 @@
       "moderate": "中",
       "high": "高"
     },
+    "riskLevels": {
+      "low": "低风险",
+      "moderate": "中等风险",
+      "high": "高风险"
+    },
+    "riskSummary": {
+      "low": {
+        "label": "低风险",
+        "message": "该产品主要含有安全成分，健康问题最少。"
+      },
+      "moderate": {
+        "label": "中等风险",
+        "message": "某些成分可能存在潜在健康问题。请查看下面的详细信息。"
+      },
+      "high": {
+        "label": "高风险",
+        "message": "该产品含有已知健康问题的成分。建议考虑替代品。"
+      },
+      "breakdown": {
+        "lowRisk": "低风险",
+        "moderate": "中等",
+        "highRisk": "高风险"
+      },
+      "ingredientsAnalyzed": "已分析 {{count}} 种成分"
+    },
+    "ingredientCard": {
+      "learnMore": "了解更多",
+      "showLess": "收起"
+    },
     "noResults": "没有找到匹配的成分。",
     "scanAnother": "扫描其他产品",
     "analyzing": {
