@@ -15,9 +15,27 @@ Auraly is a mobile-friendly web application that helps users understand ingredie
 - Language preference persisted in localStorage
 - **Mobile-optimized with 2-minute timeout protection**
 
-## Recent Changes (October 28, 2025)
+## Recent Changes (October 29, 2025)
 
-### Performance Optimization & Mobile Fix (Latest) ✅
+### Language Enforcement Fix ✅ (Latest)
+- **CRITICAL FIX: AI now respects user's language preference regardless of scanned product language**
+  - Fixed bug where AI returned analysis in the scanned product's language instead of user's selected language
+  - Example: English-speaking user scanning Chinese product now gets English ingredient analysis
+- **Strengthened language instructions in AI prompts**
+  - Added "CRITICAL INSTRUCTION" prefix to system messages
+  - Explicit instruction: "respond ONLY in [language], regardless of what language the input text is in"
+  - Multi-level enforcement: system message + user prompt + explicit notes
+- **Updated UI translations for results page**
+  - Risk summary labels and messages now fully translated
+  - Risk level badges translate (Low Risk/低风险, Moderate Risk/中等风险, High Risk/高风险)
+  - Toggle buttons translate (Learn More/了解更多, Show Less/收起)
+  - Language switcher updated to globe icon (more thematic)
+  - Removed language switcher from results page (language must be selected before analysis)
+- **End-to-end tested**: Verified English user scanning Chinese product receives all analysis in English
+
+## Previous Changes (October 28, 2025)
+
+### Performance Optimization & Mobile Fix ✅
 - **Switched from GPT-5 to GPT-4o for 3-5x faster analysis**
   - Reduced analysis time from 60-75 seconds to 10-20 seconds
   - GPT-4o avoids GPT-5's heavy reasoning token overhead (7,000+ tokens)

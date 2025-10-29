@@ -46,8 +46,8 @@ const PRODUCT_TYPE_CONTEXTS = {
 };
 
 const LANGUAGE_INSTRUCTIONS = {
-  'zh': 'IMPORTANT: Respond in Simplified Chinese (简体中文). All ingredient names, summaries, and explanations must be in Chinese.',
-  'en': 'Respond in English.',
+  'zh': 'CRITICAL INSTRUCTION: You MUST respond ONLY in Simplified Chinese (简体中文). ALL ingredient names, summaries, and detailed explanations MUST be written in Chinese, regardless of what language the input text is in.',
+  'en': 'CRITICAL INSTRUCTION: You MUST respond ONLY in English. ALL ingredient names, summaries, and detailed explanations MUST be written in English, regardless of what language the input text is in (even if the ingredients are written in Chinese, Japanese, or any other language).',
 };
 
 export async function analyzeIngredients(
@@ -55,8 +55,10 @@ export async function analyzeIngredients(
   ingredientsText: string,
   userLanguage: string = 'en'
 ): Promise<AnalysisResult> {
+  console.log(`[ANALYZER] User language: ${userLanguage}`);
   const context = PRODUCT_TYPE_CONTEXTS[productType];
   const languageInstruction = LANGUAGE_INSTRUCTIONS[userLanguage as keyof typeof LANGUAGE_INSTRUCTIONS] || LANGUAGE_INSTRUCTIONS['en'];
+  console.log(`[ANALYZER] Language instruction: ${languageInstruction.substring(0, 100)}...`);
   
   const prompt = `You are a health-focused ingredient analyst. Analyze the following ingredient list from a ${productType} product.
 
@@ -68,12 +70,14 @@ Ingredient List:
 ${ingredientsText}
 
 For each ingredient, determine:
-1. The ingredient name (clean, standardized format) - in the user's language
+1. The ingredient name (clean, standardized format)
 2. Risk level: "low" (safe), "moderate" (limited evidence/moderate concern), or "high" (known health risks)
-3. A brief summary (1-2 sentences) explaining what it is and why it's flagged - in the user's language
-4. Detailed explanation (2-3 sentences) with more context about health impacts - in the user's language
+3. A brief summary (1-2 sentences) explaining what it is and why it's flagged
+4. Detailed explanation (2-3 sentences) with more context about health impacts
 
-Also:
+IMPORTANT NOTES:
+- Translate ingredient names to the user's language if needed
+- ALL text output (name, summary, details) must be in the user's selected language
 - Extract the product name if mentioned
 - Determine overall product risk (low/moderate/high) based on the worst ingredients
 - Be friendly and clear in explanations, not alarmist
@@ -96,12 +100,16 @@ Return your analysis as JSON with this structure:
 
   try {
     console.log('Sending request to OpenAI...');
+    const systemMessage = userLanguage === 'zh' 
+      ? "You are a helpful health and wellness assistant that analyzes product ingredients. Always respond with valid JSON. CRITICAL: All text in your response must be in Simplified Chinese (简体中文), regardless of the input language."
+      : "You are a helpful health and wellness assistant that analyzes product ingredients. Always respond with valid JSON. CRITICAL: All text in your response must be in English, regardless of the input language.";
+    
     const response = await openai.chat.completions.create({
       model: "gpt-4o", // Optimized for speed - much faster than GPT-5 (10-20s vs 60-75s)
       messages: [
         {
           role: "system",
-          content: "You are a helpful health and wellness assistant that analyzes product ingredients. Always respond with valid JSON."
+          content: systemMessage
         },
         {
           role: "user",
