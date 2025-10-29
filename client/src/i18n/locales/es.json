@@ -1,0 +1,185 @@
+{
+  "app": {
+    "title": "Auraly",
+    "tagline": "Comprende Lo Que Realmente Hay En Tus Productos"
+  },
+  "landing": {
+    "hero": {
+      "title": "Claridad para lo que comes y usas, todos los días.",
+      "subtitle": "Auraly te ayuda a comprender los ingredientes en tus alimentos, cuidado de la piel y productos de cuidado personal con análisis impulsado por IA en cualquier idioma.",
+      "cta": "Comenzar a Escanear",
+      "guardian": "Tu guardián de ingredientes",
+      "trust": {
+        "privacy": "Privacidad primero",
+        "noAccount": "Sin cuenta necesaria",
+        "instant": "Resultados instantáneos"
+      }
+    },
+    "howItWorks": {
+      "title": "Cómo Funciona",
+      "subtitle": "Obtén información sobre ingredientes en tres sencillos pasos",
+      "step1": {
+        "title": "Escanear o Subir",
+        "description": "Toma una foto de cualquier etiqueta de producto o sube una imagen existente"
+      },
+      "step2": {
+        "title": "Análisis de IA",
+        "description": "Nuestra IA extrae y analiza cada ingrediente en busca de posibles riesgos para la salud"
+      },
+      "step3": {
+        "title": "Obtener Información",
+        "description": "Comprende qué es seguro y qué debes vigilar en lenguaje sencillo"
+      }
+    },
+    "features": {
+      "title": "Características Poderosas",
+      "multilang": {
+        "title": "Soporte Multiidioma",
+        "description": "Escanea etiquetas en cualquier idioma. Detectaremos y traduciremos automáticamente para un análisis preciso."
+      },
+      "risk": {
+        "title": "Evaluación de Riesgos",
+        "description": "Niveles de riesgo claros con código de colores te ayudan a identificar rápidamente ingredientes seguros y potencialmente dañinos."
+      },
+      "smart": {
+        "title": "Análisis Inteligente",
+        "description": "Análisis contextual adaptado al tipo de producto: alimentos, cuidado de la piel, cuidado bucal o cosméticos."
+      }
+    },
+    "privacy": {
+      "title": "Tu Privacidad Importa",
+      "description": "Tus datos permanecen privados: las imágenes no se almacenan en nuestros servidores. El análisis ocurre en tiempo real y los resultados solo se guardan en tu navegador.",
+      "features": {
+        "noAccount": "No se requiere cuenta",
+        "notStored": "Imágenes no almacenadas",
+        "localOnly": "Historial solo local"
+      }
+    },
+    "footer": {
+      "tagline": "Conoce qué hay en tus productos, toma decisiones informadas",
+      "copyright": "© 2025 Auraly. Análisis de ingredientes impulsado por IA."
+    }
+  },
+  "upload": {
+    "header": {
+      "title": "Auraly"
+    },
+    "selectType": {
+      "title": "¿Qué estás escaneando?",
+      "subtitle": "Selecciona el tipo de producto para un análisis preciso"
+    },
+    "uploadImage": {
+      "title": "Escanear Etiqueta",
+      "subtitle": "Apunta tu cámara a la lista de ingredientes"
+    },
+    "productTypes": {
+      "food": {
+        "label": "Alimentos",
+        "description": "Bocadillos, comidas, bebidas"
+      },
+      "skincare": {
+        "label": "Cuidado de la Piel / Cabello",
+        "description": "Lociones, champús, sueros"
+      },
+      "oralCare": {
+        "label": "Cuidado Bucal",
+        "description": "Pasta de dientes, enjuague bucal"
+      },
+      "cosmetics": {
+        "label": "Cosméticos / Fragancias",
+        "description": "Maquillaje, perfumes"
+      }
+    },
+    "analyzing": {
+      "title": "Analizando Ingredientes",
+      "description": "Extrayendo texto e identificando posibles riesgos para la salud..."
+    }
+  },
+  "imageUploader": {
+    "scanWithCamera": "Escanear con Cámara",
+    "scanDescription": "Apunta tu cámara a la lista de ingredientes",
+    "openCamera": "Abrir Cámara",
+    "uploadFromFiles": "Subir desde Archivos",
+    "dragDropOrClick": "Arrastra y suelta o haz clic para buscar",
+    "or": "o",
+    "supportedFormats": "Soporta JPG, PNG, HEIC",
+    "imageSelected": "Imagen seleccionada. Haz clic en la X para elegir una imagen diferente.",
+    "clearImage": "Borrar imagen y elegir una diferente"
+  },
+  "results": {
+    "header": {
+      "home": "Inicio"
+    },
+    "productType": "producto",
+    "search": "Buscar ingredientes...",
+    "filters": {
+      "all": "Todos",
+      "low": "Bajo",
+      "moderate": "Moderado",
+      "high": "Alto"
+    },
+    "riskLevels": {
+      "low": "Riesgo Bajo",
+      "moderate": "Riesgo Moderado",
+      "high": "Riesgo Alto"
+    },
+    "riskSummary": {
+      "low": {
+        "label": "Riesgo Bajo",
+        "message": "Este producto contiene principalmente ingredientes seguros con preocupaciones mínimas para la salud."
+      },
+      "moderate": {
+        "label": "Riesgo Moderado",
+        "message": "Algunos ingredientes pueden tener posibles preocupaciones para la salud. Revisa los detalles a continuación."
+      },
+      "high": {
+        "label": "Riesgo Alto",
+        "message": "Este producto contiene ingredientes con preocupaciones conocidas para la salud. Considera alternativas."
+      },
+      "breakdown": {
+        "lowRisk": "Riesgo Bajo",
+        "moderate": "Moderado",
+        "highRisk": "Riesgo Alto"
+      },
+      "ingredientsAnalyzed": "{{count}} ingredientes analizados"
+    },
+    "ingredientCard": {
+      "learnMore": "Saber Más",
+      "showLess": "Mostrar Menos"
+    },
+    "noResults": "No se encontraron ingredientes que coincidan con tu búsqueda.",
+    "scanAnother": "Escanear Otro Producto",
+    "analyzing": {
+      "title": "Analizando Ingredientes",
+      "description": "Extrayendo texto e identificando posibles riesgos para la salud..."
+    },
+    "error": {
+      "ocr": {
+        "title": "Imagen No Suficientemente Clara",
+        "description": "No pudimos leer la lista de ingredientes en tu imagen. Por favor intenta de nuevo con:",
+        "tips": {
+          "lighting": "Mejor iluminación",
+          "closer": "Una foto más cercana de la lista de ingredientes",
+          "steady": "Una toma estable y enfocada",
+          "clear": "Texto claro y sin obstrucciones"
+        }
+      },
+      "analysis": {
+        "title": "Análisis Fallido"
+      },
+      "tryAgain": "Intentar de Nuevo"
+    }
+  },
+  "errors": {
+    "analysisFailed": "Análisis Fallido",
+    "tryAgain": "Intentar de Nuevo",
+    "generic": "Algo salió mal. Por favor intenta de nuevo."
+  },
+  "common": {
+    "loading": "Cargando...",
+    "back": "Atrás",
+    "close": "Cerrar",
+    "search": "Buscar",
+    "filter": "Filtrar"
+  }
+}
