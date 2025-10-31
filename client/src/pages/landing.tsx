@@ -145,24 +145,24 @@ export default function Landing() {
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="p-6 hover-elevate transition-all">
-              <Globe className="w-10 h-10 text-primary mb-4" />
+            <Card className="p-6 hover-elevate transition-all text-center">
+              <Globe className="w-10 h-10 text-primary mb-4 mx-auto" />
               <h4 className="text-lg font-semibold mb-2">{t('landing.features.multilang.title')}</h4>
               <p className="text-sm text-muted-foreground">
                 {t('landing.features.multilang.description')}
               </p>
             </Card>
 
-            <Card className="p-6 hover-elevate transition-all">
-              <Shield className="w-10 h-10 text-primary mb-4" />
+            <Card className="p-6 hover-elevate transition-all text-center">
+              <Shield className="w-10 h-10 text-primary mb-4 mx-auto" />
               <h4 className="text-lg font-semibold mb-2">{t('landing.features.risk.title')}</h4>
               <p className="text-sm text-muted-foreground">
                 {t('landing.features.risk.description')}
               </p>
             </Card>
 
-            <Card className="p-6 hover-elevate transition-all">
-              <Sparkles className="w-10 h-10 text-primary mb-4" />
+            <Card className="p-6 hover-elevate transition-all text-center">
+              <Sparkles className="w-10 h-10 text-primary mb-4 mx-auto" />
               <h4 className="text-lg font-semibold mb-2">{t('landing.features.smart.title')}</h4>
               <p className="text-sm text-muted-foreground">
                 {t('landing.features.smart.description')}
