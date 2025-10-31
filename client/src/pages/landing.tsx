@@ -40,7 +40,7 @@ export default function Landing() {
           </div>
 
           {/* Main headline */}
-          <h2 className="text-5xl md:text-6xl font-bold tracking-tight mb-8 bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">{t('landing.hero.title')}</h2>
+          <h2 className="text-5xl md:text-6xl font-bold tracking-tight mb-8 pb-2 bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">{t('landing.hero.title')}</h2>
 
           {/* Subtext */}
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-12">
