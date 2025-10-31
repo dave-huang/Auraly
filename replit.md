@@ -15,9 +15,24 @@ Auraly is a mobile-friendly web application that helps users understand ingredie
 - Language preference persisted in localStorage
 - **Mobile-optimized with 2-minute timeout protection**
 
-## Recent Changes (October 29, 2025)
+## Recent Changes (October 31, 2025)
 
-### Spanish Language Support ✅ (Latest)
+### Animated Progress Bar UX Improvement ✅ (Latest)
+- **Fixed progress bar UX issue: bar now smoothly animates from 0% to 95% over 20 seconds**
+  - Previous behavior: Progress bar stuck at static 75%, causing user confusion
+  - New behavior: Gradual left-to-right fill animation creates clear visual feedback
+  - Progress updates every 100ms with smooth transitions
+  - Caps at 95% to avoid implying completion before API responds
+  - Automatically resets when mutation completes or is cancelled
+- **User experience enhancement**
+  - Users no longer question if app is stuck or timed out
+  - Clear visual indication that analysis is in progress
+  - Matches expected analysis time (10-20 seconds with GPT-4o)
+- **End-to-end tested**: Verified smooth animation during analysis flow
+
+## Previous Changes (October 29, 2025)
+
+### Spanish Language Support ✅
 - **Added complete Spanish language support to Auraly**
   - Created comprehensive Spanish translation file (client/src/i18n/locales/es.json)
   - All UI text now available in Spanish: landing page, upload flow, results page

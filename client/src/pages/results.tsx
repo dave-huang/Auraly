@@ -18,6 +18,7 @@ export default function ResultsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedRisk, setSelectedRisk] = useState<RiskLevel | "all">("all");
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
+  const [progress, setProgress] = useState(0);
 
   // Mutation for analyzing the image
   const analyzeMutation = useMutation({
@@ -78,6 +79,27 @@ export default function ResultsPage() {
     }
   }, []);
 
+  // Animate progress bar over 20 seconds
+  useEffect(() => {
+    if (analyzeMutation.isPending) {
+      setProgress(0);
+      const duration = 20000; // 20 seconds
+      const interval = 100; // Update every 100ms
+      const increment = (95 / duration) * interval; // Fill to 95% over 20 seconds
+      
+      const timer = setInterval(() => {
+        setProgress(prev => {
+          const next = prev + increment;
+          return next >= 95 ? 95 : next; // Cap at 95%
+        });
+      }, interval);
+      
+      return () => clearInterval(timer);
+    } else {
+      setProgress(0);
+    }
+  }, [analyzeMutation.isPending]);
+
   const filteredIngredients = analysisResult?.ingredients.filter(ingredient => {
     const matchesSearch = ingredient.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesRisk = selectedRisk === "all" || ingredient.riskLevel === selectedRisk;
@@ -104,8 +126,8 @@ export default function ResultsPage() {
             </div>
             <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
               <div 
-                className="h-full bg-primary rounded-full transition-all duration-500"
-                style={{ width: '75%' }}
+                className="h-full bg-primary rounded-full transition-all duration-300 ease-out"
+                style={{ width: `${progress}%` }}
               />
             </div>
           </div>
