@@ -49,7 +49,48 @@ Auraly employs a mobile-first, wellness-inspired design with a calm, trustworthy
 
 ## Recent Changes (November 2, 2025)
 
-### Image Compression Fix ✅ (Latest)
+### Language Consistency & UI Fixes ✅ (Latest)
+- **Fixed language picker dropdown positioning issues**
+  - **Problem**: Dropdown appeared in wrong location (lower part of page) or was unresponsive
+  - **Root cause**: Radix UI portal rendering and z-index conflicts with sticky header
+  - **Solution**: Added `modal={false}`, explicit `sideOffset={8}`, and `z-[100]` class
+  - **Result**: Dropdown now consistently appears directly below the globe icon
+
+- **Fixed inconsistent analysis results across languages**
+  - **Problem**: Same image produced different ingredient counts in different languages
+    - English: 14 ingredients
+    - Spanish: 10 ingredients  
+    - Chinese: 10 ingredients
+  - **Root cause**: GPT-4o was simultaneously identifying AND translating ingredients, leading to:
+    - Different decisions about what counts as an "ingredient" per language
+    - Ingredients missed during translation process
+    - Inconsistent parsing behavior
+  
+- **Two-Step Analysis Architecture** (Major Refactor)
+  - **Step 1**: Always analyze ingredients in English first
+    - Ensures consistent ingredient identification regardless of target language
+    - All ingredients identified and assessed for risk in English
+    - Deterministic parsing of OCR text
+  - **Step 2**: Translate results to target language if needed
+    - Translates ingredient names, summaries, and details
+    - Preserves ingredient count and risk levels
+    - Fallback to English if translation fails validation
+  
+- **Technical Details**
+  - Created `analyzeIngredientsEnglish()` - language-agnostic analysis
+  - Created `translateResults()` - dedicated translation step
+  - Main `analyzeIngredients()` orchestrates both steps
+  - Console logging tracks ingredient count through both steps
+  - Zod schema validation at each step ensures data integrity
+  
+- **Benefits**
+  - ✅ Consistent ingredient count across all languages
+  - ✅ More thorough ingredient extraction (captures ALL ingredients)
+  - ✅ Reliable risk assessment (same risks regardless of language)
+  - ✅ Better separation of concerns (analysis vs. translation)
+  - ✅ Improved debugging with step-by-step logging
+
+### Image Compression Fix ✅
 - **Fixed QuotaExceededError on mobile devices when storing images**
   - **Previous behavior**: Camera worked but threw QuotaExceededError when trying to store full-size photos (3-8MB) in sessionStorage
   - **Root cause**: Mobile browsers have sessionStorage limits (5-10MB), and base64-encoded images exceeded this limit
