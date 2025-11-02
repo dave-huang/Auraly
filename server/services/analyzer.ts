@@ -45,53 +45,35 @@ const PRODUCT_TYPE_CONTEXTS = {
     - Talc (asbestos contamination risk)`
 };
 
-const LANGUAGE_INSTRUCTIONS = {
-  'zh': 'CRITICAL INSTRUCTION: You MUST respond ONLY in Simplified Chinese (简体中文). ALL ingredient names, summaries, and detailed explanations MUST be written in Chinese, regardless of what language the input text is in.',
-  'en': 'CRITICAL INSTRUCTION: You MUST respond ONLY in English. ALL ingredient names, summaries, and detailed explanations MUST be written in English, regardless of what language the input text is in (even if the ingredients are written in Chinese, Japanese, or any other language).',
-  'es': 'INSTRUCCIÓN CRÍTICA: Debes responder SOLO en español. TODOS los nombres de ingredientes, resúmenes y explicaciones detalladas DEBEN estar escritos en español, sin importar en qué idioma esté escrito el texto de entrada (incluso si los ingredientes están escritos en chino, japonés o cualquier otro idioma).',
-};
-
-export async function analyzeIngredients(
+// Step 1: Analyze ingredients (always in English for consistency)
+async function analyzeIngredientsEnglish(
   productType: ProductType,
-  ingredientsText: string,
-  userLanguage: string = 'en'
+  ingredientsText: string
 ): Promise<AnalysisResult> {
-  console.log(`[ANALYZER] User language: ${userLanguage}`);
   const context = PRODUCT_TYPE_CONTEXTS[productType];
-  const languageInstruction = LANGUAGE_INSTRUCTIONS[userLanguage as keyof typeof LANGUAGE_INSTRUCTIONS] || LANGUAGE_INSTRUCTIONS['en'];
-  console.log(`[ANALYZER] Language instruction: ${languageInstruction.substring(0, 100)}...`);
   
   const prompt = `You are a health-focused ingredient analyst. Analyze the following ingredient list from a ${productType} product.
 
-${languageInstruction}
-
 Product Type Context: ${context}
 
-Ingredient List:
+Ingredient List (may be in any language):
 ${ingredientsText}
 
-For each ingredient, determine:
-1. The ingredient name (clean, standardized format) - MUST be in the user's language
-2. Risk level: "low" (safe), "moderate" (limited evidence/moderate concern), or "high" (known health risks)
-3. A brief summary (1-2 sentences) explaining what it is and why it's flagged - MUST be in the user's language
-4. Detailed explanation (2-3 sentences) with more context about health impacts - MUST be in the user's language
+CRITICAL INSTRUCTIONS:
+1. Identify EVERY ingredient mentioned in the text, no matter what language it's in
+2. Translate ALL ingredient names to English 
+3. For each ingredient, provide:
+   - name: Standardized English name (e.g., "水" → "Water", "甘油" → "Glycerin")
+   - riskLevel: "low", "moderate", or "high"
+   - summary: Brief 1-2 sentence explanation in English
+   - details: Detailed 2-3 sentence explanation in English
+   - category: Optional category (e.g., "preservative", "sweetener")
 
-CRITICAL REQUIREMENTS - INGREDIENT NAMES:
-- If the ingredient is "水" and the user's language is English, output "Water" NOT "水"
-- If the ingredient is "水" and the user's language is Spanish, output "Agua" NOT "水"
-- If the ingredient is "甘油" and the user's language is English, output "Glycerin" NOT "甘油"
-- If the ingredient is "甘油" and the user's language is Spanish, output "Glicerina" NOT "甘油"
-- ALWAYS translate/normalize ingredient names to the user's language
-- NEVER leave ingredient names in the original language from the label
+4. Extract product name if mentioned (keep in original language)
+5. Determine overall risk based on worst ingredients
+6. Be thorough - include ALL ingredients from the list
 
-OTHER IMPORTANT NOTES:
-- ALL text output (name, summary, details) must be in the user's selected language
-- Extract the product name if mentioned (product name can stay in original language)
-- Determine overall product risk (low/moderate/high) based on the worst ingredients
-- Be friendly and clear in explanations, not alarmist
-- If an ingredient is generally safe, mark it as "low" risk
-
-Return your analysis as JSON with this structure:
+Return JSON with this structure:
 {
   "productName": "Product name if found or null",
   "ingredients": [
@@ -100,62 +82,139 @@ Return your analysis as JSON with this structure:
       "riskLevel": "low|moderate|high",
       "summary": "Brief explanation",
       "details": "Detailed explanation",
-      "category": "Optional category like 'preservative', 'sweetener', etc"
+      "category": "Optional category"
     }
   ],
   "overallRisk": "low|moderate|high"
 }`;
 
+  const response = await openai.chat.completions.create({
+    model: "gpt-4o",
+    messages: [
+      {
+        role: "system",
+        content: "You are a helpful health and wellness assistant that analyzes product ingredients. Always respond with valid JSON in English."
+      },
+      {
+        role: "user",
+        content: prompt
+      }
+    ],
+    response_format: { type: "json_object" },
+    max_tokens: 4096
+  });
+
+  const content = response.choices?.[0]?.message?.content;
+  if (!content) {
+    throw new Error('No response from AI');
+  }
+
+  const analysis = JSON.parse(content);
+  
+  return {
+    productType,
+    productName: analysis.productName || undefined,
+    ingredients: analysis.ingredients || [],
+    overallRisk: analysis.overallRisk || 'moderate',
+    analyzedAt: new Date().toISOString(),
+    originalText: ingredientsText
+  };
+}
+
+// Step 2: Translate results to target language
+async function translateResults(
+  result: AnalysisResult,
+  targetLanguage: string
+): Promise<AnalysisResult> {
+  if (targetLanguage === 'en') {
+    return result; // Already in English
+  }
+
+  const languageNames = {
+    'zh': 'Simplified Chinese (简体中文)',
+    'es': 'Spanish (Español)'
+  };
+
+  const prompt = `Translate the following ingredient analysis to ${languageNames[targetLanguage as keyof typeof languageNames]}.
+
+CRITICAL INSTRUCTIONS:
+1. Translate ALL ingredient names to ${languageNames[targetLanguage as keyof typeof languageNames]}
+   - Example: "Water" → "水" (Chinese) or "Agua" (Spanish)
+   - Example: "Glycerin" → "甘油" (Chinese) or "Glicerina" (Spanish)
+2. Translate ALL summaries and details to ${languageNames[targetLanguage as keyof typeof languageNames]}
+3. Keep the same number of ingredients - do NOT add or remove any
+4. Keep productName in original language (if present)
+5. Keep riskLevel and overallRisk values exactly the same
+6. Keep category values in English (optional field)
+
+Original analysis (in English):
+${JSON.stringify(result, null, 2)}
+
+Return the translated analysis as JSON with the same structure.`;
+
+  const response = await openai.chat.completions.create({
+    model: "gpt-4o",
+    messages: [
+      {
+        role: "system",
+        content: `You are a professional translator specializing in ingredient analysis. Translate to ${languageNames[targetLanguage as keyof typeof languageNames]} while preserving the JSON structure.`
+      },
+      {
+        role: "user",
+        content: prompt
+      }
+    ],
+    response_format: { type: "json_object" },
+    max_tokens: 4096
+  });
+
+  const content = response.choices?.[0]?.message?.content;
+  if (!content) {
+    throw new Error('No response from AI');
+  }
+
+  const translated = JSON.parse(content);
+  
+  return {
+    ...result,
+    ingredients: translated.ingredients || result.ingredients,
+    productName: translated.productName || result.productName
+  };
+}
+
+export async function analyzeIngredients(
+  productType: ProductType,
+  ingredientsText: string,
+  userLanguage: string = 'en'
+): Promise<AnalysisResult> {
+  console.log(`[ANALYZER] Starting analysis in user language: ${userLanguage}`);
+  console.log(`[ANALYZER] Step 1: Analyzing ingredients in English for consistency...`);
+  
   try {
-    console.log('Sending request to OpenAI...');
-    const systemMessages = {
-      'zh': "You are a helpful health and wellness assistant that analyzes product ingredients. Always respond with valid JSON. CRITICAL: All text in your response must be in Simplified Chinese (简体中文), regardless of the input language.",
-      'en': "You are a helpful health and wellness assistant that analyzes product ingredients. Always respond with valid JSON. CRITICAL: All text in your response must be in English, regardless of the input language.",
-      'es': "Eres un asistente de salud y bienestar que analiza ingredientes de productos. Siempre responde con JSON válido. CRÍTICO: Todo el texto en tu respuesta debe estar en español, sin importar el idioma de entrada."
-    };
-    const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
+    // Step 1: Always analyze in English first (ensures consistent ingredient identification)
+    const englishResult = await analyzeIngredientsEnglish(productType, ingredientsText);
+    console.log(`[ANALYZER] English analysis complete. Found ${englishResult.ingredients.length} ingredients`);
     
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o", // Optimized for speed - much faster than GPT-5 (10-20s vs 60-75s)
-      messages: [
-        {
-          role: "system",
-          content: systemMessage
-        },
-        {
-          role: "user",
-          content: prompt
-        }
-      ],
-      response_format: { type: "json_object" },
-      max_tokens: 4096 // Sufficient for ingredient analysis
-    });
-
-    console.log('OpenAI response received:', JSON.stringify(response, null, 2));
-    
-    const content = response.choices?.[0]?.message?.content;
-    if (!content) {
-      console.error('Empty AI response. Full response:', JSON.stringify(response));
-      throw new Error('No response from AI');
-    }
-
-    let analysis;
-    try {
-      analysis = JSON.parse(content);
-    } catch (parseError) {
-      console.error('Failed to parse AI response:', content);
-      throw new Error('AI returned invalid response format');
+    // Step 2: Translate to target language if needed
+    if (userLanguage !== 'en') {
+      console.log(`[ANALYZER] Step 2: Translating results to ${userLanguage}...`);
+      const translatedResult = await translateResults(englishResult, userLanguage);
+      console.log(`[ANALYZER] Translation complete. Ingredients: ${translatedResult.ingredients.length}`);
+      
+      // Validate the translated result
+      const validatedResult = analysisResultSchema.safeParse(translatedResult);
+      
+      if (!validatedResult.success) {
+        console.error('Translation validation failed:', validatedResult.error);
+        console.warn('Falling back to English results');
+        return englishResult; // Fallback to English if translation fails validation
+      }
+      
+      return validatedResult.data;
     }
     
-    // Validate the analysis result against our schema
-    const validatedResult = analysisResultSchema.safeParse({
-      productType,
-      productName: analysis.productName || undefined,
-      ingredients: analysis.ingredients || [],
-      overallRisk: analysis.overallRisk || 'moderate',
-      analyzedAt: new Date().toISOString(),
-      originalText: ingredientsText
-    });
+    // Validate English result
+    const validatedResult = analysisResultSchema.safeParse(englishResult);
     
     if (!validatedResult.success) {
       console.error('Validation failed:', validatedResult.error);
@@ -164,7 +223,7 @@ Return your analysis as JSON with this structure:
     
     return validatedResult.data;
   } catch (error: any) {
-    console.error('Analysis failed:', error);
+    console.error('[ANALYZER] Analysis failed:', error);
     
     // Preserve meaningful error messages
     if (error.message && (error.message.includes('invalid response') || error.message.includes('expected format'))) {
