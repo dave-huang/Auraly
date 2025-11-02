@@ -6,17 +6,16 @@ import { useTranslation } from "react-i18next";
 
 interface ImageUploaderProps {
   onImageCapture: (imageData: string) => void;
-  isProcessing?: boolean;
 }
 
-export function ImageUploader({ onImageCapture, isProcessing = false }: ImageUploaderProps) {
+export function ImageUploader({ onImageCapture }: ImageUploaderProps) {
   const { t } = useTranslation();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const handleFileSelect = (file: File) => {
-    if (!file || isProcessing) return;
+    if (!file) return;
 
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -59,7 +58,7 @@ export function ImageUploader({ onImageCapture, isProcessing = false }: ImageUpl
     }
   };
 
-  if (previewUrl && !isProcessing) {
+  if (previewUrl) {
     return (
       <Card className="p-6">
         <div className="relative">
@@ -94,7 +93,6 @@ export function ImageUploader({ onImageCapture, isProcessing = false }: ImageUpl
         accept="image/*"
         className="hidden"
         onChange={handleFileInputChange}
-        disabled={isProcessing}
       />
       <input
         ref={cameraInputRef}
@@ -103,7 +101,6 @@ export function ImageUploader({ onImageCapture, isProcessing = false }: ImageUpl
         capture="environment"
         className="hidden"
         onChange={handleFileInputChange}
-        disabled={isProcessing}
       />
 
       {/* Primary CTA: Scan with Camera */}
@@ -117,7 +114,6 @@ export function ImageUploader({ onImageCapture, isProcessing = false }: ImageUpl
           variant="default"
           size="lg"
           onClick={() => cameraInputRef.current?.click()}
-          disabled={isProcessing}
           className="w-full"
           data-testid="button-scan-camera"
         >

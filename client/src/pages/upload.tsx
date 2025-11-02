@@ -1,8 +1,7 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { ArrowLeft, Upload, Camera, Loader2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { ProductTypeSelector } from "@/components/product-type-selector";
 import { ImageUploader } from "@/components/image-uploader";
 import { LanguageSwitcher } from "@/components/language-switcher";
@@ -13,15 +12,12 @@ export default function UploadPage() {
   const { t } = useTranslation();
   const [, setLocation] = useLocation();
   const [selectedType, setSelectedType] = useState<ProductType | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleProductTypeSelect = (type: ProductType) => {
     setSelectedType(type);
   };
 
-  const handleImageCapture = async (imageData: string) => {
-    setIsProcessing(true);
-    
+  const handleImageCapture = (imageData: string) => {
     // Store the data for the results page
     sessionStorage.setItem('pendingAnalysis', JSON.stringify({
       productType: selectedType,
@@ -87,27 +83,7 @@ export default function UploadPage() {
 
             <ImageUploader 
               onImageCapture={handleImageCapture}
-              isProcessing={isProcessing}
             />
-
-            {isProcessing && (
-              <div className="mt-8">
-                <Card className="p-8">
-                  <div className="flex flex-col items-center gap-4 text-center">
-                    <Loader2 className="w-12 h-12 text-primary animate-spin" />
-                    <div>
-                      <h3 className="font-semibold text-lg mb-1">{t('upload.analyzing.title')}</h3>
-                      <p className="text-sm text-muted-foreground">
-                        {t('upload.analyzing.description')}
-                      </p>
-                    </div>
-                    <div className="w-full max-w-xs bg-muted rounded-full h-2 overflow-hidden">
-                      <div className="h-full bg-primary rounded-full animate-pulse" style={{ width: '60%' }} />
-                    </div>
-                  </div>
-                </Card>
-              </div>
-            )}
           </div>
         )}
       </main>
