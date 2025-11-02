@@ -88,37 +88,51 @@ Return JSON with this structure:
   "overallRisk": "low|moderate|high"
 }`;
 
-  const response = await openai.chat.completions.create({
-    model: "gpt-4o",
-    messages: [
-      {
-        role: "system",
-        content: "You are a helpful health and wellness assistant that analyzes product ingredients. Always respond with valid JSON in English."
-      },
-      {
-        role: "user",
-        content: prompt
-      }
-    ],
-    response_format: { type: "json_object" },
-    max_tokens: 4096
-  });
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        {
+          role: "system",
+          content: "You are a helpful health and wellness assistant that analyzes product ingredients. Always respond with valid JSON in English."
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      response_format: { type: "json_object" },
+      max_tokens: 4096
+    });
 
-  const content = response.choices?.[0]?.message?.content;
-  if (!content) {
-    throw new Error('No response from AI');
+    const content = response.choices?.[0]?.message?.content;
+    if (!content) {
+      throw new Error('No response from AI');
+    }
+
+    const analysis = JSON.parse(content);
+    
+    const result: AnalysisResult = {
+      productType,
+      productName: analysis.productName || undefined,
+      ingredients: analysis.ingredients || [],
+      overallRisk: analysis.overallRisk || 'moderate',
+      analyzedAt: new Date().toISOString(),
+      originalText: ingredientsText
+    };
+    
+    // Validate the English result
+    const validated = analysisResultSchema.safeParse(result);
+    if (!validated.success) {
+      console.error('[ANALYZER] English analysis validation failed:', validated.error);
+      throw new Error('AI response did not match expected format');
+    }
+    
+    return validated.data;
+  } catch (error: any) {
+    console.error('[ANALYZER] English analysis failed:', error);
+    throw error;
   }
-
-  const analysis = JSON.parse(content);
-  
-  return {
-    productType,
-    productName: analysis.productName || undefined,
-    ingredients: analysis.ingredients || [],
-    overallRisk: analysis.overallRisk || 'moderate',
-    analyzedAt: new Date().toISOString(),
-    originalText: ingredientsText
-  };
 }
 
 // Step 2: Translate results to target language
@@ -130,18 +144,24 @@ async function translateResults(
     return result; // Already in English
   }
 
-  const languageNames = {
+  const languageNames: Record<string, string> = {
     'zh': 'Simplified Chinese (简体中文)',
     'es': 'Spanish (Español)'
   };
+  
+  const targetLangName = languageNames[targetLanguage];
+  if (!targetLangName) {
+    console.warn(`[ANALYZER] Unknown target language: ${targetLanguage}, falling back to English`);
+    return result;
+  }
 
-  const prompt = `Translate the following ingredient analysis to ${languageNames[targetLanguage as keyof typeof languageNames]}.
+  const prompt = `Translate the following ingredient analysis to ${targetLangName}.
 
 CRITICAL INSTRUCTIONS:
-1. Translate ALL ingredient names to ${languageNames[targetLanguage as keyof typeof languageNames]}
+1. Translate ALL ingredient names to ${targetLangName}
    - Example: "Water" → "水" (Chinese) or "Agua" (Spanish)
    - Example: "Glycerin" → "甘油" (Chinese) or "Glicerina" (Spanish)
-2. Translate ALL summaries and details to ${languageNames[targetLanguage as keyof typeof languageNames]}
+2. Translate ALL summaries and details to ${targetLangName}
 3. Keep the same number of ingredients - do NOT add or remove any
 4. Keep productName in original language (if present)
 5. Keep riskLevel and overallRisk values exactly the same
@@ -152,34 +172,50 @@ ${JSON.stringify(result, null, 2)}
 
 Return the translated analysis as JSON with the same structure.`;
 
-  const response = await openai.chat.completions.create({
-    model: "gpt-4o",
-    messages: [
-      {
-        role: "system",
-        content: `You are a professional translator specializing in ingredient analysis. Translate to ${languageNames[targetLanguage as keyof typeof languageNames]} while preserving the JSON structure.`
-      },
-      {
-        role: "user",
-        content: prompt
-      }
-    ],
-    response_format: { type: "json_object" },
-    max_tokens: 4096
-  });
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        {
+          role: "system",
+          content: `You are a professional translator specializing in ingredient analysis. Translate to ${targetLangName} while preserving the JSON structure.`
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      response_format: { type: "json_object" },
+      max_tokens: 4096
+    });
 
-  const content = response.choices?.[0]?.message?.content;
-  if (!content) {
-    throw new Error('No response from AI');
+    const content = response.choices?.[0]?.message?.content;
+    if (!content) {
+      throw new Error('No response from translation AI');
+    }
+
+    const translated = JSON.parse(content);
+    
+    const translatedResult: AnalysisResult = {
+      ...result,
+      ingredients: translated.ingredients || result.ingredients,
+      productName: translated.productName || result.productName
+    };
+    
+    // Validate the translated result
+    const validated = analysisResultSchema.safeParse(translatedResult);
+    if (!validated.success) {
+      console.error('[ANALYZER] Translation validation failed:', validated.error);
+      console.warn('[ANALYZER] Falling back to English results');
+      return result; // Return English version if translation fails
+    }
+    
+    return validated.data;
+  } catch (error: any) {
+    console.error('[ANALYZER] Translation failed:', error);
+    console.warn('[ANALYZER] Falling back to English results');
+    return result; // Return English version on any error
   }
-
-  const translated = JSON.parse(content);
-  
-  return {
-    ...result,
-    ingredients: translated.ingredients || result.ingredients,
-    productName: translated.productName || result.productName
-  };
 }
 
 export async function analyzeIngredients(
@@ -200,28 +236,10 @@ export async function analyzeIngredients(
       console.log(`[ANALYZER] Step 2: Translating results to ${userLanguage}...`);
       const translatedResult = await translateResults(englishResult, userLanguage);
       console.log(`[ANALYZER] Translation complete. Ingredients: ${translatedResult.ingredients.length}`);
-      
-      // Validate the translated result
-      const validatedResult = analysisResultSchema.safeParse(translatedResult);
-      
-      if (!validatedResult.success) {
-        console.error('Translation validation failed:', validatedResult.error);
-        console.warn('Falling back to English results');
-        return englishResult; // Fallback to English if translation fails validation
-      }
-      
-      return validatedResult.data;
+      return translatedResult; // Already validated in translateResults()
     }
     
-    // Validate English result
-    const validatedResult = analysisResultSchema.safeParse(englishResult);
-    
-    if (!validatedResult.success) {
-      console.error('Validation failed:', validatedResult.error);
-      throw new Error('AI response did not match expected format');
-    }
-    
-    return validatedResult.data;
+    return englishResult; // Already validated in analyzeIngredientsEnglish()
   } catch (error: any) {
     console.error('[ANALYZER] Analysis failed:', error);
     
