@@ -1,7 +1,7 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Upload, Camera, X, Image as ImageIcon, ScanLine } from "lucide-react";
+import { Upload, Camera, ScanLine } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 interface ImageUploaderProps {
@@ -12,7 +12,6 @@ export function ImageUploader({ onImageCapture }: ImageUploaderProps) {
   const { t } = useTranslation();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const handleFileSelect = (file: File) => {
     if (!file) return;
@@ -20,7 +19,6 @@ export function ImageUploader({ onImageCapture }: ImageUploaderProps) {
     const reader = new FileReader();
     reader.onloadend = () => {
       const base64String = reader.result as string;
-      setPreviewUrl(base64String);
       onImageCapture(base64String);
     };
     reader.readAsDataURL(file);
@@ -31,12 +29,6 @@ export function ImageUploader({ onImageCapture }: ImageUploaderProps) {
     if (file) {
       handleFileSelect(file);
     }
-  };
-
-  const handleClearPreview = () => {
-    setPreviewUrl(null);
-    if (fileInputRef.current) fileInputRef.current.value = '';
-    if (cameraInputRef.current) cameraInputRef.current.value = '';
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -57,33 +49,6 @@ export function ImageUploader({ onImageCapture }: ImageUploaderProps) {
       fileInputRef.current?.click();
     }
   };
-
-  if (previewUrl) {
-    return (
-      <Card className="p-6">
-        <div className="relative">
-          <img 
-            src={previewUrl} 
-            alt="Preview" 
-            className="w-full h-auto rounded-lg"
-          />
-          <Button
-            variant="destructive"
-            size="icon"
-            className="absolute top-2 right-2 rounded-full"
-            onClick={handleClearPreview}
-            aria-label={t('imageUploader.clearImage')}
-            data-testid="button-clear-image"
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-        <p className="text-sm text-muted-foreground mt-4 text-center">
-          {t('imageUploader.imageSelected')}
-        </p>
-      </Card>
-    );
-  }
 
   return (
     <div className="space-y-6">
