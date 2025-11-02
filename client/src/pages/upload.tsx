@@ -20,16 +20,24 @@ export default function UploadPage() {
   };
 
   const handleImageCapture = async (imageData: string) => {
-    setIsProcessing(true);
-    
-    // Store the data for the results page
-    sessionStorage.setItem('pendingAnalysis', JSON.stringify({
-      productType: selectedType,
-      imageData: imageData
-    }));
-    
-    // Navigate to results page which will handle the actual analysis
-    setLocation('/results');
+    try {
+      setIsProcessing(true);
+      
+      // Store the data for the results page
+      sessionStorage.setItem('pendingAnalysis', JSON.stringify({
+        productType: selectedType,
+        imageData: imageData
+      }));
+      
+      // Use setTimeout to ensure sessionStorage is written before navigation
+      // This fixes mobile browser navigation issues, especially on iPhone
+      setTimeout(() => {
+        setLocation('/results');
+      }, 100);
+    } catch (error) {
+      console.error('Error handling image capture:', error);
+      setIsProcessing(false);
+    }
   };
 
   const handleBack = () => {
