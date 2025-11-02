@@ -10,6 +10,7 @@ interface ImageUploaderProps {
 
 export function ImageUploader({ onImageCapture }: ImageUploaderProps) {
   const { t } = useTranslation();
+  const cameraInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (file: File) => {
@@ -32,17 +33,21 @@ export function ImageUploader({ onImageCapture }: ImageUploaderProps) {
     reader.readAsDataURL(file);
   };
 
-  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('handleFileInputChange triggered');
+  const handleCameraInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('Camera input change triggered');
     const file = e.target.files?.[0];
-    console.log('File from input:', file);
-    
     if (file) {
       handleFileSelect(file);
-      // Reset the input to allow selecting the same file again on mobile
       e.target.value = '';
-    } else {
-      console.log('No file in input.files[0]');
+    }
+  };
+
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('File input change triggered');
+    const file = e.target.files?.[0];
+    if (file) {
+      handleFileSelect(file);
+      e.target.value = '';
     }
   };
 
@@ -58,39 +63,36 @@ export function ImageUploader({ onImageCapture }: ImageUploaderProps) {
     e.preventDefault();
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent, inputRef: React.RefObject<HTMLInputElement>) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      fileInputRef.current?.click();
-    }
-  };
-
-  const handleCameraClick = () => {
-    console.log('Camera button clicked');
-    if (fileInputRef.current) {
-      // Set capture attribute for camera on mobile
-      fileInputRef.current.setAttribute('capture', 'environment');
-      fileInputRef.current.click();
-    }
-  };
-
-  const handleUploadClick = () => {
-    console.log('Upload button clicked');
-    if (fileInputRef.current) {
-      // Remove capture attribute for file upload
-      fileInputRef.current.removeAttribute('capture');
-      fileInputRef.current.click();
+      inputRef.current?.click();
     }
   };
 
   return (
     <div className="space-y-6">
+      {/* Camera input - visually hidden but accessible to iOS */}
       <input
-        ref={fileInputRef}
+        ref={cameraInputRef}
+        id="camera-input"
         type="file"
         accept="image/*"
-        className="hidden"
+        capture="environment"
+        className="absolute opacity-0 pointer-events-none"
+        onChange={handleCameraInputChange}
+        aria-hidden="true"
+      />
+      
+      {/* File input - visually hidden but accessible to iOS */}
+      <input
+        ref={fileInputRef}
+        id="file-input"
+        type="file"
+        accept="image/*"
+        className="absolute opacity-0 pointer-events-none"
         onChange={handleFileInputChange}
+        aria-hidden="true"
       />
 
       {/* Primary CTA: Scan with Camera */}
@@ -100,16 +102,20 @@ export function ImageUploader({ onImageCapture }: ImageUploaderProps) {
         </div>
         <h3 className="text-2xl font-semibold mb-2">{t('imageUploader.scanWithCamera')}</h3>
         <p className="text-muted-foreground mb-6">{t('imageUploader.scanDescription')}</p>
-        <Button
-          variant="default"
-          size="lg"
-          onClick={handleCameraClick}
-          className="w-full"
-          data-testid="button-scan-camera"
-        >
-          <Camera className="mr-2 h-5 w-5" />
-          {t('imageUploader.openCamera')}
-        </Button>
+        <label htmlFor="camera-input" className="w-full block">
+          <Button
+            variant="default"
+            size="lg"
+            asChild
+            className="w-full"
+            data-testid="button-scan-camera"
+          >
+            <span className="flex items-center justify-center cursor-pointer">
+              <Camera className="mr-2 h-5 w-5" />
+              {t('imageUploader.openCamera')}
+            </span>
+          </Button>
+        </label>
       </Card>
 
       {/* Divider */}
@@ -125,30 +131,31 @@ export function ImageUploader({ onImageCapture }: ImageUploaderProps) {
       </div>
 
       {/* Secondary CTA: Upload from Files with Drag & Drop */}
-      <Card
-        className="border-2 border-dashed hover-elevate transition-all cursor-pointer"
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
-        onClick={handleUploadClick}
-        onKeyDown={handleKeyDown}
-        tabIndex={0}
-        role="button"
-        aria-label={t('imageUploader.uploadFromFiles')}
-        data-testid="card-dropzone"
-      >
-        <div className="p-8 text-center">
-          <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mx-auto mb-3">
-            <Upload className="w-6 h-6 text-muted-foreground" />
+      <label htmlFor="file-input" className="block">
+        <Card
+          className="border-2 border-dashed hover-elevate transition-all cursor-pointer"
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+          onKeyDown={(e) => handleKeyDown(e, fileInputRef)}
+          tabIndex={0}
+          role="button"
+          aria-label={t('imageUploader.uploadFromFiles')}
+          data-testid="card-dropzone"
+        >
+          <div className="p-8 text-center">
+            <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mx-auto mb-3">
+              <Upload className="w-6 h-6 text-muted-foreground" />
+            </div>
+            <h4 className="font-semibold mb-1">{t('imageUploader.uploadFromFiles')}</h4>
+            <p className="text-sm text-muted-foreground mb-1">
+              {t('imageUploader.dragDropOrClick')}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              {t('imageUploader.supportedFormats')}
+            </p>
           </div>
-          <h4 className="font-semibold mb-1">{t('imageUploader.uploadFromFiles')}</h4>
-          <p className="text-sm text-muted-foreground mb-1">
-            {t('imageUploader.dragDropOrClick')}
-          </p>
-          <p className="text-xs text-muted-foreground">
-            {t('imageUploader.supportedFormats')}
-          </p>
-        </div>
-      </Card>
+        </Card>
+      </label>
     </div>
   );
 }

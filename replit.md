@@ -46,3 +46,30 @@ Auraly employs a mobile-first, wellness-inspired design with a calm, trustworthy
     - **Google Cloud Vision API**: Primary OCR engine for text extraction from product labels.
     - **Tesseract.js**: Fallback OCR engine.
 - **Deployment**: Replit platform.
+
+## Recent Changes (November 2, 2025)
+
+### iOS Mobile File Input Fix ✅ (CRITICAL)
+- **Fixed critical iOS Safari/Chrome issue where camera and file upload were completely unresponsive**
+  - **Previous behavior**: User clicked camera/upload button → nothing happened (silent failure on mobile)
+  - **Root cause**: iOS security restrictions block programmatically clicking hidden file inputs (display:none)
+  - **Additional issues**: Dynamic `capture` attribute changes and `.click()` calls violate iOS Web API policies
+  
+- **Mobile-First Architecture Implementation**
+  - Two dedicated file inputs: camera (with `capture="environment"`) and file upload (without capture)
+  - Inputs remain in DOM but visually hidden using `opacity-0 absolute` (NOT `display:none`)
+  - Trigger via `<label htmlFor>` associations instead of programmatic `.click()` calls
+  - Static `capture` attribute (not dynamically toggled at runtime)
+  - SessionStorage persistence for selectedProductType to survive camera navigation
+  
+- **Technical Details**
+  - Follows iOS Web API best practices for file input handling
+  - Label-based activation ensures native browser file picker launches correctly
+  - No state loss when switching to/from camera interface on mobile browsers
+  - Compatible with iOS Safari, Chrome, and all desktop browsers
+  
+- **User Experience**
+  - ✅ Camera and upload now work reliably on iOS Safari and Chrome
+  - ✅ Direct user gesture recognition (no programmatic clicks blocked by iOS)
+  - ✅ Smooth flow: select product type → scan/upload → immediate navigation to results
+  - ✅ Consistent experience across all devices and browsers
