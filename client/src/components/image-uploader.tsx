@@ -11,7 +11,6 @@ interface ImageUploaderProps {
 export function ImageUploader({ onImageCapture }: ImageUploaderProps) {
   const { t } = useTranslation();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const cameraInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (file: File) => {
     if (!file) {
@@ -34,9 +33,16 @@ export function ImageUploader({ onImageCapture }: ImageUploaderProps) {
   };
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('handleFileInputChange triggered');
     const file = e.target.files?.[0];
+    console.log('File from input:', file);
+    
     if (file) {
       handleFileSelect(file);
+      // Reset the input to allow selecting the same file again on mobile
+      e.target.value = '';
+    } else {
+      console.log('No file in input.files[0]');
     }
   };
 
@@ -59,20 +65,30 @@ export function ImageUploader({ onImageCapture }: ImageUploaderProps) {
     }
   };
 
+  const handleCameraClick = () => {
+    console.log('Camera button clicked');
+    if (fileInputRef.current) {
+      // Set capture attribute for camera on mobile
+      fileInputRef.current.setAttribute('capture', 'environment');
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleUploadClick = () => {
+    console.log('Upload button clicked');
+    if (fileInputRef.current) {
+      // Remove capture attribute for file upload
+      fileInputRef.current.removeAttribute('capture');
+      fileInputRef.current.click();
+    }
+  };
+
   return (
     <div className="space-y-6">
       <input
         ref={fileInputRef}
         type="file"
         accept="image/*"
-        className="hidden"
-        onChange={handleFileInputChange}
-      />
-      <input
-        ref={cameraInputRef}
-        type="file"
-        accept="image/*"
-        capture="environment"
         className="hidden"
         onChange={handleFileInputChange}
       />
@@ -87,7 +103,7 @@ export function ImageUploader({ onImageCapture }: ImageUploaderProps) {
         <Button
           variant="default"
           size="lg"
-          onClick={() => cameraInputRef.current?.click()}
+          onClick={handleCameraClick}
           className="w-full"
           data-testid="button-scan-camera"
         >
@@ -113,7 +129,7 @@ export function ImageUploader({ onImageCapture }: ImageUploaderProps) {
         className="border-2 border-dashed hover-elevate transition-all cursor-pointer"
         onDrop={handleDrop}
         onDragOver={handleDragOver}
-        onClick={() => fileInputRef.current?.click()}
+        onClick={handleUploadClick}
         onKeyDown={handleKeyDown}
         tabIndex={0}
         role="button"
