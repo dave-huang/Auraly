@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -11,7 +11,21 @@ import { useTranslation } from "react-i18next";
 export default function UploadPage() {
   const { t } = useTranslation();
   const [, setLocation] = useLocation();
-  const [selectedType, setSelectedType] = useState<ProductType | null>(null);
+  
+  // Initialize from sessionStorage to survive camera interactions on mobile
+  const [selectedType, setSelectedType] = useState<ProductType | null>(() => {
+    const stored = sessionStorage.getItem('selectedProductType');
+    return stored ? (stored as ProductType) : null;
+  });
+
+  // Persist selectedType to sessionStorage whenever it changes
+  useEffect(() => {
+    if (selectedType) {
+      sessionStorage.setItem('selectedProductType', selectedType);
+    } else {
+      sessionStorage.removeItem('selectedProductType');
+    }
+  }, [selectedType]);
 
   const handleProductTypeSelect = (type: ProductType) => {
     setSelectedType(type);
@@ -24,6 +38,9 @@ export default function UploadPage() {
       imageData: imageData
     }));
     
+    // Clean up the selected type since we're moving forward
+    sessionStorage.removeItem('selectedProductType');
+    
     // Navigate to results page which will handle the actual analysis
     setLocation('/results');
   };
@@ -32,6 +49,8 @@ export default function UploadPage() {
     if (selectedType) {
       setSelectedType(null);
     } else {
+      // Clean up when navigating back to landing page
+      sessionStorage.removeItem('selectedProductType');
       setLocation('/');
     }
   };
