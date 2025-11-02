@@ -93,6 +93,10 @@
     "analyzing": {
       "title": "Analyzing Ingredients",
       "description": "Extracting text and identifying potential health risks..."
+    },
+    "errors": {
+      "compressionFailed": "Image processing failed",
+      "tryAgain": "Please try again with a different image"
     }
   },
   "imageUploader": {

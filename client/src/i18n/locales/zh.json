@@ -93,6 +93,10 @@
     "analyzing": {
       "title": "正在分析成分",
       "description": "正在提取文本并识别潜在健康风险..."
+    },
+    "errors": {
+      "compressionFailed": "图片处理失败",
+      "tryAgain": "请尝试使用其他图片"
     }
   },
   "imageUploader": {

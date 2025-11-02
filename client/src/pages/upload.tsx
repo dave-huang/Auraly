@@ -7,10 +7,13 @@ import { ImageUploader } from "@/components/image-uploader";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import type { ProductType } from "@shared/schema";
 import { useTranslation } from "react-i18next";
+import { compressImage } from "@/lib/imageCompression";
+import { useToast } from "@/hooks/use-toast";
 
 export default function UploadPage() {
   const { t } = useTranslation();
   const [, setLocation] = useLocation();
+  const { toast } = useToast();
   
   // Initialize from sessionStorage to survive camera interactions on mobile
   const [selectedType, setSelectedType] = useState<ProductType | null>(() => {
@@ -31,24 +34,38 @@ export default function UploadPage() {
     setSelectedType(type);
   };
 
-  const handleImageCapture = (imageData: string) => {
+  const handleImageCapture = async (imageData: string) => {
     console.log('UploadPage: handleImageCapture called with image data length:', imageData.length);
     console.log('UploadPage: selectedType:', selectedType);
     
-    // Store the data for the results page
-    sessionStorage.setItem('pendingAnalysis', JSON.stringify({
-      productType: selectedType,
-      imageData: imageData
-    }));
-    
-    console.log('UploadPage: Stored pendingAnalysis in sessionStorage');
-    
-    // Clean up the selected type since we're moving forward
-    sessionStorage.removeItem('selectedProductType');
-    
-    console.log('UploadPage: Navigating to /results');
-    // Navigate to results page which will handle the actual analysis
-    setLocation('/results');
+    try {
+      console.log('UploadPage: Compressing image to prevent storage quota issues...');
+      const compressedImage = await compressImage(imageData, 1200, 1200, 0.85);
+      console.log('UploadPage: Compressed image length:', compressedImage.length);
+      console.log('UploadPage: Compression ratio:', ((1 - compressedImage.length / imageData.length) * 100).toFixed(1) + '% reduction');
+      
+      // Store the compressed data for the results page
+      sessionStorage.setItem('pendingAnalysis', JSON.stringify({
+        productType: selectedType,
+        imageData: compressedImage
+      }));
+      
+      console.log('UploadPage: Stored pendingAnalysis in sessionStorage');
+      
+      // Clean up the selected type since we're moving forward
+      sessionStorage.removeItem('selectedProductType');
+      
+      console.log('UploadPage: Navigating to /results');
+      // Navigate to results page which will handle the actual analysis
+      setLocation('/results');
+    } catch (error) {
+      console.error('UploadPage: Image compression failed:', error);
+      toast({
+        title: t('upload.errors.compressionFailed'),
+        description: t('upload.errors.tryAgain'),
+        variant: "destructive",
+      });
+    }
   };
 
   const handleBack = () => {
