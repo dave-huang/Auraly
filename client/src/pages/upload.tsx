@@ -32,15 +32,21 @@ export default function UploadPage() {
   };
 
   const handleImageCapture = (imageData: string) => {
+    console.log('UploadPage: handleImageCapture called with image data length:', imageData.length);
+    console.log('UploadPage: selectedType:', selectedType);
+    
     // Store the data for the results page
     sessionStorage.setItem('pendingAnalysis', JSON.stringify({
       productType: selectedType,
       imageData: imageData
     }));
     
+    console.log('UploadPage: Stored pendingAnalysis in sessionStorage');
+    
     // Clean up the selected type since we're moving forward
     sessionStorage.removeItem('selectedProductType');
     
+    console.log('UploadPage: Navigating to /results');
     // Navigate to results page which will handle the actual analysis
     setLocation('/results');
   };

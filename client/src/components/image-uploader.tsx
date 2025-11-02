@@ -14,12 +14,21 @@ export function ImageUploader({ onImageCapture }: ImageUploaderProps) {
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (file: File) => {
-    if (!file) return;
+    if (!file) {
+      console.log('ImageUploader: No file selected');
+      return;
+    }
+
+    console.log('ImageUploader: File selected:', file.name, file.type, file.size);
 
     const reader = new FileReader();
     reader.onloadend = () => {
       const base64String = reader.result as string;
+      console.log('ImageUploader: File read complete, calling onImageCapture with', base64String.substring(0, 50) + '...');
       onImageCapture(base64String);
+    };
+    reader.onerror = (error) => {
+      console.error('ImageUploader: FileReader error:', error);
     };
     reader.readAsDataURL(file);
   };
