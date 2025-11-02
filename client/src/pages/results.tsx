@@ -100,11 +100,19 @@ export default function ResultsPage() {
     }
   }, [analyzeMutation.isPending]);
 
-  const filteredIngredients = analysisResult?.ingredients.filter(ingredient => {
+  const filteredIngredients = (analysisResult?.ingredients.filter(ingredient => {
     const matchesSearch = ingredient.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesRisk = selectedRisk === "all" || ingredient.riskLevel === selectedRisk;
     return matchesSearch && matchesRisk;
-  }) || [];
+  }) || []).sort((a, b) => {
+    // Sort by risk level: high > moderate > low
+    const riskOrder: Record<RiskLevel, number> = {
+      high: 3,
+      moderate: 2,
+      low: 1
+    };
+    return riskOrder[b.riskLevel] - riskOrder[a.riskLevel];
+  });
 
   const riskCounts = {
     low: analysisResult?.ingredients.filter(i => i.riskLevel === "low").length || 0,
