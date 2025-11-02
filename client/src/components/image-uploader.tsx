@@ -16,30 +16,64 @@ export function ImageUploader({ onImageCapture, isProcessing = false }: ImageUpl
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const handleFileSelect = (file: File, fromCamera: boolean = false) => {
-    if (!file || isProcessing) return;
+    console.log('[ImageUploader] handleFileSelect called', { 
+      hasFile: !!file, 
+      fromCamera, 
+      isProcessing,
+      fileName: file?.name,
+      fileSize: file?.size,
+      fileType: file?.type
+    });
+    
+    if (!file || isProcessing) {
+      console.log('[ImageUploader] Aborting - no file or already processing');
+      return;
+    }
 
     const reader = new FileReader();
     reader.onloadend = () => {
       const base64String = reader.result as string;
+      console.log('[ImageUploader] FileReader completed', {
+        fromCamera,
+        base64Length: base64String?.length
+      });
       
       // For camera captures, proceed directly to analysis without preview
       if (fromCamera) {
+        console.log('[ImageUploader] Camera flow - calling onImageCapture');
         onImageCapture(base64String);
       } else {
         // For file uploads, show preview first
+        console.log('[ImageUploader] File upload flow - setting preview and calling onImageCapture');
         setPreviewUrl(base64String);
         onImageCapture(base64String);
       }
     };
+    
+    reader.onerror = (error) => {
+      console.error('[ImageUploader] FileReader error:', error);
+    };
+    
+    console.log('[ImageUploader] Starting FileReader.readAsDataURL');
     reader.readAsDataURL(file);
   };
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('[ImageUploader] handleFileInputChange triggered', {
+      hasFiles: !!e.target.files,
+      fileCount: e.target.files?.length,
+      isCameraInput: e.target === cameraInputRef.current,
+      targetElement: e.target
+    });
+    
     const file = e.target.files?.[0];
     if (file) {
       // Check if this came from the camera input
       const isFromCamera = e.target === cameraInputRef.current;
+      console.log('[ImageUploader] File detected, calling handleFileSelect', { isFromCamera });
       handleFileSelect(file, isFromCamera);
+    } else {
+      console.log('[ImageUploader] No file found in input');
     }
   };
 
