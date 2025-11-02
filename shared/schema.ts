@@ -20,7 +20,7 @@ export const ingredientSchema = z.object({
   riskLevel: z.enum(riskLevels),
   summary: z.string(),
   details: z.string(),
-  category: z.string().optional(),
+  category: z.string().nullish(), // Allow null, undefined, or string
 });
 
 export type Ingredient = z.infer<typeof ingredientSchema>;
@@ -38,7 +38,7 @@ export type AnalysisRequest = z.infer<typeof analysisRequestSchema>;
 // Analysis result schema
 export const analysisResultSchema = z.object({
   productType: z.enum(productTypes),
-  productName: z.string().optional(),
+  productName: z.string().nullish(), // Allow null, undefined, or string
   ingredients: z.array(ingredientSchema),
   overallRisk: z.enum(riskLevels),
   analyzedAt: z.string(),

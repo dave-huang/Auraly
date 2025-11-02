@@ -15,14 +15,21 @@ export function ImageUploader({ onImageCapture, isProcessing = false }: ImageUpl
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-  const handleFileSelect = (file: File) => {
+  const handleFileSelect = (file: File, fromCamera: boolean = false) => {
     if (!file || isProcessing) return;
 
     const reader = new FileReader();
     reader.onloadend = () => {
       const base64String = reader.result as string;
-      setPreviewUrl(base64String);
-      onImageCapture(base64String);
+      
+      // For camera captures, proceed directly to analysis without preview
+      if (fromCamera) {
+        onImageCapture(base64String);
+      } else {
+        // For file uploads, show preview first
+        setPreviewUrl(base64String);
+        onImageCapture(base64String);
+      }
     };
     reader.readAsDataURL(file);
   };
@@ -30,7 +37,9 @@ export function ImageUploader({ onImageCapture, isProcessing = false }: ImageUpl
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      handleFileSelect(file);
+      // Check if this came from the camera input
+      const isFromCamera = e.target === cameraInputRef.current;
+      handleFileSelect(file, isFromCamera);
     }
   };
 

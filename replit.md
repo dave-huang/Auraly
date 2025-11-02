@@ -15,9 +15,27 @@ Auraly is a mobile-friendly web application that helps users understand ingredie
 - Language preference persisted in localStorage
 - **Mobile-optimized with 2-minute timeout protection**
 
-## Recent Changes (October 31, 2025)
+## Recent Changes (November 2, 2025)
 
-### Animated Progress Bar UX Improvement ✅ (Latest)
+### Mobile Camera Scanning Fix ✅ (Latest)
+- **Fixed camera scanning on iPhone Safari and Chrome**
+  - Previous behavior: Camera captures showed preview screen with X button, blocking analysis
+  - Previous behavior: Navigation to results page failed on mobile browsers
+  - New behavior: Camera captures now proceed directly to analysis without preview
+  - New behavior: Added 100ms navigation delay to fix mobile browser race condition
+- **User experience improvement**
+  - Camera scans: Instant analysis without preview screen
+  - File uploads: Still show preview screen (allows reviewing before analysis)
+  - Works reliably on iPhone Safari and Chrome
+  - Fixes sessionStorage race condition on mobile browsers
+- **Implementation details**
+  - Modified ImageUploader to distinguish camera vs file input
+  - Added error handling for image capture
+  - setTimeout ensures sessionStorage completes before navigation
+
+## Previous Changes (October 31, 2025)
+
+### Animated Progress Bar UX Improvement ✅
 - **Fixed progress bar UX issue: bar now smoothly animates from 0% to 95% over 20 seconds**
   - Previous behavior: Progress bar stuck at static 75%, causing user confusion
   - New behavior: Gradual left-to-right fill animation creates clear visual feedback
