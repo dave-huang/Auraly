@@ -1,54 +1,86 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Upload, Camera, ScanLine } from "lucide-react";
+import { Upload, Camera, X, Image as ImageIcon, ScanLine } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 interface ImageUploaderProps {
   onImageCapture: (imageData: string) => void;
+  isProcessing?: boolean;
 }
 
-export function ImageUploader({ onImageCapture }: ImageUploaderProps) {
+export function ImageUploader({ onImageCapture, isProcessing = false }: ImageUploaderProps) {
   const { t } = useTranslation();
-  const cameraInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-  const handleFileSelect = (file: File) => {
-    if (!file) {
-      console.log('ImageUploader: No file selected');
+  const handleFileSelect = (file: File, fromCamera: boolean = false) => {
+    console.log('[ImageUploader] handleFileSelect called', { 
+      hasFile: !!file, 
+      fromCamera, 
+      isProcessing,
+      fileName: file?.name,
+      fileSize: file?.size,
+      fileType: file?.type
+    });
+    
+    if (!file || isProcessing) {
+      console.log('[ImageUploader] Aborting - no file or already processing');
       return;
     }
-
-    console.log('ImageUploader: File selected:', file.name, file.type, file.size);
 
     const reader = new FileReader();
     reader.onloadend = () => {
       const base64String = reader.result as string;
-      console.log('ImageUploader: File read complete, calling onImageCapture with', base64String.substring(0, 50) + '...');
-      onImageCapture(base64String);
+      console.log('[ImageUploader] FileReader completed', {
+        fromCamera,
+        base64Length: base64String?.length
+      });
+      
+      // For camera captures, proceed directly to analysis without preview
+      if (fromCamera) {
+        console.log('[ImageUploader] Camera flow - calling onImageCapture');
+        onImageCapture(base64String);
+      } else {
+        // For file uploads, show preview first
+        console.log('[ImageUploader] File upload flow - setting preview and calling onImageCapture');
+        setPreviewUrl(base64String);
+        onImageCapture(base64String);
+      }
     };
+    
     reader.onerror = (error) => {
-      console.error('ImageUploader: FileReader error:', error);
+      console.error('[ImageUploader] FileReader error:', error);
     };
+    
+    console.log('[ImageUploader] Starting FileReader.readAsDataURL');
     reader.readAsDataURL(file);
   };
 
-  const handleCameraInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('Camera input change triggered');
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('[ImageUploader] handleFileInputChange triggered', {
+      hasFiles: !!e.target.files,
+      fileCount: e.target.files?.length,
+      isCameraInput: e.target === cameraInputRef.current,
+      targetElement: e.target
+    });
+    
     const file = e.target.files?.[0];
     if (file) {
-      handleFileSelect(file);
-      e.target.value = '';
+      // Check if this came from the camera input
+      const isFromCamera = e.target === cameraInputRef.current;
+      console.log('[ImageUploader] File detected, calling handleFileSelect', { isFromCamera });
+      handleFileSelect(file, isFromCamera);
+    } else {
+      console.log('[ImageUploader] No file found in input');
     }
   };
 
-  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('File input change triggered');
-    const file = e.target.files?.[0];
-    if (file) {
-      handleFileSelect(file);
-      e.target.value = '';
-    }
+  const handleClearPreview = () => {
+    setPreviewUrl(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+    if (cameraInputRef.current) cameraInputRef.current.value = '';
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -63,36 +95,58 @@ export function ImageUploader({ onImageCapture }: ImageUploaderProps) {
     e.preventDefault();
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent, inputRef: React.RefObject<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      inputRef.current?.click();
+      fileInputRef.current?.click();
     }
   };
 
+  if (previewUrl && !isProcessing) {
+    return (
+      <Card className="p-6">
+        <div className="relative">
+          <img 
+            src={previewUrl} 
+            alt="Preview" 
+            className="w-full h-auto rounded-lg"
+          />
+          <Button
+            variant="destructive"
+            size="icon"
+            className="absolute top-2 right-2 rounded-full"
+            onClick={handleClearPreview}
+            aria-label={t('imageUploader.clearImage')}
+            data-testid="button-clear-image"
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        </div>
+        <p className="text-sm text-muted-foreground mt-4 text-center">
+          {t('imageUploader.imageSelected')}
+        </p>
+      </Card>
+    );
+  }
+
   return (
     <div className="space-y-6">
-      {/* Camera input - visually hidden but accessible to iOS */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={handleFileInputChange}
+        disabled={isProcessing}
+      />
       <input
         ref={cameraInputRef}
-        id="camera-input"
         type="file"
         accept="image/*"
         capture="environment"
-        className="absolute opacity-0 pointer-events-none"
-        onChange={handleCameraInputChange}
-        aria-hidden="true"
-      />
-      
-      {/* File input - visually hidden but accessible to iOS */}
-      <input
-        ref={fileInputRef}
-        id="file-input"
-        type="file"
-        accept="image/*"
-        className="absolute opacity-0 pointer-events-none"
+        className="hidden"
         onChange={handleFileInputChange}
-        aria-hidden="true"
+        disabled={isProcessing}
       />
 
       {/* Primary CTA: Scan with Camera */}
@@ -102,20 +156,17 @@ export function ImageUploader({ onImageCapture }: ImageUploaderProps) {
         </div>
         <h3 className="text-2xl font-semibold mb-2">{t('imageUploader.scanWithCamera')}</h3>
         <p className="text-muted-foreground mb-6">{t('imageUploader.scanDescription')}</p>
-        <label htmlFor="camera-input" className="w-full block">
-          <Button
-            variant="default"
-            size="lg"
-            asChild
-            className="w-full"
-            data-testid="button-scan-camera"
-          >
-            <span className="flex items-center justify-center cursor-pointer">
-              <Camera className="mr-2 h-5 w-5" />
-              {t('imageUploader.openCamera')}
-            </span>
-          </Button>
-        </label>
+        <Button
+          variant="default"
+          size="lg"
+          onClick={() => cameraInputRef.current?.click()}
+          disabled={isProcessing}
+          className="w-full"
+          data-testid="button-scan-camera"
+        >
+          <Camera className="mr-2 h-5 w-5" />
+          {t('imageUploader.openCamera')}
+        </Button>
       </Card>
 
       {/* Divider */}
@@ -131,31 +182,30 @@ export function ImageUploader({ onImageCapture }: ImageUploaderProps) {
       </div>
 
       {/* Secondary CTA: Upload from Files with Drag & Drop */}
-      <label htmlFor="file-input" className="block">
-        <Card
-          className="border-2 border-dashed hover-elevate transition-all cursor-pointer"
-          onDrop={handleDrop}
-          onDragOver={handleDragOver}
-          onKeyDown={(e) => handleKeyDown(e, fileInputRef)}
-          tabIndex={0}
-          role="button"
-          aria-label={t('imageUploader.uploadFromFiles')}
-          data-testid="card-dropzone"
-        >
-          <div className="p-8 text-center">
-            <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mx-auto mb-3">
-              <Upload className="w-6 h-6 text-muted-foreground" />
-            </div>
-            <h4 className="font-semibold mb-1">{t('imageUploader.uploadFromFiles')}</h4>
-            <p className="text-sm text-muted-foreground mb-1">
-              {t('imageUploader.dragDropOrClick')}
-            </p>
-            <p className="text-xs text-muted-foreground">
-              {t('imageUploader.supportedFormats')}
-            </p>
+      <Card
+        className="border-2 border-dashed hover-elevate transition-all cursor-pointer"
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        onClick={() => fileInputRef.current?.click()}
+        onKeyDown={handleKeyDown}
+        tabIndex={0}
+        role="button"
+        aria-label={t('imageUploader.uploadFromFiles')}
+        data-testid="card-dropzone"
+      >
+        <div className="p-8 text-center">
+          <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mx-auto mb-3">
+            <Upload className="w-6 h-6 text-muted-foreground" />
           </div>
-        </Card>
-      </label>
+          <h4 className="font-semibold mb-1">{t('imageUploader.uploadFromFiles')}</h4>
+          <p className="text-sm text-muted-foreground mb-1">
+            {t('imageUploader.dragDropOrClick')}
+          </p>
+          <p className="text-xs text-muted-foreground">
+            {t('imageUploader.supportedFormats')}
+          </p>
+        </div>
+      </Card>
     </div>
   );
 }

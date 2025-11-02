@@ -17,18 +17,14 @@ export function LanguageSwitcher() {
   };
 
   return (
-    <DropdownMenu modal={false}>
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" data-testid="button-language-switcher">
           <Globe className="h-5 w-5" />
           <span className="sr-only">Switch language</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent 
-        align="end" 
-        sideOffset={8}
-        className="z-[100]"
-      >
+      <DropdownMenuContent align="end">
         <DropdownMenuItem
           onClick={() => changeLanguage('en')}
           className={i18n.language === 'en' ? 'bg-accent' : ''}

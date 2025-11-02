@@ -1,70 +1,59 @@
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { ArrowLeft, Upload, Camera, Loader2 } from "lucide-react";
 import { ProductTypeSelector } from "@/components/product-type-selector";
 import { ImageUploader } from "@/components/image-uploader";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import type { ProductType } from "@shared/schema";
 import { useTranslation } from "react-i18next";
-import { compressImage } from "@/lib/imageCompression";
-import { useToast } from "@/hooks/use-toast";
 
 export default function UploadPage() {
   const { t } = useTranslation();
   const [, setLocation] = useLocation();
-  const { toast } = useToast();
-  
-  // Initialize from sessionStorage to survive camera interactions on mobile
-  const [selectedType, setSelectedType] = useState<ProductType | null>(() => {
-    const stored = sessionStorage.getItem('selectedProductType');
-    return stored ? (stored as ProductType) : null;
-  });
-
-  // Persist selectedType to sessionStorage whenever it changes
-  useEffect(() => {
-    if (selectedType) {
-      sessionStorage.setItem('selectedProductType', selectedType);
-    } else {
-      sessionStorage.removeItem('selectedProductType');
-    }
-  }, [selectedType]);
+  const [selectedType, setSelectedType] = useState<ProductType | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleProductTypeSelect = (type: ProductType) => {
     setSelectedType(type);
   };
 
   const handleImageCapture = async (imageData: string) => {
-    console.log('UploadPage: handleImageCapture called with image data length:', imageData.length);
-    console.log('UploadPage: selectedType:', selectedType);
+    console.log('[UploadPage] handleImageCapture called', {
+      selectedType,
+      imageDataLength: imageData?.length,
+      timestamp: new Date().toISOString()
+    });
     
     try {
-      console.log('UploadPage: Compressing image to prevent storage quota issues...');
-      const compressedImage = await compressImage(imageData, 1200, 1200, 0.85);
-      console.log('UploadPage: Compressed image length:', compressedImage.length);
-      console.log('UploadPage: Compression ratio:', ((1 - compressedImage.length / imageData.length) * 100).toFixed(1) + '% reduction');
+      console.log('[UploadPage] Setting isProcessing to true');
+      setIsProcessing(true);
       
-      // Store the compressed data for the results page
-      sessionStorage.setItem('pendingAnalysis', JSON.stringify({
+      const analysisData = {
         productType: selectedType,
-        imageData: compressedImage
-      }));
+        imageData: imageData
+      };
       
-      console.log('UploadPage: Stored pendingAnalysis in sessionStorage');
-      
-      // Clean up the selected type since we're moving forward
-      sessionStorage.removeItem('selectedProductType');
-      
-      console.log('UploadPage: Navigating to /results');
-      // Navigate to results page which will handle the actual analysis
-      setLocation('/results');
-    } catch (error) {
-      console.error('UploadPage: Image compression failed:', error);
-      toast({
-        title: t('upload.errors.compressionFailed'),
-        description: t('upload.errors.tryAgain'),
-        variant: "destructive",
+      console.log('[UploadPage] Storing to sessionStorage', {
+        productType: selectedType,
+        imageDataLength: imageData?.length
       });
+      
+      // Store the data for the results page
+      sessionStorage.setItem('pendingAnalysis', JSON.stringify(analysisData));
+      
+      console.log('[UploadPage] sessionStorage saved, scheduling navigation in 100ms');
+      
+      // Use setTimeout to ensure sessionStorage is written before navigation
+      // This fixes mobile browser navigation issues, especially on iPhone
+      setTimeout(() => {
+        console.log('[UploadPage] Navigating to /results');
+        setLocation('/results');
+      }, 100);
+    } catch (error) {
+      console.error('[UploadPage] Error handling image capture:', error);
+      setIsProcessing(false);
     }
   };
 
@@ -72,8 +61,6 @@ export default function UploadPage() {
     if (selectedType) {
       setSelectedType(null);
     } else {
-      // Clean up when navigating back to landing page
-      sessionStorage.removeItem('selectedProductType');
       setLocation('/');
     }
   };
@@ -125,7 +112,27 @@ export default function UploadPage() {
 
             <ImageUploader 
               onImageCapture={handleImageCapture}
+              isProcessing={isProcessing}
             />
+
+            {isProcessing && (
+              <div className="mt-8">
+                <Card className="p-8">
+                  <div className="flex flex-col items-center gap-4 text-center">
+                    <Loader2 className="w-12 h-12 text-primary animate-spin" />
+                    <div>
+                      <h3 className="font-semibold text-lg mb-1">{t('upload.analyzing.title')}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        {t('upload.analyzing.description')}
+                      </p>
+                    </div>
+                    <div className="w-full max-w-xs bg-muted rounded-full h-2 overflow-hidden">
+                      <div className="h-full bg-primary rounded-full animate-pulse" style={{ width: '60%' }} />
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            )}
           </div>
         )}
       </main>
