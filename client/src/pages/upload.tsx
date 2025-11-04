@@ -23,6 +23,7 @@ export default function UploadPage() {
     console.log('[UploadPage] handleImageCapture called', {
       selectedType,
       imageDataLength: imageData?.length,
+      imageDataSizeMB: (imageData?.length / 1024 / 1024).toFixed(2),
       timestamp: new Date().toISOString()
     });
     
@@ -35,13 +36,35 @@ export default function UploadPage() {
         imageData: imageData
       };
       
+      const dataString = JSON.stringify(analysisData);
       console.log('[UploadPage] Storing to sessionStorage', {
         productType: selectedType,
-        imageDataLength: imageData?.length
+        imageDataLength: imageData?.length,
+        totalDataSize: dataString.length,
+        totalDataSizeMB: (dataString.length / 1024 / 1024).toFixed(2)
       });
       
       // Store the data for the results page
-      sessionStorage.setItem('pendingAnalysis', JSON.stringify(analysisData));
+      try {
+        sessionStorage.setItem('pendingAnalysis', dataString);
+        console.log('[UploadPage] sessionStorage saved successfully');
+      } catch (storageError: any) {
+        // Handle QuotaExceededError specifically
+        if (storageError.name === 'QuotaExceededError') {
+          console.error('[UploadPage] QuotaExceededError - image too large for sessionStorage', {
+            imageSize: imageData?.length,
+            dataSizeMB: (dataString.length / 1024 / 1024).toFixed(2)
+          });
+          
+          // Clear sessionStorage and try again
+          sessionStorage.clear();
+          console.log('[UploadPage] Cleared sessionStorage, retrying...');
+          sessionStorage.setItem('pendingAnalysis', dataString);
+          console.log('[UploadPage] Retry successful');
+        } else {
+          throw storageError;
+        }
+      }
       
       console.log('[UploadPage] sessionStorage saved, scheduling navigation in 100ms');
       
@@ -54,6 +77,8 @@ export default function UploadPage() {
     } catch (error) {
       console.error('[UploadPage] Error handling image capture:', error);
       setIsProcessing(false);
+      // Show user-friendly error message
+      alert('Image is too large to process. Please try taking a photo from further away or with lower resolution.');
     }
   };
 
