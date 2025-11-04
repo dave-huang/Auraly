@@ -15,9 +15,33 @@ Auraly is a mobile-friendly web application that helps users understand ingredie
 - Language preference persisted in localStorage
 - **Mobile-optimized with 2-minute timeout protection**
 
-## Recent Changes (November 2, 2025)
+## Recent Changes (November 4, 2025)
 
-### Mobile Camera Scanning Fix ✅ (Latest)
+### Image Preprocessing for Enhanced OCR Accuracy ✅ (Latest)
+- **Implemented automatic image enhancement to improve OCR accuracy**
+  - Previous issue: Camera captures often missed ingredients compared to file uploads
+  - Previous issue: Mobile browsers compress camera images aggressively, reducing text clarity
+  - New behavior: All images are automatically preprocessed before OCR analysis
+  - New behavior: Consistent quality regardless of camera capture vs file upload
+- **Image preprocessing features**
+  - Intelligent resizing to optimal OCR dimensions (max 2400px, maintains aspect ratio)
+  - Contrast enhancement (1.3x factor) to make text more readable
+  - Sharpening filter using 3x3 convolution kernel for edge detection
+  - High-quality JPEG encoding (95% quality) to preserve text details
+- **Technical implementation**
+  - Created `client/src/lib/imagePreprocessor.ts` utility
+  - Canvas-based image processing with error handling and fallback
+  - Processes images in browser before sending to backend
+  - Logging added to track preprocessing performance
+- **User experience improvement**
+  - Camera scans now recognize more ingredients
+  - File uploads maintain consistent quality
+  - Faster OCR processing due to optimized image dimensions
+  - No user-facing changes; enhancement happens automatically
+
+## Previous Changes (November 2, 2025)
+
+### Mobile Camera Scanning Fix ✅
 - **Fixed camera scanning on iPhone Safari and Chrome**
   - Previous behavior: Camera captures showed preview screen with X button, blocking analysis
   - Previous behavior: Navigation to results page failed on mobile browsers
