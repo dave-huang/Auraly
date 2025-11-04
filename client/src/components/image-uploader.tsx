@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Upload, Camera, X, Image as ImageIcon, ScanLine } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { preprocessImageForOCR } from "@/lib/imagePreprocessor";
 
 interface ImageUploaderProps {
   onImageCapture: (imageData: string) => void;
@@ -15,7 +16,7 @@ export function ImageUploader({ onImageCapture, isProcessing = false }: ImageUpl
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-  const handleFileSelect = (file: File, fromCamera: boolean = false) => {
+  const handleFileSelect = async (file: File, fromCamera: boolean = false) => {
     console.log('[ImageUploader] handleFileSelect called', { 
       hasFile: !!file, 
       fromCamera, 
@@ -31,22 +32,50 @@ export function ImageUploader({ onImageCapture, isProcessing = false }: ImageUpl
     }
 
     const reader = new FileReader();
-    reader.onloadend = () => {
-      const base64String = reader.result as string;
-      console.log('[ImageUploader] FileReader completed', {
-        fromCamera,
-        base64Length: base64String?.length
-      });
-      
-      // For camera captures, proceed directly to analysis without preview
-      if (fromCamera) {
-        console.log('[ImageUploader] Camera flow - calling onImageCapture');
-        onImageCapture(base64String);
-      } else {
-        // For file uploads, show preview first
-        console.log('[ImageUploader] File upload flow - setting preview and calling onImageCapture');
-        setPreviewUrl(base64String);
-        onImageCapture(base64String);
+    reader.onloadend = async () => {
+      try {
+        const base64String = reader.result as string;
+        console.log('[ImageUploader] FileReader completed', {
+          fromCamera,
+          base64Length: base64String?.length,
+          originalSize: file.size
+        });
+        
+        // Preprocess image to enhance quality for OCR
+        console.log('[ImageUploader] Starting image preprocessing for OCR optimization...');
+        const startTime = Date.now();
+        const processedImage = await preprocessImageForOCR(base64String);
+        const processingTime = Date.now() - startTime;
+        
+        console.log('[ImageUploader] Image preprocessing completed', {
+          processingTimeMs: processingTime,
+          originalLength: base64String?.length,
+          processedLength: processedImage?.length,
+          sizeChange: `${((processedImage.length / base64String.length) * 100).toFixed(1)}%`
+        });
+        
+        // For camera captures, proceed directly to analysis without preview
+        if (fromCamera) {
+          console.log('[ImageUploader] Camera flow - calling onImageCapture with processed image');
+          onImageCapture(processedImage);
+        } else {
+          // For file uploads, show preview first
+          console.log('[ImageUploader] File upload flow - setting preview and calling onImageCapture with processed image');
+          setPreviewUrl(processedImage);
+          onImageCapture(processedImage);
+        }
+      } catch (error) {
+        console.error('[ImageUploader] Error during image preprocessing:', error);
+        // Fall back to original image if preprocessing fails
+        const base64String = reader.result as string;
+        console.log('[ImageUploader] Falling back to unprocessed image');
+        
+        if (fromCamera) {
+          onImageCapture(base64String);
+        } else {
+          setPreviewUrl(base64String);
+          onImageCapture(base64String);
+        }
       }
     };
     
