@@ -20,7 +20,7 @@ Auraly is a mobile-friendly web application designed to help users understand th
 - **UI/UX Decisions**:
     - **Design System**: Wellness-inspired palette (soft greens, creams, pastels), Inter and Space Grotesk fonts.
     - **Principles**: Mobile-first, calm aesthetic, clear visual hierarchy, risk color-coding, generous whitespace, rounded corners, subtle animations.
-    - **Image Preprocessing**: Automatic client-side image enhancement (resizing, contrast, sharpening) to improve OCR accuracy regardless of capture method.
+    - **Image Preprocessing**: Automatic client-side image enhancement (max 1600px, 85% JPEG quality, contrast boost, sharpening) to improve OCR accuracy. Optimized to prevent sessionStorage quota errors while maintaining text clarity.
     - **Progress Bar**: Smooth 0-95% animation over 20 seconds for visual feedback during analysis.
 
 ### Backend (Node.js + Express)
