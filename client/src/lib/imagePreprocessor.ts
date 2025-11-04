@@ -12,9 +12,9 @@ interface PreprocessOptions {
 }
 
 const DEFAULT_OPTIONS: PreprocessOptions = {
-  maxWidth: 1600, // Optimal size for OCR while keeping file size manageable
-  maxHeight: 1600,
-  quality: 0.85, // Good balance between quality and file size for OCR
+  maxWidth: 1800, // Increased for better OCR accuracy while keeping file size reasonable
+  maxHeight: 1800,
+  quality: 0.90, // Higher quality for better text recognition
   enhanceContrast: true,
   sharpen: true,
 };
