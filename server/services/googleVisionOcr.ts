@@ -26,9 +26,13 @@ export async function extractTextWithGoogleVision(imageData: string): Promise<Go
           },
           features: [
             {
-              type: 'TEXT_DETECTION'
+              type: 'DOCUMENT_TEXT_DETECTION', // Use DOCUMENT_TEXT_DETECTION for dense text like ingredient lists
+              maxResults: 1
             }
-          ]
+          ],
+          imageContext: {
+            languageHints: ['en', 'es', 'zh', 'fr', 'de', 'it', 'ja', 'ko', 'pt', 'ru'] // Support common languages
+          }
         }
       ]
     };
@@ -54,27 +58,36 @@ export async function extractTextWithGoogleVision(imageData: string): Promise<Go
       throw new Error(`Google Vision API error: ${result.responses[0].error.message}`);
     }
     
+    // DOCUMENT_TEXT_DETECTION provides fullTextAnnotation as the primary response
+    const fullTextAnnotation = result.responses?.[0]?.fullTextAnnotation;
     const textAnnotations = result.responses?.[0]?.textAnnotations;
     
-    if (!textAnnotations || textAnnotations.length === 0) {
-      throw new Error('No text found in image');
-    }
+    // Try fullTextAnnotation first (canonical for DOCUMENT_TEXT_DETECTION)
+    let extractedText = fullTextAnnotation?.text?.trim() || '';
+    let locale = 'en';
     
-    // The first annotation contains the entire detected text
-    const extractedText = textAnnotations[0].description?.trim() || '';
+    // Extract language from fullTextAnnotation if available
+    if (extractedText && fullTextAnnotation?.pages?.[0]?.property?.detectedLanguages?.[0]) {
+      locale = fullTextAnnotation.pages[0].property.detectedLanguages[0].languageCode || 'en';
+    } else if (textAnnotations && textAnnotations.length > 0) {
+      // Fallback to textAnnotations for both text and locale if fullTextAnnotation is not available
+      if (!extractedText) {
+        extractedText = textAnnotations[0].description?.trim() || '';
+      }
+      locale = textAnnotations[0].locale || 'en';
+    }
     
     // Handle empty or very short results
     if (!extractedText || extractedText.length < 5) {
       throw new Error('No text found in image. Please ensure the ingredient list is clearly visible and try again with better lighting or a closer photo.');
     }
     
-    // Extract language if available (usually in locale format like 'en')
-    const locale = textAnnotations[0].locale || 'en';
+    console.log(`Google Vision OCR detected ${extractedText.length} characters`);
     
     return {
       text: extractedText,
       language: locale,
-      confidence: 0.9 // Google Vision typically has high confidence
+      confidence: 0.95 // DOCUMENT_TEXT_DETECTION typically has very high confidence
     };
   } catch (error: any) {
     console.error('Google Vision OCR failed:', error);
