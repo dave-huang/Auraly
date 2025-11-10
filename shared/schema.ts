@@ -39,7 +39,7 @@ export type AnalysisRequest = z.infer<typeof analysisRequestSchema>;
 export const analysisResultSchema = z.object({
   productType: z.enum(productTypes),
   productName: z.string().nullish(), // Allow null, undefined, or string
-  ingredients: z.array(ingredientSchema),
+  ingredients: z.array(ingredientSchema).min(1, "Analysis must include at least one ingredient"),
   overallRisk: z.enum(riskLevels),
   analyzedAt: z.string(),
   originalText: z.string().optional(),

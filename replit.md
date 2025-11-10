@@ -35,7 +35,7 @@ Auraly is a mobile-friendly web application designed to help users understand th
 - **Error Handling**: Robust validation for OCR text length and AI response schemas.
 - **Feature Specifications**:
     - **Dual OCR System**: Combines Google Cloud Vision API with DOCUMENT_TEXT_DETECTION (primary, optimized for dense ingredient labels) with Tesseract.js (fallback) for enhanced accuracy across languages and image qualities. Uses language hints for 10+ common languages.
-    - **AI-Powered Analysis**: Utilizes GPT-4o for rapid (10-20s) and accurate ingredient analysis, providing risk assessments and detailed explanations in the user's chosen language.
+    - **AI-Powered Analysis**: Utilizes GPT-4o for rapid (10-20s) and accurate ingredient analysis, providing risk assessments and detailed explanations in the user's chosen language. Enhanced with explicit completeness requirements to ensure ALL ingredients are identified and analyzed without skipping any.
     - **Multi-Language Support**: Full internationalization for UI and AI analysis results in English, Spanish, and Chinese, ensuring the AI responds in the user's selected language regardless of the scanned product's language.
     - **Mobile Optimization**: Redesigned ImageUploader with camera scan as primary CTA, 2-minute timeout protection, and mobile browser compatibility fixes.
     - **Product-Specific Analysis**: Analyzer uses different safety criteria based on product type (Food, Skincare, Oral Care, Cosmetics).
