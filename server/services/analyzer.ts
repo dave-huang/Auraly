@@ -59,16 +59,72 @@ export async function analyzeIngredients(
   console.log(`[ANALYZER] User language: ${userLanguage}`);
   console.log(`[ANALYZER] OCR text length: ${ingredientsText.length} characters`);
   
+  // Try to isolate the ingredients section from the full OCR text
+  // Look for common markers like "INGREDIENTS:", "成分:", etc.
+  let textToAnalyze = ingredientsText;
+  let foundIngredientsMarker = false;
+  const ingredientsMarkers = [
+    /INGREDIENTS?\s*[:：]/i,
+    /成分\s*[:：]/,
+    /原料\s*[:：]/,
+    /配料\s*[:：]/,
+    /INGREDIENTES?\s*[:：]/i,
+    /INGRÉDIENTS?\s*[:：]/i
+  ];
+  
+  for (const marker of ingredientsMarkers) {
+    const match = ingredientsText.match(marker);
+    if (match && match.index !== undefined) {
+      foundIngredientsMarker = true;
+      // Extract text after the marker
+      textToAnalyze = ingredientsText.substring(match.index + match[0].length);
+      console.log(`[ANALYZER] Found ingredients marker "${match[0]}", text after marker: ${textToAnalyze.length} chars`);
+      
+      // Stop at next section markers (CONTAINS, DIRECTIONS, etc.)
+      const endMarkers = [
+        /CONTAINS?\s*[:：]/i,
+        /ALLERGENS?\s*[:：]/i,
+        /DIRECTIONS?\s*[:：]/i,
+        /INSTRUCTIONS?\s*[:：]/i,
+        /NUTRITION\s+FACTS?\s*[:：]/i,
+        /MANUFACTURED BY/i,
+        /PRODUCT OF/i,
+        /含\s*[:：]/,
+        /过敏原\s*[:：]/,
+        /使用方法\s*[:：]/,
+        /CONTIENE\s*[:：]/i,
+        /MODO DE USO\s*[:：]/i
+      ];
+      
+      let foundEndMarker = false;
+      for (const endMarker of endMarkers) {
+        const endMatch = textToAnalyze.match(endMarker);
+        if (endMatch && endMatch.index !== undefined && endMatch.index > 20) { // Must be at least 20 chars in
+          textToAnalyze = textToAnalyze.substring(0, endMatch.index);
+          console.log(`[ANALYZER] Found end marker "${endMatch[0]}" at position ${endMatch.index}, trimmed to ${textToAnalyze.length} characters`);
+          foundEndMarker = true;
+          break;
+        }
+      }
+      
+      if (!foundEndMarker) {
+        console.log(`[ANALYZER] No end marker found, using full text after ingredients marker`);
+      }
+      
+      break;
+    }
+  }
+  
   // Estimate expected ingredient count based on common separators and patterns
-  // Try multiple heuristics and use the most reliable one
-  const commaCount = (ingredientsText.match(/[,，]/g) || []).length + 1;
-  const chineseSeparatorCount = (ingredientsText.match(/[、]/g) || []).length + 1;
-  const semicolonCount = (ingredientsText.match(/[;；]/g) || []).length + 1;
-  const newlineCount = (ingredientsText.match(/\n/g) || []).length + 1;
+  // Only analyze the ingredients section (or full text if no marker found)
+  const commaCount = (textToAnalyze.match(/[,，]/g) || []).length + 1;
+  const chineseSeparatorCount = (textToAnalyze.match(/[、]/g) || []).length + 1;
+  const semicolonCount = (textToAnalyze.match(/[;；]/g) || []).length + 1;
+  const newlineCount = (textToAnalyze.match(/\n/g) || []).length + 1;
   
   // Only count actual bullet markers (not hyphens which appear in ingredient names like "beta-carotene")
   // Look for bullets at line starts only
-  const bulletCount = (ingredientsText.match(/^[•·∙\*]\s/gm) || []).length;
+  const bulletCount = (textToAnalyze.match(/^[•·∙\*]\s/gm) || []).length;
   
   // Use comma count as primary estimate (most common separator)
   // If Chinese separators are more common, use those instead
@@ -206,30 +262,45 @@ Return your analysis as JSON with this structure:
     console.log(`[ANALYZER] Product name: ${validatedResult.data.productName || 'Not detected'}`);
     console.log(`[ANALYZER] Overall risk: ${validatedResult.data.overallRisk}`);
     
-    // Enforce completeness: reject if detected count is materially below estimate
-    // Allow some tolerance (80%) for cases where separators might be miscounted
-    const minimumAcceptableCount = Math.max(
-      Math.floor(estimatedIngredientCount * 0.80), // 80% of estimated
-      estimatedIngredientCount > 10 ? estimatedIngredientCount - 5 : 1 // Or within 5 of estimate for large lists
-    );
+    // Enforce completeness check only when we have high confidence in the estimation
+    // If we found an "INGREDIENTS:" marker, the text is mixed content and the AI
+    // is better at extracting than our heuristic is at estimating - skip the check
+    const shouldEnforceCompleteness = !foundIngredientsMarker && estimatedIngredientCount > 5;
     
-    if (estimatedIngredientCount > 5 && detectedCount < minimumAcceptableCount) {
-      console.error(`[ANALYZER] COMPLETENESS FAILURE: Detected only ${detectedCount} ingredients but estimated ${estimatedIngredientCount} (minimum required: ${minimumAcceptableCount})`);
-      throw new Error(
-        `Incomplete ingredient analysis: detected ${detectedCount} ingredients but the label appears to contain approximately ${estimatedIngredientCount}. ` +
-        `This might indicate the AI missed some ingredients. Please try scanning again.`
+    if (shouldEnforceCompleteness) {
+      // For simple ingredient lists (no markers), use strict threshold
+      const minimumAcceptableCount = Math.max(
+        Math.floor(estimatedIngredientCount * 0.80), // 80% of estimated
+        estimatedIngredientCount > 10 ? estimatedIngredientCount - 5 : 1
       );
+      
+      if (detectedCount < minimumAcceptableCount) {
+        console.error(`[ANALYZER] COMPLETENESS FAILURE: Detected only ${detectedCount} ingredients but estimated ${estimatedIngredientCount} (minimum required: ${minimumAcceptableCount})`);
+        throw new Error(
+          `Incomplete ingredient analysis: detected ${detectedCount} ingredients but the label appears to contain approximately ${estimatedIngredientCount}. ` +
+          `This might indicate the AI missed some ingredients. Please try scanning again.`
+        );
+      }
+    } else if (foundIngredientsMarker) {
+      console.log(`[ANALYZER] Skipping completeness check for mixed-content label (found ingredients marker). Detected: ${detectedCount}, Estimated: ${estimatedIngredientCount}`);
     }
     
     return validatedResult.data;
   } catch (error: any) {
     console.error('Analysis failed:', error);
     
-    // Preserve meaningful error messages
-    if (error.message && (error.message.includes('invalid response') || error.message.includes('expected format'))) {
+    // Preserve meaningful error messages for user feedback
+    if (error.message && (
+      error.message.includes('Incomplete ingredient analysis') ||
+      error.message.includes('invalid response') || 
+      error.message.includes('expected format') ||
+      error.message.includes('AI response did not match')
+    )) {
       throw error;
     }
     
+    // Log the full error for debugging
+    console.error('Unexpected error details:', error);
     throw new Error('Failed to analyze ingredients. Please try again.');
   }
 }

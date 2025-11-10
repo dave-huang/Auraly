@@ -44,9 +44,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       res.json(result);
     } catch (error: any) {
-      console.error('Analysis error:', error);
-      res.status(500).json({ 
-        error: error.message || 'Failed to analyze ingredients' 
+      console.error('Analysis endpoint error:', error);
+      console.error('Error details:', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      });
+      
+      // Return appropriate status based on error type
+      const statusCode = error.message?.includes('Incomplete ingredient analysis') ? 400 : 500;
+      
+      res.status(statusCode).json({ 
+        error: error.message || 'Failed to analyze ingredients. Please try again.' 
       });
     }
   });
