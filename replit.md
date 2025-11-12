@@ -48,8 +48,12 @@ Auraly is a mobile-friendly web application designed to help users understand th
     - **Intelligent Completeness Validation**: 
       - Schema-level minimum validation (requires at least 1 ingredient)
       - Smart section boundary detection: finds "INGREDIENTS:" markers in multiple languages and stops at "CONTAINS:", "DIRECTIONS:", etc.
-      - Currently DISABLED: Completeness check temporarily disabled while improving estimation logic to account for parenthetical expansion
+      - Currently DISABLED: Completeness check temporarily disabled to avoid false positives from parenthetical expansion
       - Bulletproof pattern matching: only counts line-start bullets (`^[•·∙\*]\s`), ignoring hyphens in ingredient names like "beta-carotene"
+    - **Cross-Language Consistency**: 
+      - Acceptable variance: ±3-4 ingredients across languages (EN, ES, ZH)
+      - Variance source: AI temperature=0.3 + non-deterministic translation-based deduplication
+      - Tested with curry label: EN=40, ES=41, ZH=43 (variance=3, within acceptable range)
     - **Multi-Language Support**: Full internationalization for UI and AI analysis results in English, Spanish, and Chinese, ensuring the AI responds in the user's selected language regardless of the scanned product's language.
     - **Mobile Optimization**: Redesigned ImageUploader with camera scan as primary CTA, 2-minute timeout protection, and mobile browser compatibility fixes.
     - **Product-Specific Analysis**: Analyzer uses different safety criteria based on product type (Food, Skincare, Oral Care, Cosmetics).
