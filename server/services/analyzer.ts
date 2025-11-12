@@ -324,89 +324,124 @@ Return your analysis as JSON with this structure:
   "overallRisk": "low|moderate|high"
 }`;
 
-  try {
-    console.log('Sending request to OpenAI...');
-    const systemMessages = {
-      'zh': "You are a helpful health and wellness assistant that analyzes product ingredients. Extract and analyze EVERY ingredient from the list. Count each distinct ingredient only once (deduplicate). Always respond with valid JSON. All text in your response must be in Simplified Chinese (简体中文), regardless of the input language.",
-      'en': "You are a helpful health and wellness assistant that analyzes product ingredients. Extract and analyze EVERY ingredient from the list. Count each distinct ingredient only once (deduplicate). Always respond with valid JSON. All text in your response must be in English, regardless of the input language.",
-      'es': "Eres un asistente de salud y bienestar que analiza ingredientes de productos. Extrae y analiza TODOS los ingredientes de la lista. Cuenta cada ingrediente distinto solo una vez (deduplica). Siempre responde con JSON válido. Todo el texto en tu respuesta debe estar en español, sin importar el idioma de entrada."
-    };
-    const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
-    
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o", // Optimized for speed - much faster than GPT-5 (10-20s vs 60-75s)
-      messages: [
-        {
-          role: "system",
-          content: systemMessage
-        },
-        {
-          role: "user",
-          content: prompt
-        }
-      ],
-      response_format: { type: "json_object" },
-      max_tokens: 4096 // Sufficient for ingredient analysis
-    });
-
-    console.log('OpenAI response received:', JSON.stringify(response, null, 2));
-    
-    const content = response.choices?.[0]?.message?.content;
-    if (!content) {
-      console.error('Empty AI response. Full response:', JSON.stringify(response));
-      throw new Error('No response from AI');
-    }
-
-    let analysis;
+  // Retry logic with exponential backoff for reliability
+  let lastError: Error | null = null;
+  const maxRetries = 2;
+  
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
-      analysis = JSON.parse(content);
-    } catch (parseError) {
-      console.error('Failed to parse AI response:', content);
-      throw new Error('AI returned invalid response format');
+      if (attempt > 1) {
+        console.log(`[ANALYZER] Retry attempt ${attempt}/${maxRetries}`);
+      }
+      
+      console.log('Sending request to OpenAI...');
+      const systemMessages = {
+        'zh': "You are a helpful health and wellness assistant that analyzes product ingredients. Extract and analyze EVERY ingredient from the list. Count each distinct ingredient only once (deduplicate). Always respond with valid JSON. All text in your response must be in Simplified Chinese (简体中文), regardless of the input language.",
+        'en': "You are a helpful health and wellness assistant that analyzes product ingredients. Extract and analyze EVERY ingredient from the list. Count each distinct ingredient only once (deduplicate). Always respond with valid JSON. All text in your response must be in English, regardless of the input language.",
+        'es': "Eres un asistente de salud y bienestar que analiza ingredientes de productos. Extrae y analiza TODOS los ingredientes de la lista. Cuenta cada ingrediente distinto solo una vez (deduplica). Siempre responde con JSON válido. Todo el texto en tu respuesta debe estar en español, sin importar el idioma de entrada."
+      };
+      const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
+      
+      // Adjust max_tokens based on estimated ingredient count
+      // Each ingredient needs ~350 tokens (name, risk, summary, details, category)
+      // Add buffer for JSON structure and overhead
+      const estimatedTokensNeeded = Math.min(estimatedIngredientCount * 350 + 500, 16000);
+      const maxTokens = Math.max(8000, estimatedTokensNeeded);
+      
+      console.log(`[ANALYZER] Using max_tokens: ${maxTokens} (estimated ${estimatedIngredientCount} ingredients)`);
+      
+      const response = await openai.chat.completions.create({
+        model: "gpt-4o", // Optimized for speed - much faster than GPT-5 (10-20s vs 60-75s)
+        messages: [
+          {
+            role: "system",
+            content: systemMessage
+          },
+          {
+            role: "user",
+            content: prompt
+          }
+        ],
+        response_format: { type: "json_object" },
+        max_tokens: maxTokens,
+        temperature: 0.3 // Lower temperature for more consistent JSON output
+      });
+
+      console.log('OpenAI response received:', JSON.stringify(response, null, 2));
+      
+      const content = response.choices?.[0]?.message?.content;
+      if (!content) {
+        console.error('Empty AI response. Full response:', JSON.stringify(response));
+        throw new Error('No response from AI');
+      }
+
+      let analysis;
+      try {
+        analysis = JSON.parse(content);
+      } catch (parseError) {
+        console.error('Failed to parse AI response:', content.substring(0, 500));
+        throw new Error('AI returned invalid JSON format');
+      }
+      
+      // Validate the analysis result against our schema
+      const validatedResult = analysisResultSchema.safeParse({
+        productType,
+        productName: analysis.productName || undefined,
+        ingredients: analysis.ingredients || [],
+        overallRisk: analysis.overallRisk || 'moderate',
+        analyzedAt: new Date().toISOString(),
+        originalText: ingredientsText
+      });
+      
+      if (!validatedResult.success) {
+        console.error('Validation failed:', validatedResult.error);
+        console.error(`Received ${analysis.ingredients?.length || 0} ingredients before validation failed`);
+        throw new Error('AI response did not match expected format');
+      }
+      
+      const detectedCount = validatedResult.data.ingredients.length;
+      console.log(`[ANALYZER] Successfully analyzed ${detectedCount} ingredients`);
+      console.log(`[ANALYZER] Product name: ${validatedResult.data.productName || 'Not detected'}`);
+      console.log(`[ANALYZER] Overall risk: ${validatedResult.data.overallRisk}`);
+      
+      // TEMPORARILY DISABLED: Completeness check is interfering with parenthetical expansion
+      // The AI needs to expand grouped ingredients (e.g., "Enriched Flour (Wheat, Niacin)" → 2 ingredients)
+      // Estimation counts commas, which doesn't account for expansion, causing false failures
+      // TODO: Re-enable with smarter estimation that accounts for parenthetical groups
+      console.log(`[ANALYZER] Completeness check DISABLED. Detected: ${detectedCount}, Estimated: ${estimatedIngredientCount}, Found marker: ${foundIngredientsMarker}`);
+      
+      return validatedResult.data;
+      
+    } catch (error: any) {
+      lastError = error;
+      console.error(`[ANALYZER] Attempt ${attempt}/${maxRetries} failed:`, error.message);
+      
+      // Don't retry on certain errors
+      if (error.message && error.message.includes('No response from AI')) {
+        break; // Don't retry empty responses
+      }
+      
+      // Wait before retry (exponential backoff)
+      if (attempt < maxRetries) {
+        const waitTime = 1000 * attempt;
+        console.log(`[ANALYZER] Waiting ${waitTime}ms before retry...`);
+        await new Promise(resolve => setTimeout(resolve, waitTime));
+      }
     }
-    
-    // Validate the analysis result against our schema
-    const validatedResult = analysisResultSchema.safeParse({
-      productType,
-      productName: analysis.productName || undefined,
-      ingredients: analysis.ingredients || [],
-      overallRisk: analysis.overallRisk || 'moderate',
-      analyzedAt: new Date().toISOString(),
-      originalText: ingredientsText
-    });
-    
-    if (!validatedResult.success) {
-      console.error('Validation failed:', validatedResult.error);
-      throw new Error('AI response did not match expected format');
-    }
-    
-    const detectedCount = validatedResult.data.ingredients.length;
-    console.log(`[ANALYZER] Successfully analyzed ${detectedCount} ingredients`);
-    console.log(`[ANALYZER] Product name: ${validatedResult.data.productName || 'Not detected'}`);
-    console.log(`[ANALYZER] Overall risk: ${validatedResult.data.overallRisk}`);
-    
-    // TEMPORARILY DISABLED: Completeness check is interfering with parenthetical expansion
-    // The AI needs to expand grouped ingredients (e.g., "Enriched Flour (Wheat, Niacin)" → 2 ingredients)
-    // Estimation counts commas, which doesn't account for expansion, causing false failures
-    // TODO: Re-enable with smarter estimation that accounts for parenthetical groups
-    console.log(`[ANALYZER] Completeness check DISABLED. Detected: ${detectedCount}, Estimated: ${estimatedIngredientCount}, Found marker: ${foundIngredientsMarker}`);
-    
-    return validatedResult.data;
-  } catch (error: any) {
-    console.error('Analysis failed:', error);
-    
-    // Preserve meaningful error messages for user feedback
-    if (error.message && (
-      error.message.includes('Incomplete ingredient analysis') ||
-      error.message.includes('invalid response') || 
-      error.message.includes('expected format') ||
-      error.message.includes('AI response did not match')
-    )) {
-      throw error;
-    }
-    
-    // Log the full error for debugging
-    console.error('Unexpected error details:', error);
-    throw new Error('Failed to analyze ingredients. Please try again.');
   }
+  
+  // All retries failed
+  console.error('All retry attempts exhausted');
+  
+  // Preserve meaningful error messages for user feedback
+  if (lastError && lastError.message && (
+    lastError.message.includes('Incomplete ingredient analysis') ||
+    lastError.message.includes('invalid') || 
+    lastError.message.includes('expected format') ||
+    lastError.message.includes('AI response did not match')
+  )) {
+    throw lastError;
+  }
+  
+  throw new Error('Failed to analyze ingredients after multiple attempts. Please try again.');
 }
