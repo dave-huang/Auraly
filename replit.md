@@ -36,7 +36,10 @@ Auraly is a mobile-friendly web application designed to help users understand th
 - **Feature Specifications**:
     - **Dual OCR System**: Combines Google Cloud Vision API with DOCUMENT_TEXT_DETECTION (primary, optimized for dense ingredient labels) with Tesseract.js (fallback) for enhanced accuracy across languages and image qualities. Uses language hints for 10+ common languages. Implements quality scoring (parentheses count, keyword matches, malformed word penalty) to automatically select the best OCR result.
     - **AI-Powered Analysis**: Utilizes GPT-4o for rapid (10-20s) and accurate ingredient analysis, providing risk assessments and detailed explanations in the user's chosen language. Enhanced with:
-      - **Parenthetical Expansion**: Stack-based parser that automatically expands grouped ingredients (e.g., "Enriched Flour (Wheat Flour, Niacin)" → extracts Wheat Flour and Niacin separately)
+      - **Parenthetical Expansion**: Stack-based parser that intelligently handles parenthetical patterns:
+        * Category expansion: "Enriched Flour (Wheat, Niacin)" → extracts "Wheat, Niacin" (multiple items)
+        * Alias/qualifier: "Niacin (Vitamin B3)" → keeps "Niacin" only (single item, drops alias)
+        * Certification: "Palm Oil (RSPO Certified)" → keeps "Palm Oil" only (drops qualifier)
       - **Deduplication**: Counts each distinct ingredient only once
       - **Comprehensive Extraction**: Ensures ALL ingredients are identified, including additives, vitamins, preservatives, and colorings
       - **Dynamic Token Allocation**: Automatically calculates max_tokens based on ingredient count (ingredientCount × 350 + 500, capped at 16,000) to prevent response truncation for long ingredient lists

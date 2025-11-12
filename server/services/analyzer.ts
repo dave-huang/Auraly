@@ -3,13 +3,14 @@ import { analysisResultSchema, type ProductType, type AnalysisResult, type RiskL
 
 /**
  * Expands parenthetical ingredient groups into individual ingredients using a stack-based parser
- * Always extracts only the sub-ingredients within parentheses, replacing the parent to prevent redundancy
- * This ensures consistent ingredient counts across all languages
+ * Defaults to extracting inner content to avoid losing ingredients across translations
+ * Only keeps parent when inner is a redundant alias/certification
  * 
  * Examples:
- * - "Enriched Flour (Wheat Flour, Niacin)" → "Wheat Flour, Niacin"
- * - "Niacin (Vitamin B3)" → "Vitamin B3"
- * - "Contains: A, B (C, D)" → "Contains: A, C, D"
+ * - "Spices (turmeric, cumin)" → "turmeric, cumin" (extract list)
+ * - "Spices (turmeric)" → "turmeric" (extract single item)  
+ * - "Niacin (Vitamin B3)" → "Niacin" (vitamin alias - keep parent)
+ * - "Palm Oil (RSPO Certified)" → "Palm Oil" (certification - keep parent)
  */
 function expandParentheticalIngredients(text: string): string {
   try {
@@ -63,14 +64,35 @@ function expandParentheticalIngredients(text: string): string {
         
         expansionCount++;
         
-        // ALWAYS extract only the sub-ingredients from parentheses
-        // This prevents redundant counting (e.g., "Niacin (Vitamin B3)" should only count as 1 ingredient, not 2)
-        // The parent is replaced with the inner content to maintain consistency across all languages
+        // Intelligent expansion logic - DEFAULT TO EXPANSION to avoid losing ingredients:
+        // 1. Extract inner content by default (e.g., "Spices (turmeric)" → "turmeric")
+        // 2. ONLY keep parent when inner is clearly a redundant alias/certification
+        //
+        // Keep parent only when:
+        // - Inner matches vitamin/chemical patterns (e.g., "Niacin (Vitamin B3)", "Ascorbic Acid (Vitamin C)")
+        // - Inner is a certification/standard (e.g., "Palm Oil (RSPO Certified)", "Sugar (Fair Trade)")
+        // - Inner is just a number/code (e.g., "E300 (300)")
+        //
+        // Otherwise extract inner to avoid losing ingredients across translations
         
         if (innerContent.length > 0) {
-          // Replace parent with inner content
-          result = restOfText + (restOfText && !restOfText.endsWith(',') && !restOfText.endsWith('，') ? ', ' : '') + innerContent;
-          console.log(`[EXPANDER #${expansionCount}] Replaced "${parentToken}" with inner content: "${innerContent.substring(0, 50)}..."`);
+          // Check if inner is a redundant alias we should drop
+          const isVitaminAlias = /vitamin\s+[A-K][\d]*|vitamina\s+[A-K][\d]*|维生素\s*[A-K][\d]*/i.test(innerContent);
+          const isCertification = /certified|fair\s+trade|organic|bio|ecológico|有机/i.test(innerContent);
+          const isNumberCode = /^[\dE]+$/i.test(innerContent.trim());
+          const isPercentage = /^\d+%$/.test(innerContent.trim());
+          
+          const shouldDropInner = isVitaminAlias || isCertification || isNumberCode || isPercentage;
+          
+          if (shouldDropInner) {
+            // Inner is redundant alias/qualifier - keep parent only
+            result = beforeParenTrimmed;
+            console.log(`[EXPANDER #${expansionCount}] Alias/qualifier: kept parent "${parentToken}", dropped "${innerContent.substring(0, 30)}..."`);
+          } else {
+            // Default: extract inner content (may be single or multiple items)
+            result = restOfText + (restOfText && !restOfText.endsWith(',') && !restOfText.endsWith('，') ? ', ' : '') + innerContent;
+            console.log(`[EXPANDER #${expansionCount}] Expanded: "${parentToken}" → "${innerContent.substring(0, 50)}..."`);
+          }
         } else {
           // Empty parentheses - just keep what was before
           result = beforeParen;
