@@ -158,12 +158,29 @@ Product Type Context: ${context}
 Ingredient List:
 ${ingredientsText}
 
-CRITICAL COMPLETENESS REQUIREMENT:
-- You MUST identify and analyze EVERY SINGLE ingredient mentioned in the ingredient list above
-- Do NOT skip any ingredients - the list should contain approximately ${estimatedIngredientCount} ingredients based on separators
-- Include ALL ingredients in the exact order they appear in the list
-- If an ingredient name has OCR errors, correct them to the proper chemical/ingredient name
-- Count the ingredients carefully to ensure you haven't missed any
+CRITICAL INGREDIENT EXTRACTION RULES:
+1. EXPAND ALL PARENTHETICAL INGREDIENTS:
+   - When you see "Enriched Flour (Bleached Wheat Flour, Malted Barley Flour, Niacin, Reduced Iron)", extract each sub-ingredient individually: Bleached Wheat Flour, Malted Barley Flour, Niacin, Reduced Iron
+   - Do NOT count "Enriched Flour" as a separate ingredient - only count the items inside the parentheses
+   - This applies to ALL grouped ingredients: "Modified Corn Starch (Corn Starch, Sodium Stearate)" → extract Corn Starch and Sodium Stearate
+   - If there are nested parentheses, expand all levels
+
+2. COUNT DISTINCT INGREDIENTS ONLY:
+   - Do NOT count duplicate ingredients more than once
+   - If "Water" appears multiple times, include it only once in your analysis
+   - Deduplicate across all sub-ingredients too
+
+3. INCLUDE EVERYTHING:
+   - Include ALL additives, vitamins, minerals, preservatives, colorings, and flavorings
+   - Include percentage amounts if mentioned (e.g., "Contains 2% or less of:")
+   - Every single item separated by commas should be analyzed
+
+4. COMPLETENESS CHECK:
+   - You MUST identify and analyze EVERY SINGLE ingredient mentioned in the ingredient list
+   - The raw text contains approximately ${estimatedIngredientCount} separators (commas/parentheses)
+   - After expanding parenthetical ingredients and deduplicating, you should have a comprehensive list
+   - If an ingredient name has OCR errors, correct them to the proper chemical/ingredient name
+   - Count carefully to ensure you haven't missed any
 
 For each ingredient, determine:
 1. The ingredient name (clean, standardized format) - MUST be in the user's language
@@ -204,9 +221,9 @@ Return your analysis as JSON with this structure:
   try {
     console.log('Sending request to OpenAI...');
     const systemMessages = {
-      'zh': "You are a helpful health and wellness assistant that analyzes product ingredients. Your task is to identify EVERY ingredient in the list and analyze each one. Always respond with valid JSON. CRITICAL: All text in your response must be in Simplified Chinese (简体中文), regardless of the input language. Extract ALL ingredients without skipping any.",
-      'en': "You are a helpful health and wellness assistant that analyzes product ingredients. Your task is to identify EVERY ingredient in the list and analyze each one. Always respond with valid JSON. CRITICAL: All text in your response must be in English, regardless of the input language. Extract ALL ingredients without skipping any.",
-      'es': "Eres un asistente de salud y bienestar que analiza ingredientes de productos. Tu tarea es identificar CADA ingrediente en la lista y analizar cada uno. Siempre responde con JSON válido. CRÍTICO: Todo el texto en tu respuesta debe estar en español, sin importar el idioma de entrada. Extrae TODOS los ingredientes sin saltarte ninguno."
+      'zh': "You are a helpful health and wellness assistant that analyzes product ingredients. CRITICAL RULES: (1) EXPAND all parenthetical ingredients - e.g., 'Enriched Flour (Wheat Flour, Niacin)' → extract 'Wheat Flour' and 'Niacin' separately, NOT 'Enriched Flour'. (2) Count each distinct ingredient only once (deduplicate). (3) Extract EVERY ingredient without skipping any. Always respond with valid JSON. All text in your response must be in Simplified Chinese (简体中文), regardless of the input language.",
+      'en': "You are a helpful health and wellness assistant that analyzes product ingredients. CRITICAL RULES: (1) EXPAND all parenthetical ingredients - e.g., 'Enriched Flour (Wheat Flour, Niacin)' → extract 'Wheat Flour' and 'Niacin' separately, NOT 'Enriched Flour'. (2) Count each distinct ingredient only once (deduplicate). (3) Extract EVERY ingredient without skipping any. Always respond with valid JSON. All text in your response must be in English, regardless of the input language.",
+      'es': "Eres un asistente de salud y bienestar que analiza ingredientes de productos. REGLAS CRÍTICAS: (1) EXPANDE todos los ingredientes entre paréntesis - ej., 'Enriched Flour (Wheat Flour, Niacin)' → extrae 'Wheat Flour' y 'Niacin' por separado, NO 'Enriched Flour'. (2) Cuenta cada ingrediente distinto solo una vez (deduplica). (3) Extrae TODOS los ingredientes sin saltarte ninguno. Siempre responde con JSON válido. Todo el texto en tu respuesta debe estar en español, sin importar el idioma de entrada."
     };
     const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
     
