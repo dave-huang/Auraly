@@ -15,10 +15,14 @@ const upload = multer({ storage: multer.memoryStorage() });
 export async function registerRoutes(app: Express): Promise<Server> {
   // OCR endpoint - extract text from image
   app.post("/api/ocr", async (req, res) => {
+    const startTime = Date.now();
     try {
       const { imageData } = ocrRequestSchema.parse(req.body);
       
       const result = await extractTextFromImage(imageData);
+      
+      const duration = ((Date.now() - startTime) / 1000).toFixed(2);
+      console.log(`[TIMING] OCR completed in ${duration}s`);
       
       res.json(result);
     } catch (error: any) {
@@ -31,6 +35,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Analysis endpoint - analyze ingredients
   app.post("/api/analyze", async (req, res) => {
+    const startTime = Date.now();
     try {
       const { productType, ingredientsText, userLanguage } = analysisRequestSchema.parse(req.body);
       
@@ -41,6 +46,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       const result = await analyzeIngredients(productType as ProductType, ingredientsText, userLanguage);
+      
+      const duration = ((Date.now() - startTime) / 1000).toFixed(2);
+      console.log(`[TIMING] Analysis completed in ${duration}s`);
       
       res.json(result);
     } catch (error: any) {

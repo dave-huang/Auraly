@@ -356,7 +356,9 @@ Return your analysis as JSON with this structure:
         console.log(`[ANALYZER] Retry attempt ${attempt}/${maxRetries}`);
       }
       
-      console.log('Sending request to OpenAI...');
+      console.log('[TIMING] Sending request to OpenAI...');
+      const aiStartTime = Date.now();
+      
       const systemMessages = {
         'zh': "You are a helpful health and wellness assistant that analyzes product ingredients. Extract and analyze EVERY ingredient from the list. Count each distinct ingredient only once (deduplicate). Always respond with valid JSON. All text in your response must be in Simplified Chinese (简体中文), regardless of the input language.",
         'en': "You are a helpful health and wellness assistant that analyzes product ingredients. Extract and analyze EVERY ingredient from the list. Count each distinct ingredient only once (deduplicate). Always respond with valid JSON. All text in your response must be in English, regardless of the input language.",
@@ -389,6 +391,8 @@ Return your analysis as JSON with this structure:
         temperature: 0.3 // Lower temperature for more consistent JSON output
       });
 
+      const aiDuration = ((Date.now() - aiStartTime) / 1000).toFixed(2);
+      console.log(`[TIMING] OpenAI API call completed in ${aiDuration}s`);
       console.log('OpenAI response received:', JSON.stringify(response, null, 2));
       
       const content = response.choices?.[0]?.message?.content;
