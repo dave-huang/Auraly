@@ -12,11 +12,11 @@ interface PreprocessOptions {
 }
 
 const DEFAULT_OPTIONS: PreprocessOptions = {
-  maxWidth: 1800, // Increased for better OCR accuracy while keeping file size reasonable
-  maxHeight: 1800,
-  quality: 0.90, // Higher quality for better text recognition
-  enhanceContrast: true,
-  sharpen: true,
+  maxWidth: 2400, // Higher resolution to preserve character edges for OCR
+  maxHeight: 2400,
+  quality: 0.92, // High quality JPEG to preserve text clarity
+  enhanceContrast: false, // Disabled - was destroying character edges
+  sharpen: false, // Disabled - aggressive sharpening mangles OCR text
 };
 
 /**
@@ -62,29 +62,21 @@ export async function preprocessImageForOCR(
         // Draw image at calculated size
         ctx.drawImage(img, 0, 0, width, height);
         
-        // Apply image enhancements
-        if (opts.enhanceContrast || opts.sharpen) {
-          const imageData = ctx.getImageData(0, 0, width, height);
-          const data = imageData.data;
-          
-          // Enhance contrast to make text more readable
-          if (opts.enhanceContrast) {
-            const factor = 1.3; // Contrast enhancement factor
-            for (let i = 0; i < data.length; i += 4) {
-              // Apply contrast adjustment to RGB channels
-              data[i] = clamp(((data[i] - 128) * factor) + 128);     // Red
-              data[i + 1] = clamp(((data[i + 1] - 128) * factor) + 128); // Green
-              data[i + 2] = clamp(((data[i + 2] - 128) * factor) + 128); // Blue
-            }
-          }
-          
-          // Sharpen to improve edge detection for character recognition
-          if (opts.sharpen) {
-            sharpenImage(imageData);
-          }
-          
-          ctx.putImageData(imageData, 0, 0);
+        // Convert to grayscale for better OCR on dense text (ingredient labels)
+        // Grayscale preserves character edges better than color processing
+        const imageData = ctx.getImageData(0, 0, width, height);
+        const data = imageData.data;
+        
+        for (let i = 0; i < data.length; i += 4) {
+          // Convert to grayscale using luminosity method
+          const gray = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+          data[i] = gray;     // Red
+          data[i + 1] = gray; // Green
+          data[i + 2] = gray; // Blue
+          // Alpha channel (i+3) unchanged
         }
+        
+        ctx.putImageData(imageData, 0, 0);
         
         // Convert to base64 with high quality
         const processedBase64 = canvas.toDataURL('image/jpeg', opts.quality);
