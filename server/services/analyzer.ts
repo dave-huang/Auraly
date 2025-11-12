@@ -77,10 +77,20 @@ function expandParentheticalIngredients(text: string): string {
         
         if (innerContent.length > 0) {
           // Check if inner is a redundant alias we should drop
-          const isVitaminAlias = /vitamin\s+[A-K][\d]*|vitamina\s+[A-K][\d]*|维生素\s*[A-K][\d]*/i.test(innerContent);
-          const isCertification = /certified|fair\s+trade|organic|bio|ecológico|有机/i.test(innerContent);
-          const isNumberCode = /^[\dE]+$/i.test(innerContent.trim());
-          const isPercentage = /^\d+%$/.test(innerContent.trim());
+          // Use strict boundary matching to avoid false positives (e.g., "organic carrots" should NOT match)
+          const trimmedInner = innerContent.trim();
+          
+          // Match vitamin aliases (single tokens like "Vitamin B3", "Vitamina C", "维生素D")
+          const isVitaminAlias = /^(?:vitamin\s+[A-K][\d]*|vitamina\s+[A-K][\d]*|维生素\s*[A-K][\d]*)$/i.test(trimmedInner);
+          
+          // Match certifications/standards only if it's the ONLY content (no commas, no actual ingredients)
+          const isCertification = /^(?:RSPO\s+certified|fair\s+trade\s+certified|organic|bio|ecológico|有机|certified|non-GMO|kosher|halal)$/i.test(trimmedInner);
+          
+          // Match pure numbers or E-numbers
+          const isNumberCode = /^[E\d]+$/i.test(trimmedInner);
+          
+          // Match percentages
+          const isPercentage = /^\d+%$/.test(trimmedInner);
           
           const shouldDropInner = isVitaminAlias || isCertification || isNumberCode || isPercentage;
           
