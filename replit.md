@@ -20,7 +20,7 @@ Auraly is a mobile-friendly web application designed to help users understand th
 - **UI/UX Decisions**:
     - **Design System**: Wellness-inspired palette (soft greens, creams, pastels), Inter and Space Grotesk fonts.
     - **Principles**: Mobile-first, calm aesthetic, clear visual hierarchy, risk color-coding, generous whitespace, rounded corners, subtle animations.
-    - **Image Preprocessing**: Automatic client-side image enhancement (max 1800px, 90% JPEG quality, contrast boost, sharpening) to improve OCR accuracy. Optimized to prevent sessionStorage quota errors while maintaining excellent text clarity.
+    - **Image Preprocessing**: Automatic client-side image enhancement (max 2400px, grayscale conversion for better OCR character recognition) to improve OCR accuracy. Optimized to prevent sessionStorage quota errors while maintaining excellent text clarity. Removed aggressive sharpening that was destroying character edges.
     - **Progress Bar**: Smooth 0-95% animation over 20 seconds for visual feedback during analysis.
 
 ### Backend (Node.js + Express)
@@ -34,16 +34,18 @@ Auraly is a mobile-friendly web application designed to help users understand th
     - `openai.ts`: OpenAI client using Replit AI Integrations.
 - **Error Handling**: Robust validation for OCR text length and AI response schemas.
 - **Feature Specifications**:
-    - **Dual OCR System**: Combines Google Cloud Vision API with DOCUMENT_TEXT_DETECTION (primary, optimized for dense ingredient labels) with Tesseract.js (fallback) for enhanced accuracy across languages and image qualities. Uses language hints for 10+ common languages.
+    - **Dual OCR System**: Combines Google Cloud Vision API with DOCUMENT_TEXT_DETECTION (primary, optimized for dense ingredient labels) with Tesseract.js (fallback) for enhanced accuracy across languages and image qualities. Uses language hints for 10+ common languages. Implements quality scoring (parentheses count, keyword matches, malformed word penalty) to automatically select the best OCR result.
     - **AI-Powered Analysis**: Utilizes GPT-4o for rapid (10-20s) and accurate ingredient analysis, providing risk assessments and detailed explanations in the user's chosen language. Enhanced with:
-      - **Parenthetical Expansion**: Automatically expands grouped ingredients (e.g., "Enriched Flour (Wheat Flour, Niacin)" → extracts Wheat Flour and Niacin separately)
+      - **Parenthetical Expansion**: Stack-based parser that automatically expands grouped ingredients (e.g., "Enriched Flour (Wheat Flour, Niacin)" → extracts Wheat Flour and Niacin separately)
       - **Deduplication**: Counts each distinct ingredient only once
       - **Comprehensive Extraction**: Ensures ALL ingredients are identified, including additives, vitamins, preservatives, and colorings
+      - **Dynamic Token Allocation**: Automatically calculates max_tokens based on ingredient count (ingredientCount × 350 + 500, capped at 16,000) to prevent response truncation for long ingredient lists
+      - **Retry Logic**: Up to 2 retry attempts with exponential backoff (1-second delay) to handle transient API failures and ensure reliability
+      - **Lower Temperature**: Uses 0.3 temperature for more consistent JSON output
     - **Intelligent Completeness Validation**: 
       - Schema-level minimum validation (requires at least 1 ingredient)
       - Smart section boundary detection: finds "INGREDIENTS:" markers in multiple languages and stops at "CONTAINS:", "DIRECTIONS:", etc.
-      - Adaptive enforcement: skips completeness check for mixed-content labels (when markers are found) since AI is better at extracting ingredients than heuristics are at estimating from mixed content
-      - For simple ingredient lists: enforces 80% threshold (detected >= 80% of estimated count)
+      - Currently DISABLED: Completeness check temporarily disabled while improving estimation logic to account for parenthetical expansion
       - Bulletproof pattern matching: only counts line-start bullets (`^[•·∙\*]\s`), ignoring hyphens in ingredient names like "beta-carotene"
     - **Multi-Language Support**: Full internationalization for UI and AI analysis results in English, Spanish, and Chinese, ensuring the AI responds in the user's selected language regardless of the scanned product's language.
     - **Mobile Optimization**: Redesigned ImageUploader with camera scan as primary CTA, 2-minute timeout protection, and mobile browser compatibility fixes.
