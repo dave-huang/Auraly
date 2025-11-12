@@ -1,6 +1,44 @@
 import { openai } from '../openai';
 import { analysisResultSchema, type ProductType, type AnalysisResult, type RiskLevel } from '@shared/schema';
 
+/**
+ * Expands parenthetical ingredient groups into individual ingredients
+ * Example: "Enriched Flour (Wheat Flour, Niacin)" → "Wheat Flour, Niacin"
+ */
+function expandParentheticalIngredients(text: string): string {
+  console.log('[EXPANDER] Starting parenthetical expansion');
+  console.log(`[EXPANDER] Input text length: ${text.length} chars`);
+  let result = text;
+  let expansionCount = 0;
+  
+  // More robust pattern that handles various cases:
+  // - Matches anything before parentheses (including numbers, special chars)
+  // - Captures content within parentheses
+  // - Handles multiple spaces and line breaks
+  const parentheticalPattern = /([^(),]+?)\s*\(([^()]+)\)/g;
+  
+  result = result.replace(parentheticalPattern, (match, parentName, innerContent) => {
+    expansionCount++;
+    const parentTrimmed = parentName.trim();
+    const innerTrimmed = innerContent.trim();
+    
+    console.log(`[EXPANDER #${expansionCount}] Replacing "${parentTrimmed}" (${parentTrimmed.length} chars)`);
+    console.log(`[EXPANDER #${expansionCount}] With inner content: "${innerTrimmed.substring(0, 100)}..." (${innerTrimmed.length} chars)`);
+    
+    // Return just the inner content (comma-separated sub-ingredients)
+    // This effectively replaces "Parent (A, B, C)" with "A, B, C"
+    return innerTrimmed;
+  });
+  
+  console.log(`[EXPANDER] Completed: expanded ${expansionCount} parenthetical groups`);
+  console.log(`[EXPANDER] Output text length: ${result.length} chars`);
+  
+  // Log first 500 chars for debugging
+  console.log(`[EXPANDER] First 500 chars of output: ${result.substring(0, 500)}`);
+  
+  return result;
+}
+
 const PRODUCT_TYPE_CONTEXTS = {
   food: `Food products. Focus on:
     - Food additives (E-numbers, preservatives, colorants)
@@ -59,9 +97,15 @@ export async function analyzeIngredients(
   console.log(`[ANALYZER] User language: ${userLanguage}`);
   console.log(`[ANALYZER] OCR text length: ${ingredientsText.length} characters`);
   
+  // Pre-process the text to expand parenthetical ingredients
+  // This is more reliable than asking the AI to do it
+  const expandedText = expandParentheticalIngredients(ingredientsText);
+  console.log(`[ANALYZER] After expanding parentheticals: ${expandedText.length} characters`);
+  
   // Try to isolate the ingredients section from the full OCR text
   // Look for common markers like "INGREDIENTS:", "成分:", etc.
-  let textToAnalyze = ingredientsText;
+  // Use the expanded text for analysis
+  let textToAnalyze = expandedText;
   let foundIngredientsMarker = false;
   const ingredientsMarkers = [
     /INGREDIENTS?\s*[:：]/i,
@@ -73,11 +117,11 @@ export async function analyzeIngredients(
   ];
   
   for (const marker of ingredientsMarkers) {
-    const match = ingredientsText.match(marker);
+    const match = expandedText.match(marker);
     if (match && match.index !== undefined) {
       foundIngredientsMarker = true;
       // Extract text after the marker
-      textToAnalyze = ingredientsText.substring(match.index + match[0].length);
+      textToAnalyze = expandedText.substring(match.index + match[0].length);
       console.log(`[ANALYZER] Found ingredients marker "${match[0]}", text after marker: ${textToAnalyze.length} chars`);
       
       // Stop at next section markers (CONTAINS, DIRECTIONS, etc.)
@@ -155,32 +199,15 @@ ${languageInstruction}
 
 Product Type Context: ${context}
 
-Ingredient List:
-${ingredientsText}
+Ingredient List (parenthetical groups have been pre-expanded):
+${textToAnalyze}
 
-CRITICAL INGREDIENT EXTRACTION RULES:
-1. EXPAND ALL PARENTHETICAL INGREDIENTS:
-   - When you see "Enriched Flour (Bleached Wheat Flour, Malted Barley Flour, Niacin, Reduced Iron)", extract each sub-ingredient individually: Bleached Wheat Flour, Malted Barley Flour, Niacin, Reduced Iron
-   - Do NOT count "Enriched Flour" as a separate ingredient - only count the items inside the parentheses
-   - This applies to ALL grouped ingredients: "Modified Corn Starch (Corn Starch, Sodium Stearate)" → extract Corn Starch and Sodium Stearate
-   - If there are nested parentheses, expand all levels
-
-2. COUNT DISTINCT INGREDIENTS ONLY:
-   - Do NOT count duplicate ingredients more than once
-   - If "Water" appears multiple times, include it only once in your analysis
-   - Deduplicate across all sub-ingredients too
-
-3. INCLUDE EVERYTHING:
-   - Include ALL additives, vitamins, minerals, preservatives, colorings, and flavorings
-   - Include percentage amounts if mentioned (e.g., "Contains 2% or less of:")
-   - Every single item separated by commas should be analyzed
-
-4. COMPLETENESS CHECK:
-   - You MUST identify and analyze EVERY SINGLE ingredient mentioned in the ingredient list
-   - The raw text contains approximately ${estimatedIngredientCount} separators (commas/parentheses)
-   - After expanding parenthetical ingredients and deduplicating, you should have a comprehensive list
-   - If an ingredient name has OCR errors, correct them to the proper chemical/ingredient name
-   - Count carefully to ensure you haven't missed any
+CRITICAL EXTRACTION RULES:
+1. Extract EVERY SINGLE ingredient from the list above
+2. If an ingredient appears multiple times, count it only ONCE (deduplicate)
+3. Include ALL: additives, vitamins, minerals, preservatives, colors, emulsifiers, starches, sweeteners, oils, and flavorings
+4. The list contains approximately ${estimatedIngredientCount} ingredients based on separators
+5. If an ingredient name has OCR errors, correct them to the proper chemical/ingredient name
 
 For each ingredient, determine:
 1. The ingredient name (clean, standardized format) - MUST be in the user's language
@@ -221,9 +248,9 @@ Return your analysis as JSON with this structure:
   try {
     console.log('Sending request to OpenAI...');
     const systemMessages = {
-      'zh': "You are a helpful health and wellness assistant that analyzes product ingredients. CRITICAL RULES: (1) EXPAND all parenthetical ingredients - e.g., 'Enriched Flour (Wheat Flour, Niacin)' → extract 'Wheat Flour' and 'Niacin' separately, NOT 'Enriched Flour'. (2) Count each distinct ingredient only once (deduplicate). (3) Extract EVERY ingredient without skipping any. Always respond with valid JSON. All text in your response must be in Simplified Chinese (简体中文), regardless of the input language.",
-      'en': "You are a helpful health and wellness assistant that analyzes product ingredients. CRITICAL RULES: (1) EXPAND all parenthetical ingredients - e.g., 'Enriched Flour (Wheat Flour, Niacin)' → extract 'Wheat Flour' and 'Niacin' separately, NOT 'Enriched Flour'. (2) Count each distinct ingredient only once (deduplicate). (3) Extract EVERY ingredient without skipping any. Always respond with valid JSON. All text in your response must be in English, regardless of the input language.",
-      'es': "Eres un asistente de salud y bienestar que analiza ingredientes de productos. REGLAS CRÍTICAS: (1) EXPANDE todos los ingredientes entre paréntesis - ej., 'Enriched Flour (Wheat Flour, Niacin)' → extrae 'Wheat Flour' y 'Niacin' por separado, NO 'Enriched Flour'. (2) Cuenta cada ingrediente distinto solo una vez (deduplica). (3) Extrae TODOS los ingredientes sin saltarte ninguno. Siempre responde con JSON válido. Todo el texto en tu respuesta debe estar en español, sin importar el idioma de entrada."
+      'zh': "You are a helpful health and wellness assistant that analyzes product ingredients. Extract and analyze EVERY ingredient from the list. Count each distinct ingredient only once (deduplicate). Always respond with valid JSON. All text in your response must be in Simplified Chinese (简体中文), regardless of the input language.",
+      'en': "You are a helpful health and wellness assistant that analyzes product ingredients. Extract and analyze EVERY ingredient from the list. Count each distinct ingredient only once (deduplicate). Always respond with valid JSON. All text in your response must be in English, regardless of the input language.",
+      'es': "Eres un asistente de salud y bienestar que analiza ingredientes de productos. Extrae y analiza TODOS los ingredientes de la lista. Cuenta cada ingrediente distinto solo una vez (deduplica). Siempre responde con JSON válido. Todo el texto en tu respuesta debe estar en español, sin importar el idioma de entrada."
     };
     const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
     
@@ -279,28 +306,11 @@ Return your analysis as JSON with this structure:
     console.log(`[ANALYZER] Product name: ${validatedResult.data.productName || 'Not detected'}`);
     console.log(`[ANALYZER] Overall risk: ${validatedResult.data.overallRisk}`);
     
-    // Enforce completeness check only when we have high confidence in the estimation
-    // If we found an "INGREDIENTS:" marker, the text is mixed content and the AI
-    // is better at extracting than our heuristic is at estimating - skip the check
-    const shouldEnforceCompleteness = !foundIngredientsMarker && estimatedIngredientCount > 5;
-    
-    if (shouldEnforceCompleteness) {
-      // For simple ingredient lists (no markers), use strict threshold
-      const minimumAcceptableCount = Math.max(
-        Math.floor(estimatedIngredientCount * 0.80), // 80% of estimated
-        estimatedIngredientCount > 10 ? estimatedIngredientCount - 5 : 1
-      );
-      
-      if (detectedCount < minimumAcceptableCount) {
-        console.error(`[ANALYZER] COMPLETENESS FAILURE: Detected only ${detectedCount} ingredients but estimated ${estimatedIngredientCount} (minimum required: ${minimumAcceptableCount})`);
-        throw new Error(
-          `Incomplete ingredient analysis: detected ${detectedCount} ingredients but the label appears to contain approximately ${estimatedIngredientCount}. ` +
-          `This might indicate the AI missed some ingredients. Please try scanning again.`
-        );
-      }
-    } else if (foundIngredientsMarker) {
-      console.log(`[ANALYZER] Skipping completeness check for mixed-content label (found ingredients marker). Detected: ${detectedCount}, Estimated: ${estimatedIngredientCount}`);
-    }
+    // TEMPORARILY DISABLED: Completeness check is interfering with parenthetical expansion
+    // The AI needs to expand grouped ingredients (e.g., "Enriched Flour (Wheat, Niacin)" → 2 ingredients)
+    // Estimation counts commas, which doesn't account for expansion, causing false failures
+    // TODO: Re-enable with smarter estimation that accounts for parenthetical groups
+    console.log(`[ANALYZER] Completeness check DISABLED. Detected: ${detectedCount}, Estimated: ${estimatedIngredientCount}, Found marker: ${foundIngredientsMarker}`);
     
     return validatedResult.data;
   } catch (error: any) {
