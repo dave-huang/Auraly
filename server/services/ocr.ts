@@ -31,7 +31,51 @@ function validateImageData(imageData: string): void {
 }
 
 /**
- * Extract text from image using Google Cloud Vision API with Tesseract.js as fallback
+ * Score OCR result quality based on heuristics
+ * Higher score = better quality
+ */
+function scoreOCRQuality(text: string): { score: number; details: string } {
+  let score = 0;
+  const details: string[] = [];
+  
+  // Count parentheses (ingredient lists have many parenthetical groups)
+  const parenCount = (text.match(/\(/g) || []).length;
+  score += parenCount * 5;
+  details.push(`${parenCount} parentheses`);
+  
+  // Count commas (ingredient separators)
+  const commaCount = (text.match(/,/g) || []).length;
+  score += commaCount;
+  details.push(`${commaCount} commas`);
+  
+  // Penalize for malformed words (excessive single letters)
+  const words = text.split(/\s+/);
+  const singleLetterWords = words.filter(w => w.length === 1 && /[A-Z]/i.test(w)).length;
+  const malformedPenalty = singleLetterWords * 2;
+  score -= malformedPenalty;
+  if (singleLetterWords > 5) {
+    details.push(`-${malformedPenalty} (${singleLetterWords} single letters)`);
+  }
+  
+  // Check for common ingredient keywords
+  const ingredientKeywords = [
+    'INGREDIENTS', 'ENRICHED', 'FLOUR', 'SUGAR', 'SALT', 'OIL', 
+    'WATER', 'WHEAT', 'CORN', 'SOY', 'MILK', 'EGG', 'VITAMIN',
+    'NIACIN', 'THIAMINE', 'RIBOFLAVIN', 'ACID', 'STARCH'
+  ];
+  const keywordMatches = ingredientKeywords.filter(kw => text.toUpperCase().includes(kw)).length;
+  score += keywordMatches * 3;
+  details.push(`${keywordMatches} keywords`);
+  
+  // Prefer longer text (more complete OCR)
+  score += Math.min(text.length / 100, 10);
+  details.push(`${text.length} chars`);
+  
+  return { score, details: details.join(', ') };
+}
+
+/**
+ * Extract text from image using dual OCR (Google Vision + Tesseract), choose best result
  */
 export async function extractTextFromImage(imageData: string): Promise<OCRResult> {
   // Validate image data first
@@ -41,25 +85,71 @@ export async function extractTextFromImage(imageData: string): Promise<OCRResult
     throw new Error(`Image validation failed: ${error.message}`);
   }
   
-  // Try Google Cloud Vision first if API key is available
+  const results: Array<{ text: string; language?: string; source: string }> = [];
+  
+  // Run both Google Vision and Tesseract in parallel for best results
+  const ocrPromises: Promise<void>[] = [];
+  
+  // Try Google Cloud Vision
   if (process.env.GOOGLE_CLOUD_VISION_API_KEY) {
-    try {
-      console.log('Using Google Cloud Vision for OCR...');
-      const result = await extractTextWithGoogleVision(imageData);
-      console.log('Google Cloud Vision OCR successful');
-      return {
-        text: result.text,
-        language: result.language
-      };
-    } catch (error: any) {
-      console.warn('Google Cloud Vision failed, falling back to Tesseract:', error.message);
-      // Fall through to Tesseract fallback
-    }
+    ocrPromises.push(
+      extractTextWithGoogleVision(imageData)
+        .then(result => {
+          console.log(`[DUAL-OCR] Google Vision: ${result.text.length} chars`);
+          results.push({ ...result, source: 'Google Vision' });
+        })
+        .catch(error => {
+          console.warn('[DUAL-OCR] Google Vision failed:', error.message);
+        })
+    );
   }
   
-  // Fallback to Tesseract.js
-  console.log('Using Tesseract.js for OCR...');
+  // Also try Tesseract
+  ocrPromises.push(
+    runTesseractOCR(imageData)
+      .then(result => {
+        console.log(`[DUAL-OCR] Tesseract: ${result.text.length} chars`);
+        results.push({ ...result, source: 'Tesseract' });
+      })
+      .catch(error => {
+        console.warn('[DUAL-OCR] Tesseract failed:', error.message);
+      })
+  );
   
+  // Wait for both to complete (or fail)
+  await Promise.allSettled(ocrPromises);
+  
+  // If both failed, throw error
+  if (results.length === 0) {
+    throw new Error('Both OCR engines failed. Please try with a clearer image.');
+  }
+  
+  // Score each result and choose the best
+  const scoredResults = results.map(r => {
+    const quality = scoreOCRQuality(r.text);
+    return { ...r, score: quality.score, scoreDetails: quality.details };
+  });
+  
+  // Sort by score (descending)
+  scoredResults.sort((a, b) => b.score - a.score);
+  
+  const best = scoredResults[0];
+  console.log(`[DUAL-OCR] Quality scores:`);
+  scoredResults.forEach(r => {
+    console.log(`  ${r.source}: ${r.score.toFixed(1)} (${r.scoreDetails})`);
+  });
+  console.log(`[DUAL-OCR] Selected: ${best.source} (score: ${best.score.toFixed(1)})`);
+  
+  return {
+    text: best.text,
+    language: best.language
+  };
+}
+
+/**
+ * Run Tesseract OCR
+ */
+async function runTesseractOCR(imageData: string): Promise<{ text: string; language?: string }> {
   let worker;
   try {
     // Remove the data URL prefix if present
