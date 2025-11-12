@@ -3,12 +3,13 @@ import { analysisResultSchema, type ProductType, type AnalysisResult, type RiskL
 
 /**
  * Expands parenthetical ingredient groups into individual ingredients using a stack-based parser
- * Handles nested parentheses and preserves both parent and sub-ingredients when appropriate
+ * Always extracts only the sub-ingredients within parentheses, replacing the parent to prevent redundancy
+ * This ensures consistent ingredient counts across all languages
  * 
  * Examples:
- * - "Enriched Flour (Wheat Flour, Niacin)" → "Wheat Flour, Niacin" (parent is generic descriptor)
- * - "Niacin (Vitamin B3)" → "Niacin" (parent is the actual ingredient)
- * - "Contains: A, B (C, D)" → "Contains: A, B, C, D" (nested expansion)
+ * - "Enriched Flour (Wheat Flour, Niacin)" → "Wheat Flour, Niacin"
+ * - "Niacin (Vitamin B3)" → "Vitamin B3"
+ * - "Contains: A, B (C, D)" → "Contains: A, C, D"
  */
 function expandParentheticalIngredients(text: string): string {
   try {
@@ -62,26 +63,14 @@ function expandParentheticalIngredients(text: string): string {
         
         expansionCount++;
         
-        // Heuristics to determine if we should keep the parent:
-        // - Keep if it looks like a chemical/ingredient name (e.g., "Niacin")
-        // - Remove if it's a generic descriptor (e.g., "Enriched Flour", "Modified Starch")
-        const isGenericDescriptor = /^(enriched|modified|processed|contains?\s+\d+%|bleached|unbleached|partially|hydrogenated)/i.test(parentToken);
-        const isVeryShort = parentToken.length <= 2; // Single letters, numbers
-        const hasMultipleWords = parentToken.split(/\s+/).length > 2;
+        // ALWAYS extract only the sub-ingredients from parentheses
+        // This prevents redundant counting (e.g., "Niacin (Vitamin B3)" should only count as 1 ingredient, not 2)
+        // The parent is replaced with the inner content to maintain consistency across all languages
         
         if (innerContent.length > 0) {
-          if (isGenericDescriptor || hasMultipleWords) {
-            // Parent is generic - replace with just the inner content
-            result = restOfText + (restOfText && !restOfText.endsWith(',') && !restOfText.endsWith('，') ? ', ' : '') + innerContent;
-            console.log(`[EXPANDER #${expansionCount}] Removing generic parent "${parentToken}", keeping inner: "${innerContent.substring(0, 50)}..."`);
-          } else if (!isVeryShort) {
-            // Parent looks like an actual ingredient - keep both
-            result = beforeParenTrimmed + ', ' + innerContent;
-            console.log(`[EXPANDER #${expansionCount}] Keeping parent "${parentToken}" AND inner: "${innerContent.substring(0, 50)}..."`);
-          } else {
-            // Very short parent - just use inner content
-            result = restOfText + (restOfText ? ', ' : '') + innerContent;
-          }
+          // Replace parent with inner content
+          result = restOfText + (restOfText && !restOfText.endsWith(',') && !restOfText.endsWith('，') ? ', ' : '') + innerContent;
+          console.log(`[EXPANDER #${expansionCount}] Replaced "${parentToken}" with inner content: "${innerContent.substring(0, 50)}..."`);
         } else {
           // Empty parentheses - just keep what was before
           result = beforeParen;
