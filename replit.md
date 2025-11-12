@@ -35,15 +35,17 @@ Auraly is a mobile-friendly web application designed to help users understand th
 - **Error Handling**: Robust validation for OCR text length and AI response schemas.
 - **Feature Specifications**:
     - **Dual OCR System**: Combines Google Cloud Vision API with DOCUMENT_TEXT_DETECTION (primary, optimized for dense ingredient labels) with Tesseract.js (fallback) for enhanced accuracy across languages and image qualities. Uses language hints for 10+ common languages. Implements quality scoring (parentheses count, keyword matches, malformed word penalty) to automatically select the best OCR result.
-    - **AI-Powered Analysis**: Utilizes GPT-4o-mini for fast (5-10s) and cost-effective ingredient analysis, providing risk assessments and clear explanations in the user's chosen language. Enhanced with:
+    - **AI-Powered Analysis**: Utilizes GPT-4o-mini (first attempt, ~5-10s) with automatic fallback to GPT-4o (retry, ~10-15s) for reliability. Provides risk assessments and clear explanations in the user's chosen language. Enhanced with:
       - **Parenthetical Expansion**: Stack-based parser that intelligently handles parenthetical patterns:
         * Category expansion: "Enriched Flour (Wheat, Niacin)" → extracts "Wheat, Niacin" (multiple items)
         * Alias/qualifier: "Niacin (Vitamin B3)" → keeps "Niacin" only (single item, drops alias)
         * Certification: "Palm Oil (RSPO Certified)" → keeps "Palm Oil" only (drops qualifier)
       - **Deduplication**: Counts each distinct ingredient only once
       - **Comprehensive Extraction**: Ensures ALL ingredients are identified, including additives, vitamins, preservatives, and colorings
-      - **Dynamic Token Allocation**: Automatically calculates max_tokens based on ingredient count (ingredientCount × 140 + 800, capped at 6,000) optimized for speed while preventing truncation
-      - **Retry Logic**: Up to 2 retry attempts with exponential backoff (1-second delay) to handle transient API failures and ensure reliability
+      - **Dynamic Token Allocation**: Automatically calculates max_tokens based on ingredient count (ingredientCount × 140 + 800, capped at 10,000) to prevent JSON truncation on complex products
+      - **Smart Model Selection**: Uses gpt-4o-mini for speed on first attempt, automatically falls back to gpt-4o on retry for maximum reliability with long ingredient lists
+      - **Retry Logic**: Up to 2 retry attempts with exponential backoff (1-second delay) and model upgrade (gpt-4o-mini → gpt-4o) to handle transient API failures and ensure reliability
+      - **Telemetry**: Detailed logging of model used, token utilization (completion/max), and warnings when approaching token limits for data-driven optimization
       - **Lower Temperature**: Uses 0.3 temperature for more consistent JSON output
     - **Intelligent Completeness Validation**: 
       - Schema-level minimum validation (requires at least 1 ingredient)

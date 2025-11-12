@@ -367,16 +367,18 @@ Return your analysis as JSON with this structure:
       const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
       
       // Adjust max_tokens based on estimated ingredient count
-      // With gpt-4o-mini, use moderate limits for speed while ensuring completeness
+      // Use gpt-4o-mini for speed, but ensure sufficient tokens for complex products
       // Each ingredient needs ~120-150 tokens (name, risk, concise summary/details)
-      // Balance speed with quality - reduced from 350 tokens/ingredient
-      const estimatedTokensNeeded = Math.min(estimatedIngredientCount * 140 + 800, 6000);
+      // Cap at 10k to handle long ingredient lists without truncation
+      const estimatedTokensNeeded = Math.min(estimatedIngredientCount * 140 + 800, 10000);
       const maxTokens = Math.max(3000, estimatedTokensNeeded);
       
-      console.log(`[ANALYZER] Using max_tokens: ${maxTokens} (estimated ${estimatedIngredientCount} ingredients)`);
+      // Use gpt-4o-mini for first attempt (faster), fall back to gpt-4o on retry for reliability
+      const modelToUse = attempt === 1 ? "gpt-4o-mini" : "gpt-4o";
+      console.log(`[ANALYZER] Attempt ${attempt}/${maxRetries}: Using model ${modelToUse}, max_tokens: ${maxTokens} (estimated ${estimatedIngredientCount} ingredients)`);
       
       const response = await openai.chat.completions.create({
-        model: "gpt-4o-mini", // Fast and cost-effective for structured ingredient analysis (3-7s)
+        model: modelToUse, // gpt-4o-mini first (fast), gpt-4o on retry (reliable)
         messages: [
           {
             role: "system",
@@ -395,7 +397,15 @@ Return your analysis as JSON with this structure:
       const aiDuration = ((Date.now() - aiStartTime) / 1000).toFixed(2);
       const tokensUsed = response.usage?.total_tokens || 0;
       const completionTokens = response.usage?.completion_tokens || 0;
-      console.log(`[TIMING] OpenAI API call completed in ${aiDuration}s (${tokensUsed} tokens, ${completionTokens} completion)`);
+      const tokenUtilization = ((completionTokens / maxTokens) * 100).toFixed(1);
+      console.log(`[TIMING] OpenAI API call completed in ${aiDuration}s`);
+      console.log(`[TELEMETRY] Model: ${modelToUse}, Tokens: ${tokensUsed} (completion: ${completionTokens}/${maxTokens} = ${tokenUtilization}%)`);
+      
+      // Warn if we're close to the token limit (might indicate truncation risk)
+      if (completionTokens >= maxTokens * 0.95) {
+        console.warn(`[TELEMETRY] WARNING: Completion tokens (${completionTokens}) near limit (${maxTokens}). Response may be truncated!`);
+      }
+      
       console.log('OpenAI response received:', JSON.stringify(response, null, 2));
       
       const content = response.choices?.[0]?.message?.content;
