@@ -84,7 +84,8 @@ function expandParentheticalIngredients(text: string): string {
           const isVitaminAlias = /^(?:vitamin\s+[A-K][\d]*|vitamina\s+[A-K][\d]*|维生素\s*[A-K][\d]*)$/i.test(trimmedInner);
           
           // Match certifications/standards only if it's the ONLY content (no commas, no actual ingredients)
-          const isCertification = /^(?:RSPO\s+certified|fair\s+trade\s+certified|organic|bio|ecológico|有机|certified|non-GMO|kosher|halal)$/i.test(trimmedInner);
+          // Includes multi-word qualifiers like "Non-GMO Project Verified", "Fair Trade Certified"
+          const isCertification = /^(?:RSPO\s+certified|fair\s+trade(?:\s+certified)?|non-GMO(?:\s+project\s+verified)?|organic|bio|ecológico|有机|certified|kosher|halal)$/i.test(trimmedInner);
           
           // Match pure numbers or E-numbers
           const isNumberCode = /^[E\d]+$/i.test(trimmedInner);
