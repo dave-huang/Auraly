@@ -367,10 +367,11 @@ Return your analysis as JSON with this structure:
       const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
       
       // Adjust max_tokens based on estimated ingredient count
-      // Each ingredient needs ~350 tokens (name, risk, summary, details, category)
-      // Add buffer for JSON structure and overhead
-      const estimatedTokensNeeded = Math.min(estimatedIngredientCount * 350 + 500, 16000);
-      const maxTokens = Math.max(8000, estimatedTokensNeeded);
+      // With gpt-4o-mini, use moderate limits for speed while ensuring completeness
+      // Each ingredient needs ~120-150 tokens (name, risk, concise summary/details)
+      // Balance speed with quality - reduced from 350 tokens/ingredient
+      const estimatedTokensNeeded = Math.min(estimatedIngredientCount * 140 + 800, 6000);
+      const maxTokens = Math.max(3000, estimatedTokensNeeded);
       
       console.log(`[ANALYZER] Using max_tokens: ${maxTokens} (estimated ${estimatedIngredientCount} ingredients)`);
       
@@ -392,7 +393,9 @@ Return your analysis as JSON with this structure:
       });
 
       const aiDuration = ((Date.now() - aiStartTime) / 1000).toFixed(2);
-      console.log(`[TIMING] OpenAI API call completed in ${aiDuration}s`);
+      const tokensUsed = response.usage?.total_tokens || 0;
+      const completionTokens = response.usage?.completion_tokens || 0;
+      console.log(`[TIMING] OpenAI API call completed in ${aiDuration}s (${tokensUsed} tokens, ${completionTokens} completion)`);
       console.log('OpenAI response received:', JSON.stringify(response, null, 2));
       
       const content = response.choices?.[0]?.message?.content;
