@@ -2,41 +2,120 @@ import { openai } from '../openai';
 import { analysisResultSchema, type ProductType, type AnalysisResult, type RiskLevel } from '@shared/schema';
 
 /**
- * Expands parenthetical ingredient groups into individual ingredients
- * Example: "Enriched Flour (Wheat Flour, Niacin)" → "Wheat Flour, Niacin"
+ * Expands parenthetical ingredient groups into individual ingredients using a stack-based parser
+ * Handles nested parentheses and preserves both parent and sub-ingredients when appropriate
+ * 
+ * Examples:
+ * - "Enriched Flour (Wheat Flour, Niacin)" → "Wheat Flour, Niacin" (parent is generic descriptor)
+ * - "Niacin (Vitamin B3)" → "Niacin" (parent is the actual ingredient)
+ * - "Contains: A, B (C, D)" → "Contains: A, B, C, D" (nested expansion)
  */
 function expandParentheticalIngredients(text: string): string {
-  console.log('[EXPANDER] Starting parenthetical expansion');
-  console.log(`[EXPANDER] Input text length: ${text.length} chars`);
-  let result = text;
-  let expansionCount = 0;
-  
-  // More robust pattern that handles various cases:
-  // - Matches anything before parentheses (including numbers, special chars)
-  // - Captures content within parentheses
-  // - Handles multiple spaces and line breaks
-  const parentheticalPattern = /([^(),]+?)\s*\(([^()]+)\)/g;
-  
-  result = result.replace(parentheticalPattern, (match, parentName, innerContent) => {
-    expansionCount++;
-    const parentTrimmed = parentName.trim();
-    const innerTrimmed = innerContent.trim();
+  try {
+    console.log('[EXPANDER] Starting parenthetical expansion');
+    console.log(`[EXPANDER] Input text length: ${text.length} chars`);
     
-    console.log(`[EXPANDER #${expansionCount}] Replacing "${parentTrimmed}" (${parentTrimmed.length} chars)`);
-    console.log(`[EXPANDER #${expansionCount}] With inner content: "${innerTrimmed.substring(0, 100)}..." (${innerTrimmed.length} chars)`);
+    if (!text || text.length === 0) {
+      console.log('[EXPANDER] Empty input, returning as-is');
+      return text;
+    }
     
-    // Return just the inner content (comma-separated sub-ingredients)
-    // This effectively replaces "Parent (A, B, C)" with "A, B, C"
-    return innerTrimmed;
-  });
-  
-  console.log(`[EXPANDER] Completed: expanded ${expansionCount} parenthetical groups`);
-  console.log(`[EXPANDER] Output text length: ${result.length} chars`);
-  
-  // Log first 500 chars for debugging
-  console.log(`[EXPANDER] First 500 chars of output: ${result.substring(0, 500)}`);
-  
-  return result;
+    let result = '';
+    let stack: string[] = [];
+    let expansionCount = 0;
+    let unmatchedOpen = 0;
+    let unmatchedClose = 0;
+    
+    for (let i = 0; i < text.length; i++) {
+      const char = text[i];
+      
+      if (char === '(') {
+        // Push current content onto stack and start collecting inner content
+        stack.push(result);
+        result = '';
+      } else if (char === ')') {
+        if (stack.length === 0) {
+          unmatchedClose++;
+          // Unmatched closing paren - just include it
+          result += char;
+          continue;
+        }
+        
+        // Pop from stack and merge
+        const innerContent = result.trim();
+        const beforeParen = stack.pop()!;
+        
+        // Find the last token before the opening paren (potential parent ingredient)
+        const beforeParenTrimmed = beforeParen.trimEnd();
+        const lastCommaIndex = Math.max(
+          beforeParenTrimmed.lastIndexOf(','),
+          beforeParenTrimmed.lastIndexOf('，'),
+          beforeParenTrimmed.lastIndexOf('、'),
+          beforeParenTrimmed.lastIndexOf(';'),
+          beforeParenTrimmed.lastIndexOf('；'),
+          beforeParenTrimmed.lastIndexOf(':'),
+          beforeParenTrimmed.lastIndexOf('：')
+        );
+        
+        const parentToken = beforeParenTrimmed.substring(lastCommaIndex + 1).trim();
+        const restOfText = beforeParenTrimmed.substring(0, lastCommaIndex + 1);
+        
+        expansionCount++;
+        
+        // Heuristics to determine if we should keep the parent:
+        // - Keep if it looks like a chemical/ingredient name (e.g., "Niacin")
+        // - Remove if it's a generic descriptor (e.g., "Enriched Flour", "Modified Starch")
+        const isGenericDescriptor = /^(enriched|modified|processed|contains?\s+\d+%|bleached|unbleached|partially|hydrogenated)/i.test(parentToken);
+        const isVeryShort = parentToken.length <= 2; // Single letters, numbers
+        const hasMultipleWords = parentToken.split(/\s+/).length > 2;
+        
+        if (innerContent.length > 0) {
+          if (isGenericDescriptor || hasMultipleWords) {
+            // Parent is generic - replace with just the inner content
+            result = restOfText + (restOfText && !restOfText.endsWith(',') && !restOfText.endsWith('，') ? ', ' : '') + innerContent;
+            console.log(`[EXPANDER #${expansionCount}] Removing generic parent "${parentToken}", keeping inner: "${innerContent.substring(0, 50)}..."`);
+          } else if (!isVeryShort) {
+            // Parent looks like an actual ingredient - keep both
+            result = beforeParenTrimmed + ', ' + innerContent;
+            console.log(`[EXPANDER #${expansionCount}] Keeping parent "${parentToken}" AND inner: "${innerContent.substring(0, 50)}..."`);
+          } else {
+            // Very short parent - just use inner content
+            result = restOfText + (restOfText ? ', ' : '') + innerContent;
+          }
+        } else {
+          // Empty parentheses - just keep what was before
+          result = beforeParen;
+        }
+      } else {
+        result += char;
+      }
+    }
+    
+    // If stack is not empty, we have unmatched opening parens
+    unmatchedOpen = stack.length;
+    if (unmatchedOpen > 0) {
+      console.log(`[EXPANDER] Warning: ${unmatchedOpen} unmatched opening parentheses found`);
+      // Reconstruct by popping everything
+      while (stack.length > 0) {
+        result = stack.pop()! + '(' + result;
+      }
+    }
+    
+    if (unmatchedClose > 0) {
+      console.log(`[EXPANDER] Warning: ${unmatchedClose} unmatched closing parentheses found`);
+    }
+    
+    console.log(`[EXPANDER] Completed: expanded ${expansionCount} parenthetical groups`);
+    console.log(`[EXPANDER] Output text length: ${result.length} chars`);
+    console.log(`[EXPANDER] First 300 chars: ${result.substring(0, 300).replace(/\n/g, ' ')}...`);
+    
+    return result;
+  } catch (error) {
+    console.error('[EXPANDER] Error during expansion:', error);
+    console.error('[EXPANDER] Returning original text due to error');
+    // Return original text on error to prevent 500
+    return text;
+  }
 }
 
 const PRODUCT_TYPE_CONTEXTS = {
