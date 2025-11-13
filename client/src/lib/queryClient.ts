@@ -11,7 +11,7 @@ export async function apiRequest(
   method: string,
   url: string,
   data?: unknown | undefined,
-  timeoutMs: number = 120000, // 2 minute default timeout for long-running analyses
+  timeoutMs: number = 180000, // 3 minute default timeout for long-running analyses (handles OpenAI API intermittent slowness)
 ): Promise<Response> {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);

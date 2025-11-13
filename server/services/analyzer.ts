@@ -347,13 +347,14 @@ Return your analysis as JSON with this structure:
 }`;
 
   // Retry logic with exponential backoff for reliability
+  // OpenAI API experiences intermittent timeouts/slowness, especially during peak hours
   let lastError: Error | null = null;
-  const maxRetries = 2;
+  const maxRetries = 3; // Increased from 2 to 3 for better resilience
   
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       if (attempt > 1) {
-        console.log(`[ANALYZER] Retry attempt ${attempt}/${maxRetries}`);
+        console.log(`[ANALYZER] Retry attempt ${attempt}/${maxRetries} due to: ${lastError?.message || 'unknown error'}`);
       }
       
       console.log('[TIMING] Sending request to OpenAI...');
@@ -444,15 +445,35 @@ Return your analysis as JSON with this structure:
     } catch (error: any) {
       lastError = error;
       console.error(`[ANALYZER] Attempt ${attempt}/${maxRetries} failed:`, error.message);
+      console.error(`[ANALYZER] Error details:`, {
+        name: error.name,
+        code: error.code,
+        status: error.status,
+        type: error.type
+      });
       
-      // Don't retry on certain errors
-      if (error.message && error.message.includes('No response from AI')) {
-        break; // Don't retry empty responses
+      // Don't retry on certain non-retryable errors
+      const nonRetryableErrors = [
+        'No response from AI',
+        'API key',
+        'unauthorized',
+        'forbidden',
+        'invalid_request_error'
+      ];
+      
+      const shouldNotRetry = nonRetryableErrors.some(msg => 
+        error.message?.toLowerCase().includes(msg.toLowerCase()) ||
+        error.type?.toLowerCase().includes(msg.toLowerCase())
+      );
+      
+      if (shouldNotRetry) {
+        console.log(`[ANALYZER] Non-retryable error detected, failing immediately`);
+        break;
       }
       
-      // Wait before retry (exponential backoff)
+      // Wait before retry (exponential backoff: 2s, 4s, 8s)
       if (attempt < maxRetries) {
-        const waitTime = 1000 * attempt;
+        const waitTime = 2000 * Math.pow(2, attempt - 1);
         console.log(`[ANALYZER] Waiting ${waitTime}ms before retry...`);
         await new Promise(resolve => setTimeout(resolve, waitTime));
       }
@@ -460,16 +481,37 @@ Return your analysis as JSON with this structure:
   }
   
   // All retries failed
-  console.error('All retry attempts exhausted');
+  console.error('[ANALYZER] All retry attempts exhausted');
   
-  // Preserve meaningful error messages for user feedback
-  if (lastError && lastError.message && (
-    lastError.message.includes('Incomplete ingredient analysis') ||
-    lastError.message.includes('invalid') || 
-    lastError.message.includes('expected format') ||
-    lastError.message.includes('AI response did not match')
-  )) {
-    throw lastError;
+  // Provide user-friendly error messages based on error type
+  if (lastError) {
+    // Check for timeout errors
+    if (lastError.message?.includes('timeout') || (lastError as any).code === 'ETIMEDOUT') {
+      throw new Error('Analysis is taking longer than expected. The AI service may be experiencing high load. Please try again in a few moments.');
+    }
+    
+    // Check for rate limit errors
+    if (lastError.message?.includes('rate limit') || (lastError as any).status === 429) {
+      throw new Error('The AI service is currently busy. Please wait a minute and try again.');
+    }
+    
+    // Check for network errors
+    if (lastError.message?.includes('network') || lastError.message?.includes('ECONNREFUSED') || lastError.message?.includes('ENOTFOUND')) {
+      throw new Error('Unable to connect to the AI service. Please check your internet connection and try again.');
+    }
+    
+    // Preserve meaningful validation error messages
+    if (lastError.message && (
+      lastError.message.includes('Incomplete ingredient analysis') ||
+      lastError.message.includes('invalid') || 
+      lastError.message.includes('expected format') ||
+      lastError.message.includes('AI response did not match')
+    )) {
+      throw lastError;
+    }
+    
+    // Generic fallback with context
+    throw new Error(`Analysis failed after ${maxRetries} attempts. The AI service may be temporarily unavailable. Please try again.`);
   }
   
   throw new Error('Failed to analyze ingredients after multiple attempts. Please try again.');
