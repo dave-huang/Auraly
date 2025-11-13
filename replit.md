@@ -35,15 +35,19 @@ Auraly is a mobile-friendly web application designed to help users understand th
 - **Error Handling**: Robust validation for OCR text length and AI response schemas.
 - **Feature Specifications**:
     - **Dual OCR System**: Combines Google Cloud Vision API with DOCUMENT_TEXT_DETECTION (primary, optimized for dense ingredient labels) with Tesseract.js (fallback) for enhanced accuracy across languages and image qualities. Uses language hints for 10+ common languages. Implements quality scoring (parentheses count, keyword matches, malformed word penalty) to automatically select the best OCR result.
-    - **AI-Powered Analysis**: Utilizes GPT-4o-mini for fast (5-10s) and cost-effective ingredient analysis, providing risk assessments and clear explanations in the user's chosen language. Enhanced with:
+    - **AI-Powered Analysis**: Utilizes GPT-4o-mini for fast and cost-effective ingredient analysis (English/Spanish: 5-10s, Chinese: 30-90s due to token density), providing risk assessments and clear explanations in the user's chosen language. Enhanced with:
       - **Parenthetical Expansion**: Stack-based parser that intelligently handles parenthetical patterns:
         * Category expansion: "Enriched Flour (Wheat, Niacin)" → extracts "Wheat, Niacin" (multiple items)
         * Alias/qualifier: "Niacin (Vitamin B3)" → keeps "Niacin" only (single item, drops alias)
         * Certification: "Palm Oil (RSPO Certified)" → keeps "Palm Oil" only (drops qualifier)
       - **Deduplication**: Counts each distinct ingredient only once
       - **Comprehensive Extraction**: Ensures ALL ingredients are identified, including additives, vitamins, preservatives, and colorings
-      - **Dynamic Token Allocation**: Automatically calculates max_tokens based on ingredient count (ingredientCount × 140 + 800, capped at 6,000) optimized for speed while preventing truncation
-      - **Retry Logic**: Up to 2 retry attempts with exponential backoff (1-second delay) to handle transient API failures and ensure reliability
+      - **Dynamic Token Allocation**: Language-aware token optimization for speed and completeness:
+        * English/Spanish: ingredientCount × 140 + 800, capped at 6,000 tokens
+        * Chinese: ingredientCount × 110 + 600, capped at 4,500 tokens (faster due to higher token density)
+      - **Robust Retry Logic**: Up to 3 retry attempts with exponential backoff (2s, 4s, 8s) to handle OpenAI API intermittent failures (500/502/503 server errors, timeouts, rate limits)
+      - **Extended Timeout**: 5-minute frontend timeout to accommodate longest analyses (Chinese mode can take 2-3 minutes)
+      - **Clear Error Messages**: Specific user-friendly messages for server errors, timeouts, rate limits, and network issues instead of generic "Load failed"
       - **Lower Temperature**: Uses 0.3 temperature for more consistent JSON output
     - **Intelligent Completeness Validation**: 
       - Schema-level minimum validation (requires at least 1 ingredient)
