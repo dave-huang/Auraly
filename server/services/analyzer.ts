@@ -367,14 +367,19 @@ Return your analysis as JSON with this structure:
       };
       const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
       
-      // Adjust max_tokens based on estimated ingredient count
+      // Adjust max_tokens based on estimated ingredient count and language
+      // Chinese characters consume more tokens than Latin characters, so reduce limits for Chinese mode
       // With gpt-4o-mini, use moderate limits for speed while ensuring completeness
-      // Each ingredient needs ~120-150 tokens (name, risk, concise summary/details)
-      // Balance speed with quality - reduced from 350 tokens/ingredient
-      const estimatedTokensNeeded = Math.min(estimatedIngredientCount * 140 + 800, 6000);
-      const maxTokens = Math.max(3000, estimatedTokensNeeded);
+      // Each ingredient needs ~120-150 tokens (name, risk, concise summary/details) in English/Spanish
+      // Chinese needs ~100-120 tokens per ingredient due to higher token density
+      const tokensPerIngredient = userLanguage === 'zh' ? 110 : 140;
+      const baseTokens = userLanguage === 'zh' ? 600 : 800;
+      const maxCap = userLanguage === 'zh' ? 4500 : 6000; // Lower cap for Chinese to improve speed
       
-      console.log(`[ANALYZER] Using max_tokens: ${maxTokens} (estimated ${estimatedIngredientCount} ingredients)`);
+      const estimatedTokensNeeded = Math.min(estimatedIngredientCount * tokensPerIngredient + baseTokens, maxCap);
+      const maxTokens = Math.max(2500, estimatedTokensNeeded);
+      
+      console.log(`[ANALYZER] Using max_tokens: ${maxTokens} for language: ${userLanguage} (estimated ${estimatedIngredientCount} ingredients)`);
       
       const response = await openai.chat.completions.create({
         model: "gpt-4o-mini", // Fast and cost-effective for structured ingredient analysis (3-7s)
@@ -452,23 +457,44 @@ Return your analysis as JSON with this structure:
         type: error.type
       });
       
-      // Don't retry on certain non-retryable errors
+      // Classify error types for retry decision
+      const errorStatus = (error as any).status || (error as any).code;
+      const errorType = (error as any).type || '';
+      const errorMessage = error.message || '';
+      
+      // Non-retryable errors (client-side issues that won't be fixed by retrying)
       const nonRetryableErrors = [
-        'No response from AI',
         'API key',
         'unauthorized',
         'forbidden',
-        'invalid_request_error'
+        'invalid_request_error',
+        'authentication_error',
+        'permission_denied'
       ];
       
       const shouldNotRetry = nonRetryableErrors.some(msg => 
-        error.message?.toLowerCase().includes(msg.toLowerCase()) ||
-        error.type?.toLowerCase().includes(msg.toLowerCase())
+        errorMessage.toLowerCase().includes(msg.toLowerCase()) ||
+        errorType.toLowerCase().includes(msg.toLowerCase())
       );
       
       if (shouldNotRetry) {
-        console.log(`[ANALYZER] Non-retryable error detected, failing immediately`);
+        console.log(`[ANALYZER] Non-retryable error detected (auth/config issue), failing immediately`);
         break;
+      }
+      
+      // Retryable server errors (500, 502, 503, 429, timeouts, network issues)
+      const isRetryableServerError = 
+        errorStatus === 500 || 
+        errorStatus === 502 || 
+        errorStatus === 503 || 
+        errorStatus === 429 ||
+        errorType === 'server_error' ||
+        errorMessage.includes('timeout') ||
+        errorMessage.includes('ETIMEDOUT') ||
+        errorMessage.includes('ECONNREFUSED');
+      
+      if (isRetryableServerError) {
+        console.log(`[ANALYZER] Retryable server error detected (status: ${errorStatus}, type: ${errorType}), will retry`);
       }
       
       // Wait before retry (exponential backoff: 2s, 4s, 8s)
@@ -485,18 +511,27 @@ Return your analysis as JSON with this structure:
   
   // Provide user-friendly error messages based on error type
   if (lastError) {
+    const errorStatus = (lastError as any).status || (lastError as any).code;
+    const errorType = (lastError as any).type || '';
+    const errorMessage = lastError.message || '';
+    
+    // Check for server errors (500, 502, 503)
+    if (errorStatus === 500 || errorStatus === 502 || errorStatus === 503 || errorType === 'server_error') {
+      throw new Error(`The AI service is temporarily unavailable (tried ${maxRetries} times). This usually resolves within a few minutes. Please try again shortly.`);
+    }
+    
     // Check for timeout errors
-    if (lastError.message?.includes('timeout') || (lastError as any).code === 'ETIMEDOUT') {
+    if (errorMessage.includes('timeout') || errorStatus === 'ETIMEDOUT') {
       throw new Error('Analysis is taking longer than expected. The AI service may be experiencing high load. Please try again in a few moments.');
     }
     
     // Check for rate limit errors
-    if (lastError.message?.includes('rate limit') || (lastError as any).status === 429) {
+    if (errorMessage.includes('rate limit') || errorStatus === 429) {
       throw new Error('The AI service is currently busy. Please wait a minute and try again.');
     }
     
     // Check for network errors
-    if (lastError.message?.includes('network') || lastError.message?.includes('ECONNREFUSED') || lastError.message?.includes('ENOTFOUND')) {
+    if (errorMessage.includes('network') || errorMessage.includes('ECONNREFUSED') || errorMessage.includes('ENOTFOUND')) {
       throw new Error('Unable to connect to the AI service. Please check your internet connection and try again.');
     }
     
