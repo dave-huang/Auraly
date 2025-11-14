@@ -379,7 +379,7 @@ Return your analysis as JSON with this structure:
       const estimatedTokensNeeded = Math.min(estimatedIngredientCount * tokensPerIngredient + baseTokens, maxCap);
       const maxTokens = Math.max(2500, estimatedTokensNeeded);
       
-      console.log(`[ANALYZER] Using max_tokens: ${maxTokens} for language: ${userLanguage} (estimated ${estimatedIngredientCount} ingredients)`);
+      console.log(`[ANALYZER] Using max_completion_tokens: ${maxTokens} for language: ${userLanguage} (estimated ${estimatedIngredientCount} ingredients)`);
       
       const response = await openai.chat.completions.create({
         model: "gpt-5-nano", // Ultra-fast GPT-5 nano for high-volume ingredient analysis (optimized for speed)
@@ -394,7 +394,7 @@ Return your analysis as JSON with this structure:
           }
         ],
         response_format: { type: "json_object" },
-        max_tokens: maxTokens,
+        max_completion_tokens: maxTokens, // GPT-5 uses max_completion_tokens instead of max_tokens
         temperature: 0.3 // Lower temperature for more consistent JSON output
       });
 
