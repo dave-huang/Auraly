@@ -394,8 +394,8 @@ Return your analysis as JSON with this structure:
           }
         ],
         response_format: { type: "json_object" },
-        max_completion_tokens: maxTokens, // GPT-5 uses max_completion_tokens instead of max_tokens
-        temperature: 0.3 // Lower temperature for more consistent JSON output
+        max_completion_tokens: maxTokens // GPT-5 uses max_completion_tokens instead of max_tokens
+        // Note: GPT-5-nano only supports temperature=1 (default), so we omit it
       });
 
       const aiDuration = ((Date.now() - aiStartTime) / 1000).toFixed(2);
