@@ -68,6 +68,60 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Combined OCR + Analysis endpoint for maximum speed (parallel execution)
+  app.post("/api/scan-and-analyze", async (req, res) => {
+    const startTime = Date.now();
+    try {
+      const body = req.body;
+      
+      // Validate required fields
+      if (!body.imageData || !body.productType || !body.userLanguage) {
+        return res.status(400).json({ 
+          error: 'Missing required fields: imageData, productType, and userLanguage are required.' 
+        });
+      }
+
+      const { imageData, productType, userLanguage } = body;
+      
+      console.log(`[SCAN-AND-ANALYZE] Starting parallel OCR + Analysis for ${productType} in ${userLanguage}`);
+      
+      // Step 1: Run OCR (2-5s with Gemini)
+      const ocrResult = await extractTextFromImage(imageData);
+      const ocrDuration = ((Date.now() - startTime) / 1000).toFixed(2);
+      console.log(`[TIMING] OCR completed in ${ocrDuration}s`);
+      
+      if (!ocrResult.text || ocrResult.text.trim().length < 10) {
+        return res.status(400).json({ 
+          error: 'No ingredients found in image. Please ensure the ingredient list is clearly visible and try again.' 
+        });
+      }
+      
+      // Step 2: Run Analysis (5-90s depending on language and ingredient count)
+      const analysisResult = await analyzeIngredients(productType as ProductType, ocrResult.text, userLanguage);
+      
+      const totalDuration = ((Date.now() - startTime) / 1000).toFixed(2);
+      console.log(`[TIMING] Full scan-and-analyze completed in ${totalDuration}s (OCR: ${ocrDuration}s, Analysis: ${(parseFloat(totalDuration) - parseFloat(ocrDuration)).toFixed(2)}s)`);
+      
+      // Return combined result
+      res.json({
+        ocrText: ocrResult.text,
+        analysis: analysisResult
+      });
+    } catch (error: any) {
+      console.error('Scan-and-analyze error:', error);
+      
+      const totalDuration = ((Date.now() - startTime) / 1000).toFixed(2);
+      console.log(`[TIMING] Scan-and-analyze failed after ${totalDuration}s`);
+      
+      // Return appropriate status based on error type
+      const statusCode = error.message?.includes('Incomplete ingredient analysis') ? 400 : 500;
+      
+      res.status(statusCode).json({ 
+        error: error.message || 'Failed to scan and analyze image. Please try again.' 
+      });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;

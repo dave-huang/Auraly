@@ -20,13 +20,9 @@ export default function ResultsPage() {
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const [progress, setProgress] = useState(0);
 
-  // Mutation for analyzing the image
+  // Mutation for analyzing the image (using new combined endpoint for speed)
   const analyzeMutation = useMutation({
     mutationFn: async (data: { productType: string; imageData: string }) => {
-      // First, extract text from image using OCR
-      const ocrResponse = await apiRequest("POST", "/api/ocr", { imageData: data.imageData });
-      const ocrResult: any = await ocrResponse.json();
-      
       // Normalize language code to 'en', 'es', or 'zh' (remove region codes like -US, -CN)
       let userLanguage = 'en';
       if (i18n.language.startsWith('zh')) {
@@ -35,16 +31,16 @@ export default function ResultsPage() {
         userLanguage = 'es';
       }
       
-      // Then analyze the extracted text with user's language preference
-      const analysisResponse = await apiRequest("POST", "/api/analyze", {
+      // Use new combined endpoint that runs OCR + Analysis together for maximum speed
+      const response = await apiRequest("POST", "/api/scan-and-analyze", {
         productType: data.productType,
-        ingredientsText: ocrResult.text,
-        originalLanguage: ocrResult.language,
+        imageData: data.imageData,
         userLanguage
       });
-      const analysisResult: any = await analysisResponse.json();
+      const result: any = await response.json();
       
-      return analysisResult as AnalysisResult;
+      // Extract analysis from combined response
+      return result.analysis as AnalysisResult;
     },
     onSuccess: (data) => {
       setAnalysisResult(data);

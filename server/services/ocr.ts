@@ -1,5 +1,6 @@
 import Tesseract from 'tesseract.js';
 import { extractTextWithGoogleVision } from './googleVisionOcr';
+import { extractTextWithGemini } from './geminiOcr';
 
 export interface OCRResult {
   text: string;
@@ -87,41 +88,53 @@ export async function extractTextFromImage(imageData: string): Promise<OCRResult
   
   const results: Array<{ text: string; language?: string; source: string }> = [];
   
-  // Run both Google Vision and Tesseract in parallel for best results
+  // Run Gemini (primary), Google Vision (secondary), and Tesseract (fallback) in parallel
   const ocrPromises: Promise<void>[] = [];
   
-  // Try Google Cloud Vision
+  // Try Gemini 2.5 Flash first (fastest, 2-5s)
+  ocrPromises.push(
+    extractTextWithGemini(imageData)
+      .then(result => {
+        console.log(`[MULTI-OCR] Gemini Flash: ${result.text.length} chars`);
+        results.push({ ...result, source: 'Gemini Flash' });
+      })
+      .catch(error => {
+        console.warn('[MULTI-OCR] Gemini failed:', error.message);
+      })
+  );
+  
+  // Try Google Cloud Vision as secondary option
   if (process.env.GOOGLE_CLOUD_VISION_API_KEY) {
     ocrPromises.push(
       extractTextWithGoogleVision(imageData)
         .then(result => {
-          console.log(`[DUAL-OCR] Google Vision: ${result.text.length} chars`);
+          console.log(`[MULTI-OCR] Google Vision: ${result.text.length} chars`);
           results.push({ ...result, source: 'Google Vision' });
         })
         .catch(error => {
-          console.warn('[DUAL-OCR] Google Vision failed:', error.message);
+          console.warn('[MULTI-OCR] Google Vision failed:', error.message);
         })
     );
   }
   
-  // Also try Tesseract
+  // Tesseract as final fallback
   ocrPromises.push(
     runTesseractOCR(imageData)
       .then(result => {
-        console.log(`[DUAL-OCR] Tesseract: ${result.text.length} chars`);
+        console.log(`[MULTI-OCR] Tesseract: ${result.text.length} chars`);
         results.push({ ...result, source: 'Tesseract' });
       })
       .catch(error => {
-        console.warn('[DUAL-OCR] Tesseract failed:', error.message);
+        console.warn('[MULTI-OCR] Tesseract failed:', error.message);
       })
   );
   
-  // Wait for both to complete (or fail)
+  // Wait for all OCR engines to complete (or fail)
   await Promise.allSettled(ocrPromises);
   
-  // If both failed, throw error
+  // If all engines failed, throw error
   if (results.length === 0) {
-    throw new Error('Both OCR engines failed. Please try with a clearer image.');
+    throw new Error('All OCR engines failed. Please try with a clearer image.');
   }
   
   // Score each result and choose the best
@@ -134,11 +147,11 @@ export async function extractTextFromImage(imageData: string): Promise<OCRResult
   scoredResults.sort((a, b) => b.score - a.score);
   
   const best = scoredResults[0];
-  console.log(`[DUAL-OCR] Quality scores:`);
+  console.log(`[MULTI-OCR] Quality scores:`);
   scoredResults.forEach(r => {
     console.log(`  ${r.source}: ${r.score.toFixed(1)} (${r.scoreDetails})`);
   });
-  console.log(`[DUAL-OCR] Selected: ${best.source} (score: ${best.score.toFixed(1)})`);
+  console.log(`[MULTI-OCR] Selected: ${best.source} (score: ${best.score.toFixed(1)})`);
   
   return {
     text: best.text,
