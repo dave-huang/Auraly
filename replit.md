@@ -9,10 +9,9 @@ Auraly is a mobile-friendly web application designed to help users understand th
 - **Single Fast OCR**: Gemini Flash as primary, Google Vision as optional fallback only on failure
 - **Removed Complexity**: Eliminated slow Tesseract (20-30s) and parallel OCR overhead
 - **Combined Pipeline**: New `/api/scan-and-analyze` endpoint eliminates client round-trip latency
-- **Upgraded to GPT-5-nano**: Replaced GPT-4o-mini with ultra-fast GPT-5-nano (released Aug 2025) for ingredient analysis - optimized for speed and high-volume token generation
 - **Total Time Reduction**: 
   * English/Spanish: 30-40s → 7-15s (75% faster)
-  * Chinese: 60-120s → 35-50s (60% faster) - GPT-5-nano should reduce this further
+  * Chinese: 60-120s → 35-50s (60% faster)
 - **Higher Reliability**: Single fast service instead of waiting for slowest of three engines
 - **Zero API Key Setup**: Both Gemini and OpenAI integrations use Replit AI Integrations (billed to credits)
 
@@ -40,12 +39,12 @@ Auraly is a mobile-friendly web application designed to help users understand th
 - **API Endpoints**:
     - `POST /api/scan-and-analyze`: **PRIMARY ENDPOINT** - Combined OCR + Analysis for maximum speed (7-50s total)
     - `POST /api/ocr`: Extracts text using Gemini Flash (2-5s, with optional Google Vision fallback)
-    - `POST /api/analyze`: Analyzes ingredients with OpenAI GPT-5-nano
+    - `POST /api/analyze`: Analyzes ingredients with OpenAI GPT-4o-mini
 - **Services**:
     - `services/ocr.ts`: Simple OCR orchestration - Gemini Flash primary, Google Vision fallback
     - `services/geminiOcr.ts`: Gemini 2.5 Flash vision-based OCR (2-5s, fast and reliable)
     - `services/googleVisionOcr.ts`: Google Cloud Vision fallback (only runs if Gemini fails)
-    - `services/analyzer.ts`: GPT-5-nano ingredient analysis with Zod schema validation and multi-language support
+    - `services/analyzer.ts`: GPT-4o-mini ingredient analysis with Zod schema validation and multi-language support
     - `gemini.ts`: Gemini client using Replit AI Integrations
     - `openai.ts`: OpenAI client using Replit AI Integrations
 - **Error Handling**: Robust validation for OCR text length and AI response schemas.
@@ -55,7 +54,7 @@ Auraly is a mobile-friendly web application designed to help users understand th
       * **Google Cloud Vision API** (fallback) - Only runs if Gemini fails and API key is configured
       * Sequential execution: fast path completes in 2-5s, no waiting for slower engines
     - **Combined Scan & Analyze Pipeline**: `/api/scan-and-analyze` endpoint eliminates round-trip latency by running OCR and AI analysis sequentially in a single request. Total processing time: 7-15s (EN/ES) or 35-50s (ZH) - down from 30-120s baseline.
-    - **AI-Powered Analysis**: Utilizes GPT-5-nano (ultra-fast model released Aug 2025) for high-speed ingredient analysis, optimized for rapid token generation. Provides risk assessments and clear explanations in the user's chosen language. Enhanced with:
+    - **AI-Powered Analysis**: Utilizes GPT-4o-mini for reliable ingredient analysis. Provides risk assessments and clear explanations in the user's chosen language. Enhanced with:
       - **Parenthetical Expansion**: Stack-based parser that intelligently handles parenthetical patterns:
         * Category expansion: "Enriched Flour (Wheat, Niacin)" → extracts "Wheat, Niacin" (multiple items)
         * Alias/qualifier: "Niacin (Vitamin B3)" → keeps "Niacin" only (single item, drops alias)
@@ -90,7 +89,7 @@ Auraly is a mobile-friendly web application designed to help users understand th
 ## External Dependencies
 - **AI/ML**:
     - **Gemini 2.5 Flash** (via Replit AI Integrations) - Primary OCR, no API key required
-    - **OpenAI GPT-5-nano** (via Replit AI Integrations) - Ingredient analysis, no API key required
+    - **OpenAI GPT-4o-mini** (via Replit AI Integrations) - Ingredient analysis, no API key required
     - **Google Cloud Vision API** - Optional OCR fallback (requires API key, only used if Gemini fails)
 - **Internationalization**: i18next, react-i18next
 - **Deployment**: Replit (hosting platform)
