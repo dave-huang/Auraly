@@ -382,7 +382,7 @@ Return your analysis as JSON with this structure:
       console.log(`[ANALYZER] Using max_tokens: ${maxTokens} for language: ${userLanguage} (estimated ${estimatedIngredientCount} ingredients)`);
       
       const response = await openai.chat.completions.create({
-        model: "gpt-4o-mini", // Fast and cost-effective for structured ingredient analysis (3-7s)
+        model: "gpt-5-nano", // Ultra-fast GPT-5 nano for high-volume ingredient analysis (optimized for speed)
         messages: [
           {
             role: "system",
