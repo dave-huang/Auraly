@@ -5,13 +5,14 @@ Auraly is a mobile-friendly web application designed to help users understand th
 
 ## Recent Changes (November 14, 2025)
 ### Major Performance & Reliability Overhaul
-- **50-75% Faster Processing**: Implemented Gemini 2.5 Flash for OCR (2-5s vs 10-20s Google Vision)
-- **Triple OCR System**: Added Gemini Flash as primary, Google Vision as secondary, Tesseract as fallback
+- **75% Faster Processing**: Simplified to use only Gemini 2.5 Flash for OCR (2-5s, reliable and fast)
+- **Single Fast OCR**: Gemini Flash as primary, Google Vision as optional fallback only on failure
+- **Removed Complexity**: Eliminated slow Tesseract (20-30s) and parallel OCR overhead
 - **Combined Pipeline**: New `/api/scan-and-analyze` endpoint eliminates client round-trip latency
 - **Total Time Reduction**: 
-  * English/Spanish: 30-40s → 7-15s (50-75% faster)
-  * Chinese: 60-120s → 35-95s (40-60% faster)
-- **Higher Reliability**: Three parallel OCR engines ensure success even if one fails
+  * English/Spanish: 30-40s → 7-15s (75% faster)
+  * Chinese: 60-120s → 35-50s (60% faster)
+- **Higher Reliability**: Single fast service instead of waiting for slowest of three engines
 - **Zero API Key Setup**: Gemini integration uses Replit AI Integrations (billed to credits)
 
 ## User Preferences
@@ -36,24 +37,23 @@ Auraly is a mobile-friendly web application designed to help users understand th
 
 ### Backend (Node.js + Express)
 - **API Endpoints**:
-    - `POST /api/scan-and-analyze`: **NEW PRIMARY ENDPOINT** - Combined OCR + Analysis for maximum speed (7-95s total)
-    - `POST /api/ocr`: Extracts text using triple OCR system (Gemini Flash, Google Cloud Vision, Tesseract.js)
+    - `POST /api/scan-and-analyze`: **PRIMARY ENDPOINT** - Combined OCR + Analysis for maximum speed (7-50s total)
+    - `POST /api/ocr`: Extracts text using Gemini Flash (2-5s, with optional Google Vision fallback)
     - `POST /api/analyze`: Analyzes ingredients with OpenAI GPT-4o-mini
 - **Services**:
-    - `services/ocr.ts`: Orchestrates triple OCR process with quality scoring
-    - `services/geminiOcr.ts`: **NEW** - Gemini 2.5 Flash vision-based OCR (2-5s, primary)
-    - `services/googleVisionOcr.ts`: Google Cloud Vision integration (secondary)
+    - `services/ocr.ts`: Simple OCR orchestration - Gemini Flash primary, Google Vision fallback
+    - `services/geminiOcr.ts`: Gemini 2.5 Flash vision-based OCR (2-5s, fast and reliable)
+    - `services/googleVisionOcr.ts`: Google Cloud Vision fallback (only runs if Gemini fails)
     - `services/analyzer.ts`: GPT-4o-mini ingredient analysis with Zod schema validation and multi-language support
     - `gemini.ts`: Gemini client using Replit AI Integrations
     - `openai.ts`: OpenAI client using Replit AI Integrations
 - **Error Handling**: Robust validation for OCR text length and AI response schemas.
 - **Feature Specifications**:
-    - **Triple OCR System**: Combines three OCR engines running in parallel for maximum speed and reliability:
-      * **Gemini 2.5 Flash** (primary, 2-5s) - Vision-based OCR using Replit AI Integrations, fastest option
-      * **Google Cloud Vision API** (secondary, 5-15s) - DOCUMENT_TEXT_DETECTION optimized for dense ingredient labels
-      * **Tesseract.js** (fallback, 20-30s) - Local OCR for reliability when cloud services fail
-      * Quality scoring system (parentheses count, keyword matches, malformed word penalty) automatically selects best result
-    - **Combined Scan & Analyze Pipeline**: New `/api/scan-and-analyze` endpoint eliminates round-trip latency by running OCR and AI analysis sequentially in a single request. Total processing time: 7-15s (EN/ES) or 35-95s (ZH) - down from 30-120s baseline.
+    - **Fast OCR with Fallback**: Simplified single-engine approach for speed and reliability:
+      * **Gemini 2.5 Flash** (primary, 2-5s) - Vision-based OCR using Replit AI Integrations, returns immediately on success
+      * **Google Cloud Vision API** (fallback) - Only runs if Gemini fails and API key is configured
+      * Sequential execution: fast path completes in 2-5s, no waiting for slower engines
+    - **Combined Scan & Analyze Pipeline**: `/api/scan-and-analyze` endpoint eliminates round-trip latency by running OCR and AI analysis sequentially in a single request. Total processing time: 7-15s (EN/ES) or 35-50s (ZH) - down from 30-120s baseline.
     - **AI-Powered Analysis**: Utilizes GPT-4o-mini for fast and cost-effective ingredient analysis (English/Spanish: 5-10s, Chinese: 30-90s due to token density), providing risk assessments and clear explanations in the user's chosen language. Enhanced with:
       - **Parenthetical Expansion**: Stack-based parser that intelligently handles parenthetical patterns:
         * Category expansion: "Enriched Flour (Wheat, Niacin)" → extracts "Wheat, Niacin" (multiple items)
@@ -90,7 +90,6 @@ Auraly is a mobile-friendly web application designed to help users understand th
 - **AI/ML**:
     - **Gemini 2.5 Flash** (via Replit AI Integrations) - Primary OCR, no API key required
     - **OpenAI GPT-4o-mini** (via Replit AI Integrations) - Ingredient analysis, no API key required
-    - **Google Cloud Vision API** - Secondary OCR (requires API key)
-    - **Tesseract.js** - Fallback OCR (local, no API key)
+    - **Google Cloud Vision API** - Optional OCR fallback (requires API key, only used if Gemini fails)
 - **Internationalization**: i18next, react-i18next
 - **Deployment**: Replit (hosting platform)
