@@ -369,7 +369,7 @@ Return your analysis as JSON with this structure:
       
       // Adjust max_tokens based on estimated ingredient count and language
       // Chinese characters consume more tokens than Latin characters, so reduce limits for Chinese mode
-      // With gpt-4o-mini, use moderate limits for speed while ensuring completeness
+      // With GPT-4o, use moderate limits for speed while ensuring completeness
       // Each ingredient needs ~120-150 tokens (name, risk, concise summary/details) in English/Spanish
       // Chinese needs ~100-120 tokens per ingredient due to higher token density
       const tokensPerIngredient = userLanguage === 'zh' ? 110 : 140;
@@ -379,14 +379,14 @@ Return your analysis as JSON with this structure:
       const estimatedTokensNeeded = Math.min(estimatedIngredientCount * tokensPerIngredient + baseTokens, maxCap);
       const maxTokens = Math.max(2500, estimatedTokensNeeded);
       
-      console.log(`[ANALYZER] Using max_completion_tokens: ${maxTokens} for language: ${userLanguage} (estimated ${estimatedIngredientCount} ingredients)`);
+      console.log(`[ANALYZER] Using max_tokens: ${maxTokens} for language: ${userLanguage} (estimated ${estimatedIngredientCount} ingredients)`);
       
-      // Try GPT-5-mini first (faster, cost-effective), fall back to GPT-4o-mini if unavailable
+      // Use GPT-4o (primary, faster than GPT-4o-mini), fall back to GPT-4o-mini if unavailable
       let response;
       try {
-        console.log('[ANALYZER] Attempting GPT-5-mini with reasoning_effort: none for fast analysis');
+        console.log('[ANALYZER] Attempting GPT-4o for fast analysis');
         response = await openai.chat.completions.create({
-          model: "gpt-5-mini",
+          model: "gpt-4o",
           messages: [
             {
               role: "system",
@@ -398,14 +398,14 @@ Return your analysis as JSON with this structure:
             }
           ],
           response_format: { type: "json_object" },
-          max_completion_tokens: maxTokens,
-          reasoning_effort: "none" // Fast mode without reasoning overhead
-        } as any);
-        console.log('[ANALYZER] GPT-5-mini succeeded');
+          max_tokens: maxTokens,
+          temperature: 0.3
+        });
+        console.log('[ANALYZER] GPT-4o succeeded');
       } catch (modelError: any) {
-        // If GPT-5-mini is unavailable, fall back to GPT-4o-mini
+        // If GPT-4o is unavailable, fall back to GPT-4o-mini
         if (modelError?.status === 400 || modelError?.code === 'unknown_model') {
-          console.log('[ANALYZER] GPT-5-mini unavailable, falling back to GPT-4o-mini');
+          console.log('[ANALYZER] GPT-4o unavailable, falling back to GPT-4o-mini');
           response = await openai.chat.completions.create({
             model: "gpt-4o-mini",
             messages: [
