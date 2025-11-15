@@ -379,10 +379,10 @@ Return your analysis as JSON with this structure:
       const estimatedTokensNeeded = Math.min(estimatedIngredientCount * tokensPerIngredient + baseTokens, maxCap);
       const maxTokens = Math.max(2500, estimatedTokensNeeded);
       
-      console.log(`[ANALYZER] Using max_tokens: ${maxTokens} for language: ${userLanguage} (estimated ${estimatedIngredientCount} ingredients)`);
+      console.log(`[ANALYZER] Using max_completion_tokens: ${maxTokens} for language: ${userLanguage} (estimated ${estimatedIngredientCount} ingredients)`);
       
       const response = await openai.chat.completions.create({
-        model: "gpt-4o-mini", // Fast and reliable for ingredient analysis
+        model: "gpt-5.1", // GPT-5.1 for faster ingredient analysis
         messages: [
           {
             role: "system",
@@ -394,8 +394,7 @@ Return your analysis as JSON with this structure:
           }
         ],
         response_format: { type: "json_object" },
-        max_tokens: maxTokens, // GPT-4 uses max_tokens
-        temperature: 0.3 // Lower temperature for more consistent JSON output
+        max_completion_tokens: maxTokens // GPT-5 uses max_completion_tokens
       });
 
       const aiDuration = ((Date.now() - aiStartTime) / 1000).toFixed(2);
