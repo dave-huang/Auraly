@@ -381,21 +381,53 @@ Return your analysis as JSON with this structure:
       
       console.log(`[ANALYZER] Using max_completion_tokens: ${maxTokens} for language: ${userLanguage} (estimated ${estimatedIngredientCount} ingredients)`);
       
-      const response = await openai.chat.completions.create({
-        model: "gpt-5.1", // GPT-5.1 for faster ingredient analysis
-        messages: [
-          {
-            role: "system",
-            content: systemMessage
-          },
-          {
-            role: "user",
-            content: prompt
-          }
-        ],
-        response_format: { type: "json_object" },
-        max_completion_tokens: maxTokens // GPT-5 uses max_completion_tokens
-      });
+      // Try GPT-5-mini first (faster, cost-effective), fall back to GPT-4o-mini if unavailable
+      let response;
+      try {
+        console.log('[ANALYZER] Attempting GPT-5-mini with reasoning_effort: none for fast analysis');
+        response = await openai.chat.completions.create({
+          model: "gpt-5-mini",
+          messages: [
+            {
+              role: "system",
+              content: systemMessage
+            },
+            {
+              role: "user",
+              content: prompt
+            }
+          ],
+          response_format: { type: "json_object" },
+          max_completion_tokens: maxTokens,
+          reasoning_effort: "none" // Fast mode without reasoning overhead
+        } as any);
+        console.log('[ANALYZER] GPT-5-mini succeeded');
+      } catch (modelError: any) {
+        // If GPT-5-mini is unavailable, fall back to GPT-4o-mini
+        if (modelError?.status === 400 || modelError?.code === 'unknown_model') {
+          console.log('[ANALYZER] GPT-5-mini unavailable, falling back to GPT-4o-mini');
+          response = await openai.chat.completions.create({
+            model: "gpt-4o-mini",
+            messages: [
+              {
+                role: "system",
+                content: systemMessage
+              },
+              {
+                role: "user",
+                content: prompt
+              }
+            ],
+            response_format: { type: "json_object" },
+            max_tokens: maxTokens,
+            temperature: 0.3
+          });
+          console.log('[ANALYZER] GPT-4o-mini succeeded');
+        } else {
+          // If it's not a model availability error, re-throw
+          throw modelError;
+        }
+      }
 
       const aiDuration = ((Date.now() - aiStartTime) / 1000).toFixed(2);
       const tokensUsed = response.usage?.total_tokens || 0;
