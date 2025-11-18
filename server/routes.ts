@@ -68,56 +68,103 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Combined OCR + Analysis endpoint for maximum speed (parallel execution)
+  // Combined OCR + Analysis endpoint for maximum speed (sequential execution with caching)
   app.post("/api/scan-and-analyze", async (req, res) => {
     const startTime = Date.now();
+    let ocrText: string | undefined;
+    let ocrDuration: string = '0.00';
+    let ocrStage: 'skipped' | 'success' | 'failed' = 'skipped';
+    let analysisStage: 'pending' | 'success' | 'failed' = 'pending';
+    
     try {
       const body = req.body;
       
-      // Validate required fields
-      if (!body.imageData || !body.productType || !body.userLanguage) {
+      // Validate required fields (imageData OR ocrText must be provided)
+      if ((!body.imageData && !body.ocrText) || !body.productType || !body.userLanguage) {
         return res.status(400).json({ 
-          error: 'Missing required fields: imageData, productType, and userLanguage are required.' 
+          error: 'Missing required fields: (imageData OR ocrText), productType, and userLanguage are required.' 
         });
       }
 
-      const { imageData, productType, userLanguage } = body;
+      const { imageData, productType, userLanguage, ocrText: cachedOcrText } = body;
       
-      console.log(`[SCAN-AND-ANALYZE] Starting parallel OCR + Analysis for ${productType} in ${userLanguage}`);
-      
-      // Step 1: Run OCR (2-5s with Gemini)
-      const ocrResult = await extractTextFromImage(imageData);
-      const ocrDuration = ((Date.now() - startTime) / 1000).toFixed(2);
-      console.log(`[TIMING] OCR completed in ${ocrDuration}s`);
-      
-      if (!ocrResult.text || ocrResult.text.trim().length < 10) {
-        return res.status(400).json({ 
-          error: 'No ingredients found in image. Please ensure the ingredient list is clearly visible and try again.' 
-        });
+      // Step 1: Run OCR (2-5s with Gemini) OR use cached OCR text
+      if (cachedOcrText) {
+        console.log(`[SCAN-AND-ANALYZE] Using cached OCR text (${cachedOcrText.length} chars) for ${productType} in ${userLanguage}`);
+        ocrText = cachedOcrText;
+        ocrStage = 'skipped';
+      } else {
+        console.log(`[SCAN-AND-ANALYZE] Starting OCR + Analysis for ${productType} in ${userLanguage}`);
+        try {
+          const ocrResult = await extractTextFromImage(imageData);
+          ocrDuration = ((Date.now() - startTime) / 1000).toFixed(2);
+          console.log(`[TIMING] [OCR-SUCCESS] OCR completed in ${ocrDuration}s`);
+          ocrStage = 'success';
+          
+          if (!ocrResult.text || ocrResult.text.trim().length < 10) {
+            ocrStage = 'failed';
+            console.error(`[OCR-FAILED] No text extracted from image`);
+            return res.status(400).json({ 
+              error: 'No ingredients found in image. Please ensure the ingredient list is clearly visible and try again.',
+              stage: 'ocr'
+            });
+          }
+          
+          ocrText = ocrResult.text;
+        } catch (ocrError: any) {
+          ocrStage = 'failed';
+          ocrDuration = ((Date.now() - startTime) / 1000).toFixed(2);
+          console.error(`[OCR-FAILED] OCR error after ${ocrDuration}s:`, ocrError.message);
+          throw new Error(`OCR failed: ${ocrError.message}`);
+        }
       }
       
       // Step 2: Run Analysis (5-90s depending on language and ingredient count)
-      const analysisResult = await analyzeIngredients(productType as ProductType, ocrResult.text, userLanguage);
-      
-      const totalDuration = ((Date.now() - startTime) / 1000).toFixed(2);
-      console.log(`[TIMING] Full scan-and-analyze completed in ${totalDuration}s (OCR: ${ocrDuration}s, Analysis: ${(parseFloat(totalDuration) - parseFloat(ocrDuration)).toFixed(2)}s)`);
-      
-      // Return combined result
-      res.json({
-        ocrText: ocrResult.text,
-        analysis: analysisResult
-      });
+      const analysisStartTime = Date.now();
+      try {
+        const analysisResult = await analyzeIngredients(productType as ProductType, ocrText!, userLanguage);
+        analysisStage = 'success';
+        const analysisDuration = ((Date.now() - analysisStartTime) / 1000).toFixed(2);
+        const totalDuration = ((Date.now() - startTime) / 1000).toFixed(2);
+        
+        console.log(`[TIMING] [ANALYSIS-SUCCESS] Analysis completed in ${analysisDuration}s`);
+        console.log(`[TIMING] [COMPLETE] Full scan-and-analyze completed in ${totalDuration}s (OCR: ${ocrStage === 'skipped' ? 'cached' : ocrDuration + 's'}, Analysis: ${analysisDuration}s)`);
+        
+        // Return combined result with OCR text for caching
+        res.json({
+          ocrText: ocrText,
+          analysis: analysisResult
+        });
+      } catch (analysisError: any) {
+        analysisStage = 'failed';
+        const analysisDuration = ((Date.now() - analysisStartTime) / 1000).toFixed(2);
+        
+        // Log detailed analysis error information
+        console.error(`[ANALYSIS-FAILED] Analysis error after ${analysisDuration}s:`, analysisError.message);
+        console.error(`[ANALYSIS-FAILED] Error details:`, {
+          type: analysisError.name,
+          code: analysisError.code,
+          status: analysisError.status,
+          ocrTextLength: ocrText?.length || 0
+        });
+        
+        throw analysisError;
+      }
     } catch (error: any) {
-      console.error('Scan-and-analyze error:', error);
-      
       const totalDuration = ((Date.now() - startTime) / 1000).toFixed(2);
-      console.log(`[TIMING] Scan-and-analyze failed after ${totalDuration}s`);
+      
+      // Enhanced error logging with stage information
+      console.error(`[SCAN-AND-ANALYZE-FAILED] Failed after ${totalDuration}s at stage: ${analysisStage === 'pending' ? 'OCR' : 'Analysis'}`);
+      console.error(`[SCAN-AND-ANALYZE-FAILED] Stages: OCR=${ocrStage}, Analysis=${analysisStage}`);
+      console.error(`[SCAN-AND-ANALYZE-FAILED] Error:`, error.message);
       
       // Return appropriate status based on error type
       const statusCode = error.message?.includes('Incomplete ingredient analysis') ? 400 : 500;
       
       res.status(statusCode).json({ 
-        error: error.message || 'Failed to scan and analyze image. Please try again.' 
+        error: error.message || 'Failed to scan and analyze image. Please try again.',
+        stage: analysisStage === 'pending' ? 'ocr' : 'analysis',
+        ocrText: ocrStage === 'success' ? ocrText : undefined
       });
     }
   });
