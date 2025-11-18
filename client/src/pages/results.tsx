@@ -19,10 +19,15 @@ export default function ResultsPage() {
   const [selectedRisk, setSelectedRisk] = useState<RiskLevel | "all">("all");
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const [progress, setProgress] = useState(0);
+  const [cachedOcrText, setCachedOcrText] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
 
-  // Mutation for analyzing the image (using new combined endpoint for speed)
+  // Auto-retry mutation with exponential backoff and OCR caching
   const analyzeMutation = useMutation({
-    mutationFn: async (data: { productType: string; imageData: string }) => {
+    mutationFn: async (data: { productType: string; imageData: string; ocrText?: string }) => {
+      const MAX_RETRIES = 2; // Frontend will auto-retry up to 2 times (3s, 6s delays)
+      let lastError: any = null;
+      
       // Normalize language code to 'en', 'es', or 'zh' (remove region codes like -US, -CN)
       let userLanguage = 'en';
       if (i18n.language.startsWith('zh')) {
@@ -31,19 +36,84 @@ export default function ResultsPage() {
         userLanguage = 'es';
       }
       
-      // Use new combined endpoint that runs OCR + Analysis together for maximum speed
-      const response = await apiRequest("POST", "/api/scan-and-analyze", {
-        productType: data.productType,
-        imageData: data.imageData,
-        userLanguage
-      });
-      const result: any = await response.json();
+      for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+        try {
+          if (attempt > 0) {
+            const waitTime = 3000 * Math.pow(2, attempt - 1); // 3s, 6s
+            console.log(`[AUTO-RETRY] Attempt ${attempt + 1}/${MAX_RETRIES + 1} after ${waitTime}ms wait...`);
+            setRetryCount(attempt);
+            await new Promise(resolve => setTimeout(resolve, waitTime));
+          }
+          
+          // Use cached OCR text on retries if available
+          const requestBody: any = {
+            productType: data.productType,
+            userLanguage
+          };
+          
+          if (data.ocrText || cachedOcrText) {
+            // Use cached OCR text to skip OCR stage
+            requestBody.ocrText = data.ocrText || cachedOcrText;
+            console.log(`[AUTO-RETRY] Using cached OCR text (${requestBody.ocrText.length} chars)`);
+          } else {
+            // First attempt - include image data
+            requestBody.imageData = data.imageData;
+          }
+          
+          const response = await apiRequest("POST", "/api/scan-and-analyze", requestBody);
+          const result: any = await response.json();
+          
+          // Cache OCR text for future retries
+          if (result.ocrText) {
+            setCachedOcrText(result.ocrText);
+          }
+          
+          // Success! Reset retry count
+          setRetryCount(0);
+          
+          // Return analysis from combined response
+          return result.analysis as AnalysisResult;
+          
+        } catch (error: any) {
+          lastError = error;
+          console.error(`[AUTO-RETRY] Attempt ${attempt + 1}/${MAX_RETRIES + 1} failed:`, error.message);
+          
+          // Try to extract OCR text from error response (in case OCR succeeded but analysis failed)
+          try {
+            const errorText = error.message || '';
+            const jsonMatch = errorText.match(/\{.*\}/);
+            if (jsonMatch) {
+              const errorData = JSON.parse(jsonMatch[0]);
+              if (errorData.ocrText && !cachedOcrText) {
+                console.log(`[AUTO-RETRY] Cached OCR text from error response (${errorData.ocrText.length} chars)`);
+                setCachedOcrText(errorData.ocrText);
+              }
+            }
+          } catch (parseError) {
+            // Ignore parse errors
+          }
+          
+          // Don't retry on certain error types (client errors, OCR failures)
+          if (error.message?.includes('No ingredients found') || 
+              error.message?.includes('Missing required fields') ||
+              error.message?.includes('OCR failed')) {
+            console.log(`[AUTO-RETRY] Non-retryable error, failing immediately`);
+            break;
+          }
+          
+          // If this was the last attempt, throw the error
+          if (attempt === MAX_RETRIES) {
+            throw lastError;
+          }
+        }
+      }
       
-      // Extract analysis from combined response
-      return result.analysis as AnalysisResult;
+      throw lastError;
     },
     onSuccess: (data) => {
       setAnalysisResult(data);
+      setRetryCount(0);
+      setCachedOcrText(null); // Clear cache after successful analysis
       
       // Save to scan history in localStorage
       const history = JSON.parse(localStorage.getItem('scanHistory') || '[]');
@@ -60,6 +130,10 @@ export default function ResultsPage() {
       
       // Clear pending analysis
       sessionStorage.removeItem('pendingAnalysis');
+    },
+    onError: () => {
+      // Reset retry count on final error
+      setRetryCount(0);
     }
   });
 
