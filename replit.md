@@ -54,7 +54,15 @@ Auraly is a mobile-friendly web application designed to help users understand th
       * **Gemini 2.5 Flash** (primary, 2-5s) - Vision-based OCR using Replit AI Integrations, returns immediately on success
       * **Google Cloud Vision API** (fallback) - Only runs if Gemini fails and API key is configured
       * Sequential execution: fast path completes in 2-5s, no waiting for slower engines
-    - **Combined Scan & Analyze Pipeline**: `/api/scan-and-analyze` endpoint eliminates round-trip latency by running OCR and AI analysis sequentially in a single request. Total processing time: 7-15s (EN/ES) or 35-50s (ZH) - down from 30-120s baseline.
+    - **Combined Scan & Analyze Pipeline**: `/api/scan-and-analyze` endpoint eliminates round-trip latency by running OCR and AI analysis sequentially in a single request. Supports optional `ocrText` parameter to skip OCR when cached text is available. Total processing time: 7-15s (EN/ES) or 35-50s (ZH) - down from 30-120s baseline.
+    - **Automatic Retry System**: Frontend auto-retries failed requests to handle intermittent API issues invisibly:
+      * Up to 2 automatic retries with exponential backoff (3s, 6s delays)
+      * OCR text caching: successful OCR results are cached and reused on retries to skip the 2-5s OCR stage
+      * Smart retry: retries only re-run the failed stage (Analysis), not the entire pipeline
+      * Non-retryable errors (OCR failures, client errors) fail immediately without wasting retry attempts
+      * User sees retry status in UI with translations in EN, ES, ZH
+      * Total attempts: up to 6 (3 backend + 2 frontend) before showing error
+      * Makes transient GPT-4o rate limits and timeouts invisible to users
     - **AI-Powered Analysis**: Utilizes GPT-4o for fast and accurate ingredient analysis (automatically falls back to GPT-4o-mini if unavailable). Provides risk assessments and clear explanations in the user's chosen language. Enhanced with:
       - **Parenthetical Expansion**: Stack-based parser that intelligently handles parenthetical patterns:
         * Category expansion: "Enriched Flour (Wheat, Niacin)" → extracts "Wheat, Niacin" (multiple items)

@@ -164,7 +164,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(statusCode).json({ 
         error: error.message || 'Failed to scan and analyze image. Please try again.',
         stage: analysisStage === 'pending' ? 'ocr' : 'analysis',
-        ocrText: ocrStage === 'success' ? ocrText : undefined
+        // Include OCR text in error response if available (from either fresh OCR or cached)
+        ocrText: (ocrStage === 'success' || ocrStage === 'skipped') ? ocrText : undefined
       });
     }
   });
