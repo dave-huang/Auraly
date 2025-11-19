@@ -199,9 +199,14 @@ export default function ResultsPage() {
           <div className="flex flex-col items-center gap-4 text-center">
             <Loader2 className="w-16 h-16 text-primary animate-spin" />
             <div>
-              <h3 className="font-semibold text-xl mb-2">{t('results.analyzing.title')}</h3>
+              <h3 className="font-semibold text-xl mb-2">
+                {retryCount > 0 ? t('results.retrying.title', { attempt: retryCount + 1 }) : t('results.analyzing.title')}
+              </h3>
               <p className="text-sm text-muted-foreground mb-4">
-                {t('results.analyzing.description')}
+                {retryCount > 0 
+                  ? t('results.retrying.description') 
+                  : t('results.analyzing.description')
+                }
               </p>
             </div>
             <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
@@ -210,6 +215,11 @@ export default function ResultsPage() {
                 style={{ width: `${progress}%` }}
               />
             </div>
+            {retryCount > 0 && (
+              <p className="text-xs text-muted-foreground">
+                {cachedOcrText ? t('results.retrying.cached') : t('results.retrying.full')}
+              </p>
+            )}
           </div>
         </Card>
       </div>
@@ -217,10 +227,29 @@ export default function ResultsPage() {
   }
 
   if (analyzeMutation.isError) {
-    const errorMessage = (analyzeMutation.error as any)?.message || 'We couldn\'t analyze the image.';
+    let errorMessage = (analyzeMutation.error as any)?.message || 'We couldn\'t analyze the image.';
+    
+    // Parse clean error message from JSON response format (e.g., "500: {\"error\":\"message\"}")
+    try {
+      const jsonMatch = errorMessage.match(/\{.*"error":\s*"([^"]+)".*\}/);
+      if (jsonMatch && jsonMatch[1]) {
+        errorMessage = jsonMatch[1];
+      } else {
+        // Try to extract just the status code message part
+        const statusMatch = errorMessage.match(/^\d+:\s*(.+)$/);
+        if (statusMatch && statusMatch[1]) {
+          errorMessage = statusMatch[1];
+        }
+      }
+    } catch (e) {
+      // Keep original error message if parsing fails
+    }
     
     // Determine if this is an OCR error or analysis error
-    const isOCRError = errorMessage.includes('No text found') || errorMessage.includes('extract text');
+    const isOCRError = errorMessage.includes('No ingredients found') || 
+                       errorMessage.includes('No text found') || 
+                       errorMessage.includes('extract text') ||
+                       errorMessage.includes('OCR failed');
     
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
@@ -251,6 +280,7 @@ export default function ResultsPage() {
             <Button 
               onClick={() => {
                 sessionStorage.removeItem('pendingAnalysis');
+                setCachedOcrText(null);
                 setLocation('/upload');
               }} 
               data-testid="button-try-again"

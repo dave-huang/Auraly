@@ -153,6 +153,12 @@
       "title": "正在分析成分",
       "description": "正在提取文本并识别潜在健康风险..."
     },
+    "retrying": {
+      "title": "重试中（第 {{attempt}} 次尝试）",
+      "description": "我们正在再次尝试分析您的成分...",
+      "cached": "使用缓存文本提取以加快重试速度",
+      "full": "重新运行完整分析"
+    },
     "error": {
       "ocr": {
         "title": "图片不够清晰",

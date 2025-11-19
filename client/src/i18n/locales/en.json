@@ -153,6 +153,12 @@
       "title": "Analyzing Ingredients",
       "description": "Extracting text and identifying potential health risks..."
     },
+    "retrying": {
+      "title": "Retrying (Attempt {{attempt}})",
+      "description": "We're trying again to analyze your ingredients...",
+      "cached": "Using cached text extraction for faster retry",
+      "full": "Re-running full analysis"
+    },
     "error": {
       "ocr": {
         "title": "Image Not Clear Enough",
