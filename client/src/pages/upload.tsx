@@ -1,8 +1,8 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Upload, Camera, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { ProductTypeSelector } from "@/components/product-type-selector";
 import { ImageUploader } from "@/components/image-uploader";
 import { LanguageSwitcher } from "@/components/language-switcher";
@@ -20,15 +20,7 @@ export default function UploadPage() {
   };
 
   const handleImageCapture = async (imageData: string) => {
-    console.log('[UploadPage] handleImageCapture called', {
-      selectedType,
-      imageDataLength: imageData?.length,
-      imageDataSizeMB: (imageData?.length / 1024 / 1024).toFixed(2),
-      timestamp: new Date().toISOString()
-    });
-    
     try {
-      console.log('[UploadPage] Setting isProcessing to true');
       setIsProcessing(true);
       
       const analysisData = {
@@ -37,48 +29,25 @@ export default function UploadPage() {
       };
       
       const dataString = JSON.stringify(analysisData);
-      console.log('[UploadPage] Storing to sessionStorage', {
-        productType: selectedType,
-        imageDataLength: imageData?.length,
-        totalDataSize: dataString.length,
-        totalDataSizeMB: (dataString.length / 1024 / 1024).toFixed(2)
-      });
       
-      // Store the data for the results page
       try {
         sessionStorage.setItem('pendingAnalysis', dataString);
-        console.log('[UploadPage] sessionStorage saved successfully');
       } catch (storageError: any) {
-        // Handle QuotaExceededError specifically
         if (storageError.name === 'QuotaExceededError') {
-          console.error('[UploadPage] QuotaExceededError - image too large for sessionStorage', {
-            imageSize: imageData?.length,
-            dataSizeMB: (dataString.length / 1024 / 1024).toFixed(2)
-          });
-          
-          // Clear sessionStorage and try again
           sessionStorage.clear();
-          console.log('[UploadPage] Cleared sessionStorage, retrying...');
           sessionStorage.setItem('pendingAnalysis', dataString);
-          console.log('[UploadPage] Retry successful');
         } else {
           throw storageError;
         }
       }
       
-      console.log('[UploadPage] sessionStorage saved, scheduling navigation in 100ms');
-      
-      // Use setTimeout to ensure sessionStorage is written before navigation
-      // This fixes mobile browser navigation issues, especially on iPhone
       setTimeout(() => {
-        console.log('[UploadPage] Navigating to /results');
         setLocation('/results');
       }, 100);
     } catch (error) {
-      console.error('[UploadPage] Error handling image capture:', error);
+      console.error('[UploadPage] Error:', error);
       setIsProcessing(false);
-      // Show user-friendly error message
-      alert('Image is too large to process. Please try taking a photo from further away or with lower resolution.');
+      alert('Image is too large. Please try a clearer photo.');
     }
   };
 
@@ -92,47 +61,41 @@ export default function UploadPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      {/* Header - Minimal */}
+      <header className="border-b bg-background/95 backdrop-blur sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
           <Button
             variant="ghost"
             size="sm"
             onClick={handleBack}
             data-testid="button-back"
+            className="gap-1"
           >
-            <ArrowLeft className="mr-2 h-4 w-4" />
+            <ArrowLeft className="w-4 h-4" />
             {t('common.back')}
           </Button>
-          <h1 className="font-serif text-xl font-bold">{t('upload.header.title')}</h1>
-          <LanguageSwitcher />
+          <div className="flex items-center gap-6">
+            <h1 className="font-serif text-lg font-bold hidden sm:block">{t('app.title')}</h1>
+            <LanguageSwitcher />
+          </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 py-12">
+      <main className="max-w-4xl mx-auto px-4 py-16">
         {!selectedType ? (
           <div>
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                {t('upload.selectType.title')}
-              </h2>
-              <p className="text-muted-foreground text-lg">
-                {t('upload.selectType.subtitle')}
-              </p>
+              <h2 className="text-3xl md:text-4xl font-bold mb-3">{t('upload.selectType.title')}</h2>
+              <p className="text-muted-foreground">{t('upload.selectType.subtitle')}</p>
             </div>
-            
             <ProductTypeSelector onSelect={handleProductTypeSelect} />
           </div>
         ) : (
           <div>
-            <div className="text-center mb-8">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                {t('upload.uploadImage.title')}
-              </h2>
-              <p className="text-muted-foreground text-lg">
-                {t('upload.uploadImage.subtitle')}
-              </p>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-3">{t('upload.uploadImage.title')}</h2>
+              <p className="text-muted-foreground">{t('upload.uploadImage.subtitle')}</p>
             </div>
 
             <ImageUploader 
@@ -141,18 +104,21 @@ export default function UploadPage() {
             />
 
             {isProcessing && (
-              <div className="mt-8">
-                <Card className="p-8">
-                  <div className="flex flex-col items-center gap-4 text-center">
-                    <Loader2 className="w-12 h-12 text-primary animate-spin" />
+              <div className="mt-12">
+                <Card className="p-10 bg-gradient-to-br from-primary/5 to-background text-center">
+                  <div className="flex flex-col items-center gap-6">
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-primary/20 rounded-full blur-lg" />
+                      <Loader2 className="w-16 h-16 text-primary animate-spin relative" />
+                    </div>
                     <div>
                       <h3 className="font-semibold text-lg mb-1">{t('upload.analyzing.title')}</h3>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-sm text-muted-foreground max-w-sm">
                         {t('upload.analyzing.description')}
                       </p>
                     </div>
-                    <div className="w-full max-w-xs bg-muted rounded-full h-2 overflow-hidden">
-                      <div className="h-full bg-primary rounded-full animate-pulse" style={{ width: '60%' }} />
+                    <div className="w-full max-w-xs rounded-full h-2 bg-muted overflow-hidden">
+                      <div className="h-full bg-gradient-to-r from-primary to-primary/60 rounded-full animate-pulse" />
                     </div>
                   </div>
                 </Card>
