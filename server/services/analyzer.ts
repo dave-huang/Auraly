@@ -1,4 +1,4 @@
-import { openai } from '../openai';
+import { openaiGPT51 } from '../openai-gpt51';
 import { analysisResultSchema, type ProductType, type AnalysisResult, type RiskLevel } from '@shared/schema';
 
 /**
@@ -357,7 +357,7 @@ Return your analysis as JSON with this structure:
         console.log(`[ANALYZER] Retry attempt ${attempt}/${maxRetries} due to: ${lastError?.message || 'unknown error'}`);
       }
       
-      console.log('[TIMING] Sending request to OpenAI...');
+      console.log('[TIMING] Sending request to GPT-5.1...');
       const aiStartTime = Date.now();
       
       const systemMessages = {
@@ -368,72 +368,43 @@ Return your analysis as JSON with this structure:
       const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
       
       // Adjust max_tokens based on estimated ingredient count and language
-      // Chinese characters consume more tokens than Latin characters, so reduce limits for Chinese mode
-      // With GPT-4o, use moderate limits for speed while ensuring completeness
+      // GPT-5.1 is more efficient, so we can use higher limits for better completeness
       // Each ingredient needs ~120-150 tokens (name, risk, concise summary/details) in English/Spanish
       // Chinese needs ~100-120 tokens per ingredient due to higher token density
       const tokensPerIngredient = userLanguage === 'zh' ? 110 : 140;
       const baseTokens = userLanguage === 'zh' ? 600 : 800;
-      const maxCap = userLanguage === 'zh' ? 4500 : 6000; // Lower cap for Chinese to improve speed
+      const maxCap = userLanguage === 'zh' ? 4500 : 6000;
       
       const estimatedTokensNeeded = Math.min(estimatedIngredientCount * tokensPerIngredient + baseTokens, maxCap);
       const maxTokens = Math.max(2500, estimatedTokensNeeded);
       
       console.log(`[ANALYZER] Using max_tokens: ${maxTokens} for language: ${userLanguage} (estimated ${estimatedIngredientCount} ingredients)`);
+      console.log('[ANALYZER] Calling GPT-5.1 (no fallback - errors reported directly)');
       
-      // Use GPT-4o (primary, faster than GPT-4o-mini), fall back to GPT-4o-mini if unavailable
-      let response;
-      try {
-        console.log('[ANALYZER] Attempting GPT-4o for fast analysis');
-        response = await openai.chat.completions.create({
-          model: "gpt-4o",
-          messages: [
-            {
-              role: "system",
-              content: systemMessage
-            },
-            {
-              role: "user",
-              content: prompt
-            }
-          ],
-          response_format: { type: "json_object" },
-          max_tokens: maxTokens,
-          temperature: 0.3
-        });
-        console.log('[ANALYZER] GPT-4o succeeded');
-      } catch (modelError: any) {
-        // If GPT-4o is unavailable, fall back to GPT-4o-mini
-        if (modelError?.status === 400 || modelError?.code === 'unknown_model') {
-          console.log('[ANALYZER] GPT-4o unavailable, falling back to GPT-4o-mini');
-          response = await openai.chat.completions.create({
-            model: "gpt-4o-mini",
-            messages: [
-              {
-                role: "system",
-                content: systemMessage
-              },
-              {
-                role: "user",
-                content: prompt
-              }
-            ],
-            response_format: { type: "json_object" },
-            max_tokens: maxTokens,
-            temperature: 0.3
-          });
-          console.log('[ANALYZER] GPT-4o-mini succeeded');
-        } else {
-          // If it's not a model availability error, re-throw
-          throw modelError;
-        }
-      }
+      // Use GPT-5.1 with no fallback - errors are reported directly for visibility
+      const response = await openaiGPT51.chat.completions.create({
+        model: "gpt-5.1",
+        messages: [
+          {
+            role: "system",
+            content: systemMessage
+          },
+          {
+            role: "user",
+            content: prompt
+          }
+        ],
+        response_format: { type: "json_object" },
+        max_tokens: maxTokens,
+        temperature: 0.3
+      });
+      console.log('[ANALYZER] GPT-5.1 analysis completed successfully');
 
       const aiDuration = ((Date.now() - aiStartTime) / 1000).toFixed(2);
       const tokensUsed = response.usage?.total_tokens || 0;
       const completionTokens = response.usage?.completion_tokens || 0;
-      console.log(`[TIMING] OpenAI API call completed in ${aiDuration}s (${tokensUsed} tokens, ${completionTokens} completion)`);
-      console.log('OpenAI response received:', JSON.stringify(response, null, 2));
+      console.log(`[TIMING] GPT-5.1 API call completed in ${aiDuration}s (${tokensUsed} tokens, ${completionTokens} completion)`);
+      console.log('GPT-5.1 response received:', JSON.stringify(response, null, 2));
       
       const content = response.choices?.[0]?.message?.content;
       if (!content) {
