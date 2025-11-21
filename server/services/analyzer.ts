@@ -1,9 +1,44 @@
 import crypto from 'crypto';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { openai } from '../openai';
 import { analysisResultSchema, type ProductType, type AnalysisResult, type RiskLevel } from '@shared/schema';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const cacheFilePath = path.join(__dirname, '..', 'analysis_cache.json');
+
 // In-memory cache for full analysis results (keyed by hash of ingredient text + product type + language)
 const analysisCache = new Map<string, { result: AnalysisResult; timestamp: number }>();
+
+// Load cache from disk on startup
+function loadCacheFromDisk(): void {
+  try {
+    if (fs.existsSync(cacheFilePath)) {
+      const data = fs.readFileSync(cacheFilePath, 'utf-8');
+      const entries = JSON.parse(data) as Array<[string, { result: AnalysisResult; timestamp: number }]>;
+      for (const [key, value] of entries) {
+        analysisCache.set(key, value);
+      }
+      console.log(`[CACHE] Loaded ${analysisCache.size} analysis results from disk`);
+    }
+  } catch (error) {
+    console.error('[CACHE] Error loading cache from disk:', error);
+  }
+}
+
+// Save cache to disk
+function saveCacheToDisk(): void {
+  try {
+    const entries = Array.from(analysisCache.entries());
+    fs.writeFileSync(cacheFilePath, JSON.stringify(entries, null, 2), 'utf-8');
+  } catch (error) {
+    console.error('[CACHE] Error saving cache to disk:', error);
+  }
+}
+
+// Initialize cache on module load
+loadCacheFromDisk();
 
 // Generate cache key from ingredient text, product type, and language
 function getCacheKey(ingredientsText: string, productType: string, userLanguage: string): string {
@@ -44,6 +79,8 @@ function cacheAnalysis(cacheKey: string, result: AnalysisResult): void {
     timestamp: Date.now()
   });
   console.log(`[CACHE] STORED: analysis for ${result.ingredients.length} ingredients`);
+  // Persist to disk asynchronously
+  setImmediate(() => saveCacheToDisk());
 }
 
 /**
