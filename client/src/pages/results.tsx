@@ -134,7 +134,7 @@ export default function ResultsPage() {
         }
       });
     },
-    onSuccess: (data) => {
+    onSuccess: (data: AnalysisResult) => {
       setAnalysisResult(data);
       setRetryCount(0);
       setCachedOcrText(null); // Clear cache after successful analysis

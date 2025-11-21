@@ -79,8 +79,8 @@ function cacheAnalysis(cacheKey: string, result: AnalysisResult): void {
     timestamp: Date.now()
   });
   console.log(`[CACHE] STORED: analysis for ${result.ingredients.length} ingredients`);
-  // Persist to disk asynchronously
-  setImmediate(() => saveCacheToDisk());
+  // Persist to disk immediately (synchronous) to ensure cache survives server restarts
+  saveCacheToDisk();
 }
 
 /**
