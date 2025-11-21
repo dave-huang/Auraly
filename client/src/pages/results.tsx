@@ -54,7 +54,6 @@ export default function ResultsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedRisk, setSelectedRisk] = useState<RiskLevel | "all">("all");
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
-  const [progress, setProgress] = useState(0);
   const [cachedOcrText, setCachedOcrText] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
 
@@ -134,7 +133,7 @@ export default function ResultsPage() {
         }
       });
     },
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       setAnalysisResult(data);
       setRetryCount(0);
       setCachedOcrText(null); // Clear cache after successful analysis
@@ -172,27 +171,6 @@ export default function ResultsPage() {
       setLocation('/upload');
     }
   }, []);
-
-  // Animate progress bar over 20 seconds
-  useEffect(() => {
-    if (analyzeMutation.isPending) {
-      setProgress(0);
-      const duration = 20000; // 20 seconds
-      const interval = 100; // Update every 100ms
-      const increment = (95 / duration) * interval; // Fill to 95% over 20 seconds
-      
-      const timer = setInterval(() => {
-        setProgress(prev => {
-          const next = prev + increment;
-          return next >= 95 ? 95 : next; // Cap at 95%
-        });
-      }, interval);
-      
-      return () => clearInterval(timer);
-    } else {
-      setProgress(0);
-    }
-  }, [analyzeMutation.isPending]);
 
   // Map risk levels to sort order (higher number = higher priority)
   const riskLevelOrder: Record<RiskLevel, number> = {
@@ -235,8 +213,7 @@ export default function ResultsPage() {
             </div>
             <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
               <div 
-                className="h-full bg-primary rounded-full transition-all duration-300 ease-out"
-                style={{ width: `${progress}%` }}
+                className="h-full bg-primary rounded-full progress-bar-analyzing"
               />
             </div>
             {retryCount > 0 && (
