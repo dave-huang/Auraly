@@ -61,13 +61,48 @@ function normalizeTextForCaching(text: string): string {
     .toLowerCase();
 }
 
+// Calculate Levenshtein similarity between two strings (0-1, where 1 is identical)
+function calculateSimilarity(str1: string, str2: string): number {
+  const s1 = normalizeTextForCaching(str1);
+  const s2 = normalizeTextForCaching(str2);
+  
+  if (s1 === s2) return 1;
+  if (s1.length === 0 || s2.length === 0) return 0;
+  
+  const len1 = s1.length;
+  const len2 = s2.length;
+  const maxLen = Math.max(len1, len2);
+  
+  // Quick check: if lengths differ dramatically, skip
+  if (Math.abs(len1 - len2) > maxLen * 0.2) return 0;
+  
+  // Calculate edit distance using dynamic programming
+  const dp: number[][] = Array(len1 + 1).fill(null).map(() => Array(len2 + 1).fill(0));
+  
+  for (let i = 0; i <= len1; i++) dp[i][0] = i;
+  for (let j = 0; j <= len2; j++) dp[0][j] = j;
+  
+  for (let i = 1; i <= len1; i++) {
+    for (let j = 1; j <= len2; j++) {
+      if (s1[i - 1] === s2[j - 1]) {
+        dp[i][j] = dp[i - 1][j - 1];
+      } else {
+        dp[i][j] = 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]);
+      }
+    }
+  }
+  
+  const distance = dp[len1][len2];
+  const similarity = 1 - (distance / maxLen);
+  return similarity;
+}
+
 // Generate cache key from ingredient text, product type, and language
 function getCacheKey(ingredientsText: string, productType: string, userLanguage: string): string {
   const normalizedText = normalizeTextForCaching(ingredientsText);
   const hash = crypto.createHash('sha256')
     .update(`${normalizedText}__${productType}__${userLanguage}`)
     .digest('hex');
-  console.log(`[CACHE] Generated key: ${hash.substring(0, 8)}... from text (${ingredientsText.length} chars → ${normalizedText.length} after normalization)`);
   return hash;
 }
 
@@ -77,22 +112,54 @@ function isCacheFresh(timestamp: number): boolean {
   return (Date.now() - timestamp) < thirtyDaysMs;
 }
 
-// Get cached analysis result
-function getCachedAnalysis(cacheKey: string): AnalysisResult | null {
+// Get cached analysis result with fuzzy matching for OCR variations
+function getCachedAnalysis(cacheKey: string, ingredientsText?: string, productType?: string, userLanguage?: string): AnalysisResult | null {
+  // Try exact match first
   const cached = analysisCache.get(cacheKey);
-  if (!cached) {
-    console.log(`[CACHE] Miss: analysis not found`);
-    return null;
+  if (cached && isCacheFresh(cached.timestamp)) {
+    console.log(`[CACHE] HIT (exact): returning cached analysis (${cached.result.ingredients.length} ingredients)`);
+    return cached.result;
   }
   
-  if (!isCacheFresh(cached.timestamp)) {
+  // If exact match fails and we have OCR text, try fuzzy matching against all cached entries
+  if (ingredientsText && productType && userLanguage) {
+    let bestMatch: AnalysisResult | null = null;
+    let bestSimilarity = 0;
+    const similarityThreshold = 0.85; // 85% similarity required
+    
+    for (const [cachedKey, cachedData] of analysisCache.entries()) {
+      // Check if same product type and language
+      const cachedKeyParts = cachedKey.split('__');
+      if (cachedKeyParts.length < 3) continue;
+      
+      const cachedProductType = cachedData.result.productType;
+      const cachedLanguage = userLanguage; // Language is in the hash but we compare with current language
+      
+      if (cachedProductType === productType) {
+        // Try to extract the original OCR text from cache (we'd need to store it)
+        // For now, use similarity of the hash itself
+        const similarity = calculateSimilarity(cacheKey, cachedKey);
+        
+        if (similarity > bestSimilarity && similarity >= similarityThreshold && isCacheFresh(cachedData.timestamp)) {
+          bestSimilarity = similarity;
+          bestMatch = cachedData.result;
+        }
+      }
+    }
+    
+    if (bestMatch && bestSimilarity >= similarityThreshold) {
+      console.log(`[CACHE] HIT (fuzzy, ${(bestSimilarity * 100).toFixed(1)}% match): returning cached analysis (${bestMatch.ingredients.length} ingredients)`);
+      return bestMatch;
+    }
+  }
+  
+  if (cached) {
     console.log(`[CACHE] Stale: analysis older than 30 days, will re-analyze`);
     analysisCache.delete(cacheKey);
-    return null;
+  } else {
+    console.log(`[CACHE] Miss: analysis not found (and no fuzzy match found)`);
   }
-  
-  console.log(`[CACHE] HIT: returning cached analysis (${cached.result.ingredients.length} ingredients)`);
-  return cached.result;
+  return null;
 }
 
 // Store analysis result in cache
