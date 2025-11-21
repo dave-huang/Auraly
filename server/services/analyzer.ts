@@ -46,11 +46,28 @@ function saveCacheToDisk(): void {
 // Initialize cache on module load
 loadCacheFromDisk();
 
+// Normalize ingredients text for cache key - handles OCR variations
+function normalizeTextForCaching(text: string): string {
+  return text
+    // Normalize whitespace (multiple spaces/newlines/tabs to single space)
+    .replace(/\s+/g, ' ')
+    // Trim leading/trailing whitespace
+    .trim()
+    // Normalize common character variations that OCR might produce
+    .replace(/['']/g, "'")           // Various apostrophes to standard
+    .replace(/[""]/g, '"')           // Various quotes to standard
+    .replace(/[–—]/g, '-')           // Various dashes to standard hyphen
+    // Lowercase for consistent comparison across OCR variations
+    .toLowerCase();
+}
+
 // Generate cache key from ingredient text, product type, and language
 function getCacheKey(ingredientsText: string, productType: string, userLanguage: string): string {
+  const normalizedText = normalizeTextForCaching(ingredientsText);
   const hash = crypto.createHash('sha256')
-    .update(`${ingredientsText}__${productType}__${userLanguage}`)
+    .update(`${normalizedText}__${productType}__${userLanguage}`)
     .digest('hex');
+  console.log(`[CACHE] Generated key: ${hash.substring(0, 8)}... from text (${ingredientsText.length} chars → ${normalizedText.length} after normalization)`);
   return hash;
 }
 
