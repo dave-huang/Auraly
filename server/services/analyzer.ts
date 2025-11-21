@@ -10,7 +10,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const cacheFilePath = path.join(process.cwd(), 'analysis_cache.json');
 
 // In-memory cache for full analysis results (keyed by hash of ingredient text + product type + language)
-const analysisCache = new Map<string, { result: AnalysisResult; timestamp: number }>();
+const analysisCache = new Map<string, { result: AnalysisResult; timestamp: number; ocrText: string }>();
 
 // Load cache from disk on startup
 function loadCacheFromDisk(): void {
@@ -18,9 +18,13 @@ function loadCacheFromDisk(): void {
     console.log(`[CACHE] Attempting to load from: ${cacheFilePath}`);
     if (fs.existsSync(cacheFilePath)) {
       const data = fs.readFileSync(cacheFilePath, 'utf-8');
-      const entries = JSON.parse(data) as Array<[string, { result: AnalysisResult; timestamp: number }]>;
+      const entries = JSON.parse(data) as Array<[string, { result: AnalysisResult; timestamp: number; ocrText?: string }]>;
       for (const [key, value] of entries) {
-        analysisCache.set(key, value);
+        // Ensure ocrText is always present
+        analysisCache.set(key, {
+          ...value,
+          ocrText: value.ocrText || ''
+        });
       }
       console.log(`[CACHE] ✓ Successfully loaded ${analysisCache.size} analysis results from disk`);
     } else {
@@ -128,22 +132,19 @@ function getCachedAnalysis(cacheKey: string, ingredientsText?: string, productTy
     const similarityThreshold = 0.85; // 85% similarity required
     
     for (const [cachedKey, cachedData] of Array.from(analysisCache.entries())) {
-      // Check if same product type and language
-      const cachedKeyParts = cachedKey.split('__');
-      if (cachedKeyParts.length < 3) continue;
+      // Only check entries for the same product type
+      if (cachedData.result.productType !== productType) continue;
       
-      const cachedProductType = cachedData.result.productType;
-      const cachedLanguage = userLanguage; // Language is in the hash but we compare with current language
+      // Skip if cache entry is stale
+      if (!isCacheFresh(cachedData.timestamp)) continue;
       
-      if (cachedProductType === productType) {
-        // Try to extract the original OCR text from cache (we'd need to store it)
-        // For now, use similarity of the hash itself
-        const similarity = calculateSimilarity(cacheKey, cachedKey);
-        
-        if (similarity > bestSimilarity && similarity >= similarityThreshold && isCacheFresh(cachedData.timestamp)) {
-          bestSimilarity = similarity;
-          bestMatch = cachedData.result;
-        }
+      // NOW compare the actual OCR text, not the hashes
+      const similarity = calculateSimilarity(ingredientsText, cachedData.ocrText);
+      
+      if (similarity > bestSimilarity && similarity >= similarityThreshold) {
+        console.log(`[CACHE] Found fuzzy match (${(similarity * 100).toFixed(1)}% similar) for same product type`);
+        bestSimilarity = similarity;
+        bestMatch = cachedData.result;
       }
     }
     
@@ -162,13 +163,14 @@ function getCachedAnalysis(cacheKey: string, ingredientsText?: string, productTy
   return null;
 }
 
-// Store analysis result in cache
-function cacheAnalysis(cacheKey: string, result: AnalysisResult): void {
+// Store analysis result in cache (with original OCR text for fuzzy matching)
+function cacheAnalysis(cacheKey: string, result: AnalysisResult, ocrText: string): void {
   analysisCache.set(cacheKey, {
     result,
-    timestamp: Date.now()
+    timestamp: Date.now(),
+    ocrText
   });
-  console.log(`[CACHE] STORED: analysis for ${result.ingredients.length} ingredients`);
+  console.log(`[CACHE] STORED: analysis for ${result.ingredients.length} ingredients (OCR text: ${ocrText.length} chars)`);
   // Persist to disk immediately (synchronous) to ensure cache survives server restarts
   saveCacheToDisk();
 }
@@ -656,8 +658,8 @@ Return your analysis as JSON with this structure:
       // TODO: Re-enable with smarter estimation that accounts for parenthetical groups
       console.log(`[ANALYZER] Completeness check DISABLED. Detected: ${detectedCount}, Estimated: ${estimatedIngredientCount}, Found marker: ${foundIngredientsMarker}`);
       
-      // Cache the result before returning
-      cacheAnalysis(cacheKey, validatedResult.data);
+      // Cache the result before returning (pass original OCR text for fuzzy matching)
+      cacheAnalysis(cacheKey, validatedResult.data, ingredientsText);
       return validatedResult.data;
       
     } catch (error: any) {
