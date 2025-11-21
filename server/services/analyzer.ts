@@ -127,7 +127,7 @@ function getCachedAnalysis(cacheKey: string, ingredientsText?: string, productTy
     let bestSimilarity = 0;
     const similarityThreshold = 0.85; // 85% similarity required
     
-    for (const [cachedKey, cachedData] of analysisCache.entries()) {
+    for (const [cachedKey, cachedData] of Array.from(analysisCache.entries())) {
       // Check if same product type and language
       const cachedKeyParts = cachedKey.split('__');
       if (cachedKeyParts.length < 3) continue;
@@ -372,7 +372,7 @@ export async function analyzeIngredients(
   
   // Check cache first before doing any processing
   const cacheKey = getCacheKey(ingredientsText, productType, userLanguage);
-  const cachedResult = getCachedAnalysis(cacheKey);
+  const cachedResult = getCachedAnalysis(cacheKey, ingredientsText, productType, userLanguage);
   if (cachedResult) {
     return cachedResult;
   }

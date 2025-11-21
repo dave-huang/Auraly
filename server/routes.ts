@@ -29,7 +29,7 @@ const analysisRequests = new Map<string, AnalysisRequest>();
 // Clean up old requests (older than 1 hour)
 setInterval(() => {
   const oneHourAgo = Date.now() - (60 * 60 * 1000);
-  for (const [id, req] of analysisRequests.entries()) {
+  for (const [id, req] of Array.from(analysisRequests.entries())) {
     if (req.timestamp < oneHourAgo) {
       analysisRequests.delete(id);
     }
