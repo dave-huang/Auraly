@@ -6,7 +6,8 @@ import { openai } from '../openai';
 import { analysisResultSchema, type ProductType, type AnalysisResult, type RiskLevel } from '@shared/schema';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const cacheFilePath = path.join(__dirname, '..', 'analysis_cache.json');
+// Store cache in the project root for better persistence
+const cacheFilePath = path.join(process.cwd(), 'analysis_cache.json');
 
 // In-memory cache for full analysis results (keyed by hash of ingredient text + product type + language)
 const analysisCache = new Map<string, { result: AnalysisResult; timestamp: number }>();
@@ -14,13 +15,16 @@ const analysisCache = new Map<string, { result: AnalysisResult; timestamp: numbe
 // Load cache from disk on startup
 function loadCacheFromDisk(): void {
   try {
+    console.log(`[CACHE] Attempting to load from: ${cacheFilePath}`);
     if (fs.existsSync(cacheFilePath)) {
       const data = fs.readFileSync(cacheFilePath, 'utf-8');
       const entries = JSON.parse(data) as Array<[string, { result: AnalysisResult; timestamp: number }]>;
       for (const [key, value] of entries) {
         analysisCache.set(key, value);
       }
-      console.log(`[CACHE] Loaded ${analysisCache.size} analysis results from disk`);
+      console.log(`[CACHE] ✓ Successfully loaded ${analysisCache.size} analysis results from disk`);
+    } else {
+      console.log(`[CACHE] No cache file found at ${cacheFilePath} - starting with empty cache`);
     }
   } catch (error) {
     console.error('[CACHE] Error loading cache from disk:', error);
@@ -30,8 +34,10 @@ function loadCacheFromDisk(): void {
 // Save cache to disk
 function saveCacheToDisk(): void {
   try {
+    console.log(`[CACHE] Saving ${analysisCache.size} entries to disk...`);
     const entries = Array.from(analysisCache.entries());
     fs.writeFileSync(cacheFilePath, JSON.stringify(entries, null, 2), 'utf-8');
+    console.log(`[CACHE] ✓ Successfully saved cache to ${cacheFilePath}`);
   } catch (error) {
     console.error('[CACHE] Error saving cache to disk:', error);
   }
