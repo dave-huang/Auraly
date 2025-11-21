@@ -12,6 +12,42 @@ import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useTranslation } from "react-i18next";
 
+// Helper function for direct polling fallback
+const directPoll = async (requestId: string, resolve: any, reject: any) => {
+  const maxAttempts = 300; // 5 minutes with 1s polling
+  let attempts = 0;
+  
+  while (attempts < maxAttempts) {
+    try {
+      const statusResponse = await fetch(`/api/analysis-status/${requestId}`);
+      const statusData: any = await statusResponse.json();
+      
+      if (statusData.status === 'completed') {
+        console.log(`[DIRECT-POLL] Analysis completed!`);
+        resolve(statusData.analysis);
+        return;
+      }
+      
+      if (statusData.status === 'failed') {
+        reject(new Error(statusData.error || 'Analysis failed'));
+        return;
+      }
+      
+      // Still processing - wait 1 second before next poll
+      console.log(`[DIRECT-POLL] Status: processing (attempt ${attempts + 1}/${maxAttempts})`);
+      await new Promise(r => setTimeout(r, 1000));
+      attempts++;
+      
+    } catch (error: any) {
+      console.error(`[DIRECT-POLL] Error checking status:`, error.message);
+      reject(error);
+      return;
+    }
+  }
+  
+  reject(new Error('Analysis polling timeout - please try again'));
+};
+
 export default function ResultsPage() {
   const { t, i18n } = useTranslation();
   const [, setLocation] = useLocation();
@@ -22,7 +58,7 @@ export default function ResultsPage() {
   const [cachedOcrText, setCachedOcrText] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
 
-  // Auto-retry mutation with polling for mobile background support
+  // Auto-retry mutation with Service Worker polling for mobile background support
   const analyzeMutation = useMutation({
     mutationFn: async (data: { productType: string; imageData: string; ocrText?: string }) => {
       // Normalize language code to 'en', 'es', or 'zh'
@@ -51,50 +87,52 @@ export default function ResultsPage() {
       const requestId = initialResult.requestId;
       console.log(`[POLLING] Started analysis with request ID: ${requestId}`);
       
-      // Poll for analysis status (works even if mobile tab is backgrounded)
-      const pollAnalysis = async (): Promise<any> => {
-        const maxAttempts = 300; // 5 minutes with 1s polling
-        let attempts = 0;
-        
-        while (attempts < maxAttempts) {
-          try {
-            const statusResponse = await fetch(`/api/analysis-status/${requestId}`);
-            const statusData: any = await statusResponse.json();
+      // Use Service Worker for background polling (continues even when tab is backgrounded)
+      return new Promise((resolve, reject) => {
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('/service-worker.js', { scope: '/' }).then(registration => {
+            console.log('[SERVICE-WORKER] Registered');
             
-            if (statusData.status === 'completed') {
-              console.log(`[POLLING] Analysis completed!`);
-              return {
-                ocrText: statusData.ocrText,
-                analysis: statusData.analysis
-              };
+            // Send start polling message via MessageChannel for two-way communication
+            const channel = new MessageChannel();
+            
+            // Listen for messages from Service Worker
+            channel.port1.onmessage = (event: any) => {
+              const msg = event.data;
+              
+              if (msg.type === 'ANALYSIS_COMPLETE') {
+                console.log('[RESULT-PAGE] Received ANALYSIS_COMPLETE from Service Worker');
+                if (msg.data.ocrText) {
+                  setCachedOcrText(msg.data.ocrText);
+                }
+                resolve(msg.data.analysis);
+              } else if (msg.type === 'ANALYSIS_FAILED') {
+                console.log('[RESULT-PAGE] Received ANALYSIS_FAILED from Service Worker');
+                reject(new Error(msg.error || 'Analysis failed'));
+              }
+            };
+            
+            // Send message to Service Worker via active controller
+            if (navigator.serviceWorker.controller) {
+              navigator.serviceWorker.controller.postMessage(
+                { type: 'START_POLLING', requestId },
+                [channel.port2]
+              );
+            } else {
+              // Fallback: Service Worker not active yet, use direct polling
+              console.log('[RESULT-PAGE] Service Worker not ready, using direct polling fallback');
+              directPoll(requestId, resolve, reject);
             }
-            
-            if (statusData.status === 'failed') {
-              throw new Error(statusData.error || 'Analysis failed');
-            }
-            
-            // Still processing - wait 1 second before next poll
-            console.log(`[POLLING] Status: processing (attempt ${attempts + 1}/${maxAttempts})`);
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            attempts++;
-            
-          } catch (error: any) {
-            console.error(`[POLLING] Error checking status:`, error.message);
-            throw error;
-          }
+          }).catch((error: any) => {
+            console.error('[SERVICE-WORKER] Registration failed, falling back to direct polling:', error);
+            directPoll(requestId, resolve, reject);
+          });
+        } else {
+          console.log('[RESULT-PAGE] Service Workers not supported, using direct polling');
+          directPoll(requestId, resolve, reject);
         }
-        
-        throw new Error('Analysis polling timeout - please try again');
-      };
-      
-      const result = await pollAnalysis();
-      
-      // Cache OCR text for future retries
-      if (result.ocrText) {
-        setCachedOcrText(result.ocrText);
-      }
-      
-      return result.analysis as AnalysisResult;
+      });
     },
     onSuccess: (data) => {
       setAnalysisResult(data);
