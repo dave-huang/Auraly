@@ -22,13 +22,10 @@ export default function ResultsPage() {
   const [cachedOcrText, setCachedOcrText] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
 
-  // Auto-retry mutation with exponential backoff and OCR caching
+  // Auto-retry mutation with polling for mobile background support
   const analyzeMutation = useMutation({
     mutationFn: async (data: { productType: string; imageData: string; ocrText?: string }) => {
-      const MAX_RETRIES = 2; // Frontend will auto-retry up to 2 times (3s, 6s delays)
-      let lastError: any = null;
-      
-      // Normalize language code to 'en', 'es', or 'zh' (remove region codes like -US, -CN)
+      // Normalize language code to 'en', 'es', or 'zh'
       let userLanguage = 'en';
       if (i18n.language.startsWith('zh')) {
         userLanguage = 'zh';
@@ -36,79 +33,68 @@ export default function ResultsPage() {
         userLanguage = 'es';
       }
       
-      for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
-        try {
-          if (attempt > 0) {
-            const waitTime = 3000 * Math.pow(2, attempt - 1); // 3s, 6s
-            console.log(`[AUTO-RETRY] Attempt ${attempt + 1}/${MAX_RETRIES + 1} after ${waitTime}ms wait...`);
-            setRetryCount(attempt);
-            await new Promise(resolve => setTimeout(resolve, waitTime));
-          }
-          
-          // Use cached OCR text on retries if available
-          const requestBody: any = {
-            productType: data.productType,
-            userLanguage
-          };
-          
-          if (data.ocrText || cachedOcrText) {
-            // Use cached OCR text to skip OCR stage
-            requestBody.ocrText = data.ocrText || cachedOcrText;
-            console.log(`[AUTO-RETRY] Using cached OCR text (${requestBody.ocrText.length} chars)`);
-          } else {
-            // First attempt - include image data
-            requestBody.imageData = data.imageData;
-          }
-          
-          const response = await apiRequest("POST", "/api/scan-and-analyze", requestBody);
-          const result: any = await response.json();
-          
-          // Cache OCR text for future retries
-          if (result.ocrText) {
-            setCachedOcrText(result.ocrText);
-          }
-          
-          // Success! Reset retry count
-          setRetryCount(0);
-          
-          // Return analysis from combined response
-          return result.analysis as AnalysisResult;
-          
-        } catch (error: any) {
-          lastError = error;
-          console.error(`[AUTO-RETRY] Attempt ${attempt + 1}/${MAX_RETRIES + 1} failed:`, error.message);
-          
-          // Try to extract OCR text from error response (in case OCR succeeded but analysis failed)
-          try {
-            const errorText = error.message || '';
-            const jsonMatch = errorText.match(/\{.*\}/);
-            if (jsonMatch) {
-              const errorData = JSON.parse(jsonMatch[0]);
-              if (errorData.ocrText && !cachedOcrText) {
-                console.log(`[AUTO-RETRY] Cached OCR text from error response (${errorData.ocrText.length} chars)`);
-                setCachedOcrText(errorData.ocrText);
-              }
-            }
-          } catch (parseError) {
-            // Ignore parse errors
-          }
-          
-          // Don't retry on certain error types (client errors, OCR failures)
-          if (error.message?.includes('No ingredients found') || 
-              error.message?.includes('Missing required fields') ||
-              error.message?.includes('OCR failed')) {
-            console.log(`[AUTO-RETRY] Non-retryable error, failing immediately`);
-            break;
-          }
-          
-          // If this was the last attempt, throw the error
-          if (attempt === MAX_RETRIES) {
-            throw lastError;
-          }
-        }
+      // Send scan request and get request ID
+      const requestBody: any = {
+        productType: data.productType,
+        userLanguage,
+        imageData: data.imageData,
+        ocrText: data.ocrText
+      };
+      
+      const response = await apiRequest("POST", "/api/scan-and-analyze", requestBody);
+      const initialResult: any = await response.json();
+      
+      if (!initialResult.requestId) {
+        throw new Error('Failed to get request ID from server');
       }
       
-      throw lastError;
+      const requestId = initialResult.requestId;
+      console.log(`[POLLING] Started analysis with request ID: ${requestId}`);
+      
+      // Poll for analysis status (works even if mobile tab is backgrounded)
+      const pollAnalysis = async (): Promise<any> => {
+        const maxAttempts = 300; // 5 minutes with 1s polling
+        let attempts = 0;
+        
+        while (attempts < maxAttempts) {
+          try {
+            const statusResponse = await fetch(`/api/analysis-status/${requestId}`);
+            const statusData: any = await statusResponse.json();
+            
+            if (statusData.status === 'completed') {
+              console.log(`[POLLING] Analysis completed!`);
+              return {
+                ocrText: statusData.ocrText,
+                analysis: statusData.analysis
+              };
+            }
+            
+            if (statusData.status === 'failed') {
+              throw new Error(statusData.error || 'Analysis failed');
+            }
+            
+            // Still processing - wait 1 second before next poll
+            console.log(`[POLLING] Status: processing (attempt ${attempts + 1}/${maxAttempts})`);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            attempts++;
+            
+          } catch (error: any) {
+            console.error(`[POLLING] Error checking status:`, error.message);
+            throw error;
+          }
+        }
+        
+        throw new Error('Analysis polling timeout - please try again');
+      };
+      
+      const result = await pollAnalysis();
+      
+      // Cache OCR text for future retries
+      if (result.ocrText) {
+        setCachedOcrText(result.ocrText);
+      }
+      
+      return result.analysis as AnalysisResult;
     },
     onSuccess: (data) => {
       setAnalysisResult(data);
