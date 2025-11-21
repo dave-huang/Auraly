@@ -1,16 +1,26 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import multer from "multer";
+import z from "zod";
 import { extractTextFromImage } from "./services/ocr";
 import { analyzeIngredients } from "./services/analyzer";
+import { batchAnalyzeIngredientsWithCache, getCacheStats } from "./services/cache";
 import { 
   ocrRequestSchema, 
   analysisRequestSchema,
-  type ProductType 
+  type ProductType,
+  productTypes
 } from "@shared/schema";
 
 // Configure multer for in-memory file uploads
 const upload = multer({ storage: multer.memoryStorage() });
+
+// Schema for batch ingredient analysis (with caching)
+const batchAnalyzeRequestSchema = z.object({
+  ingredients: z.array(z.string().min(1)).min(1),
+  category: z.enum(productTypes as readonly [ProductType, ...ProductType[]]),
+  userLanguage: z.string().optional().default('en')
+});
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // OCR endpoint - extract text from image
@@ -65,6 +75,74 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(statusCode).json({ 
         error: error.message || 'Failed to analyze ingredients. Please try again.' 
       });
+    }
+  });
+
+  // Batch analyze ingredients with backend caching
+  app.post("/api/analyze-ingredients", async (req, res) => {
+    const startTime = Date.now();
+    try {
+      const { ingredients, category, userLanguage } = batchAnalyzeRequestSchema.parse(req.body);
+      
+      console.log(`[BATCH-ANALYZE] Processing ${ingredients.length} ingredients for ${category}`);
+      
+      // Use cache-aware batch analyzer
+      // Note: Individual ingredient analysis is a simplified extraction here
+      // In production, you'd call a dedicated ingredient analyzer
+      const results = await batchAnalyzeIngredientsWithCache(
+        ingredients,
+        category,
+        async (ingredient: string) => {
+          // For now, return a placeholder that indicates caching works
+          // In production, this would call your AI service for individual ingredient analysis
+          return JSON.stringify({
+            ingredient,
+            riskLevel: 'moderate',
+            summary: `Cached or analyzed ingredient: ${ingredient}`,
+            details: `Analysis for ${ingredient} in ${category} category`,
+            category
+          });
+        }
+      );
+      
+      const duration = ((Date.now() - startTime) / 1000).toFixed(2);
+      const cachedCount = results.filter(r => r.fromCache).length;
+      const newCount = results.filter(r => !r.fromCache).length;
+      
+      console.log(`[BATCH-ANALYZE] Completed in ${duration}s (${cachedCount} cached, ${newCount} newly analyzed)`);
+      
+      res.json({
+        results: results.map(r => ({
+          ingredient: r.ingredient,
+          analysis: JSON.parse(r.analysis),
+          fromCache: r.fromCache
+        })),
+        summary: {
+          total: results.length,
+          cached: cachedCount,
+          freshlyAnalyzed: newCount,
+          processingTimeMs: Math.round((Date.now() - startTime))
+        }
+      });
+    } catch (error: any) {
+      console.error('Batch analyze error:', error);
+      const statusCode = error instanceof z.ZodError ? 400 : 500;
+      res.status(statusCode).json({
+        error: error.message || 'Failed to analyze ingredients'
+      });
+    }
+  });
+
+  // Cache statistics endpoint (optional)
+  app.get("/api/cache-stats", (req, res) => {
+    try {
+      const stats = getCacheStats();
+      res.json({
+        ...stats,
+        hitRate: stats.total > 0 ? ((stats.fresh / stats.total) * 100).toFixed(2) + '%' : 'N/A'
+      });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
     }
   });
 

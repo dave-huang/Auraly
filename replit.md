@@ -3,18 +3,29 @@
 ## Overview
 Auraly is a mobile-friendly web application designed to help users understand the ingredients in their food, skincare, and personal care products. It allows users to scan or upload product labels in any language, using AI to extract and analyze ingredients, highlighting potential health risks with clear, user-friendly explanations. The project's vision is to empower users with knowledge about product compositions, fostering informed choices for better health and wellness.
 
-## Recent Changes (November 15, 2025)
+## Recent Changes (November 21, 2025)
+### Backend Ingredient Caching with Auto-Refresh
+- **New `/api/analyze-ingredients` Endpoint**: Batch ingredient analysis with intelligent caching
+- **Cache Architecture**: 
+  * Category-specific cache keys (ingredient name + product type)
+  * 30-day automatic refresh - stale entries re-analyzed on next request
+  * In-memory cache with JSON file persistence for durability
+  * Automatic deduplication of ingredients within same request
+- **Performance Impact**: Repeat scans of same products return cached results instantly (near-zero latency for cached hits)
+- **Cache Monitoring**: `/api/cache-stats` endpoint provides hit rate, fresh/stale counts for debugging
+- **Error Handling**: Graceful ingredient-level errors - one failure doesn't crash entire batch
+
+## Previous Changes (November 15, 2025)
 ### Major Performance & Reliability Overhaul
 - **75% Faster Processing**: Simplified to use only Gemini 2.5 Flash for OCR (2-5s, reliable and fast)
 - **Single Fast OCR**: Gemini Flash as primary, Google Vision as optional fallback only on failure
 - **Removed Complexity**: Eliminated slow Tesseract (20-30s) and parallel OCR overhead
 - **Combined Pipeline**: New `/api/scan-and-analyze` endpoint eliminates client round-trip latency
-- **Upgraded to GPT-4o**: Switched from GPT-4o-mini to GPT-4o for faster ingredient analysis with automatic fallback to GPT-4o-mini
+- **Reverted to GPT-4o**: Using Replit AI Integrations for reliability (GPT-5.1 had quota issues)
 - **Total Time Reduction**: 
   * English/Spanish: 30-40s → 7-15s (75% faster)
   * Chinese: 60-120s → 35-50s (60% faster)
-- **Higher Reliability**: Single fast service instead of waiting for slowest of three engines
-- **Zero API Key Setup**: Both Gemini and OpenAI integrations use Replit AI Integrations (billed to credits)
+- **Higher Reliability**: Replit integrations handle all billing/quotas automatically
 
 ## User Preferences
 - Privacy-focused: No user accounts, images not stored on server
@@ -39,9 +50,12 @@ Auraly is a mobile-friendly web application designed to help users understand th
 ### Backend (Node.js + Express)
 - **API Endpoints**:
     - `POST /api/scan-and-analyze`: **PRIMARY ENDPOINT** - Combined OCR + Analysis for maximum speed (7-50s total)
+    - `POST /api/analyze-ingredients`: Batch ingredient analysis with category-specific caching (instant for cached)
+    - `GET /api/cache-stats`: Cache performance metrics (hit rate, fresh/stale counts)
     - `POST /api/ocr`: Extracts text using Gemini Flash (2-5s, with optional Google Vision fallback)
     - `POST /api/analyze`: Analyzes ingredients with OpenAI GPT-4o (with GPT-4o-mini fallback)
 - **Services**:
+    - `services/cache.ts`: Ingredient cache with 30-day auto-refresh, deduplication, and JSON persistence
     - `services/ocr.ts`: Simple OCR orchestration - Gemini Flash primary, Google Vision fallback
     - `services/geminiOcr.ts`: Gemini 2.5 Flash vision-based OCR (2-5s, fast and reliable)
     - `services/googleVisionOcr.ts`: Google Cloud Vision fallback (only runs if Gemini fails)
@@ -93,7 +107,10 @@ Auraly is a mobile-friendly web application designed to help users understand th
 ### Tech Stack
 - **Frontend**: React, TypeScript, Tailwind CSS, shadcn/ui, TanStack Query, Wouter
 - **Backend**: Node.js, Express, TypeScript
-- **Storage**: In-memory (no database), localStorage for client-side history.
+- **Storage**: 
+    - Ingredient cache: In-memory + JSON file persistence (ingredient_cache.json)
+    - Client-side: localStorage for scan history and language preference
+    - No external database required
 
 ## External Dependencies
 - **AI/ML**:

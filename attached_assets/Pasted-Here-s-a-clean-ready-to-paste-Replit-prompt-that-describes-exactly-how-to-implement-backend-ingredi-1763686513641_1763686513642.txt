@@ -1,0 +1,105 @@
+Here’s a clean, ready-to-paste Replit prompt that describes exactly how to implement backend ingredient caching with category-specific keys and automatic monthly refresh.
+
+⸻
+
+✅ Prompt for Replit (Backend Caching + Auto-Refresh Logic)
+
+Use this prompt directly in Replit’s “Generate Code” window:
+
+⸻
+
+Prompt:
+
+Implement backend caching for ingredient analysis in my Auraly app.
+
+Requirements:
+	1.	Purpose of caching:
+	•	When a product is scanned, each ingredient should first be checked against a backend cache.
+	•	If cached analysis exists and was created within the last 30 days, return the cached data instead of calling the AI model again.
+	•	If no cached entry exists OR the entry is older than 30 days, call the AI model, store the new analysis, and return it.
+	2.	Cache structure:
+	•	Cache keys should uniquely combine:
+	•	ingredient name (normalized: lowercase, trimmed)
+	•	product category (e.g., “food”, “skincare”, “haircare”, “cosmetics”, “oral-care”, “fragrance”, “personal-care”)
+	•	Example key: vitamin_c__skincare
+	3.	Data to store per ingredient:
+
+{
+  ingredient: string,
+  category: string,
+  analysis: string (AI output),
+  lastUpdated: timestamp,
+}
+
+
+	4.	Storage method:
+	•	Use a lightweight database or file-based store that works well on Replit, such as:
+	•	Replit DB
+	•	SQLite
+	•	Prefer SQLite if possible for reliability.
+	5.	Cache refresh logic:
+	•	Before returning cached analysis, check:
+
+if (now - lastUpdated) > 30 days
+
+
+	•	If older:
+	•	Re-run AI analysis
+	•	Update the cache entry with new analysis and timestamp
+	•	Then return the updated value.
+
+	6.	Batch processing (important):
+	•	When scanning a product, process all ingredients with caching logic in parallel (e.g., Promise.all if using Node.js).
+	7.	API structure to build or update:
+
+POST /analyze-ingredients
+Request:
+  {
+    "ingredients": ["Ingredient1", "Ingredient2", ...],
+    "category": "skincare"  // or food, haircare, etc.
+  }
+
+Response:
+  {
+    "results": [
+      {
+        ingredient: string,
+        analysis: string,
+        fromCache: boolean
+      }
+    ]
+  }
+
+
+	8.	Optional optimization (include if easy):
+	•	Normalize ingredients by:
+	•	lowercasing
+	•	trimming whitespace
+	•	removing punctuation like commas
+	•	handling duplicates in the same scan
+	9.	Error handling:
+	•	If the AI model fails, return a graceful error for that ingredient without crashing the whole batch.
+	10.	Code style:
+
+	•	Use modern async/await
+	•	Write modular functions:
+	•	getCachedIngredientAnalysis()
+	•	setCachedIngredientAnalysis()
+	•	analyzeIngredientWithAI()
+	•	shouldRefreshCache()
+	•	Include comments so it’s easy for me to modify later.
+
+⸻
+
+If you need to pick a tech stack, choose:
+	•	Runtime: Node.js
+	•	Database: SQLite
+	•	AI model: Function stub placeholder (I’ll swap in GPT later)
+
+⸻
+
+Let me know if you want me to generate a follow-up prompt for:
+	•	Rate limiting (so you don’t get hit with too many scans)
+	•	API keys & environment variables
+	•	A usage dashboard
+	•	Background jobs for cache cleanup
