@@ -1,5 +1,50 @@
+import crypto from 'crypto';
 import { openai } from '../openai';
 import { analysisResultSchema, type ProductType, type AnalysisResult, type RiskLevel } from '@shared/schema';
+
+// In-memory cache for full analysis results (keyed by hash of ingredient text + product type + language)
+const analysisCache = new Map<string, { result: AnalysisResult; timestamp: number }>();
+
+// Generate cache key from ingredient text, product type, and language
+function getCacheKey(ingredientsText: string, productType: string, userLanguage: string): string {
+  const hash = crypto.createHash('sha256')
+    .update(`${ingredientsText}__${productType}__${userLanguage}`)
+    .digest('hex');
+  return hash;
+}
+
+// Check if cached analysis is still fresh (< 30 days)
+function isCacheFresh(timestamp: number): boolean {
+  const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000;
+  return (Date.now() - timestamp) < thirtyDaysMs;
+}
+
+// Get cached analysis result
+function getCachedAnalysis(cacheKey: string): AnalysisResult | null {
+  const cached = analysisCache.get(cacheKey);
+  if (!cached) {
+    console.log(`[CACHE] Miss: analysis not found`);
+    return null;
+  }
+  
+  if (!isCacheFresh(cached.timestamp)) {
+    console.log(`[CACHE] Stale: analysis older than 30 days, will re-analyze`);
+    analysisCache.delete(cacheKey);
+    return null;
+  }
+  
+  console.log(`[CACHE] HIT: returning cached analysis (${cached.result.ingredients.length} ingredients)`);
+  return cached.result;
+}
+
+// Store analysis result in cache
+function cacheAnalysis(cacheKey: string, result: AnalysisResult): void {
+  analysisCache.set(cacheKey, {
+    result,
+    timestamp: Date.now()
+  });
+  console.log(`[CACHE] STORED: analysis for ${result.ingredients.length} ingredients`);
+}
 
 /**
  * Expands parenthetical ingredient groups into individual ingredients using a stack-based parser
@@ -197,6 +242,14 @@ export async function analyzeIngredients(
 ): Promise<AnalysisResult> {
   console.log(`[ANALYZER] User language: ${userLanguage}`);
   console.log(`[ANALYZER] OCR text length: ${ingredientsText.length} characters`);
+  
+  // Check cache first before doing any processing
+  const cacheKey = getCacheKey(ingredientsText, productType, userLanguage);
+  const cachedResult = getCachedAnalysis(cacheKey);
+  if (cachedResult) {
+    return cachedResult;
+  }
+  console.log(`[CACHE] Miss: will perform fresh analysis`);
   
   // Pre-process the text to expand parenthetical ingredients
   // This is more reliable than asking the AI to do it
@@ -476,6 +529,8 @@ Return your analysis as JSON with this structure:
       // TODO: Re-enable with smarter estimation that accounts for parenthetical groups
       console.log(`[ANALYZER] Completeness check DISABLED. Detected: ${detectedCount}, Estimated: ${estimatedIngredientCount}, Found marker: ${foundIngredientsMarker}`);
       
+      // Cache the result before returning
+      cacheAnalysis(cacheKey, validatedResult.data);
       return validatedResult.data;
       
     } catch (error: any) {
