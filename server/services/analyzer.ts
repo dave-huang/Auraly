@@ -471,7 +471,9 @@ Return your analysis as JSON with this structure:
         'forbidden',
         'invalid_request_error',
         'authentication_error',
-        'permission_denied'
+        'permission_denied',
+        'insufficient_quota',
+        'quota'
       ];
       
       const shouldNotRetry = nonRetryableErrors.some(msg => 
@@ -517,6 +519,16 @@ Return your analysis as JSON with this structure:
     const errorType = (lastError as any).type || '';
     const errorMessage = lastError.message || '';
     
+    // Check for quota/billing errors (most specific, check first)
+    if (errorType === 'insufficient_quota' || errorMessage.includes('quota') || errorMessage.includes('billing')) {
+      throw new Error(`Your OpenAI API key has insufficient quota. ${errorMessage}`);
+    }
+    
+    // Check for auth/API key errors
+    if (errorMessage.includes('API key') || errorMessage.includes('unauthorized') || errorMessage.includes('invalid api')) {
+      throw new Error(`API authentication error: ${errorMessage}`);
+    }
+    
     // Check for server errors (500, 502, 503)
     if (errorStatus === 500 || errorStatus === 502 || errorStatus === 503 || errorType === 'server_error') {
       throw new Error(`The AI service is temporarily unavailable (tried ${maxRetries} times). This usually resolves within a few minutes. Please try again shortly.`);
@@ -527,8 +539,8 @@ Return your analysis as JSON with this structure:
       throw new Error('Analysis is taking longer than expected. The AI service may be experiencing high load. Please try again in a few moments.');
     }
     
-    // Check for rate limit errors
-    if (errorMessage.includes('rate limit') || errorStatus === 429) {
+    // Check for rate limit errors (different from quota - this is per-minute throttling)
+    if (errorMessage.includes('rate limit') && !errorMessage.includes('quota')) {
       throw new Error('The AI service is currently busy. Please wait a minute and try again.');
     }
     
