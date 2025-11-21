@@ -1,4 +1,4 @@
-import { openaiGPT51 } from '../openai-gpt51';
+import { openai } from '../openai';
 import { analysisResultSchema, type ProductType, type AnalysisResult, type RiskLevel } from '@shared/schema';
 
 /**
@@ -357,7 +357,7 @@ Return your analysis as JSON with this structure:
         console.log(`[ANALYZER] Retry attempt ${attempt}/${maxRetries} due to: ${lastError?.message || 'unknown error'}`);
       }
       
-      console.log('[TIMING] Sending request to GPT-5.1...');
+      console.log('[TIMING] Sending request to OpenAI (Replit AI Integrations)...');
       const aiStartTime = Date.now();
       
       const systemMessages = {
@@ -368,43 +368,72 @@ Return your analysis as JSON with this structure:
       const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
       
       // Adjust max_tokens based on estimated ingredient count and language
-      // GPT-5.1 is more efficient, so we can use higher limits for better completeness
+      // With GPT-4o, use moderate limits for speed while ensuring completeness
       // Each ingredient needs ~120-150 tokens (name, risk, concise summary/details) in English/Spanish
       // Chinese needs ~100-120 tokens per ingredient due to higher token density
       const tokensPerIngredient = userLanguage === 'zh' ? 110 : 140;
       const baseTokens = userLanguage === 'zh' ? 600 : 800;
-      const maxCap = userLanguage === 'zh' ? 4500 : 6000;
+      const maxCap = userLanguage === 'zh' ? 4500 : 6000; // Lower cap for Chinese to improve speed
       
       const estimatedTokensNeeded = Math.min(estimatedIngredientCount * tokensPerIngredient + baseTokens, maxCap);
       const maxTokens = Math.max(2500, estimatedTokensNeeded);
       
       console.log(`[ANALYZER] Using max_tokens: ${maxTokens} for language: ${userLanguage} (estimated ${estimatedIngredientCount} ingredients)`);
-      console.log('[ANALYZER] Calling GPT-5.1 (no fallback - errors reported directly)');
+      console.log('[ANALYZER] Calling GPT-4o (primary), with GPT-4o-mini fallback if needed');
       
-      // Use GPT-5.1 with no fallback - errors are reported directly for visibility
-      const response = await openaiGPT51.chat.completions.create({
-        model: "gpt-5.1",
-        messages: [
-          {
-            role: "system",
-            content: systemMessage
-          },
-          {
-            role: "user",
-            content: prompt
-          }
-        ],
-        response_format: { type: "json_object" },
-        max_tokens: maxTokens,
-        temperature: 0.3
-      });
-      console.log('[ANALYZER] GPT-5.1 analysis completed successfully');
+      // Use GPT-4o (primary, faster than GPT-4o-mini), fall back to GPT-4o-mini if unavailable
+      let response;
+      try {
+        console.log('[ANALYZER] Attempting GPT-4o for fast analysis');
+        response = await openai.chat.completions.create({
+          model: "gpt-4o",
+          messages: [
+            {
+              role: "system",
+              content: systemMessage
+            },
+            {
+              role: "user",
+              content: prompt
+            }
+          ],
+          response_format: { type: "json_object" },
+          max_tokens: maxTokens,
+          temperature: 0.3
+        });
+        console.log('[ANALYZER] GPT-4o succeeded');
+      } catch (modelError: any) {
+        // If GPT-4o is unavailable, fall back to GPT-4o-mini
+        if (modelError?.status === 400 || modelError?.code === 'unknown_model') {
+          console.log('[ANALYZER] GPT-4o unavailable, falling back to GPT-4o-mini');
+          response = await openai.chat.completions.create({
+            model: "gpt-4o-mini",
+            messages: [
+              {
+                role: "system",
+                content: systemMessage
+              },
+              {
+                role: "user",
+                content: prompt
+              }
+            ],
+            response_format: { type: "json_object" },
+            max_tokens: maxTokens,
+            temperature: 0.3
+          });
+          console.log('[ANALYZER] GPT-4o-mini succeeded');
+        } else {
+          // If it's not a model availability error, re-throw
+          throw modelError;
+        }
+      }
 
       const aiDuration = ((Date.now() - aiStartTime) / 1000).toFixed(2);
       const tokensUsed = response.usage?.total_tokens || 0;
       const completionTokens = response.usage?.completion_tokens || 0;
-      console.log(`[TIMING] GPT-5.1 API call completed in ${aiDuration}s (${tokensUsed} tokens, ${completionTokens} completion)`);
-      console.log('GPT-5.1 response received:', JSON.stringify(response, null, 2));
+      console.log(`[TIMING] OpenAI API call completed in ${aiDuration}s (${tokensUsed} tokens, ${completionTokens} completion)`);
+      console.log('OpenAI response received:', JSON.stringify(response, null, 2));
       
       const content = response.choices?.[0]?.message?.content;
       if (!content) {
@@ -519,16 +548,6 @@ Return your analysis as JSON with this structure:
     const errorType = (lastError as any).type || '';
     const errorMessage = lastError.message || '';
     
-    // Check for quota/billing errors (most specific, check first)
-    if (errorType === 'insufficient_quota' || errorMessage.includes('quota') || errorMessage.includes('billing')) {
-      throw new Error(`Your OpenAI API key has insufficient quota. ${errorMessage}`);
-    }
-    
-    // Check for auth/API key errors
-    if (errorMessage.includes('API key') || errorMessage.includes('unauthorized') || errorMessage.includes('invalid api')) {
-      throw new Error(`API authentication error: ${errorMessage}`);
-    }
-    
     // Check for server errors (500, 502, 503)
     if (errorStatus === 500 || errorStatus === 502 || errorStatus === 503 || errorType === 'server_error') {
       throw new Error(`The AI service is temporarily unavailable (tried ${maxRetries} times). This usually resolves within a few minutes. Please try again shortly.`);
@@ -539,8 +558,8 @@ Return your analysis as JSON with this structure:
       throw new Error('Analysis is taking longer than expected. The AI service may be experiencing high load. Please try again in a few moments.');
     }
     
-    // Check for rate limit errors (different from quota - this is per-minute throttling)
-    if (errorMessage.includes('rate limit') && !errorMessage.includes('quota')) {
+    // Check for rate limit errors
+    if (errorMessage.includes('rate limit') || errorStatus === 429) {
       throw new Error('The AI service is currently busy. Please wait a minute and try again.');
     }
     
