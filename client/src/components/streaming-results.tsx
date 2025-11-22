@@ -27,7 +27,7 @@ export function StreamingResults({
       try {
         const response = await fetch("/api/scan-and-stream", {
           method: "POST",
-          headers: { "Content-Type": "text/event-stream" },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             imageData,
             productType,
