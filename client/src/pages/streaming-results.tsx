@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Camera } from "lucide-react";
@@ -13,7 +13,7 @@ export default function StreamingResultsPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   // Get data from session storage that was set by upload page
-  useState(() => {
+  useEffect(() => {
     const stored = sessionStorage.getItem("streamingAnalysisParams");
     if (stored) {
       const params = JSON.parse(stored);
@@ -24,7 +24,7 @@ export default function StreamingResultsPage() {
     } else {
       setLocation("/upload");
     }
-  });
+  }, [setLocation]);
 
   if (isLoading || !ingredients.length) {
     return null;
