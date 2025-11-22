@@ -112,36 +112,40 @@ export function StreamingResults({
     }
   };
 
+  // Error display
+  if (error) {
+    return (
+      <Card className="p-8 text-center border-destructive/50 bg-destructive/5">
+        <p className="text-destructive font-semibold">{error}</p>
+      </Card>
+    );
+  }
+
   return (
     <div className="space-y-3">
       {/* Streaming Results */}
       {results.map((result, idx) => (
         <Card
-          key={`${result.ingredient}-${idx}`}
+          key={`${result.name}-${idx}`}
           className="p-4 animate-in fade-in slide-in-from-top-2 duration-300"
-          data-testid={`card-ingredient-${result.ingredient}`}
+          data-testid={`card-ingredient-${result.name}`}
         >
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-2 flex-wrap">
                 <h3
                   className="font-semibold text-foreground break-words"
-                  data-testid={`text-ingredient-name-${result.ingredient}`}
+                  data-testid={`text-ingredient-name-${result.name}`}
                 >
-                  {result.ingredient}
+                  {result.name}
                 </h3>
                 <Badge
                   variant="secondary"
                   className={getRiskColor(result.riskLevel)}
-                  data-testid={`badge-risk-${result.ingredient}`}
+                  data-testid={`badge-risk-${result.name}`}
                 >
                   {result.riskLevel}
                 </Badge>
-                {result.fromCache && (
-                  <Badge variant="outline" className="text-xs">
-                    cached
-                  </Badge>
-                )}
               </div>
               <p className="text-sm text-muted-foreground">
                 {result.summary}
@@ -151,30 +155,12 @@ export function StreamingResults({
         </Card>
       ))}
 
-      {/* Error Results */}
-      {errors.size > 0 &&
-        Array.from(errors.entries()).map(([ingredient, error]) => (
-          <Card
-            key={`error-${ingredient}`}
-            className="p-4 border-destructive/50 bg-destructive/5"
-            data-testid={`card-error-${ingredient}`}
-          >
-            <div className="flex items-start gap-2">
-              <div className="text-destructive mt-1">⚠</div>
-              <div>
-                <h3 className="font-semibold text-foreground">{ingredient}</h3>
-                <p className="text-sm text-destructive">{error}</p>
-              </div>
-            </div>
-          </Card>
-        ))}
-
       {/* Loading State */}
       {isLoading && results.length === 0 && (
         <Card className="p-8 text-center">
           <Loader2 className="h-8 w-8 animate-spin mx-auto text-muted-foreground" />
           <p className="text-muted-foreground mt-4">
-            Processing {ingredients.length} ingredients...
+            Processing ingredients...
           </p>
         </Card>
       )}
@@ -184,7 +170,7 @@ export function StreamingResults({
         <Card className="p-4 text-center">
           <Loader2 className="h-4 w-4 animate-spin inline mr-2" />
           <span className="text-sm text-muted-foreground">
-            Analyzing {ingredients.length - results.length} remaining...
+            Analyzing more ingredients...
           </span>
         </Card>
       )}

@@ -338,6 +338,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Step 2: Run Analysis and stream results
       try {
+        if (!ocrText) {
+          throw new Error('No OCR text available for analysis');
+        }
         const analysisResult = await analyzeIngredients(productType as ProductType, ocrText, userLanguage);
         
         // Send product info first
