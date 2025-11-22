@@ -1,32 +1,36 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Camera } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { ArrowLeft, Camera, AlertCircle } from "lucide-react";
 import { StreamingResults } from "@/components/streaming-results";
+import { IngredientCard } from "@/components/ingredient-card";
+import { RiskSummary } from "@/components/risk-summary";
+import type { RiskLevel } from "@shared/schema";
 import { useTranslation } from "react-i18next";
 
 export default function StreamingResultsPage() {
   const { t, i18n } = useTranslation();
   const [, setLocation] = useLocation();
-  const [ingredients, setIngredients] = useState<string[]>([]);
-  const [category, setCategory] = useState<string>("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [imageData, setImageData] = useState<string | null>(null);
+  const [productType, setProductType] = useState<string | null>(null);
+  const [isInitializing, setIsInitializing] = useState(true);
 
-  // Get data from session storage that was set by upload page
+  // Get data from session storage
   useEffect(() => {
-    const stored = sessionStorage.getItem("streamingAnalysisParams");
+    const stored = sessionStorage.getItem("pendingAnalysis");
     if (stored) {
       const params = JSON.parse(stored);
-      setIngredients(params.ingredients);
-      setCategory(params.category);
-      setIsLoading(false);
-      sessionStorage.removeItem("streamingAnalysisParams");
+      setImageData(params.imageData);
+      setProductType(params.productType);
+      setIsInitializing(false);
+      sessionStorage.removeItem("pendingAnalysis");
     } else {
       setLocation("/upload");
     }
   }, [setLocation]);
 
-  if (isLoading || !ingredients.length) {
+  if (isInitializing || !imageData || !productType) {
     return null;
   }
 
@@ -62,12 +66,9 @@ export default function StreamingResultsPage() {
 
         {/* Streaming Results Component */}
         <StreamingResults
-          ingredients={ingredients}
-          category={category}
-          userLanguage={i18n.language}
-          onComplete={() => {
-            // Could redirect or show completion message
-          }}
+          imageData={imageData}
+          productType={productType}
+          userLanguage={i18n.language.startsWith('zh') ? 'zh' : i18n.language.startsWith('es') ? 'es' : 'en'}
         />
       </main>
 

@@ -290,71 +290,90 @@ export async function registerRoutes(app: Express): Promise<Server> {
     })();
   });
 
-  // Server-Sent Events streaming endpoint for progressive ingredient analysis
-  app.post("/api/stream-ingredients", async (req, res) => {
+  // Streaming OCR + Analysis endpoint - streams ingredients as they complete
+  app.post("/api/scan-and-stream", async (req, res) => {
+    const body = req.body;
+    
+    // Validate required fields
+    if ((!body.imageData && !body.ocrText) || !body.productType || !body.userLanguage) {
+      return res.status(400).json({ 
+        error: 'Missing required fields: (imageData OR ocrText), productType, and userLanguage are required.' 
+      });
+    }
+
+    // Set up SSE headers
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    
+    const startTime = Date.now();
+    let ocrText: string | undefined;
+    
     try {
-      const { ingredients, category, userLanguage } = batchAnalyzeRequestSchema.parse(req.body);
+      const { imageData, productType, userLanguage, ocrText: cachedOcrText } = body;
       
-      console.log(`[STREAM] Starting SSE stream for ${ingredients.length} ingredients`);
-      
-      // Set up SSE headers
-      res.setHeader('Content-Type', 'text/event-stream');
-      res.setHeader('Cache-Control', 'no-cache');
-      res.setHeader('Connection', 'keep-alive');
-      res.setHeader('Access-Control-Allow-Origin', '*');
-      
-      // Process ingredients concurrently but stream results as they complete
-      const promises = ingredients.map(async (ingredient) => {
+      // Step 1: Run OCR or use cached
+      if (cachedOcrText) {
+        console.log(`[STREAM] Using cached OCR text (${cachedOcrText.length} chars)`);
+        ocrText = cachedOcrText;
+      } else {
+        console.log(`[STREAM] Starting OCR for ${productType} in ${userLanguage}`);
         try {
-          // For each ingredient, create a simple analysis
-          // In production, you'd call a dedicated ingredient analyzer
-          // For now, use a simple fallback that checks if it's a known risky ingredient
-          const riskKeywords = {
-            high: ['aspartame', 'msg', 'hfcs', 'bpa', 'parabens', 'formaldehyde', 'lead', 'mercury', 'arsenic', 'toluene', 'phthalates'],
-            moderate: ['sugar', 'sodium', 'artificial', 'dye', 'color', 'flavor', 'sulfate', 'sls', 'alcohol', 'glycerin'],
-          };
+          const ocrResult = await extractTextFromImage(imageData);
           
-          const ingredientLower = ingredient.toLowerCase();
-          let riskLevel: 'low' | 'moderate' | 'high' = 'low';
-          
-          if (riskKeywords.high.some(kw => ingredientLower.includes(kw))) {
-            riskLevel = 'high';
-          } else if (riskKeywords.moderate.some(kw => ingredientLower.includes(kw))) {
-            riskLevel = 'moderate';
+          if (!ocrResult.text || ocrResult.text.trim().length < 10) {
+            throw new Error('No ingredients found in image. Please ensure the ingredient list is clearly visible and try again.');
           }
           
-          // Simulate small processing delay to make streaming visible
-          await new Promise(r => setTimeout(r, 100));
-          
-          const result = {
-            ingredient,
-            riskLevel,
-            summary: `${ingredient} - ${riskLevel} risk ingredient`,
-            fromCache: false
-          };
-          
-          // Send SSE event
-          res.write(`event: ingredientResult\n`);
-          res.write(`data: ${JSON.stringify(result)}\n\n`);
-          
-        } catch (error: any) {
-          res.write(`event: ingredientError\n`);
-          res.write(`data: ${JSON.stringify({ ingredient, error: error.message })}\n\n`);
+          ocrText = ocrResult.text;
+          console.log(`[STREAM] OCR completed: ${ocrText.length} chars`);
+        } catch (ocrError: any) {
+          res.write(`event: error\n`);
+          res.write(`data: ${JSON.stringify({ error: `OCR failed: ${ocrError.message}` })}\n\n`);
+          res.end();
+          return;
         }
-      });
+      }
       
-      // Wait for all ingredients to finish processing
-      await Promise.allSettled(promises);
-      
-      // Send completion event
-      res.write(`event: done\n`);
-      res.write(`data: complete\n\n`);
-      res.end();
-      
-      console.log(`[STREAM] SSE stream completed for ${ingredients.length} ingredients`);
+      // Step 2: Run Analysis and stream results
+      try {
+        const analysisResult = await analyzeIngredients(productType as ProductType, ocrText, userLanguage);
+        
+        // Send product info first
+        res.write(`event: productInfo\n`);
+        res.write(`data: ${JSON.stringify({
+          productName: analysisResult.productName,
+          overallRisk: analysisResult.overallRisk
+        })}\n\n`);
+        
+        // Stream each ingredient with a small delay for visual effect
+        for (const ingredient of analysisResult.ingredients) {
+          await new Promise(r => setTimeout(r, 50)); // 50ms delay between ingredients
+          
+          res.write(`event: ingredientResult\n`);
+          res.write(`data: ${JSON.stringify(ingredient)}\n\n`);
+        }
+        
+        // Send completion
+        res.write(`event: done\n`);
+        res.write(`data: ${JSON.stringify({ 
+          totalIngredients: analysisResult.ingredients.length,
+          duration: (Date.now() - startTime) / 1000 
+        })}\n\n`);
+        res.end();
+        
+        console.log(`[STREAM] Completed: ${analysisResult.ingredients.length} ingredients streamed in ${(Date.now() - startTime) / 1000}s`);
+      } catch (analysisError: any) {
+        res.write(`event: error\n`);
+        res.write(`data: ${JSON.stringify({ error: `Analysis failed: ${analysisError.message}` })}\n\n`);
+        res.end();
+      }
     } catch (error: any) {
-      console.error('[STREAM] SSE error:', error);
-      res.status(400).json({ error: error.message || 'Failed to stream ingredients' });
+      console.error('[STREAM] Error:', error);
+      if (!res.headersSent) {
+        res.status(400).json({ error: error.message || 'Failed to stream analysis' });
+      }
     }
   });
 

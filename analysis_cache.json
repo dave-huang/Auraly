@@ -1,0 +1,353 @@
+[
+  [
+    "ac725901a1f29f0baaf893a6984641417ecab134a065bbb521d11000335f32be",
+    {
+      "result": {
+        "productType": "food",
+        "ingredients": [
+          {
+            "name": "Sugar",
+            "riskLevel": "moderate",
+            "summary": "Sugar is a common sweetener that can contribute to health issues like obesity and diabetes when consumed in excess.",
+            "details": "Sugar is a simple carbohydrate that provides energy but lacks essential nutrients. High consumption is linked to increased risk of chronic conditions such as heart disease and dental cavities.",
+            "category": "Sweetener"
+          },
+          {
+            "name": "Bleached Wheat Flour",
+            "riskLevel": "moderate",
+            "summary": "Bleached wheat flour is refined flour treated with chemicals to improve texture and appearance.",
+            "details": "Bleached wheat flour undergoes chemical processing, which may reduce its nutritional value compared to whole wheat flour. It is often used in processed foods and can contribute to blood sugar spikes.",
+            "category": "Refined carbohydrate"
+          },
+          {
+            "name": "Malted Barley Flour",
+            "riskLevel": "low",
+            "summary": "Malted barley flour is a natural ingredient used to enhance flavor and improve baking properties.",
+            "details": "This flour is made from sprouted barley grains and is often used in baked goods to improve texture and flavor. It is generally considered safe.",
+            "category": "Natural ingredient"
+          },
+          {
+            "name": "Niacin",
+            "riskLevel": "low",
+            "summary": "Niacin is a B-vitamin essential for energy production and maintaining healthy skin and nerves.",
+            "details": "Niacin (Vitamin B3) is added to fortified foods to prevent deficiencies. It plays a role in converting food into energy and supports overall health.",
+            "category": "Vitamin"
+          },
+          {
+            "name": "Reduced Iron",
+            "riskLevel": "low",
+            "summary": "Reduced iron is a mineral used to fortify foods and prevent iron deficiency anemia.",
+            "details": "Iron is essential for oxygen transport in the blood. Fortified foods often include reduced iron to help meet dietary needs, especially in populations prone to deficiency.",
+            "category": "Mineral"
+          },
+          {
+            "name": "Ferrous Sulfate",
+            "riskLevel": "low",
+            "summary": "Ferrous sulfate is a form of iron used in food fortification to prevent iron deficiency.",
+            "details": "This mineral is commonly added to processed foods to improve iron content. It is safe in recommended amounts but can cause gastrointestinal discomfort in excess.",
+            "category": "Mineral"
+          },
+          {
+            "name": "Thiamine Mononitrate",
+            "riskLevel": "low",
+            "summary": "Thiamine mononitrate is a synthetic form of Vitamin B1 used to fortify foods.",
+            "details": "Vitamin B1 is essential for energy metabolism and nerve function. Fortification helps prevent deficiencies, especially in populations consuming refined grains.",
+            "category": "Vitamin"
+          },
+          {
+            "name": "Riboflavin",
+            "riskLevel": "low",
+            "summary": "Riboflavin is a B-vitamin that supports energy production and overall health.",
+            "details": "Also known as Vitamin B2, riboflavin is important for cellular function and metabolism. It is often added to fortified foods to prevent deficiencies.",
+            "category": "Vitamin"
+          },
+          {
+            "name": "Folic Acid",
+            "riskLevel": "low",
+            "summary": "Folic acid is a synthetic form of folate, a B-vitamin essential for DNA synthesis and cell growth.",
+            "details": "Folic acid is commonly added to fortified foods to prevent neural tube defects during pregnancy and support overall health. It is safe and beneficial in recommended amounts.",
+            "category": "Vitamin"
+          },
+          {
+            "name": "Water",
+            "riskLevel": "low",
+            "summary": "Water is a natural ingredient used as a base or solvent in food products.",
+            "details": "Water is essential for hydration and is commonly used in food preparation. It poses no health risks.",
+            "category": "Natural ingredient"
+          },
+          {
+            "name": "High Fructose Corn Syrup",
+            "riskLevel": "high",
+            "summary": "High fructose corn syrup is a sweetener linked to obesity and metabolic disorders.",
+            "details": "This processed sweetener is made from corn starch and contains high levels of fructose. It is associated with increased risk of diabetes, heart disease, and liver issues when consumed excessively.",
+            "category": "Sweetener"
+          },
+          {
+            "name": "Palm Oil",
+            "riskLevel": "moderate",
+            "summary": "Palm oil is a widely used vegetable oil that may contribute to health and environmental concerns.",
+            "details": "Palm oil is high in saturated fats, which can raise cholesterol levels if consumed in excess. Its production is also linked to deforestation and habitat destruction.",
+            "category": "Oil"
+          },
+          {
+            "name": "Corn Syrup",
+            "riskLevel": "moderate",
+            "summary": "Corn syrup is a sweetener that can contribute to blood sugar spikes and weight gain.",
+            "details": "Corn syrup is made from corn starch and is used to add sweetness to foods. While less concentrated than high fructose corn syrup, it can still contribute to health issues when consumed excessively.",
+            "category": "Sweetener"
+          },
+          {
+            "name": "Cocoa",
+            "riskLevel": "low",
+            "summary": "Cocoa is a natural ingredient derived from cacao beans and used for flavoring.",
+            "details": "Cocoa is rich in antioxidants and can provide health benefits when consumed in moderation. It is commonly used in chocolate and baked goods.",
+            "category": "Natural ingredient"
+          },
+          {
+            "name": "Tallow",
+            "riskLevel": "moderate",
+            "summary": "Tallow is rendered animal fat used as a cooking fat or ingredient in processed foods.",
+            "details": "Tallow is high in saturated fats, which can contribute to heart disease if consumed in excess. It is often used in baked goods and fried foods.",
+            "category": "Fat"
+          },
+          {
+            "name": "Soybean Oil",
+            "riskLevel": "moderate",
+            "summary": "Soybean oil is a vegetable oil commonly used in processed foods.",
+            "details": "Soybean oil is high in omega-6 fatty acids, which can promote inflammation when consumed excessively. It is widely used due to its low cost and versatility.",
+            "category": "Oil"
+          },
+          {
+            "name": "Glycerin",
+            "riskLevel": "low",
+            "summary": "Glycerin is a humectant used to retain moisture in foods.",
+            "details": "This ingredient is a sugar alcohol that helps preserve texture and moisture in processed foods. It is generally safe for consumption.",
+            "category": "Humectant"
+          },
+          {
+            "name": "Cocoa Processed with Alkali",
+            "riskLevel": "low",
+            "summary": "Cocoa processed with alkali is treated to reduce acidity and improve flavor.",
+            "details": "Also known as Dutch-processed cocoa, this ingredient is used in baking and chocolate products. It is safe and enhances the taste of cocoa.",
+            "category": "Natural ingredient"
+          },
+          {
+            "name": "Food Starch Modified",
+            "riskLevel": "moderate",
+            "summary": "Modified food starch is a processed thickener used in many foods.",
+            "details": "This starch is chemically or physically altered to improve its functionality in processed foods. It is generally safe but provides little nutritional value.",
+            "category": "Thickener"
+          },
+          {
+            "name": "Corn Starch",
+            "riskLevel": "low",
+            "summary": "Corn starch is a natural thickener used in cooking and food production.",
+            "details": "Derived from corn, this ingredient is used to thicken sauces and stabilize processed foods. It is safe but lacks significant nutritional benefits.",
+            "category": "Thickener"
+          },
+          {
+            "name": "Baking Soda",
+            "riskLevel": "low",
+            "summary": "Baking soda is a leavening agent used in baked goods.",
+            "details": "Also known as sodium bicarbonate, baking soda helps dough rise by releasing carbon dioxide. It is safe and widely used in cooking.",
+            "category": "Leavening agent"
+          },
+          {
+            "name": "Salt",
+            "riskLevel": "moderate",
+            "summary": "Salt is used to enhance flavor but can contribute to high blood pressure if consumed excessively.",
+            "details": "Sodium chloride is essential for bodily functions but is often overused in processed foods, leading to potential health risks like hypertension and cardiovascular disease.",
+            "category": "Flavor enhancer"
+          },
+          {
+            "name": "Whey",
+            "riskLevel": "low",
+            "summary": "Whey is a dairy protein used in food products.",
+            "details": "Derived from milk, whey is a source of protein and is commonly used in baked goods and supplements. It is safe for most people but may cause issues for those with dairy allergies.",
+            "category": "Protein"
+          },
+          {
+            "name": "Corn Syrup Solids",
+            "riskLevel": "moderate",
+            "summary": "Corn syrup solids are dehydrated corn syrup used as a sweetener.",
+            "details": "This ingredient is similar to corn syrup but in powdered form. It adds sweetness and texture to processed foods and can contribute to health issues when consumed excessively.",
+            "category": "Sweetener"
+          },
+          {
+            "name": "Calcium Sulfate",
+            "riskLevel": "low",
+            "summary": "Calcium sulfate is a food additive used as a firming agent and preservative.",
+            "details": "This mineral is used to maintain texture and stability in processed foods. It is generally recognized as safe in food applications.",
+            "category": "Preservative"
+          },
+          {
+            "name": "Egg",
+            "riskLevel": "low",
+            "summary": "Eggs are a natural ingredient used for binding and texture in recipes.",
+            "details": "Eggs are a source of protein and nutrients but may pose allergy risks for some individuals. They are commonly used in baked goods and processed foods.",
+            "category": "Natural ingredient"
+          },
+          {
+            "name": "Agave Syrup",
+            "riskLevel": "moderate",
+            "summary": "Agave syrup is a natural sweetener derived from the agave plant.",
+            "details": "Agave syrup is high in fructose, which can contribute to metabolic issues when consumed in excess. It is often marketed as a healthier alternative to sugar.",
+            "category": "Sweetener"
+          },
+          {
+            "name": "Inulin",
+            "riskLevel": "low",
+            "summary": "Inulin is a dietary fiber used to improve texture and promote gut health.",
+            "details": "This fiber is derived from plants and is often added to foods to enhance fiber content. It supports digestion and is generally safe.",
+            "category": "Fiber"
+          },
+          {
+            "name": "Egg Whites",
+            "riskLevel": "low",
+            "summary": "Egg whites are a natural ingredient used for binding and texture.",
+            "details": "Egg whites are a source of protein and are commonly used in baking and processed foods. They are safe but may pose allergy risks for some individuals.",
+            "category": "Natural ingredient"
+          },
+          {
+            "name": "Dextrose",
+            "riskLevel": "moderate",
+            "summary": "Dextrose is a simple sugar used as a sweetener.",
+            "details": "This sugar is derived from corn and is used to add sweetness and improve texture in processed foods. It can contribute to blood sugar spikes when consumed excessively.",
+            "category": "Sweetener"
+          },
+          {
+            "name": "Hydrogenated Tallow",
+            "riskLevel": "high",
+            "summary": "Hydrogenated tallow is a processed fat that may contain trans fats.",
+            "details": "This ingredient is made by chemically altering tallow to improve shelf life and texture. Trans fats in hydrogenated fats are linked to heart disease and other health risks.",
+            "category": "Fat"
+          },
+          {
+            "name": "Sodium Acid Pyrophosphate",
+            "riskLevel": "moderate",
+            "summary": "Sodium acid pyrophosphate is a leavening agent used in baked goods.",
+            "details": "This chemical helps dough rise and improves texture in processed foods. It is generally safe but may contribute to high sodium intake.",
+            "category": "Leavening agent"
+          },
+          {
+            "name": "Mono and Diglycerides",
+            "riskLevel": "moderate",
+            "summary": "Mono and diglycerides are emulsifiers used to improve texture and shelf life.",
+            "details": "These ingredients are derived from fats and are used to stabilize processed foods. They may contain trans fats, which are linked to health risks.",
+            "category": "Emulsifier"
+          },
+          {
+            "name": "Polysorbate 60",
+            "riskLevel": "moderate",
+            "summary": "Polysorbate 60 is an emulsifier used in processed foods.",
+            "details": "This synthetic compound helps mix ingredients like oil and water. It is generally safe but may cause digestive discomfort in sensitive individuals.",
+            "category": "Emulsifier"
+          },
+          {
+            "name": "Sodium Stearoyl Lactylate",
+            "riskLevel": "low",
+            "summary": "Sodium stearoyl lactylate is an emulsifier used to improve texture and shelf life.",
+            "details": "This ingredient is commonly used in baked goods and is considered safe in food applications. It helps maintain consistency in processed foods.",
+            "category": "Emulsifier"
+          },
+          {
+            "name": "Cottonseed Oil",
+            "riskLevel": "moderate",
+            "summary": "Cottonseed oil is a vegetable oil used in processed foods.",
+            "details": "This oil is high in omega-6 fatty acids, which can promote inflammation when consumed excessively. It is widely used due to its low cost.",
+            "category": "Oil"
+          },
+          {
+            "name": "Soy Lecithin",
+            "riskLevel": "low",
+            "summary": "Soy lecithin is an emulsifier used to improve texture and mixability in foods.",
+            "details": "Derived from soybeans, this ingredient is widely used in processed foods and is generally safe. It poses allergy risks for individuals sensitive to soy.",
+            "category": "Emulsifier"
+          },
+          {
+            "name": "Xanthan Gum",
+            "riskLevel": "low",
+            "summary": "Xanthan gum is a thickener and stabilizer used in processed foods.",
+            "details": "This ingredient is produced by fermenting sugars and is used to improve texture and stability in foods. It is safe and widely used in gluten-free products.",
+            "category": "Thickener"
+          },
+          {
+            "name": "Agar",
+            "riskLevel": "low",
+            "summary": "Agar is a natural thickener derived from seaweed.",
+            "details": "This ingredient is used to improve texture and stability in foods. It is safe and often used in vegetarian and vegan products.",
+            "category": "Thickener"
+          },
+          {
+            "name": "Cellulose Gum",
+            "riskLevel": "low",
+            "summary": "Cellulose gum is a thickener and stabilizer used in processed foods.",
+            "details": "Derived from plant fibers, this ingredient is used to improve texture and stability. It is safe and widely used in food production.",
+            "category": "Thickener"
+          },
+          {
+            "name": "Natural and Artificial Flavors",
+            "riskLevel": "moderate",
+            "summary": "Natural and artificial flavors are used to enhance taste in processed foods.",
+            "details": "Natural flavors are derived from plant or animal sources, while artificial flavors are chemically synthesized. While generally safe, artificial flavors may cause sensitivity in some individuals.",
+            "category": "Flavoring"
+          },
+          {
+            "name": "Color",
+            "riskLevel": "moderate",
+            "summary": "Color additives are used to enhance the appearance of foods.",
+            "details": "Artificial colors may pose health risks, including allergies and hyperactivity in sensitive individuals. Natural colors are generally safer.",
+            "category": "Colorant"
+          },
+          {
+            "name": "Monocalcium Phosphate",
+            "riskLevel": "low",
+            "summary": "Monocalcium phosphate is a leavening agent used in baked goods.",
+            "details": "This ingredient helps dough rise and improves texture in processed foods. It is considered safe in food applications.",
+            "category": "Leavening agent"
+          },
+          {
+            "name": "Enzymes",
+            "riskLevel": "low",
+            "summary": "Enzymes are natural proteins used to improve food processing and texture.",
+            "details": "These proteins help break down ingredients and improve texture in processed foods. They are safe and widely used in food production.",
+            "category": "Processing aid"
+          },
+          {
+            "name": "Locust Bean Gum",
+            "riskLevel": "low",
+            "summary": "Locust bean gum is a natural thickener derived from carob seeds.",
+            "details": "This ingredient is used to improve texture and stability in foods. It is safe and often used in gluten-free products.",
+            "category": "Thickener"
+          },
+          {
+            "name": "Dipotassium Phosphate",
+            "riskLevel": "moderate",
+            "summary": "Dipotassium phosphate is a food additive used as a stabilizer and buffering agent.",
+            "details": "This ingredient helps maintain pH balance and improve texture in processed foods. It is generally safe but may contribute to high potassium intake in sensitive individuals.",
+            "category": "Stabilizer"
+          },
+          {
+            "name": "Chocolate Liquor",
+            "riskLevel": "low",
+            "summary": "Chocolate liquor is a natural ingredient made from ground cacao beans.",
+            "details": "This ingredient is used to provide chocolate flavor in foods. It is safe and contains antioxidants that may offer health benefits.",
+            "category": "Natural ingredient"
+          },
+          {
+            "name": "Defatted Soy Flour",
+            "riskLevel": "moderate",
+            "summary": "Defatted soy flour is a processed soy product used to improve texture and protein content.",
+            "details": "This ingredient is made by removing fat from soybeans and is used in baked goods and processed foods. It poses allergy risks for individuals sensitive to soy.",
+            "category": "Protein"
+          }
+        ],
+        "overallRisk": "high",
+        "analyzedAt": "2025-11-22T03:12:00.138Z",
+        "originalText": "INGREDIENTS: SUGAR, ENRICHED FLOUR (BLEACHED\nWHEAT FLOUR, MALTED BARLEY FLOUR, NIACIN,\nREDUCED IRON OR FERROUS SULFATE, THIAMINE\nMONONITRATE, RIBOFLAVIN, FOLIC ACID), WATER,\nHIGH FRUCTOSE CORN SYRUP, PALM OIL, CORN SYRUP,\nCOCOA, TALLOW, SOYBEAN OIL, CONTAINS 2% OR\nLESS OF: GLYCERIN, COCOA PROCESSED WITH ALKALI,\nFOOD STARCH MODIFIED, CORN STARCH, BAKING\nSODA, SALT, WHEY, CORN SYRUP SOLIDS, CALCIUM\nSULFATE, EGG, SORBIC ACID AND POTASSIUM\nSORBATE (TO RETAIN FRESHNESS), AGAVE SYRUP,\nINULIN, EGG WHITES, DEXTROSE, HYDROGENATED\nTALLOW, SODIUM ACID PYROPHOSPHATE, ΜΟΝΟ\nAND DIGLYCERIDES, BAKING SODA, BLEACHED\nWHEAT FLOUR, POLYSORBATE 60, SODIUM STEAROYL\nLACTYLATE, COTTONSEED OIL, SOY LECITHIN,\nXANTHAN GUM, AGAR, CELLULOSE GUM, NATURAL\nAND ARTIFICIAL FLAVORS, TITANIUM DIOXIDE\n(COLOR), MONOCALCIUM PHOSPHATE, ENZYMES,\nSALT, LOCUST BEAN GUM, DIPOTASSIUM PHOSPHATE,\nCHOCOLATE LIQUOR, DEFATTED SOY FLOUR.\nCONTAINS EGG, MILK, SOYBEAN AND WHEAT\nINGREDIENTS.\nCONTAINS BIOENGINEERED FOOD INGREDIENTS"
+      },
+      "timestamp": 1763781120141,
+      "ocrText": "INGREDIENTS: SUGAR, ENRICHED FLOUR (BLEACHED\nWHEAT FLOUR, MALTED BARLEY FLOUR, NIACIN,\nREDUCED IRON OR FERROUS SULFATE, THIAMINE\nMONONITRATE, RIBOFLAVIN, FOLIC ACID), WATER,\nHIGH FRUCTOSE CORN SYRUP, PALM OIL, CORN SYRUP,\nCOCOA, TALLOW, SOYBEAN OIL, CONTAINS 2% OR\nLESS OF: GLYCERIN, COCOA PROCESSED WITH ALKALI,\nFOOD STARCH MODIFIED, CORN STARCH, BAKING\nSODA, SALT, WHEY, CORN SYRUP SOLIDS, CALCIUM\nSULFATE, EGG, SORBIC ACID AND POTASSIUM\nSORBATE (TO RETAIN FRESHNESS), AGAVE SYRUP,\nINULIN, EGG WHITES, DEXTROSE, HYDROGENATED\nTALLOW, SODIUM ACID PYROPHOSPHATE, ΜΟΝΟ\nAND DIGLYCERIDES, BAKING SODA, BLEACHED\nWHEAT FLOUR, POLYSORBATE 60, SODIUM STEAROYL\nLACTYLATE, COTTONSEED OIL, SOY LECITHIN,\nXANTHAN GUM, AGAR, CELLULOSE GUM, NATURAL\nAND ARTIFICIAL FLAVORS, TITANIUM DIOXIDE\n(COLOR), MONOCALCIUM PHOSPHATE, ENZYMES,\nSALT, LOCUST BEAN GUM, DIPOTASSIUM PHOSPHATE,\nCHOCOLATE LIQUOR, DEFATTED SOY FLOUR.\nCONTAINS EGG, MILK, SOYBEAN AND WHEAT\nINGREDIENTS.\nCONTAINS BIOENGINEERED FOOD INGREDIENTS"
+    }
+  ]
+]

@@ -1,55 +1,45 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react";
-import type { RiskLevel } from "@shared/schema";
-
-interface StreamedIngredient {
-  ingredient: string;
-  riskLevel: RiskLevel;
-  summary: string;
-  fromCache: boolean;
-}
+import type { Ingredient, RiskLevel } from "@shared/schema";
 
 interface StreamingResultsProps {
-  ingredients: string[];
-  category: string;
+  imageData: string;
+  productType: string;
   userLanguage: string;
-  onComplete: () => void;
 }
 
 export function StreamingResults({
-  ingredients,
-  category,
+  imageData,
+  productType,
   userLanguage,
-  onComplete,
 }: StreamingResultsProps) {
-  const [results, setResults] = useState<StreamedIngredient[]>([]);
-  const [errors, setErrors] = useState<Map<string, string>>(new Map());
+  const [results, setResults] = useState<Ingredient[]>([]);
+  const [productName, setProductName] = useState<string | null>(null);
+  const [overallRisk, setOverallRisk] = useState<RiskLevel | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [isComplete, setIsComplete] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const eventSourceRef = useRef<EventSource | null>(null);
 
   useEffect(() => {
     const startStreaming = async () => {
       try {
-        const response = await fetch("/api/stream-ingredients", {
+        const response = await fetch("/api/scan-and-stream", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "text/event-stream" },
           body: JSON.stringify({
-            ingredients,
-            category,
+            imageData,
+            productType,
             userLanguage,
           }),
         });
 
-        if (!response.ok) {
+        if (!response.body) {
           throw new Error("Failed to start streaming");
         }
 
-        const reader = response.body?.getReader();
-        if (!reader) throw new Error("No reader available");
-
+        const reader = response.body.getReader();
         const decoder = new TextDecoder();
         let buffer = "";
 
@@ -61,51 +51,55 @@ export function StreamingResults({
           const lines = buffer.split("\n");
           buffer = lines.pop() || "";
 
-          for (const line of lines) {
-            if (!line.trim()) continue;
-
-            if (line.startsWith("event: ingredientResult")) {
-              // Read next line for data
-              const nextIdx = lines.indexOf(line) + 1;
-              if (nextIdx < lines.length && lines[nextIdx].startsWith("data:")) {
-                const jsonStr = lines[nextIdx].substring(5).trim();
-                const result = JSON.parse(jsonStr) as StreamedIngredient;
-                setResults((prev) => [...prev, result]);
+          let i = 0;
+          while (i < lines.length) {
+            const line = lines[i];
+            
+            if (line.startsWith("event: productInfo")) {
+              const dataLine = lines[i + 1];
+              if (dataLine?.startsWith("data:")) {
+                const jsonStr = dataLine.substring(5).trim();
+                const data = JSON.parse(jsonStr);
+                setProductName(data.productName);
+                setOverallRisk(data.overallRisk);
               }
-            } else if (line.startsWith("event: ingredientError")) {
-              const nextIdx = lines.indexOf(line) + 1;
-              if (
-                nextIdx < lines.length &&
-                lines[nextIdx].startsWith("data:")
-              ) {
-                const jsonStr = lines[nextIdx].substring(5).trim();
-                const error = JSON.parse(jsonStr);
-                setErrors(
-                  (prev) =>
-                    new Map(prev).set(error.ingredient, error.error)
-                );
+              i += 2;
+            } else if (line.startsWith("event: ingredientResult")) {
+              const dataLine = lines[i + 1];
+              if (dataLine?.startsWith("data:")) {
+                const jsonStr = dataLine.substring(5).trim();
+                const ingredient = JSON.parse(jsonStr) as Ingredient;
+                setResults((prev) => [...prev, ingredient]);
+                setIsLoading(false);
               }
+              i += 2;
             } else if (line.startsWith("event: done")) {
               setIsComplete(true);
               setIsLoading(false);
-              onComplete();
+              i += 2;
+            } else if (line.startsWith("event: error")) {
+              const dataLine = lines[i + 1];
+              if (dataLine?.startsWith("data:")) {
+                const jsonStr = dataLine.substring(5).trim();
+                const errData = JSON.parse(jsonStr);
+                setError(errData.error);
+              }
+              setIsLoading(false);
+              i += 2;
+            } else {
+              i++;
             }
           }
         }
-      } catch (error) {
-        console.error("Streaming error:", error);
+      } catch (err) {
+        console.error("Streaming error:", err);
+        setError(err instanceof Error ? err.message : "Streaming failed");
         setIsLoading(false);
       }
     };
 
     startStreaming();
-
-    return () => {
-      if (eventSourceRef.current) {
-        eventSourceRef.current.close();
-      }
-    };
-  }, [ingredients, category, userLanguage, onComplete]);
+  }, [imageData, productType, userLanguage]);
 
   const getRiskColor = (risk: RiskLevel) => {
     switch (risk) {
