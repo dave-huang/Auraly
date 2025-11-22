@@ -637,5 +637,321 @@
       "timestamp": 1763781469969,
       "ocrText": "INGREDIENTS Water, Glycerin, Olea Europaea (Olive) Fruit Oil, Butylene\nGlycol, Macadamia Ternifolia Seed Oil, Cyclopentasiloxane, Cetearyl Alc\nohol, Beeswax, Cetyl Ethylhexanoate, Cyclohexasiloxane, Polysorbate 60,\nStearic Acid, Polyglyceryl-3 Methylglucose Distearate, Isopropyl Myristate,\nPEG-100 Stearate, Glyceryl Stearate, Hamamelis Virginiana (Witch Hazel)\nExtract, Dimethiconol, Sodium Polyacrylate, 1,2-Hexanediol, Caprylyl Glycol,\nButyrospermum Parkii (Shea) Butter, Illicium Verum (Anise) Fruit Extract,\nDisodium EDTA, Betaine, Allantoin, Trehalose, Polysorbate 20, Polyglutamic\nAcid, Glycyrrhiza Glabra (Licorice) Root Extract, Camellia Sinensis Leaf Ex\ntract, Rosmarinus Officinalis (Rosemary) Leaf Extract, Centella Asiatica Ext\nract, Chamomilla Recutita (Matricaria) Flower Extract, Scutellaria Baicalen\nsis Root Extract, Polygonum Cuspidatum Root Extract, Xylitol, Ceramide NP,\nCitric Acid"
     }
+  ],
+  [
+    "8ee7287fd8c0bd0368639530a282fcbe8f5cd0c3b5b32f24744a94c37728b1b1",
+    {
+      "result": {
+        "productType": "food",
+        "ingredients": [
+          {
+            "name": "Palm Oil",
+            "riskLevel": "moderate",
+            "summary": "Palm oil is a type of vegetable oil commonly used in processed foods.",
+            "details": "Palm oil is high in saturated fats, which may contribute to heart disease when consumed in excess. Additionally, its production raises environmental concerns due to deforestation.",
+            "category": "oil"
+          },
+          {
+            "name": "Canola Oil",
+            "riskLevel": "low",
+            "summary": "Canola oil is a vegetable oil derived from rapeseed.",
+            "details": "Canola oil is considered a healthy oil due to its low saturated fat content and high omega-3 fatty acids. It is widely used in cooking and food production.",
+            "category": "oil"
+          },
+          {
+            "name": "Soy Lecithin",
+            "riskLevel": "low",
+            "summary": "Soy lecithin is an emulsifier derived from soybeans.",
+            "details": "Soy lecithin helps blend ingredients like oil and water. It is generally safe for consumption but may pose a risk for individuals allergic to soy.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Wheat Flour",
+            "riskLevel": "moderate",
+            "summary": "Wheat flour is a common ingredient made from ground wheat.",
+            "details": "Wheat flour contains gluten, which can cause adverse reactions in individuals with celiac disease or gluten sensitivity. It is a staple in many baked goods.",
+            "category": "allergen"
+          },
+          {
+            "name": "Sugar",
+            "riskLevel": "moderate",
+            "summary": "Sugar is a sweetener commonly used in food products.",
+            "details": "Excessive sugar consumption is linked to health issues such as obesity, diabetes, and heart disease. It is often added to enhance flavor.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Salt",
+            "riskLevel": "moderate",
+            "summary": "Salt is a mineral used as a seasoning and preservative.",
+            "details": "High sodium intake is associated with increased blood pressure and cardiovascular risks. It is widely used in processed foods.",
+            "category": "seasoning"
+          },
+          {
+            "name": "Corn Starch",
+            "riskLevel": "low",
+            "summary": "Corn starch is a thickening agent derived from corn.",
+            "details": "Corn starch is commonly used to improve texture in sauces and baked goods. It is generally safe for consumption.",
+            "category": "starch"
+          },
+          {
+            "name": "Spices",
+            "riskLevel": "low",
+            "summary": "Spices are natural flavoring agents derived from plants.",
+            "details": "Spices are used to enhance the flavor of food and are generally safe. Specific spices may have health benefits or allergenic potential.",
+            "category": "seasoning"
+          },
+          {
+            "name": "Garlic",
+            "riskLevel": "low",
+            "summary": "Garlic is a bulb used for flavoring and medicinal purposes.",
+            "details": "Garlic is known for its strong flavor and potential health benefits, including antimicrobial properties and heart health support.",
+            "category": "seasoning"
+          },
+          {
+            "name": "Whole Milk Powder",
+            "riskLevel": "moderate",
+            "summary": "Whole milk powder is dehydrated milk.",
+            "details": "Whole milk powder contains lactose and dairy proteins, which can be problematic for individuals with lactose intolerance or dairy allergies.",
+            "category": "dairy"
+          },
+          {
+            "name": "Skim Milk Powder",
+            "riskLevel": "moderate",
+            "summary": "Skim milk powder is dehydrated milk with reduced fat content.",
+            "details": "Skim milk powder is used in processed foods and contains lactose, which may cause issues for lactose-intolerant individuals.",
+            "category": "dairy"
+          },
+          {
+            "name": "Caramel Color",
+            "riskLevel": "moderate",
+            "summary": "Caramel color is a food coloring made by heating sugar.",
+            "details": "Caramel color is used to enhance the appearance of foods. Some types may contain compounds linked to health concerns such as carcinogenicity.",
+            "category": "colorant"
+          },
+          {
+            "name": "Monosodium Glutamate",
+            "riskLevel": "moderate",
+            "summary": "MSG is a flavor enhancer commonly used in processed foods.",
+            "details": "MSG enhances savory flavors but may cause sensitivity in some individuals, leading to headaches or nausea. It is generally recognized as safe by regulatory agencies.",
+            "category": "flavor enhancer"
+          },
+          {
+            "name": "Defatted Soybean",
+            "riskLevel": "low",
+            "summary": "Defatted soybean is soy with reduced fat content.",
+            "details": "Defatted soybean is used in food products as a protein source. It is safe for consumption but may cause issues for soy-allergic individuals.",
+            "category": "protein source"
+          },
+          {
+            "name": "Yeast Extract",
+            "riskLevel": "low",
+            "summary": "Yeast extract is a flavor enhancer derived from yeast.",
+            "details": "Yeast extract is used to add umami flavor to foods. It is generally safe but may contain naturally occurring glutamates.",
+            "category": "flavor enhancer"
+          },
+          {
+            "name": "Natural and Artificial Flavors",
+            "riskLevel": "moderate",
+            "summary": "Natural and artificial flavors are additives used to enhance taste.",
+            "details": "Natural flavors are derived from plants or animals, while artificial flavors are chemically synthesized. Some artificial flavors may pose health concerns.",
+            "category": "flavoring"
+          },
+          {
+            "name": "Honey",
+            "riskLevel": "low",
+            "summary": "Honey is a natural sweetener made by bees.",
+            "details": "Honey is a healthier alternative to refined sugar and contains trace nutrients. It should be avoided by infants due to the risk of botulism.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Dextrin",
+            "riskLevel": "low",
+            "summary": "Dextrin is a carbohydrate used as a thickener or stabilizer.",
+            "details": "Dextrin is derived from starch and is generally safe for consumption. It is commonly used in processed foods.",
+            "category": "stabilizer"
+          },
+          {
+            "name": "Pasteurized Milk",
+            "riskLevel": "moderate",
+            "summary": "Pasteurized milk is heat-treated to kill bacteria.",
+            "details": "Pasteurized milk is safe for most people but contains lactose, which may cause issues for lactose-intolerant individuals.",
+            "category": "dairy"
+          },
+          {
+            "name": "Cheese Cultures",
+            "riskLevel": "low",
+            "summary": "Cheese cultures are bacteria used in cheese production.",
+            "details": "Cheese cultures help ferment milk to produce cheese. They are safe for consumption and essential for cheese flavor development.",
+            "category": "dairy"
+          },
+          {
+            "name": "Enzymes",
+            "riskLevel": "low",
+            "summary": "Enzymes are proteins used to catalyze chemical reactions in food production.",
+            "details": "Enzymes are commonly used in baking and dairy processing. They are safe for consumption.",
+            "category": "processing aid"
+          },
+          {
+            "name": "Onion Flake",
+            "riskLevel": "low",
+            "summary": "Onion flakes are dehydrated onion pieces.",
+            "details": "Onion flakes are used to add flavor to foods and are generally safe for consumption.",
+            "category": "seasoning"
+          },
+          {
+            "name": "Onion Extract",
+            "riskLevel": "low",
+            "summary": "Onion extract is a concentrated form of onion flavor.",
+            "details": "Onion extract is used to enhance flavor in processed foods. It is safe for consumption.",
+            "category": "seasoning"
+          },
+          {
+            "name": "Soy Sauce",
+            "riskLevel": "moderate",
+            "summary": "Soy sauce is a fermented condiment made from soybeans, wheat, and salt.",
+            "details": "Soy sauce contains high sodium levels and gluten, which may pose risks for individuals with hypertension or gluten sensitivity.",
+            "category": "seasoning"
+          },
+          {
+            "name": "Tomato Powder",
+            "riskLevel": "low",
+            "summary": "Tomato powder is dehydrated tomato used as a flavoring agent.",
+            "details": "Tomato powder is used to add tomato flavor to foods. It is generally safe for consumption.",
+            "category": "seasoning"
+          },
+          {
+            "name": "Dried Onion",
+            "riskLevel": "low",
+            "summary": "Dried onion is dehydrated onion used for flavoring.",
+            "details": "Dried onion is safe for consumption and commonly used in processed foods.",
+            "category": "seasoning"
+          },
+          {
+            "name": "Glucose",
+            "riskLevel": "moderate",
+            "summary": "Glucose is a simple sugar used as a sweetener.",
+            "details": "Excessive glucose consumption can lead to health issues such as obesity and diabetes. It is often added to processed foods.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Sucrose Fatty Acid Esters",
+            "riskLevel": "low",
+            "summary": "Sucrose fatty acid esters are emulsifiers used in food production.",
+            "details": "These compounds help blend ingredients like oil and water. They are generally recognized as safe for consumption.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Banana",
+            "riskLevel": "low",
+            "summary": "Banana is a natural fruit used for flavor and nutrition.",
+            "details": "Bananas are a good source of potassium and vitamins. They are safe for most individuals.",
+            "category": "natural ingredient"
+          },
+          {
+            "name": "Processed Honey",
+            "riskLevel": "low",
+            "summary": "Processed honey is a refined form of honey.",
+            "details": "Processed honey is used as a sweetener but may lose some nutrients during processing. It is safe for consumption.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Tomato Paste",
+            "riskLevel": "low",
+            "summary": "Tomato paste is concentrated tomato used for flavoring.",
+            "details": "Tomato paste is safe for consumption and commonly used in sauces and soups.",
+            "category": "seasoning"
+          },
+          {
+            "name": "Fermented Milk",
+            "riskLevel": "moderate",
+            "summary": "Fermented milk is milk that has undergone fermentation.",
+            "details": "Fermented milk contains probiotics but may pose issues for lactose-intolerant individuals. It is commonly used in dairy products.",
+            "category": "dairy"
+          },
+          {
+            "name": "Citric Acid",
+            "riskLevel": "low",
+            "summary": "Citric acid is a natural acid used as a preservative and flavor enhancer.",
+            "details": "Citric acid is widely used in processed foods and beverages. It is safe for consumption.",
+            "category": "preservative"
+          },
+          {
+            "name": "Mono- and Diglycerides",
+            "riskLevel": "moderate",
+            "summary": "Mono- and diglycerides are emulsifiers used in food production.",
+            "details": "These compounds help stabilize mixtures of oil and water. They may contain trans fats, which are linked to heart disease.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Processed with Alkali",
+            "riskLevel": "low",
+            "summary": "Processed with alkali refers to the use of alkaline substances in food production.",
+            "details": "This process is used to modify texture and flavor in foods like cocoa. It is generally safe for consumption.",
+            "category": "processing aid"
+          },
+          {
+            "name": "Tomato Extract",
+            "riskLevel": "low",
+            "summary": "Tomato extract is a concentrated form of tomato flavor.",
+            "details": "Tomato extract is used to enhance flavor in processed foods. It is safe for consumption.",
+            "category": "seasoning"
+          },
+          {
+            "name": "Soy Protein Hydrolysate",
+            "riskLevel": "moderate",
+            "summary": "Soy protein hydrolysate is a processed form of soy protein.",
+            "details": "This ingredient is used as a protein source and flavor enhancer. It may cause issues for individuals with soy allergies.",
+            "category": "protein source"
+          },
+          {
+            "name": "Apple Puree",
+            "riskLevel": "low",
+            "summary": "Apple puree is a natural fruit ingredient used for flavor and texture.",
+            "details": "Apple puree is safe for consumption and adds natural sweetness and fiber to foods.",
+            "category": "natural ingredient"
+          },
+          {
+            "name": "Maltose",
+            "riskLevel": "moderate",
+            "summary": "Maltose is a sugar used as a sweetener.",
+            "details": "Excessive maltose consumption can contribute to health issues like obesity and diabetes. It is commonly used in processed foods.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Whey Powder",
+            "riskLevel": "moderate",
+            "summary": "Whey powder is a dairy protein derived from milk.",
+            "details": "Whey powder is used as a protein source but may cause issues for individuals with lactose intolerance or dairy allergies.",
+            "category": "dairy"
+          },
+          {
+            "name": "Garlic Flake",
+            "riskLevel": "low",
+            "summary": "Garlic flakes are dehydrated garlic pieces.",
+            "details": "Garlic flakes are used to add flavor to foods and are generally safe for consumption.",
+            "category": "seasoning"
+          },
+          {
+            "name": "Paprika Color",
+            "riskLevel": "low",
+            "summary": "Paprika color is a natural coloring derived from paprika.",
+            "details": "Paprika color is used to enhance the appearance of foods. It is safe for consumption.",
+            "category": "colorant"
+          },
+          {
+            "name": "Disodium Inosinate",
+            "riskLevel": "moderate",
+            "summary": "Disodium inosinate is a flavor enhancer used in processed foods.",
+            "details": "This additive enhances savory flavors but may cause sensitivity in some individuals. It is often used in combination with MSG.",
+            "category": "flavor enhancer"
+          }
+        ],
+        "overallRisk": "moderate",
+        "analyzedAt": "2025-11-22T04:45:17.164Z",
+        "originalText": "INGREDIENTS: VEGETABLE OIL (PALM OIL, CANOLA OIL, SOY LECITHIN), WHEAT FLOUR, SUGAR, SALT, CORN STARCH, CURRY POWDER\n(SPICES, GARLIC), SUGAR AND MILK POWDER MIXTURE (SUGAR, WHOLE MILK POWDER, SALT, SKIM MILK POWDER), CARAMEL COLOR,\nMONOSODIUM GLUTAMATE, WHOLE MILK POWDER, DEFATTED SOYBEAN, YEAST EXTRACT, NATURAL AND ARTIFICIAL FLAVORS, HONEY, CHEESE\nPRODUCT (DEXTRIN, ENZYME MODIFIED CHEESE [CHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), WHOLE MILK POWDER,\nSALT], YEAST EXTRACT, CORN STARCH, SALT), SOY LECITHIN, ROASTED ONION POWDER (ONION FLAKE, DEXTRIN, NATURAL FLAVOR), ONION\nSEASONING (ONION EXTRACT, DEXTRIN, SOY SAUCE [SOYBEAN, WHEAT, SALT], YEAST EXTRACT, CORN STARCH, SALT, GARLIC EXTRACT,\nNATURAL FLAVOR), TOMATO POWDER, ONION POWDER (DRIED ONION, DEFATTED SOYBEAN, GLUCOSE), SUCROSE FATTY ACID ESTERS, BROWN\nROUX (PALM OIL, SKIM MILK POWDER, WHEAT FLOUR, DEXTROSE ANHYDROUS GLUCOSE), FRUIT PASTE (BANANA, SUGAR, PROCESSED HONEY,\nTOMATO PASTE, FERMENTED MILK, CITRIC ACID, SALT), SPICES, CITRIC ACID, MONO- AND DIGLYCERIDES, COCOA POWDER (PROCESSED WITH\nALKALI), TOMATO SEASONING (DEXTRIN, TOMATO EXTRACT, YEAST EXTRACT, CORN STARCH, SALT), PROTEIN HYDROLYSATE (SOY PROTEIN\nHYDROLYSATE, DEXTRIN, MONOSODIUM GLUTAMATE), SKIM MILK POWDER, APPLE PASTE (APPLE PUREE, CITRIC ACID), GARLIC POWDER (DRIED\nGARLIC, DEFATTED SOYBEAN, GLUCOSE, MALTOSE), WHEY POWDER, ROASTED GARLIC POWDER (GARLIC FLAKE, DEXTRIN, NATURAL FLAVOR),\nCHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), ONION EXTRACT (ONION EXTRACT, YEAST EXTRACT), PAPRIKA COLOR,\nDISODIUM INOSINATE, TOMATO EXTRACT (TOMATO EXTRACT, PALM OIL, SALT, SUGAR, YEAST EXTRACT) ."
+      },
+      "timestamp": 1763786717166,
+      "ocrText": "INGREDIENTS: VEGETABLE OIL (PALM OIL, CANOLA OIL, SOY LECITHIN), WHEAT FLOUR, SUGAR, SALT, CORN STARCH, CURRY POWDER\n(SPICES, GARLIC), SUGAR AND MILK POWDER MIXTURE (SUGAR, WHOLE MILK POWDER, SALT, SKIM MILK POWDER), CARAMEL COLOR,\nMONOSODIUM GLUTAMATE, WHOLE MILK POWDER, DEFATTED SOYBEAN, YEAST EXTRACT, NATURAL AND ARTIFICIAL FLAVORS, HONEY, CHEESE\nPRODUCT (DEXTRIN, ENZYME MODIFIED CHEESE [CHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), WHOLE MILK POWDER,\nSALT], YEAST EXTRACT, CORN STARCH, SALT), SOY LECITHIN, ROASTED ONION POWDER (ONION FLAKE, DEXTRIN, NATURAL FLAVOR), ONION\nSEASONING (ONION EXTRACT, DEXTRIN, SOY SAUCE [SOYBEAN, WHEAT, SALT], YEAST EXTRACT, CORN STARCH, SALT, GARLIC EXTRACT,\nNATURAL FLAVOR), TOMATO POWDER, ONION POWDER (DRIED ONION, DEFATTED SOYBEAN, GLUCOSE), SUCROSE FATTY ACID ESTERS, BROWN\nROUX (PALM OIL, SKIM MILK POWDER, WHEAT FLOUR, DEXTROSE ANHYDROUS GLUCOSE), FRUIT PASTE (BANANA, SUGAR, PROCESSED HONEY,\nTOMATO PASTE, FERMENTED MILK, CITRIC ACID, SALT), SPICES, CITRIC ACID, MONO- AND DIGLYCERIDES, COCOA POWDER (PROCESSED WITH\nALKALI), TOMATO SEASONING (DEXTRIN, TOMATO EXTRACT, YEAST EXTRACT, CORN STARCH, SALT), PROTEIN HYDROLYSATE (SOY PROTEIN\nHYDROLYSATE, DEXTRIN, MONOSODIUM GLUTAMATE), SKIM MILK POWDER, APPLE PASTE (APPLE PUREE, CITRIC ACID), GARLIC POWDER (DRIED\nGARLIC, DEFATTED SOYBEAN, GLUCOSE, MALTOSE), WHEY POWDER, ROASTED GARLIC POWDER (GARLIC FLAKE, DEXTRIN, NATURAL FLAVOR),\nCHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), ONION EXTRACT (ONION EXTRACT, YEAST EXTRACT), PAPRIKA COLOR,\nDISODIUM INOSINATE, TOMATO EXTRACT (TOMATO EXTRACT, PALM OIL, SALT, SUGAR, YEAST EXTRACT) ."
+    }
   ]
 ]
