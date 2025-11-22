@@ -42,7 +42,7 @@ export default function UploadPage() {
       }
       
       setTimeout(() => {
-        setLocation('/streaming-results');
+        setLocation('/results');
       }, 100);
     } catch (error) {
       console.error('[UploadPage] Error:', error);

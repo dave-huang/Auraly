@@ -6,7 +6,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Landing from "@/pages/landing";
 import UploadPage from "@/pages/upload";
 import ResultsPage from "@/pages/results";
-import StreamingResultsPage from "@/pages/streaming-results";
 import NotFound from "@/pages/not-found";
 import "./i18n/config";
 
@@ -16,7 +15,6 @@ function Router() {
       <Route path="/" component={Landing} />
       <Route path="/upload" component={UploadPage} />
       <Route path="/results" component={ResultsPage} />
-      <Route path="/streaming-results" component={StreamingResultsPage} />
       <Route component={NotFound} />
     </Switch>
   );
