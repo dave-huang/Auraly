@@ -290,6 +290,74 @@ export async function registerRoutes(app: Express): Promise<Server> {
     })();
   });
 
+  // Server-Sent Events streaming endpoint for progressive ingredient analysis
+  app.post("/api/stream-ingredients", async (req, res) => {
+    try {
+      const { ingredients, category, userLanguage } = batchAnalyzeRequestSchema.parse(req.body);
+      
+      console.log(`[STREAM] Starting SSE stream for ${ingredients.length} ingredients`);
+      
+      // Set up SSE headers
+      res.setHeader('Content-Type', 'text/event-stream');
+      res.setHeader('Cache-Control', 'no-cache');
+      res.setHeader('Connection', 'keep-alive');
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      
+      // Process ingredients concurrently but stream results as they complete
+      const promises = ingredients.map(async (ingredient) => {
+        try {
+          // For each ingredient, create a simple analysis
+          // In production, you'd call a dedicated ingredient analyzer
+          // For now, use a simple fallback that checks if it's a known risky ingredient
+          const riskKeywords = {
+            high: ['aspartame', 'msg', 'hfcs', 'bpa', 'parabens', 'formaldehyde', 'lead', 'mercury', 'arsenic', 'toluene', 'phthalates'],
+            moderate: ['sugar', 'sodium', 'artificial', 'dye', 'color', 'flavor', 'sulfate', 'sls', 'alcohol', 'glycerin'],
+          };
+          
+          const ingredientLower = ingredient.toLowerCase();
+          let riskLevel: 'low' | 'moderate' | 'high' = 'low';
+          
+          if (riskKeywords.high.some(kw => ingredientLower.includes(kw))) {
+            riskLevel = 'high';
+          } else if (riskKeywords.moderate.some(kw => ingredientLower.includes(kw))) {
+            riskLevel = 'moderate';
+          }
+          
+          // Simulate small processing delay to make streaming visible
+          await new Promise(r => setTimeout(r, 100));
+          
+          const result = {
+            ingredient,
+            riskLevel,
+            summary: `${ingredient} - ${riskLevel} risk ingredient`,
+            fromCache: false
+          };
+          
+          // Send SSE event
+          res.write(`event: ingredientResult\n`);
+          res.write(`data: ${JSON.stringify(result)}\n\n`);
+          
+        } catch (error: any) {
+          res.write(`event: ingredientError\n`);
+          res.write(`data: ${JSON.stringify({ ingredient, error: error.message })}\n\n`);
+        }
+      });
+      
+      // Wait for all ingredients to finish processing
+      await Promise.allSettled(promises);
+      
+      // Send completion event
+      res.write(`event: done\n`);
+      res.write(`data: complete\n\n`);
+      res.end();
+      
+      console.log(`[STREAM] SSE stream completed for ${ingredients.length} ingredients`);
+    } catch (error: any) {
+      console.error('[STREAM] SSE error:', error);
+      res.status(400).json({ error: error.message || 'Failed to stream ingredients' });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;
