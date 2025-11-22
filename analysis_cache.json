@@ -349,5 +349,293 @@
       "timestamp": 1763781120141,
       "ocrText": "INGREDIENTS: SUGAR, ENRICHED FLOUR (BLEACHED\nWHEAT FLOUR, MALTED BARLEY FLOUR, NIACIN,\nREDUCED IRON OR FERROUS SULFATE, THIAMINE\nMONONITRATE, RIBOFLAVIN, FOLIC ACID), WATER,\nHIGH FRUCTOSE CORN SYRUP, PALM OIL, CORN SYRUP,\nCOCOA, TALLOW, SOYBEAN OIL, CONTAINS 2% OR\nLESS OF: GLYCERIN, COCOA PROCESSED WITH ALKALI,\nFOOD STARCH MODIFIED, CORN STARCH, BAKING\nSODA, SALT, WHEY, CORN SYRUP SOLIDS, CALCIUM\nSULFATE, EGG, SORBIC ACID AND POTASSIUM\nSORBATE (TO RETAIN FRESHNESS), AGAVE SYRUP,\nINULIN, EGG WHITES, DEXTROSE, HYDROGENATED\nTALLOW, SODIUM ACID PYROPHOSPHATE, ΜΟΝΟ\nAND DIGLYCERIDES, BAKING SODA, BLEACHED\nWHEAT FLOUR, POLYSORBATE 60, SODIUM STEAROYL\nLACTYLATE, COTTONSEED OIL, SOY LECITHIN,\nXANTHAN GUM, AGAR, CELLULOSE GUM, NATURAL\nAND ARTIFICIAL FLAVORS, TITANIUM DIOXIDE\n(COLOR), MONOCALCIUM PHOSPHATE, ENZYMES,\nSALT, LOCUST BEAN GUM, DIPOTASSIUM PHOSPHATE,\nCHOCOLATE LIQUOR, DEFATTED SOY FLOUR.\nCONTAINS EGG, MILK, SOYBEAN AND WHEAT\nINGREDIENTS.\nCONTAINS BIOENGINEERED FOOD INGREDIENTS"
     }
+  ],
+  [
+    "e89c7a113cf6fce2fe2241550675d550d1fea40d2a1a5b1be076585c0be9ab5a",
+    {
+      "result": {
+        "productType": "skincare",
+        "ingredients": [
+          {
+            "name": "Water",
+            "riskLevel": "low",
+            "summary": "Water is a common solvent used in skincare products.",
+            "details": "Water serves as a base for many formulations, helping to dissolve other ingredients and provide hydration.",
+            "category": "solvent"
+          },
+          {
+            "name": "Glycerin",
+            "riskLevel": "low",
+            "summary": "Glycerin is a humectant that helps retain moisture in the skin.",
+            "details": "It is widely used in skincare products to improve hydration by drawing water into the skin from the environment.",
+            "category": "humectant"
+          },
+          {
+            "name": "Olive Fruit Oil",
+            "riskLevel": "low",
+            "summary": "Olive Fruit Oil is a natural oil that moisturizes and nourishes the skin.",
+            "details": "Rich in antioxidants and fatty acids, it helps protect the skin barrier and improve skin texture.",
+            "category": "natural oil"
+          },
+          {
+            "name": "Butylene Glycol",
+            "riskLevel": "low",
+            "summary": "Butylene Glycol is a solvent and humectant used in skincare formulations.",
+            "details": "It helps improve the texture of products and retains moisture in the skin, making it a common ingredient in cosmetics.",
+            "category": "solvent/humectant"
+          },
+          {
+            "name": "Macadamia Ternifolia Seed Oil",
+            "riskLevel": "low",
+            "summary": "Macadamia Seed Oil is a natural oil that hydrates and softens the skin.",
+            "details": "It is rich in fatty acids and antioxidants, which help nourish and protect the skin from environmental stressors.",
+            "category": "natural oil"
+          },
+          {
+            "name": "Cyclopentasiloxane",
+            "riskLevel": "moderate",
+            "summary": "Cyclopentasiloxane is a silicone-based ingredient used for its smoothing properties.",
+            "details": "While it provides a silky texture to products, silicones can sometimes build up on the skin, potentially clogging pores or causing irritation in sensitive individuals.",
+            "category": "silicone"
+          },
+          {
+            "name": "Cetearyl Alcohol",
+            "riskLevel": "low",
+            "summary": "Cetearyl Alcohol is a fatty alcohol used as an emollient and thickener.",
+            "details": "Unlike drying alcohols, it helps moisturize the skin and stabilize product formulations.",
+            "category": "emollient/thickener"
+          },
+          {
+            "name": "Beeswax",
+            "riskLevel": "low",
+            "summary": "Beeswax is a natural wax used as an emollient and thickening agent.",
+            "details": "It helps lock in moisture and provides a protective barrier on the skin, making it ideal for dry skin formulations.",
+            "category": "natural wax"
+          },
+          {
+            "name": "Cetyl Ethylhexanoate",
+            "riskLevel": "low",
+            "summary": "Cetyl Ethylhexanoate is an emollient that improves skin texture.",
+            "details": "It helps provide a smooth, non-greasy feel to products and enhances their spreadability.",
+            "category": "emollient"
+          },
+          {
+            "name": "Cyclohexasiloxane",
+            "riskLevel": "moderate",
+            "summary": "Cyclohexasiloxane is a silicone-based ingredient used for its smoothing properties.",
+            "details": "Similar to other silicones, it can create a silky texture but may build up on the skin, potentially causing irritation or clogged pores.",
+            "category": "silicone"
+          },
+          {
+            "name": "Polysorbate 60",
+            "riskLevel": "low",
+            "summary": "Polysorbate 60 is an emulsifier that helps mix oil and water-based ingredients.",
+            "details": "It is commonly used in skincare formulations to stabilize products and ensure even distribution of ingredients.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Stearic Acid",
+            "riskLevel": "low",
+            "summary": "Stearic Acid is a fatty acid used as an emollient and thickener.",
+            "details": "It helps stabilize formulations and provides a creamy texture while supporting skin hydration.",
+            "category": "emollient/thickener"
+          },
+          {
+            "name": "Polyglyceryl-3 Methylglucose Distearate",
+            "riskLevel": "low",
+            "summary": "Polyglyceryl-3 Methylglucose Distearate is an emulsifier used in skincare products.",
+            "details": "It helps blend oil and water-based ingredients and provides a smooth texture to formulations.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Isopropyl Myristate",
+            "riskLevel": "moderate",
+            "summary": "Isopropyl Myristate is an emollient that enhances product absorption.",
+            "details": "While it improves the texture and absorption of products, it can sometimes clog pores, making it unsuitable for acne-prone skin.",
+            "category": "emollient"
+          },
+          {
+            "name": "PEG-100 Stearate",
+            "riskLevel": "moderate",
+            "summary": "PEG-100 Stearate is an emulsifier derived from polyethylene glycol.",
+            "details": "It helps stabilize formulations but may contain trace amounts of impurities like ethylene oxide or 1,4-dioxane, which are potential carcinogens.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Glyceryl Stearate",
+            "riskLevel": "low",
+            "summary": "Glyceryl Stearate is an emulsifier and emollient used in skincare products.",
+            "details": "It helps improve the texture of formulations and provides hydration to the skin.",
+            "category": "emulsifier/emollient"
+          },
+          {
+            "name": "Witch Hazel Extract",
+            "riskLevel": "low",
+            "summary": "Witch Hazel Extract is a natural astringent that helps tone the skin.",
+            "details": "It is commonly used to reduce inflammation and tighten pores, making it suitable for oily or acne-prone skin.",
+            "category": "natural extract"
+          },
+          {
+            "name": "Dimethiconol",
+            "riskLevel": "moderate",
+            "summary": "Dimethiconol is a silicone-based polymer used for its smoothing properties.",
+            "details": "It provides a silky texture and helps lock in moisture, but like other silicones, it may cause buildup on the skin over time.",
+            "category": "silicone"
+          },
+          {
+            "name": "Sodium Polyacrylate",
+            "riskLevel": "low",
+            "summary": "Sodium Polyacrylate is a thickener and film-forming agent.",
+            "details": "It helps improve the texture of products and provides a protective barrier on the skin.",
+            "category": "thickener"
+          },
+          {
+            "name": "1,2-Hexanediol",
+            "riskLevel": "low",
+            "summary": "1,2-Hexanediol is a humectant and preservative used in skincare products.",
+            "details": "It helps retain moisture in the skin and stabilizes formulations by preventing microbial growth.",
+            "category": "humectant/preservative"
+          },
+          {
+            "name": "Caprylyl Glycol",
+            "riskLevel": "low",
+            "summary": "Caprylyl Glycol is a humectant and preservative used in cosmetics.",
+            "details": "It helps hydrate the skin and enhances the efficacy of other preservatives in formulations.",
+            "category": "humectant/preservative"
+          },
+          {
+            "name": "Shea Butter",
+            "riskLevel": "low",
+            "summary": "Shea Butter is a natural emollient that deeply moisturizes the skin.",
+            "details": "Rich in vitamins and fatty acids, it helps nourish and protect the skin barrier, making it ideal for dry or sensitive skin.",
+            "category": "natural emollient"
+          },
+          {
+            "name": "Anise Fruit Extract",
+            "riskLevel": "low",
+            "summary": "Anise Fruit Extract is a natural extract with antioxidant properties.",
+            "details": "It helps protect the skin from environmental stressors and may provide a mild soothing effect.",
+            "category": "natural extract"
+          },
+          {
+            "name": "Disodium EDTA",
+            "riskLevel": "moderate",
+            "summary": "Disodium EDTA is a chelating agent used to stabilize formulations.",
+            "details": "It binds to metal ions to prevent product degradation, but it is a synthetic ingredient that may cause mild irritation in sensitive individuals.",
+            "category": "chelating agent"
+          },
+          {
+            "name": "Betaine",
+            "riskLevel": "low",
+            "summary": "Betaine is a humectant that helps hydrate the skin.",
+            "details": "It is derived from sugar beets and helps improve skin moisture levels while reducing irritation.",
+            "category": "humectant"
+          },
+          {
+            "name": "Allantoin",
+            "riskLevel": "low",
+            "summary": "Allantoin is a soothing agent that promotes skin healing.",
+            "details": "It helps reduce irritation and supports the regeneration of damaged skin cells.",
+            "category": "soothing agent"
+          },
+          {
+            "name": "Trehalose",
+            "riskLevel": "low",
+            "summary": "Trehalose is a sugar-based humectant that helps retain moisture.",
+            "details": "It protects the skin from dehydration and oxidative stress, making it a beneficial ingredient in skincare products.",
+            "category": "humectant"
+          },
+          {
+            "name": "Polysorbate 20",
+            "riskLevel": "low",
+            "summary": "Polysorbate 20 is an emulsifier used to mix oil and water-based ingredients.",
+            "details": "It helps stabilize formulations and ensures even distribution of active ingredients.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Polyglutamic Acid",
+            "riskLevel": "low",
+            "summary": "Polyglutamic Acid is a humectant that helps retain moisture in the skin.",
+            "details": "It is known for its ability to hold water, improving skin hydration and elasticity.",
+            "category": "humectant"
+          },
+          {
+            "name": "Licorice Root Extract",
+            "riskLevel": "low",
+            "summary": "Licorice Root Extract is a natural extract with brightening and soothing properties.",
+            "details": "It helps reduce hyperpigmentation and inflammation, making it suitable for sensitive or uneven skin tones.",
+            "category": "natural extract"
+          },
+          {
+            "name": "Camellia Sinensis Leaf Extract",
+            "riskLevel": "low",
+            "summary": "Camellia Sinensis Leaf Extract is a natural antioxidant derived from green tea.",
+            "details": "It helps protect the skin from free radical damage and has soothing properties, making it ideal for sensitive skin.",
+            "category": "natural extract"
+          },
+          {
+            "name": "Rosemary Leaf Extract",
+            "riskLevel": "low",
+            "summary": "Rosemary Leaf Extract is a natural antioxidant with antimicrobial properties.",
+            "details": "It helps protect the skin from environmental stressors and supports product preservation.",
+            "category": "natural extract"
+          },
+          {
+            "name": "Centella Asiatica Extract",
+            "riskLevel": "low",
+            "summary": "Centella Asiatica Extract is a natural extract known for its soothing and healing properties.",
+            "details": "It helps reduce inflammation and promotes skin repair, making it ideal for sensitive or damaged skin.",
+            "category": "natural extract"
+          },
+          {
+            "name": "Matricaria Flower Extract",
+            "riskLevel": "low",
+            "summary": "Matricaria Flower Extract is a natural extract with soothing and anti-inflammatory properties.",
+            "details": "Derived from chamomile, it helps calm irritated skin and supports skin healing.",
+            "category": "natural extract"
+          },
+          {
+            "name": "Scutellaria Baicalensis Root Extract",
+            "riskLevel": "low",
+            "summary": "Scutellaria Baicalensis Root Extract is a natural antioxidant with anti-inflammatory properties.",
+            "details": "It helps protect the skin from oxidative stress and reduces redness or irritation.",
+            "category": "natural extract"
+          },
+          {
+            "name": "Polygonum Cuspidatum Root Extract",
+            "riskLevel": "low",
+            "summary": "Polygonum Cuspidatum Root Extract is a natural antioxidant with soothing properties.",
+            "details": "It helps protect the skin from environmental damage and supports skin health.",
+            "category": "natural extract"
+          },
+          {
+            "name": "Xylitol",
+            "riskLevel": "low",
+            "summary": "Xylitol is a sugar alcohol used as a humectant in skincare products.",
+            "details": "It helps retain moisture in the skin and improves hydration levels.",
+            "category": "humectant"
+          },
+          {
+            "name": "Ceramide NP",
+            "riskLevel": "low",
+            "summary": "Ceramide NP is a lipid molecule that strengthens the skin barrier.",
+            "details": "It helps retain moisture and protects the skin from external irritants, making it ideal for dry or sensitive skin.",
+            "category": "skin barrier support"
+          },
+          {
+            "name": "Citric Acid",
+            "riskLevel": "low",
+            "summary": "Citric Acid is an alpha hydroxy acid (AHA) used to adjust pH and exfoliate the skin.",
+            "details": "It helps remove dead skin cells and improves product stability by balancing pH levels.",
+            "category": "pH adjuster/exfoliant"
+          }
+        ],
+        "overallRisk": "moderate",
+        "analyzedAt": "2025-11-22T03:17:49.965Z",
+        "originalText": "INGREDIENTS Water, Glycerin, Olea Europaea (Olive) Fruit Oil, Butylene\nGlycol, Macadamia Ternifolia Seed Oil, Cyclopentasiloxane, Cetearyl Alc\nohol, Beeswax, Cetyl Ethylhexanoate, Cyclohexasiloxane, Polysorbate 60,\nStearic Acid, Polyglyceryl-3 Methylglucose Distearate, Isopropyl Myristate,\nPEG-100 Stearate, Glyceryl Stearate, Hamamelis Virginiana (Witch Hazel)\nExtract, Dimethiconol, Sodium Polyacrylate, 1,2-Hexanediol, Caprylyl Glycol,\nButyrospermum Parkii (Shea) Butter, Illicium Verum (Anise) Fruit Extract,\nDisodium EDTA, Betaine, Allantoin, Trehalose, Polysorbate 20, Polyglutamic\nAcid, Glycyrrhiza Glabra (Licorice) Root Extract, Camellia Sinensis Leaf Ex\ntract, Rosmarinus Officinalis (Rosemary) Leaf Extract, Centella Asiatica Ext\nract, Chamomilla Recutita (Matricaria) Flower Extract, Scutellaria Baicalen\nsis Root Extract, Polygonum Cuspidatum Root Extract, Xylitol, Ceramide NP,\nCitric Acid"
+      },
+      "timestamp": 1763781469969,
+      "ocrText": "INGREDIENTS Water, Glycerin, Olea Europaea (Olive) Fruit Oil, Butylene\nGlycol, Macadamia Ternifolia Seed Oil, Cyclopentasiloxane, Cetearyl Alc\nohol, Beeswax, Cetyl Ethylhexanoate, Cyclohexasiloxane, Polysorbate 60,\nStearic Acid, Polyglyceryl-3 Methylglucose Distearate, Isopropyl Myristate,\nPEG-100 Stearate, Glyceryl Stearate, Hamamelis Virginiana (Witch Hazel)\nExtract, Dimethiconol, Sodium Polyacrylate, 1,2-Hexanediol, Caprylyl Glycol,\nButyrospermum Parkii (Shea) Butter, Illicium Verum (Anise) Fruit Extract,\nDisodium EDTA, Betaine, Allantoin, Trehalose, Polysorbate 20, Polyglutamic\nAcid, Glycyrrhiza Glabra (Licorice) Root Extract, Camellia Sinensis Leaf Ex\ntract, Rosmarinus Officinalis (Rosemary) Leaf Extract, Centella Asiatica Ext\nract, Chamomilla Recutita (Matricaria) Flower Extract, Scutellaria Baicalen\nsis Root Extract, Polygonum Cuspidatum Root Extract, Xylitol, Ceramide NP,\nCitric Acid"
+    }
   ]
 ]
