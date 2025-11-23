@@ -768,3 +768,277 @@ Return your analysis as JSON with this structure:
   
   throw new Error('Failed to analyze ingredients after multiple attempts. Please try again.');
 }
+
+/**
+ * Analyzes ingredients directly from an image using GPT-5.1 vision capability
+ * Much faster than OCR + text analysis (single API call instead of two)
+ * Caches results by image hash for instant repeat scans
+ */
+export async function analyzeIngredientsFromImage(
+  imageData: string,
+  productType: ProductType,
+  userLanguage: string
+): Promise<AnalysisResult> {
+  // Create cache key from image hash
+  const imageHash = crypto.createHash('sha256')
+    .update(`${imageData}__${productType}__${userLanguage}`)
+    .digest('hex');
+  
+  // Check cache first
+  const cached = analysisCache.get(imageHash);
+  if (cached && isCacheFresh(cached.timestamp)) {
+    console.log(`[VISION-CACHE] HIT: returning cached analysis (${cached.result.ingredients.length} ingredients)`);
+    return cached.result;
+  }
+  console.log(`[VISION-CACHE] Miss: will perform fresh analysis`);
+  
+  const context = PRODUCT_TYPE_CONTEXTS[productType];
+  const languageInstruction = LANGUAGE_INSTRUCTIONS[userLanguage as keyof typeof LANGUAGE_INSTRUCTIONS] || LANGUAGE_INSTRUCTIONS['en'];
+  
+  const prompt = `You are a health-focused ingredient analyst. Analyze the ingredient list visible in this product image for a ${productType} product.
+
+${languageInstruction}
+
+Product Type Context: ${context}
+
+CRITICAL EXTRACTION RULES:
+1. Extract EVERY SINGLE ingredient visible in the image
+2. If an ingredient appears multiple times, count it only ONCE (deduplicate)
+3. Include ALL: additives, vitamins, minerals, preservatives, colors, emulsifiers, starches, sweeteners, oils, and flavorings
+4. If an ingredient name is unclear due to image quality, correct it to the proper chemical/ingredient name
+
+For each ingredient, determine:
+1. The ingredient name (clean, standardized format) - MUST be in the user's language
+2. Risk level: "low" (safe), "moderate" (limited evidence/moderate concern), or "high" (known health risks)
+3. A brief summary (1-2 sentences) explaining what it is and why it's flagged - MUST be in the user's language
+4. Detailed explanation (2-3 sentences) with more context about health impacts - MUST be in the user's language
+
+INGREDIENT NAME TRANSLATION REQUIREMENTS:
+- ALWAYS translate ingredient names to the user's language accurately
+- Use proper chemical/scientific names when translating
+- Examples: "水" → "Water" (English) or "Agua" (Spanish), "甘油" → "Glycerin" (English) or "Glicerina" (Spanish)
+- For unclear text, correct to the nearest valid ingredient name based on context
+- NEVER leave ingredient names in the original language from the label
+- NEVER invent ingredients that don't exist in the image
+
+OTHER IMPORTANT NOTES:
+- ALL text output (name, summary, details) must be in the user's selected language
+- Extract the product name if visible (product name can stay in original language)
+- Determine overall product risk (low/moderate/high) based on the worst ingredients
+- Be friendly and clear in explanations, not alarmist
+- If an ingredient is generally safe, mark it as "low" risk
+
+Return your analysis as JSON with this structure:
+{
+  "productName": "Product name if visible or null",
+  "ingredients": [
+    {
+      "name": "Ingredient Name",
+      "riskLevel": "low|moderate|high",
+      "summary": "Brief explanation",
+      "details": "Detailed explanation",
+      "category": "Optional category like 'preservative', 'sweetener', etc"
+    }
+  ],
+  "overallRisk": "low|moderate|high"
+}`;
+
+  let lastError: Error | null = null;
+  const maxRetries = 3;
+  
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      if (attempt > 1) {
+        console.log(`[VISION-ANALYZER] Retry attempt ${attempt}/${maxRetries} due to: ${lastError?.message || 'unknown error'}`);
+      }
+      
+      console.log('[TIMING] Sending image to GPT-5.1 Vision for direct analysis...');
+      const aiStartTime = Date.now();
+      
+      const systemMessages = {
+        'zh': "You are a helpful health and wellness assistant that analyzes product ingredients from images. Extract and analyze EVERY ingredient from the image. Count each distinct ingredient only once (deduplicate). Always respond with valid JSON. All text in your response must be in Simplified Chinese (简体中文), regardless of the input language.",
+        'en': "You are a helpful health and wellness assistant that analyzes product ingredients from images. Extract and analyze EVERY ingredient from the image. Count each distinct ingredient only once (deduplicate). Always respond with valid JSON. All text in your response must be in English, regardless of the input language.",
+        'es': "Eres un asistente de salud y bienestar que analiza ingredientes de productos desde imágenes. Extrae y analiza TODOS los ingredientes de la imagen. Cuenta cada ingrediente distinto solo una vez (deduplica). Siempre responde con JSON válido. Todo el texto en tu respuesta debe estar en español, sin importar el idioma de entrada."
+      };
+      const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
+      
+      const tokensPerIngredient = userLanguage === 'zh' ? 110 : 140;
+      const baseTokens = userLanguage === 'zh' ? 600 : 800;
+      const maxCap = userLanguage === 'zh' ? 4500 : 6000;
+      const estimatedTokensNeeded = Math.min(40 * tokensPerIngredient + baseTokens, maxCap); // Assume ~40 ingredients
+      const maxTokens = Math.max(2500, estimatedTokensNeeded);
+      
+      console.log(`[VISION-ANALYZER] Using max_tokens: ${maxTokens} for language: ${userLanguage}`);
+      console.log('[VISION-ANALYZER] Calling GPT-5.1 with vision capability');
+      
+      let response;
+      try {
+        console.log('[VISION-ANALYZER] Attempting GPT-5.1 Vision analysis');
+        response = await openai.chat.completions.create({
+          model: "gpt-5.1",
+          messages: [
+            {
+              role: "system",
+              content: systemMessage
+            },
+            {
+              role: "user",
+              content: [
+                {
+                  type: "image_url",
+                  image_url: {
+                    url: `data:image/jpeg;base64,${imageData}`
+                  }
+                },
+                {
+                  type: "text",
+                  text: prompt
+                }
+              ]
+            }
+          ],
+          response_format: { type: "json_object" },
+          max_tokens: maxTokens,
+          temperature: 0.3
+        });
+        console.log('[VISION-ANALYZER] GPT-5.1 Vision succeeded');
+      } catch (modelError: any) {
+        if (modelError?.status === 400 || modelError?.code === 'unknown_model') {
+          console.log('[VISION-ANALYZER] GPT-5.1 Vision unavailable, falling back to GPT-4o Vision');
+          response = await openai.chat.completions.create({
+            model: "gpt-4o",
+            messages: [
+              {
+                role: "system",
+                content: systemMessage
+              },
+              {
+                role: "user",
+                content: [
+                  {
+                    type: "image_url",
+                    image_url: {
+                      url: `data:image/jpeg;base64,${imageData}`
+                    }
+                  },
+                  {
+                    type: "text",
+                    text: prompt
+                  }
+                ]
+              }
+            ],
+            response_format: { type: "json_object" },
+            max_tokens: maxTokens,
+            temperature: 0.3
+          });
+          console.log('[VISION-ANALYZER] GPT-4o Vision succeeded');
+        } else {
+          throw modelError;
+        }
+      }
+      
+      const aiDuration = ((Date.now() - aiStartTime) / 1000).toFixed(2);
+      const tokensUsed = response.usage?.total_tokens || 0;
+      const completionTokens = response.usage?.completion_tokens || 0;
+      console.log(`[TIMING] GPT-5.1 Vision analysis completed in ${aiDuration}s (${tokensUsed} tokens, ${completionTokens} completion)`);
+      
+      const content = response.choices?.[0]?.message?.content;
+      if (!content) {
+        console.error('Empty AI response. Full response:', JSON.stringify(response));
+        throw new Error('No response from AI');
+      }
+
+      let analysis;
+      try {
+        analysis = JSON.parse(content);
+      } catch (parseError) {
+        console.error('Failed to parse AI response:', content.substring(0, 500));
+        throw new Error('AI returned invalid JSON format');
+      }
+      
+      // Validate the analysis result against our schema
+      const validatedResult = analysisResultSchema.safeParse({
+        productType,
+        productName: analysis.productName || undefined,
+        ingredients: analysis.ingredients || [],
+        overallRisk: analysis.overallRisk || 'moderate',
+        analyzedAt: new Date().toISOString(),
+        originalText: `[Image-based analysis - ${imageData.length} bytes]`
+      });
+      
+      if (!validatedResult.success) {
+        console.error('Validation failed:', validatedResult.error);
+        console.error(`Received ${analysis.ingredients?.length || 0} ingredients before validation failed`);
+        throw new Error('AI response did not match expected format');
+      }
+      
+      const detectedCount = validatedResult.data.ingredients.length;
+      console.log(`[VISION-ANALYZER] Successfully analyzed ${detectedCount} ingredients`);
+      console.log(`[VISION-ANALYZER] Product name: ${validatedResult.data.productName || 'Not detected'}`);
+      console.log(`[VISION-ANALYZER] Overall risk: ${validatedResult.data.overallRisk}`);
+      
+      // Cache the result
+      analysisCache.set(imageHash, {
+        result: validatedResult.data,
+        timestamp: Date.now(),
+        ocrText: `[Image-based analysis]`
+      });
+      saveCacheToDisk();
+      
+      return validatedResult.data;
+      
+    } catch (error: any) {
+      lastError = error;
+      console.error(`[VISION-ANALYZER] Attempt ${attempt}/${maxRetries} failed:`, error.message);
+      
+      const nonRetryableErrors = [
+        'API key',
+        'unauthorized',
+        'forbidden',
+        'invalid_request_error',
+        'authentication_error',
+        'permission_denied',
+        'insufficient_quota',
+        'quota'
+      ];
+      
+      const shouldNotRetry = nonRetryableErrors.some(msg => 
+        error.message.toLowerCase().includes(msg.toLowerCase())
+      );
+      
+      if (shouldNotRetry) {
+        console.log(`[VISION-ANALYZER] Non-retryable error detected, failing immediately`);
+        break;
+      }
+      
+      if (attempt < maxRetries) {
+        const waitTime = 2000 * Math.pow(2, attempt - 1);
+        console.log(`[VISION-ANALYZER] Waiting ${waitTime}ms before retry...`);
+        await new Promise(resolve => setTimeout(resolve, waitTime));
+      }
+    }
+  }
+  
+  console.error('[VISION-ANALYZER] All retry attempts exhausted');
+  
+  if (lastError) {
+    const errorMessage = lastError.message || '';
+    
+    if (errorMessage.includes('timeout') || errorMessage.includes('ETIMEDOUT')) {
+      throw new Error('Image analysis is taking longer than expected. Please try again in a few moments.');
+    }
+    
+    if (errorMessage.includes('rate limit')) {
+      throw new Error('The AI service is currently busy. Please wait a minute and try again.');
+    }
+    
+    if (errorMessage.includes('network') || errorMessage.includes('ECONNREFUSED') || errorMessage.includes('ENOTFOUND')) {
+      throw new Error('Unable to connect to the AI service. Please check your internet connection and try again.');
+    }
+    
+    throw new Error(`Image analysis failed after ${maxRetries} attempts. Please try again.`);
+  }
+  
+  throw new Error('Failed to analyze image after multiple attempts. Please try again.');
+}
