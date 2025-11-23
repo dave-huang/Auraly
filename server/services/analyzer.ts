@@ -561,14 +561,14 @@ Return your analysis as JSON with this structure:
       const maxTokens = Math.max(2500, estimatedTokensNeeded);
       
       console.log(`[ANALYZER] Using max_tokens: ${maxTokens} for language: ${userLanguage} (estimated ${estimatedIngredientCount} ingredients)`);
-      console.log('[ANALYZER] Calling GPT-4o (primary), with GPT-4o-mini fallback if needed');
+      console.log('[ANALYZER] Calling GPT-5.1 for fast analysis');
       
-      // Use GPT-4o (primary, faster than GPT-4o-mini), fall back to GPT-4o-mini if unavailable
+      // Use GPT-5.1 for superior ingredient analysis
       let response;
       try {
-        console.log('[ANALYZER] Attempting GPT-4o for fast analysis');
+        console.log('[ANALYZER] Attempting GPT-5.1 for fast analysis');
         response = await openai.chat.completions.create({
-          model: "gpt-4o",
+          model: "gpt-5.1",
           messages: [
             {
               role: "system",
@@ -583,13 +583,13 @@ Return your analysis as JSON with this structure:
           max_tokens: maxTokens,
           temperature: 0.3
         });
-        console.log('[ANALYZER] GPT-4o succeeded');
+        console.log('[ANALYZER] GPT-5.1 succeeded');
       } catch (modelError: any) {
-        // If GPT-4o is unavailable, fall back to GPT-4o-mini
+        // If GPT-5.1 is unavailable, fall back to GPT-4o
         if (modelError?.status === 400 || modelError?.code === 'unknown_model') {
-          console.log('[ANALYZER] GPT-4o unavailable, falling back to GPT-4o-mini');
+          console.log('[ANALYZER] GPT-5.1 unavailable, falling back to GPT-4o');
           response = await openai.chat.completions.create({
-            model: "gpt-4o-mini",
+            model: "gpt-4o",
             messages: [
               {
                 role: "system",
@@ -604,7 +604,7 @@ Return your analysis as JSON with this structure:
             max_tokens: maxTokens,
             temperature: 0.3
           });
-          console.log('[ANALYZER] GPT-4o-mini succeeded');
+          console.log('[ANALYZER] GPT-4o succeeded');
         } else {
           // If it's not a model availability error, re-throw
           throw modelError;
