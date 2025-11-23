@@ -779,9 +779,26 @@ export async function analyzeIngredientsFromImage(
   productType: ProductType,
   userLanguage: string
 ): Promise<AnalysisResult> {
+  // Extract base64 if imageData includes the data URL prefix
+  // Handle both "data:image/jpeg;base64,xxx" and just "xxx" formats
+  let base64Only = imageData;
+  let mimeType = 'image/jpeg'; // default
+  
+  if (imageData.startsWith('data:')) {
+    // Parse data URL: "data:image/jpeg;base64,xxx"
+    const match = imageData.match(/^data:([^;]+);base64,(.+)$/);
+    if (match) {
+      mimeType = match[1];
+      base64Only = match[2];
+      console.log(`[VISION-ANALYZER] Extracted base64 from data URL, mime type: ${mimeType}`);
+    } else {
+      console.warn('[VISION-ANALYZER] Malformed data URL, attempting to use as-is');
+    }
+  }
+  
   // Create cache key from image hash
   const imageHash = crypto.createHash('sha256')
-    .update(`${imageData}__${productType}__${userLanguage}`)
+    .update(`${base64Only}__${productType}__${userLanguage}`)
     .digest('hex');
   
   // Check cache first
@@ -887,7 +904,7 @@ Return your analysis as JSON with this structure:
                 {
                   type: "image_url",
                   image_url: {
-                    url: `data:image/jpeg;base64,${imageData}`
+                    url: `data:${mimeType};base64,${base64Only}`
                   }
                 },
                 {
@@ -918,7 +935,7 @@ Return your analysis as JSON with this structure:
                   {
                     type: "image_url",
                     image_url: {
-                      url: `data:image/jpeg;base64,${imageData}`
+                      url: `data:${mimeType};base64,${base64Only}`
                     }
                   },
                   {
@@ -978,11 +995,11 @@ Return your analysis as JSON with this structure:
       console.log(`[VISION-ANALYZER] Product name: ${validatedResult.data.productName || 'Not detected'}`);
       console.log(`[VISION-ANALYZER] Overall risk: ${validatedResult.data.overallRisk}`);
       
-      // Cache the result
+      // Cache the result (use extracted base64 for consistent cache key)
       analysisCache.set(imageHash, {
         result: validatedResult.data,
         timestamp: Date.now(),
-        ocrText: `[Image-based analysis]`
+        ocrText: `[Image-based analysis - ${base64Only.length} bytes]`
       });
       saveCacheToDisk();
       
