@@ -786,5 +786,1221 @@
       "timestamp": 1763873816153,
       "ocrText": "[Image-based analysis - 1495720 bytes]"
     }
+  ],
+  [
+    "e89c7a113cf6fce2fe2241550675d550d1fea40d2a1a5b1be076585c0be9ab5a",
+    {
+      "result": {
+        "productType": "skincare",
+        "ingredients": [
+          {
+            "name": "Water",
+            "riskLevel": "low",
+            "summary": "Water is a common solvent used in skincare products.",
+            "details": "It acts as a base for many formulations, helping to dissolve other ingredients and provide hydration.",
+            "category": "solvent"
+          },
+          {
+            "name": "Glycerin",
+            "riskLevel": "low",
+            "summary": "Glycerin is a humectant that attracts moisture to the skin.",
+            "details": "It helps to keep the skin hydrated by drawing water from the air into the skin's outer layer.",
+            "category": "humectant"
+          },
+          {
+            "name": "Olive Fruit Oil",
+            "riskLevel": "low",
+            "summary": "Olive Fruit Oil is an emollient that moisturizes and nourishes the skin.",
+            "details": "Rich in fatty acids and antioxidants, it helps to maintain skin elasticity and softness.",
+            "category": "emollient"
+          },
+          {
+            "name": "Butylene Glycol",
+            "riskLevel": "low",
+            "summary": "Butylene Glycol is a conditioning agent that helps to improve the texture of skincare products.",
+            "details": "It acts as a solvent and humectant, enhancing the penetration of other ingredients into the skin.",
+            "category": "conditioning agent"
+          },
+          {
+            "name": "Macadamia Ternifolia Seed Oil",
+            "riskLevel": "low",
+            "summary": "Macadamia Ternifolia Seed Oil is an emollient that provides moisture and nourishment.",
+            "details": "It contains high levels of palmitoleic acid, which is beneficial for dry and aging skin.",
+            "category": "emollient"
+          },
+          {
+            "name": "Cyclopentasiloxane",
+            "riskLevel": "low",
+            "summary": "Cyclopentasiloxane is a silicone that provides a silky texture to skincare products.",
+            "details": "It helps to spread the product evenly and evaporates quickly, leaving a smooth feel.",
+            "category": "silicone"
+          },
+          {
+            "name": "Cetearyl Alcohol",
+            "riskLevel": "low",
+            "summary": "Cetearyl Alcohol is a fatty alcohol used as an emollient and thickener.",
+            "details": "Unlike drying alcohols, it helps to soften the skin and stabilize emulsions.",
+            "category": "emollient"
+          },
+          {
+            "name": "Beeswax",
+            "riskLevel": "low",
+            "summary": "Beeswax is a natural wax that acts as a thickening agent and moisturizer.",
+            "details": "It forms a protective barrier on the skin, helping to lock in moisture.",
+            "category": "thickener"
+          },
+          {
+            "name": "Cetyl Ethylhexanoate",
+            "riskLevel": "low",
+            "summary": "Cetyl Ethylhexanoate is an emollient that provides a smooth application.",
+            "details": "It helps to enhance the spreadability of products without leaving a greasy residue.",
+            "category": "emollient"
+          },
+          {
+            "name": "Cyclohexasiloxane",
+            "riskLevel": "low",
+            "summary": "Cyclohexasiloxane is a silicone that provides a silky feel to the skin.",
+            "details": "It is used to improve the texture and spreadability of skincare products.",
+            "category": "silicone"
+          },
+          {
+            "name": "Polysorbate 60",
+            "riskLevel": "low",
+            "summary": "Polysorbate 60 is an emulsifier that helps to blend oil and water components.",
+            "details": "It stabilizes formulations, ensuring even distribution of ingredients.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Stearic Acid",
+            "riskLevel": "low",
+            "summary": "Stearic Acid is a fatty acid used as an emulsifier and thickener.",
+            "details": "It helps to stabilize and thicken formulations, providing a smooth texture.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Polyglyceryl-3 Methylglucose Distearate",
+            "riskLevel": "low",
+            "summary": "This is an emulsifier that helps to blend oil and water in formulations.",
+            "details": "It provides stability to emulsions and enhances the texture of products.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Isopropyl Myristate",
+            "riskLevel": "low",
+            "summary": "Isopropyl Myristate is an emollient that enhances the absorption of other ingredients.",
+            "details": "It helps to create a smooth, non-greasy feel and improves the spreadability of products.",
+            "category": "emollient"
+          },
+          {
+            "name": "PEG-100 Stearate",
+            "riskLevel": "low",
+            "summary": "PEG-100 Stearate is an emulsifier that helps to blend ingredients.",
+            "details": "It stabilizes formulations and improves the texture of skincare products.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Glyceryl Stearate",
+            "riskLevel": "low",
+            "summary": "Glyceryl Stearate is an emulsifier and emollient used in skincare products.",
+            "details": "It helps to form stable emulsions and provides a smooth, soft feel to the skin.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Witch Hazel Extract",
+            "riskLevel": "low",
+            "summary": "Witch Hazel Extract is a natural astringent that helps to tighten the skin.",
+            "details": "It is often used to soothe irritation and reduce inflammation.",
+            "category": "astringent"
+          },
+          {
+            "name": "Dimethiconol",
+            "riskLevel": "low",
+            "summary": "Dimethiconol is a silicone used for its conditioning properties.",
+            "details": "It provides a smooth, silky feel and helps to protect the skin's barrier.",
+            "category": "silicone"
+          },
+          {
+            "name": "Sodium Polyacrylate",
+            "riskLevel": "low",
+            "summary": "Sodium Polyacrylate is a thickening agent and film-former.",
+            "details": "It helps to improve the texture and stability of formulations.",
+            "category": "thickener"
+          },
+          {
+            "name": "1,2-Hexanediol",
+            "riskLevel": "low",
+            "summary": "1,2-Hexanediol is a humectant and preservative booster.",
+            "details": "It helps to enhance the effectiveness of preservatives and provides moisture.",
+            "category": "humectant"
+          },
+          {
+            "name": "Caprylyl Glycol",
+            "riskLevel": "low",
+            "summary": "Caprylyl Glycol is a skin-conditioning agent and preservative booster.",
+            "details": "It helps to moisturize the skin and enhance the effectiveness of preservatives.",
+            "category": "conditioning agent"
+          },
+          {
+            "name": "Shea Butter",
+            "riskLevel": "low",
+            "summary": "Shea Butter is a natural fat that provides deep moisture and nourishment.",
+            "details": "Rich in vitamins and fatty acids, it helps to soften and protect the skin.",
+            "category": "emollient"
+          },
+          {
+            "name": "Anise Fruit Extract",
+            "riskLevel": "low",
+            "summary": "Anise Fruit Extract is used for its fragrance and potential antioxidant properties.",
+            "details": "It may provide a pleasant scent and help to protect the skin from oxidative stress.",
+            "category": "fragrance"
+          },
+          {
+            "name": "Disodium EDTA",
+            "riskLevel": "low",
+            "summary": "Disodium EDTA is a chelating agent that helps to stabilize formulations.",
+            "details": "It binds to metal ions, preventing them from affecting the stability and efficacy of the product.",
+            "category": "chelating agent"
+          },
+          {
+            "name": "Betaine",
+            "riskLevel": "low",
+            "summary": "Betaine is a humectant and anti-irritant that helps to hydrate the skin.",
+            "details": "It helps to maintain skin moisture balance and soothes irritation.",
+            "category": "humectant"
+          },
+          {
+            "name": "Allantoin",
+            "riskLevel": "low",
+            "summary": "Allantoin is a soothing agent that helps to protect and heal the skin.",
+            "details": "It promotes cell regeneration and is known for its calming properties.",
+            "category": "soothing agent"
+          },
+          {
+            "name": "Trehalose",
+            "riskLevel": "low",
+            "summary": "Trehalose is a sugar that acts as a moisturizer and antioxidant.",
+            "details": "It helps to retain moisture and protect the skin from environmental stress.",
+            "category": "humectant"
+          },
+          {
+            "name": "Polysorbate 20",
+            "riskLevel": "low",
+            "summary": "Polysorbate 20 is an emulsifier that helps to blend oil and water components.",
+            "details": "It stabilizes formulations and ensures even distribution of ingredients.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Polyglutamic Acid",
+            "riskLevel": "low",
+            "summary": "Polyglutamic Acid is a humectant that provides intense hydration.",
+            "details": "It can hold several times its weight in water, helping to keep the skin moisturized.",
+            "category": "humectant"
+          },
+          {
+            "name": "Licorice Root Extract",
+            "riskLevel": "low",
+            "summary": "Licorice Root Extract is known for its soothing and brightening properties.",
+            "details": "It helps to reduce redness and hyperpigmentation, promoting an even skin tone.",
+            "category": "brightening agent"
+          },
+          {
+            "name": "Camellia Sinensis Leaf Extract",
+            "riskLevel": "low",
+            "summary": "Camellia Sinensis Leaf Extract is an antioxidant-rich ingredient.",
+            "details": "Commonly known as green tea extract, it helps to protect the skin from free radical damage.",
+            "category": "antioxidant"
+          },
+          {
+            "name": "Rosemary Leaf Extract",
+            "riskLevel": "low",
+            "summary": "Rosemary Leaf Extract is used for its antioxidant and antimicrobial properties.",
+            "details": "It helps to protect the skin from environmental damage and reduce inflammation.",
+            "category": "antioxidant"
+          },
+          {
+            "name": "Centella Asiatica Extract",
+            "riskLevel": "low",
+            "summary": "Centella Asiatica Extract is known for its healing and soothing properties.",
+            "details": "It helps to calm irritated skin and promote wound healing.",
+            "category": "soothing agent"
+          },
+          {
+            "name": "Matricaria Flower Extract",
+            "riskLevel": "low",
+            "summary": "Matricaria Flower Extract, also known as chamomile, is soothing and anti-inflammatory.",
+            "details": "It helps to calm the skin and reduce redness and irritation.",
+            "category": "soothing agent"
+          },
+          {
+            "name": "Scutellaria Baicalensis Root Extract",
+            "riskLevel": "low",
+            "summary": "Scutellaria Baicalensis Root Extract is an antioxidant with anti-inflammatory properties.",
+            "details": "It helps to protect the skin from environmental stress and soothe irritation.",
+            "category": "antioxidant"
+          },
+          {
+            "name": "Polygonum Cuspidatum Root Extract",
+            "riskLevel": "low",
+            "summary": "Polygonum Cuspidatum Root Extract is a source of resveratrol, an antioxidant.",
+            "details": "It helps to protect the skin from free radical damage and promote a youthful appearance.",
+            "category": "antioxidant"
+          },
+          {
+            "name": "Xylitol",
+            "riskLevel": "low",
+            "summary": "Xylitol is a sugar alcohol used as a humectant and moisturizing agent.",
+            "details": "It helps to retain moisture in the skin and improve hydration.",
+            "category": "humectant"
+          },
+          {
+            "name": "Ceramide NP",
+            "riskLevel": "low",
+            "summary": "Ceramide NP is a lipid that helps to restore the skin barrier.",
+            "details": "It is essential for maintaining skin hydration and protecting against environmental damage.",
+            "category": "skin conditioning agent"
+          },
+          {
+            "name": "Citric Acid",
+            "riskLevel": "low",
+            "summary": "Citric Acid is used to adjust the pH of formulations.",
+            "details": "It can also act as an exfoliant, helping to remove dead skin cells and promote cell turnover.",
+            "category": "pH adjuster"
+          }
+        ],
+        "overallRisk": "low",
+        "analyzedAt": "2025-11-23T05:02:51.111Z",
+        "originalText": "INGREDIENTS Water, Glycerin, Olea Europaea (Olive) Fruit Oil, Butylene\nGlycol, Macadamia Ternifolia Seed Oil, Cyclopentasiloxane, Cetearyl Alc\nohol, Beeswax, Cetyl Ethylhexanoate, Cyclohexasiloxane, Polysorbate 60,\nStearic Acid, Polyglyceryl-3 Methylglucose Distearate, Isopropyl Myristate,\nPEG-100 Stearate, Glyceryl Stearate, Hamamelis Virginiana (Witch Hazel)\nExtract, Dimethiconol, Sodium Polyacrylate, 1,2-Hexanediol, Caprylyl Glycol,\nButyrospermum Parkii (Shea) Butter, Illicium Verum (Anise) Fruit Extract,\nDisodium EDTA, Betaine, Allantoin, Trehalose, Polysorbate 20, Polyglutamic\nAcid, Glycyrrhiza Glabra (Licorice) Root Extract, Camellia Sinensis Leaf Ex\ntract, Rosmarinus Officinalis (Rosemary) Leaf Extract, Centella Asiatica Ext\nract, Chamomilla Recutita (Matricaria) Flower Extract, Scutellaria Baicalen\nsis Root Extract, Polygonum Cuspidatum Root Extract, Xylitol, Ceramide NP,\nCitric Acid"
+      },
+      "timestamp": 1763874171113,
+      "ocrText": "INGREDIENTS Water, Glycerin, Olea Europaea (Olive) Fruit Oil, Butylene\nGlycol, Macadamia Ternifolia Seed Oil, Cyclopentasiloxane, Cetearyl Alc\nohol, Beeswax, Cetyl Ethylhexanoate, Cyclohexasiloxane, Polysorbate 60,\nStearic Acid, Polyglyceryl-3 Methylglucose Distearate, Isopropyl Myristate,\nPEG-100 Stearate, Glyceryl Stearate, Hamamelis Virginiana (Witch Hazel)\nExtract, Dimethiconol, Sodium Polyacrylate, 1,2-Hexanediol, Caprylyl Glycol,\nButyrospermum Parkii (Shea) Butter, Illicium Verum (Anise) Fruit Extract,\nDisodium EDTA, Betaine, Allantoin, Trehalose, Polysorbate 20, Polyglutamic\nAcid, Glycyrrhiza Glabra (Licorice) Root Extract, Camellia Sinensis Leaf Ex\ntract, Rosmarinus Officinalis (Rosemary) Leaf Extract, Centella Asiatica Ext\nract, Chamomilla Recutita (Matricaria) Flower Extract, Scutellaria Baicalen\nsis Root Extract, Polygonum Cuspidatum Root Extract, Xylitol, Ceramide NP,\nCitric Acid"
+    }
+  ],
+  [
+    "a95ced755feeee6ede4fb6440d865d18cd9a9d3af425f9d2a7c250e0065e08eb",
+    {
+      "result": {
+        "productType": "skincare",
+        "ingredients": [
+          {
+            "name": "Water",
+            "riskLevel": "low",
+            "summary": "Water is commonly used as a solvent in skincare products.",
+            "details": "Water is essential for hydrating the skin and is used as a base in many formulations.",
+            "category": "solvent"
+          },
+          {
+            "name": "Cetearyl Alcohol",
+            "riskLevel": "low",
+            "summary": "Cetearyl Alcohol is a fatty alcohol used as an emollient and thickener.",
+            "details": "Unlike drying alcohols, Cetearyl Alcohol helps to soften and condition the skin.",
+            "category": "emollient"
+          },
+          {
+            "name": "Dimethicone",
+            "riskLevel": "low",
+            "summary": "Dimethicone is a silicone used to provide a smooth application.",
+            "details": "It forms a protective barrier on the skin, helping to retain moisture and improve texture.",
+            "category": "silicone"
+          },
+          {
+            "name": "Panthenol",
+            "riskLevel": "low",
+            "summary": "Panthenol is a form of Vitamin B5 used for its moisturizing properties.",
+            "details": "It helps to improve skin hydration, elasticity, and smooth appearance.",
+            "category": "vitamin"
+          },
+          {
+            "name": "Panthenyl Ethyl Ether",
+            "riskLevel": "low",
+            "summary": "A derivative of Panthenol, used for its conditioning properties.",
+            "details": "It enhances the moisture retention of the skin and hair.",
+            "category": "conditioner"
+          },
+          {
+            "name": "Stearamidopropyl Dimethylamine",
+            "riskLevel": "low",
+            "summary": "A conditioning agent often used in haircare products.",
+            "details": "It helps to detangle hair and improve manageability.",
+            "category": "conditioner"
+          },
+          {
+            "name": "Tea Tree Leaf Water",
+            "riskLevel": "low",
+            "summary": "Tea Tree Leaf Water is used for its antimicrobial properties.",
+            "details": "It can help soothe and reduce skin irritation and acne.",
+            "category": "botanical"
+          },
+          {
+            "name": "Lemon Fruit Extract",
+            "riskLevel": "low",
+            "summary": "Lemon Fruit Extract is used for its antioxidant and astringent properties.",
+            "details": "It can help brighten the skin and reduce oiliness.",
+            "category": "botanical"
+          },
+          {
+            "name": "Sage Extract",
+            "riskLevel": "low",
+            "summary": "Sage Extract is used for its antioxidant and antimicrobial properties.",
+            "details": "It can help soothe the skin and reduce inflammation.",
+            "category": "botanical"
+          },
+          {
+            "name": "Tocopherol",
+            "riskLevel": "low",
+            "summary": "Tocopherol is a form of Vitamin E used as an antioxidant.",
+            "details": "It helps protect the skin from free radical damage and improves moisture retention.",
+            "category": "vitamin"
+          },
+          {
+            "name": "Behentrimonium Methosulfate",
+            "riskLevel": "low",
+            "summary": "A mild conditioning agent used in haircare products.",
+            "details": "It helps to detangle hair and reduce static without causing irritation.",
+            "category": "conditioner"
+          },
+          {
+            "name": "Olealkonium Chloride",
+            "riskLevel": "low",
+            "summary": "A conditioning agent used to improve hair texture.",
+            "details": "It helps to smooth and soften hair, making it more manageable.",
+            "category": "conditioner"
+          },
+          {
+            "name": "Oleyl Alcohol",
+            "riskLevel": "low",
+            "summary": "A fatty alcohol used as an emollient and thickener.",
+            "details": "It helps to soften and condition the skin and hair.",
+            "category": "emollient"
+          },
+          {
+            "name": "PEG-2M",
+            "riskLevel": "moderate",
+            "summary": "PEG-2M is a polyethylene glycol used as a thickener and lubricant.",
+            "details": "While generally considered safe, PEG compounds can be contaminated with harmful impurities.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Polyquaternium-47",
+            "riskLevel": "low",
+            "summary": "A conditioning polymer used to improve hair texture.",
+            "details": "It helps to enhance the feel and appearance of hair.",
+            "category": "conditioner"
+          },
+          {
+            "name": "Glycerin",
+            "riskLevel": "low",
+            "summary": "Glycerin is a humectant used to draw moisture into the skin.",
+            "details": "It helps to keep the skin hydrated and improve its barrier function.",
+            "category": "humectant"
+          },
+          {
+            "name": "Glyceryl Stearate",
+            "riskLevel": "low",
+            "summary": "An emulsifier used to stabilize formulations.",
+            "details": "It helps to blend oil and water components in skincare products.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Hydroxyethylcellulose",
+            "riskLevel": "low",
+            "summary": "A thickening agent used to improve product texture.",
+            "details": "It helps to stabilize and thicken formulations without causing irritation.",
+            "category": "thickener"
+          },
+          {
+            "name": "Undecane",
+            "riskLevel": "low",
+            "summary": "A hydrocarbon used as an emollient and solvent.",
+            "details": "It helps to improve the spreadability of formulations.",
+            "category": "emollient"
+          },
+          {
+            "name": "Tridecane",
+            "riskLevel": "low",
+            "summary": "A hydrocarbon used as an emollient and solvent.",
+            "details": "It enhances the texture and application of skincare products.",
+            "category": "emollient"
+          },
+          {
+            "name": "Polysorbate 60",
+            "riskLevel": "low",
+            "summary": "An emulsifier used to stabilize formulations.",
+            "details": "It helps to blend oil and water components in skincare products.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Silica",
+            "riskLevel": "low",
+            "summary": "Silica is used as an absorbent and anti-caking agent.",
+            "details": "It helps to improve the texture and mattify the skin.",
+            "category": "absorbent"
+          },
+          {
+            "name": "Magnesium Chloride",
+            "riskLevel": "low",
+            "summary": "A mineral used for its stabilizing properties.",
+            "details": "It helps to improve the texture and stability of formulations.",
+            "category": "mineral"
+          },
+          {
+            "name": "Magnesium Nitrate",
+            "riskLevel": "low",
+            "summary": "A mineral used as a stabilizer in formulations.",
+            "details": "It helps to maintain the consistency and efficacy of products.",
+            "category": "mineral"
+          },
+          {
+            "name": "Disodium EDTA",
+            "riskLevel": "low",
+            "summary": "A chelating agent used to improve product stability.",
+            "details": "It binds to metal ions, preventing them from affecting the product's performance.",
+            "category": "chelating agent"
+          },
+          {
+            "name": "Disodium Phosphate",
+            "riskLevel": "low",
+            "summary": "A buffering agent used to maintain pH balance.",
+            "details": "It helps to stabilize the formulation and enhance its performance.",
+            "category": "buffering agent"
+          },
+          {
+            "name": "Sodium Phosphate",
+            "riskLevel": "low",
+            "summary": "A buffering agent used to maintain pH balance.",
+            "details": "It helps to stabilize the formulation and enhance its performance.",
+            "category": "buffering agent"
+          },
+          {
+            "name": "Citric Acid",
+            "riskLevel": "low",
+            "summary": "A natural acid used to adjust pH and provide exfoliation.",
+            "details": "It helps to balance the pH of products and can gently exfoliate the skin.",
+            "category": "pH adjuster"
+          },
+          {
+            "name": "Sodium Hydroxide",
+            "riskLevel": "low",
+            "summary": "A strong base used to adjust pH in formulations.",
+            "details": "It helps to neutralize acids and maintain the desired pH level.",
+            "category": "pH adjuster"
+          },
+          {
+            "name": "Alcohol",
+            "riskLevel": "moderate",
+            "summary": "Alcohol is used as a solvent and can be drying to the skin.",
+            "details": "While it helps to dissolve other ingredients, it can strip moisture from the skin, leading to dryness.",
+            "category": "solvent"
+          },
+          {
+            "name": "BHT",
+            "riskLevel": "moderate",
+            "summary": "BHT is an antioxidant used to preserve product stability.",
+            "details": "There is some concern about its potential to cause skin irritation and disrupt hormones.",
+            "category": "preservative"
+          },
+          {
+            "name": "Sodium Benzoate",
+            "riskLevel": "low",
+            "summary": "A preservative used to prevent microbial growth.",
+            "details": "It is generally considered safe, though high concentrations can cause irritation.",
+            "category": "preservative"
+          },
+          {
+            "name": "Methylchloroisothiazolinone",
+            "riskLevel": "high",
+            "summary": "A preservative with potential to cause skin irritation and allergies.",
+            "details": "It is effective at preventing microbial growth but is associated with contact dermatitis and allergic reactions.",
+            "category": "preservative"
+          },
+          {
+            "name": "Methylisothiazolinone",
+            "riskLevel": "high",
+            "summary": "A preservative known to cause skin irritation and allergies.",
+            "details": "It is used to prevent microbial growth but has been linked to contact dermatitis and allergic reactions.",
+            "category": "preservative"
+          },
+          {
+            "name": "Fragrance",
+            "riskLevel": "high",
+            "summary": "Fragrance is used to impart scent but can cause allergic reactions.",
+            "details": "The specific components of fragrance are often undisclosed, which can lead to skin irritation and allergies.",
+            "category": "fragrance"
+          },
+          {
+            "name": "Hexyl Cinnamal",
+            "riskLevel": "moderate",
+            "summary": "A fragrance ingredient that can cause allergic reactions.",
+            "details": "It is used for its floral scent but is a known allergen for some individuals.",
+            "category": "fragrance"
+          },
+          {
+            "name": "Limonene",
+            "riskLevel": "moderate",
+            "summary": "A fragrance ingredient with potential to cause skin irritation.",
+            "details": "While it provides a citrus scent, it can oxidize and become an irritant.",
+            "category": "fragrance"
+          },
+          {
+            "name": "Tetramethyl Acetyloctahydronaphthalenes",
+            "riskLevel": "moderate",
+            "summary": "A synthetic fragrance compound with potential allergenic effects.",
+            "details": "It is used for its scent but can cause skin sensitization and allergic reactions.",
+            "category": "fragrance"
+          }
+        ],
+        "overallRisk": "high",
+        "analyzedAt": "2025-11-23T05:04:28.095Z",
+        "originalText": "INGREDIENTS: Water (Aqua, Eau), Cetearyl\nAlcohol, Dimethicone, Panthenol,\nPanthenyl Ethyl Ether, Stearamidopropyl\nDimethylamine, Melaleuca Alternifolia (Tea\nTree) Leaf Water, Citrus Limon (Lemon) Fruit\nExtract, Salvia Officinalis (Sage) Extract,\nTocopherol, Behentrimonium Methosulfate,\nOlealkonium Chloride, Oleyl Alcohol,\nPEG-2M, Polyquaternium-47, Glycerin,\nGlyceryl Stearate, Hydroxyethylcellulose,\nUndecane, Tridecane, Polysorbate 60,\nSilica, Magnesium Chloride, Magnesium\nNitrate, Disodium EDTA, Disodium\nPhosphate, Sodium Phosphate, Citric Acid,\nSodium Hydroxide, Alcohol, BHT, Sodium\nBenzoate, Methylchloroisothiazolinone,\nMethylisothiazolinone, Parfum (Fragrance),\nHexyl Cinnamal, Limonene, Tetramethyl\nAcetyloctahydronaphthalenes"
+      },
+      "timestamp": 1763874268097,
+      "ocrText": "INGREDIENTS: Water (Aqua, Eau), Cetearyl\nAlcohol, Dimethicone, Panthenol,\nPanthenyl Ethyl Ether, Stearamidopropyl\nDimethylamine, Melaleuca Alternifolia (Tea\nTree) Leaf Water, Citrus Limon (Lemon) Fruit\nExtract, Salvia Officinalis (Sage) Extract,\nTocopherol, Behentrimonium Methosulfate,\nOlealkonium Chloride, Oleyl Alcohol,\nPEG-2M, Polyquaternium-47, Glycerin,\nGlyceryl Stearate, Hydroxyethylcellulose,\nUndecane, Tridecane, Polysorbate 60,\nSilica, Magnesium Chloride, Magnesium\nNitrate, Disodium EDTA, Disodium\nPhosphate, Sodium Phosphate, Citric Acid,\nSodium Hydroxide, Alcohol, BHT, Sodium\nBenzoate, Methylchloroisothiazolinone,\nMethylisothiazolinone, Parfum (Fragrance),\nHexyl Cinnamal, Limonene, Tetramethyl\nAcetyloctahydronaphthalenes"
+    }
+  ],
+  [
+    "3bf22514f63e2460b1f58a710cb6612d98bbff811cc5f9ce84712c32492106b3",
+    {
+      "result": {
+        "productType": "skincare",
+        "ingredients": [
+          {
+            "name": "Purified Water",
+            "riskLevel": "low",
+            "summary": "Purified water is used as a solvent in skincare products.",
+            "details": "Water is essential for dissolving other ingredients and providing hydration to the skin. It is generally considered safe.",
+            "category": "solvent"
+          },
+          {
+            "name": "Coconut Oil",
+            "riskLevel": "low",
+            "summary": "Coconut oil is a natural moisturizer and emollient.",
+            "details": "Rich in fatty acids, coconut oil helps to nourish and hydrate the skin, making it soft and smooth. It is generally safe for most skin types.",
+            "category": "emollient"
+          },
+          {
+            "name": "Cetyl Alcohol",
+            "riskLevel": "low",
+            "summary": "Cetyl alcohol is a fatty alcohol used as an emulsifier and thickener.",
+            "details": "Derived from natural oils, cetyl alcohol helps to stabilize and thicken formulations. It is not a drying alcohol and is safe for skin use.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Capric/Caprylic Triglyceride",
+            "riskLevel": "low",
+            "summary": "This is a mixed triester derived from coconut oil and glycerin.",
+            "details": "It acts as an emollient, helping to smooth and soften the skin. It is considered safe and non-irritating.",
+            "category": "emollient"
+          },
+          {
+            "name": "Glyceryl Stearate SE",
+            "riskLevel": "low",
+            "summary": "Glyceryl stearate SE is used as an emulsifier and stabilizer.",
+            "details": "It helps to blend water and oil components in formulations and is generally safe for use in skincare products.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Glycerin",
+            "riskLevel": "low",
+            "summary": "Glycerin is a humectant that attracts moisture to the skin.",
+            "details": "It is a common ingredient in skincare products due to its ability to hydrate and maintain skin moisture balance. It is safe and beneficial for all skin types.",
+            "category": "humectant"
+          },
+          {
+            "name": "Stearyl Alcohol",
+            "riskLevel": "low",
+            "summary": "Stearyl alcohol is a fatty alcohol used as an emulsifier and thickener.",
+            "details": "It is derived from natural fats and oils, helping to stabilize and thicken formulations. It is not a drying alcohol and is safe for skin use.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Shea Butter",
+            "riskLevel": "low",
+            "summary": "Shea butter is a natural fat extracted from the nuts of the shea tree.",
+            "details": "It is highly moisturizing and nourishing, providing essential fatty acids and vitamins to the skin. It is safe and beneficial for dry and sensitive skin.",
+            "category": "emollient"
+          },
+          {
+            "name": "Aloe Barbadensis Leaf Juice",
+            "riskLevel": "low",
+            "summary": "Aloe vera juice is known for its soothing and hydrating properties.",
+            "details": "It is commonly used to calm irritated skin and provide moisture. Aloe vera is safe and beneficial for all skin types.",
+            "category": "soothing agent"
+          },
+          {
+            "name": "Clary Extract",
+            "riskLevel": "low",
+            "summary": "Clary extract is derived from the clary sage plant and used for its soothing properties.",
+            "details": "It is often used in skincare for its calming and anti-inflammatory effects. It is generally safe for use.",
+            "category": "botanical extract"
+          },
+          {
+            "name": "Tocopheryl Acetate",
+            "riskLevel": "low",
+            "summary": "Tocopheryl acetate is a form of vitamin E used as an antioxidant.",
+            "details": "It helps to protect the skin from free radical damage and supports skin health. It is safe and beneficial for skin.",
+            "category": "antioxidant"
+          },
+          {
+            "name": "Grapefruit Fruit Extract",
+            "riskLevel": "low",
+            "summary": "Grapefruit extract is used for its antioxidant and astringent properties.",
+            "details": "It can help to tone and refresh the skin, providing a natural source of vitamins. It is generally safe for use.",
+            "category": "botanical extract"
+          },
+          {
+            "name": "Yucca Schidigera Extract",
+            "riskLevel": "low",
+            "summary": "Yucca extract is used for its cleansing and anti-inflammatory properties.",
+            "details": "It is derived from the yucca plant and can help to soothe and cleanse the skin. It is considered safe for use.",
+            "category": "botanical extract"
+          },
+          {
+            "name": "Dimethicone",
+            "riskLevel": "low",
+            "summary": "Dimethicone is a type of silicone used as an emollient and skin protectant.",
+            "details": "It forms a barrier on the skin, helping to retain moisture and improve texture. It is generally considered safe for skin use.",
+            "category": "silicone"
+          },
+          {
+            "name": "Orange Peel Extract",
+            "riskLevel": "low",
+            "summary": "Orange peel extract is used for its antioxidant and astringent properties.",
+            "details": "It can help to tone and refresh the skin, providing a natural source of vitamins. It is generally safe for use.",
+            "category": "botanical extract"
+          },
+          {
+            "name": "Lemongrass Extract",
+            "riskLevel": "low",
+            "summary": "Lemongrass extract is used for its antimicrobial and astringent properties.",
+            "details": "It can help to cleanse and tone the skin, providing a refreshing scent. It is generally safe for use.",
+            "category": "botanical extract"
+          },
+          {
+            "name": "Carbomer",
+            "riskLevel": "low",
+            "summary": "Carbomer is used as a thickening agent in skincare products.",
+            "details": "It helps to stabilize and thicken formulations, providing a smooth texture. It is considered safe for use.",
+            "category": "thickener"
+          },
+          {
+            "name": "Centella Asiatica Extract",
+            "riskLevel": "low",
+            "summary": "Centella asiatica extract is known for its soothing and healing properties.",
+            "details": "It is often used to calm irritated skin and promote healing. It is safe and beneficial for sensitive skin.",
+            "category": "botanical extract"
+          },
+          {
+            "name": "Matricaria Flower Extract",
+            "riskLevel": "low",
+            "summary": "Matricaria flower extract, also known as chamomile, is used for its soothing properties.",
+            "details": "It is commonly used to calm and soothe irritated skin. It is safe and beneficial for sensitive skin.",
+            "category": "botanical extract"
+          },
+          {
+            "name": "Polysorbate 20",
+            "riskLevel": "low",
+            "summary": "Polysorbate 20 is an emulsifier used to blend oil and water components.",
+            "details": "It helps to stabilize formulations and is generally considered safe for use in skincare products.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Hops Extract",
+            "riskLevel": "low",
+            "summary": "Hops extract is used for its soothing and anti-inflammatory properties.",
+            "details": "It is derived from the hops plant and can help to calm and soothe the skin. It is considered safe for use.",
+            "category": "botanical extract"
+          },
+          {
+            "name": "Sodium Benzoate",
+            "riskLevel": "low",
+            "summary": "Sodium benzoate is a preservative used to prevent microbial growth.",
+            "details": "It is commonly used in cosmetics and food products to ensure product safety and longevity. It is generally considered safe for use.",
+            "category": "preservative"
+          },
+          {
+            "name": "Disodium EDTA",
+            "riskLevel": "low",
+            "summary": "Disodium EDTA is a chelating agent used to improve product stability.",
+            "details": "It binds to metal ions, preventing them from affecting the stability and efficacy of the product. It is considered safe for use in cosmetics.",
+            "category": "chelating agent"
+          },
+          {
+            "name": "Lemon Peel Extract",
+            "riskLevel": "low",
+            "summary": "Lemon peel extract is used for its antioxidant and astringent properties.",
+            "details": "It can help to tone and refresh the skin, providing a natural source of vitamins. It is generally safe for use.",
+            "category": "botanical extract"
+          },
+          {
+            "name": "Equisetum Arvense Extract",
+            "riskLevel": "low",
+            "summary": "Equisetum arvense extract, also known as horsetail, is used for its antioxidant properties.",
+            "details": "It is rich in silica, which can help to strengthen and improve skin texture. It is considered safe for use.",
+            "category": "botanical extract"
+          },
+          {
+            "name": "Vaccinium Myrtillus Fruit/Leaf Extract",
+            "riskLevel": "low",
+            "summary": "Vaccinium myrtillus extract, also known as bilberry, is used for its antioxidant properties.",
+            "details": "It is rich in vitamins and antioxidants, helping to protect the skin from free radical damage. It is considered safe for use.",
+            "category": "botanical extract"
+          },
+          {
+            "name": "Fragrance",
+            "riskLevel": "moderate",
+            "summary": "Fragrance is used to add scent to products but can be a potential allergen.",
+            "details": "Fragrances can contain a mixture of various chemicals, some of which may cause allergic reactions or skin irritation in sensitive individuals. It is advisable for those with sensitive skin to use fragrance-free products.",
+            "category": "fragrance"
+          },
+          {
+            "name": "Ethylhexylglycerin",
+            "riskLevel": "low",
+            "summary": "Ethylhexylglycerin is used as a skin conditioning agent and preservative enhancer.",
+            "details": "It helps to improve the efficacy of preservatives and provides moisturizing benefits. It is considered safe for use in skincare products.",
+            "category": "preservative enhancer"
+          },
+          {
+            "name": "Phenoxyethanol",
+            "riskLevel": "moderate",
+            "summary": "Phenoxyethanol is a preservative used to prevent microbial growth.",
+            "details": "While effective at preserving products, phenoxyethanol can cause irritation in some individuals, particularly in high concentrations. It is generally safe in low concentrations.",
+            "category": "preservative"
+          },
+          {
+            "name": "Sodium Hydroxide",
+            "riskLevel": "low",
+            "summary": "Sodium hydroxide is used to adjust the pH of skincare products.",
+            "details": "It is used in small amounts to balance the acidity and alkalinity of formulations. It is safe in the concentrations typically used in cosmetics.",
+            "category": "pH adjuster"
+          }
+        ],
+        "overallRisk": "moderate",
+        "analyzedAt": "2025-11-23T05:05:31.466Z",
+        "originalText": "ingredients:\nPURIFIED WATER, COCOS NUCIFERA (COCONUT) OIL,\nCETYL ALCOHOL, CAPRIC/CAPRYLIC TRIGLYCERIDE, GLYCERYL\nSTEARATE SE, GLYCERIN, STEARYL ALCOHOL, BUTYROSPERMUM\nPARKII (SHEA) BUTTER, ALOE BARBADENSIS LEAF JUICE, SALVIA\nSCLAREA (CLARY) EXTRACT*, TOCOPHERYL ACETATE (VITAMIN E),\nCITRUS GRANDIS (GRAPEFRUIT) FRUIT EXTRACT, YUCCA SCHIDIGERA\nEXTRACT, DIMETHICONE, CITRUS AURANTIUM DULCIS (ORANGE) PEEL\nEXTRACT, ROSMARINUS OFFICINALIS (ROSEMARY) LEAF EXTRACT\nALTHAEA OFFICINALIS ROOT (MARSHMALLOW) EXTRACT*\nCYMBOPOGON SCHOENANTHUS (LEMONGRASS) EXTRACT, CARBOMER,\nCENTELLA ASIATICA EXTRACT*, CHAMOMILLA RECUTITA (MATRICARIA)\nFLOWER EXTRACT, POLYSORBATE 20, HUMULUS LUPULUS (HOPS)\nEXTRACT*, SODIUM BENZOATE, DISODIUM EDTA, CITRUS MEDICA\nLIMONUM (LEMON) PEEL EXTRACT, EQUISETUM ARVENSE EXTRACT*\nVACCINIUM MYRTILLUS FRUIT/LEAF EXTRACT, FRAGRANCE, ETHYLHEX-\nYLGLYCERIN, PHENOXYETHANOL, SODIUM HYDROXIDE, POTASSIUM\nSORBATE. (*CERTIFIED ORGANIC INGREDIENTS)."
+      },
+      "timestamp": 1763874331467,
+      "ocrText": "ingredients:\nPURIFIED WATER, COCOS NUCIFERA (COCONUT) OIL,\nCETYL ALCOHOL, CAPRIC/CAPRYLIC TRIGLYCERIDE, GLYCERYL\nSTEARATE SE, GLYCERIN, STEARYL ALCOHOL, BUTYROSPERMUM\nPARKII (SHEA) BUTTER, ALOE BARBADENSIS LEAF JUICE, SALVIA\nSCLAREA (CLARY) EXTRACT*, TOCOPHERYL ACETATE (VITAMIN E),\nCITRUS GRANDIS (GRAPEFRUIT) FRUIT EXTRACT, YUCCA SCHIDIGERA\nEXTRACT, DIMETHICONE, CITRUS AURANTIUM DULCIS (ORANGE) PEEL\nEXTRACT, ROSMARINUS OFFICINALIS (ROSEMARY) LEAF EXTRACT\nALTHAEA OFFICINALIS ROOT (MARSHMALLOW) EXTRACT*\nCYMBOPOGON SCHOENANTHUS (LEMONGRASS) EXTRACT, CARBOMER,\nCENTELLA ASIATICA EXTRACT*, CHAMOMILLA RECUTITA (MATRICARIA)\nFLOWER EXTRACT, POLYSORBATE 20, HUMULUS LUPULUS (HOPS)\nEXTRACT*, SODIUM BENZOATE, DISODIUM EDTA, CITRUS MEDICA\nLIMONUM (LEMON) PEEL EXTRACT, EQUISETUM ARVENSE EXTRACT*\nVACCINIUM MYRTILLUS FRUIT/LEAF EXTRACT, FRAGRANCE, ETHYLHEX-\nYLGLYCERIN, PHENOXYETHANOL, SODIUM HYDROXIDE, POTASSIUM\nSORBATE. (*CERTIFIED ORGANIC INGREDIENTS)."
+    }
+  ],
+  [
+    "f7de6b87eb80c0e667c045b3c38a92c59bc494b82f13796d483371424c889e89",
+    {
+      "result": {
+        "productType": "skincare",
+        "ingredients": [
+          {
+            "name": "Water",
+            "riskLevel": "low",
+            "summary": "Water is a universal solvent used in skincare products.",
+            "details": "Water is used as a base in many skincare formulations to dissolve other ingredients and provide hydration.",
+            "category": "solvent"
+          },
+          {
+            "name": "Glycerin",
+            "riskLevel": "low",
+            "summary": "Glycerin is a humectant that attracts moisture to the skin.",
+            "details": "Glycerin helps to keep the skin hydrated by drawing moisture from the air into the skin's outer layer.",
+            "category": "humectant"
+          },
+          {
+            "name": "Myristic Acid",
+            "riskLevel": "low",
+            "summary": "Myristic Acid is a fatty acid used as a cleansing agent.",
+            "details": "This ingredient is often used in soaps and cleansers for its ability to help remove dirt and oils from the skin.",
+            "category": "cleansing agent"
+          },
+          {
+            "name": "Palmitic Acid",
+            "riskLevel": "low",
+            "summary": "Palmitic Acid is a fatty acid used as an emollient.",
+            "details": "It helps to soften and smooth the skin, often used in moisturizers and creams.",
+            "category": "emollient"
+          },
+          {
+            "name": "Potassium Hydroxide",
+            "riskLevel": "moderate",
+            "summary": "Potassium Hydroxide is used to adjust pH levels in skincare products.",
+            "details": "While it helps to balance the pH of products, it can be irritating to the skin in high concentrations.",
+            "category": "pH adjuster"
+          },
+          {
+            "name": "Glycol Distearate",
+            "riskLevel": "low",
+            "summary": "Glycol Distearate is used as an emulsifier and opacifier.",
+            "details": "It helps to stabilize formulations and give products a pearlescent appearance.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Dipropylene Glycol",
+            "riskLevel": "low",
+            "summary": "Dipropylene Glycol is a solvent and viscosity-decreasing agent.",
+            "details": "It is used to improve the texture and spreadability of skincare products.",
+            "category": "solvent"
+          },
+          {
+            "name": "Sorbitol",
+            "riskLevel": "low",
+            "summary": "Sorbitol is a sugar alcohol used as a humectant.",
+            "details": "It helps to retain moisture in the skin, similar to glycerin.",
+            "category": "humectant"
+          },
+          {
+            "name": "Lauric Acid",
+            "riskLevel": "low",
+            "summary": "Lauric Acid is a fatty acid used for its cleansing properties.",
+            "details": "It is effective in removing oils and dirt from the skin, commonly found in soaps.",
+            "category": "cleansing agent"
+          },
+          {
+            "name": "Stearic Acid",
+            "riskLevel": "low",
+            "summary": "Stearic Acid is a fatty acid used as an emulsifier and thickener.",
+            "details": "It helps to stabilize formulations and improve texture in creams and lotions.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Lauryl Betaine",
+            "riskLevel": "low",
+            "summary": "Lauryl Betaine is a mild surfactant used in cleansing products.",
+            "details": "It is often used to reduce irritation potential in cleansers and shampoos.",
+            "category": "surfactant"
+          },
+          {
+            "name": "Glyceryl Stearate SE",
+            "riskLevel": "low",
+            "summary": "Glyceryl Stearate SE is an emulsifier that helps blend oil and water.",
+            "details": "It is used to create a stable formulation in creams and lotions.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Synthetic Wax",
+            "riskLevel": "low",
+            "summary": "Synthetic Wax is used to provide texture and stability to products.",
+            "details": "It helps to thicken formulations and improve the feel of the product on the skin.",
+            "category": "thickener"
+          },
+          {
+            "name": "Myristyl Betaine",
+            "riskLevel": "low",
+            "summary": "Myristyl Betaine is a surfactant used for its cleansing properties.",
+            "details": "It is used to help cleanse the skin without causing irritation.",
+            "category": "surfactant"
+          },
+          {
+            "name": "Isopropanol",
+            "riskLevel": "moderate",
+            "summary": "Isopropanol is a type of alcohol used as a solvent.",
+            "details": "While effective in dissolving ingredients, it can be drying to the skin with frequent use.",
+            "category": "solvent"
+          },
+          {
+            "name": "Sodium Metabisulfite",
+            "riskLevel": "moderate",
+            "summary": "Sodium Metabisulfite is a preservative used to prevent oxidation.",
+            "details": "It can cause allergic reactions in some individuals, especially those with sulfite sensitivity.",
+            "category": "preservative"
+          },
+          {
+            "name": "Disodium EDTA",
+            "riskLevel": "low",
+            "summary": "Disodium EDTA is a chelating agent that improves product stability.",
+            "details": "It binds to metal ions to prevent them from affecting the stability and appearance of the product.",
+            "category": "chelating agent"
+          },
+          {
+            "name": "Bis-Ethoxydiglycol Cyclohexane 1,4-Dicarboxylate",
+            "riskLevel": "low",
+            "summary": "This compound is used as a film-former and conditioning agent.",
+            "details": "It helps to create a smooth, even layer on the skin, enhancing the feel of the product.",
+            "category": "conditioning agent"
+          },
+          {
+            "name": "Acetylated Sodium Hyaluronate",
+            "riskLevel": "low",
+            "summary": "Acetylated Sodium Hyaluronate is a modified form of hyaluronic acid.",
+            "details": "It provides enhanced moisture retention and skin conditioning properties.",
+            "category": "humectant"
+          },
+          {
+            "name": "Silk Protein",
+            "riskLevel": "low",
+            "summary": "Silk Protein is used for its moisturizing and conditioning properties.",
+            "details": "It helps to improve skin texture and hydration by forming a protective barrier.",
+            "category": "conditioning agent"
+          },
+          {
+            "name": "Butylated Hydroxytoluene (BHT)",
+            "riskLevel": "moderate",
+            "summary": "BHT is an antioxidant used to prevent product spoilage.",
+            "details": "While effective in preserving products, there are concerns about its potential as a skin irritant and its long-term health effects.",
+            "category": "antioxidant"
+          },
+          {
+            "name": "Sodium Hyaluronate",
+            "riskLevel": "low",
+            "summary": "Sodium Hyaluronate is a salt form of hyaluronic acid used for hydration.",
+            "details": "It penetrates the skin to provide deep hydration and improve elasticity.",
+            "category": "humectant"
+          },
+          {
+            "name": "Potassium Sorbate",
+            "riskLevel": "low",
+            "summary": "Potassium Sorbate is a preservative used to inhibit microbial growth.",
+            "details": "It is commonly used in cosmetics to extend shelf life and maintain product integrity.",
+            "category": "preservative"
+          },
+          {
+            "name": "Citric Acid",
+            "riskLevel": "low",
+            "summary": "Citric Acid is used to adjust the pH of skincare products.",
+            "details": "It helps to maintain the acidity of products, ensuring they remain effective and safe for use.",
+            "category": "pH adjuster"
+          },
+          {
+            "name": "Tocopherol",
+            "riskLevel": "low",
+            "summary": "Tocopherol is a form of Vitamin E used as an antioxidant.",
+            "details": "It helps to protect the skin from free radical damage and improve moisture retention.",
+            "category": "antioxidant"
+          }
+        ],
+        "overallRisk": "moderate",
+        "analyzedAt": "2025-11-23T05:06:21.609Z",
+        "originalText": "成分:水、甘油、肉豆蔻酸、棕榈酸、氢氧化钾、乙二醇二硬脂酸酯、双丙甘醇、山梨(\n糖)醇、月桂酸、硬脂酸、月桂基甜菜碱、甘油硬脂酸酯 SE、合成蜡、肉豆蔻基甜菜碱、\n其他微量成分:异丙醇、焦亚硫酸钠、EDTA二钠、双-二乙氧基二甘醇环己烷1,4-二羧酸\n酯、乙酰化透明质酸钠、蚕丝胶蛋白、丁羟甲苯、透明质酸钠、山梨酸钾、柠檬酸、生育\n酚(维生素E)"
+      },
+      "timestamp": 1763874381609,
+      "ocrText": "成分:水、甘油、肉豆蔻酸、棕榈酸、氢氧化钾、乙二醇二硬脂酸酯、双丙甘醇、山梨(\n糖)醇、月桂酸、硬脂酸、月桂基甜菜碱、甘油硬脂酸酯 SE、合成蜡、肉豆蔻基甜菜碱、\n其他微量成分:异丙醇、焦亚硫酸钠、EDTA二钠、双-二乙氧基二甘醇环己烷1,4-二羧酸\n酯、乙酰化透明质酸钠、蚕丝胶蛋白、丁羟甲苯、透明质酸钠、山梨酸钾、柠檬酸、生育\n酚(维生素E)"
+    }
+  ],
+  [
+    "bd9e4971511f82ac1d6340381a8d73290dc883147e9bdb346647ef27cd737ca3",
+    {
+      "result": {
+        "productType": "skincare",
+        "ingredients": [
+          {
+            "name": "Agua",
+            "riskLevel": "low",
+            "summary": "El agua es un solvente común en productos de cuidado personal.",
+            "details": "El agua se utiliza para disolver otros ingredientes y proporcionar hidratación a la piel.",
+            "category": "solvente"
+          },
+          {
+            "name": "Glicerina",
+            "riskLevel": "low",
+            "summary": "La glicerina es un humectante que ayuda a retener la humedad en la piel.",
+            "details": "Es ampliamente utilizada en productos de cuidado de la piel por su capacidad para atraer agua y mantener la piel hidratada.",
+            "category": "humectante"
+          },
+          {
+            "name": "Ácido mirístico",
+            "riskLevel": "low",
+            "summary": "El ácido mirístico es un ácido graso utilizado como emulsionante.",
+            "details": "Se encuentra comúnmente en productos de cuidado personal para ayudar a mezclar ingredientes a base de agua y aceite.",
+            "category": "emulsionante"
+          },
+          {
+            "name": "Ácido palmítico",
+            "riskLevel": "low",
+            "summary": "El ácido palmítico es un ácido graso que actúa como emoliente.",
+            "details": "Ayuda a suavizar y acondicionar la piel, mejorando su textura.",
+            "category": "emoliente"
+          },
+          {
+            "name": "Hidróxido de potasio",
+            "riskLevel": "moderate",
+            "summary": "El hidróxido de potasio se utiliza para ajustar el pH de los productos.",
+            "details": "Puede ser irritante para la piel en concentraciones altas, pero es seguro en las cantidades típicas utilizadas en cosméticos.",
+            "category": "ajustador de pH"
+          },
+          {
+            "name": "Esterato de glicol disteárico",
+            "riskLevel": "low",
+            "summary": "Es un emulsionante que ayuda a estabilizar las mezclas de agua y aceite.",
+            "details": "Facilita la formación de emulsiones estables en productos de cuidado personal.",
+            "category": "emulsionante"
+          },
+          {
+            "name": "Dipropilenglicol",
+            "riskLevel": "low",
+            "summary": "El dipropilenglicol es un solvente y humectante utilizado en cosméticos.",
+            "details": "Ayuda a disolver otros ingredientes y a mantener la humedad en la piel.",
+            "category": "solvente"
+          },
+          {
+            "name": "Sorbitol",
+            "riskLevel": "low",
+            "summary": "El sorbitol es un humectante que atrae la humedad a la piel.",
+            "details": "Se utiliza para mejorar la hidratación y la textura de los productos cosméticos.",
+            "category": "humectante"
+          },
+          {
+            "name": "Ácido láurico",
+            "riskLevel": "low",
+            "summary": "El ácido láurico es un ácido graso utilizado como agente limpiador.",
+            "details": "Tiene propiedades antimicrobianas y se utiliza en productos de limpieza y cuidado de la piel.",
+            "category": "agente limpiador"
+          },
+          {
+            "name": "Ácido esteárico",
+            "riskLevel": "low",
+            "summary": "El ácido esteárico es un ácido graso que actúa como emulsionante y estabilizador.",
+            "details": "Ayuda a mantener la consistencia de las emulsiones en productos de cuidado personal.",
+            "category": "emulsionante"
+          },
+          {
+            "name": "Cocamidopropil betaína",
+            "riskLevel": "moderate",
+            "summary": "Es un surfactante suave utilizado en productos de limpieza.",
+            "details": "Puede causar irritación en pieles sensibles, pero es generalmente seguro en productos cosméticos.",
+            "category": "surfactante"
+          },
+          {
+            "name": "Estearato de glicerilo SE",
+            "riskLevel": "low",
+            "summary": "Es un emulsionante que ayuda a mezclar ingredientes a base de agua y aceite.",
+            "details": "Proporciona estabilidad a las emulsiones en productos cosméticos.",
+            "category": "emulsionante"
+          },
+          {
+            "name": "Cera sintética",
+            "riskLevel": "low",
+            "summary": "La cera sintética se utiliza para proporcionar textura y consistencia a los productos.",
+            "details": "Ayuda a espesar y estabilizar las formulaciones cosméticas.",
+            "category": "texturizante"
+          },
+          {
+            "name": "Miristamidopropil betaína",
+            "riskLevel": "low",
+            "summary": "Es un surfactante suave utilizado para limpiar la piel.",
+            "details": "Ayuda a eliminar la suciedad y el aceite sin irritar la piel.",
+            "category": "surfactante"
+          },
+          {
+            "name": "Policuaternio-7",
+            "riskLevel": "low",
+            "summary": "Es un acondicionador utilizado en productos para el cabello y la piel.",
+            "details": "Ayuda a mejorar la suavidad y manejabilidad del cabello.",
+            "category": "acondicionador"
+          },
+          {
+            "name": "Benzoato de sodio",
+            "riskLevel": "moderate",
+            "summary": "Es un conservante utilizado para prevenir el crecimiento microbiano.",
+            "details": "Puede causar irritación en algunas personas, pero es seguro en las concentraciones típicas de los cosméticos.",
+            "category": "conservante"
+          },
+          {
+            "name": "Cloruro de sodio",
+            "riskLevel": "low",
+            "summary": "El cloruro de sodio se utiliza como agente espesante y estabilizador.",
+            "details": "Es comúnmente conocido como sal de mesa y es seguro en productos cosméticos.",
+            "category": "estabilizador"
+          },
+          {
+            "name": "Fragancia",
+            "riskLevel": "high",
+            "summary": "Las fragancias pueden causar alergias e irritaciones en la piel.",
+            "details": "A menudo contienen compuestos que son sensibilizantes y pueden desencadenar reacciones alérgicas.",
+            "category": "alérgeno potencial"
+          },
+          {
+            "name": "Policuaternio-6",
+            "riskLevel": "low",
+            "summary": "Es un acondicionador utilizado para mejorar la textura del cabello.",
+            "details": "Proporciona suavidad y manejabilidad al cabello sin dejar residuos.",
+            "category": "acondicionador"
+          },
+          {
+            "name": "Cocamidopropil betaína",
+            "riskLevel": "moderate",
+            "summary": "Es un surfactante suave utilizado en productos de limpieza.",
+            "details": "Puede causar irritación en pieles sensibles, pero es generalmente seguro en productos cosméticos.",
+            "category": "surfactante"
+          },
+          {
+            "name": "Isopropanol",
+            "riskLevel": "moderate",
+            "summary": "Es un alcohol utilizado como solvente y agente de secado.",
+            "details": "Puede ser secante para la piel y causar irritación en altas concentraciones.",
+            "category": "solvente"
+          },
+          {
+            "name": "Metabisulfito de sodio",
+            "riskLevel": "moderate",
+            "summary": "Es un conservante que previene el deterioro del producto.",
+            "details": "Puede causar reacciones alérgicas en personas sensibles a los sulfitos.",
+            "category": "conservante"
+          },
+          {
+            "name": "EDTA disódico",
+            "riskLevel": "low",
+            "summary": "Es un agente quelante que mejora la estabilidad del producto.",
+            "details": "Ayuda a prevenir la degradación de los ingredientes activos en las formulaciones cosméticas.",
+            "category": "agente quelante"
+          },
+          {
+            "name": "Bis-etoxidiglicol ciclohexano 1,4-dicarboxilato",
+            "riskLevel": "low",
+            "summary": "Es un emoliente utilizado para suavizar la piel.",
+            "details": "Proporciona una sensación sedosa y mejora la aplicación de productos cosméticos.",
+            "category": "emoliente"
+          },
+          {
+            "name": "Hialuronato de sodio acetilado",
+            "riskLevel": "low",
+            "summary": "Es una forma de ácido hialurónico que mejora la hidratación de la piel.",
+            "details": "Ayuda a retener la humedad y proporciona una apariencia más tersa a la piel.",
+            "category": "humectante"
+          },
+          {
+            "name": "Proteína de seda",
+            "riskLevel": "low",
+            "summary": "Es un ingrediente que mejora la textura y suavidad de la piel.",
+            "details": "Proporciona propiedades acondicionadoras y mejora la sensación de los productos cosméticos.",
+            "category": "acondicionador"
+          },
+          {
+            "name": "Butilhidroxitolueno (BHT)",
+            "riskLevel": "moderate",
+            "summary": "Es un antioxidante utilizado para prevenir la oxidación de los ingredientes.",
+            "details": "Puede causar irritación en la piel y es objeto de debate por sus posibles efectos en la salud.",
+            "category": "antioxidante"
+          },
+          {
+            "name": "Hialuronato de sodio",
+            "riskLevel": "low",
+            "summary": "Es una forma de ácido hialurónico que ayuda a hidratar la piel.",
+            "details": "Es conocido por su capacidad para retener grandes cantidades de agua, mejorando la hidratación de la piel.",
+            "category": "humectante"
+          },
+          {
+            "name": "Sorbato de potasio",
+            "riskLevel": "low",
+            "summary": "Es un conservante utilizado para inhibir el crecimiento de moho y levaduras.",
+            "details": "Es considerado seguro en las concentraciones típicas utilizadas en cosméticos.",
+            "category": "conservante"
+          },
+          {
+            "name": "Ácido cítrico",
+            "riskLevel": "low",
+            "summary": "Se utiliza para ajustar el pH de los productos cosméticos.",
+            "details": "También actúa como antioxidante y es seguro en las concentraciones típicas de los cosméticos.",
+            "category": "ajustador de pH"
+          },
+          {
+            "name": "Tocoferol",
+            "riskLevel": "low",
+            "summary": "Es una forma de vitamina E utilizada como antioxidante.",
+            "details": "Ayuda a proteger la piel de los daños causados por los radicales libres.",
+            "category": "antioxidante"
+          }
+        ],
+        "overallRisk": "high",
+        "analyzedAt": "2025-11-23T05:08:29.226Z",
+        "originalText": "成分:水、甘油、肉豆蔻酸、棕榈酸、氢氧化钾、乙二醇二硬脂酸酯、双丙甘醇、山梨(\n糖)醇、月桂酸、硬脂酸、月桂基甜菜碱、甘油硬脂酸酯 SE、合成蜡、肉豆蔻基甜菜碱、\n聚季铵盐-7、苯甲酸钠、氯化钠、(日用)香精、聚季铵盐-6、鲸蜡基甜菜碱\n其他微量成分:异丙醇、焦亚硫酸钠、EDTA二钠、双-二乙氧基二甘醇环己烷1,4-二羧酸\n酯、乙酰化透明质酸钠、蚕丝胶蛋白、丁羟甲苯、透明质酸钠、山梨酸钾、柠檬酸、生育\n酚(维生素E)"
+      },
+      "timestamp": 1763874509227,
+      "ocrText": "成分:水、甘油、肉豆蔻酸、棕榈酸、氢氧化钾、乙二醇二硬脂酸酯、双丙甘醇、山梨(\n糖)醇、月桂酸、硬脂酸、月桂基甜菜碱、甘油硬脂酸酯 SE、合成蜡、肉豆蔻基甜菜碱、\n聚季铵盐-7、苯甲酸钠、氯化钠、(日用)香精、聚季铵盐-6、鲸蜡基甜菜碱\n其他微量成分:异丙醇、焦亚硫酸钠、EDTA二钠、双-二乙氧基二甘醇环己烷1,4-二羧酸\n酯、乙酰化透明质酸钠、蚕丝胶蛋白、丁羟甲苯、透明质酸钠、山梨酸钾、柠檬酸、生育\n酚(维生素E)"
+    }
   ]
 ]
