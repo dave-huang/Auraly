@@ -4,7 +4,7 @@ import multer from "multer";
 import z from "zod";
 import crypto from "crypto";
 import { extractTextFromImage } from "./services/ocr";
-import { analyzeIngredients, analyzeIngredientsFromImage } from "./services/analyzer";
+import { analyzeIngredients } from "./services/analyzer";
 import { batchAnalyzeIngredientsWithCache, getCacheStats } from "./services/cache";
 import { 
   ocrRequestSchema, 
@@ -198,14 +198,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
-  // Combined Vision Analysis endpoint (GPT-5.1 directly on images - fastest approach)
+  // Combined OCR + Analysis endpoint (exhaustive ingredient extraction)
   app.post("/api/scan-and-analyze", async (req, res) => {
     const body = req.body;
     
     // Validate required fields
-    if (!body.imageData || !body.productType || !body.userLanguage) {
+    if ((!body.imageData && !body.ocrText) || !body.productType || !body.userLanguage) {
       return res.status(400).json({ 
-        error: 'Missing required fields: imageData, productType, and userLanguage are required.' 
+        error: 'Missing required fields: (imageData OR ocrText), productType, and userLanguage are required.' 
       });
     }
 
@@ -221,29 +221,59 @@ export async function registerRoutes(app: Express): Promise<Server> {
     // Return request ID immediately so client can poll
     res.status(202).json({ requestId, status: 'processing' });
     
-    // Process vision analysis in background (non-blocking)
+    // Process analysis in background (non-blocking)
     (async () => {
       const startTime = Date.now();
+      let ocrText: string | undefined;
       
       try {
-        const { imageData, productType, userLanguage } = body;
+        const { imageData, productType, userLanguage, ocrText: cachedOcrText } = body;
         
-        console.log(`[VISION-SCAN-${requestId}] Starting direct image analysis for ${productType} in ${userLanguage}`);
+        // Step 1: Run OCR or use cached
+        if (cachedOcrText) {
+          console.log(`[SCAN-AND-ANALYZE-${requestId}] Using cached OCR text (${cachedOcrText.length} chars)`);
+          ocrText = cachedOcrText;
+        } else {
+          console.log(`[SCAN-AND-ANALYZE-${requestId}] Starting OCR for ${productType} in ${userLanguage}`);
+          try {
+            const ocrResult = await extractTextFromImage(imageData);
+            const ocrDuration = ((Date.now() - startTime) / 1000).toFixed(2);
+            console.log(`[TIMING] [OCR-SUCCESS-${requestId}] OCR completed in ${ocrDuration}s`);
+            
+            if (!ocrResult.text || ocrResult.text.trim().length < 10) {
+              throw new Error('No ingredients found in image. Please ensure the ingredient list is clearly visible and try again.');
+            }
+            
+            ocrText = ocrResult.text;
+          } catch (ocrError: any) {
+            const ocrDuration = ((Date.now() - startTime) / 1000).toFixed(2);
+            console.error(`[OCR-FAILED-${requestId}] OCR error after ${ocrDuration}s:`, ocrError.message);
+            throw new Error(`OCR failed: ${ocrError.message}`);
+          }
+        }
         
-        // Use GPT-5.1 Vision directly on image for maximum speed (no OCR needed)
-        const analysisResult = await analyzeIngredientsFromImage(imageData, productType as ProductType, userLanguage);
-        
-        const totalDuration = ((Date.now() - startTime) / 1000).toFixed(2);
-        console.log(`[TIMING] [VISION-SUCCESS-${requestId}] Analysis completed in ${totalDuration}s`);
-        
-        // Store completed result
-        analysisRequest.status = 'completed';
-        analysisRequest.result = analysisResult;
-        analysisRequest.ocrText = '[Vision analysis - no OCR needed]';
-        analysisRequest.timestamp = Date.now();
-        
+        // Step 2: Run Analysis
+        const analysisStartTime = Date.now();
+        try {
+          const analysisResult = await analyzeIngredients(productType as ProductType, ocrText!, userLanguage);
+          const analysisDuration = ((Date.now() - analysisStartTime) / 1000).toFixed(2);
+          const totalDuration = ((Date.now() - startTime) / 1000).toFixed(2);
+          
+          console.log(`[TIMING] [ANALYSIS-SUCCESS-${requestId}] Analysis completed in ${analysisDuration}s (total: ${totalDuration}s)`);
+          
+          // Store completed result
+          analysisRequest.status = 'completed';
+          analysisRequest.result = analysisResult;
+          analysisRequest.ocrText = ocrText;
+          analysisRequest.timestamp = Date.now();
+          
+        } catch (analysisError: any) {
+          const analysisDuration = ((Date.now() - analysisStartTime) / 1000).toFixed(2);
+          console.error(`[ANALYSIS-FAILED-${requestId}] Analysis error after ${analysisDuration}s:`, analysisError.message);
+          throw analysisError;
+        }
       } catch (error: any) {
-        console.error(`[VISION-SCAN-FAILED-${requestId}] Error:`, error.message);
+        console.error(`[SCAN-AND-ANALYZE-FAILED-${requestId}] Error:`, error.message);
         analysisRequest.status = 'failed';
         analysisRequest.error = error.message || 'Failed to analyze image. Please try again.';
         analysisRequest.timestamp = Date.now();

@@ -665,5 +665,126 @@
       "timestamp": 1763866945785,
       "ocrText": "INGREDIENTS: SUGAR, ENRICHED FLOUR (BLEACHED\nWHEAT FLOUR, MALTED BARLEY FLOUR, NIACIN,\nREDUCED IRON OR FERROUS SULFATE, THIAMINE\nMONONITRATE, RIBOFLAVIN, FOLIC ACID), WATER,\nHIGH FRUCTOSE CORN SYRUP, PALM OIL, CORN SYRUP,\nCOCOA, TALLOW, SOYBEAN OIL, CONTAINS 2% OR\nLESS OF: GLYCERIN, COCOA PROCESSED WITH ALKALI,\nFOOD STARCH MODIFIED, CORN STARCH, BAKING\nSODA, SALT, WHEY, CORN SYRUP SOLIDS, CALCIUM\nSULFATE, EGG, SORBIC ACID AND POTASSIUM\nSORBATE (TO RETAIN FRESHNESS), AGAVE SYRUP,\nINULIN, EGG WHITES, DEXTROSE, HYDROGENATED\nTALLOW, SODIUM ACID PYROPHOSPHATE, ΜΟΝΟ\nAND DIGLYCERIDES, BAKING SODA, BLEACHED\nWHEAT FLOUR, POLYSORBATE 60, SODIUM STEAROYL\nLACTYLATE, COTTONSEED OIL, SOY LECITHIN,\nXANTHAN GUM, AGAR, CELLULOSE GUM, NATURAL\nAND ARTIFICIAL FLAVORS, TITANIUM DIOXIDE\n(COLOR), MONOCALCIUM PHOSPHATE, ENZYMES,\nSALT, LOCUST BEAN GUM, DIPOTASSIUM PHOSPHATE,\nCHOCOLATE LIQUOR, DEFATTED SOY FLOUR.\nCONTAINS EGG, MILK, SOYBEAN AND WHEAT\nINGREDIENTS.\nCONTAINS BIOENGINEERED FOOD INGREDIENTS"
     }
+  ],
+  [
+    "d566a1a4b91c51a10d173e99aa7ccb9ad02409dce21100f60402a96f2493a520",
+    {
+      "result": {
+        "productType": "food",
+        "productName": "House Vermont Curry",
+        "ingredients": [
+          {
+            "name": "Vegetable Oil",
+            "riskLevel": "low",
+            "summary": "Common cooking oil used in food products.",
+            "details": "Vegetable oil is used for cooking and frying. It is generally considered safe when consumed in moderation.",
+            "category": "oil"
+          },
+          {
+            "name": "Palm Oil",
+            "riskLevel": "moderate",
+            "summary": "Widely used oil with environmental concerns.",
+            "details": "Palm oil is used in many processed foods. It has been linked to deforestation and habitat destruction, but is safe for consumption.",
+            "category": "oil"
+          },
+          {
+            "name": "Canola Oil",
+            "riskLevel": "low",
+            "summary": "A type of vegetable oil low in saturated fat.",
+            "details": "Canola oil is often used for cooking due to its low saturated fat content. It is generally considered safe.",
+            "category": "oil"
+          },
+          {
+            "name": "Sugar",
+            "riskLevel": "moderate",
+            "summary": "Common sweetener used in many foods.",
+            "details": "Excessive sugar intake can lead to health issues like obesity and diabetes. It is safe in moderation.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Salt",
+            "riskLevel": "moderate",
+            "summary": "Common seasoning and preservative.",
+            "details": "High salt intake is linked to high blood pressure and heart disease. It is safe in moderation.",
+            "category": "seasoning"
+          },
+          {
+            "name": "Corn Starch",
+            "riskLevel": "low",
+            "summary": "Thickening agent used in cooking.",
+            "details": "Corn starch is used to thicken sauces and soups. It is generally safe for consumption.",
+            "category": "thickener"
+          },
+          {
+            "name": "Monosodium Glutamate (MSG)",
+            "riskLevel": "moderate",
+            "summary": "Flavor enhancer often used in savory dishes.",
+            "details": "MSG is used to enhance flavor. Some people may experience sensitivity, but it is generally recognized as safe.",
+            "category": "flavor enhancer"
+          },
+          {
+            "name": "Yeast Extract",
+            "riskLevel": "low",
+            "summary": "Flavor enhancer derived from yeast.",
+            "details": "Yeast extract is used to add umami flavor to foods. It is generally considered safe.",
+            "category": "flavor enhancer"
+          },
+          {
+            "name": "Caramel Color",
+            "riskLevel": "moderate",
+            "summary": "Common food coloring used in many products.",
+            "details": "Caramel color is used to color foods and beverages. Some types may contain contaminants, but it is generally safe.",
+            "category": "color"
+          },
+          {
+            "name": "Soy Sauce",
+            "riskLevel": "moderate",
+            "summary": "Common condiment made from fermented soybeans.",
+            "details": "Soy sauce contains high levels of sodium and may cause allergic reactions in sensitive individuals.",
+            "category": "seasoning"
+          },
+          {
+            "name": "Skim Milk Powder",
+            "riskLevel": "low",
+            "summary": "Dried milk product used in food processing.",
+            "details": "Skim milk powder is used to add dairy flavor and nutrients. It is generally safe but may cause issues for those with lactose intolerance.",
+            "category": "dairy"
+          },
+          {
+            "name": "Apple Paste",
+            "riskLevel": "low",
+            "summary": "Fruit paste used for flavoring.",
+            "details": "Apple paste is used to add sweetness and flavor. It is generally considered safe.",
+            "category": "flavoring"
+          },
+          {
+            "name": "Garlic Powder",
+            "riskLevel": "low",
+            "summary": "Dried and ground garlic used for seasoning.",
+            "details": "Garlic powder is used to add flavor to dishes. It is generally safe and has health benefits.",
+            "category": "seasoning"
+          },
+          {
+            "name": "Onion Powder",
+            "riskLevel": "low",
+            "summary": "Dried and ground onion used for seasoning.",
+            "details": "Onion powder is used to add flavor to dishes. It is generally considered safe.",
+            "category": "seasoning"
+          },
+          {
+            "name": "Paprika Color",
+            "riskLevel": "low",
+            "summary": "Natural color derived from paprika.",
+            "details": "Paprika color is used to enhance the color of foods. It is generally considered safe.",
+            "category": "color"
+          }
+        ],
+        "overallRisk": "moderate",
+        "analyzedAt": "2025-11-23T04:56:56.150Z",
+        "originalText": "[Image-based analysis - 1495743 bytes]"
+      },
+      "timestamp": 1763873816153,
+      "ocrText": "[Image-based analysis - 1495720 bytes]"
+    }
   ]
 ]

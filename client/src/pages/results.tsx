@@ -59,8 +59,8 @@ export default function ResultsPage() {
   const [retryCount, setRetryCount] = useState(0);
 
   // Auto-retry mutation with Service Worker polling for mobile background support
-  const analyzeMutation = useMutation({
-    mutationFn: async (data: { productType: string; imageData: string; ocrText?: string }) => {
+  const analyzeMutation = useMutation<AnalysisResult, Error, { productType: string; imageData: string; ocrText?: string }>({
+    mutationFn: async (data: { productType: string; imageData: string; ocrText?: string }): Promise<AnalysisResult> => {
       // Normalize language code to 'en', 'es', or 'zh'
       let userLanguage = 'en';
       if (i18n.language.startsWith('zh')) {
