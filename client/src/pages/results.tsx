@@ -86,93 +86,120 @@ export default function ResultsPage() {
         setStreamingIngredients([]);
         setStreamProgress({ cached: 0, total: 0 });
 
-        return await new Promise<AnalysisResult>((resolve, reject) => {
-          // Build query string manually to handle undefined values properly
-          const params = new URLSearchParams();
-          if (requestBody.imageData) params.append('imageData', requestBody.imageData);
-          if (requestBody.ocrText) params.append('ocrText', requestBody.ocrText);
-          params.append('productType', requestBody.productType);
-          params.append('userLanguage', requestBody.userLanguage);
+        return await new Promise<AnalysisResult>(async (resolve, reject) => {
+          try {
+            const response = await fetch('/api/scan-and-analyze-stream', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(requestBody)
+            });
 
-          const eventSource = new EventSource(
-            `/api/scan-and-analyze-stream?${params.toString()}`
-          );
-
-          let ocrText = '';
-          const collectedIngredients: Ingredient[] = [];
-          let productType_final = data.productType;
-
-          eventSource.onmessage = (event) => {
-            try {
-              const message = JSON.parse(event.data);
-
-              if (message.type === 'ocr_complete') {
-                ocrText = message.ocrText;
-                setStreamProgress({ cached: 0, total: message.ingredientCount });
-                console.log('[STREAM] OCR complete:', message.ingredientCount, 'ingredients');
-              } else if (message.type === 'ingredient') {
-                collectedIngredients.push(message.ingredient);
-                setStreamingIngredients([...collectedIngredients]);
-                console.log('[STREAM] Received ingredient:', message.ingredient.name);
-              } else if (message.type === 'progress') {
-                setStreamProgress({ cached: message.cached, total: message.total });
-                console.log('[STREAM] Progress:', message.cached, '/', message.total);
-              } else if (message.type === 'complete') {
-                console.log('[STREAM] Analysis complete in', message.duration, 's');
-                eventSource.close();
-                setIsStreaming(false);
-
-                // Build final result
-                const overallRisk =
-                  collectedIngredients.some(i => i.riskLevel === 'high')
-                    ? 'high'
-                    : collectedIngredients.some(i => i.riskLevel === 'moderate')
-                      ? 'moderate'
-                      : 'low';
-
-                const result: AnalysisResult = {
-                  productType: productType_final as any,
-                  productName: null,
-                  ingredients: collectedIngredients,
-                  overallRisk,
-                  analyzedAt: new Date().toISOString()
-                };
-
-                resolve(result);
-              } else if (message.type === 'error') {
-                console.error('[STREAM] Error:', message.error);
-                eventSource.close();
-                setIsStreaming(false);
-                reject(new Error(message.error));
-              }
-            } catch (e) {
-              console.error('[STREAM] Parse error:', e);
+            if (!response.ok) {
+              throw new Error(`HTTP ${response.status}: ${await response.text()}`);
             }
-          };
 
-          eventSource.onerror = (error) => {
-            console.error('[STREAM] Connection error:', error);
-            eventSource.close();
-            setIsStreaming(false);
+            const reader = response.body?.getReader();
+            if (!reader) {
+              throw new Error('Response body is not readable');
+            }
 
-            // Fall back to polling if streaming not available
-            if (collectedIngredients.length === 0) {
-              console.log('[STREAM] Falling back to polling endpoint...');
-              apiRequest("POST", "/api/scan-and-analyze", requestBody)
-                .then(r => r.json())
-                .then(result => {
-                  if (result.requestId) {
-                    // Use direct polling
-                    directPoll(result.requestId, resolve, reject);
-                  } else {
-                    reject(new Error('Streaming unavailable and no request ID'));
+            const decoder = new TextDecoder();
+            let buffer = '';
+            const collectedIngredients: Ingredient[] = [];
+            let productType_final = data.productType;
+
+            // Read stream line by line
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+
+              buffer += decoder.decode(value, { stream: true });
+              const lines = buffer.split('\n');
+              buffer = lines.pop() || ''; // Keep incomplete line in buffer
+
+              for (const line of lines) {
+                if (!line.trim()) continue;
+                try {
+                  const message = JSON.parse(line);
+
+                  if (message.type === 'ocr_complete') {
+                    setStreamProgress({ cached: 0, total: message.ingredientCount });
+                    console.log('[STREAM] OCR complete:', message.ingredientCount, 'ingredients');
+                  } else if (message.type === 'ingredient') {
+                    collectedIngredients.push(message.ingredient);
+                    setStreamingIngredients([...collectedIngredients]);
+                    console.log('[STREAM] Received ingredient:', message.ingredient.name);
+                  } else if (message.type === 'progress') {
+                    setStreamProgress({ cached: message.cached, total: message.total });
+                    console.log('[STREAM] Progress:', message.cached, '/', message.total);
+                  } else if (message.type === 'complete') {
+                    console.log('[STREAM] Analysis complete in', message.duration, 's');
+                    setIsStreaming(false);
+
+                    // Build final result
+                    const overallRisk =
+                      collectedIngredients.some(i => i.riskLevel === 'high')
+                        ? 'high'
+                        : collectedIngredients.some(i => i.riskLevel === 'moderate')
+                          ? 'moderate'
+                          : 'low';
+
+                    const result: AnalysisResult = {
+                      productType: productType_final as any,
+                      productName: null,
+                      ingredients: collectedIngredients,
+                      overallRisk,
+                      analyzedAt: new Date().toISOString()
+                    };
+
+                    resolve(result);
+                    return;
+                  } else if (message.type === 'error') {
+                    console.error('[STREAM] Error:', message.error);
+                    setIsStreaming(false);
+                    reject(new Error(message.error));
+                    return;
                   }
-                })
-                .catch(reject);
-            } else {
-              reject(new Error('Stream connection lost'));
+                } catch (parseError) {
+                  console.error('[STREAM] Parse error:', parseError);
+                }
+              }
             }
-          };
+
+            // Handle remaining buffer
+            if (buffer.trim()) {
+              try {
+                const message = JSON.parse(buffer);
+                if (message.type === 'complete' || message.type === 'error') {
+                  if (message.type === 'error') {
+                    reject(new Error(message.error));
+                  } else {
+                    const overallRisk =
+                      collectedIngredients.some(i => i.riskLevel === 'high')
+                        ? 'high'
+                        : collectedIngredients.some(i => i.riskLevel === 'moderate')
+                          ? 'moderate'
+                          : 'low';
+                    resolve({
+                      productType: productType_final as any,
+                      productName: null,
+                      ingredients: collectedIngredients,
+                      overallRisk,
+                      analyzedAt: new Date().toISOString()
+                    });
+                  }
+                }
+              } catch (e) {
+                console.error('[STREAM] Final buffer parse error:', e);
+              }
+            }
+
+            setIsStreaming(false);
+          } catch (streamError: any) {
+            console.log('[STREAM] Streaming failed:', streamError.message);
+            setIsStreaming(false);
+            reject(streamError);
+          }
         });
       } catch (streamError) {
         console.log('[STREAM] Streaming failed, falling back to polling:', streamError);

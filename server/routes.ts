@@ -199,19 +199,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
-  // Streaming OCR + Analysis endpoint (SSE - must be GET to work with EventSource)
-  app.get("/api/scan-and-analyze-stream", async (req, res) => {
-    const { imageData, ocrText: cachedOcrText, productType, userLanguage } = req.query;
+  // Streaming OCR + Analysis endpoint (NDJSON - newline-delimited JSON for true streaming)
+  app.post("/api/scan-and-analyze-stream", async (req, res) => {
+    const { imageData, ocrText: cachedOcrText, productType, userLanguage } = req.body;
     
     // Validate required fields
     if ((!imageData && !cachedOcrText) || !productType || !userLanguage) {
       return res.status(400).json({ 
-        error: 'Missing required fields in query: imageData or ocrText, productType, and userLanguage are required.' 
+        error: 'Missing required fields in body: (imageData OR ocrText), productType, and userLanguage are required.' 
       });
     }
 
-    // Set SSE headers
-    res.setHeader('Content-Type', 'text/event-stream');
+    // Set NDJSON headers for streaming
+    res.setHeader('Content-Type', 'application/x-ndjson; charset=utf-8');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -244,12 +244,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
           ocrText = ocrResult.text;
         } catch (ocrError: any) {
           console.error(`[OCR-FAILED-${requestId}] OCR error:`, ocrError.message);
-          res.write(`data: ${JSON.stringify({ type: 'error', error: `OCR failed: ${ocrError.message}` })}\n\n`);
+          res.write(JSON.stringify({ type: 'error', error: `OCR failed: ${ocrError.message}` }) + '\n');
           res.end();
           return;
         }
       } else {
-        res.write(`data: ${JSON.stringify({ type: 'error', error: 'Neither imageData nor ocrText provided' })}\n\n`);
+        res.write(JSON.stringify({ type: 'error', error: 'Neither imageData nor ocrText provided' }) + '\n');
         res.end();
         return;
       }
@@ -260,7 +260,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log(`[STREAM-${requestId}] Parsed ${allIngredients.length} ingredients`);
 
       // Emit OCR text
-      res.write(`data: ${JSON.stringify({ type: 'ocr_complete', ocrText: ocrText!, ingredientCount: allIngredients.length })}\n\n`);
+      res.write(JSON.stringify({ type: 'ocr_complete', ocrText: ocrText!, ingredientCount: allIngredients.length }) + '\n');
 
       // Step 3: Stream ingredients (cached first, then uncached)
       const cachedIngredients: any[] = [];
@@ -280,53 +280,65 @@ export async function registerRoutes(app: Express): Promise<Server> {
       for (const ingredient of cachedIngredients) {
         try {
           const parsed = JSON.parse(ingredient.analysis);
-          res.write(`data: ${JSON.stringify({ type: 'ingredient', ingredient: parsed, fromCache: true })}\n\n`);
+          res.write(JSON.stringify({ type: 'ingredient', ingredient: parsed, fromCache: true }) + '\n');
         } catch (e) {
           console.error(`[STREAM-${requestId}] Error parsing cached ingredient:`, e);
         }
       }
 
       // Emit progress update
-      res.write(`data: ${JSON.stringify({ type: 'progress', cached: cachedIngredients.length, total: allIngredients.length })}\n\n`);
+      res.write(JSON.stringify({ type: 'progress', cached: cachedIngredients.length, total: allIngredients.length }) + '\n');
 
-      // Step 4: Analyze uncached ingredients in batches
+      // Step 4: Analyze uncached ingredients in batches (streaming each batch as complete)
       if (uncachedIngredients.length > 0) {
-        console.log(`[STREAM-${requestId}] Analyzing ${uncachedIngredients.length} uncached ingredients`);
+        console.log(`[STREAM-${requestId}] Analyzing ${uncachedIngredients.length} uncached ingredients in batches`);
         
-        try {
-          const analyzedIngredients = await analyzeIndividualIngredients(
-            uncachedIngredients.map((i: any) => i.name),
-            productType as ProductType,
-            userLanguage as string
-          );
+        const batchSize = 8;
+        for (let i = 0; i < uncachedIngredients.length; i += batchSize) {
+          const batch = uncachedIngredients.slice(i, Math.min(i + batchSize, uncachedIngredients.length));
+          const batchIngredientNames = batch.map((ing: any) => ing.name);
+          
+          try {
+            console.log(`[STREAM-${requestId}] Batch ${Math.floor(i / batchSize) + 1}: Analyzing ${batch.length} ingredients...`);
+            
+            // Analyze this batch
+            const analyzedBatch = await analyzeIndividualIngredients(
+              batchIngredientNames,
+              productType as ProductType,
+              userLanguage as string
+            );
 
-          // Stream and cache each analyzed ingredient
-          for (const analyzed of analyzedIngredients) {
-            try {
-              // Cache the analysis
-              setCachedIngredientAnalysis(analyzed.name, productType as string, JSON.stringify(analyzed));
-              
-              // Stream to client
-              res.write(`data: ${JSON.stringify({ type: 'ingredient', ingredient: analyzed, fromCache: false })}\n\n`);
-            } catch (e) {
-              console.error(`[STREAM-${requestId}] Error processing analyzed ingredient:`, e);
+            // Stream and cache each analyzed ingredient from this batch immediately
+            for (const analyzed of analyzedBatch) {
+              try {
+                // Cache the analysis
+                setCachedIngredientAnalysis(analyzed.name, productType as string, JSON.stringify(analyzed));
+                
+                // Stream to client immediately
+                res.write(JSON.stringify({ type: 'ingredient', ingredient: analyzed, fromCache: false }) + '\n');
+              } catch (e) {
+                console.error(`[STREAM-${requestId}] Error processing analyzed ingredient:`, e);
+              }
             }
+            
+            console.log(`[STREAM-${requestId}] Batch ${Math.floor(i / batchSize) + 1} complete: streamed ${analyzedBatch.length} ingredients`);
+          } catch (batchError: any) {
+            console.error(`[STREAM-${requestId}] Error analyzing batch:`, batchError.message);
+            res.write(JSON.stringify({ type: 'error', error: `Analysis failed: ${batchError.message}` }) + '\n');
+            break; // Stop processing further batches on error
           }
-        } catch (analyzeError: any) {
-          console.error(`[STREAM-${requestId}] Error analyzing uncached ingredients:`, analyzeError.message);
-          res.write(`data: ${JSON.stringify({ type: 'error', error: `Analysis failed: ${analyzeError.message}` })}\n\n`);
         }
       }
 
       // Emit completion
       const totalDuration = ((Date.now() - startTime) / 1000).toFixed(2);
       console.log(`[TIMING] [STREAM-${requestId}] Completed in ${totalDuration}s`);
-      res.write(`data: ${JSON.stringify({ type: 'complete', duration: totalDuration })}\n\n`);
+      res.write(JSON.stringify({ type: 'complete', duration: totalDuration }) + '\n');
       res.end();
 
     } catch (error: any) {
       console.error(`[STREAM-${requestId}] Unexpected error:`, error.message);
-      res.write(`data: ${JSON.stringify({ type: 'error', error: error.message || 'Unexpected error' })}\n\n`);
+      res.write(JSON.stringify({ type: 'error', error: error.message || 'Unexpected error' }) + '\n');
       res.end();
     }
   });
