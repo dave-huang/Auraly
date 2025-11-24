@@ -2052,5 +2052,174 @@
       "timestamp": 1763957643324,
       "ocrText": "DIRECTIONS: TAKE 2 CAPSULES IN THE MORNING WITH FOOD\nSupplement Facts\nServing Size 2 Veggie Capsules\nServings Per Container 30\nAmount Per Serving\n% Dally Value\nVitamin D (as Cholecalciferol)\n50 mcg (2000 IU) 250%\nVitamin E (d-alpha-Tocopherol)\n67 mg\n447%\nThiamin (Vitamin B1) (as HCI)\n1.1 mg\n92%\nRiboflavin (Vitamin B2)\n1.4 mg\n108%\nNiacin (as Niacinamide)\n15 mg\n94%\nVitamin B6 (as Pyridoxine HCI)\n1.4 mg\n82%\nFolate (as Calcium L-5 Methyltetrahydrofolate)\n200 mcg DFE\n50%\nVitamin B12 (as Methylcobalamin)\n125 mcg\n5208%\nBiotin\n50 mcg\n167%\nPantothenic Acid (as D-Calcium Pantothenate)\n6 mg\n120%\nCalcium (from Carbonate and Dicalcium Phosphate)\n50 mg\n4%\nIodine (as Potassium Iodide)\n200 mcg\n133%\nZinc (as Bisglycinate)\n15 mg\n136%\nSelenium (as L-Selenomethionine)\n28 mcg\n51%\nManganese (as Citrate)\n1 mg\n43%\nNicotinamide Riboside (as Chloride)\n300 mg\n†\nBroccoli Seed Extract (Glucoraphanin 20 mg)\n200 mg\n†\nFisetin (from Stem of Smoketree Extract)\n100 mg\n†\nLuteolin (from Bud of S. japonica Extract)\n100 mg\n†\nUbiquinol (as Reduced CoQ10)\n50 mg\n†\nLactobacillus acidophilus (4 Billion CFU)\n20 mg\n†\nSpermidine (as Trihydrochloride)\n10 mg\n†\nBoron (as Glycinate)\n3 mg\n†\nLithium (as Orotate)\n1 mg\n†\n† Daily Value not established\nOTHER INGREDIENTS: Veggie Capsule (Hydroxypropyl\nMethylcellulose, Pectin), Rice Hulls, Starch, Rice Blend Extract"
     }
+  ],
+  [
+    "ccbdc2dd623f1dc98b1462b1f6804617d4061225bcb6d215bba05ad14396ebe0",
+    {
+      "result": {
+        "productType": "skincare",
+        "ingredients": [
+          {
+            "name": "Water",
+            "riskLevel": "low",
+            "summary": "Water is a universal solvent used in many skincare products.",
+            "details": "Water is used as a base in skincare products to dissolve other ingredients and provide hydration.",
+            "category": "solvent"
+          },
+          {
+            "name": "Sodium Lauryl Isethionate",
+            "riskLevel": "low",
+            "summary": "A mild surfactant used for cleansing.",
+            "details": "Sodium Lauryl Isethionate is a surfactant that helps to create foam and cleanse the skin without stripping natural oils.",
+            "category": "surfactant"
+          },
+          {
+            "name": "Sodium Methyl Lauroyl Taurate",
+            "riskLevel": "low",
+            "summary": "A gentle surfactant used for its foaming properties.",
+            "details": "This ingredient is used to enhance the texture and foaming ability of cleansing products, providing a mild cleansing effect.",
+            "category": "surfactant"
+          },
+          {
+            "name": "Cocamidopropyl Betaine",
+            "riskLevel": "moderate",
+            "summary": "A surfactant derived from coconut oil, can cause irritation in some individuals.",
+            "details": "While generally considered safe, Cocamidopropyl Betaine can cause skin irritation or allergic reactions in sensitive individuals.",
+            "category": "surfactant"
+          },
+          {
+            "name": "Lauric Acid",
+            "riskLevel": "low",
+            "summary": "A fatty acid used for its cleansing and moisturizing properties.",
+            "details": "Lauric Acid is often used in skincare for its ability to cleanse and moisturize, as well as its antimicrobial properties.",
+            "category": "emollient"
+          },
+          {
+            "name": "Sodium Hydroxypropyl Starch Phosphate",
+            "riskLevel": "low",
+            "summary": "A modified starch used as a thickener.",
+            "details": "This ingredient is used to improve the texture and stability of skincare formulations.",
+            "category": "thickener"
+          },
+          {
+            "name": "Hydrogenated Soybean Oil",
+            "riskLevel": "low",
+            "summary": "An emollient used to soften and moisturize the skin.",
+            "details": "Hydrogenated Soybean Oil is used in skincare products to provide moisture and improve skin texture.",
+            "category": "emollient"
+          },
+          {
+            "name": "Glycine Soja (Soybean) Oil",
+            "riskLevel": "low",
+            "summary": "A natural oil used for its moisturizing properties.",
+            "details": "Soybean Oil is rich in fatty acids and is used to nourish and hydrate the skin.",
+            "category": "emollient"
+          },
+          {
+            "name": "Sodium Chloride",
+            "riskLevel": "low",
+            "summary": "Common salt used as a thickening agent.",
+            "details": "Sodium Chloride is used to thicken the consistency of skincare products and can also act as a mild exfoliant.",
+            "category": "thickener"
+          },
+          {
+            "name": "Glycerin",
+            "riskLevel": "low",
+            "summary": "A humectant that attracts moisture to the skin.",
+            "details": "Glycerin is widely used in skincare for its ability to draw moisture from the air into the skin, keeping it hydrated.",
+            "category": "humectant"
+          },
+          {
+            "name": "Stearic Acid",
+            "riskLevel": "low",
+            "summary": "A fatty acid used as an emulsifier and thickener.",
+            "details": "Stearic Acid helps to stabilize and thicken formulations, and it also provides a creamy texture.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Palmitic Acid",
+            "riskLevel": "low",
+            "summary": "A fatty acid used for its emollient properties.",
+            "details": "Palmitic Acid is used to soften and smooth the skin, and it also acts as a surfactant.",
+            "category": "emollient"
+          },
+          {
+            "name": "Hydrogenated Vegetable Glycerides",
+            "riskLevel": "low",
+            "summary": "Used as an emollient and thickening agent.",
+            "details": "These glycerides are used to improve the texture and moisturizing properties of skincare products.",
+            "category": "emollient"
+          },
+          {
+            "name": "Glyceryl Stearate",
+            "riskLevel": "low",
+            "summary": "An emulsifier that helps to blend oil and water.",
+            "details": "Glyceryl Stearate is used to stabilize emulsions and improve the texture of skincare products.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Hydroxystearic Acid",
+            "riskLevel": "low",
+            "summary": "A derivative of stearic acid used for its emollient properties.",
+            "details": "Hydroxystearic Acid is used to enhance the texture and moisturizing properties of skincare formulations.",
+            "category": "emollient"
+          },
+          {
+            "name": "Sodium Benzoate",
+            "riskLevel": "moderate",
+            "summary": "A preservative used to prevent microbial growth.",
+            "details": "Sodium Benzoate is commonly used as a preservative in cosmetics, but it can cause skin irritation in some individuals.",
+            "category": "preservative"
+          },
+          {
+            "name": "Guar Hydroxypropyltrimonium Chloride",
+            "riskLevel": "low",
+            "summary": "A conditioning agent derived from guar gum.",
+            "details": "This ingredient is used to improve the texture and manageability of hair and skin products.",
+            "category": "conditioning agent"
+          },
+          {
+            "name": "Fragrance",
+            "riskLevel": "high",
+            "summary": "Used to add scent to products, can cause allergic reactions.",
+            "details": "Fragrance is a common allergen and can cause irritation or allergic reactions, especially in sensitive individuals.",
+            "category": "fragrance"
+          },
+          {
+            "name": "Citric Acid",
+            "riskLevel": "low",
+            "summary": "Used to adjust the pH of skincare products.",
+            "details": "Citric Acid is used to balance the acidity of formulations and can also act as a mild exfoliant.",
+            "category": "pH adjuster"
+          },
+          {
+            "name": "Caprylyl Glycine",
+            "riskLevel": "low",
+            "summary": "An amino acid derivative used for its skin-conditioning properties.",
+            "details": "Caprylyl Glycine is used to improve the texture and hydration of the skin.",
+            "category": "conditioning agent"
+          },
+          {
+            "name": "Undecylenoyl Glycine",
+            "riskLevel": "low",
+            "summary": "An amino acid derivative used for its antimicrobial properties.",
+            "details": "This ingredient is used to help preserve the product and maintain skin health.",
+            "category": "antimicrobial"
+          },
+          {
+            "name": "Sodium Gluconate",
+            "riskLevel": "low",
+            "summary": "A chelating agent used to improve product stability.",
+            "details": "Sodium Gluconate helps to stabilize formulations by binding metal ions that could otherwise degrade the product.",
+            "category": "chelating agent"
+          }
+        ],
+        "overallRisk": "high",
+        "analyzedAt": "2025-11-24T20:26:33.251Z",
+        "originalText": "INGREDIENTS: WATER (AQUAL SODIUM LAURYL ISETHIONATE, SODIUM METHYL LAUROYL\nTAURATE, COCAMIDOPROPYL BETAINE, LAURIC ACID, SODIUM HYDROXYPROPYL STARCH\nPHOSPHATE, HYDROGENATED SOYBEAN DIL, GLYCINE SOJA (SOYBEAN OIL, SODIUM CHLORIDE\nGLYCERIN, STEARIC ACID, PALMITIC ADD, HYDROGENATED VEGETABLE GLYCERIDES, GLYCERINL\nSTEARATE, HYDROXYSTEARIC ACID, SODIUM BENZOATE, GUAR HYDROXYPROPYLTRIMONIUM\nCHLORIDE, FRAGRANCE PARFUM CITRIC ACID, CAPRYLYL GLYCINE, UNDECYLENDHL GLYCINE\nSODIUM GLUCONATE"
+      },
+      "timestamp": 1764015993254,
+      "ocrText": "INGREDIENTS: WATER (AQUAL SODIUM LAURYL ISETHIONATE, SODIUM METHYL LAUROYL\nTAURATE, COCAMIDOPROPYL BETAINE, LAURIC ACID, SODIUM HYDROXYPROPYL STARCH\nPHOSPHATE, HYDROGENATED SOYBEAN DIL, GLYCINE SOJA (SOYBEAN OIL, SODIUM CHLORIDE\nGLYCERIN, STEARIC ACID, PALMITIC ADD, HYDROGENATED VEGETABLE GLYCERIDES, GLYCERINL\nSTEARATE, HYDROXYSTEARIC ACID, SODIUM BENZOATE, GUAR HYDROXYPROPYLTRIMONIUM\nCHLORIDE, FRAGRANCE PARFUM CITRIC ACID, CAPRYLYL GLYCINE, UNDECYLENDHL GLYCINE\nSODIUM GLUCONATE"
+    }
   ]
 ]

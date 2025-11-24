@@ -580,7 +580,7 @@ Return your analysis as JSON with this structure:
             }
           ],
           response_format: { type: "json_object" },
-          max_tokens: maxTokens,
+          max_completion_tokens: maxTokens,
           temperature: 0.3
         });
         console.log('[ANALYZER] GPT-5.1 succeeded');
@@ -601,7 +601,7 @@ Return your analysis as JSON with this structure:
               }
             ],
             response_format: { type: "json_object" },
-            max_tokens: maxTokens,
+            max_completion_tokens: maxTokens,
             temperature: 0.3
           });
           console.log('[ANALYZER] GPT-4o succeeded');
@@ -915,7 +915,7 @@ Return your analysis as JSON with this structure:
             }
           ],
           response_format: { type: "json_object" },
-          max_tokens: maxTokens,
+          max_completion_tokens: maxTokens,
           temperature: 0.3
         });
         console.log('[VISION-ANALYZER] GPT-5.1 Vision succeeded');
@@ -946,7 +946,7 @@ Return your analysis as JSON with this structure:
               }
             ],
             response_format: { type: "json_object" },
-            max_tokens: maxTokens,
+            max_completion_tokens: maxTokens,
             temperature: 0.3
           });
           console.log('[VISION-ANALYZER] GPT-4o Vision succeeded');
@@ -1132,7 +1132,7 @@ Return as JSON array:
           }
         ],
         response_format: { type: "json_object" },
-        max_tokens: Math.min(2000, batch.length * 200),
+        max_completion_tokens: Math.min(2000, batch.length * 200),
         temperature: 0.3
       });
 
