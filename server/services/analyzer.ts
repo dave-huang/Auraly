@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { openai } from '../openai';
-import { analysisResultSchema, type ProductType, type AnalysisResult, type RiskLevel } from '@shared/schema';
+import { analysisResultSchema, type ProductType, type AnalysisResult, type RiskLevel, type Ingredient } from '@shared/schema';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // Store cache in the project root for better persistence
@@ -1058,4 +1058,119 @@ Return your analysis as JSON with this structure:
   }
   
   throw new Error('Failed to analyze image after multiple attempts. Please try again.');
+}
+
+/**
+ * Analyze individual ingredients one at a time (for streaming results)
+ * Useful for incremental display without waiting for full batch completion
+ */
+export async function analyzeIndividualIngredients(
+  ingredientNames: string[],
+  productType: ProductType,
+  userLanguage: string = 'en'
+): Promise<Ingredient[]> {
+  console.log(`[INDIVIDUAL-ANALYZER] Analyzing ${ingredientNames.length} ingredients for ${productType} in ${userLanguage}`);
+  
+  const context = PRODUCT_TYPE_CONTEXTS[productType];
+  const languageInstruction = LANGUAGE_INSTRUCTIONS[userLanguage as keyof typeof LANGUAGE_INSTRUCTIONS] || LANGUAGE_INSTRUCTIONS['en'];
+
+  const results: Ingredient[] = [];
+
+  // Batch ingredients in groups of 5-10 for efficiency while maintaining streaming speed
+  const batchSize = 8;
+  for (let i = 0; i < ingredientNames.length; i += batchSize) {
+    const batch = ingredientNames.slice(i, Math.min(i + batchSize, ingredientNames.length));
+    
+    const prompt = `You are a health-focused ingredient analyst. Analyze these ${productType} ingredients for health/safety concerns.
+
+${languageInstruction}
+
+Product Type Context: ${context}
+
+Ingredients to analyze (one per line):
+${batch.join('\n')}
+
+For each ingredient, provide:
+1. The ingredient name (clean, standardized format, translated to ${userLanguage})
+2. Risk level: "low" (safe), "moderate" (limited evidence/concern), or "high" (known risks)
+3. A brief summary (1-2 sentences) explaining what it is and any concerns
+4. Detailed explanation (2-3 sentences) with health context
+
+ALL text output must be in ${userLanguage}.
+
+Return as JSON array:
+[
+  {
+    "name": "Ingredient Name",
+    "riskLevel": "low|moderate|high",
+    "summary": "Brief explanation",
+    "details": "Detailed explanation",
+    "category": "Optional category"
+  }
+]`;
+
+    try {
+      console.log(`[INDIVIDUAL-ANALYZER] Analyzing batch of ${batch.length} ingredients...`);
+      
+      const systemMessages = {
+        'zh': "You are a health and wellness assistant analyzing product ingredients. Always respond with valid JSON. All text must be in Simplified Chinese (简体中文).",
+        'en': "You are a health and wellness assistant analyzing product ingredients. Always respond with valid JSON. All text must be in English.",
+        'es': "Eres un asistente de salud analizando ingredientes de productos. Siempre responde con JSON válido. Todo el texto debe estar en español."
+      };
+      const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
+
+      const response = await openai.chat.completions.create({
+        model: "gpt-5.1",
+        messages: [
+          {
+            role: "system",
+            content: systemMessage
+          },
+          {
+            role: "user",
+            content: prompt
+          }
+        ],
+        response_format: { type: "json_object" },
+        max_tokens: Math.min(2000, batch.length * 200),
+        temperature: 0.3
+      });
+
+      const content = response.choices[0]?.message?.content;
+      if (!content) {
+        throw new Error('No response from AI service');
+      }
+
+      try {
+        // Extract JSON from response
+        const jsonMatch = content.match(/\[[\s\S]*\]/);
+        const parsed = JSON.parse(jsonMatch?.[0] || content);
+        
+        // Validate and add to results
+        const batchResults = Array.isArray(parsed) ? parsed : [parsed];
+        for (const item of batchResults) {
+          if (item.name && item.riskLevel && item.summary && item.details) {
+            results.push({
+              name: item.name,
+              riskLevel: item.riskLevel as RiskLevel,
+              summary: item.summary,
+              details: item.details,
+              category: item.category || undefined
+            });
+          }
+        }
+        
+        console.log(`[INDIVIDUAL-ANALYZER] Successfully analyzed batch of ${batchResults.length} ingredients`);
+      } catch (parseError) {
+        console.error('[INDIVIDUAL-ANALYZER] Failed to parse response:', parseError);
+        throw new Error('Failed to parse AI response');
+      }
+    } catch (error: any) {
+      console.error('[INDIVIDUAL-ANALYZER] Error analyzing batch:', error.message);
+      throw error;
+    }
+  }
+
+  console.log(`[INDIVIDUAL-ANALYZER] Successfully analyzed all ${results.length} ingredients`);
+  return results;
 }

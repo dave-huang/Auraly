@@ -4,8 +4,9 @@ import multer from "multer";
 import z from "zod";
 import crypto from "crypto";
 import { extractTextFromImage } from "./services/ocr";
-import { analyzeIngredients } from "./services/analyzer";
-import { batchAnalyzeIngredientsWithCache, getCacheStats } from "./services/cache";
+import { analyzeIngredients, analyzeIndividualIngredients } from "./services/analyzer";
+import { batchAnalyzeIngredientsWithCache, getCacheStats, getCachedIngredientAnalysis, setCachedIngredientAnalysis } from "./services/cache";
+import { parseIngredients } from "./services/ingredientParser";
 import { 
   ocrRequestSchema, 
   analysisRequestSchema,
@@ -196,6 +197,138 @@ export async function registerRoutes(app: Express): Promise<Server> {
       ocrText: request.ocrText,
       analysis: request.result
     });
+  });
+
+  // Streaming OCR + Analysis endpoint (SSE - must be GET to work with EventSource)
+  app.get("/api/scan-and-analyze-stream", async (req, res) => {
+    const { imageData, ocrText: cachedOcrText, productType, userLanguage } = req.query;
+    
+    // Validate required fields
+    if ((!imageData && !cachedOcrText) || !productType || !userLanguage) {
+      return res.status(400).json({ 
+        error: 'Missing required fields in query: imageData or ocrText, productType, and userLanguage are required.' 
+      });
+    }
+
+    // Set SSE headers
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    const requestId = crypto.randomBytes(8).toString('hex');
+    const startTime = Date.now();
+    let ocrText: string | undefined;
+    let allIngredients: Array<{ name: string; originalIndex: number }> = [];
+
+    try {
+      // Decode image data if provided
+      const imageDataStr = imageData as string | undefined;
+      const ocrTextStr = cachedOcrText as string | undefined;
+
+      // Step 1: Run OCR or use cached
+      if (ocrTextStr) {
+        console.log(`[STREAM-${requestId}] Using cached OCR text (${ocrTextStr.length} chars)`);
+        ocrText = ocrTextStr;
+      } else if (imageDataStr) {
+        console.log(`[STREAM-${requestId}] Starting OCR for ${productType} in ${userLanguage}`);
+        try {
+          const ocrResult = await extractTextFromImage(imageDataStr);
+          const ocrDuration = ((Date.now() - startTime) / 1000).toFixed(2);
+          console.log(`[TIMING] [OCR-${requestId}] OCR completed in ${ocrDuration}s`);
+          
+          if (!ocrResult.text || ocrResult.text.trim().length < 10) {
+            throw new Error('No ingredients found in image. Please ensure the ingredient list is clearly visible and try again.');
+          }
+          
+          ocrText = ocrResult.text;
+        } catch (ocrError: any) {
+          console.error(`[OCR-FAILED-${requestId}] OCR error:`, ocrError.message);
+          res.write(`data: ${JSON.stringify({ type: 'error', error: `OCR failed: ${ocrError.message}` })}\n\n`);
+          res.end();
+          return;
+        }
+      } else {
+        res.write(`data: ${JSON.stringify({ type: 'error', error: 'Neither imageData nor ocrText provided' })}\n\n`);
+        res.end();
+        return;
+      }
+
+      // Step 2: Parse ingredients
+      console.log(`[STREAM-${requestId}] Parsing ingredients from OCR text`);
+      allIngredients = parseIngredients(ocrText!);
+      console.log(`[STREAM-${requestId}] Parsed ${allIngredients.length} ingredients`);
+
+      // Emit OCR text
+      res.write(`data: ${JSON.stringify({ type: 'ocr_complete', ocrText: ocrText!, ingredientCount: allIngredients.length })}\n\n`);
+
+      // Step 3: Stream ingredients (cached first, then uncached)
+      const cachedIngredients: any[] = [];
+      const uncachedIngredients: any[] = [];
+
+      for (const ingredient of allIngredients) {
+        const cached = getCachedIngredientAnalysis(ingredient.name, productType as string);
+        if (cached) {
+          cachedIngredients.push({ ...ingredient, analysis: cached.analysis });
+        } else {
+          uncachedIngredients.push(ingredient);
+        }
+      }
+
+      // Emit all cached ingredients immediately
+      console.log(`[STREAM-${requestId}] Streaming ${cachedIngredients.length} cached ingredients`);
+      for (const ingredient of cachedIngredients) {
+        try {
+          const parsed = JSON.parse(ingredient.analysis);
+          res.write(`data: ${JSON.stringify({ type: 'ingredient', ingredient: parsed, fromCache: true })}\n\n`);
+        } catch (e) {
+          console.error(`[STREAM-${requestId}] Error parsing cached ingredient:`, e);
+        }
+      }
+
+      // Emit progress update
+      res.write(`data: ${JSON.stringify({ type: 'progress', cached: cachedIngredients.length, total: allIngredients.length })}\n\n`);
+
+      // Step 4: Analyze uncached ingredients in batches
+      if (uncachedIngredients.length > 0) {
+        console.log(`[STREAM-${requestId}] Analyzing ${uncachedIngredients.length} uncached ingredients`);
+        
+        try {
+          const analyzedIngredients = await analyzeIndividualIngredients(
+            uncachedIngredients.map((i: any) => i.name),
+            productType as ProductType,
+            userLanguage as string
+          );
+
+          // Stream and cache each analyzed ingredient
+          for (const analyzed of analyzedIngredients) {
+            try {
+              // Cache the analysis
+              setCachedIngredientAnalysis(analyzed.name, productType as string, JSON.stringify(analyzed));
+              
+              // Stream to client
+              res.write(`data: ${JSON.stringify({ type: 'ingredient', ingredient: analyzed, fromCache: false })}\n\n`);
+            } catch (e) {
+              console.error(`[STREAM-${requestId}] Error processing analyzed ingredient:`, e);
+            }
+          }
+        } catch (analyzeError: any) {
+          console.error(`[STREAM-${requestId}] Error analyzing uncached ingredients:`, analyzeError.message);
+          res.write(`data: ${JSON.stringify({ type: 'error', error: `Analysis failed: ${analyzeError.message}` })}\n\n`);
+        }
+      }
+
+      // Emit completion
+      const totalDuration = ((Date.now() - startTime) / 1000).toFixed(2);
+      console.log(`[TIMING] [STREAM-${requestId}] Completed in ${totalDuration}s`);
+      res.write(`data: ${JSON.stringify({ type: 'complete', duration: totalDuration })}\n\n`);
+      res.end();
+
+    } catch (error: any) {
+      console.error(`[STREAM-${requestId}] Unexpected error:`, error.message);
+      res.write(`data: ${JSON.stringify({ type: 'error', error: error.message || 'Unexpected error' })}\n\n`);
+      res.end();
+    }
   });
 
   // Combined OCR + Analysis endpoint (exhaustive ingredient extraction)
