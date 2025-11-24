@@ -2002,5 +2002,55 @@
       "timestamp": 1763874509227,
       "ocrText": "成分:水、甘油、肉豆蔻酸、棕榈酸、氢氧化钾、乙二醇二硬脂酸酯、双丙甘醇、山梨(\n糖)醇、月桂酸、硬脂酸、月桂基甜菜碱、甘油硬脂酸酯 SE、合成蜡、肉豆蔻基甜菜碱、\n聚季铵盐-7、苯甲酸钠、氯化钠、(日用)香精、聚季铵盐-6、鲸蜡基甜菜碱\n其他微量成分:异丙醇、焦亚硫酸钠、EDTA二钠、双-二乙氧基二甘醇环己烷1,4-二羧酸\n酯、乙酰化透明质酸钠、蚕丝胶蛋白、丁羟甲苯、透明质酸钠、山梨酸钾、柠檬酸、生育\n酚(维生素E)"
     }
+  ],
+  [
+    "e92c4f0dc17787bcc51f681a61e07909ce933b5eed67e115dfeb1f33bce25ed5",
+    {
+      "result": {
+        "productType": "food",
+        "ingredients": [
+          {
+            "name": "Hydroxypropyl Methylcellulose",
+            "riskLevel": "low",
+            "summary": "Hydroxypropyl Methylcellulose is a thickener and emulsifier used in food products.",
+            "details": "It is a chemically modified cellulose polymer that is generally recognized as safe (GRAS) by the FDA. It is used to improve texture and stability in various food products.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Pectin",
+            "riskLevel": "low",
+            "summary": "Pectin is a natural polysaccharide used as a gelling agent in foods.",
+            "details": "Derived from fruits, pectin is commonly used in jams and jellies to provide a gel-like consistency. It is considered safe and is also a source of dietary fiber.",
+            "category": "gelling agent"
+          },
+          {
+            "name": "Rice Hulls",
+            "riskLevel": "low",
+            "summary": "Rice hulls are the protective outer layer of rice grains.",
+            "details": "They are often used as a dietary fiber source or as a filler in food products. Rice hulls are safe for consumption and provide additional fiber to the diet.",
+            "category": "fiber"
+          },
+          {
+            "name": "Starch",
+            "riskLevel": "low",
+            "summary": "Starch is a carbohydrate used as a thickening agent in foods.",
+            "details": "Commonly derived from corn, potatoes, or wheat, starch is used to thicken sauces and soups. It is a staple ingredient in many diets and is generally considered safe.",
+            "category": "thickener"
+          },
+          {
+            "name": "Rice Blend Extract",
+            "riskLevel": "low",
+            "summary": "Rice Blend Extract is a concentrated form of rice used for flavor or nutritional purposes.",
+            "details": "This extract can be used to enhance the flavor or nutritional profile of food products. It is safe for consumption and often used in health-focused food items.",
+            "category": "flavoring"
+          }
+        ],
+        "overallRisk": "low",
+        "analyzedAt": "2025-11-24T04:14:03.319Z",
+        "originalText": "DIRECTIONS: TAKE 2 CAPSULES IN THE MORNING WITH FOOD\nSupplement Facts\nServing Size 2 Veggie Capsules\nServings Per Container 30\nAmount Per Serving\n% Dally Value\nVitamin D (as Cholecalciferol)\n50 mcg (2000 IU) 250%\nVitamin E (d-alpha-Tocopherol)\n67 mg\n447%\nThiamin (Vitamin B1) (as HCI)\n1.1 mg\n92%\nRiboflavin (Vitamin B2)\n1.4 mg\n108%\nNiacin (as Niacinamide)\n15 mg\n94%\nVitamin B6 (as Pyridoxine HCI)\n1.4 mg\n82%\nFolate (as Calcium L-5 Methyltetrahydrofolate)\n200 mcg DFE\n50%\nVitamin B12 (as Methylcobalamin)\n125 mcg\n5208%\nBiotin\n50 mcg\n167%\nPantothenic Acid (as D-Calcium Pantothenate)\n6 mg\n120%\nCalcium (from Carbonate and Dicalcium Phosphate)\n50 mg\n4%\nIodine (as Potassium Iodide)\n200 mcg\n133%\nZinc (as Bisglycinate)\n15 mg\n136%\nSelenium (as L-Selenomethionine)\n28 mcg\n51%\nManganese (as Citrate)\n1 mg\n43%\nNicotinamide Riboside (as Chloride)\n300 mg\n†\nBroccoli Seed Extract (Glucoraphanin 20 mg)\n200 mg\n†\nFisetin (from Stem of Smoketree Extract)\n100 mg\n†\nLuteolin (from Bud of S. japonica Extract)\n100 mg\n†\nUbiquinol (as Reduced CoQ10)\n50 mg\n†\nLactobacillus acidophilus (4 Billion CFU)\n20 mg\n†\nSpermidine (as Trihydrochloride)\n10 mg\n†\nBoron (as Glycinate)\n3 mg\n†\nLithium (as Orotate)\n1 mg\n†\n† Daily Value not established\nOTHER INGREDIENTS: Veggie Capsule (Hydroxypropyl\nMethylcellulose, Pectin), Rice Hulls, Starch, Rice Blend Extract"
+      },
+      "timestamp": 1763957643324,
+      "ocrText": "DIRECTIONS: TAKE 2 CAPSULES IN THE MORNING WITH FOOD\nSupplement Facts\nServing Size 2 Veggie Capsules\nServings Per Container 30\nAmount Per Serving\n% Dally Value\nVitamin D (as Cholecalciferol)\n50 mcg (2000 IU) 250%\nVitamin E (d-alpha-Tocopherol)\n67 mg\n447%\nThiamin (Vitamin B1) (as HCI)\n1.1 mg\n92%\nRiboflavin (Vitamin B2)\n1.4 mg\n108%\nNiacin (as Niacinamide)\n15 mg\n94%\nVitamin B6 (as Pyridoxine HCI)\n1.4 mg\n82%\nFolate (as Calcium L-5 Methyltetrahydrofolate)\n200 mcg DFE\n50%\nVitamin B12 (as Methylcobalamin)\n125 mcg\n5208%\nBiotin\n50 mcg\n167%\nPantothenic Acid (as D-Calcium Pantothenate)\n6 mg\n120%\nCalcium (from Carbonate and Dicalcium Phosphate)\n50 mg\n4%\nIodine (as Potassium Iodide)\n200 mcg\n133%\nZinc (as Bisglycinate)\n15 mg\n136%\nSelenium (as L-Selenomethionine)\n28 mcg\n51%\nManganese (as Citrate)\n1 mg\n43%\nNicotinamide Riboside (as Chloride)\n300 mg\n†\nBroccoli Seed Extract (Glucoraphanin 20 mg)\n200 mg\n†\nFisetin (from Stem of Smoketree Extract)\n100 mg\n†\nLuteolin (from Bud of S. japonica Extract)\n100 mg\n†\nUbiquinol (as Reduced CoQ10)\n50 mg\n†\nLactobacillus acidophilus (4 Billion CFU)\n20 mg\n†\nSpermidine (as Trihydrochloride)\n10 mg\n†\nBoron (as Glycinate)\n3 mg\n†\nLithium (as Orotate)\n1 mg\n†\n† Daily Value not established\nOTHER INGREDIENTS: Veggie Capsule (Hydroxypropyl\nMethylcellulose, Pectin), Rice Hulls, Starch, Rice Blend Extract"
+    }
   ]
 ]
