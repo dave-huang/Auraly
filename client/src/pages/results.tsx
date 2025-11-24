@@ -54,14 +54,11 @@ export default function ResultsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedRisk, setSelectedRisk] = useState<RiskLevel | "all">("all");
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
-  const [streamingIngredients, setStreamingIngredients] = useState<Ingredient[]>([]);
-  const [isStreaming, setIsStreaming] = useState(false);
-  const [streamProgress, setStreamProgress] = useState({ cached: 0, total: 0 });
   const [progress, setProgress] = useState(0);
   const [cachedOcrText, setCachedOcrText] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
 
-  // Auto-retry mutation with streaming or polling support
+  // Auto-retry mutation with Service Worker polling for mobile background support
   const analyzeMutation = useMutation<AnalysisResult, Error, { productType: string; imageData: string; ocrText?: string }>({
     mutationFn: async (data: { productType: string; imageData: string; ocrText?: string }): Promise<AnalysisResult> => {
       // Normalize language code to 'en', 'es', or 'zh'
@@ -72,200 +69,73 @@ export default function ResultsPage() {
         userLanguage = 'es';
       }
       
-      // Prepare request body
-      const requestBody = {
+      // Send scan request and get request ID
+      const requestBody: any = {
         productType: data.productType,
         userLanguage,
         imageData: data.imageData,
         ocrText: data.ocrText
       };
-
-      // Try streaming endpoint first, fall back to polling if unavailable
-      try {
-        setIsStreaming(true);
-        setStreamingIngredients([]);
-        setStreamProgress({ cached: 0, total: 0 });
-
-        return await new Promise<AnalysisResult>(async (resolve, reject) => {
-          try {
-            const response = await fetch('/api/scan-and-analyze-stream', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(requestBody)
-            });
-
-            if (!response.ok) {
-              throw new Error(`HTTP ${response.status}: ${await response.text()}`);
-            }
-
-            const reader = response.body?.getReader();
-            if (!reader) {
-              throw new Error('Response body is not readable');
-            }
-
-            const decoder = new TextDecoder();
-            let buffer = '';
-            const collectedIngredients: Ingredient[] = [];
-            let productType_final = data.productType;
-
-            // Read stream line by line
-            while (true) {
-              const { done, value } = await reader.read();
-              if (done) break;
-
-              buffer += decoder.decode(value, { stream: true });
-              const lines = buffer.split('\n');
-              buffer = lines.pop() || ''; // Keep incomplete line in buffer
-
-              for (const line of lines) {
-                if (!line.trim()) continue;
-                try {
-                  const message = JSON.parse(line);
-
-                  if (message.type === 'ocr_complete') {
-                    setStreamProgress({ cached: 0, total: message.ingredientCount });
-                    console.log('[STREAM] OCR complete:', message.ingredientCount, 'ingredients');
-                  } else if (message.type === 'ingredient') {
-                    collectedIngredients.push(message.ingredient);
-                    setStreamingIngredients([...collectedIngredients]);
-                    console.log('[STREAM] Received ingredient:', message.ingredient.name);
-                  } else if (message.type === 'progress') {
-                    setStreamProgress({ cached: message.cached, total: message.total });
-                    console.log('[STREAM] Progress:', message.cached, '/', message.total);
-                  } else if (message.type === 'complete') {
-                    console.log('[STREAM] Analysis complete in', message.duration, 's');
-                    setIsStreaming(false);
-
-                    // Build final result
-                    const overallRisk =
-                      collectedIngredients.some(i => i.riskLevel === 'high')
-                        ? 'high'
-                        : collectedIngredients.some(i => i.riskLevel === 'moderate')
-                          ? 'moderate'
-                          : 'low';
-
-                    const result: AnalysisResult = {
-                      productType: productType_final as any,
-                      productName: null,
-                      ingredients: collectedIngredients,
-                      overallRisk,
-                      analyzedAt: new Date().toISOString()
-                    };
-
-                    resolve(result);
-                    return;
-                  } else if (message.type === 'error') {
-                    console.error('[STREAM] Error:', message.error);
-                    setIsStreaming(false);
-                    reject(new Error(message.error));
-                    return;
-                  }
-                } catch (parseError) {
-                  console.error('[STREAM] Parse error:', parseError);
-                }
-              }
-            }
-
-            // Handle remaining buffer
-            if (buffer.trim()) {
-              try {
-                const message = JSON.parse(buffer);
-                if (message.type === 'complete' || message.type === 'error') {
-                  if (message.type === 'error') {
-                    reject(new Error(message.error));
-                  } else {
-                    const overallRisk =
-                      collectedIngredients.some(i => i.riskLevel === 'high')
-                        ? 'high'
-                        : collectedIngredients.some(i => i.riskLevel === 'moderate')
-                          ? 'moderate'
-                          : 'low';
-                    resolve({
-                      productType: productType_final as any,
-                      productName: null,
-                      ingredients: collectedIngredients,
-                      overallRisk,
-                      analyzedAt: new Date().toISOString()
-                    });
-                  }
-                }
-              } catch (e) {
-                console.error('[STREAM] Final buffer parse error:', e);
-              }
-            }
-
-            setIsStreaming(false);
-          } catch (streamError: any) {
-            console.log('[STREAM] Streaming failed:', streamError.message);
-            setIsStreaming(false);
-            reject(streamError);
-          }
-        });
-      } catch (streamError) {
-        console.log('[STREAM] Streaming failed, falling back to polling:', streamError);
-        
-        // Fallback to polling endpoint
-        const response = await apiRequest("POST", "/api/scan-and-analyze", requestBody);
-        const initialResult: any = await response.json();
-        if (!initialResult.requestId) {
-          throw new Error('Failed to get request ID from server');
-        }
-        
-        const requestId = initialResult.requestId;
-        console.log(`[POLLING] Started analysis with request ID: ${requestId}`);
-        
-        // Use Service Worker for background polling (continues even when tab is backgrounded)
-        return new Promise((resolve, reject) => {
-          // Register Service Worker
-          if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/service-worker.js', { scope: '/' }).then(registration => {
-              console.log('[SERVICE-WORKER] Registered');
-              
-              // Send start polling message via MessageChannel for two-way communication
-              const channel = new MessageChannel();
-              
-              // Listen for messages from Service Worker
-              channel.port1.onmessage = (event: any) => {
-                const msg = event.data;
-                
-                if (msg.type === 'ANALYSIS_COMPLETE') {
-                  console.log('[RESULT-PAGE] Received ANALYSIS_COMPLETE from Service Worker');
-                  if (msg.data.ocrText) {
-                    setCachedOcrText(msg.data.ocrText);
-                  }
-                  resolve(msg.data.analysis);
-                } else if (msg.type === 'ANALYSIS_FAILED') {
-                  console.log('[RESULT-PAGE] Received ANALYSIS_FAILED from Service Worker');
-                  reject(new Error(msg.error || 'Analysis failed'));
-                }
-              };
-              
-              // Send message to Service Worker via active controller
-              if (navigator.serviceWorker.controller) {
-                navigator.serviceWorker.controller.postMessage(
-                  { type: 'START_POLLING', requestId },
-                  [channel.port2]
-                );
-              } else {
-                // Fallback: Service Worker not active yet, use direct polling
-                console.log('[RESULT-PAGE] Service Worker not ready, using direct polling fallback');
-                directPoll(requestId, resolve, reject);
-              }
-            }).catch((error: any) => {
-              console.error('[SERVICE-WORKER] Registration failed, falling back to direct polling:', error);
-              directPoll(requestId, resolve, reject);
-            });
-          } else {
-            console.log('[RESULT-PAGE] Service Workers not supported, using direct polling');
-            directPoll(requestId, resolve, reject);
-          }
-        });
+      
+      const response = await apiRequest("POST", "/api/scan-and-analyze", requestBody);
+      const initialResult: any = await response.json();
+      
+      if (!initialResult.requestId) {
+        throw new Error('Failed to get request ID from server');
       }
+      
+      const requestId = initialResult.requestId;
+      console.log(`[POLLING] Started analysis with request ID: ${requestId}`);
+      
+      // Use Service Worker for background polling (continues even when tab is backgrounded)
+      return new Promise((resolve, reject) => {
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('/service-worker.js', { scope: '/' }).then(registration => {
+            console.log('[SERVICE-WORKER] Registered');
+            
+            // Send start polling message via MessageChannel for two-way communication
+            const channel = new MessageChannel();
+            
+            // Listen for messages from Service Worker
+            channel.port1.onmessage = (event: any) => {
+              const msg = event.data;
+              
+              if (msg.type === 'ANALYSIS_COMPLETE') {
+                console.log('[RESULT-PAGE] Received ANALYSIS_COMPLETE from Service Worker');
+                if (msg.data.ocrText) {
+                  setCachedOcrText(msg.data.ocrText);
+                }
+                resolve(msg.data.analysis);
+              } else if (msg.type === 'ANALYSIS_FAILED') {
+                console.log('[RESULT-PAGE] Received ANALYSIS_FAILED from Service Worker');
+                reject(new Error(msg.error || 'Analysis failed'));
+              }
+            };
+            
+            // Send message to Service Worker via active controller
+            if (navigator.serviceWorker.controller) {
+              navigator.serviceWorker.controller.postMessage(
+                { type: 'START_POLLING', requestId },
+                [channel.port2]
+              );
+            } else {
+              // Fallback: Service Worker not active yet, use direct polling
+              console.log('[RESULT-PAGE] Service Worker not ready, using direct polling fallback');
+              directPoll(requestId, resolve, reject);
+            }
+          }).catch((error: any) => {
+            console.error('[SERVICE-WORKER] Registration failed, falling back to direct polling:', error);
+            directPoll(requestId, resolve, reject);
+          });
+        } else {
+          console.log('[RESULT-PAGE] Service Workers not supported, using direct polling');
+          directPoll(requestId, resolve, reject);
+        }
+      });
     },
     onSuccess: (data: AnalysisResult) => {
       setAnalysisResult(data);
-      setStreamingIngredients([]);
-      setIsStreaming(false);
       setRetryCount(0);
       setCachedOcrText(null); // Clear cache after successful analysis
       
@@ -346,102 +216,36 @@ export default function ResultsPage() {
     high: analysisResult?.ingredients.filter(i => i.riskLevel === "high").length || 0,
   };
 
-  if (analyzeMutation.isPending || isStreaming) {
+  if (analyzeMutation.isPending) {
     return (
-      <div className="min-h-screen bg-background flex flex-col p-4">
-        {/* Header */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-bold">
-              {isStreaming ? t('results.streaming.title') : t('results.analyzing.title')}
-            </h2>
-            {isStreaming && streamProgress.total > 0 && (
-              <span data-testid="text-streaming-progress" className="text-sm text-muted-foreground">
-                {streamingIngredients.length} / {streamProgress.total}
-              </span>
-            )}
-          </div>
-          
-          {/* Progress bar */}
-          <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
-            <div 
-              className="h-full bg-primary rounded-full transition-all duration-300 ease-out"
-              style={{ width: `${isStreaming ? (streamingIngredients.length / Math.max(1, streamProgress.total) * 100) : progress}%` }}
-              data-testid="progress-bar-fill"
-            />
-          </div>
-        </div>
-
-        {/* Streaming results */}
-        {isStreaming && streamingIngredients.length > 0 && (
-          <div className="flex-1 overflow-auto">
-            <div className="space-y-2">
-              {streamingIngredients.map((ingredient, index) => (
-                <Card key={`${ingredient.name}-${index}`} className="p-3 bg-muted/50 animate-in fade-in-50 duration-300">
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1 min-w-0">
-                      <h4 className="font-medium text-sm truncate">{ingredient.name}</h4>
-                      <p className="text-xs text-muted-foreground line-clamp-2">{ingredient.summary}</p>
-                    </div>
-                    <div className={`ml-3 px-2 py-1 rounded text-xs font-medium flex-shrink-0 ${
-                      ingredient.riskLevel === 'high' ? 'bg-destructive/20 text-destructive' :
-                      ingredient.riskLevel === 'moderate' ? 'bg-warning/20 text-warning' :
-                      'bg-green-500/20 text-green-700 dark:text-green-400'
-                    }`}>
-                      {ingredient.riskLevel}
-                    </div>
-                  </div>
-                </Card>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Status message */}
-        {isStreaming && streamingIngredients.length === 0 && (
-          <Card className="p-8 max-w-md w-full mx-auto">
-            <div className="flex flex-col items-center gap-4 text-center">
-              <Loader2 className="w-12 h-12 text-primary animate-spin" />
-              <p className="text-sm text-muted-foreground">
-                {streamProgress.total > 0 
-                  ? `Processing ${streamProgress.total} ingredients...`
-                  : 'Starting analysis...'}
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <Card className="p-8 max-w-md w-full">
+          <div className="flex flex-col items-center gap-4 text-center">
+            <Loader2 className="w-16 h-16 text-primary animate-spin" />
+            <div>
+              <h3 className="font-semibold text-xl mb-2">
+                {retryCount > 0 ? t('results.retrying.title', { attempt: retryCount + 1 }) : t('results.analyzing.title')}
+              </h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                {retryCount > 0 
+                  ? t('results.retrying.description') 
+                  : t('results.analyzing.description')
+                }
               </p>
             </div>
-          </Card>
-        )}
-
-        {/* Still analyzing (not streaming or no data yet) */}
-        {!isStreaming && !streamingIngredients.length && (
-          <Card className="p-8 max-w-md w-full mx-auto">
-            <div className="flex flex-col items-center gap-4 text-center">
-              <Loader2 className="w-16 h-16 text-primary animate-spin" />
-              <div>
-                <h3 className="font-semibold text-xl mb-2">
-                  {retryCount > 0 ? t('results.retrying.title', { attempt: retryCount + 1 }) : t('results.analyzing.title')}
-                </h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  {retryCount > 0 
-                    ? t('results.retrying.description') 
-                    : t('results.analyzing.description')
-                  }
-                </p>
-              </div>
-              <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
-                <div 
-                  className="h-full bg-primary rounded-full transition-all duration-300 ease-out"
-                  style={{ width: `${progress}%` }}
-                  data-testid="progress-bar-traditional"
-                />
-              </div>
-              {retryCount > 0 && (
-                <p className="text-xs text-muted-foreground">
-                  {cachedOcrText ? t('results.retrying.cached') : t('results.retrying.full')}
-                </p>
-              )}
+            <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
+              <div 
+                className="h-full bg-primary rounded-full transition-all duration-300 ease-out"
+                style={{ width: `${progress}%` }}
+              />
             </div>
-          </Card>
-        )}
+            {retryCount > 0 && (
+              <p className="text-xs text-muted-foreground">
+                {cachedOcrText ? t('results.retrying.cached') : t('results.retrying.full')}
+              </p>
+            )}
+          </div>
+        </Card>
       </div>
     );
   }

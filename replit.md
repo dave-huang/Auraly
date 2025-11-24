@@ -3,26 +3,17 @@
 ## Overview
 Auraly is a mobile-friendly web application designed to help users understand the ingredients in their food, skincare, and personal care products. It allows users to scan or upload product labels in any language, using AI to extract and analyze ingredients, highlighting potential health risks with clear, user-friendly explanations. The project's vision is to empower users with knowledge about product compositions, fostering informed choices for better health and wellness.
 
-## Recent Changes (November 24, 2025)
-### Streaming Incremental Results with Instant Cache Display
-- **New `/api/scan-and-analyze-stream` Endpoint**: Server-Sent Events (SSE) streaming for real-time ingredient results
-- **Streaming Architecture**:
-  * Cached ingredients stream immediately (< 100ms) while uncached batch being analyzed
-  * Individual ingredient parser extracts all ingredients from OCR text
-  * Uncached ingredients batch-analyzed in groups of 8 for efficiency
-  * Each analyzed ingredient cached automatically for future scans
-- **User Experience Improvements**:
-  * Real-time progress display (cached: X / total: Y)
-  * Individual ingredient cards appear as they complete (animated fade-in)
-  * No more waiting for full batch - see results instantly
-  * Second and subsequent scans show all cached ingredients instantly
-- **Performance Impact**: Repeat scans now show results in < 100ms for fully cached products, < 5s for partially cached
-- **Fallback Support**: Automatically falls back to polling endpoint if streaming unavailable (browser compatibility)
-
-## Previous Changes (November 21, 2025)
+## Recent Changes (November 21, 2025)
 ### Backend Ingredient Caching with Auto-Refresh
-- **Cache Architecture**: Category-specific cache keys with 30-day auto-refresh
-- **Performance**: Near-zero latency for cached hits, graceful error handling
+- **New `/api/analyze-ingredients` Endpoint**: Batch ingredient analysis with intelligent caching
+- **Cache Architecture**: 
+  * Category-specific cache keys (ingredient name + product type)
+  * 30-day automatic refresh - stale entries re-analyzed on next request
+  * In-memory cache with JSON file persistence for durability
+  * Automatic deduplication of ingredients within same request
+- **Performance Impact**: Repeat scans of same products return cached results instantly (near-zero latency for cached hits)
+- **Cache Monitoring**: `/api/cache-stats` endpoint provides hit rate, fresh/stale counts for debugging
+- **Error Handling**: Graceful ingredient-level errors - one failure doesn't crash entire batch
 
 ## Previous Changes (November 15, 2025)
 ### Major Performance & Reliability Overhaul
@@ -58,33 +49,26 @@ Auraly is a mobile-friendly web application designed to help users understand th
 
 ### Backend (Node.js + Express)
 - **API Endpoints**:
-    - `GET /api/scan-and-analyze-stream`: **STREAMING ENDPOINT** - Server-Sent Events for real-time incremental results (cached ingredients instant, total 7-50s)
-    - `POST /api/scan-and-analyze`: **FALLBACK ENDPOINT** - Combined OCR + Analysis with polling for compatibility (7-50s total)
+    - `POST /api/scan-and-analyze`: **PRIMARY ENDPOINT** - Combined OCR + Analysis for maximum speed (7-50s total)
     - `POST /api/analyze-ingredients`: Batch ingredient analysis with category-specific caching (instant for cached)
     - `GET /api/cache-stats`: Cache performance metrics (hit rate, fresh/stale counts)
     - `POST /api/ocr`: Extracts text using Gemini Flash (2-5s, with optional Google Vision fallback)
     - `POST /api/analyze`: Analyzes ingredients with OpenAI GPT-4o (with GPT-4o-mini fallback)
 - **Services**:
-    - `services/ingredientParser.ts`: NEW - Extracts individual ingredients from OCR text, handles multi-language separators
-    - `services/analyzer.ts`: Enhanced with `analyzeIndividualIngredients()` for streaming, batch processing uncached ingredients (8 at a time)
     - `services/cache.ts`: Ingredient cache with 30-day auto-refresh, deduplication, and JSON persistence
     - `services/ocr.ts`: Simple OCR orchestration - Gemini Flash primary, Google Vision fallback
     - `services/geminiOcr.ts`: Gemini 2.5 Flash vision-based OCR (2-5s, fast and reliable)
     - `services/googleVisionOcr.ts`: Google Cloud Vision fallback (only runs if Gemini fails)
+    - `services/analyzer.ts`: GPT-4o ingredient analysis (with GPT-4o-mini fallback) with Zod schema validation and multi-language support
     - `gemini.ts`: Gemini client using Replit AI Integrations
     - `openai.ts`: OpenAI client using Replit AI Integrations
 - **Error Handling**: Robust validation for OCR text length and AI response schemas.
 - **Feature Specifications**:
-    - **Streaming Incremental Results**: NEW SSE streaming endpoint shows ingredients as they complete:
-      * Cached ingredients stream immediately (grouped OCR extraction < 100ms lookup)
-      * Uncached ingredients batch-analyzed (8 at a time) and streamed as complete
-      * UI updates in real-time with animated ingredient cards
-      * Progress counter shows X/total as results arrive
     - **Fast OCR with Fallback**: Simplified single-engine approach for speed and reliability:
       * **Gemini 2.5 Flash** (primary, 2-5s) - Vision-based OCR using Replit AI Integrations, returns immediately on success
       * **Google Cloud Vision API** (fallback) - Only runs if Gemini fails and API key is configured
       * Sequential execution: fast path completes in 2-5s, no waiting for slower engines
-    - **Combined Scan & Analyze Pipeline**: `/api/scan-and-analyze-stream` endpoint uses SSE to stream results incrementally. `/api/scan-and-analyze` polling fallback available for compatibility. Supports optional `ocrText` parameter to skip OCR when cached text is available. Total processing time: < 100ms (fully cached) to 7-15s (EN/ES) or 35-50s (ZH).
+    - **Combined Scan & Analyze Pipeline**: `/api/scan-and-analyze` endpoint eliminates round-trip latency by running OCR and AI analysis sequentially in a single request. Supports optional `ocrText` parameter to skip OCR when cached text is available. Total processing time: 7-15s (EN/ES) or 35-50s (ZH) - down from 30-120s baseline.
     - **Automatic Retry System**: Frontend auto-retries failed requests to handle intermittent API issues invisibly:
       * Up to 2 automatic retries with exponential backoff (3s, 6s delays)
       * OCR text caching: successful OCR results are cached and reused on retries to skip the 2-5s OCR stage
