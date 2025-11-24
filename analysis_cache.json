@@ -2221,5 +2221,146 @@
       "timestamp": 1764015993254,
       "ocrText": "INGREDIENTS: WATER (AQUAL SODIUM LAURYL ISETHIONATE, SODIUM METHYL LAUROYL\nTAURATE, COCAMIDOPROPYL BETAINE, LAURIC ACID, SODIUM HYDROXYPROPYL STARCH\nPHOSPHATE, HYDROGENATED SOYBEAN DIL, GLYCINE SOJA (SOYBEAN OIL, SODIUM CHLORIDE\nGLYCERIN, STEARIC ACID, PALMITIC ADD, HYDROGENATED VEGETABLE GLYCERIDES, GLYCERINL\nSTEARATE, HYDROXYSTEARIC ACID, SODIUM BENZOATE, GUAR HYDROXYPROPYLTRIMONIUM\nCHLORIDE, FRAGRANCE PARFUM CITRIC ACID, CAPRYLYL GLYCINE, UNDECYLENDHL GLYCINE\nSODIUM GLUCONATE"
     }
+  ],
+  [
+    "474c4a8e8c0a11f4baa6b05b0139a42f25322b1faeb1c940ba35adcbe7076364",
+    {
+      "result": {
+        "productType": "food",
+        "ingredients": [
+          {
+            "name": "Water",
+            "riskLevel": "low",
+            "summary": "Water is used as the main solvent and base of the formulation.",
+            "details": "Water serves as the primary carrier for other ingredients, helping to dissolve and distribute them evenly. It does not pose health concerns in this context and is considered safe in cosmetic and food-contact formulations when properly purified.",
+            "category": "base/solvent"
+          },
+          {
+            "name": "Cocamidopropyl Betaine",
+            "riskLevel": "moderate",
+            "summary": "Cocamidopropyl betaine is a surfactant derived from coconut oil used for cleansing and foaming.",
+            "details": "This ingredient is widely used in personal care products for its mild cleansing and foaming properties. While generally considered safe, it can cause skin or eye irritation and allergic reactions in sensitive individuals, often due to impurities such as amidoamine or DMAPA from the manufacturing process.",
+            "category": "surfactant/foaming agent"
+          },
+          {
+            "name": "Glycerin",
+            "riskLevel": "low",
+            "summary": "Glycerin is a humectant that helps retain moisture.",
+            "details": "Glycerin attracts and holds water, helping to keep skin or surfaces hydrated and preventing dryness. It is widely regarded as safe and is commonly used in both foods and personal care products, with a long history of low toxicity at typical use levels.",
+            "category": "humectant"
+          },
+          {
+            "name": "Sodium Lauroamphoacetate",
+            "riskLevel": "low",
+            "summary": "Sodium lauroamphoacetate is a mild amphoteric surfactant used for cleansing and foam boosting.",
+            "details": "This ingredient helps remove dirt and oils while being gentler than many traditional detergents, making it common in mild cleansers and baby products. It has a good safety profile, with low irritation potential at normal use concentrations.",
+            "category": "surfactant/foaming agent"
+          },
+          {
+            "name": "Coco-Glucoside",
+            "riskLevel": "low",
+            "summary": "Coco-glucoside is a mild, plant-derived surfactant used for gentle cleansing.",
+            "details": "Made from coconut-derived fatty alcohols and glucose, coco-glucoside is used to create foam and cleanse without being overly harsh. It is generally well tolerated, biodegradable, and considered safe, including for sensitive skin, though any surfactant can irritate in high concentrations.",
+            "category": "surfactant/foaming agent"
+          },
+          {
+            "name": "Sodium Chloride",
+            "riskLevel": "low",
+            "summary": "Sodium chloride is common table salt, used here mainly to adjust viscosity and ionic strength.",
+            "details": "In rinse-off products, sodium chloride helps thicken formulations and stabilize surfactant systems. While high dietary intake of salt is linked to elevated blood pressure, its presence in a topical or rinse-off product does not pose systemic health risks under normal use.",
+            "category": "stabilizer/viscosity modifier"
+          },
+          {
+            "name": "Hydroxypropyl Starch Phosphate",
+            "riskLevel": "low",
+            "summary": "Hydroxypropyl starch phosphate is a modified starch used as a thickener and stabilizer.",
+            "details": "This ingredient helps control texture and stabilize emulsions, preventing separation of water and oils. It is generally recognized as safe in foods and is also widely used in cosmetics, with low toxicity and low irritation potential.",
+            "category": "thickener/stabilizer"
+          },
+          {
+            "name": "Citric Acid",
+            "riskLevel": "low",
+            "summary": "Citric acid is an organic acid used to adjust pH and sometimes as a mild preservative.",
+            "details": "Naturally found in citrus fruits, citric acid helps keep the product at a skin-compatible pH and can support preservative systems. It is considered safe, though in higher concentrations it may cause mild irritation on very sensitive or damaged skin.",
+            "category": "pH adjuster/acidulant"
+          },
+          {
+            "name": "Acrylates/C10-30 Alkyl Acrylate Crosspolymer",
+            "riskLevel": "low",
+            "summary": "Acrylates/C10-30 alkyl acrylate crosspolymer is a synthetic polymer used as a thickener and stabilizer.",
+            "details": "This crosslinked polymer swells in water to create gels and stabilize emulsions, giving products a smooth, consistent texture. It is not significantly absorbed through the skin and is generally considered safe, though some individuals with very sensitive skin may experience mild irritation.",
+            "category": "thickener/film-former"
+          },
+          {
+            "name": "Sodium Benzoate",
+            "riskLevel": "moderate",
+            "summary": "Sodium benzoate is a preservative used to prevent microbial growth.",
+            "details": "Common in foods and personal care products, sodium benzoate inhibits the growth of bacteria, yeast, and molds, extending shelf life. It is generally recognized as safe at regulated levels, but can cause irritation or allergic reactions in a small subset of people and may form benzene when combined with ascorbic acid under certain conditions in beverages, which is why its use is monitored and limited.",
+            "category": "preservative"
+          },
+          {
+            "name": "Panthenol",
+            "riskLevel": "low",
+            "summary": "Panthenol (provitamin B5) is used for moisturizing and soothing.",
+            "details": "Panthenol helps attract and retain moisture, supporting skin barrier function and improving softness and elasticity. It has an excellent safety profile and is widely used in both topical and ingestible forms, with allergic reactions being rare.",
+            "category": "humectant/conditioning agent"
+          },
+          {
+            "name": "Sodium Hydroxide",
+            "riskLevel": "low",
+            "summary": "Sodium hydroxide is a strong base used in tiny amounts to adjust pH.",
+            "details": "While concentrated sodium hydroxide is highly caustic, in finished products it is used in very small quantities to neutralize acids and bring the formula to a skin-friendly pH. At these low, well-controlled levels it does not pose a significant health risk, though improper formulation could increase irritation potential.",
+            "category": "pH adjuster"
+          },
+          {
+            "name": "Glyceryl Oleate",
+            "riskLevel": "low",
+            "summary": "Glyceryl oleate is an emulsifier and skin-conditioning agent derived from glycerin and oleic acid.",
+            "details": "It helps mix oil and water components and can deposit a light, conditioning layer on the skin or hair, improving softness. It is generally considered safe and well tolerated, though people with very sensitive or acne-prone skin may occasionally find richer emollients comedogenic depending on the overall formula.",
+            "category": "emulsifier/emollient"
+          },
+          {
+            "name": "Polyquaternium-7",
+            "riskLevel": "low",
+            "summary": "Polyquaternium-7 is a conditioning polymer that reduces static and improves feel.",
+            "details": "This cationic polymer forms a thin film on hair or skin, enhancing smoothness, combability, and reducing frizz or roughness. It has a good safety record in rinse-off products, with low systemic absorption; irritation is uncommon but possible in very sensitive individuals.",
+            "category": "conditioning agent/film-former"
+          },
+          {
+            "name": "Oat Kernel Flour",
+            "riskLevel": "low",
+            "summary": "Oat kernel flour is a finely ground oat ingredient used for soothing and conditioning.",
+            "details": "Rich in beta-glucans and other beneficial compounds, oat kernel flour can help calm and protect the skin barrier, making it popular in gentle and sensitive-skin products. It is generally safe, but individuals with oat or gluten-related allergies should be aware of potential reactions or cross-contamination.",
+            "category": "botanical/soothing agent"
+          },
+          {
+            "name": "Disodium EDTA",
+            "riskLevel": "moderate",
+            "summary": "Disodium EDTA is a chelating agent that binds metal ions to improve stability and preservative performance.",
+            "details": "By binding trace metals, disodium EDTA helps prevent product degradation and supports the effectiveness of preservatives. It is considered safe at the low levels used in cosmetics and many foods, though it is poorly absorbed and can be an environmental concern due to persistence; some people prefer to limit exposure to synthetic chelators as a precaution.",
+            "category": "chelating agent/stabilizer"
+          },
+          {
+            "name": "Aloe Barbadensis Leaf Extract",
+            "riskLevel": "low",
+            "summary": "Aloe barbadensis leaf extract (aloe vera) is used for its soothing and moisturizing properties.",
+            "details": "Aloe vera contains polysaccharides and other compounds that can help calm irritation, provide light hydration, and support skin repair. It is generally safe and well tolerated, though rare allergic reactions can occur, especially in people sensitive to plants in the Liliaceae family.",
+            "category": "botanical/soothing agent"
+          },
+          {
+            "name": "Oat Kernel Extract",
+            "riskLevel": "low",
+            "summary": "Oat kernel extract is a concentrated oat-derived ingredient used for soothing and conditioning.",
+            "details": "This extract provides bioactive components from oats, such as avenanthramides and beta-glucans, which can help reduce redness and support the skin barrier. It is typically safe, but those with known oat or grain allergies should exercise caution due to the potential for allergic responses.",
+            "category": "botanical/soothing agent"
+          }
+        ],
+        "overallRisk": "low",
+        "analyzedAt": "2025-11-24T20:38:57.328Z",
+        "originalText": "Water, Cocamidopropyl Betaine, Glycerin, Sodium Lauroamphoacetate,\nCoco-Glucoside, Sodium Chloride, Hydroxypropyl Starch Phosphate, Citric Acid,\nAcrylates/C10-30 Alkyl Acrylate Crosspolymer, Sodium Benzoate, Panthenol, Sodium\nHydroxide, Glyceryl Oleate, Polyquaternium-7, Avena Sativa (Oat) Kernel Flour,\nDisodium EDTA, Aloe Barbadensis Leaf Extract, Avena Sativa (Oat) Kernel Extract"
+      },
+      "timestamp": 1764016737330,
+      "ocrText": "Water, Cocamidopropyl Betaine, Glycerin, Sodium Lauroamphoacetate,\nCoco-Glucoside, Sodium Chloride, Hydroxypropyl Starch Phosphate, Citric Acid,\nAcrylates/C10-30 Alkyl Acrylate Crosspolymer, Sodium Benzoate, Panthenol, Sodium\nHydroxide, Glyceryl Oleate, Polyquaternium-7, Avena Sativa (Oat) Kernel Flour,\nDisodium EDTA, Aloe Barbadensis Leaf Extract, Avena Sativa (Oat) Kernel Extract"
+    }
   ]
 ]

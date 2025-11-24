@@ -1,0 +1,292 @@
+{
+  "water__food": {
+    "analysis": "{\"name\":\"Water\",\"riskLevel\":\"low\",\"summary\":\"Water is the primary solvent in many foods and beverages and is generally safe when potable and properly treated.\",\"details\":\"In food products, water is used to dissolve ingredients, adjust texture, and aid processing. Health concerns arise only if the water source is contaminated with microbes, heavy metals, or chemicals; in regulated food production, potable water standards are applied to minimize such risks.\",\"category\":\"base ingredient\"}",
+    "lastUpdated": 1764016709591,
+    "createdAt": 1764016709591
+  },
+  "cocamidopropyl betaine__food": {
+    "analysis": "{\"name\":\"Cocamidopropyl Betaine\",\"riskLevel\":\"moderate\",\"summary\":\"Cocamidopropyl betaine is a surfactant commonly used in personal care products; it is not typically used in foods and can cause skin irritation or allergic reactions in some people.\",\"details\":\"This ingredient is derived from coconut oil and dimethylaminopropylamine and functions mainly as a foaming and cleansing agent in shampoos, soaps, and similar products, not as a food additive. While not a typical food ingredient, its main health concerns relate to contact allergy and irritation, especially if impurities such as amidoamine or DMAPA are present; ingestion data are limited because it is not intended for consumption.\",\"category\":\"surfactant / non-food cosmetic ingredient\"}",
+    "lastUpdated": 1764016709591,
+    "createdAt": 1764016709591
+  },
+  "glycerin__food": {
+    "analysis": "{\"name\":\"Glycerin\",\"riskLevel\":\"low\",\"summary\":\"Glycerin (glycerol) is a sugar alcohol used as a humectant, sweetener, and texture agent in foods and is generally recognized as safe (GRAS).\",\"details\":\"In food, glycerin helps retain moisture, improve mouthfeel, and provide mild sweetness, and it is widely used in baked goods, confectionery, and low-sugar products. At typical dietary levels it is well tolerated, though very high intakes may cause digestive discomfort (such as bloating or diarrhea) in sensitive individuals due to its osmotic effect.\",\"category\":\"humectant / sugar alcohol\"}",
+    "lastUpdated": 1764016709591,
+    "createdAt": 1764016709591
+  },
+  "sodium lauroamphoacetate__food": {
+    "analysis": "{\"name\":\"Sodium Lauroamphoacetate\",\"riskLevel\":\"moderate\",\"summary\":\"Sodium lauroamphoacetate is an amphoteric surfactant mainly used in personal care products for mild cleansing and foaming, not as a food ingredient.\",\"details\":\"This compound is commonly found in shampoos, body washes, and facial cleansers because it is relatively mild on skin and eyes compared with harsher detergents. Its safety data focus on topical use; ingestion is not intended, and while it is not known as a major systemic toxin, it may cause irritation or gastrointestinal upset if swallowed, so it is not appropriate as a food additive.\",\"category\":\"surfactant / non-food cosmetic ingredient\"}",
+    "lastUpdated": 1764016709591,
+    "createdAt": 1764016709591
+  },
+  "coco-glucoside__food": {
+    "analysis": "{\"name\":\"Coco-Glucoside\",\"riskLevel\":\"moderate\",\"summary\":\"Coco-glucoside is a non-ionic surfactant derived from coconut fatty alcohols and glucose, widely used in personal care products rather than foods.\",\"details\":\"It is valued for being a relatively mild, plant-derived cleansing and foaming agent in shampoos, soaps, and cleansers. While it has a favorable safety profile for topical use, it is not approved or commonly used as a food additive, and ingestion at product-use levels is not recommended; potential issues would mainly be irritation or digestive upset if swallowed in significant amounts.\",\"category\":\"surfactant / non-food cosmetic ingredient\"}",
+    "lastUpdated": 1764016709591,
+    "createdAt": 1764016709591
+  },
+  "sodium chloride__food": {
+    "analysis": "{\"name\":\"Sodium Chloride\",\"riskLevel\":\"moderate\",\"summary\":\"Sodium chloride is common table salt, used for flavor and preservation; excessive intake is linked to high blood pressure and cardiovascular risk.\",\"details\":\"In foods, sodium chloride enhances taste and helps preserve products by inhibiting microbial growth. While small to moderate amounts are essential for fluid balance and nerve function, chronic high intake is associated with hypertension, increased risk of stroke and heart disease, and can worsen kidney and fluid-retention issues; people with salt-sensitive hypertension or kidney disease should be especially cautious about total dietary sodium.\",\"category\":\"salt / seasoning / preservative\"}",
+    "lastUpdated": 1764016709592,
+    "createdAt": 1764016709592
+  },
+  "hydroxypropyl starch phosphate__food": {
+    "analysis": "{\"name\":\"Hydroxypropyl Starch Phosphate\",\"riskLevel\":\"low\",\"summary\":\"Hydroxypropyl starch phosphate is a modified starch used as a thickener and stabilizer in foods and is generally considered safe.\",\"details\":\"This ingredient is produced by chemically modifying starch (often from corn, potato, or tapioca) to improve stability under heat, freezing, and acidic conditions, helping maintain smooth texture in sauces, soups, and processed foods. Regulatory agencies such as EFSA and FDA regard it as acceptable at typical use levels; in large amounts it may contribute to overall refined carbohydrate intake, and people with specific starch intolerances or sensitivities may need to monitor their response.\",\"category\":\"thickener / stabilizer (modified starch)\"}",
+    "lastUpdated": 1764016709592,
+    "createdAt": 1764016709592
+  },
+  "citric acid__food": {
+    "analysis": "{\"name\":\"Citric Acid\",\"riskLevel\":\"low\",\"summary\":\"Citric acid is a weak organic acid used as an acidulant, flavor enhancer, and preservative in many foods and beverages and is generally recognized as safe.\",\"details\":\"Commercial citric acid is usually produced by fermentation (often using Aspergillus niger) and is added to foods to provide tartness, adjust pH, and improve shelf life. Most people tolerate it well, though in high concentrations it can irritate the mouth or stomach in sensitive individuals, and a small number of people report intolerance or pseudo-allergic reactions, often related to impurities rather than citric acid itself.\",\"category\":\"acidulant / preservative\"}",
+    "lastUpdated": 1764016709592,
+    "createdAt": 1764016709592
+  },
+  "acrylates/c10-30 alkyl acrylate crosspolymer__food": {
+    "analysis": "{\"name\":\"Acrylates/C10-30 Alkyl Acrylate Crosspolymer\",\"riskLevel\":\"moderate\",\"summary\":\"Acrylates/C10-30 Alkyl Acrylate Crosspolymer is a synthetic polymer used mainly as a thickener and stabilizer in cosmetics, not typically in foods. It is generally not considered a food ingredient and ingestion safety data are limited.\",\"details\":\"This ingredient is widely used in personal care products to control viscosity and stabilize emulsions, and it is not a standard approved food additive in most jurisdictions. Toxicity via skin contact is considered low, but there is limited data on chronic ingestion, so its presence in a food context would be unusual and concerning from a regulatory and safety standpoint. If found in a food product, it may indicate mislabeling or non-food-grade use and should be avoided until clarified.\",\"category\":\"non-food polymer / thickener\"}",
+    "lastUpdated": 1764016718100,
+    "createdAt": 1764016718100
+  },
+  "sodium benzoate__food": {
+    "analysis": "{\"name\":\"Sodium Benzoate\",\"riskLevel\":\"moderate\",\"summary\":\"Sodium benzoate is a common preservative used to prevent microbial growth in acidic foods and drinks. It is generally recognized as safe at regulated levels but has some concerns, especially when combined with vitamin C.\",\"details\":\"Sodium benzoate (E211) helps extend shelf life in soft drinks, sauces, and processed foods by inhibiting bacteria, yeast, and mold. At permitted concentrations it is considered safe for most people, but in the presence of ascorbic acid (vitamin C) and heat/light, it can form small amounts of benzene, a known carcinogen, which has led to regulatory monitoring. Some individuals, particularly children, may experience sensitivity such as hyperactivity or allergic-type reactions, so limiting intake from multiple processed sources is prudent.\",\"category\":\"preservative\"}",
+    "lastUpdated": 1764016718100,
+    "createdAt": 1764016718100
+  },
+  "panthenol__food": {
+    "analysis": "{\"name\":\"Panthenol\",\"riskLevel\":\"low\",\"summary\":\"Panthenol is a form of vitamin B5 used as a humectant and conditioning agent, primarily in cosmetics and sometimes in fortified foods or supplements. It is generally considered safe with low toxicity.\",\"details\":\"Panthenol is converted in the body to pantothenic acid (vitamin B5), an essential nutrient involved in energy metabolism. In foods and supplements, it contributes to vitamin B5 intake and has a good safety profile, with adverse effects being rare and usually associated with very high supplemental doses (e.g., mild gastrointestinal upset). It is not associated with major allergenicity or chronic toxicity at typical dietary levels.\",\"category\":\"vitamin / humectant\"}",
+    "lastUpdated": 1764016718100,
+    "createdAt": 1764016718100
+  },
+  "sodium__food": {
+    "analysis": "{\"name\":\"Sodium\",\"riskLevel\":\"moderate\",\"summary\":\"Sodium is an essential mineral but is often consumed in excess through salt and processed foods. High sodium intake is linked to elevated blood pressure and increased cardiovascular risk.\",\"details\":\"In food, sodium most commonly comes from sodium chloride (table salt) and various sodium-based additives (e.g., sodium benzoate, sodium bicarbonate). While the body needs sodium for fluid balance and nerve and muscle function, many diets far exceed recommended limits (often >2,300 mg/day), contributing to hypertension, stroke, and heart disease, especially in salt-sensitive individuals. Monitoring total sodium from all sources and favoring minimally processed foods helps reduce these risks.\",\"category\":\"mineral / electrolyte\"}",
+    "lastUpdated": 1764016718100,
+    "createdAt": 1764016718100
+  },
+  "sodium hydroxide__food": {
+    "analysis": "{\"name\":\"Sodium Hydroxide\",\"riskLevel\":\"moderate\",\"summary\":\"Sodium hydroxide (lye) is a strong alkali used in food processing to adjust pH or peel foods, but it is not present in significant amounts in the final product. Its main risks relate to its caustic nature before neutralization.\",\"details\":\"In food manufacturing, sodium hydroxide can be used to cure olives, make pretzels, or process cocoa and some traditional foods; it is then neutralized or washed so that only trace, safe residues remain. Direct ingestion of concentrated sodium hydroxide is highly corrosive and dangerous, but food-grade use is tightly controlled to avoid this. When properly used and neutralized, consumer health risk from residual sodium hydroxide in foods is low, though it does contribute slightly to overall sodium content.\",\"category\":\"processing aid / pH regulator\"}",
+    "lastUpdated": 1764016718100,
+    "createdAt": 1764016718100
+  },
+  "glyceryl oleate__food": {
+    "analysis": "{\"name\":\"Glyceryl Oleate\",\"riskLevel\":\"low\",\"summary\":\"Glyceryl oleate is an emulsifier made from glycerin and oleic acid (a fatty acid found in oils). It is generally considered safe and is used in both foods and cosmetics to help mix oil and water.\",\"details\":\"This compound is structurally similar to natural monoacylglycerols found in dietary fats and is metabolized by the body into glycerol and fatty acids. In food applications, it helps stabilize emulsions and improve texture, and it has a low toxicity profile at typical use levels. It is not a common allergen, though people with very specific fat metabolism disorders or severe sensitivities to certain oils should still monitor overall fat sources rather than this emulsifier specifically.\",\"category\":\"emulsifier\"}",
+    "lastUpdated": 1764016718100,
+    "createdAt": 1764016718100
+  },
+  "polyquaternium (unspecified type)__food": {
+    "analysis": "{\"name\":\"Polyquaternium (unspecified type)\",\"riskLevel\":\"moderate\",\"summary\":\"Polyquaternium refers to a family of synthetic cationic polymers used mainly in hair and skin products, not as food ingredients. Safety data for ingestion are limited, and they are not standard food additives.\",\"details\":\"Different numbered polyquaterniums (e.g., Polyquaternium-7, -10) are used as conditioning and film-forming agents in cosmetics, where dermal exposure at approved levels is generally considered low risk. However, these polymers are not intended for consumption, and there is little evidence supporting their safety as food ingredients. Their presence on a food label would be atypical and should prompt caution and clarification, as non-food-grade polymers may pose unknown or unnecessary ingestion risks.\",\"category\":\"non-food polymer / conditioning agent\"}",
+    "lastUpdated": 1764016718100,
+    "createdAt": 1764016718100
+  },
+  "avena sativa (oat) kernel flour__food": {
+    "analysis": "{\"name\":\"Avena sativa (oat) kernel flour\",\"riskLevel\":\"low\",\"summary\":\"Avena sativa (oat) kernel flour is ground oat grain used as a cereal ingredient or thickener. It is generally healthy but can be an issue for people with oat allergy or celiac disease if contaminated with gluten.\",\"details\":\"Oat flour provides fiber, complex carbohydrates, and some protein, and is often considered beneficial for heart health and blood sugar control when eaten as part of a balanced diet. However, some individuals are allergic to oats, and oats are frequently cross-contaminated with wheat, barley, or rye, which is problematic for people with celiac disease or gluten sensitivity unless the oats are certified gluten-free. Aside from these allergen and contamination concerns, oat flour is considered a low-risk, nutritious food ingredient.\",\"category\":\"cereal grain / potential gluten cross-contamination\"}",
+    "lastUpdated": 1764016718100,
+    "createdAt": 1764016718100
+  },
+  "butyrospermum parkii (shea) butter__skincare": {
+    "analysis": "{\"name\":\"Butyrospermum Parkii (Shea) Butter\",\"riskLevel\":\"low\",\"summary\":\"Shea butter is a plant-derived fat used as an emollient and occlusive moisturizer. It is generally safe and well tolerated, with low risk of irritation or sensitization.\",\"details\":\"Shea butter is rich in fatty acids and minor bioactive compounds that help soften skin and support the skin barrier. It is commonly used in moisturizers, balms, and hair products to reduce dryness and transepidermal water loss. Allergic reactions are uncommon, even in people with nut allergies, but can occur in very sensitive individuals. It does not fall into concern categories like parabens, sulfates, phthalates, formaldehyde releasers, or heavy metals.\",\"category\":\"emollient / occlusive\"}",
+    "lastUpdated": 1764023569277,
+    "createdAt": 1764023512482
+  },
+  "hamamelis virginiana (witch hazel) extract__skincare": {
+    "analysis": "{\"name\":\"Hamamelis Virginiana (Witch Hazel) Extract\",\"riskLevel\":\"moderate\",\"summary\":\"A botanical extract with astringent and soothing properties; can be beneficial but may be irritating, especially if high in alcohol or tannins.\",\"details\":\"Witch hazel extract is used for its anti-inflammatory and astringent effects, often in toners and acne products. Alcohol-distilled witch hazel can be drying and irritating, particularly for dry, sensitive, or rosacea-prone skin, and its tannins may cause stinging or redness in some users. It is not linked to systemic toxicity or endocrine disruption, but the irritation potential and barrier disruption risk place it in a moderate concern category for sensitive skin types.\",\"category\":\"botanical extract / astringent\"}",
+    "lastUpdated": 1764023554693,
+    "createdAt": 1764023512483
+  },
+  "water__skincare": {
+    "analysis": "{\"name\":\"Water\",\"riskLevel\":\"low\",\"summary\":\"Water is the primary solvent in skincare, used to dissolve and deliver other ingredients. It is generally safe for all skin types.\",\"details\":\"In cosmetics, purified water (often listed as aqua) acts as the base of the formula and helps distribute active ingredients evenly on the skin. It has no known toxicity at the levels and purity used in skincare and does not pose hormonal, carcinogenic, or sensitizing concerns by itself. Any risk usually relates to contamination or poor preservation of the overall product, not to water itself.\",\"category\":\"solvent/base\"}",
+    "lastUpdated": 1764023525557,
+    "createdAt": 1764023525557
+  },
+  "glycerin__skincare": {
+    "analysis": "{\"name\":\"Glycerin\",\"riskLevel\":\"low\",\"summary\":\"Glycerin is a humectant that attracts water to the skin, helping to keep it hydrated. It is widely considered safe and non-irritating for most people.\",\"details\":\"Glycerin (glycerol) is commonly derived from plant oils or synthetically produced and is used to improve skin moisture and barrier function. It has a long history of safe use in both cosmetics and food, with low risk of allergy or irritation. At very high concentrations it can feel sticky, but it is not associated with hormone disruption, carcinogenicity, or systemic toxicity in cosmetic use.\",\"category\":\"humectant/moisturizer\"}",
+    "lastUpdated": 1764023525557,
+    "createdAt": 1764023525557
+  },
+  "olea europaea (olive) fruit oil__skincare": {
+    "analysis": "{\"name\":\"Olea Europaea (Olive) Fruit Oil\",\"riskLevel\":\"low\",\"summary\":\"Olive fruit oil is a plant oil used as an emollient to soften and moisturize the skin. It is generally safe, though very sensitive or acne-prone skin may occasionally experience breakouts or irritation.\",\"details\":\"Olea europaea (olive) fruit oil contains fatty acids and antioxidants that help support the skin barrier and reduce dryness. It is not linked to endocrine disruption, carcinogenicity, or systemic toxicity in cosmetic use. A small number of people may experience contact irritation or comedogenic effects (pore-clogging) depending on skin type, but these are localized skin reactions rather than systemic health risks.\",\"category\":\"emollient/plant oil\"}",
+    "lastUpdated": 1764023525557,
+    "createdAt": 1764023525557
+  },
+  "butylene glycol__skincare": {
+    "analysis": "{\"name\":\"Butylene Glycol\",\"riskLevel\":\"low\",\"summary\":\"Butylene glycol is a solvent and humectant that helps products spread easily and retain moisture. It is generally considered safe, with low irritation potential for most users.\",\"details\":\"Butylene glycol improves texture, enhances penetration of other ingredients, and helps keep formulas stable. Regulatory reviews have found it to be of low toxicity at cosmetic concentrations, with occasional mild irritation possible in very sensitive individuals. It is not a paraben, sulfate, phthalate, formaldehyde-releaser, or known endocrine disruptor, and it does not carry heavy metal concerns.\",\"category\":\"solvent/humectant\"}",
+    "lastUpdated": 1764023525558,
+    "createdAt": 1764023525558
+  },
+  "macadamia ternifolia seed oil__skincare": {
+    "analysis": "{\"name\":\"Macadamia Ternifolia Seed Oil\",\"riskLevel\":\"low\",\"summary\":\"Macadamia seed oil is a plant-derived emollient that moisturizes and softens the skin. It is generally safe, with low risk of irritation for most people.\",\"details\":\"Macadamia ternifolia seed oil is rich in monounsaturated fatty acids, which help support the skin barrier and reduce transepidermal water loss. It is not associated with hormone disruption, carcinogenicity, or systemic toxicity in cosmetic use. As with other nut-derived oils, rare individuals with strong nut allergies may be cautious, but topical reactions are uncommon and usually limited to local irritation if they occur.\",\"category\":\"emollient/plant oil\"}",
+    "lastUpdated": 1764023525558,
+    "createdAt": 1764023525558
+  },
+  "cyclopentasiloxane__skincare": {
+    "analysis": "{\"name\":\"Cyclopentasiloxane\",\"riskLevel\":\"moderate\",\"summary\":\"Cyclopentasiloxane is a volatile silicone used to give products a silky, spreadable feel and to reduce greasiness. It is generally considered low in direct toxicity, but there are environmental persistence concerns and some debate about long-term accumulation of certain silicones.\",\"details\":\"Cyclopentasiloxane (D5) evaporates after application, leaving a smooth finish and helping other ingredients spread evenly. Current safety assessments indicate low irritation and low systemic toxicity at cosmetic use levels, and it is not a paraben, sulfate, phthalate, or formaldehyde-releasing preservative. However, some regulatory bodies have raised concerns about environmental bioaccumulation of cyclic silicones and have imposed concentration limits in certain rinse-off products; for health-conscious users, it is often categorized as a “use with awareness” rather than a strictly high-risk ingredient.\",\"category\":\"silicone/emollient\"}",
+    "lastUpdated": 1764023525558,
+    "createdAt": 1764023525558
+  },
+  "cetearyl alcohol__skincare": {
+    "analysis": "{\"name\":\"Cetearyl Alcohol\",\"riskLevel\":\"low\",\"summary\":\"A fatty alcohol used as an emollient and thickener; generally considered safe and non‑drying for skin and hair.\",\"details\":\"Cetearyl alcohol is a mixture of cetyl and stearyl fatty alcohols derived from plant or synthetic sources and functions as an emollient, stabilizer, and thickener in creams and conditioners. Unlike simple drying alcohols (like ethanol or isopropyl alcohol), fatty alcohols are oily and help soften and protect the skin barrier. It is well tolerated by most skin types, including sensitive and dry skin, with irritation being rare and usually related to individual allergy rather than inherent toxicity.\",\"category\":\"fatty alcohol / emollient\"}",
+    "lastUpdated": 1764023540996,
+    "createdAt": 1764023540996
+  },
+  "beeswax__skincare": {
+    "analysis": "{\"name\":\"Beeswax\",\"riskLevel\":\"low\",\"summary\":\"A natural wax from honeybees used as an occlusive and thickener; generally safe but can rarely cause allergy in sensitive individuals.\",\"details\":\"Beeswax (cera alba) forms a protective, semi‑occlusive film on the skin that helps reduce transepidermal water loss and improve moisture retention. It is widely used in balms, salves, and creams and is considered low‑toxicity and non‑sensitizing for most people. A small number of individuals, especially those with known bee or propolis allergies, may experience contact dermatitis, so patch testing is advisable for very sensitive users.\",\"category\":\"natural wax / occlusive\"}",
+    "lastUpdated": 1764023540996,
+    "createdAt": 1764023540996
+  },
+  "cetyl ethylhexanoate__skincare": {
+    "analysis": "{\"name\":\"Cetyl Ethylhexanoate\",\"riskLevel\":\"low\",\"summary\":\"An emollient ester that gives slip and a lightweight feel; considered low risk for most users.\",\"details\":\"Cetyl ethylhexanoate is an ester of cetyl alcohol and 2‑ethylhexanoic acid used to improve spreadability and provide a silky, non‑greasy texture in skincare and haircare products. It is not associated with endocrine disruption, carcinogenicity, or major systemic toxicity at cosmetic use levels. Mild irritation or comedogenicity is possible in very acne‑prone or sensitive skin, but overall it is regarded as a safe emollient in cosmetic formulations.\",\"category\":\"emollient ester\"}",
+    "lastUpdated": 1764023540996,
+    "createdAt": 1764023540996
+  },
+  "cyclohexasiloxane__skincare": {
+    "analysis": "{\"name\":\"Cyclohexasiloxane\",\"riskLevel\":\"moderate\",\"summary\":\"A volatile silicone that provides slip and a silky feel; generally low acute toxicity but with environmental persistence and some regulatory scrutiny of related cyclic silicones.\",\"details\":\"Cyclohexasiloxane is a cyclic silicone used to give products a lightweight, non‑greasy, quick‑drying finish and to improve spreadability. Current data suggest low irritation and low acute toxicity for humans at cosmetic concentrations, but cyclic silicones as a group (especially D4 and D5) have raised concerns about bioaccumulation and potential endocrine or reproductive effects in environmental studies, leading to restrictions in some regions. While cyclohexasiloxane itself is not among the most heavily restricted silicones, cautious users may choose to limit cyclic silicone exposure, particularly if they prefer more environmentally friendly formulations.\",\"category\":\"silicone (cyclic / volatile)\"}",
+    "lastUpdated": 1764023540997,
+    "createdAt": 1764023540997
+  },
+  "polysorbate (unspecified type)__skincare": {
+    "analysis": "{\"name\":\"Polysorbate (unspecified type)\",\"riskLevel\":\"low\",\"summary\":\"A family of emulsifiers (e.g., Polysorbate 20, 60, 80) used to mix oil and water; generally considered safe with low irritation potential.\",\"details\":\"Polysorbates are ethoxylated surfactants derived from sorbitol and fatty acids and are widely used to solubilize fragrances and oils in water‑based products. At cosmetic use levels, they show low acute toxicity and are not linked to endocrine disruption or carcinogenicity, though very sensitive skin may experience mild irritation. Because they are ethoxylated, they can theoretically contain trace impurities (like 1,4‑dioxane) if manufacturing is poorly controlled, but reputable manufacturers minimize these residues and regulatory bodies consider them safe as used in cosmetics.\",\"category\":\"emulsifier / solubilizer (ethoxylated surfactant)\"}",
+    "lastUpdated": 1764023540997,
+    "createdAt": 1764023540997
+  },
+  "stearic acid__skincare": {
+    "analysis": "{\"name\":\"Stearic Acid\",\"riskLevel\":\"low\",\"summary\":\"A saturated fatty acid used as an emollient, thickener, and surfactant; generally safe and well tolerated.\",\"details\":\"Stearic acid is a long‑chain fatty acid commonly derived from plant or animal fats and used to stabilize emulsions, thicken creams, and provide mild cleansing properties. It is considered non‑toxic and non‑sensitizing for most people and is widely used even in products for sensitive skin. Rarely, individuals with very reactive skin may experience mild irritation, but it is not associated with systemic health concerns such as hormone disruption or carcinogenicity.\",\"category\":\"fatty acid / emollient / thickener\"}",
+    "lastUpdated": 1764023540997,
+    "createdAt": 1764023540997
+  },
+  "polyglyceryl-3 methylglucose distearate__skincare": {
+    "analysis": "{\"name\":\"Polyglyceryl-3 Methylglucose Distearate\",\"riskLevel\":\"low\",\"summary\":\"A plant‑derived emulsifier that helps blend oil and water; regarded as gentle and safe for most skin types.\",\"details\":\"Polyglyceryl‑3 methylglucose distearate is a non‑ionic emulsifier made from polyglycerin, methylglucose, and stearic acid, often used in natural or mild formulations. It helps stabilize oil‑in‑water emulsions and contributes a creamy texture without the need for harsher surfactants. It has a good safety profile, low irritation potential, and is not associated with endocrine disruption, formaldehyde release, or other major health concerns at typical cosmetic concentrations.\",\"category\":\"emulsifier / surfactant\"}",
+    "lastUpdated": 1764023540997,
+    "createdAt": 1764023540997
+  },
+  "isopropyl myristate__skincare": {
+    "analysis": "{\"name\":\"Isopropyl Myristate\",\"riskLevel\":\"moderate\",\"summary\":\"An emollient and texture enhancer that can be comedogenic and irritating for some skin types, especially acne-prone or sensitive skin.\",\"details\":\"Isopropyl myristate is an ester of isopropyl alcohol and myristic acid, used to improve spreadability and give a silky feel in skincare and haircare. It is generally considered safe and is not linked to hormone disruption or cancer, but it has a relatively high comedogenic rating and can worsen breakouts or folliculitis in acne-prone individuals. In some people it may also enhance penetration of other ingredients, which can increase irritation potential if the formula contains sensitizing substances.\",\"category\":\"emollient / texture enhancer\"}",
+    "lastUpdated": 1764023554693,
+    "createdAt": 1764023554693
+  },
+  "peg-100 stearate__skincare": {
+    "analysis": "{\"name\":\"PEG-100 Stearate\",\"riskLevel\":\"moderate\",\"summary\":\"A synthetic emulsifier that helps oil and water mix; generally considered safe but may contain trace impurities from the manufacturing process.\",\"details\":\"PEG-100 stearate is a polyethylene glycol derivative of stearic acid used to stabilize creams and lotions. The main concern with PEG ingredients is potential contamination with ethylene oxide or 1,4-dioxane, which are processing by-products; reputable manufacturers typically purify to minimize these. It is not a paraben, sulfate, phthalate, or formaldehyde releaser, and is usually well tolerated on intact skin, though very damaged or compromised skin may absorb PEGs more readily.\",\"category\":\"emulsifier / surfactant\"}",
+    "lastUpdated": 1764023554693,
+    "createdAt": 1764023554693
+  },
+  "glyceryl stearate__skincare": {
+    "analysis": "{\"name\":\"Glyceryl Stearate\",\"riskLevel\":\"low\",\"summary\":\"A fatty acid ester used as an emollient and emulsifier, generally considered very safe and well tolerated.\",\"details\":\"Glyceryl stearate is derived from glycerin and stearic acid and helps stabilize oil-in-water emulsions while providing a soft, smooth feel. It is not associated with hormone disruption, carcinogenicity, or major irritation and is widely used in products for sensitive skin. Adverse reactions are rare and usually limited to individual allergies or sensitivities.\",\"category\":\"emollient / emulsifier\"}",
+    "lastUpdated": 1764023554693,
+    "createdAt": 1764023554693
+  },
+  "dimethiconol__skincare": {
+    "analysis": "{\"name\":\"Dimethiconol\",\"riskLevel\":\"low\",\"summary\":\"A silicone polymer used for smoothing and conditioning; generally considered safe and non-irritating.\",\"details\":\"Dimethiconol is a high–molecular weight silicone that forms a flexible film on skin or hair, improving slip, shine, and protection against moisture loss. It is chemically inert, not absorbed significantly through the skin, and not associated with hormone disruption, cancer, or sensitization in typical cosmetic use. Concerns are mainly aesthetic or environmental (build-up, persistence in the environment) rather than direct human health risks.\",\"category\":\"silicone / conditioning agent\"}",
+    "lastUpdated": 1764023554694,
+    "createdAt": 1764023554694
+  },
+  "sodium polyacrylate__skincare": {
+    "analysis": "{\"name\":\"Sodium Polyacrylate\",\"riskLevel\":\"low\",\"summary\":\"A synthetic polymer used as a thickener and absorbent; generally low toxicity with minimal skin irritation potential.\",\"details\":\"Sodium polyacrylate is a cross-linked polymer that can hold large amounts of water, used to control texture and viscosity in creams and gels. It is not a paraben, sulfate, phthalate, or formaldehyde releaser, and due to its large molecular size it does not penetrate the skin significantly. Health concerns are minimal under normal cosmetic use, with rare cases of mechanical irritation or sensitivity rather than systemic effects.\",\"category\":\"polymer / thickener\"}",
+    "lastUpdated": 1764023554694,
+    "createdAt": 1764023554694
+  },
+  "hexanediol (12-hexanediol)__skincare": {
+    "analysis": "{\"name\":\"Hexanediol (1,2-Hexanediol)\",\"riskLevel\":\"low\",\"summary\":\"A synthetic diol used as a humectant and preservative booster; generally considered safe with low irritation potential.\",\"details\":\"1,2-Hexanediol helps retain moisture and enhances the effectiveness of preservatives, allowing for lower levels of harsher antimicrobial agents. It has a good safety profile in cosmetic concentrations, with low sensitization and irritation rates and no evidence of endocrine disruption or carcinogenicity. Occasional individuals with very sensitive skin may experience mild irritation, but this is uncommon.\",\"category\":\"humectant / preservative booster\"}",
+    "lastUpdated": 1764023554694,
+    "createdAt": 1764023554694
+  },
+  "caprylyl glycol__skincare": {
+    "analysis": "{\"name\":\"Caprylyl Glycol\",\"riskLevel\":\"low\",\"summary\":\"Caprylyl glycol is a humectant and skin-conditioning agent that also has mild preservative-boosting properties. It is generally considered safe and non-irritating for most skin types.\",\"details\":\"Caprylyl glycol is an 8‑carbon alcohol derived from fatty acids, used to help skin retain moisture and to enhance the efficacy of preservatives. It is not the same as drying alcohols (like ethanol or isopropyl alcohol) and does not typically disrupt the skin barrier. Reported irritation is rare and usually associated with very sensitive or compromised skin. It is not a paraben, sulfate, phthalate, formaldehyde releaser, or heavy metal.\",\"category\":\"humectant / emollient / preservative booster\"}",
+    "lastUpdated": 1764023569277,
+    "createdAt": 1764023569277
+  },
+  "illicium verum (anise) fruit extract__skincare": {
+    "analysis": "{\"name\":\"Illicium Verum (Anise) Fruit Extract\",\"riskLevel\":\"moderate\",\"summary\":\"Anise fruit extract is a plant extract used for fragrance and potential antioxidant or soothing properties. The main concern is its fragrance components, which can trigger irritation or allergy in sensitive skin.\",\"details\":\"Illicium verum (star anise) extract contains aromatic compounds such as anethole that give it a characteristic scent, so it often functions as a natural fragrance. While generally safe at cosmetic concentrations, fragrance-type botanicals can cause contact dermatitis or irritation, especially in those with eczema, rosacea, or fragrance allergies. It is not a paraben, sulfate, phthalate, or formaldehyde releaser, but it should be approached with caution by fragrance-sensitive users.\",\"category\":\"botanical extract / fragrance component\"}",
+    "lastUpdated": 1764023569277,
+    "createdAt": 1764023569277
+  },
+  "disodium edta__skincare": {
+    "analysis": "{\"name\":\"Disodium EDTA\",\"riskLevel\":\"moderate\",\"summary\":\"Disodium EDTA is a chelating agent used to bind metal ions and stabilize formulations. It is considered safe at typical cosmetic levels, but there are environmental and mild irritation concerns.\",\"details\":\"Disodium EDTA helps prevent product degradation and improves the performance of preservatives by binding metal ions such as calcium and magnesium. Human toxicity at cosmetic use levels is low, and it is not associated with endocrine disruption like parabens or phthalates. However, it is poorly biodegradable and can contribute to environmental persistence, and in rare cases may cause mild irritation in very sensitive skin. It is not a sulfate, formaldehyde releaser, or heavy metal, but it does interact with metals as part of its function.\",\"category\":\"chelating agent / stabilizer\"}",
+    "lastUpdated": 1764023569277,
+    "createdAt": 1764023569277
+  },
+  "betaine__skincare": {
+    "analysis": "{\"name\":\"Betaine\",\"riskLevel\":\"low\",\"summary\":\"Betaine is a naturally occurring osmolyte used as a humectant and skin-conditioning agent. It is generally very well tolerated and considered safe for most skin types.\",\"details\":\"Derived from sources like sugar beet, betaine helps cells manage water balance and can improve skin hydration and feel. It is non-irritating for most people and is often used in gentle cleansers and moisturizers, including for sensitive skin. There is no evidence that it acts as a hormone disruptor or carcinogen, and it is not related to sulfates, parabens, phthalates, or formaldehyde-releasing preservatives. Adverse reactions are rare and usually idiosyncratic.\",\"category\":\"humectant / skin-conditioning agent\"}",
+    "lastUpdated": 1764023569277,
+    "createdAt": 1764023569277
+  },
+  "allantoin__skincare": {
+    "analysis": "{\"name\":\"Allantoin\",\"riskLevel\":\"low\",\"summary\":\"Allantoin is a soothing and skin-protective ingredient used to calm irritation and support skin repair. It is widely regarded as safe and non-sensitizing.\",\"details\":\"Allantoin can be derived from plants or produced synthetically and is used for its keratolytic (gentle exfoliating) and skin-soothing properties. It is common in products for sensitive, irritated, or compromised skin, including baby care and after-sun products. Toxicity and allergenicity are very low, and it is not associated with endocrine disruption or other systemic health concerns. It is not a paraben, sulfate, phthalate, formaldehyde releaser, or heavy metal.\",\"category\":\"soothing agent / skin protectant\"}",
+    "lastUpdated": 1764023569277,
+    "createdAt": 1764023569277
+  },
+  "trehalose__skincare": {
+    "analysis": "{\"name\":\"Trehalose\",\"riskLevel\":\"low\",\"summary\":\"Trehalose is a sugar used as a humectant and stabilizer to help retain moisture and protect ingredients. It is considered safe and non-irritating for skin.\",\"details\":\"Trehalose is a disaccharide found in various plants and microorganisms, valued in cosmetics for its ability to help protect cells and proteins from dehydration and stress. In skincare, it supports hydration and can improve the texture and stability of formulas. It has a strong safety profile, with minimal risk of irritation or sensitization, and no evidence of endocrine disruption or carcinogenicity. It is unrelated to sulfates, parabens, phthalates, or formaldehyde-releasing preservatives.\",\"category\":\"humectant / stabilizer\"}",
+    "lastUpdated": 1764023569277,
+    "createdAt": 1764023569277
+  },
+  "polyglutamic acid__skincare": {
+    "analysis": "{\"name\":\"Polyglutamic Acid\",\"riskLevel\":\"low\",\"summary\":\"Polyglutamic acid is a hydrating polymer derived from glutamic acid that acts as a powerful humectant. It is generally safe and well tolerated, with low irritation potential.\",\"details\":\"Often produced by fermentation, polyglutamic acid can hold significant amounts of water on the skin surface, helping to improve hydration and smoothness. It is used similarly to hyaluronic acid but forms a film on the skin that reduces water loss. Current data indicate a good safety profile, with low risk of sensitization or systemic toxicity, and it is not associated with hormone disruption or carcinogenic effects. It does not belong to concern groups such as parabens, sulfates, phthalates, formaldehyde releasers, or heavy metals.\",\"category\":\"humectant / film-forming agent\"}",
+    "lastUpdated": 1764023569277,
+    "createdAt": 1764023569277
+  },
+  "acid (unspecified type)__skincare": {
+    "analysis": "{\"name\":\"Acid (unspecified type)\",\"riskLevel\":\"moderate\",\"summary\":\"“Acid” is a generic term and could refer to many different cosmetic acids (such as glycolic acid, salicylic acid, or hyaluronic acid), each with different safety profiles. Without the specific acid named, the main concerns are potential irritation, redness, or barrier disruption, especially at high concentrations or low pH.\",\"details\":\"In skincare, acids are commonly used as exfoliants (AHAs, BHAs, PHAs) or humectants (like hyaluronic acid), and their safety depends heavily on the exact compound, concentration, and formulation pH. Some acids (e.g., glycolic, salicylic, lactic) can cause stinging, peeling, or increased sun sensitivity, particularly on sensitive or compromised skin. Because the ingredient is not specified, it is not possible to rule out stronger or more irritating acids, so a cautious, moderate risk rating is appropriate, focused mainly on irritation rather than systemic toxicity.\",\"category\":\"unspecified acid / active\"}",
+    "lastUpdated": 1764023582362,
+    "createdAt": 1764023582362
+  },
+  "glycyrrhiza glabra (licorice) root extract__skincare": {
+    "analysis": "{\"name\":\"Glycyrrhiza glabra (Licorice) root extract\",\"riskLevel\":\"low\",\"summary\":\"Licorice root extract is a plant extract used for soothing the skin and brightening dark spots. It is generally considered safe, with the main concern being rare allergic reactions or irritation in very sensitive individuals.\",\"details\":\"Licorice root extract contains compounds such as glabridin that can help reduce hyperpigmentation and calm redness due to their anti-inflammatory and antioxidant properties. In topical skincare, systemic absorption is low, so concerns seen with high oral intake (like effects on blood pressure or hormones) are not typically relevant. It does not belong to parabens, sulfates, phthalates, formaldehyde releasers, mineral oils, silicones, or heavy metals, and is not a drying alcohol; overall, it is regarded as a low-risk botanical ingredient.\",\"category\":\"botanical extract / soothing and brightening agent\"}",
+    "lastUpdated": 1764023582363,
+    "createdAt": 1764023582363
+  },
+  "camellia sinensis (green tea) leaf extract__skincare": {
+    "analysis": "{\"name\":\"Camellia sinensis (Green tea) leaf extract\",\"riskLevel\":\"low\",\"summary\":\"Camellia sinensis leaf extract (green tea extract) is a plant-derived antioxidant used to help protect skin from environmental damage and soothe irritation. It is generally very safe, with occasional mild irritation or allergy in sensitive users.\",\"details\":\"Green tea extract is rich in polyphenols (such as EGCG) that provide antioxidant, anti-inflammatory, and potential anti-aging benefits in topical products. It is widely used in skincare with a strong safety record and no association with parabens, sulfates, phthalates, formaldehyde-releasing preservatives, mineral oil, silicones, or heavy metals. Adverse effects are usually limited to rare contact allergy or mild irritation, making it a low-risk ingredient for most people.\",\"category\":\"botanical extract / antioxidant\"}",
+    "lastUpdated": 1764023582363,
+    "createdAt": 1764023582363
+  },
+  "rosmarinus officinalis (rosemary) leaf extract__skincare": {
+    "analysis": "{\"name\":\"Rosmarinus officinalis (Rosemary) leaf extract\",\"riskLevel\":\"low\",\"summary\":\"Rosemary leaf extract is a botanical ingredient used for its antioxidant and mild antimicrobial properties, and sometimes as a natural preservative or fragrance-like component. It is generally safe, though it can occasionally trigger irritation or allergic reactions, especially in fragrance-sensitive individuals.\",\"details\":\"This extract contains compounds such as rosmarinic acid and carnosic acid that help protect formulations and skin from oxidative damage. While rosemary essential oil can be more sensitizing, the extract used in skincare is typically present at low levels and has a good safety profile, though people with known fragrance or herbal allergies should be cautious. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, mineral oil, silicone, drying alcohol, or heavy metal, and its main concern is potential mild sensitization in susceptible users.\",\"category\":\"botanical extract / antioxidant and mild preservative\"}",
+    "lastUpdated": 1764023582363,
+    "createdAt": 1764023582363
+  },
+  "centella asiatica extract__skincare": {
+    "analysis": "{\"name\":\"Centella asiatica extract\",\"riskLevel\":\"low\",\"summary\":\"Centella asiatica extract (also known as gotu kola or cica) is a plant extract used for soothing, barrier support, and wound-healing benefits. It is generally considered very safe, with rare cases of irritation or allergy.\",\"details\":\"Centella asiatica contains active compounds such as asiaticoside and madecassoside, which have been shown to support collagen synthesis, calm inflammation, and aid skin barrier repair. It is widely used in products for sensitive or compromised skin and has a strong safety record in topical use. It does not fall into the categories of parabens, sulfates, phthalates, formaldehyde releasers, mineral oils, silicones, drying alcohols, or heavy metals; the primary risk is limited to uncommon contact sensitivity in very reactive skin.\",\"category\":\"botanical extract / soothing and barrier-supporting agent\"}",
+    "lastUpdated": 1764023582363,
+    "createdAt": 1764023582363
+  },
+  "chamomilla recutita (matricaria) flower extract__skincare": {
+    "analysis": "{\"name\":\"Chamomilla recutita (Matricaria) flower extract\",\"riskLevel\":\"low\",\"summary\":\"Chamomilla recutita (chamomile) flower extract is a botanical ingredient used for its soothing and anti-inflammatory properties. It is generally safe, but people with ragweed or related plant allergies may have a higher risk of sensitivity.\",\"details\":\"Chamomile extract contains compounds such as bisabolol and chamazulene that help calm redness and irritation, making it common in products for sensitive skin. While its overall safety profile is good, cross-reactivity can occur in individuals allergic to plants in the Asteraceae/Compositae family (such as ragweed), leading to contact dermatitis. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, mineral oil, silicone, drying alcohol, or heavy metal; its main concern is potential allergic reaction in predisposed users.\",\"category\":\"botanical extract / soothing agent\"}",
+    "lastUpdated": 1764023582363,
+    "createdAt": 1764023582363
+  },
+  "scutellaria baicalensis root extract__skincare": {
+    "analysis": "{\"name\":\"Scutellaria Baicalensis Root Extract\",\"riskLevel\":\"low\",\"summary\":\"A plant extract from Chinese skullcap used for its antioxidant and soothing properties; generally considered low risk in skincare.\",\"details\":\"Scutellaria baicalensis root extract contains flavonoids (such as baicalin) with anti-inflammatory and antioxidant activity, often used in calming or brightening formulas. Most safety data suggest low irritation potential, though any botanical extract can cause allergic reactions in sensitive individuals. It is not associated with parabens, sulfates, phthalates, formaldehyde releasers, or heavy metals when properly sourced.\",\"category\":\"botanical extract\"}",
+    "lastUpdated": 1764023589948,
+    "createdAt": 1764023589948
+  },
+  "polygonum cuspidatum root extract__skincare": {
+    "analysis": "{\"name\":\"Polygonum Cuspidatum Root Extract\",\"riskLevel\":\"low\",\"summary\":\"A plant extract (Japanese knotweed) rich in resveratrol, used for antioxidant and anti-aging benefits; typically low risk topically.\",\"details\":\"Polygonum cuspidatum root extract is a common cosmetic source of resveratrol, providing antioxidant and potential anti-inflammatory effects in skincare. It is generally well tolerated, though as with other plant extracts, there is a small risk of contact allergy or irritation in sensitive users. It does not belong to the major concern groups such as parabens, sulfates, phthalates, formaldehyde releasers, or silicones.\",\"category\":\"botanical extract\"}",
+    "lastUpdated": 1764023589949,
+    "createdAt": 1764023589949
+  },
+  "xylitol__skincare": {
+    "analysis": "{\"name\":\"Xylitol\",\"riskLevel\":\"low\",\"summary\":\"A sugar alcohol used as a humectant and moisturizing agent in skincare; considered very low risk.\",\"details\":\"Xylitol helps attract and retain moisture in the skin and may support skin barrier function and microbiome balance. It is widely used in oral care and skincare with an excellent safety profile and minimal irritation potential. It is not a drying alcohol and is unrelated to sulfates, parabens, phthalates, or formaldehyde-releasing preservatives.\",\"category\":\"humectant\"}",
+    "lastUpdated": 1764023589949,
+    "createdAt": 1764023589949
+  },
+  "ceramide np__skincare": {
+    "analysis": "{\"name\":\"Ceramide NP\",\"riskLevel\":\"low\",\"summary\":\"A skin-identical lipid that helps restore and protect the skin barrier; considered very safe and beneficial.\",\"details\":\"Ceramide NP mimics natural ceramides found in the outer layer of the skin, improving barrier integrity, hydration, and resilience, especially in dry or sensitive skin. It has an excellent safety profile and is widely recommended in dermatology for conditions like eczema and barrier impairment. It is not associated with endocrine disruption, irritation, or the listed concern groups (parabens, sulfates, phthalates, formaldehyde releasers, mineral oil, silicones).\",\"category\":\"skin-identical lipid\"}",
+    "lastUpdated": 1764023589949,
+    "createdAt": 1764023589949
+  },
+  "citric acid__skincare": {
+    "analysis": "{\"name\":\"Citric Acid\",\"riskLevel\":\"low\",\"summary\":\"An alpha-hydroxy acid used mainly to adjust pH and sometimes for mild exfoliation; generally low risk but can irritate very sensitive skin at higher levels.\",\"details\":\"In most skincare, citric acid is present at low concentrations to control product acidity, which helps maintain formula stability and skin-friendly pH. At higher concentrations or in leave-on products for very sensitive or compromised skin, it can cause stinging, redness, or mild irritation due to its exfoliating properties. It is not linked to hormone disruption, sulfates, phthalates, formaldehyde release, or heavy metal contamination under normal cosmetic use.\",\"category\":\"pH adjuster / exfoliating acid\"}",
+    "lastUpdated": 1764023589949,
+    "createdAt": 1764023589949
+  },
+  "non-ingredient text: instructions and cautions__skincare": {
+    "analysis": "{\"name\":\"Non-ingredient text: instructions and cautions\",\"riskLevel\":\"low\",\"summary\":\"This line is product usage instruction text, not an ingredient, and does not represent a chemical safety concern by itself.\",\"details\":\"Phrases such as “Please read and understand the instructions before use” and “CAUTION For external use only. Keep out of reach of children” are regulatory and safety statements, not components of the formula. They do not correspond to parabens, sulfates, phthalates, fragrances, or other chemical categories of concern.\",\"category\":\"not an ingredient\"}",
+    "lastUpdated": 1764023589949,
+    "createdAt": 1764023589949
+  },
+  "discontinue use if signs of irritation or rashes appear__skincare": {
+    "analysis": "{\"name\":\"Discontinue use if signs of irritation or rashes appear\",\"riskLevel\":\"low\",\"summary\":\"This is not an ingredient but a safety warning advising users to stop using the product if irritation or rashes occur.\",\"details\":\"This statement is a general precautionary instruction commonly printed on cosmetic and skincare packaging. It does not represent a chemical substance or active ingredient and therefore carries no inherent toxicological risk itself; instead, it encourages users to monitor for adverse skin reactions and discontinue use if they occur.\",\"category\":\"label warning / safety instruction\"}",
+    "lastUpdated": 1764023593466,
+    "createdAt": 1764023593466
+  },
+  "dermatologist tested__skincare": {
+    "analysis": "{\"name\":\"Dermatologist tested\",\"riskLevel\":\"low\",\"summary\":\"This is a marketing and safety claim indicating that a dermatologist has evaluated or overseen testing of the product, not an ingredient.\",\"details\":\"The phrase suggests the product has undergone some form of dermatological assessment, but it does not specify the rigor, sample size, or outcomes of that testing. It is not a chemical component and therefore has no direct health risk classification; its presence on a label should be interpreted as a claim about testing rather than about ingredient safety itself.\",\"category\":\"marketing / testing claim\"}",
+    "lastUpdated": 1764023593466,
+    "createdAt": 1764023593466
+  }
+}
