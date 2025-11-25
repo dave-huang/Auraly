@@ -3,7 +3,26 @@
 ## Overview
 Auraly is a mobile-friendly web application designed to help users understand the ingredients in their food, skincare, and personal care products. It allows users to scan or upload product labels in any language, using AI to extract and analyze ingredients, highlighting potential health risks with clear, user-friendly explanations. The project's vision is to empower users with knowledge about product compositions, fostering informed choices for better health and wellness.
 
-## Recent Changes (November 21, 2025)
+## Recent Changes (November 25, 2025)
+### True Incremental Streaming of Ingredient Results
+- **Architecture**: Two-stage streaming pipeline
+  * Stage 1: Backend OCR (2-5 seconds) → Frontend detects completion via polling
+  * Stage 2: Frontend switches to streaming, `/stream-ingredient-analysis` SSE endpoint streams ingredient analysis one-by-one
+- **Backend Changes**:
+  * `/api/analysis-status` now returns `ocrReady: true` and `ocrText` immediately after OCR completes
+  * OCR text stored in analysisRequest as soon as extraction finishes (before analysis starts)
+  * `/stream-ingredient-analysis` endpoint analyzes each ingredient independently, streaming via SSE
+- **Frontend Changes**:
+  * `directPoll` function now detects `ocrReady` flag and triggers `onOcrReady` callback
+  * When OCR ready detected, polling stops and StreamingResults component takes over
+  * Results page passes `onOcrReady` callback to polling to enable streaming trigger
+- **User Experience**:
+  * First ingredient appears 1-3 seconds after OCR (cached) or 5-10 seconds after OCR (fresh)
+  * Remaining ingredients stream in progressively as they're analyzed
+  * Real-time visual feedback with "Streaming: X of Y ingredients analyzed" indicator
+  * No more waiting - users see results appearing as they arrive
+
+## Previous Changes (November 21, 2025)
 ### Backend Ingredient Caching with Auto-Refresh
 - **New `/api/analyze-ingredients` Endpoint**: Batch ingredient analysis with intelligent caching
 - **Cache Architecture**: 

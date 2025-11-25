@@ -180,6 +180,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
     
     if (request.status === 'processing') {
+      // Return OCR text as soon as it's available for early streaming trigger
+      if (request.ocrText) {
+        console.log(`[STATUS-CHECK-${requestId}] OCR text available, allowing client to start streaming`);
+        return res.status(202).json({ 
+          status: 'processing',
+          ocrText: request.ocrText,
+          ocrReady: true 
+        });
+      }
       return res.status(202).json({ status: 'processing' });
     }
     
@@ -245,6 +254,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }
             
             ocrText = ocrResult.text;
+            // CRITICAL: Store OCR text immediately so polling can detect it and start streaming
+            analysisRequest.ocrText = ocrText;
+            console.log(`[OCR-COMPLETED-${requestId}] OCR text stored (${ocrText.length} chars), client can now start streaming`);
           } catch (ocrError: any) {
             const ocrDuration = ((Date.now() - startTime) / 1000).toFixed(2);
             console.error(`[OCR-FAILED-${requestId}] OCR error after ${ocrDuration}s:`, ocrError.message);
