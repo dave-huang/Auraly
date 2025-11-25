@@ -441,22 +441,47 @@ Return your analysis as JSON with this structure (ingredients array may be empty
   
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
-      const response = await openai.chat.completions.create({
-        model: "gpt-4o",
-        messages: [
-          {
-            role: "system",
-            content: systemMessage
-          },
-          {
-            role: "user",
-            content: prompt
-          }
-        ],
-        response_format: { type: "json_object" },
-        max_tokens: maxTokens,
-        temperature: 0.3
-      });
+      let response;
+      try {
+        response = await openai.chat.completions.create({
+          model: "gpt-5.1",
+          messages: [
+            {
+              role: "system",
+              content: systemMessage
+            },
+            {
+              role: "user",
+              content: prompt
+            }
+          ],
+          response_format: { type: "json_object" },
+          max_tokens: maxTokens,
+          temperature: 0.3
+        });
+      } catch (modelError: any) {
+        // If GPT-5.1 is unavailable, fall back to GPT-4o
+        if (modelError?.status === 400 || modelError?.code === 'unknown_model') {
+          response = await openai.chat.completions.create({
+            model: "gpt-4o",
+            messages: [
+              {
+                role: "system",
+                content: systemMessage
+              },
+              {
+                role: "user",
+                content: prompt
+              }
+            ],
+            response_format: { type: "json_object" },
+            max_tokens: maxTokens,
+            temperature: 0.3
+          });
+        } else {
+          throw modelError;
+        }
+      }
       
       const content = response.choices?.[0]?.message?.content;
       if (!content) {
