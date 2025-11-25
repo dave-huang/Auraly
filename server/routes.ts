@@ -282,51 +282,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Streaming ingredient analysis endpoint - one ingredient at a time via SSE
-  // Diagnostic endpoint to test streaming without actual GPT calls
-  app.get("/debug/stream-test", async (req, res) => {
-    console.log(`[DEBUG-STREAM] Starting 5-second diagnostic stream test`);
-    
-    // Set SSE headers
-    res.writeHead(200, {
-      'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
-      'Connection': 'keep-alive',
-      'X-Accel-Buffering': 'no'
-    });
-    
-    // Flush headers immediately
-    res.flushHeaders();
-    
-    // Send one event every 1 second for 5 seconds
-    for (let i = 1; i <= 5; i++) {
-      const timestamp = new Date().toISOString();
-      const event = `event: test\ndata: ${JSON.stringify({
-        message: `Test message ${i}/5`,
-        timestamp,
-        index: i - 1
-      })}\n\n`;
-      
-      res.write(event);
-      const writable = res as any;
-      writable.flush?.();
-      
-      console.log(`[DEBUG-STREAM] Sent message ${i}/5 at ${timestamp}`);
-      
-      // Wait 1 second before next message (except after last)
-      if (i < 5) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-      }
-    }
-    
-    // Send completion event
-    res.write('event: done\ndata: complete\n\n');
-    const writable = res as any;
-    writable.flush?.();
-    
-    console.log(`[DEBUG-STREAM] ✓ Stream completed`);
-    res.end();
-  });
-
   app.post("/stream-ingredient-analysis", async (req, res) => {
     const body = req.body;
     

@@ -131,100 +131,67 @@ export function StreamingResults({ ocrText, productType, userLanguage }: Streami
           buffer += decoder.decode(value, { stream: true });
           
           // Parse SSE events from buffer
-          // SSE format: event: name\ndata: {...}\n\n (3 lines per event)
           const lines = buffer.split('\n');
           buffer = lines.pop() || ''; // Keep incomplete line in buffer
           
-          // Process events: skip blank lines, group event+data pairs
-          let i = 0;
-          while (i < lines.length) {
-            const line = lines[i].trim();
+          for (let i = 0; i < lines.length - 1; i += 2) {
+            const eventLine = lines[i];
+            const dataLine = lines[i + 1];
             
-            // Skip blank lines (SSE separator)
-            if (!line) {
-              i++;
-              continue;
-            }
-            
-            // Look for event: TYPE
-            if (line.startsWith('event:')) {
-              const eventType = line.substring('event:'.length).trim();
-              
-              // Next non-blank line should be data:
-              let dataLine = '';
-              i++;
-              while (i < lines.length) {
-                const nextLine = lines[i].trim();
-                if (!nextLine) {
-                  i++;
-                  break;
-                }
-                if (nextLine.startsWith('data:')) {
-                  dataLine = nextLine;
-                  i++;
-                  break;
-                }
-                i++;
+            if (eventLine.startsWith('event: ingredientResult')) {
+              try {
+                const jsonStr = dataLine.replace('data: ', '');
+                const data = JSON.parse(jsonStr);
+                
+                console.log(`[STREAMING-RESULTS] ✓ Received ingredient ${data.index + 1}/${ingredientsList.length}: ${data.ingredient.name} (${data.fromCache ? 'cached' : 'fresh'})`);
+                
+                // Update results map with new ingredient
+                setResults(prev => {
+                  const newMap = new Map(prev);
+                  newMap.set(data.index, { ...data.ingredient, fromCache: data.fromCache });
+                  return newMap;
+                });
+              } catch (e) {
+                console.error('[STREAMING-RESULTS] Error parsing ingredientResult:', e);
               }
-              
-              // Process the event
-              if (eventType === 'ingredientResult' && dataLine) {
-                try {
-                  const jsonStr = dataLine.replace('data:', '').trim();
-                  const data = JSON.parse(jsonStr);
-                  
-                  console.log(`[STREAMING-RESULTS] ✓ Received ingredient ${data.index + 1}/${ingredientsList.length}: ${data.ingredient.name} (${data.fromCache ? 'cached' : 'fresh'})`);
-                  
-                  // Update results map with new ingredient
-                  setResults(prev => {
-                    const newMap = new Map(prev);
-                    newMap.set(data.index, { ...data.ingredient, fromCache: data.fromCache });
-                    return newMap;
-                  });
-                } catch (e) {
-                  console.error('[STREAMING-RESULTS] Error parsing ingredientResult:', e, 'data:', dataLine);
-                }
-              } else if (eventType === 'ingredientError' && dataLine) {
-                try {
-                  const jsonStr = dataLine.replace('data:', '').trim();
-                  const data = JSON.parse(jsonStr);
-                  
-                  console.error(`[STREAMING-RESULTS] ✗ Error analyzing ingredient ${data.index + 1}: ${data.ingredient}`, data.error);
-                  
-                  // Add to errors set
-                  setErrors(prev => new Set(prev).add(data.index));
-                } catch (e) {
-                  console.error('[STREAMING-RESULTS] Error parsing ingredientError:', e);
-                }
-              } else if (eventType === 'done') {
-                console.log('[STREAMING-RESULTS] ✓ Stream completed, all ingredients processed');
-                setIsStreaming(false);
-                try {
-                  reader.cancel();
-                } catch (e) {
-                  // Reader already closed, ignore
-                }
-                return;
-              } else if (eventType === 'streamError' && dataLine) {
-                try {
-                  const jsonStr = dataLine.replace('data:', '').trim();
-                  const data = JSON.parse(jsonStr);
-                  
-                  console.error('[STREAMING-RESULTS] Stream error:', data.error);
-                  setStreamError(data.error);
-                } catch (e) {
-                  console.error('[STREAMING-RESULTS] Error parsing streamError:', e);
-                }
-                setIsStreaming(false);
-                try {
-                  reader.cancel();
-                } catch (e) {
-                  // Reader already closed, ignore
-                }
-                return;
+            } else if (eventLine.startsWith('event: ingredientError')) {
+              try {
+                const jsonStr = dataLine.replace('data: ', '');
+                const data = JSON.parse(jsonStr);
+                
+                console.error(`[STREAMING-RESULTS] ✗ Error analyzing ingredient ${data.index + 1}: ${data.ingredient}`, data.error);
+                
+                // Add to errors set
+                setErrors(prev => new Set(prev).add(data.index));
+              } catch (e) {
+                console.error('[STREAMING-RESULTS] Error parsing ingredientError:', e);
               }
-            } else {
-              i++;
+            } else if (eventLine.startsWith('event: done')) {
+              console.log('[STREAMING-RESULTS] ✓ Stream completed, all ingredients processed');
+              setIsStreaming(false);
+              try {
+                reader.cancel();
+              } catch (e) {
+                // Reader already closed, ignore
+              }
+              return;
+            } else if (eventLine.startsWith('event: streamError')) {
+              try {
+                const jsonStr = dataLine.replace('data: ', '');
+                const data = JSON.parse(jsonStr);
+                
+                console.error('[STREAMING-RESULTS] Stream error:', data.error);
+                setStreamError(data.error);
+              } catch (e) {
+                console.error('[STREAMING-RESULTS] Error parsing streamError:', e);
+              }
+              setIsStreaming(false);
+              try {
+                reader.cancel();
+              } catch (e) {
+                // Reader already closed, ignore
+              }
+              return;
             }
           }
         }
