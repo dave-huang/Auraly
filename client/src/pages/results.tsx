@@ -15,7 +15,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { useTranslation } from "react-i18next";
 
 // Helper function for direct polling fallback
-const directPoll = async (requestId: string, resolve: any, reject: any, onOcrReady?: (ocrText: string) => void) => {
+const directPoll = async (requestId: string, resolve: any, reject: any) => {
   const maxAttempts = 300; // 5 minutes with 1s polling
   let attempts = 0;
   
@@ -33,13 +33,6 @@ const directPoll = async (requestId: string, resolve: any, reject: any, onOcrRea
       if (statusData.status === 'failed') {
         reject(new Error(statusData.error || 'Analysis failed'));
         return;
-      }
-      
-      // Check if OCR is ready - trigger streaming analysis
-      if (statusData.ocrReady && statusData.ocrText && onOcrReady) {
-        console.log(`[DIRECT-POLL] ✓ OCR ready! ${statusData.ocrText.length} chars. Switching to streaming.`);
-        onOcrReady(statusData.ocrText);
-        return; // Stop polling, streaming will handle it
       }
       
       // Still processing - wait 1 second before next poll
@@ -98,19 +91,6 @@ export default function ResultsPage() {
       const requestId = initialResult.requestId;
       console.log(`[POLLING] Started analysis with request ID: ${requestId}`);
       
-      // Callback to switch to streaming when OCR completes
-      const onOcrReady = (ocrText: string) => {
-        console.log(`[MUTATION] OCR ready, switching to streaming mode with ${ocrText.length} chars`);
-        flushSync(() => {
-          setStreamingData({
-            ocrText,
-            productType: data.productType as ProductType,
-            userLanguage
-          });
-          setUseStreaming(true);
-        });
-      };
-
       // Use Service Worker for background polling (continues even when tab is backgrounded)
       return new Promise((resolve, reject) => {
         // Register Service Worker
@@ -146,15 +126,15 @@ export default function ResultsPage() {
             } else {
               // Fallback: Service Worker not active yet, use direct polling
               console.log('[RESULT-PAGE] Service Worker not ready, using direct polling fallback');
-              directPoll(requestId, resolve, reject, onOcrReady);
+              directPoll(requestId, resolve, reject);
             }
           }).catch((error: any) => {
             console.error('[SERVICE-WORKER] Registration failed, falling back to direct polling:', error);
-            directPoll(requestId, resolve, reject, onOcrReady);
+            directPoll(requestId, resolve, reject);
           });
         } else {
           console.log('[RESULT-PAGE] Service Workers not supported, using direct polling');
-          directPoll(requestId, resolve, reject, onOcrReady);
+          directPoll(requestId, resolve, reject);
         }
       });
     },
@@ -198,17 +178,15 @@ export default function ResultsPage() {
         userLanguage = 'es';
       }
       
-      // Always use streaming if we have OCR text (ingredient list)
+      // Use streaming if we have OCR text (ingredient list)
+      // Extract ingredients from OCR text
       if (data.ocrText) {
-        console.log('[RESULTS] Using streaming analysis for OCR text');
-        flushSync(() => {
-          setStreamingData({
-            ocrText: data.ocrText,
-            productType: data.productType as ProductType,
-            userLanguage
-          });
-          setUseStreaming(true);
+        setStreamingData({
+          ocrText: data.ocrText,
+          productType: data.productType as ProductType,
+          userLanguage
         });
+        setUseStreaming(true);
         sessionStorage.removeItem('pendingAnalysis');
       } else {
         // Fallback to old polling method if no OCR text
