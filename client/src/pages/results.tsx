@@ -167,7 +167,7 @@ export default function ResultsPage() {
   useEffect(() => {
     // Check if there's a pending analysis
     const pending = sessionStorage.getItem('pendingAnalysis');
-    if (pending && !analysisResult && !analyzeMutation.isPending && !useStreaming) {
+    if (pending && !analysisResult && !analyzeMutation.isPending && !useStreaming && !streamingData) {
       const data = JSON.parse(pending);
       
       // Normalize language code to 'en', 'es', or 'zh'
@@ -178,9 +178,40 @@ export default function ResultsPage() {
         userLanguage = 'es';
       }
       
-      // Use streaming if we have OCR text (ingredient list)
-      // Extract ingredients from OCR text
-      if (data.ocrText) {
+      // If we have imageData, do OCR first to get ingredients, then use streaming
+      if (data.imageData && !data.ocrText) {
+        console.log('[RESULTS] Extracting ingredients via OCR before streaming analysis...');
+        
+        // Do OCR to get ingredient text
+        (async () => {
+          try {
+            const ocrResponse = await apiRequest('POST', '/api/ocr', {
+              imageData: data.imageData
+            });
+            const ocrResult: any = await ocrResponse.json();
+            
+            if (!ocrResult.text) {
+              throw new Error('No ingredients found in image');
+            }
+            
+            console.log(`[RESULTS] ✓ OCR extracted ${ocrResult.text.length} chars, routing to streaming analysis`);
+            
+            // Now use streaming for per-ingredient analysis
+            setStreamingData({
+              ocrText: ocrResult.text,
+              productType: data.productType as ProductType,
+              userLanguage
+            });
+            setUseStreaming(true);
+            sessionStorage.removeItem('pendingAnalysis');
+          } catch (ocrError: any) {
+            console.error('[RESULTS] OCR failed:', ocrError.message);
+            // Fallback to polling method if OCR fails
+            analyzeMutation.mutate(data);
+          }
+        })();
+      } else if (data.ocrText) {
+        // Already have OCR text, go straight to streaming
         setStreamingData({
           ocrText: data.ocrText,
           productType: data.productType as ProductType,
@@ -189,10 +220,10 @@ export default function ResultsPage() {
         setUseStreaming(true);
         sessionStorage.removeItem('pendingAnalysis');
       } else {
-        // Fallback to old polling method if no OCR text
+        // Fallback to old polling method
         analyzeMutation.mutate(data);
       }
-    } else if (!pending && !analysisResult && !useStreaming) {
+    } else if (!pending && !analysisResult && !useStreaming && !streamingData) {
       // No analysis to show, redirect to upload
       setLocation('/upload');
     }
