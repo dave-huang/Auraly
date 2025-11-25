@@ -4,7 +4,7 @@ import multer from "multer";
 import z from "zod";
 import crypto from "crypto";
 import { extractTextFromImage } from "./services/ocr";
-import { analyzeIngredients, analyzeSingleIngredient, generateIngredientDetails } from "./services/analyzer";
+import { analyzeIngredients, analyzeSingleIngredient } from "./services/analyzer";
 import { batchAnalyzeIngredientsWithCache, getCacheStats } from "./services/cache";
 import { 
   ocrRequestSchema, 
@@ -98,33 +98,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       res.status(statusCode).json({ 
         error: error.message || 'Failed to analyze ingredients. Please try again.' 
-      });
-    }
-  });
-
-  // Get detailed explanation for a specific ingredient on-demand
-  app.post("/api/ingredient-details", async (req, res) => {
-    try {
-      const { ingredientName, riskLevel, productType, userLanguage } = req.body;
-      
-      if (!ingredientName || !productType) {
-        return res.status(400).json({ 
-          error: 'Missing required fields: ingredientName, productType' 
-        });
-      }
-      
-      const details = await generateIngredientDetails(
-        ingredientName,
-        riskLevel || 'moderate',
-        productType as ProductType,
-        userLanguage || 'en'
-      );
-      
-      res.json({ details });
-    } catch (error: any) {
-      console.error('Ingredient details endpoint error:', error);
-      res.status(500).json({ 
-        error: error.message || 'Failed to generate ingredient details. Please try again.' 
       });
     }
   });

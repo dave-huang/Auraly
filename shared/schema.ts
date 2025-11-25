@@ -19,7 +19,7 @@ export const ingredientSchema = z.object({
   name: z.string(),
   riskLevel: z.enum(riskLevels),
   summary: z.string(),
-  details: z.string().optional(), // Details loaded on-demand to save tokens
+  details: z.string(),
   category: z.string().nullish(), // Allow null, undefined, or string
 });
 
