@@ -441,47 +441,22 @@ Return your analysis as JSON with this structure (ingredients array may be empty
   
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
-      let response;
-      try {
-        response = await openai.chat.completions.create({
-          model: "gpt-5.1",
-          messages: [
-            {
-              role: "system",
-              content: systemMessage
-            },
-            {
-              role: "user",
-              content: prompt
-            }
-          ],
-          response_format: { type: "json_object" },
-          max_tokens: maxTokens,
-          temperature: 0.3
-        });
-      } catch (modelError: any) {
-        // If GPT-5.1 is unavailable, fall back to GPT-4o
-        if (modelError?.status === 400 || modelError?.code === 'unknown_model') {
-          response = await openai.chat.completions.create({
-            model: "gpt-4o",
-            messages: [
-              {
-                role: "system",
-                content: systemMessage
-              },
-              {
-                role: "user",
-                content: prompt
-              }
-            ],
-            response_format: { type: "json_object" },
-            max_tokens: maxTokens,
-            temperature: 0.3
-          });
-        } else {
-          throw modelError;
-        }
-      }
+      const response = await openai.chat.completions.create({
+        model: "gpt-5.1",
+        messages: [
+          {
+            role: "system",
+            content: systemMessage
+          },
+          {
+            role: "user",
+            content: prompt
+          }
+        ],
+        response_format: { type: "json_object" },
+        max_tokens: maxTokens,
+        temperature: 0.3
+      });
       
       const content = response.choices?.[0]?.message?.content;
       if (!content) {
@@ -813,55 +788,26 @@ Return your analysis as JSON with this structure:
       const maxTokens = Math.max(2500, estimatedTokensNeeded);
       
       console.log(`[ANALYZER] Using max_tokens: ${maxTokens} for language: ${userLanguage} (estimated ${estimatedIngredientCount} ingredients)`);
-      console.log('[ANALYZER] Calling GPT-5.1 for fast analysis');
       
       // Use GPT-5.1 for superior ingredient analysis
-      let response;
-      try {
-        console.log('[ANALYZER] Attempting GPT-5.1 for fast analysis');
-        response = await openai.chat.completions.create({
-          model: "gpt-5.1",
-          messages: [
-            {
-              role: "system",
-              content: systemMessage
-            },
-            {
-              role: "user",
-              content: prompt
-            }
-          ],
-          response_format: { type: "json_object" },
-          max_tokens: maxTokens,
-          temperature: 0.3
-        });
-        console.log('[ANALYZER] GPT-5.1 succeeded');
-      } catch (modelError: any) {
-        // If GPT-5.1 is unavailable, fall back to GPT-4o
-        if (modelError?.status === 400 || modelError?.code === 'unknown_model') {
-          console.log('[ANALYZER] GPT-5.1 unavailable, falling back to GPT-4o');
-          response = await openai.chat.completions.create({
-            model: "gpt-4o",
-            messages: [
-              {
-                role: "system",
-                content: systemMessage
-              },
-              {
-                role: "user",
-                content: prompt
-              }
-            ],
-            response_format: { type: "json_object" },
-            max_tokens: maxTokens,
-            temperature: 0.3
-          });
-          console.log('[ANALYZER] GPT-4o succeeded');
-        } else {
-          // If it's not a model availability error, re-throw
-          throw modelError;
-        }
-      }
+      console.log('[ANALYZER] Calling GPT-5.1 for analysis');
+      const response = await openai.chat.completions.create({
+        model: "gpt-5.1",
+        messages: [
+          {
+            role: "system",
+            content: systemMessage
+          },
+          {
+            role: "user",
+            content: prompt
+          }
+        ],
+        response_format: { type: "json_object" },
+        max_tokens: maxTokens,
+        temperature: 0.3
+      });
+      console.log('[ANALYZER] GPT-5.1 succeeded');
 
       const aiDuration = ((Date.now() - aiStartTime) / 1000).toFixed(2);
       const tokensUsed = response.usage?.total_tokens || 0;
@@ -1265,74 +1211,36 @@ Return your analysis as JSON with this structure:
       const maxTokens = Math.max(2500, estimatedTokensNeeded);
       
       console.log(`[VISION-ANALYZER] Using max_tokens: ${maxTokens} for language: ${userLanguage}`);
-      console.log('[VISION-ANALYZER] Calling GPT-5.1 with vision capability');
       
-      let response;
-      try {
-        console.log('[VISION-ANALYZER] Attempting GPT-5.1 Vision analysis');
-        response = await openai.chat.completions.create({
-          model: "gpt-5.1",
-          messages: [
-            {
-              role: "system",
-              content: systemMessage
-            },
-            {
-              role: "user",
-              content: [
-                {
-                  type: "image_url",
-                  image_url: {
-                    url: `data:${mimeType};base64,${base64Only}`
-                  }
-                },
-                {
-                  type: "text",
-                  text: prompt
-                }
-              ]
-            }
-          ],
-          response_format: { type: "json_object" },
-          max_tokens: maxTokens,
-          temperature: 0.3
-        });
-        console.log('[VISION-ANALYZER] GPT-5.1 Vision succeeded');
-      } catch (modelError: any) {
-        if (modelError?.status === 400 || modelError?.code === 'unknown_model') {
-          console.log('[VISION-ANALYZER] GPT-5.1 Vision unavailable, falling back to GPT-4o Vision');
-          response = await openai.chat.completions.create({
-            model: "gpt-4o",
-            messages: [
+      console.log('[VISION-ANALYZER] Calling GPT-5.1 Vision analysis');
+      const response = await openai.chat.completions.create({
+        model: "gpt-5.1",
+        messages: [
+          {
+            role: "system",
+            content: systemMessage
+          },
+          {
+            role: "user",
+            content: [
               {
-                role: "system",
-                content: systemMessage
+                type: "image_url",
+                image_url: {
+                  url: `data:${mimeType};base64,${base64Only}`
+                }
               },
               {
-                role: "user",
-                content: [
-                  {
-                    type: "image_url",
-                    image_url: {
-                      url: `data:${mimeType};base64,${base64Only}`
-                    }
-                  },
-                  {
-                    type: "text",
-                    text: prompt
-                  }
-                ]
+                type: "text",
+                text: prompt
               }
-            ],
-            response_format: { type: "json_object" },
-            max_tokens: maxTokens,
-            temperature: 0.3
-          });
-          console.log('[VISION-ANALYZER] GPT-4o Vision succeeded');
-        } else {
-          throw modelError;
-        }
-      }
+            ]
+          }
+        ],
+        response_format: { type: "json_object" },
+        max_tokens: maxTokens,
+        temperature: 0.3
+      });
+      console.log('[VISION-ANALYZER] GPT-5.1 Vision succeeded');
       
       const aiDuration = ((Date.now() - aiStartTime) / 1000).toFixed(2);
       const tokensUsed = response.usage?.total_tokens || 0;
