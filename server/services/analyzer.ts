@@ -364,6 +364,119 @@ const LANGUAGE_INSTRUCTIONS = {
   'es': 'INSTRUCCIÓN CRÍTICA: Debes responder SOLO en español. TODOS los nombres de ingredientes, resúmenes y explicaciones detalladas DEBEN estar escritos en español, sin importar en qué idioma esté escrito el texto de entrada (incluso si los ingredientes están escritos en chino, japonés o cualquier otro idioma).',
 };
 
+// Extract simple ingredient list (just names) for batch splitting
+function extractIngredientNames(ingredientsText: string): string[] {
+  // Split by common separators
+  const separators = /[,，;；\n•·∙\*]/;
+  const items = ingredientsText.split(separators)
+    .map(item => item.trim())
+    .filter(item => item.length > 1 && item.length < 100)
+    .filter(item => !/^(\d+|%|ml|g|oz|mg)/.test(item)); // Remove pure numbers/measurements
+  
+  return Array.from(new Set(items)); // Deduplicate
+}
+
+// Analyze a batch of ingredients in parallel
+async function analyzeIngredientBatch(
+  ingredientsText: string,
+  productType: ProductType,
+  userLanguage: string,
+  estimatedCount: number,
+  context: string,
+  maxRetries: number = 3
+): Promise<any> {
+  const systemMessages = {
+    'zh': "You are a helpful health and wellness assistant that analyzes product ingredients. Extract and analyze ingredients from the list. Always respond with valid JSON. All text in your response must be in Simplified Chinese (简体中文).",
+    'en': "You are a helpful health and wellness assistant that analyzes product ingredients. Extract and analyze ingredients from the list. Always respond with valid JSON. All text in your response must be in English.",
+    'es': "Eres un asistente de salud y bienestar que analiza ingredientes de productos. Extrae y analiza ingredientes de la lista. Siempre responde con JSON válido. Todo el texto en tu respuesta debe estar en español."
+  };
+  const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
+  const languageInstruction = LANGUAGE_INSTRUCTIONS[userLanguage as keyof typeof LANGUAGE_INSTRUCTIONS] || LANGUAGE_INSTRUCTIONS['en'];
+  
+  const tokensPerIngredient = userLanguage === 'zh' ? 110 : 140;
+  const baseTokens = userLanguage === 'zh' ? 600 : 800;
+  const maxCap = userLanguage === 'zh' ? 4500 : 6000;
+  
+  const estimatedTokensNeeded = Math.min(estimatedCount * tokensPerIngredient + baseTokens, maxCap);
+  const maxTokens = Math.max(2500, estimatedTokensNeeded);
+  
+  const prompt = `You are a health-focused ingredient analyst. Analyze the following ingredient batch from a ${productType} product.
+
+${languageInstruction}
+
+Product Type Context: ${context}
+
+Ingredient List:
+${ingredientsText}
+
+CRITICAL EXTRACTION RULES:
+1. Extract EVERY SINGLE ingredient from the list above
+2. If an ingredient appears multiple times, count it only ONCE (deduplicate)
+3. Include ALL: additives, vitamins, minerals, preservatives, colors, emulsifiers, starches, sweeteners, oils, and flavorings
+4. This batch contains approximately ${estimatedCount} ingredients
+5. If an ingredient name has OCR errors, correct them to the proper chemical/ingredient name
+
+For each ingredient, determine:
+1. The ingredient name (clean, standardized format) - MUST be in the user's language
+2. Risk level: "low" (safe), "moderate" (limited evidence/moderate concern), or "high" (known health risks)
+3. A brief summary (1-2 sentences) explaining what it is and why it's flagged - MUST be in the user's language
+4. Detailed explanation (2-3 sentences) with more context about health impacts - MUST be in the user's language
+
+Return your analysis as JSON with this structure (ingredients array may be empty if batch has no valid ingredients):
+{
+  "productName": null,
+  "ingredients": [
+    {
+      "name": "Ingredient Name",
+      "riskLevel": "low|moderate|high",
+      "summary": "Brief explanation",
+      "details": "Detailed explanation",
+      "category": "Optional category"
+    }
+  ],
+  "overallRisk": "low|moderate|high"
+}`;
+
+  let lastError: Error | null = null;
+  
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const response = await openai.chat.completions.create({
+        model: "gpt-4o",
+        messages: [
+          {
+            role: "system",
+            content: systemMessage
+          },
+          {
+            role: "user",
+            content: prompt
+          }
+        ],
+        response_format: { type: "json_object" },
+        max_tokens: maxTokens,
+        temperature: 0.3
+      });
+      
+      const content = response.choices?.[0]?.message?.content;
+      if (!content) {
+        throw new Error('No response from AI');
+      }
+      
+      const analysis = JSON.parse(content);
+      return analysis;
+    } catch (error: any) {
+      lastError = error;
+      if (attempt < maxRetries) {
+        const waitTime = 1000 * Math.pow(2, attempt - 1);
+        await new Promise(resolve => setTimeout(resolve, waitTime));
+      }
+    }
+  }
+  
+  throw lastError || new Error('Batch analysis failed');
+}
+
 export async function analyzeIngredients(
   productType: ProductType,
   ingredientsText: string,
@@ -476,6 +589,120 @@ export async function analyzeIngredients(
   const languageInstruction = LANGUAGE_INSTRUCTIONS[userLanguage as keyof typeof LANGUAGE_INSTRUCTIONS] || LANGUAGE_INSTRUCTIONS['en'];
   console.log(`[ANALYZER] Language instruction: ${languageInstruction.substring(0, 100)}...`);
   
+  // PARALLEL BATCH OPTIMIZATION: Split into smaller batches to parallelize API calls
+  // Instead of one large batch to GPT-4o, send 5-8 smaller batches in parallel
+  // This dramatically reduces total processing time for large ingredient lists
+  
+  // Extract ingredient lines for batch splitting
+  const ingredientLines = textToAnalyze
+    .split(/[\n;；]/)
+    .map(line => line.trim())
+    .filter(line => line.length > 1);
+  
+  console.log(`[ANALYZER] Extracted ${ingredientLines.length} ingredient lines for parallel processing`);
+  
+  // Create batches of ~5-8 ingredients each
+  const batchSize = Math.max(5, Math.min(8, Math.ceil(ingredientLines.length / 4)));
+  const batches: string[] = [];
+  
+  for (let i = 0; i < ingredientLines.length; i += batchSize) {
+    const batchLines = ingredientLines.slice(i, i + batchSize);
+    batches.push(batchLines.join('\n'));
+  }
+  
+  console.log(`[ANALYZER] Created ${batches.length} parallel batches (${batchSize} items per batch)`);
+  
+  if (batches.length > 1) {
+    // Use parallel batch processing for faster analysis
+    console.log(`[TIMING] Sending ${batches.length} batches in parallel to GPT-4o...`);
+    const parallelStartTime = Date.now();
+    
+    try {
+      // Send all batches in parallel
+      const batchPromises = batches.map((batchText, idx) => {
+        const estimatedBatchCount = Math.ceil(estimatedIngredientCount / batches.length);
+        console.log(`[ANALYZER] Batch ${idx + 1}/${batches.length} - ${batchText.split('\n').length} lines, ~${estimatedBatchCount} ingredients`);
+        return analyzeIngredientBatch(
+          batchText,
+          productType,
+          userLanguage,
+          estimatedBatchCount,
+          context
+        );
+      });
+      
+      const batchResults = await Promise.all(batchPromises);
+      const parallelDuration = ((Date.now() - parallelStartTime) / 1000).toFixed(2);
+      console.log(`[TIMING] All ${batches.length} batches completed in parallel in ${parallelDuration}s`);
+      
+      // Merge batch results
+      const allIngredients: Ingredient[] = [];
+      let productName: string | undefined = undefined;
+      const riskLevels: RiskLevel[] = [];
+      
+      for (const batchResult of batchResults) {
+        if (batchResult.productName && !productName) {
+          productName = batchResult.productName;
+        }
+        
+        if (batchResult.ingredients && Array.isArray(batchResult.ingredients)) {
+          // Deduplicate by ingredient name (case-insensitive)
+          for (const ing of batchResult.ingredients) {
+            const exists = allIngredients.some(
+              existing => existing.name.toLowerCase() === ing.name.toLowerCase()
+            );
+            if (!exists) {
+              allIngredients.push(ing);
+            }
+          }
+        }
+        
+        if (batchResult.overallRisk) {
+          riskLevels.push(batchResult.overallRisk);
+        }
+      }
+      
+      // Determine overall risk (highest level from all batches)
+      const riskOrder = { high: 3, moderate: 2, low: 1 };
+      const overallRisk = riskLevels.length > 0
+        ? (Object.keys(riskOrder) as RiskLevel[]).reduce((a, b) => 
+            riskOrder[a] >= riskOrder[b] ? a : b
+          )
+        : 'moderate';
+      
+      const detectedCount = allIngredients.length;
+      console.log(`[ANALYZER] Merged ${batches.length} batches into ${detectedCount} unique ingredients`);
+      console.log(`[ANALYZER] Product name: ${productName || 'Not detected'}`);
+      console.log(`[ANALYZER] Overall risk: ${overallRisk}`);
+      
+      // Validate merged result
+      const mergedResult = {
+        productType,
+        productName: productName || undefined,
+        ingredients: allIngredients,
+        overallRisk,
+        analyzedAt: new Date().toISOString(),
+        originalText: ingredientsText
+      };
+      
+      const validatedResult = analysisResultSchema.safeParse(mergedResult);
+      if (!validatedResult.success) {
+        console.error('Merged result validation failed:', validatedResult.error);
+        throw new Error('Merged analysis did not match expected format');
+      }
+      
+      // Cache the result before returning
+      cacheAnalysis(cacheKey, validatedResult.data, ingredientsText);
+      return validatedResult.data;
+      
+    } catch (parallelError: any) {
+      console.error('[ANALYZER] Parallel batch processing failed:', parallelError.message);
+      console.log('[ANALYZER] Falling back to single large batch analysis...');
+      // Fall through to single batch processing below
+    }
+  }
+  
+  // FALLBACK: Single large batch processing (for small ingredient lists or if parallel fails)
   const prompt = `You are a health-focused ingredient analyst. Analyze the following ingredient list from a ${productType} product.
 
 ${languageInstruction}
