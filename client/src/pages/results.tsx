@@ -178,15 +178,17 @@ export default function ResultsPage() {
         userLanguage = 'es';
       }
       
-      // Use streaming if we have OCR text (ingredient list)
-      // Extract ingredients from OCR text
+      // Always use streaming if we have OCR text (ingredient list)
       if (data.ocrText) {
-        setStreamingData({
-          ocrText: data.ocrText,
-          productType: data.productType as ProductType,
-          userLanguage
+        console.log('[RESULTS] Using streaming analysis for OCR text');
+        flushSync(() => {
+          setStreamingData({
+            ocrText: data.ocrText,
+            productType: data.productType as ProductType,
+            userLanguage
+          });
+          setUseStreaming(true);
         });
-        setUseStreaming(true);
         sessionStorage.removeItem('pendingAnalysis');
       } else {
         // Fallback to old polling method if no OCR text
