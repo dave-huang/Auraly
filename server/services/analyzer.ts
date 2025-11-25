@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { openai } from '../openai';
-import { analysisResultSchema, type ProductType, type AnalysisResult, type RiskLevel } from '@shared/schema';
+import { analysisResultSchema, type ProductType, type AnalysisResult, type RiskLevel, type Ingredient } from '@shared/schema';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // Store cache in the project root for better persistence
@@ -774,6 +774,133 @@ Return your analysis as JSON with this structure:
  * Much faster than OCR + text analysis (single API call instead of two)
  * Caches results by image hash for instant repeat scans
  */
+/**
+ * Analyzes a SINGLE ingredient with risk assessment
+ * This is used for streaming - one GPT call per ingredient
+ * Checks cache first, calls GPT if needed, streams result immediately
+ */
+export async function analyzeSingleIngredient(
+  ingredientName: string,
+  productType: ProductType,
+  userLanguage: string
+): Promise<{ analysis: Ingredient; fromCache: boolean }> {
+  // Create cache key for this specific ingredient
+  const cacheKey = crypto.createHash('sha256')
+    .update(`${ingredientName.toLowerCase().trim()}__${productType}__${userLanguage}`)
+    .digest('hex');
+  
+  // Check cache first
+  const cached = analysisCache.get(cacheKey);
+  if (cached && isCacheFresh(cached.timestamp)) {
+    console.log(`[SINGLE-INGREDIENT-CACHE] HIT: ${ingredientName}`);
+    // Extract the first ingredient from cached result (should be this one ingredient)
+    return {
+      analysis: cached.result.ingredients[0] || {
+        name: ingredientName,
+        riskLevel: 'low',
+        summary: 'Cached result',
+        details: 'Previously analyzed'
+      },
+      fromCache: true
+    };
+  }
+  
+  console.log(`[SINGLE-INGREDIENT-ANALYZER] Analyzing: ${ingredientName}`);
+  
+  const context = PRODUCT_TYPE_CONTEXTS[productType];
+  const languageInstruction = LANGUAGE_INSTRUCTIONS[userLanguage as keyof typeof LANGUAGE_INSTRUCTIONS] || LANGUAGE_INSTRUCTIONS['en'];
+  
+  const systemMessage = `You are a health and safety expert analyzing a single ingredient for a ${productType} product.
+${languageInstruction}
+
+Respond ONLY with valid JSON matching this exact structure:
+{
+  "name": "ingredient name",
+  "riskLevel": "low" | "moderate" | "high",
+  "summary": "2-3 sentence health summary",
+  "details": "5-7 sentences with specific concerns and recommendations"
+}`;
+
+  const prompt = `Analyze this single ingredient for a ${productType} product:
+
+Ingredient: ${ingredientName}
+
+${context}
+
+IMPORTANT: 
+- Assess health/safety risks (allergies, toxins, hormonal effects, etc.)
+- Be specific and factual
+- If safe, explain why
+- If concerning, explain the specific health risks`;
+
+  try {
+    console.log(`[SINGLE-INGREDIENT-ANALYZER] Calling GPT-5.1 for: ${ingredientName}`);
+    
+    const response = await openai.chat.completions.create({
+      model: "gpt-5.1",
+      messages: [
+        {
+          role: "system",
+          content: systemMessage
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      response_format: { type: "json_object" },
+      max_tokens: 500,
+      temperature: 0.3
+    });
+    
+    const content = response.choices[0]?.message?.content;
+    if (!content) {
+      throw new Error('Empty response from GPT');
+    }
+    
+    const parsed = JSON.parse(content);
+    const validatedResult = analysisResultSchema.pick({ ingredients: true }).parse({
+      ingredients: [{ ...parsed, name: ingredientName }]
+    });
+    
+    const ingredient = validatedResult.ingredients[0];
+    console.log(`[SINGLE-INGREDIENT-ANALYZER] ✓ Analyzed: ${ingredientName} (${ingredient.riskLevel})`);
+    
+    // Cache the result
+    const fullResult: AnalysisResult = {
+      productType,
+      ingredients: [ingredient],
+      overallRisk: ingredient.riskLevel,
+      analyzedAt: new Date().toISOString()
+    };
+    
+    analysisCache.set(cacheKey, {
+      result: fullResult,
+      timestamp: Date.now(),
+      ocrText: ingredientName
+    });
+    saveCacheToDisk();
+    
+    return {
+      analysis: ingredient,
+      fromCache: false
+    };
+    
+  } catch (error: any) {
+    console.error(`[SINGLE-INGREDIENT-ANALYZER] Error analyzing ${ingredientName}:`, error.message);
+    // Return a safe default on error
+    return {
+      analysis: {
+        name: ingredientName,
+        riskLevel: 'moderate',
+        summary: 'Unable to analyze this ingredient. Please check with product manufacturer.',
+        details: 'Analysis temporarily unavailable. Please try again later.'
+      },
+      fromCache: false
+    };
+  }
+}
+
 export async function analyzeIngredientsFromImage(
   imageData: string,
   productType: ProductType,

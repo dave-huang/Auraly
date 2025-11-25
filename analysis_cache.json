@@ -2002,5 +2002,449 @@
       "timestamp": 1763874509227,
       "ocrText": "成分:水、甘油、肉豆蔻酸、棕榈酸、氢氧化钾、乙二醇二硬脂酸酯、双丙甘醇、山梨(\n糖)醇、月桂酸、硬脂酸、月桂基甜菜碱、甘油硬脂酸酯 SE、合成蜡、肉豆蔻基甜菜碱、\n聚季铵盐-7、苯甲酸钠、氯化钠、(日用)香精、聚季铵盐-6、鲸蜡基甜菜碱\n其他微量成分:异丙醇、焦亚硫酸钠、EDTA二钠、双-二乙氧基二甘醇环己烷1,4-二羧酸\n酯、乙酰化透明质酸钠、蚕丝胶蛋白、丁羟甲苯、透明质酸钠、山梨酸钾、柠檬酸、生育\n酚(维生素E)"
     }
+  ],
+  [
+    "37bba32e0fef0eacb3bedd907f592c7fce6a43e5423c2f6f436efc97b6fc061e",
+    {
+      "result": {
+        "productType": "skincare",
+        "ingredients": [
+          {
+            "name": "Water",
+            "riskLevel": "low",
+            "summary": "Water is a universal solvent used in many skincare products.",
+            "details": "Water acts as a base for most skincare formulations, helping to dissolve other ingredients and providing hydration.",
+            "category": "solvent"
+          },
+          {
+            "name": "Cocamidopropyl Betaine",
+            "riskLevel": "moderate",
+            "summary": "Cocamidopropyl Betaine is a surfactant and foam booster derived from coconut oil.",
+            "details": "While generally considered safe, it can cause skin irritation in some individuals, especially those with sensitive skin.",
+            "category": "surfactant"
+          },
+          {
+            "name": "Glycerin",
+            "riskLevel": "low",
+            "summary": "Glycerin is a humectant that helps retain moisture in the skin.",
+            "details": "It is widely used in skincare for its ability to draw moisture from the air into the skin, providing hydration and improving skin barrier function.",
+            "category": "humectant"
+          },
+          {
+            "name": "Sodium Lauroamphoacetate",
+            "riskLevel": "low",
+            "summary": "Sodium Lauroamphoacetate is a mild surfactant used in cleansing products.",
+            "details": "It is known for its gentle cleansing properties and is suitable for sensitive skin, often used in baby products.",
+            "category": "surfactant"
+          },
+          {
+            "name": "Coco-Glucoside",
+            "riskLevel": "low",
+            "summary": "Coco-Glucoside is a non-ionic surfactant derived from coconut oil and glucose.",
+            "details": "It is used for its gentle cleansing and foaming properties, making it suitable for sensitive skin types.",
+            "category": "surfactant"
+          },
+          {
+            "name": "Sodium Chloride",
+            "riskLevel": "low",
+            "summary": "Sodium Chloride is common table salt used as a thickening agent.",
+            "details": "In skincare, it is used to enhance the viscosity of products and can also act as a mild exfoliant.",
+            "category": "thickener"
+          },
+          {
+            "name": "Hydroxypropyl Starch Phosphate",
+            "riskLevel": "low",
+            "summary": "Hydroxypropyl Starch Phosphate is a modified starch used as a thickener and stabilizer.",
+            "details": "It helps to improve the texture and stability of skincare products, providing a smooth application.",
+            "category": "thickener"
+          },
+          {
+            "name": "Citric Acid",
+            "riskLevel": "low",
+            "summary": "Citric Acid is used to adjust the pH of skincare products.",
+            "details": "It is an alpha hydroxy acid (AHA) that can also provide mild exfoliation, promoting skin renewal.",
+            "category": "pH adjuster"
+          },
+          {
+            "name": "Acrylates/C10-30 Alkyl Acrylate Crosspolymer",
+            "riskLevel": "low",
+            "summary": "This is a synthetic polymer used as a thickening agent.",
+            "details": "It helps to stabilize and thicken formulations, providing a smooth and consistent texture.",
+            "category": "thickener"
+          },
+          {
+            "name": "Sodium Benzoate",
+            "riskLevel": "low",
+            "summary": "Sodium Benzoate is a preservative used to prevent microbial growth.",
+            "details": "It is effective in acidic environments and is generally considered safe for use in cosmetics.",
+            "category": "preservative"
+          },
+          {
+            "name": "Panthenol",
+            "riskLevel": "low",
+            "summary": "Panthenol is a form of vitamin B5 used as a moisturizer and skin conditioner.",
+            "details": "It helps to improve skin hydration, elasticity, and smoothness, making it a popular ingredient in skincare products.",
+            "category": "vitamin"
+          },
+          {
+            "name": "Sodium Hydroxide",
+            "riskLevel": "moderate",
+            "summary": "Sodium Hydroxide is used to adjust the pH of cosmetic products.",
+            "details": "While it is effective in small amounts, it can be highly irritating and corrosive if used inappropriately.",
+            "category": "pH adjuster"
+          },
+          {
+            "name": "Glyceryl Oleate",
+            "riskLevel": "low",
+            "summary": "Glyceryl Oleate is an emulsifier derived from natural oils.",
+            "details": "It helps to stabilize emulsions and provides moisturizing properties, enhancing skin softness.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Polyquaternium-7",
+            "riskLevel": "low",
+            "summary": "Polyquaternium-7 is a conditioning agent used in hair and skincare products.",
+            "details": "It provides a smooth feel and helps to reduce static and frizz in hair care formulations.",
+            "category": "conditioning agent"
+          },
+          {
+            "name": "Oat Kernel Flour",
+            "riskLevel": "low",
+            "summary": "Oat Kernel Flour is used for its soothing and anti-inflammatory properties.",
+            "details": "It is beneficial for sensitive and irritated skin, helping to calm and protect the skin barrier.",
+            "category": "soothing agent"
+          },
+          {
+            "name": "Disodium EDTA",
+            "riskLevel": "low",
+            "summary": "Disodium EDTA is a chelating agent that improves product stability.",
+            "details": "It binds to metal ions, preventing them from affecting the stability and efficacy of the product.",
+            "category": "chelating agent"
+          },
+          {
+            "name": "Aloe Barbadensis Leaf Extract",
+            "riskLevel": "low",
+            "summary": "Aloe Barbadensis Leaf Extract is known for its soothing and moisturizing properties.",
+            "details": "It is commonly used in skincare for its ability to hydrate and calm irritated skin, promoting healing.",
+            "category": "soothing agent"
+          },
+          {
+            "name": "Oat Kernel Extract",
+            "riskLevel": "low",
+            "summary": "Oat Kernel Extract is used for its soothing and anti-inflammatory benefits.",
+            "details": "It is effective in calming irritated skin and providing moisture, making it suitable for sensitive skin types.",
+            "category": "soothing agent"
+          }
+        ],
+        "overallRisk": "moderate",
+        "analyzedAt": "2025-11-24T23:50:33.849Z",
+        "originalText": "Ingredients:\nWater, Cocamidopropyl Betaine, Glycerin, Sodium Lauroamphoacetate,\nCoco-Glucoside, Sodium Chloride, Hydroxypropyl Starch Phosphate, Citric Acid,\nAcrylates/C10-30 Alkyl Acrylate Crosspolymer, Sodium Benzoate, Panthenol, Sodium\nHydroxide, Glyceryl Oleate, Polyquaternium-7, Avena Sativa (Oat) Kernel Flour,\nDisodium EDTA, Aloe Barbadensis Leaf Extract, Avena Sativa (Oat) Kernel Extract"
+      },
+      "timestamp": 1764028233851,
+      "ocrText": "Ingredients:\nWater, Cocamidopropyl Betaine, Glycerin, Sodium Lauroamphoacetate,\nCoco-Glucoside, Sodium Chloride, Hydroxypropyl Starch Phosphate, Citric Acid,\nAcrylates/C10-30 Alkyl Acrylate Crosspolymer, Sodium Benzoate, Panthenol, Sodium\nHydroxide, Glyceryl Oleate, Polyquaternium-7, Avena Sativa (Oat) Kernel Flour,\nDisodium EDTA, Aloe Barbadensis Leaf Extract, Avena Sativa (Oat) Kernel Extract"
+    }
+  ],
+  [
+    "ec8a17e5ff61a06f6a54a48f499e06230ff64de67aa7140e8da9c00bc78c99e4",
+    {
+      "result": {
+        "productType": "skincare",
+        "ingredients": [
+          {
+            "name": "Water",
+            "riskLevel": "low",
+            "summary": "Water is a universal solvent used in many skincare products.",
+            "details": "Water is used as a base in many cosmetic and skincare formulations. It is generally considered safe and is essential for hydrating the skin.",
+            "category": "solvent"
+          },
+          {
+            "name": "Glycerin",
+            "riskLevel": "low",
+            "summary": "Glycerin is a humectant that helps retain moisture in the skin.",
+            "details": "Glycerin is a common ingredient in skincare products due to its ability to attract water from the environment into the skin, helping to keep it hydrated.",
+            "category": "humectant"
+          },
+          {
+            "name": "Sodium Laureth Sulfate",
+            "riskLevel": "moderate",
+            "summary": "Sodium Laureth Sulfate is a surfactant used for cleansing and foaming.",
+            "details": "Sodium Laureth Sulfate is effective at removing dirt and oil but can be irritating to the skin and eyes, especially with prolonged use. It is a sulfate, which can be harsh for sensitive skin.",
+            "category": "surfactant"
+          },
+          {
+            "name": "Cocamidopropyl Betaine",
+            "riskLevel": "low",
+            "summary": "Cocamidopropyl Betaine is a mild surfactant derived from coconut oil.",
+            "details": "This ingredient is used to enhance the foaming properties of cleansing products and is generally considered safe, though it can cause irritation in some individuals with sensitive skin.",
+            "category": "surfactant"
+          },
+          {
+            "name": "Sodium Hydrolyzed Potato Starch Dodecenylsuccinate",
+            "riskLevel": "low",
+            "summary": "A modified starch used for its thickening and stabilizing properties.",
+            "details": "This ingredient is used to improve the texture and stability of skincare formulations. It is generally considered safe for use in cosmetics.",
+            "category": "thickener"
+          },
+          {
+            "name": "Oat Kernel Flour",
+            "riskLevel": "low",
+            "summary": "Oat Kernel Flour is used for its soothing and anti-inflammatory properties.",
+            "details": "Derived from oats, this ingredient is beneficial for calming irritated skin and is often used in products for sensitive skin.",
+            "category": "soothing agent"
+          },
+          {
+            "name": "Oat Kernel Oil",
+            "riskLevel": "low",
+            "summary": "Oat Kernel Oil is an emollient that helps moisturize and soothe the skin.",
+            "details": "Rich in lipids and antioxidants, Oat Kernel Oil is used to nourish and protect the skin, making it suitable for dry and sensitive skin types.",
+            "category": "emollient"
+          },
+          {
+            "name": "Oat Kernel Extract",
+            "riskLevel": "low",
+            "summary": "Oat Kernel Extract is known for its soothing and anti-inflammatory properties.",
+            "details": "This extract is used in skincare for its ability to reduce redness and irritation, making it ideal for sensitive skin formulations.",
+            "category": "soothing agent"
+          },
+          {
+            "name": "Guar Hydroxypropyltrimonium Chloride",
+            "riskLevel": "low",
+            "summary": "A conditioning agent derived from guar gum.",
+            "details": "This ingredient is used to improve the texture and manageability of hair, providing conditioning benefits without weighing it down.",
+            "category": "conditioning agent"
+          },
+          {
+            "name": "Polyquaternium-10",
+            "riskLevel": "low",
+            "summary": "Polyquaternium-10 is a conditioning polymer used in hair care products.",
+            "details": "It helps improve the texture and manageability of hair by reducing static and enhancing softness. It is generally considered safe.",
+            "category": "conditioning agent"
+          },
+          {
+            "name": "Tetrasodium Glutamate Diacetate",
+            "riskLevel": "low",
+            "summary": "A chelating agent that enhances the effectiveness of preservatives.",
+            "details": "This ingredient helps to stabilize formulations by binding metal ions, thereby preventing the degradation of the product. It is considered safe for use in cosmetics.",
+            "category": "chelating agent"
+          },
+          {
+            "name": "Glycol Distearate",
+            "riskLevel": "low",
+            "summary": "Glycol Distearate is used as an opacifying agent and emollient.",
+            "details": "This ingredient gives products a pearlescent appearance and helps to soften and smooth the skin. It is generally considered safe.",
+            "category": "emollient"
+          },
+          {
+            "name": "Laureth-4",
+            "riskLevel": "low",
+            "summary": "Laureth-4 is an emulsifier and surfactant.",
+            "details": "It is used to help blend oil and water-based ingredients and to improve the texture of products. It is generally considered safe for use in cosmetics.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Acrylates/C10-30 Alkyl Acrylate Crosspolymer",
+            "riskLevel": "low",
+            "summary": "A thickening agent used to stabilize emulsions.",
+            "details": "This polymer is used to enhance the texture and consistency of products, providing a smooth application. It is considered safe for use in cosmetics.",
+            "category": "thickener"
+          },
+          {
+            "name": "Sodium Benzoate",
+            "riskLevel": "low",
+            "summary": "Sodium Benzoate is a preservative used to prevent microbial growth.",
+            "details": "Commonly used in cosmetics and food, Sodium Benzoate is effective at inhibiting the growth of bacteria, yeast, and fungi. It is generally considered safe in low concentrations.",
+            "category": "preservative"
+          },
+          {
+            "name": "Citric Acid",
+            "riskLevel": "low",
+            "summary": "Citric Acid is used to adjust the pH of formulations.",
+            "details": "This ingredient helps to maintain the stability and effectiveness of cosmetic products by balancing their pH levels. It is generally considered safe.",
+            "category": "pH adjuster"
+          },
+          {
+            "name": "Sodium Hydroxide",
+            "riskLevel": "moderate",
+            "summary": "Sodium Hydroxide is used to adjust pH levels in formulations.",
+            "details": "While effective at balancing pH, Sodium Hydroxide can be irritating to the skin in high concentrations. It is used in small amounts to ensure product stability.",
+            "category": "pH adjuster"
+          }
+        ],
+        "overallRisk": "moderate",
+        "analyzedAt": "2025-11-24T23:51:23.798Z",
+        "originalText": "INGREDIENTS:\nWater, Glycerin, Sodium Laureth Sulfate, Cocamidopropyl Betaine, Sodium Hydrolyzed Potato\nStarch Dodecenylsuccinate, Avena Sativa (Oat) Kernel Flour, Avena Sativa (Oat) Kernel Oil, Avena\nSativa (Oat) Kernel Extract, Guar Hydroxypropyltrimonium Chloride, Polyquaternium-10,\nTetrasodium Glutamate Diacetate, Glycol Distearate, Laureth-4, Acrylates/C10-30 Alkyl Acrylate\nCrosspolymer, Sodium Benzoate, Citric Acid, Sodium Hydroxide"
+      },
+      "timestamp": 1764028283799,
+      "ocrText": "INGREDIENTS:\nWater, Glycerin, Sodium Laureth Sulfate, Cocamidopropyl Betaine, Sodium Hydrolyzed Potato\nStarch Dodecenylsuccinate, Avena Sativa (Oat) Kernel Flour, Avena Sativa (Oat) Kernel Oil, Avena\nSativa (Oat) Kernel Extract, Guar Hydroxypropyltrimonium Chloride, Polyquaternium-10,\nTetrasodium Glutamate Diacetate, Glycol Distearate, Laureth-4, Acrylates/C10-30 Alkyl Acrylate\nCrosspolymer, Sodium Benzoate, Citric Acid, Sodium Hydroxide"
+    }
+  ],
+  [
+    "04905d3d17eab086d4813e43eb33607b51c42a58b5b4dfd2db78c61082c38d32",
+    {
+      "result": {
+        "productType": "skincare",
+        "ingredients": [
+          {
+            "name": "Water",
+            "riskLevel": "low",
+            "summary": "Water is a common solvent used in skincare products.",
+            "details": "Water is used as a base in many skincare formulations to dissolve other ingredients and provide hydration.",
+            "category": "solvent"
+          },
+          {
+            "name": "Sodium Lauryl Isethionate",
+            "riskLevel": "low",
+            "summary": "A mild surfactant used for cleansing.",
+            "details": "Sodium Lauryl Isethionate is a surfactant that helps to cleanse the skin by removing dirt and oils. It is considered gentle and less irritating than traditional sulfates.",
+            "category": "surfactant"
+          },
+          {
+            "name": "Sodium Methyl Lauroyl Taurate",
+            "riskLevel": "low",
+            "summary": "A mild surfactant and foaming agent.",
+            "details": "This ingredient is used to create foam and cleanse the skin without causing irritation, making it suitable for sensitive skin.",
+            "category": "surfactant"
+          },
+          {
+            "name": "Cocamidopropyl Betaine",
+            "riskLevel": "moderate",
+            "summary": "A surfactant derived from coconut oil, can cause skin irritation.",
+            "details": "Cocamidopropyl Betaine is used to enhance foam and cleanse the skin. Some individuals may experience allergic reactions or irritation.",
+            "category": "surfactant"
+          },
+          {
+            "name": "Lauric Acid",
+            "riskLevel": "low",
+            "summary": "A fatty acid used for its moisturizing properties.",
+            "details": "Lauric Acid is commonly found in coconut oil and is used in skincare for its ability to moisturize and condition the skin.",
+            "category": "fatty acid"
+          },
+          {
+            "name": "Sodium Hydroxypropyl Starch Phosphate",
+            "riskLevel": "low",
+            "summary": "A modified starch used as a thickener.",
+            "details": "This ingredient is used to improve the texture and consistency of skincare products, making them easier to apply.",
+            "category": "thickener"
+          },
+          {
+            "name": "Hydrogenated Soybean Oil",
+            "riskLevel": "low",
+            "summary": "An emollient used for its moisturizing properties.",
+            "details": "Hydrogenated Soybean Oil helps to soften and smooth the skin by forming a protective barrier to prevent moisture loss.",
+            "category": "emollient"
+          },
+          {
+            "name": "Soybean Oil",
+            "riskLevel": "low",
+            "summary": "A natural oil used for its moisturizing benefits.",
+            "details": "Soybean Oil is rich in fatty acids and vitamin E, providing nourishment and hydration to the skin.",
+            "category": "emollient"
+          },
+          {
+            "name": "Sodium Chloride",
+            "riskLevel": "low",
+            "summary": "Commonly known as salt, used as a thickener.",
+            "details": "Sodium Chloride is used to adjust the viscosity of skincare products and can also help to cleanse the skin.",
+            "category": "thickener"
+          },
+          {
+            "name": "Glycerin",
+            "riskLevel": "low",
+            "summary": "A humectant that attracts moisture to the skin.",
+            "details": "Glycerin is widely used in skincare for its ability to draw moisture from the environment into the skin, keeping it hydrated.",
+            "category": "humectant"
+          },
+          {
+            "name": "Stearic Acid",
+            "riskLevel": "low",
+            "summary": "A fatty acid used as an emulsifier and thickener.",
+            "details": "Stearic Acid helps to stabilize and thicken formulations, providing a smooth texture to skincare products.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Palmitic Acid",
+            "riskLevel": "low",
+            "summary": "A fatty acid used for its emollient properties.",
+            "details": "Palmitic Acid is used to soften and smooth the skin, helping to maintain its natural barrier.",
+            "category": "emollient"
+          },
+          {
+            "name": "Hydrogenated Vegetable Glycerides",
+            "riskLevel": "low",
+            "summary": "Used as an emollient and thickening agent.",
+            "details": "These glycerides are used to enhance the texture of skincare products and provide moisturizing benefits.",
+            "category": "emollient"
+          },
+          {
+            "name": "Glycerin Stearate",
+            "riskLevel": "low",
+            "summary": "An emulsifier that helps to blend ingredients.",
+            "details": "Glycerin Stearate is used to stabilize formulations and improve the texture of skincare products.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Hydroxystearic Acid",
+            "riskLevel": "low",
+            "summary": "A derivative of stearic acid used as an emulsifier.",
+            "details": "Hydroxystearic Acid helps to stabilize emulsions and improve the consistency of skincare products.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Sodium Benzoate",
+            "riskLevel": "moderate",
+            "summary": "A preservative used to prevent microbial growth.",
+            "details": "Sodium Benzoate is effective in preventing the growth of bacteria and fungi in cosmetic products, but it can cause irritation in sensitive individuals.",
+            "category": "preservative"
+          },
+          {
+            "name": "Guar Hydroxypropyltrimonium Chloride",
+            "riskLevel": "low",
+            "summary": "A conditioning agent derived from guar gum.",
+            "details": "This ingredient is used to improve the texture and manageability of hair and skin, providing conditioning benefits.",
+            "category": "conditioning agent"
+          },
+          {
+            "name": "Fragrance",
+            "riskLevel": "high",
+            "summary": "A mixture of scent chemicals that can cause allergic reactions.",
+            "details": "Fragrance is often a blend of various chemicals used to impart a pleasant scent, but it can trigger allergies and sensitivities in some individuals.",
+            "category": "fragrance"
+          },
+          {
+            "name": "Citric Acid",
+            "riskLevel": "low",
+            "summary": "Used to adjust the pH of skincare products.",
+            "details": "Citric Acid is a natural acid found in citrus fruits, used to balance the acidity of formulations and enhance the effectiveness of preservatives.",
+            "category": "pH adjuster"
+          },
+          {
+            "name": "Caprylyl Glycine",
+            "riskLevel": "low",
+            "summary": "An amino acid derivative used for its antimicrobial properties.",
+            "details": "Caprylyl Glycine is used to help control the growth of bacteria on the skin, contributing to the preservation of the product.",
+            "category": "antimicrobial"
+          },
+          {
+            "name": "Undecylenoyl Glycine",
+            "riskLevel": "low",
+            "summary": "An amino acid derivative with antimicrobial properties.",
+            "details": "Similar to Caprylyl Glycine, this ingredient helps to inhibit microbial growth, enhancing the product's shelf life.",
+            "category": "antimicrobial"
+          },
+          {
+            "name": "Sodium Gluconate",
+            "riskLevel": "low",
+            "summary": "A chelating agent that helps to stabilize formulations.",
+            "details": "Sodium Gluconate is used to bind metal ions, preventing them from affecting the stability and efficacy of the product.",
+            "category": "chelating agent"
+          }
+        ],
+        "overallRisk": "high",
+        "analyzedAt": "2025-11-24T23:53:52.856Z",
+        "originalText": "INGREDIENTS: WATER (AQUA), SODIUM LAURYL ISETHIONATE, SODIUM METHYL LAUROYL\nTAURATE, COCAMIDOPROPYL BETAINE, LAURIC ACID, SODIUM HYDROXYPROPYL STARCH\nPHOSPHATE, HYDROGENATED SOYBEAN OIL, GLYCINE SOJA (SOYBEAN OIL), SODIUM CHLORIDE,\nGLYCERIN, STEARIC ACID, PALMITIC ACID, HYDROGENATED VEGETABLE GLYCERIDES, GLYCERIN,\nSTEARATE, HYDROXYSTEARIC ACID, SODIUM BENZOATE, GUAR HYDROXYPROPYLTRIMONIUM\nCHLORIDE, FRAGRANCE (PARFUM), CITRIC ACID, CAPRYLYL GLYCINE, UNDECYLENOYL GLYCINE,\nSODIUM GLUCONATE"
+      },
+      "timestamp": 1764028432857,
+      "ocrText": "INGREDIENTS: WATER (AQUA), SODIUM LAURYL ISETHIONATE, SODIUM METHYL LAUROYL\nTAURATE, COCAMIDOPROPYL BETAINE, LAURIC ACID, SODIUM HYDROXYPROPYL STARCH\nPHOSPHATE, HYDROGENATED SOYBEAN OIL, GLYCINE SOJA (SOYBEAN OIL), SODIUM CHLORIDE,\nGLYCERIN, STEARIC ACID, PALMITIC ACID, HYDROGENATED VEGETABLE GLYCERIDES, GLYCERIN,\nSTEARATE, HYDROXYSTEARIC ACID, SODIUM BENZOATE, GUAR HYDROXYPROPYLTRIMONIUM\nCHLORIDE, FRAGRANCE (PARFUM), CITRIC ACID, CAPRYLYL GLYCINE, UNDECYLENOYL GLYCINE,\nSODIUM GLUCONATE"
+    }
   ]
 ]

@@ -4,7 +4,7 @@ import multer from "multer";
 import z from "zod";
 import crypto from "crypto";
 import { extractTextFromImage } from "./services/ocr";
-import { analyzeIngredients } from "./services/analyzer";
+import { analyzeIngredients, analyzeSingleIngredient } from "./services/analyzer";
 import { batchAnalyzeIngredientsWithCache, getCacheStats } from "./services/cache";
 import { 
   ocrRequestSchema, 
@@ -277,6 +277,106 @@ export async function registerRoutes(app: Express): Promise<Server> {
         analysisRequest.status = 'failed';
         analysisRequest.error = error.message || 'Failed to analyze image. Please try again.';
         analysisRequest.timestamp = Date.now();
+      }
+    })();
+  });
+
+  // Streaming ingredient analysis endpoint - one ingredient at a time via SSE
+  app.post("/stream-ingredient-analysis", async (req, res) => {
+    const body = req.body;
+    
+    // Validate request
+    if (!body.ingredients || !Array.isArray(body.ingredients) || body.ingredients.length === 0) {
+      return res.status(400).json({ 
+        error: 'Missing required field: ingredients array is required.' 
+      });
+    }
+    if (!body.productType || !body.userLanguage) {
+      return res.status(400).json({ 
+        error: 'Missing required fields: productType and userLanguage are required.' 
+      });
+    }
+    
+    const ingredients = body.ingredients as string[];
+    const productType = body.productType as string;
+    const userLanguage = body.userLanguage as string;
+    
+    // Set SSE headers - ALL FOUR ARE REQUIRED to prevent buffering
+    res.writeHead(200, {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive',
+      'X-Accel-Buffering': 'no'
+    });
+    
+    // Flush headers immediately
+    res.flushHeaders();
+    console.log(`[SSE-STREAM] Starting stream for ${ingredients.length} ingredients`);
+    
+    // Process each ingredient sequentially and stream immediately
+    (async () => {
+      try {
+        for (let i = 0; i < ingredients.length; i++) {
+          const ingredient = ingredients[i].trim();
+          if (!ingredient) continue;
+          
+          try {
+            console.log(`[SSE-STREAM] Processing ingredient ${i + 1}/${ingredients.length}: ${ingredient}`);
+            
+            // Analyze single ingredient (checks cache first)
+            const result = await analyzeSingleIngredient(ingredient, productType as any, userLanguage);
+            
+            // Send SSE event IMMEDIATELY after this ingredient is done
+            const sseEvent = `event: ingredientResult\ndata: ${JSON.stringify({
+              ingredient: result.analysis,
+              index: i,
+              fromCache: result.fromCache
+            })}\n\n`;
+            
+            res.write(sseEvent);
+            
+            // FLUSH after each ingredient - critical for Replit proxy
+            const writable = res as any;
+            writable.flush?.();
+            
+            console.log(`[SSE-STREAM] ✓ Streamed ingredient ${i + 1}/${ingredients.length}: ${ingredient} (${result.fromCache ? 'cached' : 'fresh'})`);
+            
+          } catch (ingredientError: any) {
+            console.error(`[SSE-STREAM] Error analyzing ingredient: ${ingredient}`, ingredientError.message);
+            
+            // Send error event for this ingredient
+            const errorEvent = `event: ingredientError\ndata: ${JSON.stringify({
+              ingredient,
+              index: i,
+              error: ingredientError.message || 'Failed to analyze ingredient'
+            })}\n\n`;
+            
+            res.write(errorEvent);
+            const writable = res as any;
+            writable.flush?.();
+          }
+        }
+        
+        // Send final completion event
+        console.log(`[SSE-STREAM] All ingredients processed, sending done event`);
+        res.write('event: done\ndata: complete\n\n');
+        const writable = res as any;
+        writable.flush?.();
+        
+        // Close connection
+        res.end();
+        console.log(`[SSE-STREAM] ✓ Stream completed and closed`);
+        
+      } catch (error: any) {
+        console.error(`[SSE-STREAM] Critical error:`, error.message);
+        
+        // Send error event
+        const errorEvent = `event: streamError\ndata: ${JSON.stringify({
+          error: error.message || 'Stream processing failed'
+        })}\n\n`;
+        
+        res.write(errorEvent);
+        res.end();
       }
     })();
   });
