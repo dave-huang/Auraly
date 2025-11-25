@@ -1,0 +1,341 @@
+[
+  [
+    "5ba229501888ea466b6f2671b48b86bc6610a36691fdb4dff93de72ad8891c1f",
+    {
+      "result": {
+        "productType": "food",
+        "ingredients": [
+          {
+            "name": "Sugar",
+            "riskLevel": "moderate",
+            "summary": "Refined sugar is a simple carbohydrate that provides calories without nutrients and can contribute to weight gain, blood sugar spikes, and increased risk of metabolic diseases when consumed in excess.",
+            "category": "Sweetener"
+          },
+          {
+            "name": "Bleached wheat flour",
+            "riskLevel": "moderate",
+            "summary": "Bleached wheat flour is refined grain flour treated with bleaching agents; it is lower in fiber and nutrients than whole grain and can rapidly raise blood sugar levels.",
+            "category": "Cereal/grain"
+          },
+          {
+            "name": "Malted barley flour",
+            "riskLevel": "low",
+            "summary": "Malted barley flour is a grain-based flour used to improve flavor and texture; it contains gluten and is unsuitable for people with celiac disease or gluten sensitivity.",
+            "category": "Cereal/grain"
+          },
+          {
+            "name": "Niacin (vitamin B3)",
+            "riskLevel": "low",
+            "summary": "Niacin is a B vitamin added for enrichment that supports energy metabolism and nervous system function; amounts in fortified foods are generally considered safe.",
+            "category": "Vitamin"
+          },
+          {
+            "name": "Reduced iron",
+            "riskLevel": "low",
+            "summary": "Reduced iron is an elemental iron powder used to fortify flour and prevent iron deficiency; typical fortification levels are considered safe for most people.",
+            "category": "Mineral"
+          },
+          {
+            "name": "Ferrous sulfate",
+            "riskLevel": "low",
+            "summary": "Ferrous sulfate is an iron salt used for fortification to help prevent anemia; in normal food fortification doses it is generally safe, though high supplemental doses can cause gastrointestinal upset.",
+            "category": "Mineral"
+          },
+          {
+            "name": "Thiamine mononitrate (vitamin B1)",
+            "riskLevel": "low",
+            "summary": "Thiamine mononitrate is a synthetic form of vitamin B1 used to enrich refined flour and supports energy metabolism and nerve function.",
+            "category": "Vitamin"
+          },
+          {
+            "name": "Riboflavin (vitamin B2)",
+            "riskLevel": "low",
+            "summary": "Riboflavin is vitamin B2 added for enrichment and is important for energy production and antioxidant functions; it is considered very safe at fortification levels.",
+            "category": "Vitamin"
+          },
+          {
+            "name": "Folic acid (vitamin B9)",
+            "riskLevel": "low",
+            "summary": "Folic acid is a synthetic form of folate used to fortify grains and help prevent neural tube defects; usual amounts in foods are considered safe for the general population.",
+            "category": "Vitamin"
+          },
+          {
+            "name": "Water",
+            "riskLevel": "low",
+            "summary": "Water is used as a basic solvent and moisture component in the product and poses no health concern in normal food use.",
+            "category": "Base ingredient"
+          },
+          {
+            "name": "High fructose corn syrup",
+            "riskLevel": "high",
+            "summary": "High fructose corn syrup is a refined liquid sweetener high in fructose that is linked to increased risk of obesity, fatty liver, and metabolic syndrome when consumed frequently and in large amounts.",
+            "category": "Sweetener"
+          },
+          {
+            "name": "Palm oil",
+            "riskLevel": "moderate",
+            "summary": "Palm oil is a highly saturated vegetable fat that can raise LDL cholesterol when consumed in excess, though it is free of trans fats when not hydrogenated.",
+            "category": "Fat/oil"
+          },
+          {
+            "name": "Corn syrup",
+            "riskLevel": "moderate",
+            "summary": "Corn syrup is a refined glucose-based sweetener that adds significant calories and can contribute to blood sugar spikes and weight gain when overconsumed.",
+            "category": "Sweetener"
+          },
+          {
+            "name": "Cocoa",
+            "riskLevel": "low",
+            "summary": "Cocoa is derived from cocoa beans and provides flavor and some beneficial polyphenols; in this context it is mainly used as a flavoring ingredient.",
+            "category": "Flavoring"
+          },
+          {
+            "name": "Tallow",
+            "riskLevel": "high",
+            "summary": "Tallow is rendered animal fat high in saturated fat, which can raise LDL cholesterol and is associated with increased cardiovascular risk when eaten frequently in large amounts.",
+            "category": "Fat/oil"
+          },
+          {
+            "name": "Soybean oil",
+            "riskLevel": "moderate",
+            "summary": "Soybean oil is a common vegetable oil high in omega-6 fatty acids; excessive intake relative to omega-3s may promote inflammation, and it is also a potential allergen source for people with soy allergy.",
+            "category": "Fat/oil"
+          },
+          {
+            "name": "Glycerin",
+            "riskLevel": "low",
+            "summary": "Glycerin is a humectant and sweet-tasting liquid used to retain moisture and improve texture; it is generally recognized as safe when consumed in normal food amounts.",
+            "category": "humectant"
+          },
+          {
+            "name": "Cocoa processed with alkali",
+            "riskLevel": "low",
+            "summary": "Cocoa processed with alkali (Dutch-processed cocoa) is cocoa treated to reduce acidity and create a milder flavor; it is safe for most people but may contain small amounts of caffeine and theobromine.",
+            "category": "cocoa product"
+          },
+          {
+            "name": "Modified food starch",
+            "riskLevel": "low",
+            "summary": "Modified food starch is starch that has been physically or chemically altered to improve thickening and stability; it is generally safe, though it can be a hidden source of gluten if not specified as gluten-free.",
+            "category": "starch/thickener"
+          },
+          {
+            "name": "Corn starch",
+            "riskLevel": "low",
+            "summary": "Corn starch is a refined carbohydrate used as a thickener and texturizer; it is generally safe but offers little nutritional value and can raise blood sugar when consumed in large amounts.",
+            "category": "starch/thickener"
+          },
+          {
+            "name": "Baking soda",
+            "riskLevel": "low",
+            "summary": "Baking soda (sodium bicarbonate) is a leavening agent that helps baked goods rise; it is safe in normal food quantities but contributes a small amount of sodium.",
+            "category": "leavening agent"
+          },
+          {
+            "name": "Salt",
+            "riskLevel": "moderate",
+            "summary": "Salt (sodium chloride) is used for flavor and preservation; high intake is linked to elevated blood pressure and cardiovascular risk, so overall dietary sodium load is the main concern.",
+            "category": "salt/sodium source"
+          },
+          {
+            "name": "Whey",
+            "riskLevel": "moderate",
+            "summary": "Whey is a milk-derived protein used for texture and protein content; it is a common allergen for people with dairy allergy or severe lactose intolerance.",
+            "category": "dairy allergen"
+          },
+          {
+            "name": "Corn syrup solids",
+            "riskLevel": "moderate",
+            "summary": "Corn syrup solids are dehydrated corn syrup used as a sweetener and bulking agent; they are a concentrated source of simple sugars that can contribute to blood sugar spikes and excess calorie intake.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Calcium sulfate",
+            "riskLevel": "low",
+            "summary": "Calcium sulfate is a mineral salt used as a firming agent and dough conditioner; it is generally recognized as safe and also provides a small amount of calcium.",
+            "category": "mineral additive"
+          },
+          {
+            "name": "Egg",
+            "riskLevel": "moderate",
+            "summary": "Egg is used for structure and richness in foods; it is a major allergen and can cause serious reactions in people with egg allergy.",
+            "category": "egg allergen"
+          },
+          {
+            "name": "Agave syrup",
+            "riskLevel": "moderate",
+            "summary": "Agave syrup is a liquid sweetener high in fructose; while it has a lower immediate impact on blood glucose than some sugars, high fructose intake is associated with potential metabolic and liver concerns when consumed in excess.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Inulin",
+            "riskLevel": "low",
+            "summary": "Inulin is a soluble dietary fiber and prebiotic used to improve texture and fiber content; it is generally beneficial but may cause gas or bloating in sensitive individuals or in large amounts.",
+            "category": "fiber/prebiotic"
+          },
+          {
+            "name": "Egg whites",
+            "riskLevel": "moderate",
+            "summary": "Egg whites provide protein and structure; they are still part of the egg allergen group and can trigger reactions in people allergic to eggs.",
+            "category": "egg allergen"
+          },
+          {
+            "name": "Dextrose",
+            "riskLevel": "moderate",
+            "summary": "Dextrose is a simple sugar (glucose) used as a sweetener and to aid browning; it rapidly raises blood sugar and can contribute to excess calorie intake when heavily consumed.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Hydrogenated tallow",
+            "riskLevel": "high",
+            "summary": "Hydrogenated tallow is animal fat that has been hydrogenated, a process that can create trans fats; trans fats are strongly linked to increased LDL cholesterol and cardiovascular disease risk.",
+            "category": "fat/trans fat source"
+          },
+          {
+            "name": "Sodium acid pyrophosphate",
+            "riskLevel": "moderate",
+            "summary": "Sodium acid pyrophosphate is a leavening acid and sequestrant that helps baked goods rise and maintain color; it adds to overall sodium and phosphate intake, which may be a concern for people with kidney disease or on sodium-restricted diets.",
+            "category": "leavening agent/additive"
+          },
+          {
+            "name": "Mono- and diglycerides",
+            "riskLevel": "moderate",
+            "summary": "Emulsifiers derived from fats that help blend oil and water; generally recognized as safe but may contain small amounts of trans fats depending on source and processing.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Baking soda (sodium bicarbonate)",
+            "riskLevel": "low",
+            "summary": "A common leavening agent used to help baked goods rise; considered safe at typical food-use levels.",
+            "category": "leavening agent"
+          },
+          {
+            "name": "Polysorbate 60",
+            "riskLevel": "moderate",
+            "summary": "A synthetic emulsifier used to improve texture and shelf life; approved for use but some studies raise questions about potential effects on gut barrier and microbiome at high or chronic intakes.",
+            "category": "emulsifier / stabilizer"
+          },
+          {
+            "name": "Sodium stearoyl lactylate",
+            "riskLevel": "low",
+            "summary": "An emulsifier used in baked goods to improve dough strength and texture; generally recognized as safe, though it is a marker of processed foods.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Cottonseed oil",
+            "riskLevel": "moderate",
+            "summary": "A refined vegetable oil often high in omega-6 fats and sometimes from genetically modified crops; highly processed oils may contribute to an imbalanced fatty acid intake when consumed frequently.",
+            "category": "refined oil / fat"
+          },
+          {
+            "name": "Soy lecithin",
+            "riskLevel": "low",
+            "summary": "A soy-derived emulsifier that helps ingredients mix smoothly; generally safe but may be a concern for people with soy allergy or strict soy avoidance.",
+            "category": "emulsifier / allergen (soy source)"
+          },
+          {
+            "name": "Xanthan gum",
+            "riskLevel": "low",
+            "summary": "A thickener and stabilizer produced by fermentation; usually well tolerated, though large amounts may cause digestive discomfort in sensitive individuals.",
+            "category": "thickener / stabilizer"
+          },
+          {
+            "name": "Agar",
+            "riskLevel": "low",
+            "summary": "A gelling agent derived from seaweed used to thicken or gel foods; generally safe and a source of soluble fiber.",
+            "category": "gelling agent / thickener"
+          },
+          {
+            "name": "Cellulose gum (carboxymethyl cellulose)",
+            "riskLevel": "moderate",
+            "summary": "A synthetic form of plant fiber used as a thickener and stabilizer; considered safe, but some research suggests certain emulsifiers and gums may affect gut barrier function in high or chronic intake.",
+            "category": "thickener / stabilizer"
+          },
+          {
+            "name": "Natural and artificial flavors",
+            "riskLevel": "moderate",
+            "summary": "A mixture of flavoring chemicals, some from natural sources and some synthetic; composition is not disclosed, which limits transparency and may be an issue for sensitive individuals.",
+            "category": "flavoring"
+          },
+          {
+            "name": "Color (artificial or unspecified coloring agents)",
+            "riskLevel": "moderate",
+            "summary": "Added coloring agents to enhance appearance; risk depends on specific dyes used, and some artificial colors have been linked to hyperactivity or sensitivity in susceptible individuals.",
+            "category": "color additive"
+          },
+          {
+            "name": "Monocalcium phosphate",
+            "riskLevel": "low",
+            "summary": "A leavening acid used in baking powders to help dough rise; generally recognized as safe at typical food-use levels.",
+            "category": "leavening agent / mineral salt"
+          },
+          {
+            "name": "Enzymes",
+            "riskLevel": "low",
+            "summary": "Processing aids that modify dough or texture; typically present in very small amounts, though the exact source is often not disclosed (which may matter for some allergen or dietary concerns).",
+            "category": "processing aid"
+          },
+          {
+            "name": "Salt (sodium chloride)",
+            "riskLevel": "moderate",
+            "summary": "Common seasoning and preservative; safe in small amounts, but high overall dietary sodium intake is associated with increased blood pressure and cardiovascular risk.",
+            "category": "salt / seasoning"
+          },
+          {
+            "name": "Locust bean gum (carob bean gum)",
+            "riskLevel": "low",
+            "summary": "A plant-derived thickener and stabilizer from carob tree seeds; generally well tolerated and widely used in foods.",
+            "category": "thickener / stabilizer"
+          },
+          {
+            "name": "Dipotassium phosphate",
+            "riskLevel": "moderate",
+            "summary": "A buffering and stabilizing salt that can also act as a mineral supplement; usually safe, but excessive intake of phosphate additives may be a concern for people with kidney disease or those consuming many processed foods.",
+            "category": "stabilizer / mineral salt"
+          },
+          {
+            "name": "Chocolate liquor",
+            "riskLevel": "low",
+            "summary": "Chocolate liquor is the ground, roasted cocoa mass (non‑alcoholic) that provides cocoa solids and cocoa butter; it is generally safe for most people but contains caffeine and theobromine, which may be an issue in large amounts or for sensitive individuals.",
+            "category": "cocoa product"
+          },
+          {
+            "name": "Defatted soy flour",
+            "riskLevel": "moderate",
+            "summary": "Defatted soy flour is made from soybeans with most of the oil removed and is high in protein; it is a common allergen and contains soy isoflavones, which may affect hormone-sensitive individuals, so it is flagged mainly for allergenicity.",
+            "category": "legume / soy ingredient"
+          },
+          {
+            "name": "Milk",
+            "riskLevel": "moderate",
+            "summary": "Milk provides protein, lactose, and milk fats but is a major allergen; it can trigger reactions in people with milk allergy and digestive issues in those with lactose intolerance.",
+            "category": "allergen / dairy"
+          },
+          {
+            "name": "Soybean",
+            "riskLevel": "moderate",
+            "summary": "Soybean is a legume used widely as a protein source and processing ingredient; it is a common allergen and may cause reactions ranging from mild to severe in sensitive individuals.",
+            "category": "allergen / legume"
+          },
+          {
+            "name": "Wheat",
+            "riskLevel": "moderate",
+            "summary": "Wheat is a cereal grain that commonly contains gluten; it is a major allergen and can cause serious issues for people with celiac disease, non‑celiac gluten sensitivity, or wheat allergy.",
+            "category": "allergen / gluten-containing grain"
+          },
+          {
+            "name": "Bioengineered food ingredients (GMOs)",
+            "riskLevel": "moderate",
+            "summary": "Bioengineered food ingredients (genetically modified organisms, GMOs) are crops or components altered using biotechnology; current evidence does not show clear harm in humans, but they are flagged due to ongoing debate, environmental concerns, and the possibility of increased pesticide exposure depending on the crop.",
+            "category": "processing / agricultural technology"
+          }
+        ],
+        "overallRisk": "high",
+        "analyzedAt": "2025-11-25T22:22:05.005Z",
+        "originalText": "INGREDIENTS: SUGAR, ENRICHED FLOUR (BLEACHED\nWHEAT FLOUR, MALTED BARLEY FLOUR, NIACIN,\nREDUCED IRON OR FERROUS SULFATE, THIAMINE\nMONONITRATE, RIBOFLAVIN, FOLIC ACID), WATER,\nHIGH FRUCTOSE CORN SYRUP, PALM OIL, CORN SYRUP,\nCOCOA, TALLOW, SOYBEAN OIL, CONTAINS 2% OR\nLESS OF: GLYCERIN, COCOA PROCESSED WITH ALKALI,\nFOOD STARCH MODIFIED, CORN STARCH, BAKING\nSODA, SALT, WHEY, CORN SYRUP SOLIDS, CALCIUM\nSULFATE, EGG, SORBIC ACID AND POTASSIUM\nSORBATE (TO RETAIN FRESHNESS), AGAVE SYRUP,\nINULIN, EGG WHITES, DEXTROSE, HYDROGENATED\nTALLOW, SODIUM ACID PYROPHOSPHATE, MONO\nAND DIGLYCERIDES, BAKING SODA, BLEACHED\nWHEAT FLOUR, POLYSORBATE 60, SODIUM STEAROYL\nLACTYLATE, COTTONSEED OIL, SOY LECITHIN,\nXANTHAN GUM, AGAR, CELLULOSE GUM, NATURAL\nAND ARTIFICIAL FLAVORS, TITANIUM DIOXIDE\n(COLOR), MONOCALCIUM PHOSPHATE, ENZYMES,\nSALT, LOCUST BEAN GUM, DIPOTASSIUM PHOSPHATE,\nCHOCOLATE LIQUOR, DEFATTED SOY FLOUR.\nCONTAINS EGG, MILK, SOYBEAN AND WHEAT\nINGREDIENTS.\n\nCONTAINS BIOENGINEERED FOOD INGREDIENTS"
+      },
+      "timestamp": 1764109325009,
+      "ocrText": "INGREDIENTS: SUGAR, ENRICHED FLOUR (BLEACHED\nWHEAT FLOUR, MALTED BARLEY FLOUR, NIACIN,\nREDUCED IRON OR FERROUS SULFATE, THIAMINE\nMONONITRATE, RIBOFLAVIN, FOLIC ACID), WATER,\nHIGH FRUCTOSE CORN SYRUP, PALM OIL, CORN SYRUP,\nCOCOA, TALLOW, SOYBEAN OIL, CONTAINS 2% OR\nLESS OF: GLYCERIN, COCOA PROCESSED WITH ALKALI,\nFOOD STARCH MODIFIED, CORN STARCH, BAKING\nSODA, SALT, WHEY, CORN SYRUP SOLIDS, CALCIUM\nSULFATE, EGG, SORBIC ACID AND POTASSIUM\nSORBATE (TO RETAIN FRESHNESS), AGAVE SYRUP,\nINULIN, EGG WHITES, DEXTROSE, HYDROGENATED\nTALLOW, SODIUM ACID PYROPHOSPHATE, MONO\nAND DIGLYCERIDES, BAKING SODA, BLEACHED\nWHEAT FLOUR, POLYSORBATE 60, SODIUM STEAROYL\nLACTYLATE, COTTONSEED OIL, SOY LECITHIN,\nXANTHAN GUM, AGAR, CELLULOSE GUM, NATURAL\nAND ARTIFICIAL FLAVORS, TITANIUM DIOXIDE\n(COLOR), MONOCALCIUM PHOSPHATE, ENZYMES,\nSALT, LOCUST BEAN GUM, DIPOTASSIUM PHOSPHATE,\nCHOCOLATE LIQUOR, DEFATTED SOY FLOUR.\nCONTAINS EGG, MILK, SOYBEAN AND WHEAT\nINGREDIENTS.\n\nCONTAINS BIOENGINEERED FOOD INGREDIENTS"
+    }
+  ]
+]

@@ -1403,13 +1403,13 @@ export async function generateIngredientDetails(
   const languageInstruction = LANGUAGE_INSTRUCTIONS[userLanguage as keyof typeof LANGUAGE_INSTRUCTIONS] || LANGUAGE_INSTRUCTIONS['en'];
   
   const systemMessages = {
-    'zh': "You are a health expert. Provide detailed, evidence-based health information about an ingredient. Respond ONLY with a detailed explanation (3-5 sentences) in Simplified Chinese (简体中文).",
-    'en': "You are a health expert. Provide detailed, evidence-based health information about an ingredient. Respond ONLY with a detailed explanation (3-5 sentences) in English.",
-    'es': "Eres un experto en salud. Proporciona información detallada y basada en evidencia sobre un ingrediente. Responde SOLO con una explicación detallada (3-5 oraciones) en español."
+    'zh': "You are a health expert. Provide health information about an ingredient. Respond ONLY with a brief explanation (2-3 sentences) in Simplified Chinese (简体中文).",
+    'en': "You are a health expert. Provide health information about an ingredient. Respond ONLY with a brief explanation (2-3 sentences) in English.",
+    'es': "Eres un experto en salud. Proporciona información sobre un ingrediente. Responde SOLO con una breve explicación (2-3 oraciones) en español."
   };
   const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
   
-  const prompt = `Provide a detailed health analysis for the ingredient "${ingredientName}" in a ${productType} product.
+  const prompt = `Provide a health analysis for the ingredient "${ingredientName}" in a ${productType} product.
 
 ${languageInstruction}
 
@@ -1417,12 +1417,11 @@ Product Type Context: ${context}
 
 Risk Assessment: This ingredient is marked as "${riskLevel}" risk.
 
-Provide:
-1. Detailed explanation of what this ingredient is and its purpose
-2. Specific health concerns or benefits based on the risk level
-3. Any important usage considerations or recommendations
+Provide a 2-3 sentence explanation covering:
+1. What this ingredient is and its purpose
+2. Health concerns or benefits based on the risk level
 
-Keep the explanation clear, factual, and helpful for consumers.`;
+Keep it clear, factual, and helpful for consumers.`;
 
   let lastError: Error | null = null;
   const maxRetries = 2;
