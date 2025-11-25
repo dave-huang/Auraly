@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { flushSync } from "react-dom";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -130,43 +131,58 @@ export function StreamingResults({ ocrText, productType, userLanguage }: Streami
           
           buffer += decoder.decode(value, { stream: true });
           
-          // Parse SSE events from buffer
-          const lines = buffer.split('\n');
-          buffer = lines.pop() || ''; // Keep incomplete line in buffer
-          
-          for (let i = 0; i < lines.length - 1; i += 2) {
-            const eventLine = lines[i];
-            const dataLine = lines[i + 1];
+          // Parse ONE complete SSE event at a time to ensure incremental rendering
+          // SSE format: "event: name\ndata: {...}\n\n"
+          while (buffer.includes('\n\n')) {
+            // Find the next complete event
+            const eventEnd = buffer.indexOf('\n\n');
+            const eventStr = buffer.substring(0, eventEnd);
+            buffer = buffer.substring(eventEnd + 2); // Remove event from buffer
             
-            if (eventLine.startsWith('event: ingredientResult')) {
+            // Parse event lines
+            const eventLines = eventStr.split('\n');
+            let eventType = '';
+            let eventData = '';
+            
+            for (const line of eventLines) {
+              if (line.startsWith('event: ')) {
+                eventType = line.substring(7);
+              } else if (line.startsWith('data: ')) {
+                eventData = line.substring(6);
+              }
+            }
+            
+            // Process ONE event with flushSync for immediate rendering
+            if (eventType === 'ingredientResult' && eventData) {
               try {
-                const jsonStr = dataLine.replace('data: ', '');
-                const data = JSON.parse(jsonStr);
+                const data = JSON.parse(eventData);
                 
                 console.log(`[STREAMING-RESULTS] ✓ Received ingredient ${data.index + 1}/${ingredientsList.length}: ${data.ingredient.name} (${data.fromCache ? 'cached' : 'fresh'})`);
                 
-                // Update results map with new ingredient
-                setResults(prev => {
-                  const newMap = new Map(prev);
-                  newMap.set(data.index, { ...data.ingredient, fromCache: data.fromCache });
-                  return newMap;
+                // CRITICAL: Use flushSync to force immediate rendering of THIS ingredient
+                // Process one event at a time to prevent batching
+                flushSync(() => {
+                  setResults(prev => {
+                    const newMap = new Map(prev);
+                    newMap.set(data.index, { ...data.ingredient, fromCache: data.fromCache });
+                    return newMap;
+                  });
                 });
               } catch (e) {
                 console.error('[STREAMING-RESULTS] Error parsing ingredientResult:', e);
               }
-            } else if (eventLine.startsWith('event: ingredientError')) {
+            } else if (eventType === 'ingredientError' && eventData) {
               try {
-                const jsonStr = dataLine.replace('data: ', '');
-                const data = JSON.parse(jsonStr);
-                
+                const data = JSON.parse(eventData);
                 console.error(`[STREAMING-RESULTS] ✗ Error analyzing ingredient ${data.index + 1}: ${data.ingredient}`, data.error);
                 
-                // Add to errors set
-                setErrors(prev => new Set(prev).add(data.index));
+                flushSync(() => {
+                  setErrors(prev => new Set(prev).add(data.index));
+                });
               } catch (e) {
                 console.error('[STREAMING-RESULTS] Error parsing ingredientError:', e);
               }
-            } else if (eventLine.startsWith('event: done')) {
+            } else if (eventType === 'done') {
               console.log('[STREAMING-RESULTS] ✓ Stream completed, all ingredients processed');
               setIsStreaming(false);
               try {
@@ -175,11 +191,9 @@ export function StreamingResults({ ocrText, productType, userLanguage }: Streami
                 // Reader already closed, ignore
               }
               return;
-            } else if (eventLine.startsWith('event: streamError')) {
+            } else if (eventType === 'streamError' && eventData) {
               try {
-                const jsonStr = dataLine.replace('data: ', '');
-                const data = JSON.parse(jsonStr);
-                
+                const data = JSON.parse(eventData);
                 console.error('[STREAMING-RESULTS] Stream error:', data.error);
                 setStreamError(data.error);
               } catch (e) {
@@ -193,6 +207,9 @@ export function StreamingResults({ ocrText, productType, userLanguage }: Streami
               }
               return;
             }
+            
+            // Yield to event loop after each event to allow rendering
+            await new Promise(resolve => setTimeout(resolve, 0));
           }
         }
         

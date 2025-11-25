@@ -337,9 +337,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
             
             // FLUSH after each ingredient - critical for Replit proxy
             const writable = res as any;
-            writable.flush?.();
+            if (writable.flush) {
+              writable.flush();
+            }
             
             console.log(`[SSE-STREAM] ✓ Streamed ingredient ${i + 1}/${ingredients.length}: ${ingredient} (${result.fromCache ? 'cached' : 'fresh'})`);
+            console.log(`[SSE-STREAM] Written bytes, flushing...`);
+            
+            // Add small 50ms delay to allow socket to truly flush
+            // setImmediate alone isn't enough - we need actual time for network buffers to clear
+            if (i < ingredients.length - 1) {
+              await new Promise(resolve => setTimeout(resolve, 50));
+            }
             
           } catch (ingredientError: any) {
             console.error(`[SSE-STREAM] Error analyzing ingredient: ${ingredient}`, ingredientError.message);
@@ -353,7 +362,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
             
             res.write(errorEvent);
             const writable = res as any;
-            writable.flush?.();
+            if (writable.flush) {
+              writable.flush();
+            }
+            
+            // Add delay after error too
+            if (i < ingredients.length - 1) {
+              await new Promise(resolve => setTimeout(resolve, 50));
+            }
           }
         }
         
@@ -361,7 +377,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log(`[SSE-STREAM] All ingredients processed, sending done event`);
         res.write('event: done\ndata: complete\n\n');
         const writable = res as any;
-        writable.flush?.();
+        if (writable.flush) {
+          writable.flush();
+        }
         
         // Close connection
         res.end();
