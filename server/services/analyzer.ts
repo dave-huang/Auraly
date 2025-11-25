@@ -923,6 +923,7 @@ Return your analysis as JSON with this structure:
   
   // All retries failed
   console.error('[ANALYZER] All retry attempts exhausted');
+  console.error('[ANALYZER] Final error:', lastError);
   
   // Provide user-friendly error messages based on error type
   if (lastError) {
@@ -930,24 +931,47 @@ Return your analysis as JSON with this structure:
     const errorType = (lastError as any).type || '';
     const errorMessage = lastError.message || '';
     
+    console.error('[ANALYZER] Error details for user:', {
+      status: errorStatus,
+      type: errorType,
+      message: errorMessage
+    });
+    
+    // Check for API key / auth errors first (most common issue)
+    if (errorMessage.toLowerCase().includes('api key') || 
+        errorMessage.toLowerCase().includes('unauthorized') ||
+        errorMessage.toLowerCase().includes('authentication') ||
+        errorStatus === 401) {
+      throw new Error(`OpenAI API key issue: ${errorMessage}. Please verify your API key is valid and has appropriate permissions.`);
+    }
+    
+    // Check for quota/billing errors
+    if (errorMessage.toLowerCase().includes('quota') || 
+        errorMessage.toLowerCase().includes('insufficient') ||
+        errorStatus === 429) {
+      throw new Error(`OpenAI account issue: ${errorMessage}. Please check your OpenAI account quota and billing status.`);
+    }
+    
+    // Check for model not found
+    if (errorMessage.toLowerCase().includes('model') || 
+        errorMessage.toLowerCase().includes('gpt-5.1') ||
+        errorStatus === 404) {
+      throw new Error(`Model error: ${errorMessage}. GPT-5.1 may not be available in your OpenAI account. Contact OpenAI support or use a different model.`);
+    }
+    
     // Check for server errors (500, 502, 503)
     if (errorStatus === 500 || errorStatus === 502 || errorStatus === 503 || errorType === 'server_error') {
-      throw new Error(`The AI service is temporarily unavailable (tried ${maxRetries} times). This usually resolves within a few minutes. Please try again shortly.`);
+      throw new Error(`OpenAI server error (${errorStatus}). Please try again in a few moments.`);
     }
     
     // Check for timeout errors
     if (errorMessage.includes('timeout') || errorStatus === 'ETIMEDOUT') {
-      throw new Error('Analysis is taking longer than expected. The AI service may be experiencing high load. Please try again in a few moments.');
-    }
-    
-    // Check for rate limit errors
-    if (errorMessage.includes('rate limit') || errorStatus === 429) {
-      throw new Error('The AI service is currently busy. Please wait a minute and try again.');
+      throw new Error('Analysis timed out. OpenAI is experiencing high load. Please try again in a few moments.');
     }
     
     // Check for network errors
     if (errorMessage.includes('network') || errorMessage.includes('ECONNREFUSED') || errorMessage.includes('ENOTFOUND')) {
-      throw new Error('Unable to connect to the AI service. Please check your internet connection and try again.');
+      throw new Error('Network error connecting to OpenAI. Please check your internet connection and try again.');
     }
     
     // Preserve meaningful validation error messages
@@ -960,8 +984,8 @@ Return your analysis as JSON with this structure:
       throw lastError;
     }
     
-    // Generic fallback with context
-    throw new Error(`Analysis failed after ${maxRetries} attempts. The AI service may be temporarily unavailable. Please try again.`);
+    // Generic fallback - include the actual error for debugging
+    throw new Error(`Analysis failed: ${errorMessage}. This may be due to an API key issue, insufficient quota, or the GPT-5.1 model not being available in your account.`);
   }
   
   throw new Error('Failed to analyze ingredients after multiple attempts. Please try again.');
@@ -1327,7 +1351,28 @@ Return your analysis as JSON with this structure:
   console.error('[VISION-ANALYZER] All retry attempts exhausted');
   
   if (lastError) {
+    const errorStatus = (lastError as any).status || (lastError as any).code;
     const errorMessage = lastError.message || '';
+    
+    console.error('[VISION-ANALYZER] Error details:', { status: errorStatus, message: errorMessage });
+    
+    // Check for API key / auth errors
+    if (errorMessage.toLowerCase().includes('api key') || 
+        errorMessage.toLowerCase().includes('unauthorized') ||
+        errorStatus === 401) {
+      throw new Error(`OpenAI API key issue: ${errorMessage}. Please verify your API key is valid.`);
+    }
+    
+    // Check for quota/billing errors
+    if (errorMessage.toLowerCase().includes('quota') || 
+        errorMessage.toLowerCase().includes('insufficient')) {
+      throw new Error(`OpenAI account issue: ${errorMessage}. Please check your quota and billing status.`);
+    }
+    
+    // Check for model not found
+    if (errorMessage.toLowerCase().includes('gpt-5.1') || errorStatus === 404) {
+      throw new Error(`GPT-5.1 model error: ${errorMessage}. This model may not be available in your account.`);
+    }
     
     if (errorMessage.includes('timeout') || errorMessage.includes('ETIMEDOUT')) {
       throw new Error('Image analysis is taking longer than expected. Please try again in a few moments.');
@@ -1341,7 +1386,7 @@ Return your analysis as JSON with this structure:
       throw new Error('Unable to connect to the AI service. Please check your internet connection and try again.');
     }
     
-    throw new Error(`Image analysis failed after ${maxRetries} attempts. Please try again.`);
+    throw new Error(`Image analysis failed: ${errorMessage}. This may be due to an API key issue or GPT-5.1 not being available in your account.`);
   }
   
   throw new Error('Failed to analyze image after multiple attempts. Please try again.');
