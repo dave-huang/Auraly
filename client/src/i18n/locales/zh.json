@@ -145,7 +145,8 @@
     },
     "ingredientCard": {
       "learnMore": "了解更多",
-      "showLess": "收起"
+      "showLess": "收起",
+      "loading": "正在加载详情..."
     },
     "noResults": "没有找到匹配的成分。",
     "scanAnother": "扫描其他产品",

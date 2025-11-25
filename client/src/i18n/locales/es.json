@@ -145,7 +145,8 @@
     },
     "ingredientCard": {
       "learnMore": "Saber Más",
-      "showLess": "Mostrar Menos"
+      "showLess": "Mostrar Menos",
+      "loading": "Cargando detalles..."
     },
     "noResults": "No se encontraron ingredientes que coincidan con tu búsqueda.",
     "scanAnother": "Escanear Otro Producto",

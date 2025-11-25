@@ -432,12 +432,22 @@ export default function ResultsPage() {
               </p>
             </Card>
           ) : (
-            filteredIngredients.map((ingredient, index) => (
-              <IngredientCard 
-                key={`${ingredient.name}-${index}`}
-                ingredient={ingredient}
-              />
-            ))
+            filteredIngredients.map((ingredient, index) => {
+              let userLanguage = 'en';
+              if (i18n.language.startsWith('zh')) {
+                userLanguage = 'zh';
+              } else if (i18n.language.startsWith('es')) {
+                userLanguage = 'es';
+              }
+              return (
+                <IngredientCard 
+                  key={`${ingredient.name}-${index}`}
+                  ingredient={ingredient}
+                  productType={analysisResult.productType as ProductType}
+                  userLanguage={userLanguage}
+                />
+              );
+            })
           )}
         </div>
       </main>

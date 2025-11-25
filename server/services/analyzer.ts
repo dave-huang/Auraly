@@ -420,7 +420,6 @@ For each ingredient, determine:
 1. The ingredient name (clean, standardized format) - MUST be in the user's language
 2. Risk level: "low" (safe), "moderate" (limited evidence/moderate concern), or "high" (known health risks)
 3. A brief summary (1-2 sentences) explaining what it is and why it's flagged - MUST be in the user's language
-4. Detailed explanation (2-3 sentences) with more context about health impacts - MUST be in the user's language
 
 Return your analysis as JSON with this structure (ingredients array may be empty if batch has no valid ingredients):
 {
@@ -430,7 +429,6 @@ Return your analysis as JSON with this structure (ingredients array may be empty
       "name": "Ingredient Name",
       "riskLevel": "low|moderate|high",
       "summary": "Brief explanation",
-      "details": "Detailed explanation",
       "category": "Optional category"
     }
   ],
@@ -734,7 +732,7 @@ INGREDIENT NAME TRANSLATION REQUIREMENTS:
 - NEVER invent ingredients that don't exist in the text
 
 OTHER IMPORTANT NOTES:
-- ALL text output (name, summary, details) must be in the user's selected language
+- ALL text output (name, summary) must be in the user's selected language
 - Extract the product name if mentioned (product name can stay in original language)
 - Determine overall product risk (low/moderate/high) based on the worst ingredients
 - Be friendly and clear in explanations, not alarmist
@@ -748,7 +746,6 @@ Return your analysis as JSON with this structure:
       "name": "Ingredient Name",
       "riskLevel": "low|moderate|high",
       "summary": "Brief explanation",
-      "details": "Detailed explanation",
       "category": "Optional category like 'preservative', 'sweetener', etc"
     }
   ],
@@ -1390,4 +1387,78 @@ Return your analysis as JSON with this structure:
   }
   
   throw new Error('Failed to analyze image after multiple attempts. Please try again.');
+}
+
+/**
+ * Generates detailed explanation for an ingredient on-demand
+ * Called only when user clicks "Learn More" to save tokens during initial analysis
+ */
+export async function generateIngredientDetails(
+  ingredientName: string,
+  riskLevel: string,
+  productType: ProductType,
+  userLanguage: string
+): Promise<string> {
+  const context = PRODUCT_TYPE_CONTEXTS[productType];
+  const languageInstruction = LANGUAGE_INSTRUCTIONS[userLanguage as keyof typeof LANGUAGE_INSTRUCTIONS] || LANGUAGE_INSTRUCTIONS['en'];
+  
+  const systemMessages = {
+    'zh': "You are a health expert. Provide detailed, evidence-based health information about an ingredient. Respond ONLY with a detailed explanation (3-5 sentences) in Simplified Chinese (简体中文).",
+    'en': "You are a health expert. Provide detailed, evidence-based health information about an ingredient. Respond ONLY with a detailed explanation (3-5 sentences) in English.",
+    'es': "Eres un experto en salud. Proporciona información detallada y basada en evidencia sobre un ingrediente. Responde SOLO con una explicación detallada (3-5 oraciones) en español."
+  };
+  const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
+  
+  const prompt = `Provide a detailed health analysis for the ingredient "${ingredientName}" in a ${productType} product.
+
+${languageInstruction}
+
+Product Type Context: ${context}
+
+Risk Assessment: This ingredient is marked as "${riskLevel}" risk.
+
+Provide:
+1. Detailed explanation of what this ingredient is and its purpose
+2. Specific health concerns or benefits based on the risk level
+3. Any important usage considerations or recommendations
+
+Keep the explanation clear, factual, and helpful for consumers.`;
+
+  let lastError: Error | null = null;
+  const maxRetries = 2;
+  
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const response = await openai.chat.completions.create({
+        model: "gpt-5.1",
+        messages: [
+          {
+            role: "system",
+            content: systemMessage
+          },
+          {
+            role: "user",
+            content: prompt
+          }
+        ],
+        max_completion_tokens: 400,
+        temperature: 0.3
+      });
+      
+      const content = response.choices?.[0]?.message?.content;
+      if (!content) {
+        throw new Error('No response from AI');
+      }
+      
+      return content;
+    } catch (error: any) {
+      lastError = error;
+      if (attempt < maxRetries) {
+        const waitTime = 1000 * Math.pow(2, attempt - 1);
+        await new Promise(resolve => setTimeout(resolve, waitTime));
+      }
+    }
+  }
+  
+  throw lastError || new Error('Failed to generate ingredient details');
 }
