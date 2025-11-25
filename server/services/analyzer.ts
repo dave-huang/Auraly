@@ -454,7 +454,7 @@ Return your analysis as JSON with this structure (ingredients array may be empty
           }
         ],
         response_format: { type: "json_object" },
-        max_tokens: maxTokens,
+        max_completion_tokens: maxTokens,
         temperature: 0.3
       });
       
@@ -787,7 +787,7 @@ Return your analysis as JSON with this structure:
       const estimatedTokensNeeded = Math.min(estimatedIngredientCount * tokensPerIngredient + baseTokens, maxCap);
       const maxTokens = Math.max(2500, estimatedTokensNeeded);
       
-      console.log(`[ANALYZER] Using max_tokens: ${maxTokens} for language: ${userLanguage} (estimated ${estimatedIngredientCount} ingredients)`);
+      console.log(`[ANALYZER] Using max_completion_tokens: ${maxTokens} for language: ${userLanguage} (estimated ${estimatedIngredientCount} ingredients)`);
       
       // Use GPT-5.1 for superior ingredient analysis
       console.log('[ANALYZER] Calling GPT-5.1 for analysis');
@@ -804,7 +804,7 @@ Return your analysis as JSON with this structure:
           }
         ],
         response_format: { type: "json_object" },
-        max_tokens: maxTokens,
+        max_completion_tokens: maxTokens,
         temperature: 0.3
       });
       console.log('[ANALYZER] GPT-5.1 succeeded');
@@ -1071,7 +1071,7 @@ IMPORTANT:
         }
       ],
       response_format: { type: "json_object" },
-      max_tokens: 500,
+      max_completion_tokens: 500,
       temperature: 0.3
     });
     
@@ -1234,7 +1234,7 @@ Return your analysis as JSON with this structure:
       const estimatedTokensNeeded = Math.min(40 * tokensPerIngredient + baseTokens, maxCap); // Assume ~40 ingredients
       const maxTokens = Math.max(2500, estimatedTokensNeeded);
       
-      console.log(`[VISION-ANALYZER] Using max_tokens: ${maxTokens} for language: ${userLanguage}`);
+      console.log(`[VISION-ANALYZER] Using max_completion_tokens: ${maxTokens} for language: ${userLanguage}`);
       
       console.log('[VISION-ANALYZER] Calling GPT-5.1 Vision analysis');
       const response = await openai.chat.completions.create({
@@ -1261,7 +1261,7 @@ Return your analysis as JSON with this structure:
           }
         ],
         response_format: { type: "json_object" },
-        max_tokens: maxTokens,
+        max_completion_tokens: maxTokens,
         temperature: 0.3
       });
       console.log('[VISION-ANALYZER] GPT-5.1 Vision succeeded');
