@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { flushSync } from "react-dom";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -140,7 +141,7 @@ export default function ResultsPage() {
     onSuccess: (data: AnalysisResult) => {
       setAnalysisResult(data);
       setRetryCount(0);
-      setCachedOcrText(null); // Clear cache after successful analysis
+      setCachedOcrText(null);
       
       // Save to scan history in localStorage
       const history = JSON.parse(localStorage.getItem('scanHistory') || '[]');
@@ -153,9 +154,8 @@ export default function ResultsPage() {
         ingredientCount: data.ingredients.length
       };
       history.unshift(historyItem);
-      localStorage.setItem('scanHistory', JSON.stringify(history.slice(0, 10))); // Keep last 10 scans
+      localStorage.setItem('scanHistory', JSON.stringify(history.slice(0, 10)));
       
-      // Clear pending analysis
       sessionStorage.removeItem('pendingAnalysis');
     },
     onError: () => {
