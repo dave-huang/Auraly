@@ -1228,7 +1228,7 @@ Return your analysis as JSON with this structure:
       };
       const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
       
-      const tokensPerIngredient = userLanguage === 'zh' ? 110 : 140;
+      const tokensPerIngredient = userLanguage === 'zh' ? 55 : 70;
       const baseTokens = userLanguage === 'zh' ? 600 : 800;
       const maxCap = userLanguage === 'zh' ? 4500 : 6000;
       const estimatedTokensNeeded = Math.min(40 * tokensPerIngredient + baseTokens, maxCap); // Assume ~40 ingredients
