@@ -589,117 +589,36 @@ export async function analyzeIngredients(
   const languageInstruction = LANGUAGE_INSTRUCTIONS[userLanguage as keyof typeof LANGUAGE_INSTRUCTIONS] || LANGUAGE_INSTRUCTIONS['en'];
   console.log(`[ANALYZER] Language instruction: ${languageInstruction.substring(0, 100)}...`);
   
-  // PARALLEL BATCH OPTIMIZATION: Split into smaller batches to parallelize API calls
-  // Instead of one large batch to GPT-4o, send 5-8 smaller batches in parallel
-  // This dramatically reduces total processing time for large ingredient lists
+  // SINGLE BATCH OPTIMIZATION: Send all ingredients in one request to GPT-5.1
+  // Testing: Skip parallel batching to measure if it's faster with one API call
+  console.log(`[TIMING] Sending all ingredients in single batch to GPT-5.1...`);
+  const singleBatchStartTime = Date.now();
   
-  // Extract ingredient lines for batch splitting
-  const ingredientLines = textToAnalyze
-    .split(/[\n;；]/)
-    .map(line => line.trim())
-    .filter(line => line.length > 1);
-  
-  console.log(`[ANALYZER] Extracted ${ingredientLines.length} ingredient lines for parallel processing`);
-  
-  // Create batches of ~5-8 ingredients each
-  const batchSize = Math.max(5, Math.min(8, Math.ceil(ingredientLines.length / 4)));
-  const batches: string[] = [];
-  
-  for (let i = 0; i < ingredientLines.length; i += batchSize) {
-    const batchLines = ingredientLines.slice(i, i + batchSize);
-    batches.push(batchLines.join('\n'));
-  }
-  
-  console.log(`[ANALYZER] Created ${batches.length} parallel batches (${batchSize} items per batch)`);
-  
-  if (batches.length > 1) {
-    // Use parallel batch processing for faster analysis
-    console.log(`[TIMING] Sending ${batches.length} batches in parallel to GPT-4o...`);
-    const parallelStartTime = Date.now();
+  try {
+    const result = await analyzeIngredientBatch(
+      textToAnalyze,
+      productType,
+      userLanguage,
+      estimatedIngredientCount,
+      context
+    );
     
-    try {
-      // Send all batches in parallel
-      const batchPromises = batches.map((batchText, idx) => {
-        const estimatedBatchCount = Math.ceil(estimatedIngredientCount / batches.length);
-        console.log(`[ANALYZER] Batch ${idx + 1}/${batches.length} - ${batchText.split('\n').length} lines, ~${estimatedBatchCount} ingredients`);
-        return analyzeIngredientBatch(
-          batchText,
-          productType,
-          userLanguage,
-          estimatedBatchCount,
-          context
-        );
-      });
-      
-      const batchResults = await Promise.all(batchPromises);
-      const parallelDuration = ((Date.now() - parallelStartTime) / 1000).toFixed(2);
-      console.log(`[TIMING] All ${batches.length} batches completed in parallel in ${parallelDuration}s`);
-      
-      // Merge batch results
-      const allIngredients: Ingredient[] = [];
-      let productName: string | undefined = undefined;
-      const riskLevels: RiskLevel[] = [];
-      
-      for (const batchResult of batchResults) {
-        if (batchResult.productName && !productName) {
-          productName = batchResult.productName;
-        }
-        
-        if (batchResult.ingredients && Array.isArray(batchResult.ingredients)) {
-          // Deduplicate by ingredient name (case-insensitive)
-          for (const ing of batchResult.ingredients) {
-            const exists = allIngredients.some(
-              existing => existing.name.toLowerCase() === ing.name.toLowerCase()
-            );
-            if (!exists) {
-              allIngredients.push(ing);
-            }
-          }
-        }
-        
-        if (batchResult.overallRisk) {
-          riskLevels.push(batchResult.overallRisk);
-        }
-      }
-      
-      // Determine overall risk (highest level from all batches)
-      const riskOrder = { high: 3, moderate: 2, low: 1 };
-      const overallRisk = riskLevels.length > 0
-        ? riskLevels.reduce((a, b) => 
-            riskOrder[a] >= riskOrder[b] ? a : b
-          )
-        : 'moderate';
-      
-      const detectedCount = allIngredients.length;
-      console.log(`[ANALYZER] Merged ${batches.length} batches into ${detectedCount} unique ingredients`);
-      console.log(`[ANALYZER] Product name: ${productName || 'Not detected'}`);
-      console.log(`[ANALYZER] Overall risk: ${overallRisk}`);
-      
-      // Validate merged result
-      const mergedResult = {
-        productType,
-        productName: productName || undefined,
-        ingredients: allIngredients,
-        overallRisk,
-        analyzedAt: new Date().toISOString(),
-        originalText: ingredientsText
-      };
-      
-      const validatedResult = analysisResultSchema.safeParse(mergedResult);
-      if (!validatedResult.success) {
-        console.error('Merged result validation failed:', validatedResult.error);
-        throw new Error('Merged analysis did not match expected format');
-      }
-      
-      // Cache the result before returning
-      cacheAnalysis(cacheKey, validatedResult.data, ingredientsText);
-      return validatedResult.data;
-      
-    } catch (parallelError: any) {
-      console.error('[ANALYZER] Parallel batch processing failed:', parallelError.message);
-      console.log('[ANALYZER] Falling back to single large batch analysis...');
-      // Fall through to single batch processing below
-    }
+    const singleBatchDuration = ((Date.now() - singleBatchStartTime) / 1000).toFixed(2);
+    console.log(`[TIMING] Single batch analysis completed in ${singleBatchDuration}s`);
+    
+    const detectedCount = result.ingredients.length;
+    console.log(`[ANALYZER] Analyzed ${detectedCount} unique ingredients`);
+    console.log(`[ANALYZER] Product name: ${result.productName || 'Not detected'}`);
+    console.log(`[ANALYZER] Overall risk: ${result.overallRisk}`);
+    
+    // Cache the result before returning
+    cacheAnalysis(cacheKey, result, ingredientsText);
+    return result;
+    
+  } catch (singleBatchError: any) {
+    console.error('[ANALYZER] Single batch processing failed:', singleBatchError.message);
+    console.log('[ANALYZER] Falling back to standard analysis...');
+    // Fall through to standard analysis below
   }
   
   // FALLBACK: Single large batch processing (for small ingredient lists or if parallel fails)
