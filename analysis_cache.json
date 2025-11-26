@@ -48,5 +48,146 @@
       "timestamp": 1764124484481,
       "ocrText": "INGREDIENTS: WHOLE GRAIN OAT\nFLAKES, FLAX SEEDS, CHIA SEEDS,\nQUINOA, AMARANTH FLAKES.\nDIST. & SOLD EXCLUSIVELY BY:\nTRADER JOE'S, MONROVIA, CA 91016\nSTORE IN A COOL, DRY PLACE."
     }
+  ],
+  [
+    "37bba32e0fef0eacb3bedd907f592c7fce6a43e5423c2f6f436efc97b6fc061e",
+    {
+      "result": {
+        "productType": "skincare",
+        "ingredients": [
+          {
+            "name": "Water",
+            "riskLevel": "low",
+            "summary": "Water is the main solvent in the formula and helps dissolve and distribute other ingredients on the skin or hair.",
+            "details": "In skincare and haircare, water acts as a base that allows humectants, surfactants, and actives to be evenly spread and absorbed. It is generally completely safe and does not pose health concerns in cosmetic use.",
+            "category": "solvent"
+          },
+          {
+            "name": "Cocamidopropyl Betaine",
+            "riskLevel": "low",
+            "summary": "Cocamidopropyl betaine is a mild surfactant derived from coconut oil that helps cleanse by loosening dirt and oil.",
+            "details": "It is widely used in gentle cleansers and shampoos to create foam and reduce irritation compared with harsher sulfates. A small number of people may experience contact allergy or irritation, usually related to impurities, but overall it is considered low risk in rinse-off products.",
+            "category": "surfactant"
+          },
+          {
+            "name": "Glycerin",
+            "riskLevel": "low",
+            "summary": "Glycerin is a humectant that attracts and retains moisture in the skin and hair.",
+            "details": "It helps improve skin hydration, barrier function, and softness by drawing water into the outer skin layers. Glycerin is well-studied, biocompatible, and generally non-irritating, making it a low-risk moisturizing ingredient.",
+            "category": "humectant"
+          },
+          {
+            "name": "Sodium Lauroamphoacetate",
+            "riskLevel": "low",
+            "summary": "Sodium lauroamphoacetate is a mild amphoteric surfactant used to cleanse and boost foam while reducing irritation.",
+            "details": "It is often combined with other surfactants to create gentle cleansers suitable for sensitive skin and baby products. Toxicological data indicate low irritation and sensitization potential, and it is not a sulfate (different from SLS/SLES), so it is considered low risk.",
+            "category": "surfactant"
+          },
+          {
+            "name": "Coco-Glucoside",
+            "riskLevel": "low",
+            "summary": "Coco-glucoside is a very mild, plant-derived surfactant used for gentle cleansing and foaming.",
+            "details": "Made from coconut-derived fatty alcohols and glucose, it is known for being skin-friendly and biodegradable. It is commonly used in natural and sensitive-skin formulas and has a low risk of irritation or systemic health concerns.",
+            "category": "surfactant"
+          },
+          {
+            "name": "Sodium Chloride",
+            "riskLevel": "low",
+            "summary": "Sodium chloride (table salt) is used to adjust viscosity and sometimes as a simple preservative aid.",
+            "details": "In cleansers and shampoos, it helps thicken the formula and can influence foaming behavior. At typical cosmetic levels it is safe; only very high concentrations may be drying or irritating, which is uncommon in standard skincare and haircare products.",
+            "category": "viscosity modifier"
+          },
+          {
+            "name": "Hydroxypropyl Starch Phosphate",
+            "riskLevel": "low",
+            "summary": "Hydroxypropyl starch phosphate is a modified starch used as a thickener and stabilizer.",
+            "details": "It helps control the texture and spreadability of the product and can also stabilize emulsions. It is generally considered safe, with low irritation potential and no known systemic toxicity at cosmetic use levels.",
+            "category": "thickener"
+          },
+          {
+            "name": "Citric Acid",
+            "riskLevel": "low",
+            "summary": "Citric acid is used mainly to adjust the pH of the formula and can provide mild chelating and antioxidant support.",
+            "details": "By controlling pH, it helps maintain product stability and compatibility with skin. In some individuals, especially at higher concentrations or on compromised skin, it can cause mild stinging, but overall it is regarded as a low-risk cosmetic acid in rinse-off products.",
+            "category": "pH adjuster"
+          },
+          {
+            "name": "Acrylates/C10-30 Alkyl Acrylate Crosspolymer",
+            "riskLevel": "low",
+            "summary": "Acrylates/C10-30 alkyl acrylate crosspolymer is a synthetic polymer used as a thickener, stabilizer, and texture enhancer.",
+            "details": "It helps create a smooth gel-like consistency and stabilizes emulsions so the product does not separate. It has very low skin penetration and is generally considered safe, with irritation being rare and usually related to high concentrations or poorly neutralized formulas.",
+            "category": "thickener"
+          },
+          {
+            "name": "Sodium Benzoate",
+            "riskLevel": "low",
+            "summary": "Sodium benzoate is a preservative that helps prevent the growth of bacteria and fungi in water-based products.",
+            "details": "It is widely used in foods and cosmetics and is considered safe at regulated concentrations. Rarely, it can cause mild irritation or sensitivity, and theoretical concerns about benzene formation require specific conditions (such as high heat and ascorbic acid) that are not typical for most skincare and haircare products.",
+            "category": "preservative"
+          },
+          {
+            "name": "Panthenol",
+            "riskLevel": "low",
+            "summary": "Panthenol (provitamin B5) is a humectant and conditioning agent that helps soothe and moisturize skin and hair.",
+            "details": "It can improve skin barrier function, reduce dryness, and add shine and smoothness to hair. Panthenol is generally very well tolerated, with a low risk of irritation or allergy, and is commonly used in products for sensitive or compromised skin.",
+            "category": "humectant"
+          },
+          {
+            "name": "Sodium Hydroxide",
+            "riskLevel": "low",
+            "summary": "Sodium hydroxide is used in tiny amounts to adjust the pH of the formula to a skin-friendly range.",
+            "details": "While concentrated sodium hydroxide is highly caustic, in cosmetics it is neutralized and present at very low levels solely to fine-tune acidity. Under these controlled conditions it does not pose a significant health risk and is considered low risk in finished products.",
+            "category": "pH adjuster"
+          },
+          {
+            "name": "Glyceryl Oleate",
+            "riskLevel": "low",
+            "summary": "Glyceryl oleate is an emulsifier and skin-conditioning agent derived from glycerin and oleic acid.",
+            "details": "It helps mix oil and water phases and can deposit a light, conditioning layer on skin and hair, improving softness. It is generally well tolerated and considered safe, with low irritation potential in cosmetic use.",
+            "category": "emollient"
+          },
+          {
+            "name": "Polyquaternium-7",
+            "riskLevel": "low",
+            "summary": "Polyquaternium-7 is a cationic polymer used as a conditioning agent to improve slip and reduce static.",
+            "details": "It forms a thin film on hair and skin, enhancing smoothness and detangling while reducing friction. It has low skin penetration and is typically non-irritating; concerns are minimal at cosmetic use levels, so it is considered low risk.",
+            "category": "conditioning agent"
+          },
+          {
+            "name": "Avena Sativa (Oat) Kernel Flour",
+            "riskLevel": "low",
+            "summary": "Oat kernel flour is a soothing, skin-conditioning ingredient known for its calming and anti-itch properties.",
+            "details": "Colloidal oat components (such as beta-glucans and lipids) help support the skin barrier, reduce redness, and provide mild antioxidant benefits. It is widely used for sensitive and dry skin; the main caution is for individuals with known oat or gluten-related allergies, but overall risk is low.",
+            "category": "botanical extract"
+          },
+          {
+            "name": "Disodium EDTA",
+            "riskLevel": "low",
+            "summary": "Disodium EDTA is a chelating agent that binds metal ions to improve product stability and preservative performance.",
+            "details": "By sequestering metal ions, it helps prevent formula degradation, discoloration, and reduced preservative efficacy. It has very low skin penetration and is generally considered safe at cosmetic levels, though it is not environmentally ideal due to persistence; human health risk from topical use is low.",
+            "category": "chelating agent"
+          },
+          {
+            "name": "Aloe Barbadensis Leaf Extract",
+            "riskLevel": "low",
+            "summary": "Aloe barbadensis leaf extract (aloe vera) is a soothing, hydrating botanical extract.",
+            "details": "It can provide mild anti-inflammatory, moisturizing, and calming effects, making it popular in products for sensitive or irritated skin. Most people tolerate aloe well; rare individuals may experience allergy or irritation, but overall it is considered a low-risk, beneficial ingredient.",
+            "category": "botanical extract"
+          },
+          {
+            "name": "Avena Sativa (Oat) Kernel Extract",
+            "riskLevel": "low",
+            "summary": "Oat kernel extract is a concentrated oat-derived ingredient used for its soothing and barrier-supporting properties.",
+            "details": "Rich in antioxidants, lipids, and anti-inflammatory compounds, it can help calm redness, dryness, and irritation. As with other oat ingredients, the main concern is potential allergy in sensitized individuals, but for most users it is low risk and skin-friendly.",
+            "category": "botanical extract"
+          }
+        ],
+        "overallRisk": "low",
+        "analyzedAt": "2025-11-26T02:38:25.172Z",
+        "originalText": "Ingredients:\nWater, Cocamidopropyl Betaine, Glycerin, Sodium Lauroamphoacetate,\nCoco-Glucoside, Sodium Chloride, Hydroxypropyl Starch Phosphate, Citric Acid,\nAcrylates/C10-30 Alkyl Acrylate Crosspolymer, Sodium Benzoate, Panthenol, Sodium\nHydroxide, Glyceryl Oleate, Polyquaternium-7, Avena Sativa (Oat) Kernel Flour,\nDisodium EDTA, Aloe Barbadensis Leaf Extract, Avena Sativa (Oat) Kernel Extract"
+      },
+      "timestamp": 1764124705173,
+      "ocrText": "Ingredients:\nWater, Cocamidopropyl Betaine, Glycerin, Sodium Lauroamphoacetate,\nCoco-Glucoside, Sodium Chloride, Hydroxypropyl Starch Phosphate, Citric Acid,\nAcrylates/C10-30 Alkyl Acrylate Crosspolymer, Sodium Benzoate, Panthenol, Sodium\nHydroxide, Glyceryl Oleate, Polyquaternium-7, Avena Sativa (Oat) Kernel Flour,\nDisodium EDTA, Aloe Barbadensis Leaf Extract, Avena Sativa (Oat) Kernel Extract"
+    }
   ]
 ]
