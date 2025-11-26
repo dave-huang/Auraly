@@ -393,7 +393,7 @@ async function analyzeIngredientBatch(
   const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
   const languageInstruction = LANGUAGE_INSTRUCTIONS[userLanguage as keyof typeof LANGUAGE_INSTRUCTIONS] || LANGUAGE_INSTRUCTIONS['en'];
   
-  const tokensPerIngredient = userLanguage === 'zh' ? 110 : 140;
+  const tokensPerIngredient = userLanguage === 'zh' ? 55 : 70;
   const baseTokens = userLanguage === 'zh' ? 600 : 800;
   const maxCap = userLanguage === 'zh' ? 4500 : 6000;
   
@@ -777,10 +777,10 @@ Return your analysis as JSON with this structure:
       const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
       
       // Adjust max_tokens based on estimated ingredient count and language
-      // With GPT-4o, use moderate limits for speed while ensuring completeness
-      // Each ingredient needs ~120-150 tokens (name, risk, concise summary/details) in English/Spanish
-      // Chinese needs ~100-120 tokens per ingredient due to higher token density
-      const tokensPerIngredient = userLanguage === 'zh' ? 110 : 140;
+      // With GPT-5.1, use reduced limits for speed while ensuring completeness
+      // Each ingredient needs ~60-70 tokens (name, risk, concise summary/details) in English/Spanish
+      // Chinese needs ~50-55 tokens per ingredient due to higher token density
+      const tokensPerIngredient = userLanguage === 'zh' ? 55 : 70;
       const baseTokens = userLanguage === 'zh' ? 600 : 800;
       const maxCap = userLanguage === 'zh' ? 4500 : 6000; // Lower cap for Chinese to improve speed
       
