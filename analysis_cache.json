@@ -335,5 +335,55 @@
       "timestamp": 1764135466826,
       "ocrText": "INGREDIENTS: VEGETABLE OIL (PALM OIL, CANOLA OIL, SOY LECITHIN), WHEAT FLOUR, SUGAR, SALT, CORN STARCH, CURRY POWDER\n(SPICES, GARLIC), SUGAR AND MILK POWDER MIXTURE (SUGAR, WHOLE MILK POWDER, SALT, SKIM MILK POWDER), CARAMEL COLOR,\nMONOSODIUM GLUTAMATE, WHOLE MILK POWDER, DEFATTED SOYBEAN, YEAST EXTRACT, NATURAL AND ARTIFICIAL FLAVORS, HONEY, CHEESE\nPRODUCT (DEXTRIN, ENZYME MODIFIED CHEESE [CHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), WHOLE MILK POWDER,\nSALT], YEAST EXTRACT, CORN STARCH, SALT), SOY LECITHIN, ROASTED ONION POWDER (ONION FLAKE, DEXTRIN, NATURAL FLAVOR), ONION\nSEASONING (ONION EXTRACT, DEXTRIN, SOY SAUCE [SOYBEAN, WHEAT, SALT], YEAST EXTRACT, CORN STARCH, SALT, GARLIC EXTRACT,\nNATURAL FLAVOR), TOMATO POWDER, ONION POWDER (DRIED ONION, DEFATTED SOYBEAN, GLUCOSE), SUCROSE FATTY ACID ESTERS, BROWN\nROUX (PALM OIL, SKIM MILK POWDER, WHEAT FLOUR, DEXTROSE ANHYDROUS GLUCOSE), FRUIT PASTE (BANANA, SUGAR, PROCESSED HONEY,\nTOMATO PASTE, FERMENTED MILK, CITRIC ACID, SALT), SPICES, CITRIC ACID, MONO- AND DIGLYCERIDES, COCOA POWDER (PROCESSED WITH\nALKALI), TOMATO SEASONING (DEXTRIN, TOMATO EXTRACT, YEAST EXTRACT, CORN STARCH, SALT), PROTEIN HYDROLYSATE (SOY PROTEIN\nHYDROLYSATE, DEXTRIN, MONOSODIUM GLUTAMATE), SKIM MILK POWDER, APPLE PASTE (APPLE PUREE, CITRIC ACID), GARLIC POWDER (DRIED\nGARLIC, DEFATTED SOYBEAN, GLUCOSE, MALTOSE), WHEY POWDER, ROASTED GARLIC POWDER (GARLIC FLAKE, DEXTRIN, NATURAL FLAVOR),\nCHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), ONION EXTRACT (ONION EXTRACT, YEAST EXTRACT), PAPRIKA COLOR,\nDISODIUM INOSINATE, TOMATO EXTRACT (TOMATO EXTRACT, PALM OIL, SALT, SUGAR, YEAST EXTRACT) .\nCONTAINS: SOYBEANS, WHEAT, AND MILK."
     }
+  ],
+  [
+    "cd0a337d950115d034e4e18b8db37e22907f7d27760986b8ef85b2ea4b9eed2e",
+    {
+      "result": {
+        "productType": "food",
+        "ingredients": [
+          {
+            "name": "Whole grain oat flakes",
+            "riskLevel": "low",
+            "summary": "Whole grain oat flakes are minimally processed oats that provide fiber, vitamins, and minerals and are generally considered healthy for most people.",
+            "details": "Whole grain oats contain beta-glucan, a soluble fiber known to help support healthy cholesterol levels and promote satiety. They have a low to moderate glycemic impact compared to refined grains and provide beneficial nutrients such as B vitamins, iron, and magnesium. The main concerns are for individuals with celiac disease or gluten sensitivity, as oats can sometimes be cross-contaminated with gluten-containing grains unless certified gluten-free.",
+            "category": "whole grain"
+          },
+          {
+            "name": "Flax seeds",
+            "riskLevel": "low",
+            "summary": "Flax seeds are a source of fiber and omega-3 fatty acids and are generally considered beneficial for heart and digestive health.",
+            "details": "Flax seeds provide alpha-linolenic acid (ALA), an omega-3 fatty acid, along with lignans and both soluble and insoluble fiber, which can support healthy cholesterol levels and regular digestion. They may help with blood sugar control and satiety when included as part of a balanced diet. The main cautions are for people with seed allergies or those needing to limit very high fiber intake due to specific digestive conditions.",
+            "category": "seed"
+          },
+          {
+            "name": "Chia seeds",
+            "riskLevel": "low",
+            "summary": "Chia seeds are nutrient-dense seeds rich in fiber, omega-3 fatty acids, and minerals, and are generally safe and health-promoting.",
+            "details": "Chia seeds absorb water and form a gel-like texture, which can slow digestion and help stabilize blood sugar while promoting a feeling of fullness. They are a plant-based source of omega-3 fatty acids, calcium, magnesium, and antioxidants. Possible concerns include choking risk if eaten dry in large amounts without adequate fluid and potential issues for people with seed allergies or certain gastrointestinal conditions sensitive to high fiber.",
+            "category": "seed"
+          },
+          {
+            "name": "Quinoa",
+            "riskLevel": "low",
+            "summary": "Quinoa is a gluten-free pseudocereal rich in protein, fiber, and minerals and is generally considered a nutritious grain alternative.",
+            "details": "Quinoa provides all essential amino acids, making it a complete plant protein, and also supplies fiber, iron, magnesium, and B vitamins. It has a relatively low glycemic impact and is naturally gluten-free, making it suitable for people with celiac disease when processed without cross-contamination. Some individuals may experience digestive discomfort if quinoa is not well-rinsed to remove naturally occurring saponins, which can be irritating.",
+            "category": "pseudocereal"
+          },
+          {
+            "name": "Amaranth flakes",
+            "riskLevel": "low",
+            "summary": "Amaranth flakes are made from the pseudocereal amaranth, providing protein, fiber, and minerals, and are generally regarded as a wholesome ingredient.",
+            "details": "Amaranth is a naturally gluten-free pseudocereal that offers a good amount of protein, including lysine, as well as fiber, iron, magnesium, and other micronutrients. As flakes, it is mildly processed (rolled or flaked) but typically without added additives. It is generally well tolerated, though people with grain or seed sensitivities should introduce it gradually to watch for individual reactions.",
+            "category": "pseudocereal"
+          }
+        ],
+        "overallRisk": "low",
+        "analyzedAt": "2025-11-26T05:39:46.918Z",
+        "originalText": "INGREDIENTS: WHOLE GRAIN OAT\nFLAKES, FLAX SEEDS, CHIA SEEDS,\nQUINOA, AMARANTH FLAKES."
+      },
+      "timestamp": 1764135586919,
+      "ocrText": "INGREDIENTS: WHOLE GRAIN OAT\nFLAKES, FLAX SEEDS, CHIA SEEDS,\nQUINOA, AMARANTH FLAKES."
+    }
   ]
 ]
