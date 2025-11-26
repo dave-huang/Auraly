@@ -1,0 +1,374 @@
+[
+  [
+    "5861d7c9a484b41fd993ab2941d014b6baab5842d312c6388869d432f62dbf58",
+    {
+      "result": {
+        "productType": "food",
+        "ingredients": [
+          {
+            "name": "Palm oil",
+            "riskLevel": "low",
+            "summary": "A common vegetable oil high in saturated fats.",
+            "details": "Palm oil is widely used as a cooking oil and in processed foods. While it contributes to texture and shelf life, it is high in saturated fat, which can impact heart health if consumed in excess.",
+            "category": "oil"
+          },
+          {
+            "name": "Canola oil",
+            "riskLevel": "low",
+            "summary": "Oil rich in monounsaturated fats and omega-3s.",
+            "details": "Canola oil is generally considered healthier than palm oil due to higher monounsaturated fat content, though processing may vary. Use in moderation as part of a balanced diet.",
+            "category": "oil"
+          },
+          {
+            "name": "Soy lecithin",
+            "riskLevel": "low",
+            "summary": "Emulsifier derived from soy lecithin.",
+            "details": "Emulsifier widely used to stabilize mixtures. Some soy lecithin may contain trace soy proteins; individuals with soy allergy should be cautious.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Wheat flour",
+            "riskLevel": "moderate",
+            "summary": "Primary gluten-containing flour.",
+            "details": "Wheat flour contains gluten; not suitable for those with celiac disease or gluten sensitivity. Adds structure and bulk to baked products.",
+            "category": "gluten-containing"
+          },
+          {
+            "name": "Sugar",
+            "riskLevel": "moderate",
+            "summary": "Common sweetener (sucrose).",
+            "details": "Excessive sugar intake is linked to obesity, metabolic syndrome, and dental issues. Used for sweetness and browning.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Salt",
+            "riskLevel": "moderate",
+            "summary": "Common mineral salt (sodium chloride).",
+            "details": "High sodium content can raise blood pressure in sensitive individuals. Used for flavor and preservation.",
+            "category": "preservative/flavoring"
+          },
+          {
+            "name": "Corn starch",
+            "riskLevel": "low",
+            "summary": "Starch used as thickener or filler.",
+            "details": "Corn starch is a carbohydrate thickener with minimal intrinsic health risk for most people when consumed in typical amounts.",
+            "category": "starch"
+          },
+          {
+            "name": "Spices",
+            "riskLevel": "low",
+            "summary": "Mixed spice blend.",
+            "details": "Spices are generally safe but can contain added flavors or allergens depending on processing. They enhance flavor.",
+            "category": "flavor enhancer"
+          },
+          {
+            "name": "Garlic",
+            "riskLevel": "low",
+            "summary": "Allium vegetable used for flavor.",
+            "details": "Garlic is a common, generally safe ingredient; can cause digestive upset in sensitive individuals.",
+            "category": "vegetable"
+          },
+          {
+            "name": "Whole milk powder",
+            "riskLevel": "moderate",
+            "summary": "Dried milk product containing lactose and dairy proteins.",
+            "details": "Dairy ingredient provides flavor and texture; contains lactose which may affect lactose-intolerant individuals.",
+            "category": "dairy"
+          },
+          {
+            "name": "Skim milk powder",
+            "riskLevel": "moderate",
+            "summary": "Low-fat dried milk product.",
+            "details": "Dairy ingredient with reduced fat; contains lactose and dairy proteins. Not suitable for dairy-free diets.",
+            "category": "dairy"
+          },
+          {
+            "name": "Caramel color",
+            "riskLevel": "low",
+            "summary": "Colorant used to impart brown color.",
+            "details": "Food coloring derived from caramelization of sugar; generally considered safe in typical amounts but may contain trace contaminants depending on process.",
+            "category": "colorant"
+          },
+          {
+            "name": "Monosodium glutamate",
+            "riskLevel": "moderate",
+            "summary": "Flavor enhancer (MSG).",
+            "details": "MSG enhances umami taste; some individuals report sensitivity (headache, flushing) but majority tolerate well. Not universally problematic.",
+            "category": "flavor enhancer"
+          },
+          {
+            "name": "Defatted soybean",
+            "riskLevel": "low",
+            "summary": "Soybean meal/defatted soybean powder used as protein source.",
+            "details": "Source of plant protein; may carry soy allergen risk for sensitive individuals.",
+            "category": "soy"
+          },
+          {
+            "name": "Yeast extract",
+            "riskLevel": "low",
+            "summary": "Flavor enhancer derived from yeast.",
+            "details": "Contains natural glutamates and other amino compounds; generally safe but may contribute to MSG-like taste components.",
+            "category": "flavor enhancer"
+          },
+          {
+            "name": "Natural and artificial flavors",
+            "riskLevel": "moderate",
+            "summary": "Flavoring agents of various origin.",
+            "details": "Complex mixtures that may include allergens or be proprietary; some individuals may have sensitivities.",
+            "category": "flavoring"
+          },
+          {
+            "name": "Honey",
+            "riskLevel": "low",
+            "summary": "Natural sweetener.",
+            "details": "Contains sugars; not suitable for infants under 1 year. Generally safe for adults in moderation.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Dextrin",
+            "riskLevel": "low",
+            "summary": "Polysaccharide carbohydrate derivative.",
+            "details": "Used as thickener or filler; typically considered safe.",
+            "category": "starch substitute"
+          },
+          {
+            "name": "Pasteurized milk",
+            "riskLevel": "moderate",
+            "summary": "Dairy liquid product.",
+            "details": "Contains lactose and dairy proteins; dairy allergy or lactose intolerance applies.",
+            "category": "dairy"
+          },
+          {
+            "name": "Cheese cultures",
+            "riskLevel": "low",
+            "summary": "Microbial cultures used to ferment cheese.",
+            "details": "Contributes to cheese flavor; generally safe for lactose-tolerant individuals.",
+            "category": "dairy culture"
+          },
+          {
+            "name": "Enzymes",
+            "riskLevel": "low",
+            "summary": "Protein catalysts used in processing.",
+            "details": "Broad category; many enzymes are safe, but specifics matter for those with allergies to enzyme preparations.",
+            "category": "processing aid"
+          },
+          {
+            "name": "Salt",
+            "riskLevel": "moderate",
+            "summary": "Sodium chloride (duplicate entry, deduplicated).",
+            "details": "Already noted earlier; contributes to overall sodium intake.",
+            "category": "preservative/flavoring"
+          },
+          {
+            "name": "Onion flakes",
+            "riskLevel": "low",
+            "summary": "Dehydrated onion pieces.",
+            "details": "Common flavoring; generally safe; may cause gas in sensitive individuals.",
+            "category": "vegetable"
+          },
+          {
+            "name": "Dextrin",
+            "riskLevel": "low",
+            "summary": "Polysaccharide carbohydrate derivative.",
+            "details": "Repeated entry; safe in typical amounts; used as filler/thickener.",
+            "category": "starch substitute"
+          },
+          {
+            "name": "Soy sauce",
+            "riskLevel": "moderate",
+            "summary": "Fermented sauce containing soy and wheat.",
+            "details": "Contains gluten from wheat and soy protein; high in sodium; flavor enhancer and salt source.",
+            "category": "condiment"
+          },
+          {
+            "name": "Onion extract",
+            "riskLevel": "low",
+            "summary": "Extracted flavor from onions.",
+            "details": "Used for flavor; generally safe; watch for onion allergy or intolerance.",
+            "category": "flavoring"
+          },
+          {
+            "name": "Tomato powder",
+            "riskLevel": "low",
+            "summary": "Dried tomato powder.",
+            "details": "Flavoring/coloring agent with natural sugars; generally safe.",
+            "category": "vegetable"
+          },
+          {
+            "name": "Dried onion",
+            "riskLevel": "low",
+            "summary": "Dehydrated onion.",
+            "details": "Flavoring; similar considerations to onion flakes.",
+            "category": "vegetable"
+          },
+          {
+            "name": "Glucose",
+            "riskLevel": "low",
+            "summary": "Simple sugar (dextrose).",
+            "details": "Energy source; contributes to total sugar content; generally safe in typical amounts.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Sucrose fatty acid esters",
+            "riskLevel": "low",
+            "summary": "Emulsifier derived from sugar and fatty acids.",
+            "details": "Food additive used to improve texture; generally regarded as safe.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Palm oil",
+            "riskLevel": "low",
+            "summary": "Repeated, deduplicated; see above.",
+            "details": "See palm oil entry.",
+            "category": "oil"
+          },
+          {
+            "name": "Skim milk powder",
+            "riskLevel": "moderate",
+            "summary": "Repeated dairy powder; see above.",
+            "details": "Lactose-containing; dairy-related considerations apply.",
+            "category": "dairy"
+          },
+          {
+            "name": "Wheat flour",
+            "riskLevel": "moderate",
+            "summary": "Repeated gluten-containing flour; see above.",
+            "details": "Gluten presence requires caution for gluten-sensitive individuals.",
+            "category": "gluten-containing"
+          },
+          {
+            "name": "Dextrose anhydrous glucose",
+            "riskLevel": "low",
+            "summary": "Glucose form; sugar.",
+            "details": "Adds sweetness; contributes to glycemic load.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Banana",
+            "riskLevel": "low",
+            "summary": "Fresh fruit.",
+            "details": "Natural sugars and nutrients; generally safe unless allergies to banana exist.",
+            "category": "fruit"
+          },
+          {
+            "name": "Processed honey",
+            "riskLevel": "low",
+            "summary": "Honey added/processed honey.",
+            "details": "Natural sweetener; similar considerations to honey previously noted.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Tomato paste",
+            "riskLevel": "low",
+            "summary": "Concentrated tomato product.",
+            "details": "Flavor and color; generally safe.",
+            "category": "vegetable"
+          },
+          {
+            "name": "Fermented milk",
+            "riskLevel": "low",
+            "summary": "Dairy product containing live cultures.",
+            "details": "Contains dairy; probiotics flavor considerations; lactose content depends on product.",
+            "category": "dairy"
+          },
+          {
+            "name": "Citric acid",
+            "riskLevel": "low",
+            "summary": "Acidulant and flavor enhancer.",
+            "details": "Common food additive; safe in typical amounts but can be harsh for sensitive individuals in high concentrations.",
+            "category": "acidulant"
+          },
+          {
+            "name": "Enzymes",
+            "riskLevel": "low",
+            "summary": "Processing enzymes (duplicate entry).",
+            "details": "See above enzyme note.",
+            "category": "processing aid"
+          },
+          {
+            "name": "Tomato extract",
+            "riskLevel": "low",
+            "summary": "Concentrated tomato flavor/color.",
+            "details": "Natural flavoring component; generally safe.",
+            "category": "vegetable"
+          },
+          {
+            "name": "Kermit",
+            "riskLevel": "low",
+            "summary": "Not present in list; placeholder ignored.",
+            "details": "No valid ingredient named 'Kermit' found in text.",
+            "category": "none"
+          },
+          {
+            "name": "Tomato powder",
+            "riskLevel": "low",
+            "summary": "Repeated; see above.",
+            "details": "Flavor/color; safe in typical amounts.",
+            "category": "vegetable"
+          },
+          {
+            "name": "Soy protein hydrolysate",
+            "riskLevel": "low",
+            "summary": "Hydrolyzed soy protein (glutamates present).",
+            "details": "Used as flavor enhancer; soy allergen risk applies for sensitive individuals.",
+            "category": "soy"
+          },
+          {
+            "name": "Dextin",
+            "riskLevel": "low",
+            "summary": "Likely a misspelling of dextrin; see above.",
+            "details": "Polysaccharide carbohydrate derivative; used as thickener.",
+            "category": "starch substitute"
+          },
+          {
+            "name": "Disodium inosinate",
+            "riskLevel": "moderate",
+            "summary": "Flavor enhancer often used with MSG.",
+            "details": "Potent umami enhancer; may cause sensitivity in some individuals; often used with MSG.",
+            "category": "flavor enhancer"
+          },
+          {
+            "name": "Tomato extract",
+            "riskLevel": "low",
+            "summary": "Repeated; see above.",
+            "details": "Natural flavoring component from tomato.",
+            "category": "vegetable"
+          },
+          {
+            "name": "Palm oil",
+            "riskLevel": "low",
+            "summary": "Repeated; see above.",
+            "details": "Oil with saturated fat content; consumption in moderation advised.",
+            "category": "oil"
+          },
+          {
+            "name": "Sugar",
+            "riskLevel": "moderate",
+            "summary": "Repeated sugar entry; see above.",
+            "details": "Adds sweetness and caloric content; contributes to glycemic load.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Yeast extract",
+            "riskLevel": "low",
+            "summary": "Repeated; see above.",
+            "details": "Flavor enhancer containing natural glutamates.",
+            "category": "flavor enhancer"
+          },
+          {
+            "name": "Disodium inosinate",
+            "riskLevel": "moderate",
+            "summary": "Repeated; see above.",
+            "details": "Flavor enhancer; potential sensitivity concerns.",
+            "category": "flavor enhancer"
+          }
+        ],
+        "overallRisk": "high",
+        "analyzedAt": "2025-11-26T05:45:09.001Z",
+        "originalText": "INGREDIENTS: VEGETABLE OIL (PALM OIL, CANOLA OIL, SOY LECITHIN), WHEAT FLOUR, SUGAR, SALT, CORN STARCH, CURRY POWDER\n(SPICES, GARLIC), SUGAR AND MILK POWDER MIXTURE (SUGAR, WHOLE MILK POWDER, SALT, SKIM MILK POWDER), CARAMEL COLOR,\nMONOSODIUM GLUTAMATE, WHOLE MILK POWDER, DEFATTED SOYBEAN, YEAST EXTRACT, NATURAL AND ARTIFICIAL FLAVORS, HONEY, CHEESE\nPRODUCT (DEXTRIN, ENZYME MODIFIED CHEESE [CHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), WHOLE MILK POWDER,\nSALT], YEAST EXTRACT, CORN STARCH, SALT), SOY LECITHIN, ROASTED ONION POWDER (ONION FLAKE, DEXTRIN, NATURAL FLAVOR), ONION\nSEASONING (ONION EXTRACT, DEXTRIN, SOY SAUCE [SOYBEAN, WHEAT, SALT], YEAST EXTRACT, CORN STARCH, SALT, GARLIC EXTRACT,\nNATURAL FLAVOR), TOMATO POWDER, ONION POWDER (DRIED ONION, DEFATTED SOYBEAN, GLUCOSE), SUCROSE FATTY ACID ESTERS, BROWN\nROUX (PALM OIL, SKIM MILK POWDER, WHEAT FLOUR, DEXTROSE ANHYDROUS GLUCOSE), FRUIT PASTE (BANANA, SUGAR, PROCESSED HONEY,\nTOMATO PASTE, FERMENTED MILK, CITRIC ACID, SALT), SPICES, CITRIC ACID, MONO- AND DIGLYCERIDES, COCOA POWDER (PROCESSED WITH\nALKALI), TOMATO SEASONING (DEXTRIN, TOMATO EXTRACT, YEAST EXTRACT, CORN STARCH, SALT), PROTEIN HYDROLYSATE (SOY PROTEIN\nHYDROLYSATE, DEXTRIN, MONOSODIUM GLUTAMATE), SKIM MILK POWDER, APPLE PASTE (APPLE PUREE, CITRIC ACID), GARLIC POWDER (DRIED\nGARLIC, DEFATTED SOYBEAN, GLUCOSE, MALTOSE), WHEY POWDER, ROASTED GARLIC POWDER (GARLIC FLAKE, DEXTRIN, NATURAL FLAVOR),\nCHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), ONION EXTRACT (ONION EXTRACT, YEAST EXTRACT), PAPRIKA COLOR,\nDISODIUM INOSINATE, TOMATO EXTRACT (TOMATO EXTRACT, PALM OIL, SALT, SUGAR, YEAST EXTRACT) .\nCONTAINS: SOYBEANS, WHEAT, AND MILK."
+      },
+      "timestamp": 1764135909005,
+      "ocrText": "INGREDIENTS: VEGETABLE OIL (PALM OIL, CANOLA OIL, SOY LECITHIN), WHEAT FLOUR, SUGAR, SALT, CORN STARCH, CURRY POWDER\n(SPICES, GARLIC), SUGAR AND MILK POWDER MIXTURE (SUGAR, WHOLE MILK POWDER, SALT, SKIM MILK POWDER), CARAMEL COLOR,\nMONOSODIUM GLUTAMATE, WHOLE MILK POWDER, DEFATTED SOYBEAN, YEAST EXTRACT, NATURAL AND ARTIFICIAL FLAVORS, HONEY, CHEESE\nPRODUCT (DEXTRIN, ENZYME MODIFIED CHEESE [CHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), WHOLE MILK POWDER,\nSALT], YEAST EXTRACT, CORN STARCH, SALT), SOY LECITHIN, ROASTED ONION POWDER (ONION FLAKE, DEXTRIN, NATURAL FLAVOR), ONION\nSEASONING (ONION EXTRACT, DEXTRIN, SOY SAUCE [SOYBEAN, WHEAT, SALT], YEAST EXTRACT, CORN STARCH, SALT, GARLIC EXTRACT,\nNATURAL FLAVOR), TOMATO POWDER, ONION POWDER (DRIED ONION, DEFATTED SOYBEAN, GLUCOSE), SUCROSE FATTY ACID ESTERS, BROWN\nROUX (PALM OIL, SKIM MILK POWDER, WHEAT FLOUR, DEXTROSE ANHYDROUS GLUCOSE), FRUIT PASTE (BANANA, SUGAR, PROCESSED HONEY,\nTOMATO PASTE, FERMENTED MILK, CITRIC ACID, SALT), SPICES, CITRIC ACID, MONO- AND DIGLYCERIDES, COCOA POWDER (PROCESSED WITH\nALKALI), TOMATO SEASONING (DEXTRIN, TOMATO EXTRACT, YEAST EXTRACT, CORN STARCH, SALT), PROTEIN HYDROLYSATE (SOY PROTEIN\nHYDROLYSATE, DEXTRIN, MONOSODIUM GLUTAMATE), SKIM MILK POWDER, APPLE PASTE (APPLE PUREE, CITRIC ACID), GARLIC POWDER (DRIED\nGARLIC, DEFATTED SOYBEAN, GLUCOSE, MALTOSE), WHEY POWDER, ROASTED GARLIC POWDER (GARLIC FLAKE, DEXTRIN, NATURAL FLAVOR),\nCHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), ONION EXTRACT (ONION EXTRACT, YEAST EXTRACT), PAPRIKA COLOR,\nDISODIUM INOSINATE, TOMATO EXTRACT (TOMATO EXTRACT, PALM OIL, SALT, SUGAR, YEAST EXTRACT) .\nCONTAINS: SOYBEANS, WHEAT, AND MILK."
+    }
+  ]
+]
