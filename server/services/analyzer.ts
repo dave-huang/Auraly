@@ -188,7 +188,7 @@ function cacheAnalysis(cacheKey: string, result: AnalysisResult, ocrText: string
  */
 function expandParentheticalIngredients(text: string): string {
   try {
-    console.log('[EXPANDER] Starting parenthetical expansion');
+    console.log('[EXPANDER] Starting SELECTIVE parenthetical expansion');
     console.log(`[EXPANDER] Input text length: ${text.length} chars`);
     
     if (!text || text.length === 0) {
@@ -199,6 +199,7 @@ function expandParentheticalIngredients(text: string): string {
     let result = '';
     let stack: string[] = [];
     let expansionCount = 0;
+    let skippedCount = 0;
     let unmatchedOpen = 0;
     let unmatchedClose = 0;
     
@@ -236,47 +237,35 @@ function expandParentheticalIngredients(text: string): string {
         const parentToken = beforeParenTrimmed.substring(lastCommaIndex + 1).trim();
         const restOfText = beforeParenTrimmed.substring(0, lastCommaIndex + 1);
         
-        expansionCount++;
-        
-        // Intelligent expansion logic - DEFAULT TO EXPANSION to avoid losing ingredients:
-        // 1. Extract inner content by default (e.g., "Spices (turmeric)" → "turmeric")
-        // 2. ONLY keep parent when inner is clearly a redundant alias/certification
-        //
-        // Keep parent only when:
-        // - Inner matches vitamin/chemical patterns (e.g., "Niacin (Vitamin B3)", "Ascorbic Acid (Vitamin C)")
-        // - Inner is a certification/standard (e.g., "Palm Oil (RSPO Certified)", "Sugar (Fair Trade)")
-        // - Inner is just a number/code (e.g., "E300 (300)")
-        //
-        // Otherwise extract inner to avoid losing ingredients across translations
-        
         if (innerContent.length > 0) {
-          // Check if inner is a redundant alias we should drop
-          // Use strict boundary matching to avoid false positives (e.g., "organic carrots" should NOT match)
           const trimmedInner = innerContent.trim();
           
-          // Match vitamin aliases (single tokens like "Vitamin B3", "Vitamina C", "维生素D")
+          // SELECTIVE EXPANSION: Only expand if it contains MULTIPLE items (has commas)
+          // This is the key optimization - we're being conservative to avoid unnecessary processing
+          const hasMultipleItems = /[,，、;；]/.test(trimmedInner);
+          
+          // Check if inner is a known alias/qualifier pattern (vitamin, certification, code, etc)
           const isVitaminAlias = /^(?:vitamin\s+[A-K][\d]*|vitamina\s+[A-K][\d]*|维生素\s*[A-K][\d]*)$/i.test(trimmedInner);
-          
-          // Match certifications/standards only if it's the ONLY content (no commas, no actual ingredients)
-          // Includes multi-word qualifiers like "Non-GMO Project Verified", "Fair Trade Certified"
           const isCertification = /^(?:RSPO\s+certified|fair\s+trade(?:\s+certified)?|non-GMO(?:\s+project\s+verified)?|organic|bio|ecológico|有机|certified|kosher|halal)$/i.test(trimmedInner);
-          
-          // Match pure numbers or E-numbers
           const isNumberCode = /^[E\d]+$/i.test(trimmedInner);
-          
-          // Match percentages
           const isPercentage = /^\d+%$/.test(trimmedInner);
+          const isKnownAlias = isVitaminAlias || isCertification || isNumberCode || isPercentage;
           
-          const shouldDropInner = isVitaminAlias || isCertification || isNumberCode || isPercentage;
+          // ONLY expand if:
+          // 1. Has multiple items (contains comma/separator), OR
+          // 2. Is a known non-alias pattern that adds ingredient info
+          // Otherwise, keep as-is to save processing and avoid false expansions
           
-          if (shouldDropInner) {
-            // Inner is redundant alias/qualifier - keep parent only
-            result = beforeParenTrimmed;
-            console.log(`[EXPANDER #${expansionCount}] Alias/qualifier: kept parent "${parentToken}", dropped "${innerContent.substring(0, 30)}..."`);
-          } else {
-            // Default: extract inner content (may be single or multiple items)
+          if (hasMultipleItems && !isKnownAlias) {
+            // Expand: multiple items detected
+            expansionCount++;
             result = restOfText + (restOfText && !restOfText.endsWith(',') && !restOfText.endsWith('，') ? ', ' : '') + innerContent;
-            console.log(`[EXPANDER #${expansionCount}] Expanded: "${parentToken}" → "${innerContent.substring(0, 50)}..."`);
+            console.log(`[EXPANDER #${expansionCount}] Expanded (multiple items): "${parentToken}" → "${trimmedInner.substring(0, 40)}..."`);
+          } else {
+            // Skip: single item or known alias - keep parenthetical as-is
+            skippedCount++;
+            result = beforeParenTrimmed + '(' + innerContent + ')';
+            console.log(`[EXPANDER] Skipped #${skippedCount}: "${parentToken}(...)" kept as-is (single item or known alias)`);
           }
         } else {
           // Empty parentheses - just keep what was before
@@ -301,7 +290,7 @@ function expandParentheticalIngredients(text: string): string {
       console.log(`[EXPANDER] Warning: ${unmatchedClose} unmatched closing parentheses found`);
     }
     
-    console.log(`[EXPANDER] Completed: expanded ${expansionCount} parenthetical groups`);
+    console.log(`[EXPANDER] Completed: expanded ${expansionCount}, skipped ${skippedCount}`);
     console.log(`[EXPANDER] Output text length: ${result.length} chars`);
     console.log(`[EXPANDER] First 300 chars: ${result.substring(0, 300).replace(/\n/g, ' ')}...`);
     
