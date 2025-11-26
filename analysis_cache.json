@@ -1,0 +1,52 @@
+[
+  [
+    "19454fae1788dcac73a1ee0a82f80e642a61882426e2ffb4cb6b1034f60f1349",
+    {
+      "result": {
+        "productType": "food",
+        "ingredients": [
+          {
+            "name": "Whole grain oat flakes",
+            "riskLevel": "low",
+            "summary": "Whole grain oat flakes are minimally processed oats that provide fiber, complex carbohydrates, and some protein, and are generally considered safe for most people. They can be a healthy staple in a balanced diet.",
+            "details": "Whole grain oats contain beta-glucan, a soluble fiber that may help lower LDL cholesterol and support blood sugar control. They are naturally gluten-free but can be cross-contaminated with gluten during processing, which is a concern for people with celiac disease or gluten sensitivity. Overall, they are nutrient-dense and not associated with major health risks for the general population.",
+            "category": "whole grain"
+          },
+          {
+            "name": "Flax seeds",
+            "riskLevel": "low",
+            "summary": "Flax seeds are nutrient-dense seeds rich in omega-3 fatty acids, fiber, and lignans, and are generally safe when eaten in typical food amounts. They support digestive and cardiovascular health.",
+            "details": "Flax seeds provide alpha-linolenic acid (ALA), a plant-based omega-3 fat that may support heart health, along with both soluble and insoluble fiber that can aid digestion and help with cholesterol management. They also contain phytoestrogens (lignans), which have mild hormone-like effects, but these are generally considered safe in food quantities for most people. People with certain hormone-sensitive conditions or on specific medications should consult a healthcare provider if consuming large amounts regularly.",
+            "category": "seed"
+          },
+          {
+            "name": "Chia seeds",
+            "riskLevel": "low",
+            "summary": "Chia seeds are small seeds high in fiber, omega-3 fats, and minerals, and are considered safe for most people when consumed with adequate fluid. They can help support satiety and digestive health.",
+            "details": "Chia seeds absorb significant amounts of water and form a gel-like texture, which can slow digestion and help stabilize blood sugar while promoting a feeling of fullness. Their high fiber content supports bowel regularity and may benefit cholesterol levels. Because they swell when hydrated, they should be eaten with sufficient liquid to reduce any risk of digestive discomfort or choking in people with swallowing difficulties.",
+            "category": "seed"
+          },
+          {
+            "name": "Quinoa",
+            "riskLevel": "low",
+            "summary": "Quinoa is a gluten-free pseudocereal rich in protein, fiber, and minerals, and is generally safe and well tolerated. It is often used as a nutritious alternative to refined grains.",
+            "details": "Quinoa provides all essential amino acids, making it a high-quality plant protein source, and also contains magnesium, iron, and other micronutrients. The outer coating naturally contains saponins, which can cause bitterness or mild digestive irritation in some people if not rinsed, but commercial products are usually pre-rinsed or processed to reduce this. It is suitable for people avoiding gluten, including those with celiac disease, when processed in gluten-free facilities.",
+            "category": "pseudocereal / whole grain-like"
+          },
+          {
+            "name": "Amaranth flakes",
+            "riskLevel": "low",
+            "summary": "Amaranth flakes are made from amaranth, a gluten-free pseudocereal high in protein and minerals, and are generally considered safe and nutritious. They are used similarly to other whole-grain breakfast flakes.",
+            "details": "Amaranth contains a good amount of protein, including lysine, an amino acid less common in many grains, as well as iron, magnesium, and fiber. It is naturally gluten-free and can be a good option for people with celiac disease or gluten sensitivity when processed without cross-contamination. There are no major health risks associated with typical dietary intake, and it can contribute positively to overall nutrient intake.",
+            "category": "pseudocereal / whole grain-like"
+          }
+        ],
+        "overallRisk": "low",
+        "analyzedAt": "2025-11-26T02:34:44.479Z",
+        "originalText": "INGREDIENTS: WHOLE GRAIN OAT\nFLAKES, FLAX SEEDS, CHIA SEEDS,\nQUINOA, AMARANTH FLAKES.\nDIST. & SOLD EXCLUSIVELY BY:\nTRADER JOE'S, MONROVIA, CA 91016\nSTORE IN A COOL, DRY PLACE."
+      },
+      "timestamp": 1764124484481,
+      "ocrText": "INGREDIENTS: WHOLE GRAIN OAT\nFLAKES, FLAX SEEDS, CHIA SEEDS,\nQUINOA, AMARANTH FLAKES.\nDIST. & SOLD EXCLUSIVELY BY:\nTRADER JOE'S, MONROVIA, CA 91016\nSTORE IN A COOL, DRY PLACE."
+    }
+  ]
+]
