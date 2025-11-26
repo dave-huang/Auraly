@@ -393,9 +393,9 @@ async function analyzeIngredientBatch(
   const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
   const languageInstruction = LANGUAGE_INSTRUCTIONS[userLanguage as keyof typeof LANGUAGE_INSTRUCTIONS] || LANGUAGE_INSTRUCTIONS['en'];
   
-  const tokensPerIngredient = userLanguage === 'zh' ? 110 : 140;
-  const baseTokens = userLanguage === 'zh' ? 600 : 800;
-  const maxCap = userLanguage === 'zh' ? 4500 : 6000;
+  const tokensPerIngredient = userLanguage === 'zh' ? 80 : 100;
+  const baseTokens = userLanguage === 'zh' ? 450 : 600;
+  const maxCap = userLanguage === 'zh' ? 3500 : 4500;
   
   const estimatedTokensNeeded = Math.min(estimatedCount * tokensPerIngredient + baseTokens, maxCap);
   const maxTokens = Math.max(2500, estimatedTokensNeeded);
@@ -777,12 +777,12 @@ Return your analysis as JSON with this structure:
       const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
       
       // Adjust max_tokens based on estimated ingredient count and language
-      // With GPT-4o, use moderate limits for speed while ensuring completeness
-      // Each ingredient needs ~120-150 tokens (name, risk, concise summary/details) in English/Spanish
-      // Chinese needs ~100-120 tokens per ingredient due to higher token density
-      const tokensPerIngredient = userLanguage === 'zh' ? 110 : 140;
-      const baseTokens = userLanguage === 'zh' ? 600 : 800;
-      const maxCap = userLanguage === 'zh' ? 4500 : 6000; // Lower cap for Chinese to improve speed
+      // Optimized token allocation for faster API response times
+      // Each ingredient needs ~80-100 tokens (name, risk, concise summary/details) in English/Spanish
+      // Chinese needs ~80 tokens per ingredient due to higher token density
+      const tokensPerIngredient = userLanguage === 'zh' ? 80 : 100;
+      const baseTokens = userLanguage === 'zh' ? 450 : 600;
+      const maxCap = userLanguage === 'zh' ? 3500 : 4500; // Optimized caps for faster analysis
       
       const estimatedTokensNeeded = Math.min(estimatedIngredientCount * tokensPerIngredient + baseTokens, maxCap);
       const maxTokens = Math.max(2500, estimatedTokensNeeded);
