@@ -785,11 +785,73 @@ export async function analyzeIngredientsParallel(
     }
   }
   
+  // Helper function to join wrapped lines
+  // When a line ends with a word and next line starts with lowercase or is a continuation, join them
+  function joinWrappedLines(text: string): string {
+    return text
+      .split('\n')
+      .reduce((acc: string[], line: string, idx: number, arr: string[]) => {
+        const trimmedLine = line.trim();
+        
+        // Skip empty lines
+        if (!trimmedLine) return acc;
+        
+        // Check if this line should be joined with previous line
+        // (previous line ends with word, this line is lowercase start or continuation)
+        if (acc.length > 0) {
+          const lastLine = acc[acc.length - 1];
+          const lastChar = lastLine[lastLine.length - 1];
+          
+          // If last line doesn't end with punctuation and current line doesn't start uppercase
+          // and current line isn't a structural marker, it's likely a wrapped continuation
+          const isWrappedContinuation = 
+            /[a-zA-Z]$/.test(lastLine) && // Last line ends with letter
+            /^[a-z]/.test(trimmedLine) && // This line starts with lowercase
+            !/^(CONTAINS|LESS|OF:|OR|AND|WITH|TO|IN|AS|IS)/.test(trimmedLine); // Not a structural marker
+          
+          if (isWrappedContinuation) {
+            acc[acc.length - 1] = lastLine + ' ' + trimmedLine;
+            return acc;
+          }
+        }
+        
+        acc.push(trimmedLine);
+        return acc;
+      }, [])
+      .join('\n');
+  }
+  
+  // Helper function to filter out structural markers
+  function isStructuralMarker(line: string): boolean {
+    const upperLine = line.toUpperCase();
+    
+    // Filter out percent/quantity markers and section headers
+    const structuralPatterns = [
+      /^CONTAINS\s+[\d.]+%\s+(OR|LESS)/i,  // "CONTAINS 2% OR", "CONTAINS 1% LESS"
+      /^LESS\s+OF:/i,                       // "LESS OF:"
+      /^OF:\s+/i,                           // "OF:" alone
+      /^OR\s+(LESS|MORE)/i,                 // "OR LESS", "OR MORE"
+      /^CONTAINS\s+(EGG|MILK|SOY|WHEAT|PEANUT|TREE|NUT|FISH|SHELLFISH|SESAME)/i, // Allergen declarations
+      /^CONTAINS:\s+(EGG|MILK|SOY|WHEAT)/i, // CONTAINS: declarations
+      /^\d+%\s*(OR|AND|LESS)?\s*(MORE|LESS)?$/i, // Pure percentage
+      /^(INGREDIENTS?|ALLERGENS?|DIRECTIONS?|INSTRUCTIONS?|MADE IN|MANUFACTURED)\.?$/i // Section headers
+    ];
+    
+    return structuralPatterns.some(pattern => pattern.test(line));
+  }
+  
+  // Pre-process to join wrapped lines
+  const joinedText = joinWrappedLines(textToAnalyze);
+  
   // Parse individual ingredients by splitting on common separators
-  const rawIngredients = textToAnalyze
+  const rawIngredients = joinedText
     .split(/[,，、;；\n]/)
     .map(ing => ing.trim())
-    .filter(ing => ing.length > 2 && !ing.match(/^[\d.]+%?$/))
+    .filter(ing => 
+      ing.length > 2 && 
+      !ing.match(/^[\d.]+%?$/) && 
+      !isStructuralMarker(ing)
+    )
     .slice(0, 150); // Cap at 150 to avoid huge batches
   
   if (rawIngredients.length === 0) {
