@@ -255,8 +255,8 @@
     "createdAt": 1764141372281
   },
   "modified food starch__food": {
-    "analysis": "{\"name\":\"Modified food starch\",\"riskLevel\":\"low\",\"summary\":\"Modified food starch is a processed starch used to thicken or stabilize foods and is generally considered safe for most people.\",\"details\":\"Modified food starch is typically derived from corn, potato, tapioca, or wheat and then physically or chemically treated to improve its performance in processed foods (e.g., better thickening, freeze-thaw stability). Health concerns are generally low, but sensitive individuals may need to check the source (e.g., wheat-based starch can contain gluten, and corn-based starch may be avoided by those with corn allergy). It contributes minimal nutritional value but is widely approved by food safety authorities as safe at typical intake levels.\",\"category\":\"Thickener / stabilizer\"}",
-    "lastUpdated": 1764141451488,
+    "analysis": "{\"name\":\"Modified food starch\",\"riskLevel\":\"low\",\"summary\":\"Modified food starch is a processed starch used to thicken or stabilize foods and is generally recognized as safe for most people.\",\"details\":\"Modified food starch is typically derived from corn, potato, tapioca, or wheat and then chemically or physically altered to improve texture, stability, or resistance to heat and acidity. For most consumers it poses low health risk, but individuals with specific allergies or celiac disease should verify the starch source, because it can sometimes be made from wheat and contain trace gluten unless labeled gluten-free.\",\"category\":\"Thickener / stabilizer\"}",
+    "lastUpdated": 1764141782849,
     "createdAt": 1764141451488
   },
   "baking (as part of 'baking soda')__food": {
@@ -265,8 +265,8 @@
     "createdAt": 1764141451488
   },
   "baking soda (sodium bicarbonate)__food": {
-    "analysis": "{\"name\":\"Baking Soda (Sodium Bicarbonate)\",\"riskLevel\":\"low\",\"summary\":\"Baking soda is a common leavening agent used in baked goods and is generally recognized as safe in normal food amounts.\",\"details\":\"Sodium bicarbonate helps doughs and batters rise by releasing carbon dioxide when it reacts with acids. The main health consideration is its sodium content: very large or frequent supplemental intakes could contribute to excess sodium, but the quantities used in typical foods are small and not a concern for most people. Individuals on strict low-sodium diets should consider total dietary sodium from all sources.\",\"category\":\"Leavening agent\"}",
-    "lastUpdated": 1764141458237,
+    "analysis": "{\"name\":\"Baking soda (sodium bicarbonate)\",\"riskLevel\":\"low\",\"summary\":\"Baking soda is a leavening agent used to help baked goods rise and is generally safe when consumed in normal food amounts.\",\"details\":\"Chemically known as sodium bicarbonate, baking soda reacts with acids in doughs and batters to release carbon dioxide, creating a light, airy texture. While it does add some sodium, the quantity in typical baked products is modest; health concerns mainly arise only with excessive use (such as large supplemental doses), which can disturb electrolyte balance or raise sodium intake significantly.\",\"category\":\"Leavening agent\"}",
+    "lastUpdated": 1764141782849,
     "createdAt": 1764141451488
   },
   "water__food": {
@@ -290,8 +290,8 @@
     "createdAt": 1764141452508
   },
   "reduced iron / ferrous sulfate__food": {
-    "analysis": "{\"name\":\"Reduced iron / Ferrous sulfate\",\"riskLevel\":\"low\",\"summary\":\"An added source of dietary iron used to fortify foods and prevent iron deficiency.\",\"details\":\"Reduced iron and ferrous sulfate are common iron fortificants added to grain products and other foods to improve their iron content. At normal food levels they are safe for most people, though large supplemental doses can cause gastrointestinal discomfort and may be inappropriate for individuals with iron overload conditions like hemochromatosis.\",\"category\":\"Fortified nutrient (mineral)\"}",
-    "lastUpdated": 1764141453172,
+    "analysis": "{\"name\":\"Reduced Iron / Ferrous Sulfate\",\"riskLevel\":\"low\",\"summary\":\"A source of supplemental iron added to foods to prevent iron deficiency. Generally safe at levels used in fortified foods, but very high intakes can cause digestive upset and are dangerous for young children if taken in large accidental doses.\",\"details\":\"Reduced iron and ferrous sulfate are forms of iron used to fortify foods like cereals and flours, helping prevent iron-deficiency anemia in the general population. In typical food amounts they are considered safe for most people, though some individuals may experience mild gastrointestinal discomfort (such as constipation or nausea) with higher supplemental intakes. Excess iron intake, especially from supplements, can be harmful and is particularly risky for children if large amounts are ingested at once; people with iron overload conditions (like hemochromatosis) should also be cautious.\",\"category\":\"Mineral fortificant / nutrient\"}",
+    "lastUpdated": 1764141781428,
     "createdAt": 1764141453172
   },
   "thiamine__food": {
@@ -335,13 +335,13 @@
     "createdAt": 1764141454702
   },
   "artificial flavors__food": {
-    "analysis": "{\"name\":\"Artificial flavors\",\"riskLevel\":\"moderate\",\"summary\":\"Artificial flavors are chemically synthesized compounds used to mimic natural tastes; they are generally recognized as safe but can be problematic for sensitive individuals.\",\"details\":\"Artificial flavors are made from isolated or synthesized chemicals that recreate specific flavor profiles without using the original food source. Regulatory agencies (like the FDA) typically consider approved artificial flavors safe at the levels used in foods, but formulations are often proprietary, so consumers do not know the exact compounds used. A small subset of people may experience headaches, hyperactivity, or other sensitivity-type reactions, and some prefer to avoid them as a precaution and to minimize ultra-processed ingredients.\",\"category\":\"Artificial flavoring\"}",
-    "lastUpdated": 1764141455686,
+    "analysis": "{\"name\":\"Artificial flavors\",\"riskLevel\":\"moderate\",\"summary\":\"Artificial flavors are synthetic chemicals designed to mimic natural flavors; they are generally recognized as safe but can cause sensitivity in some people and indicate a highly processed product.\",\"details\":\"“Artificial flavors” is a catch‑all term that can encompass dozens of different lab‑created flavoring chemicals, solvents, and carriers, without specifying each substance. Regulatory agencies typically consider approved artificial flavors safe at permitted levels, but some individuals (especially those with chemical sensitivities, migraines, or children with behavioral concerns) may report reactions. Their presence also usually signals an ultra‑processed food, which is associated with poorer overall diet quality and health outcomes when eaten frequently.\",\"category\":\"Artificial flavoring\"}",
+    "lastUpdated": 1764141782357,
     "createdAt": 1764141455686
   },
   "titanium dioxide (color)__food": {
-    "analysis": "{\"name\":\"Titanium dioxide (color)\",\"riskLevel\":\"moderate\",\"summary\":\"Titanium dioxide is a white pigment used to whiten or brighten foods; safety evaluations are evolving, and some regions have restricted its use due to concerns about possible genotoxicity at certain particle sizes and exposures.\",\"details\":\"Titanium dioxide (often E171) has long been used as a whitening agent in foods, confectionery, and supplements. Traditional toxicology suggested low absorption and low acute toxicity, but newer data have raised questions about nanoparticle forms and potential DNA damage, leading the EU to ban its use in food as a precautionary measure, while other authorities have maintained approvals with limits. For most individuals and at typical dietary exposures the immediate risk appears low, but given regulatory uncertainty and its purely cosmetic function, some consumers may choose to limit or avoid it.\",\"category\":\"Color additive\"}",
-    "lastUpdated": 1764141455686,
+    "analysis": "{\"name\":\"Titanium dioxide (color)\",\"riskLevel\":\"moderate\",\"summary\":\"Titanium dioxide is a white pigment used to brighten and whiten foods; while once widely accepted as safe, its safety has been questioned due to concerns about possible DNA damage and nanoparticle effects.\",\"details\":\"Titanium dioxide (often labeled TiO₂ or E171) is an inorganic colorant that gives products an opaque, bright white appearance. Some newer research suggests that certain forms, particularly nanoparticle-sized titanium dioxide, may cause inflammation or genotoxic effects in lab models, leading the EU to ban it as a food additive, while other regulatory bodies (like the U.S. FDA) still allow it within limits. Because of this evolving evidence and regulatory disagreement, many health‑conscious consumers choose to limit or avoid it when possible.\",\"category\":\"Color additive\"}",
+    "lastUpdated": 1764141782357,
     "createdAt": 1764141455686
   },
   "monocalcium phosphate__food": {
@@ -380,8 +380,8 @@
     "createdAt": 1764141456184
   },
   "sorbic acid and potassium sorbate__food": {
-    "analysis": "{\"name\":\"Sorbic acid and potassium sorbate\",\"riskLevel\":\"low\",\"summary\":\"A commonly used preservative pair that helps prevent mold and yeast growth in foods. Generally recognized as safe at typical food-use levels.\",\"details\":\"Sorbic acid and its salt, potassium sorbate, are food preservatives used to extend shelf life by inhibiting the growth of molds, yeasts, and some bacteria. Regulatory agencies such as the FDA and EFSA consider them safe within established limits, and they are widely used in baked goods, cheeses, and beverages. Some sensitive individuals may experience mild irritation or intolerance, but serious adverse effects are rare at normal dietary exposures.\",\"category\":\"Preservative\"}",
-    "lastUpdated": 1764141456664,
+    "analysis": "{\"name\":\"Sorbic acid and potassium sorbate\",\"riskLevel\":\"low\",\"summary\":\"Sorbic acid and its salt, potassium sorbate, are common food preservatives used to inhibit mold and yeast growth. They are generally recognized as safe for most people at the levels used in foods.\",\"details\":\"Sorbic acid and potassium sorbate prevent spoilage by interfering with the growth of fungi and some bacteria, extending shelf life of many processed foods. Regulatory agencies such as the FDA and EFSA consider them safe within established limits, and they do not accumulate in the body because they are metabolized similarly to fatty acids. A small number of individuals may experience mild sensitivity or irritation (for example, oral or skin irritation) at higher exposures, but serious adverse effects are rare.\",\"category\":\"Preservative\"}",
+    "lastUpdated": 1764141781254,
     "createdAt": 1764141456664
   },
   "potassium sorbate (to retain freshness)__food": {
@@ -488,5 +488,75 @@
     "analysis": "{\"name\":\"Mono- and Diglycerides (diglycerides component)\",\"riskLevel\":\"moderate\",\"summary\":\"Diglycerides are the companion to monoglycerides in the common emulsifier pair “mono- and diglycerides,” helping stabilize texture in processed foods. Health concerns are similar: they are generally safe but can be a minor source of trans fats and come from refined fats.\",\"details\":\"Diglycerides have two fatty acids attached to a glycerol backbone and act as surface-active agents that keep fat and water mixed and improve softness in baked goods, margarine, and many packaged items. They are metabolized as fats and, like monoglycerides, can introduce small amounts of trans fats depending on how they are produced. While regulatory agencies consider them safe at typical use levels, frequent consumption is characteristic of diets high in ultra-processed foods, which are associated with poorer long-term health outcomes.\",\"category\":\"Emulsifier\"}",
     "lastUpdated": 1764141459369,
     "createdAt": 1764141459369
+  },
+  "baking soda__food": {
+    "analysis": "{\"name\":\"Baking Soda\",\"riskLevel\":\"low\",\"summary\":\"Baking soda (sodium bicarbonate) is a common leavening agent that is generally recognized as safe when used in normal food quantities.\",\"details\":\"Sodium bicarbonate helps baked goods rise by releasing carbon dioxide when it reacts with acids. The main health consideration is its sodium content: very large or frequent intakes can contribute to excess sodium, which may be a concern for people with hypertension or kidney issues, but typical amounts in food are small and not problematic for most individuals.\",\"category\":\"leavening agent\"}",
+    "lastUpdated": 1764141780624,
+    "createdAt": 1764141780624
+  },
+  "lactylate__food": {
+    "analysis": "{\"name\":\"Lactylate\",\"riskLevel\":\"low\",\"summary\":\"Lactylate usually refers to food emulsifiers such as sodium stearoyl lactylate or calcium stearoyl lactylate, which are widely used and generally recognized as safe.\",\"details\":\"These compounds are made from lactic acid and fatty acids and help blend water and fat in products like baked goods, margarines, and whipped toppings, improving texture and shelf life. They contain no lactose in meaningful amounts and rarely cause issues; however, extremely sensitive individuals to milk-derived ingredients may prefer to check which specific lactylate is used and whether it is sourced from dairy.\",\"category\":\"emulsifier\"}",
+    "lastUpdated": 1764141780624,
+    "createdAt": 1764141780624
+  },
+  "potassium sorbate__food": {
+    "analysis": "{\"name\":\"Potassium sorbate\",\"riskLevel\":\"low\",\"summary\":\"Potassium sorbate is a preservative used to retain freshness by preventing mold and yeast growth. It is widely approved as safe when used within regulatory limits.\",\"details\":\"As the potassium salt of sorbic acid, potassium sorbate is highly effective at extending the shelf life of foods such as baked goods, beverages, and dairy products by inhibiting microbial growth. Toxicological studies show low toxicity, and it is generally recognized as safe (GRAS) by major food safety authorities. Some people with chemical sensitivities may report mild irritation or intolerance, but for the general population, dietary exposures from normal food use are considered low risk.\",\"category\":\"Preservative\"}",
+    "lastUpdated": 1764141781256,
+    "createdAt": 1764141781256
+  },
+  "thiamine mononitrate (vitamin b1)__food": {
+    "analysis": "{\"name\":\"Thiamine Mononitrate (Vitamin B1)\",\"riskLevel\":\"low\",\"summary\":\"A synthetic form of vitamin B1 used to enrich foods. It is considered very safe and helps prevent thiamine deficiency.\",\"details\":\"Mononitrate in food ingredient lists almost always refers to thiamine mononitrate, a stable form of vitamin B1 added to refined grains and other foods for nutritional enrichment. Thiamine is essential for energy metabolism and nervous system function, and deficiencies can cause serious health problems, so fortification is beneficial at the population level. It has a very low toxicity profile, and adverse effects from normal dietary fortification levels are extremely rare.\",\"category\":\"Vitamin / nutrient\"}",
+    "lastUpdated": 1764141781428,
+    "createdAt": 1764141781428
+  },
+  "contains 2% or less of__food": {
+    "analysis": "{\"name\":\"Contains 2% or less of\",\"riskLevel\":\"low\",\"summary\":\"This is not an ingredient but a labeling phrase indicating that the following ingredients each make up 2% or less of the product by weight.\",\"details\":\"Food labels often use the phrase \\\"contains 2% or less of\\\" to group minor ingredients that are present in very small amounts. The health impact depends entirely on the specific ingredients listed after this phrase, not on the phrase itself.\",\"category\":\"Labeling phrase / not an ingredient\"}",
+    "lastUpdated": 1764141782456,
+    "createdAt": 1764141782456
+  },
+  "glycerin__food": {
+    "analysis": "{\"name\":\"Glycerin\",\"riskLevel\":\"low\",\"summary\":\"Glycerin (glycerol) is a common humectant and sweet-tasting compound used to retain moisture and improve texture in foods.\",\"details\":\"Glycerin is generally recognized as safe (GRAS) and is widely used in processed foods, candies, and baked goods to keep them soft and moist. In typical food amounts it poses little risk for most people, though very high intakes may cause mild digestive upset (such as gas or loose stools) in some individuals due to its osmotic effect.\",\"category\":\"Humectant / texture agent\"}",
+    "lastUpdated": 1764141782456,
+    "createdAt": 1764141782456
+  },
+  "cocoa processed with alkali__food": {
+    "analysis": "{\"name\":\"Cocoa processed with alkali\",\"riskLevel\":\"low\",\"summary\":\"Cocoa processed with alkali (Dutch-processed cocoa) is cocoa that has been treated with an alkaline substance to reduce acidity and create a milder flavor and darker color.\",\"details\":\"The alkalization process makes cocoa smoother and less bitter, which is desirable in many chocolate-flavored foods and beverages. While this processing can reduce some natural cocoa flavonoids (beneficial antioxidants), it does not generally introduce major health risks; overall health impact depends more on the total sugar, fat, and other ingredients in the final product.\",\"category\":\"Processed cocoa / flavoring\"}",
+    "lastUpdated": 1764141782456,
+    "createdAt": 1764141782456
+  },
+  "baking__food": {
+    "analysis": "{\"name\":\"Baking\",\"riskLevel\":\"low\",\"summary\":\"“Baking” on its own is not an ingredient but likely part of the term “baking soda” or “baking powder.”\",\"details\":\"In an ingredient list, the word “baking” by itself is incomplete and probably refers to a leavening agent such as baking soda or baking powder, which help doughs and batters rise. There is no specific health risk associated with the term alone; the actual risk depends on the complete ingredient (for example, baking soda is sodium bicarbonate, while baking powder can also contain added sodium and other components).\",\"category\":\"Label artifact / likely part of leavening agent\"}",
+    "lastUpdated": 1764141782849,
+    "createdAt": 1764141782849
+  },
+  "hydrogenated (as in hydrogenated oils/fats)__food": {
+    "analysis": "{\"name\":\"Hydrogenated (as in hydrogenated oils/fats)\",\"riskLevel\":\"high\",\"summary\":\"Refers to fats that have been chemically hydrogenated, often creating trans fats that are strongly linked to heart disease.\",\"details\":\"Hydrogenation is a process that adds hydrogen to liquid vegetable oils to make them more solid and shelf‑stable. This process can create trans fats, which raise LDL (bad) cholesterol, lower HDL (good) cholesterol, and increase the risk of cardiovascular disease and inflammation. When you see “hydrogenated” in an ingredient list (especially “partially hydrogenated oils”), it usually signals the presence of unhealthy industrial trans fats, even if the label rounds them down to 0 g.\",\"category\":\"Trans fats / hydrogenated oils\"}",
+    "lastUpdated": 1764141783008,
+    "createdAt": 1764141783008
+  },
+  "mono (as in mono-glycerides)__food": {
+    "analysis": "{\"name\":\"Mono (as in mono-glycerides)\",\"riskLevel\":\"moderate\",\"summary\":\"Monoglycerides are emulsifiers made from glycerol and fatty acids, often derived from vegetable oils or animal fats.\",\"details\":\"Monoglycerides help blend fats and water in processed foods like baked goods, margarine, and ice cream, improving texture and shelf life. Health concerns include that they can be a source of additional industrial trans fats, since they may be produced from partially hydrogenated oils, even though they are not counted in the ‘trans fat’ line on nutrition labels. For most people they are considered generally safe at typical intake levels, but those trying to strictly avoid trans fats or highly processed additives may wish to minimize them.\",\"category\":\"Emulsifier / processing aid\"}",
+    "lastUpdated": 1764141783008,
+    "createdAt": 1764141783008
+  },
+  "diglycerides (as in mono- and diglycerides)__food": {
+    "analysis": "{\"name\":\"Diglycerides (as in mono- and diglycerides)\",\"riskLevel\":\"moderate\",\"summary\":\"Diglycerides are emulsifiers similar to monoglycerides, used to improve texture and stability in processed foods and can also carry hidden trans fats.\",\"details\":\"Diglycerides are molecules made from glycerol and two fatty acids, commonly added to foods to keep ingredients from separating, making products softer and extending shelf life. Like monoglycerides, they may be manufactured from partially hydrogenated oils, which means they can contribute small amounts of industrial trans fats that are not reflected in the nutrition facts panel. While regulatory bodies generally consider them safe, people limiting processed foods, trans fats, or certain animal-derived ingredients may prefer to avoid frequent consumption.\",\"category\":\"Emulsifier / processing aid\"}",
+    "lastUpdated": 1764141783008,
+    "createdAt": 1764141783008
+  },
+  "soybean and wheat__food": {
+    "analysis": "{\"name\":\"Soybean and wheat\",\"riskLevel\":\"moderate\",\"summary\":\"Soybean and wheat are common food ingredients that are major allergens and sources of protein and carbohydrates. They are generally safe for most people but can cause serious reactions in those with soy or gluten/wheat allergies or intolerances.\",\"details\":\"Soybeans provide plant-based protein and fats, while wheat is a staple grain rich in carbohydrates and gluten. For individuals with soy allergy, wheat allergy, celiac disease, or non-celiac gluten sensitivity, consumption can trigger symptoms ranging from digestive distress to severe allergic reactions. For people without these conditions, these ingredients are usually safe, but they do indicate the presence of common allergens that some consumers need to avoid carefully.\",\"category\":\"Allergens (soy, gluten/wheat)\"}",
+    "lastUpdated": 1764141783581,
+    "createdAt": 1764141783581
+  },
+  "ingredients (label marker not an ingredient)__food": {
+    "analysis": "{\"name\":\"Ingredients (label marker, not an ingredient)\",\"riskLevel\":\"low\",\"summary\":\"The word \\\"INGREDIENTS\\\" is a labeling header, not a consumable substance. It carries no nutritional or health risk on its own.\",\"details\":\"Regulatory labeling standards require manufacturers to list components of a product under an \\\"Ingredients\\\" heading. This term is purely informational and indicates the start of the ingredient list, so it does not have any direct health impact or risk profile.\",\"category\":\"Labeling / non-ingredient\"}",
+    "lastUpdated": 1764141783581,
+    "createdAt": 1764141783581
+  },
+  "bioengineered food ingredients (gmos)__food": {
+    "analysis": "{\"name\":\"Bioengineered food ingredients (GMOs)\",\"riskLevel\":\"moderate\",\"summary\":\"Bioengineered food ingredients indicate the presence of genetically modified organisms (GMOs). Current evidence suggests they are generally safe to eat, but some consumers have environmental, ethical, or precautionary concerns.\",\"details\":\"The phrase \\\"contains bioengineered food ingredients\\\" is a regulatory disclosure that some components are genetically modified, often crops like soy, corn, or canola. Large scientific bodies (such as the WHO and major national academies) have not found consistent evidence that approved GMOs pose greater health risks than conventional counterparts. However, GMO use is sometimes associated with higher pesticide use or certain agricultural practices, and long-term ecological and sustainability issues remain points of debate, which leads some people to avoid them as a precaution or for personal preference.\",\"category\":\"Genetically modified / bioengineered\"}",
+    "lastUpdated": 1764141783581,
+    "createdAt": 1764141783581
   }
 }
