@@ -665,7 +665,7 @@ export async function analyzeIngredients(
       // Determine overall risk (highest level from all batches)
       const riskOrder = { high: 3, moderate: 2, low: 1 };
       const overallRisk = riskLevels.length > 0
-        ? (Object.keys(riskOrder) as RiskLevel[]).reduce((a, b) => 
+        ? riskLevels.reduce((a, b) => 
             riskOrder[a] >= riskOrder[b] ? a : b
           )
         : 'moderate';
