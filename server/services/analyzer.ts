@@ -564,6 +564,7 @@ Return your analysis as JSON with this structure:
       console.log('[ANALYZER] Calling GPT-5.1 for fast analysis');
       
       // Use GPT-5.1 Instant mode for fast analysis with minimal reasoning overhead
+      // Note: GPT-5.1 with reasoning_effort only supports default temperature (1), not custom values
       const response = await openai.chat.completions.create({
         model: "gpt-5.1",
         messages: [
@@ -578,7 +579,6 @@ Return your analysis as JSON with this structure:
         ],
         response_format: { type: "json_object" },
         max_completion_tokens: maxTokens,
-        temperature: 0.3,
         reasoning_effort: "low"
       } as any);
       console.log('[ANALYZER] GPT-5.1 Instant mode succeeded');
