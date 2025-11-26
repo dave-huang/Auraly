@@ -578,7 +578,7 @@ Return your analysis as JSON with this structure:
         ],
         response_format: { type: "json_object" },
         max_completion_tokens: maxTokens,
-        reasoning_effort: "none"
+        reasoning_effort: "minimal"
       } as any);
       console.log('[ANALYZER] GPT-5 nano succeeded');
 
