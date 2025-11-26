@@ -936,31 +936,71 @@ export async function analyzeIngredientsParallel(
       return cachedResults.map(r => r.data);
     }
     
-    // Query GPT only for missing ingredients
+    // Query GPT only for missing ingredients using Auraly framework
     const missingList = missingIngredients.map((ing, idx) => `${idx + 1}. ${ing}`).join('\n');
-    const batchPrompt = `Analyze these ${missingIngredients.length} ingredients from a ${productType} product:
+    const batchPrompt = `You are Auraly, an ingredient-safety analyst trained to evaluate food, skincare, haircare, cosmetics, oral care, fragrance, and personal-care ingredients using a dimension-based safety framework. You must return structured JSON only.
+
+Your job is to evaluate each ingredient using the following methodology:
+
+AURALY RISK FRAMEWORK
+A) HEALTH RISK (PRIMARY RISK SCORE)
+Focus ONLY on:
+1. Toxicity
+2. Carcinogenicity
+3. Endocrine disruption
+4. Metabolic effects
+5. Chronic ingestion risks
+6. Additive/process risk (e.g., ultra-processed additives, stabilizers, synthetic preservatives)
+
+DO NOT classify allergens as "high risk."
+Health risk is based on impact on the general population in normal exposure amounts.
+
+Health risk may be:
+- "High"
+- "Medium"
+- "Low"
+
+B) ALLERGEN RISK (SECONDARY, NOT PART OF HEALTH RISK SCORE)
+Only mark true if the ingredient is a top allergen:
+milk, egg, peanut, tree nuts, soy, wheat, sesame, shellfish, fish, gluten.
+Allergen status must NOT raise the health risk score.
+
+C) DIETARY & RESTRICTION FLAGS (SECONDARY, NOT PART OF HEALTH RISK SCORE)
+Identify as applicable:
+- vegan: yes/no
+- vegetarian: yes/no
+- containsAnimalProducts: yes/no
+- containsGluten: yes/no
+- containsLactose: yes/no
+- containsAddedSugars: yes/no
+- ultraProcessedAdditive: yes/no
+
+Analyze these ${missingIngredients.length} ingredients from a ${productType} product:
 
 ${missingList}
 
-For each, provide:
-1. Name (in user's language)
-2. Risk level: "low", "moderate", or "high"
-3. 1-2 sentence summary
-4. 2-3 sentence detailed explanation
-5. Optional category
+Product context: ${context}
 
 ${languageInstruction}
 
-Product context: ${context}
-
-Return as JSON array:
+Return as JSON array with this exact structure:
 [
   {
-    "name": "Ingredient Name",
-    "riskLevel": "low|moderate|high",
-    "summary": "Brief explanation",
-    "details": "Detailed explanation",
-    "category": "Optional category"
+    "ingredient": "NAME",
+    "category": "${productType}",
+    "healthRisk": "High|Medium|Low",
+    "allergen": true/false,
+    "dietaryFlags": {
+      "vegan": true/false,
+      "vegetarian": true/false,
+      "containsAnimalProducts": true/false,
+      "containsGluten": true/false,
+      "containsLactose": true/false,
+      "containsAddedSugars": true/false,
+      "ultraProcessedAdditive": true/false
+    },
+    "summary": "Short explanation of health risk and any notable concerns.",
+    "sourcesOrNotes": "Optional contextual detail for nuanced cases or null"
   }
 ]`;
     
