@@ -66,6 +66,33 @@ function normalizeTextForCaching(text: string): string {
     .toLowerCase();
 }
 
+// Normalize ingredient name capitalization to title case for consistency
+// For English/Spanish: "Title Case Format"
+// For Chinese: leave as-is since it doesn't have capitalization rules
+function normalizeIngredientCapitalization(name: string, language: string = 'en'): string {
+  // Skip normalization for Chinese
+  if (language === 'zh') {
+    return name;
+  }
+  
+  // For English and Spanish, convert to title case
+  // Handle special cases like Roman numerals, abbreviations, etc.
+  return name
+    .toLowerCase()
+    .split(' ')
+    .map((word: string) => {
+      // Skip very small connector words but capitalize most words
+      const skipCapitalization = ['a', 'an', 'the', 'or', 'y', 'e', 'de', 'del', 'la', 'el'];
+      if (skipCapitalization.includes(word) && word.length <= 2) {
+        return word;
+      }
+      // Capitalize first letter
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(' ')
+    .replace(/^./, (char: string) => char.toUpperCase()); // Ensure first letter is always capitalized
+}
+
 // Calculate Levenshtein similarity between two strings (0-1, where 1 is identical)
 function calculateSimilarity(str1: string, str2: string): number {
   const s1 = normalizeTextForCaching(str1);
@@ -961,6 +988,12 @@ Return as JSON array:
         console.error(`[PARALLEL-BATCH-${batchIdx}] Failed to parse GPT response:`, content);
         throw new Error('Invalid JSON from GPT');
       }
+      
+      // Normalize ingredient name capitalization for consistency
+      freshResults = freshResults.map(result => ({
+        ...result,
+        name: normalizeIngredientCapitalization(result.name, userLanguage)
+      }));
       
       // Cache fresh results
       for (const result of freshResults) {
