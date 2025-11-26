@@ -563,7 +563,7 @@ Return your analysis as JSON with this structure:
       console.log(`[ANALYZER] Using max_tokens: ${maxTokens} for language: ${userLanguage} (estimated ${estimatedIngredientCount} ingredients)`);
       console.log('[ANALYZER] Calling GPT-5.1 for fast analysis');
       
-      // Use GPT-5.1 for superior ingredient analysis (no fallback - errors should be visible)
+      // Use GPT-5.1 Instant mode for fast analysis with minimal reasoning overhead
       const response = await openai.chat.completions.create({
         model: "gpt-5.1",
         messages: [
@@ -578,9 +578,10 @@ Return your analysis as JSON with this structure:
         ],
         response_format: { type: "json_object" },
         max_completion_tokens: maxTokens,
-        temperature: 0.3
-      });
-      console.log('[ANALYZER] GPT-5.1 succeeded');
+        temperature: 0.3,
+        reasoning_effort: "low"
+      } as any);
+      console.log('[ANALYZER] GPT-5.1 Instant mode succeeded');
 
       const aiDuration = ((Date.now() - aiStartTime) / 1000).toFixed(2);
       const tokensUsed = response.usage?.total_tokens || 0;
