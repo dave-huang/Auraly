@@ -4,6 +4,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { openai } from '../openai';
 import { analysisResultSchema, type ProductType, type AnalysisResult, type RiskLevel } from '@shared/schema';
+import { getCachedIngredientAnalysis, setCachedIngredientAnalysis } from './cache';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // Store cache in the project root for better persistence
