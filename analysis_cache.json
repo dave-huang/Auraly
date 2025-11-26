@@ -370,5 +370,293 @@
       "timestamp": 1764135909005,
       "ocrText": "INGREDIENTS: VEGETABLE OIL (PALM OIL, CANOLA OIL, SOY LECITHIN), WHEAT FLOUR, SUGAR, SALT, CORN STARCH, CURRY POWDER\n(SPICES, GARLIC), SUGAR AND MILK POWDER MIXTURE (SUGAR, WHOLE MILK POWDER, SALT, SKIM MILK POWDER), CARAMEL COLOR,\nMONOSODIUM GLUTAMATE, WHOLE MILK POWDER, DEFATTED SOYBEAN, YEAST EXTRACT, NATURAL AND ARTIFICIAL FLAVORS, HONEY, CHEESE\nPRODUCT (DEXTRIN, ENZYME MODIFIED CHEESE [CHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), WHOLE MILK POWDER,\nSALT], YEAST EXTRACT, CORN STARCH, SALT), SOY LECITHIN, ROASTED ONION POWDER (ONION FLAKE, DEXTRIN, NATURAL FLAVOR), ONION\nSEASONING (ONION EXTRACT, DEXTRIN, SOY SAUCE [SOYBEAN, WHEAT, SALT], YEAST EXTRACT, CORN STARCH, SALT, GARLIC EXTRACT,\nNATURAL FLAVOR), TOMATO POWDER, ONION POWDER (DRIED ONION, DEFATTED SOYBEAN, GLUCOSE), SUCROSE FATTY ACID ESTERS, BROWN\nROUX (PALM OIL, SKIM MILK POWDER, WHEAT FLOUR, DEXTROSE ANHYDROUS GLUCOSE), FRUIT PASTE (BANANA, SUGAR, PROCESSED HONEY,\nTOMATO PASTE, FERMENTED MILK, CITRIC ACID, SALT), SPICES, CITRIC ACID, MONO- AND DIGLYCERIDES, COCOA POWDER (PROCESSED WITH\nALKALI), TOMATO SEASONING (DEXTRIN, TOMATO EXTRACT, YEAST EXTRACT, CORN STARCH, SALT), PROTEIN HYDROLYSATE (SOY PROTEIN\nHYDROLYSATE, DEXTRIN, MONOSODIUM GLUTAMATE), SKIM MILK POWDER, APPLE PASTE (APPLE PUREE, CITRIC ACID), GARLIC POWDER (DRIED\nGARLIC, DEFATTED SOYBEAN, GLUCOSE, MALTOSE), WHEY POWDER, ROASTED GARLIC POWDER (GARLIC FLAKE, DEXTRIN, NATURAL FLAVOR),\nCHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), ONION EXTRACT (ONION EXTRACT, YEAST EXTRACT), PAPRIKA COLOR,\nDISODIUM INOSINATE, TOMATO EXTRACT (TOMATO EXTRACT, PALM OIL, SALT, SUGAR, YEAST EXTRACT) .\nCONTAINS: SOYBEANS, WHEAT, AND MILK."
     }
+  ],
+  [
+    "e89c7a113cf6fce2fe2241550675d550d1fea40d2a1a5b1be076585c0be9ab5a",
+    {
+      "result": {
+        "productType": "skincare",
+        "ingredients": [
+          {
+            "name": "Water",
+            "riskLevel": "low",
+            "summary": "Common solvent and humectant in cosmetics.",
+            "details": "Water (aqua) is the principal solvent in many skincare formulations. It is considered safe when used in topical products, with no known systemic risks at typical concentrations.",
+            "category": "solvent"
+          },
+          {
+            "name": "Glycerin",
+            "riskLevel": "low",
+            "summary": "Humectant that attracts moisture to the skin.",
+            "details": "Glycerin is widely used to improve hydration. It is generally non-irritating and safe for topical use, though very high concentrations can feel sticky; typical cosmetic concentrations are well tolerated.",
+            "category": "humectant"
+          },
+          {
+            "name": "Olive Fruit Oil",
+            "riskLevel": "low",
+            "summary": "Plant-derived emollient rich in fatty acids.",
+            "details": "Olea europaea (olive) fruit oil provides lubrication and can help soften skin. Generally safe for topical use with rare sensitivities.",
+            "category": "emollient"
+          },
+          {
+            "name": "Butylene Glycol",
+            "riskLevel": "low",
+            "summary": "Humectant and solvent that helps with texture and penetration.",
+            "details": "Butylene glycol is a common cosmetic ingredient used to improve viscosity and moisture retention. Allergic reactions are uncommon; overall safety is good at typical cosmetic levels.",
+            "category": "humectant/solvent"
+          },
+          {
+            "name": "Macadamia Ternifolia Seed Oil",
+            "riskLevel": "low",
+            "summary": "Emollient oil rich in fatty acids.",
+            "details": "Macadamia oil provides slip and conditioning to the skin. It is generally well tolerated, though nut-derived oils can occasionally trigger allergies in sensitive individuals.",
+            "category": "emollient"
+          },
+          {
+            "name": "Cyclopentasiloxane",
+            "riskLevel": "low",
+            "summary": "Volatile silicone used as a slip-enhancing carrier.",
+            "details": "Cyclopentasiloxane is a cyclic silicone that provides lubrication and allows product feel. It is considered low risk for topical use, though some consumers seek silicone-free formulations; not linked to systemic absorption in typical cosmetic use.",
+            "category": "silicone"
+          },
+          {
+            "name": "Cetearyl Alcohol",
+            "riskLevel": "low",
+            "summary": "Fatty alcohol used as an emollient and thickener.",
+            "details": "Cetearyl alcohol is a common conditioning ingredient that helps stabilize emulsions. It is generally non-irritating and widely considered safe for skin.",
+            "category": "emollient/thickener"
+          },
+          {
+            "name": "Beeswax",
+            "riskLevel": "low",
+            "summary": "Natural thickener and stabilizer.",
+            "details": "Beeswax acts as a thickener and emollient in creams and balms. It is typically safe with rare allergic reactions to bee products.",
+            "category": "thickener"
+          },
+          {
+            "name": "Cetyl Ethylhexanoate",
+            "riskLevel": "low",
+            "summary": "Emollient ester providing slip and conditioning.",
+            "details": "Cetyl ethylhexanoate is used to improve texture and skin feel. Generally safe for topical use with minimal irritation potential.",
+            "category": "emollient"
+          },
+          {
+            "name": "Cyclohexasiloxane",
+            "riskLevel": "low",
+            "summary": "Silicone providing slip and evaporation.",
+            "details": "Cyclohexasiloxane is a volatile silicone similar to cyclopentasiloxane, used to enhance texture and spreadability. Considered low risk in standard cosmetic usage.",
+            "category": "silicone"
+          },
+          {
+            "name": "Polysorbate 60",
+            "riskLevel": "low",
+            "summary": "Emulsifier/surfactant aiding mixing of oil and water.",
+            "details": "Polysorbate 60 helps oils blend into aqueous formulations and can aid delivery of actives. Generally regarded as safe in cosmetic use.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Stearic Acid",
+            "riskLevel": "low",
+            "summary": "Fatty acid and surfactant with emollient properties.",
+            "details": "Stearic acid is a common cleansing/emollient fatty acid. It is typically safe, though high concentrations can be mildly irritating for some individuals.",
+            "category": "emollient/surfactant"
+          },
+          {
+            "name": "Polyglyceryl-3 Methylglucose Distearate",
+            "riskLevel": "low",
+            "summary": "Emollient and thickener derived from sugars.",
+            "details": "An FDA Generally Recognized as Safe (GRAS) type emulsifier/emollient for cosmetics; low irritation potential.",
+            "category": "emollient/emulsifier"
+          },
+          {
+            "name": "Isopropyl Myristate",
+            "riskLevel": "low",
+            "summary": "Emollient that softens and aids absorption.",
+            "details": "Commonly used to improve glide and reduce tackiness. Generally safe with rare fragrance-related sensitivities; some people may dislike the occlusive feel.",
+            "category": "emollient"
+          },
+          {
+            "name": "PEG-100 Stearate",
+            "riskLevel": "low",
+            "summary": "Emulsifier and surfactant.",
+            "details": "PEG esters are used to stabilize formulations and improve texture. Generally safe; may cause irritation for very sensitive individuals.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Glyceryl Stearate",
+            "riskLevel": "low",
+            "summary": "Emollient and thickener.",
+            "details": "Glyceryl stearate provides slip and helps moisturize. Widely used and typically well tolerated.",
+            "category": "emollient"
+          },
+          {
+            "name": "Witch Hazel Extract",
+            "riskLevel": "low",
+            "summary": "Astringent plant extract with potential anti-inflammatory effects.",
+            "details": "Hamamelis virginiana (witch hazel) extract can help with toning and soothing, though it can be drying for some skin types due to tannins.",
+            "category": "extract/toner"
+          },
+          {
+            "name": "Dimethiconol",
+            "riskLevel": "low",
+            "summary": "Silicone fluid providing slip and barrier formation.",
+            "details": "Dimethiconol is a lighter silicone used to improve texture and act as a barrier. Generally regarded as safe for skin exposure.",
+            "category": "silicone"
+          },
+          {
+            "name": "Sodium Polyacrylate",
+            "riskLevel": "low",
+            "summary": "Thickening agent/polysaccharide derivative.",
+            "details": "Common thickener in cosmetics; generally safe with low irritation potential.",
+            "category": "thickener"
+          },
+          {
+            "name": "1,2-Hexanediol",
+            "riskLevel": "low",
+            "summary": "Humectant and solvent with antimicrobial properties at some concentrations.",
+            "details": "1,2-Hexanediol is used to retain moisture and assist preservation. Generally safe in cosmetic use; may cause irritation in sensitive individuals at higher concentrations.",
+            "category": "humectant/solvent"
+          },
+          {
+            "name": "Caprylyl Glycol",
+            "riskLevel": "low",
+            "summary": "Humectant and emollient with antimicrobial benefits.",
+            "details": "Caprylyl glycol helps moisturize and can act as a preservative booster. Generally safe for topical use.",
+            "category": "humectant"
+          },
+          {
+            "name": "Shea Butter",
+            "riskLevel": "low",
+            "summary": "Emollient fat from Shea tree rich in fatty acids.",
+            "details": "Shea butter provides deep moisturization and skin barrier support. Rarely causes irritation; suitable for many skin types.",
+            "category": "emollient"
+          },
+          {
+            "name": "Anise Fruit Extract",
+            "riskLevel": "low",
+            "summary": "Botanical extract with fragrance and potential antioxidant properties.",
+            "details": "Anise extract is used for scent and potential soothing effects. Some individuals may be sensitive to essential oil-type components.",
+            "category": "extract/fragrance component"
+          },
+          {
+            "name": "Disodium EDTA",
+            "riskLevel": "low",
+            "summary": "Chelating agent that stabilizes formulas.",
+            "details": "EDTA binds metal ions to improve product stability. Generally considered safe in cosmetics when used as directed; systemic exposure is unlikely.",
+            "category": "preservative/stabilizer"
+          },
+          {
+            "name": "Betaine",
+            "riskLevel": "low",
+            "summary": "Humectant and conditioning agent.",
+            "details": "Betaine helps retain moisture and can soften skin. Considered safe with good skin compatibility.",
+            "category": "humectant"
+          },
+          {
+            "name": "Allantoin",
+            "riskLevel": "low",
+            "summary": "Soothing and conditioning agent.",
+            "details": "Allantoin is well-known for its soothing, healing and anti-irritant properties. Generally safe for most users.",
+            "category": "soothing agent"
+          },
+          {
+            "name": "Trehalose",
+            "riskLevel": "low",
+            "summary": "Disaccharide humectant with stabilizing properties.",
+            "details": "Trehalose helps retain moisture and can provide protective effects for skin cells. Considered safe in cosmetics.",
+            "category": "humectant"
+          },
+          {
+            "name": "Polysorbate 20",
+            "riskLevel": "low",
+            "summary": "Emulsifier aiding solubilization of ingredients.",
+            "details": "Polysorbate 20 helps dissolve fragrance/fragrance-like components and improves texture. Generally safe for topical use.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Polyglutamic Acid",
+            "riskLevel": "low",
+            "summary": "Humectant and moisturizer enhancer.",
+            "details": "Polyglutamic acid binds water and can improve skin hydration. Emerging ingredient with favorable safety profile.",
+            "category": "humectant"
+          },
+          {
+            "name": "Licorice Root Extract",
+            "riskLevel": "low",
+            "summary": "Botanical extract with potential brightening effects.",
+            "details": "Licorice root extract contains glabridin and other compounds that may have soothing and skin-brightening properties; generally safe but could irritate very sensitive individuals in high concentrations.",
+            "category": "extract"
+          },
+          {
+            "name": "Camellia Sinensis Leaf Extract",
+            "riskLevel": "low",
+            "summary": "Green tea extract with antioxidant properties.",
+            "details": "Rich in polyphenols, camellia sinensis extract offers antioxidant activity and potential anti-inflammatory effects. Generally safe for topical use.",
+            "category": "extract"
+          },
+          {
+            "name": "Rosemary Leaf Extract",
+            "riskLevel": "low",
+            "summary": "Herbal extract with antioxidant properties.",
+            "details": "Rosemary extract provides antioxidant activity; some individuals may be sensitive to essential oil components and fragrance-like effects.",
+            "category": "extract"
+          },
+          {
+            "name": "Centella Asiatica Extract",
+            "riskLevel": "low",
+            "summary": "Herbal extract with soothing and healing properties.",
+            "details": "Centella asiatica is commonly used for calming and repairing the skin; generally well tolerated.",
+            "category": "extract"
+          },
+          {
+            "name": "Matricaria Flower Extract",
+            "riskLevel": "low",
+            "summary": "Chamomile extract with soothing properties.",
+            "details": "Chamomile extract can help calm irritated skin; typically safe though rare sensitivities exist.",
+            "category": "extract"
+          },
+          {
+            "name": "Scutellaria Baicalensis Root Extract",
+            "riskLevel": "low",
+            "summary": "Baikal skullcap root extract with anti-inflammatory properties.",
+            "details": "Baical skullcap extract is used for anti-inflammatory and antioxidant effects; generally safe for topical use.",
+            "category": "extract"
+          },
+          {
+            "name": "Polygonum Cuspidatum Root Extract",
+            "riskLevel": "low",
+            "summary": "Resveratrol-rich extract with antioxidant effects.",
+            "details": "Polygonum cuspidatum (Japanese knotweed) root extract provides antioxidants; safe for most users though fragrance components may affect sensitive individuals.",
+            "category": "extract"
+          },
+          {
+            "name": "Xylitol",
+            "riskLevel": "low",
+            "summary": "Sugar alcohol with humectant properties.",
+            "details": "Xylitol acts as a humectant and anti-irritant in some formulations. Generally safe in cosmetics.",
+            "category": "humectant"
+          },
+          {
+            "name": "Ceramide NP",
+            "riskLevel": "low",
+            "summary": "Ceramide for skin barrier reinforcement.",
+            "details": "Ceramide NP helps restore and maintain the skin barrier. Safe and well tolerated in topical products.",
+            "category": "lipid/reparative ingredient"
+          },
+          {
+            "name": "Citric Acid",
+            "riskLevel": "low",
+            "summary": "Alpha-hydroxy acid used for pH adjustment and mild exfoliation.",
+            "details": "Citric acid is used to adjust formulation pH and can provide gentle exfoliation. It may cause irritation in sensitive or compromised skin at higher concentrations.",
+            "category": "pH adjuster/exfoliant"
+          }
+        ],
+        "overallRisk": "low",
+        "analyzedAt": "2025-11-26T05:49:30.152Z",
+        "originalText": "INGREDIENTS Water, Glycerin, Olea Europaea (Olive) Fruit Oil, Butylene\nGlycol, Macadamia Ternifolia Seed Oil, Cyclopentasiloxane, Cetearyl Alc\nohol, Beeswax, Cetyl Ethylhexanoate, Cyclohexasiloxane, Polysorbate 60,\nStearic Acid, Polyglyceryl-3 Methylglucose Distearate, Isopropyl Myristate,\nPEG-100 Stearate, Glyceryl Stearate, Hamamelis Virginiana (Witch Hazel)\nExtract, Dimethiconol, Sodium Polyacrylate, 1,2-Hexanediol, Caprylyl Glycol,\nButyrospermum Parkii (Shea) Butter, Illicium Verum (Anise) Fruit Extract,\nDisodium EDTA, Betaine, Allantoin, Trehalose, Polysorbate 20, Polyglutamic\nAcid, Glycyrrhiza Glabra (Licorice) Root Extract, Camellia Sinensis Leaf Ex\ntract, Rosmarinus Officinalis (Rosemary) Leaf Extract, Centella Asiatica Ext\nract, Chamomilla Recutita (Matricaria) Flower Extract, Scutellaria Baicalen\nsis Root Extract, Polygonum Cuspidatum Root Extract, Xylitol, Ceramide NP,\nCitric Acid"
+      },
+      "timestamp": 1764136170153,
+      "ocrText": "INGREDIENTS Water, Glycerin, Olea Europaea (Olive) Fruit Oil, Butylene\nGlycol, Macadamia Ternifolia Seed Oil, Cyclopentasiloxane, Cetearyl Alc\nohol, Beeswax, Cetyl Ethylhexanoate, Cyclohexasiloxane, Polysorbate 60,\nStearic Acid, Polyglyceryl-3 Methylglucose Distearate, Isopropyl Myristate,\nPEG-100 Stearate, Glyceryl Stearate, Hamamelis Virginiana (Witch Hazel)\nExtract, Dimethiconol, Sodium Polyacrylate, 1,2-Hexanediol, Caprylyl Glycol,\nButyrospermum Parkii (Shea) Butter, Illicium Verum (Anise) Fruit Extract,\nDisodium EDTA, Betaine, Allantoin, Trehalose, Polysorbate 20, Polyglutamic\nAcid, Glycyrrhiza Glabra (Licorice) Root Extract, Camellia Sinensis Leaf Ex\ntract, Rosmarinus Officinalis (Rosemary) Leaf Extract, Centella Asiatica Ext\nract, Chamomilla Recutita (Matricaria) Flower Extract, Scutellaria Baicalen\nsis Root Extract, Polygonum Cuspidatum Root Extract, Xylitol, Ceramide NP,\nCitric Acid"
+    }
   ]
 ]
