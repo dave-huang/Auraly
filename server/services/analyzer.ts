@@ -601,8 +601,8 @@ export async function analyzeIngredients(
   
   console.log(`[ANALYZER] Extracted ${ingredientLines.length} ingredient lines for parallel processing`);
   
-  // Create batches of 1 ingredient each for maximum parallelization
-  const batchSize = 1;
+  // Create batches of 5 ingredients each for balanced API calls and parallelization
+  const batchSize = 5;
   const batches: string[] = [];
   
   for (let i = 0; i < ingredientLines.length; i += batchSize) {
@@ -610,7 +610,7 @@ export async function analyzeIngredients(
     batches.push(batchLines.join('\n'));
   }
   
-  console.log(`[ANALYZER] Created ${batches.length} parallel batches (${batchSize} ingredient per batch)`);
+  console.log(`[ANALYZER] Created ${batches.length} parallel batches (${batchSize} ingredients per batch)`);
   
   if (batches.length > 1) {
     // Use parallel batch processing for faster analysis
