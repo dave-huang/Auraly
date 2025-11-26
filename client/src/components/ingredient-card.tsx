@@ -33,7 +33,8 @@ const riskConfig = {
 export function IngredientCard({ ingredient }: IngredientCardProps) {
   const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
-  const config = riskConfig[ingredient.riskLevel];
+  const riskLevel = ingredient.riskLevel || 'moderate';
+  const config = riskConfig[riskLevel];
 
   return (
     <Card className={`border-l-4 ${config.borderColor} overflow-hidden`}>
@@ -41,18 +42,40 @@ export function IngredientCard({ ingredient }: IngredientCardProps) {
         {/* Header */}
         <div className="flex items-start justify-between gap-4 mb-3">
           <div className="flex-1">
-            <h3 className="font-semibold text-lg mb-2" data-testid={`text-ingredient-name-${ingredient.name}`}>
-              {ingredient.name}
+            <h3 className="font-semibold text-lg mb-2" data-testid={`text-ingredient-name-${ingredient.name || ingredient.ingredient}`}>
+              {ingredient.name || ingredient.ingredient}
             </h3>
-            <Badge 
-              className={`${config.bgColor} ${config.textColor} border-0 text-xs font-semibold`}
-              data-testid={`badge-risk-${ingredient.riskLevel}`}
-            >
-              {t(`results.riskLevels.${ingredient.riskLevel}`)}
-            </Badge>
+            <div className="flex flex-wrap gap-2 items-center">
+              <Badge 
+                className={`${config.bgColor} ${config.textColor} border-0 text-xs font-semibold`}
+                data-testid={`badge-risk-${riskLevel}`}
+              >
+                {t(`results.riskLevels.${riskLevel}`)}
+              </Badge>
+              {ingredient.allergen && (
+                <Badge 
+                  variant="outline"
+                  className="text-xs font-semibold bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400 border-red-200 dark:border-red-800"
+                  data-testid="badge-allergen"
+                >
+                  {t('results.allergen')}
+                </Badge>
+              )}
+            </div>
           </div>
           <div className={`w-3 h-3 rounded-full ${config.color} mt-1 flex-shrink-0`} />
         </div>
+
+        {/* Dietary Flags */}
+        {ingredient.dietaryFlags && Object.values(ingredient.dietaryFlags).some(Boolean) && (
+          <div className="mb-3 flex flex-wrap gap-1">
+            {ingredient.dietaryFlags.vegan && <Badge variant="secondary" className="text-xs">{t('dietary.vegan')}</Badge>}
+            {ingredient.dietaryFlags.vegetarian && <Badge variant="secondary" className="text-xs">{t('dietary.vegetarian')}</Badge>}
+            {ingredient.dietaryFlags.containsGluten && <Badge variant="secondary" className="text-xs">{t('dietary.gluten')}</Badge>}
+            {ingredient.dietaryFlags.containsLactose && <Badge variant="secondary" className="text-xs">{t('dietary.lactose')}</Badge>}
+            {ingredient.dietaryFlags.ultraProcessedAdditive && <Badge variant="secondary" className="text-xs">{t('dietary.processed')}</Badge>}
+          </div>
+        )}
 
         {/* Summary */}
         <p className="text-sm text-foreground mb-3">
@@ -60,12 +83,12 @@ export function IngredientCard({ ingredient }: IngredientCardProps) {
         </p>
 
         {/* Learn More Toggle */}
-        {ingredient.details && (
+        {(ingredient.details || ingredient.sourcesOrNotes) && (
           <>
             <button
               onClick={() => setIsExpanded(!isExpanded)}
               className="flex items-center gap-1 text-sm font-medium text-primary hover-elevate active-elevate-2 px-3 py-1.5 rounded-md -ml-3 transition-colors"
-              data-testid={`button-toggle-details-${ingredient.name}`}
+              data-testid={`button-toggle-details-${ingredient.name || ingredient.ingredient}`}
             >
               {isExpanded ? (
                 <>
@@ -82,9 +105,14 @@ export function IngredientCard({ ingredient }: IngredientCardProps) {
 
             {isExpanded && (
               <div className={`mt-4 p-4 rounded-lg ${config.bgColor} border ${config.borderColor.replace('border-l-', 'border-')}`}>
-                <p className="text-sm text-foreground/90" data-testid={`text-ingredient-details-${ingredient.name}`}>
-                  {ingredient.details}
+                <p className="text-sm text-foreground/90" data-testid={`text-ingredient-details-${ingredient.name || ingredient.ingredient}`}>
+                  {ingredient.details || ingredient.summary}
                 </p>
+                {ingredient.sourcesOrNotes && (
+                  <p className="text-xs text-foreground/70 mt-2 italic">
+                    {ingredient.sourcesOrNotes}
+                  </p>
+                )}
               </div>
             )}
           </>

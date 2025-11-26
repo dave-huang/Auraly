@@ -1029,16 +1029,44 @@ Return as JSON array with this exact structure:
         throw new Error('Invalid JSON from GPT');
       }
       
-      // Normalize ingredient name capitalization for consistency
-      freshResults = freshResults.map(result => ({
-        ...result,
-        name: normalizeIngredientCapitalization(result.name, userLanguage)
-      }));
+      // Map Auraly response fields: normalize and add legacy fields for backward compatibility
+      freshResults = freshResults.map(result => {
+        const ingredientName = normalizeIngredientCapitalization(result.ingredient || result.name || '', userLanguage);
+        // Convert healthRisk (High/Medium/Low) to legacy riskLevel (high/moderate/low) for backward compatibility
+        const healthRiskMap: Record<string, RiskLevel> = {
+          'High': 'high',
+          'Medium': 'moderate',
+          'Low': 'low'
+        };
+        const legacyRiskLevel: RiskLevel = healthRiskMap[result.healthRisk as keyof typeof healthRiskMap] || 'moderate';
+        
+        return {
+          ingredient: ingredientName,
+          name: ingredientName, // For backward compatibility
+          category: result.category || productType,
+          healthRisk: result.healthRisk,
+          riskLevel: legacyRiskLevel, // Legacy field
+          allergen: result.allergen || false,
+          dietaryFlags: result.dietaryFlags || {
+            vegan: false,
+            vegetarian: false,
+            containsAnimalProducts: false,
+            containsGluten: false,
+            containsLactose: false,
+            containsAddedSugars: false,
+            ultraProcessedAdditive: false
+          },
+          summary: result.summary,
+          sourcesOrNotes: result.sourcesOrNotes,
+          details: result.summary // Legacy field
+        };
+      });
       
       // Cache fresh results
       for (const result of freshResults) {
-        setCachedIngredientAnalysis(result.name, productType, JSON.stringify(result));
-        console.log(`[PARALLEL-BATCH-${batchIdx}] Cached: ${result.name}`);
+        const cacheKey = result.ingredient || result.name || '';
+        setCachedIngredientAnalysis(cacheKey, productType, JSON.stringify(result));
+        console.log(`[PARALLEL-BATCH-${batchIdx}] Cached: ${cacheKey}`);
       }
       
       const batchDuration = ((Date.now() - batchStartTime) / 1000).toFixed(2);
@@ -1059,9 +1087,15 @@ Return as JSON array with this exact structure:
   
   console.log(`[PARALLEL-ANALYZER] Merged ${allIngredients.length} total ingredients from ${batches.length} batches`);
   
-  // Determine overall risk
-  const hasHigh = allIngredients.some(i => i.riskLevel === 'high');
-  const hasModerate = allIngredients.some(i => i.riskLevel === 'moderate');
+  // Determine overall risk based on healthRisk field (ignore allergens per Auraly framework)
+  const hasHigh = allIngredients.some(i => {
+    const healthRisk = (i as any).healthRisk;
+    return healthRisk === 'High' || i.riskLevel === 'high';
+  });
+  const hasModerate = allIngredients.some(i => {
+    const healthRisk = (i as any).healthRisk;
+    return healthRisk === 'Medium' || i.riskLevel === 'moderate';
+  });
   const overallRisk: RiskLevel = hasHigh ? 'high' : (hasModerate ? 'moderate' : 'low');
   
   // Build final result
