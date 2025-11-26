@@ -165,15 +165,10 @@ function getCachedAnalysis(cacheKey: string, ingredientsText?: string, productTy
 }
 
 // Store analysis result in cache (with original OCR text for fuzzy matching)
+// DISABLED: Full-result caching was causing stale risk data. Use ingredient-level caching only.
 function cacheAnalysis(cacheKey: string, result: AnalysisResult, ocrText: string): void {
-  analysisCache.set(cacheKey, {
-    result,
-    timestamp: Date.now(),
-    ocrText
-  });
-  console.log(`[CACHE] STORED: analysis for ${result.ingredients.length} ingredients (OCR text: ${ocrText.length} chars)`);
-  // Persist to disk immediately (synchronous) to ensure cache survives server restarts
-  saveCacheToDisk();
+  // NO-OP: Caching disabled due to stale data issues with overallRisk calculation
+  console.log(`[CACHE] Skipping full-result cache (using ingredient-level cache only)`);
 }
 
 /**
