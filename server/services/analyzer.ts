@@ -563,53 +563,24 @@ Return your analysis as JSON with this structure:
       console.log(`[ANALYZER] Using max_tokens: ${maxTokens} for language: ${userLanguage} (estimated ${estimatedIngredientCount} ingredients)`);
       console.log('[ANALYZER] Calling GPT-5.1 for fast analysis');
       
-      // Use GPT-5.1 for superior ingredient analysis
-      let response;
-      try {
-        console.log('[ANALYZER] Attempting GPT-5.1 for fast analysis');
-        response = await openai.chat.completions.create({
-          model: "gpt-5.1",
-          messages: [
-            {
-              role: "system",
-              content: systemMessage
-            },
-            {
-              role: "user",
-              content: prompt
-            }
-          ],
-          response_format: { type: "json_object" },
-          max_tokens: maxTokens,
-          temperature: 0.3
-        });
-        console.log('[ANALYZER] GPT-5.1 succeeded');
-      } catch (modelError: any) {
-        // If GPT-5.1 is unavailable, fall back to GPT-4o
-        if (modelError?.status === 400 || modelError?.code === 'unknown_model') {
-          console.log('[ANALYZER] GPT-5.1 unavailable, falling back to GPT-4o');
-          response = await openai.chat.completions.create({
-            model: "gpt-4o",
-            messages: [
-              {
-                role: "system",
-                content: systemMessage
-              },
-              {
-                role: "user",
-                content: prompt
-              }
-            ],
-            response_format: { type: "json_object" },
-            max_tokens: maxTokens,
-            temperature: 0.3
-          });
-          console.log('[ANALYZER] GPT-4o succeeded');
-        } else {
-          // If it's not a model availability error, re-throw
-          throw modelError;
-        }
-      }
+      // Use GPT-5.1 for superior ingredient analysis (no fallback - errors should be visible)
+      const response = await openai.chat.completions.create({
+        model: "gpt-5.1",
+        messages: [
+          {
+            role: "system",
+            content: systemMessage
+          },
+          {
+            role: "user",
+            content: prompt
+          }
+        ],
+        response_format: { type: "json_object" },
+        max_tokens: maxTokens,
+        temperature: 0.3
+      });
+      console.log('[ANALYZER] GPT-5.1 succeeded');
 
       const aiDuration = ((Date.now() - aiStartTime) / 1000).toFixed(2);
       const tokensUsed = response.usage?.total_tokens || 0;
