@@ -1,0 +1,59 @@
+[
+  [
+    "cd0a337d950115d034e4e18b8db37e22907f7d27760986b8ef85b2ea4b9eed2e",
+    {
+      "result": {
+        "productType": "food",
+        "ingredients": [
+          {
+            "name": "Whole grain oat",
+            "riskLevel": "low",
+            "summary": "Whole grain oat is a minimally processed cereal grain that is generally considered healthy and nutrient-dense, providing fiber, vitamins, and minerals.",
+            "details": "Whole grain oats contain the bran, germ, and endosperm, offering beta-glucan fiber that can help support healthy cholesterol levels and blood sugar control. They are naturally low in sodium and free of artificial additives, colors, and preservatives. The main health consideration is for individuals with celiac disease or gluten sensitivity, as oats can be cross-contaminated with gluten unless specifically certified gluten-free.",
+            "category": "whole grain"
+          },
+          {
+            "name": "Cereal flakes",
+            "riskLevel": "low",
+            "summary": "Cereal flakes are typically made from processed grains such as corn, wheat, oats, or rice and provide carbohydrates and some fiber. Health impact depends on whether sugar, salt, or additives are included, which are not specified here.",
+            "details": "In their plain form, cereal flakes are mainly a source of complex carbohydrates and can contribute to energy and some micronutrients, especially if made from whole grains. Potential concerns arise when flakes are heavily processed or coated with added sugars, sodium, or artificial additives, but this ingredient list does not specify such additions. For most people, plain cereal flakes are considered low risk, though individuals with gluten sensitivity or celiac disease should verify the grain source.",
+            "category": "Grain / cereal"
+          },
+          {
+            "name": "Flax seeds",
+            "riskLevel": "low",
+            "summary": "Flax seeds are nutrient-dense seeds rich in omega-3 fatty acids, fiber, and lignans, generally considered beneficial for heart and digestive health. They are low risk for most people but can cause digestive discomfort in large amounts.",
+            "details": "Flax seeds provide alpha-linolenic acid (ALA), a plant-based omega-3 fat associated with cardiovascular benefits, as well as soluble and insoluble fiber that supports bowel regularity and may help with cholesterol management. They also contain lignans, which have antioxidant and potential hormone-modulating properties. Excessive intake without adequate water may cause bloating or constipation, and people on blood-thinning medications or with certain hormone-sensitive conditions should consult a healthcare professional before consuming large amounts.",
+            "category": "Seed"
+          },
+          {
+            "name": "Chia seeds",
+            "riskLevel": "low",
+            "summary": "Chia seeds are high in fiber, plant-based omega-3 fats, and minerals, and are generally considered a health-promoting food. They are low risk for most people but can cause digestive issues or choking risk if eaten dry in large quantities.",
+            "details": "Chia seeds absorb many times their weight in water, forming a gel that can promote satiety and support digestive health due to their high soluble fiber content. They provide alpha-linolenic acid (ALA), protein, and minerals such as calcium and magnesium, which may support heart, bone, and metabolic health. However, consuming large amounts without sufficient fluid can cause gastrointestinal discomfort, and people with swallowing difficulties or strict fluid restrictions should be cautious, as dry chia can expand and pose a choking hazard.",
+            "category": "Seed"
+          },
+          {
+            "name": "Quinoa",
+            "riskLevel": "low",
+            "summary": "Quinoa is a whole grain seed rich in protein, fiber, and minerals, generally considered very healthy for most people. It is naturally gluten-free and not associated with major health risks for the general population.",
+            "details": "Quinoa provides complete protein (containing all essential amino acids), along with fiber, magnesium, and other micronutrients that support metabolic and cardiovascular health. It has a relatively low glycemic impact compared to refined grains, which can help with blood sugar control. Allergic reactions to quinoa are rare but possible; individuals with known seed or grain allergies should monitor for symptoms.",
+            "category": "whole grain"
+          },
+          {
+            "name": "Amaranth flakes",
+            "riskLevel": "low",
+            "summary": "Amaranth flakes are made from the amaranth grain, a nutrient-dense pseudocereal that is typically considered a healthy whole-grain-like ingredient. They are naturally gluten-free and not linked to common food additive or preservative concerns.",
+            "details": "Amaranth is high in protein, fiber, and minerals such as iron and magnesium, and it contains beneficial phytochemicals that may support cardiovascular and metabolic health. As flakes, it is usually processed by simple cooking and flaking, without the need for artificial additives. Allergies to amaranth are uncommon, but as with any grain-like food, sensitive individuals should be aware of potential reactions.",
+            "category": "whole grain"
+          }
+        ],
+        "overallRisk": "high",
+        "analyzedAt": "2025-11-26T01:21:05.717Z",
+        "originalText": "INGREDIENTS: WHOLE GRAIN OAT\nFLAKES, FLAX SEEDS, CHIA SEEDS,\nQUINOA, AMARANTH FLAKES."
+      },
+      "timestamp": 1764120065719,
+      "ocrText": "INGREDIENTS: WHOLE GRAIN OAT\nFLAKES, FLAX SEEDS, CHIA SEEDS,\nQUINOA, AMARANTH FLAKES."
+    }
+  ]
+]
