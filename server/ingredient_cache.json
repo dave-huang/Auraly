@@ -30,8 +30,8 @@
     "createdAt": 1764141259470
   },
   "salt__food": {
-    "analysis": "{\"name\":\"Salt\",\"riskLevel\":\"moderate\",\"summary\":\"Salt is a common seasoning that is safe in small amounts but can contribute to high blood pressure and heart disease when consumed in excess.\",\"details\":\"Salt (sodium chloride) is essential in small quantities for fluid balance and nerve and muscle function. However, typical diets often contain more sodium than recommended, which can increase the risk of hypertension, cardiovascular disease, and kidney strain, especially in sensitive individuals. People with high blood pressure, heart or kidney issues, or those on sodium-restricted diets should monitor their total daily sodium intake from all foods, not just added table salt.\",\"category\":\"Mineral / sodium source\"}",
-    "lastUpdated": 1764181773618,
+    "analysis": "{\"name\":\"Salt\",\"riskLevel\":\"moderate\",\"summary\":\"Salt (sodium chloride) is essential in small amounts but can be harmful when consumed in excess, primarily due to its sodium content.\",\"details\":\"Dietary salt provides sodium, which is necessary for fluid balance, nerve function, and muscle contraction. However, high intake of sodium is strongly associated with increased blood pressure and a higher risk of cardiovascular diseases and stroke, especially in salt-sensitive individuals. Processed foods often contain large amounts of salt, so frequent consumption can easily push intake above recommended limits.\",\"category\":\"Mineral / sodium source\"}",
+    "lastUpdated": 1764184114106,
     "createdAt": 1764141259470
   },
   "onion flake__food": {
@@ -205,8 +205,8 @@
     "createdAt": 1764141263449
   },
   "dextrose anhydrous (glucose)__food": {
-    "analysis": "{\"name\":\"Dextrose Anhydrous (Glucose)\",\"riskLevel\":\"moderate\",\"summary\":\"Dextrose anhydrous is a form of glucose used as a sweetener and quick energy source. Like other simple sugars, it is safe in moderation but can be problematic in excessive amounts.\",\"details\":\"Dextrose is the D-form of glucose and “anhydrous” means it contains no water; functionally, it behaves as a fast-absorbed simple carbohydrate with a high glycemic index. Frequent or high intake of added dextrose contributes to overall sugar load, which is linked to metabolic issues such as insulin resistance, fatty liver, and dental caries when part of a high-sugar diet. People with diabetes or prediabetes should monitor intake closely, while occasional consumption within total sugar limits is generally acceptable for healthy individuals.\",\"category\":\"Added sugar / simple carbohydrate\"}",
-    "lastUpdated": 1764141263449,
+    "analysis": "{\"name\":\"Dextrose Anhydrous (glucose)\",\"riskLevel\":\"moderate\",\"summary\":\"A simple sugar (glucose) used as a sweetener and energy source; generally recognized as safe but can contribute to high sugar intake.\",\"details\":\"Dextrose anhydrous is a purified form of glucose with no water, commonly used in foods and beverages to provide sweetness and quick energy. While it is safe for most people in normal amounts, frequent or high intake of added simple sugars can contribute to weight gain, blood sugar spikes, insulin resistance, and increased risk of type 2 diabetes and heart disease, especially in people with metabolic issues. Individuals with diabetes or impaired glucose tolerance should monitor and limit foods high in dextrose and other added sugars.\",\"category\":\"Sugar / Sweetener\"}",
+    "lastUpdated": 1764184114469,
     "createdAt": 1764141263449
   },
   "banana__food": {
@@ -583,5 +583,15 @@
     "analysis": "{\"name\":\"Niacin (vitamin B3)\",\"riskLevel\":\"low\",\"summary\":\"Niacin is vitamin B3, commonly added to enriched flours and cereals to restore or boost nutrient content. At levels used in fortified foods, it is safe and beneficial for most people.\",\"details\":\"Niacin is an essential vitamin involved in energy metabolism and nervous system function, and fortification helps prevent deficiency in populations that rely on refined grains. Adverse effects such as skin flushing, itching, or liver strain occur mainly with high-dose supplements, not with the relatively low amounts typically present in enriched or fortified foods.\",\"category\":\"vitamin / nutrient fortification\"}",
     "lastUpdated": 1764181833495,
     "createdAt": 1764181833495
+  },
+  "alkali__food": {
+    "analysis": "{\"name\":\"Alkali\",\"riskLevel\":\"low\",\"summary\":\"In foods, an alkali is a basic (high pH) substance used mainly to adjust acidity, modify texture, or process ingredients like cocoa or noodles.\",\"details\":\"Common food-grade alkalis include sodium carbonate, potassium carbonate, and sodium hydroxide, which are tightly regulated for safety and used in very small, controlled amounts. For most healthy individuals, typical dietary exposure is considered safe, though people on strict low-sodium diets may want to be mindful if the specific alkali is sodium-based, and improper industrial use (not consumer-level) can be caustic, but this does not apply to finished foods.\",\"category\":\"pH regulator / processing aid\"}",
+    "lastUpdated": 1764184118661,
+    "createdAt": 1764184118661
+  },
+  "hydrolysate__food": {
+    "analysis": "{\"name\":\"Hydrolysate\",\"riskLevel\":\"moderate\",\"summary\":\"Hydrolysate refers to proteins or other large molecules that have been broken down into smaller peptides or amino acids, often used to enhance flavor or improve digestibility.\",\"details\":\"Common examples in foods include soy protein hydrolysate or wheat protein hydrolysate, which can act as flavor enhancers and may contain free glutamate similar to MSG, potentially triggering symptoms in sensitive individuals. They also retain the allergenic source (e.g., soy, wheat/gluten, milk), so people with allergies or intolerances must avoid hydrolysates derived from their specific allergen even though the proteins are partially broken down.\",\"category\":\"protein derivative / flavor enhancer\"}",
+    "lastUpdated": 1764184118661,
+    "createdAt": 1764184118661
   }
 }

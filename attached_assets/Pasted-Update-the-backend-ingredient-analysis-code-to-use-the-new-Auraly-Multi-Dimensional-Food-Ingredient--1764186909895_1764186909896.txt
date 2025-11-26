@@ -1,0 +1,251 @@
+Update the backend ingredient-analysis code to use the new Auraly Multi-Dimensional Food Ingredient Risk Framework.
+This framework must fully replace the existing simplistic “risk-level” logic and must guide how the system constructs GPT-5.1 prompts and parses results.
+
+🎯 
+1. Replace Existing Ingredient Analysis Prompt With This Prompt Template
+In the backend, wherever we call GPT-5.1 to analyze one or more ingredients, replace the prompt with the following exact template.
+Ensure programmatic placeholders ({{ingredients}}, {{category}}) are supported.
+
+AURALY INGREDIENT ANALYSIS PROMPT (TO SEND TO GPT-5.1)
+You are Auraly, an ingredient-safety analyst trained to evaluate food, skincare, haircare, cosmetics, oral care, fragrance, and personal-care ingredients using a dimension-based safety framework. You must return structured JSON only.
+
+Your job is to evaluate each ingredient using the following methodology:
+
+-------------------------
+AURALY RISK FRAMEWORK
+-------------------------
+
+A) HEALTH RISK (PRIMARY RISK SCORE)
+Focus ONLY on:
+1. Toxicity
+2. Carcinogenicity
+3. Endocrine disruption
+4. Metabolic effects
+5. Chronic ingestion risks
+6. Additive/process risk (e.g., ultra-processed additives, stabilizers, synthetic preservatives)
+
+DO NOT classify allergens as “high risk.”  
+Health risk is based on impact on the general population in normal exposure amounts.
+
+Health risk may be:
+- "High"
+- "Medium"
+- "Low"
+
+Examples:
+High: BHA, BHT, Red 3, nitrosamines, titanium dioxide (EU banned), trans fats  
+Medium: nitrates, emulsifiers like polysorbate 80, artificial sweeteners  
+Low: whole foods (milk, oats, peanuts, eggs), herbs, pectin, lecithin
+
+------------------------------------------------------
+
+B) ALLERGEN RISK (SECONDARY, NOT PART OF HEALTH RISK SCORE)
+Only mark “yes” if the ingredient is a top allergen:
+milk, egg, peanut, tree nuts, soy, wheat, sesame, shellfish, fish, gluten.
+
+Allergen status must NOT raise the health risk score.
+
+------------------------------------------------------
+
+C) DIETARY & RESTRICTION FLAGS (SECONDARY, NOT PART OF HEALTH RISK SCORE)
+Identify as applicable:
+- vegan: yes/no  
+- vegetarian: yes/no  
+- contains-animal-products: yes/no  
+- contains-gluten: yes/no  
+- contains-lactose: yes/no  
+- contains-added-sugars: yes/no  
+- ultra-processed-additive: yes/no
+
+These do NOT alter the health risk score.
+
+------------------------------------------------------
+
+D) SUMMARY (Human-friendly explanation)
+Short, factual explanation of:
+- why its health risk rating is what it is  
+- any notable safety concerns  
+- any known regulatory restrictions  
+- when risks occur only at high doses  
+- clarify that allergen risk is separate
+
+------------------------------------------------------
+
+You must return JSON with the following structure:
+
+{
+  "ingredients": [
+    {
+      "ingredient": "NAME",
+      "category": "{{category}}",
+      "healthRisk": "High | Medium | Low",
+      "allergen": true/false,
+      "dietaryFlags": {
+        "vegan": true/false,
+        "vegetarian": true/false,
+        "containsAnimalProducts": true/false,
+        "containsGluten": true/false,
+        "containsLactose": true/false,
+        "containsAddedSugars": true/false,
+        "ultraProcessedAdditive": true/false
+      },
+      "summary": "Short explanation.",
+      "sourcesOrNotes": "Optional contextual detail for nuanced cases"
+    }
+  ]
+}
+
+-------------------------
+
+Analyze the following ingredient list using this framework:
+
+{{ingredients}}
+
+Return JSON only.
+
+🧱 
+2. Backend Requirements for Replit to Implement
+Update the backend logic as follows:
+A) Use the new Auraly prompt template for every GPT-5.1 request
+Replace old system/user messages with this template
+
+
+Inject ingredient list and product category
+
+
+Ensure the GPT call always requests JSON format
+
+
+Add strict JSON parsing and fallback repair logic
+
+
+
+B) Update Cache Schema
+Cache entries must store:
+{
+  ingredient,
+  category,
+  healthRisk,
+  allergen,
+  dietaryFlags: { ... },
+  summary,
+  sourcesOrNotes,
+  lastUpdated
+}
+If the schema changed, perform a silent migration:
+If old cached object lacks new fields, mark it expired and reprocess.
+
+
+
+C) Ensure Allergens Do NOT Influence the Risk Score
+Risk level = ONLY toxicity + carcinogenicity + processing/additive concerns
+
+
+Allergens → separate boolean flag
+
+
+Dietary flags → separate booleans
+
+
+Never map “allergen = high risk”
+
+
+
+D) Strict Validation After GPT Returns
+After receiving JSON:
+Ensure every ingredient has:
+
+
+healthRisk ∈ {High, Medium, Low}
+
+
+allergen is boolean
+
+
+dietaryFlags has all required fields
+
+
+If invalid, re-prompt GPT with a self-correction message
+
+
+
+E) Ensure Multi-Batched, Parallel GPT Processing Works With This Prompt
+Batch size (ex: 5 ingredients per request) should still work
+
+
+Each batch must use this Auraly prompt template
+
+
+After analysis, merge batch results in original order
+
+
+Store each ingredient in cache separately
+
+
+
+F) Replace Any UI Badges That Previously Used Allergy as “High Risk”
+Backend should send:
+"healthRisk": "Low",
+"allergen": true
+Frontend can render:
+“Low Health Risk”
+
+
+“Contains Allergen: Milk”
+
+ But NOT “High Risk”.
+
+
+
+🧪 
+3. Add a Debug Endpoint to Verify Classification Logic
+Create:
+GET /debug/auraly-risk-test
+Return sample classification for:
+milk
+
+
+peanuts
+
+
+titanium dioxide
+
+
+BHA
+
+
+polysorbate 80
+
+
+sugar
+
+
+red 3
+
+
+Used to confirm correctness.
+
+📌 
+4. Summary for Replit
+By the end of this task, Auraly must:
+Use the new multi-dimensional risk methodology
+
+
+Treat allergens separately from health risk
+
+
+Categorize risk based only on toxicity + processing
+
+
+Apply consistent JSON schema
+
+
+Cache intelligently
+
+
+Support parallel micro-batched GPT calls
+
+
+Produce medically aligned, non-alarmist outputs
+
+

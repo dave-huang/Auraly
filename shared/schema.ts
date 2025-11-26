@@ -10,17 +10,40 @@ export const productTypes = [
 
 export type ProductType = typeof productTypes[number];
 
-// Risk levels for ingredients
+// Health risk levels (Auraly multi-dimensional framework)
+export const healthRiskLevels = ["High", "Medium", "Low"] as const;
+export type HealthRiskLevel = typeof healthRiskLevels[number];
+
+// Legacy risk levels for backward compatibility
 export const riskLevels = ["low", "moderate", "high"] as const;
 export type RiskLevel = typeof riskLevels[number];
 
-// Ingredient analysis schema
+// Dietary flags schema
+export const dietaryFlagsSchema = z.object({
+  vegan: z.boolean().default(false),
+  vegetarian: z.boolean().default(false),
+  containsAnimalProducts: z.boolean().default(false),
+  containsGluten: z.boolean().default(false),
+  containsLactose: z.boolean().default(false),
+  containsAddedSugars: z.boolean().default(false),
+  ultraProcessedAdditive: z.boolean().default(false),
+});
+
+export type DietaryFlags = z.infer<typeof dietaryFlagsSchema>;
+
+// New Auraly ingredient analysis schema
 export const ingredientSchema = z.object({
-  name: z.string(),
-  riskLevel: z.enum(riskLevels),
+  ingredient: z.string(),
+  category: z.string().nullish(),
+  healthRisk: z.enum(healthRiskLevels),
+  allergen: z.boolean().default(false),
+  dietaryFlags: dietaryFlagsSchema,
   summary: z.string(),
-  details: z.string(),
-  category: z.string().nullish(), // Allow null, undefined, or string
+  sourcesOrNotes: z.string().nullish(),
+  // Legacy fields for backward compatibility
+  name: z.string().optional(),
+  riskLevel: z.enum(riskLevels).optional(),
+  details: z.string().optional(),
 });
 
 export type Ingredient = z.infer<typeof ingredientSchema>;
