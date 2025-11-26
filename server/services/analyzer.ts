@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { openai } from '../openai';
-import { analysisResultSchema, type ProductType, type AnalysisResult, type RiskLevel, type Ingredient } from '@shared/schema';
+import { analysisResultSchema, type ProductType, type AnalysisResult, type RiskLevel } from '@shared/schema';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // Store cache in the project root for better persistence
@@ -364,119 +364,6 @@ const LANGUAGE_INSTRUCTIONS = {
   'es': 'INSTRUCCIÓN CRÍTICA: Debes responder SOLO en español. TODOS los nombres de ingredientes, resúmenes y explicaciones detalladas DEBEN estar escritos en español, sin importar en qué idioma esté escrito el texto de entrada (incluso si los ingredientes están escritos en chino, japonés o cualquier otro idioma).',
 };
 
-// Extract simple ingredient list (just names) for batch splitting
-function extractIngredientNames(ingredientsText: string): string[] {
-  // Split by common separators
-  const separators = /[,，;；\n•·∙\*]/;
-  const items = ingredientsText.split(separators)
-    .map(item => item.trim())
-    .filter(item => item.length > 1 && item.length < 100)
-    .filter(item => !/^(\d+|%|ml|g|oz|mg)/.test(item)); // Remove pure numbers/measurements
-  
-  return Array.from(new Set(items)); // Deduplicate
-}
-
-// Analyze a batch of ingredients in parallel
-async function analyzeIngredientBatch(
-  ingredientsText: string,
-  productType: ProductType,
-  userLanguage: string,
-  estimatedCount: number,
-  context: string,
-  maxRetries: number = 3
-): Promise<any> {
-  const systemMessages = {
-    'zh': "You are a helpful health and wellness assistant that analyzes product ingredients. Extract and analyze ingredients from the list. Always respond with valid JSON. All text in your response must be in Simplified Chinese (简体中文).",
-    'en': "You are a helpful health and wellness assistant that analyzes product ingredients. Extract and analyze ingredients from the list. Always respond with valid JSON. All text in your response must be in English.",
-    'es': "Eres un asistente de salud y bienestar que analiza ingredientes de productos. Extrae y analiza ingredientes de la lista. Siempre responde con JSON válido. Todo el texto en tu respuesta debe estar en español."
-  };
-  const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
-  const languageInstruction = LANGUAGE_INSTRUCTIONS[userLanguage as keyof typeof LANGUAGE_INSTRUCTIONS] || LANGUAGE_INSTRUCTIONS['en'];
-  
-  const tokensPerIngredient = userLanguage === 'zh' ? 80 : 100;
-  const baseTokens = userLanguage === 'zh' ? 450 : 600;
-  const maxCap = userLanguage === 'zh' ? 3500 : 4500;
-  
-  const estimatedTokensNeeded = Math.min(estimatedCount * tokensPerIngredient + baseTokens, maxCap);
-  const maxTokens = Math.max(2500, estimatedTokensNeeded);
-  
-  const prompt = `You are a health-focused ingredient analyst. Analyze the following ingredient batch from a ${productType} product.
-
-${languageInstruction}
-
-Product Type Context: ${context}
-
-Ingredient List:
-${ingredientsText}
-
-CRITICAL EXTRACTION RULES:
-1. Extract EVERY SINGLE ingredient from the list above
-2. If an ingredient appears multiple times, count it only ONCE (deduplicate)
-3. Include ALL: additives, vitamins, minerals, preservatives, colors, emulsifiers, starches, sweeteners, oils, and flavorings
-4. This batch contains approximately ${estimatedCount} ingredients
-5. If an ingredient name has OCR errors, correct them to the proper chemical/ingredient name
-
-For each ingredient, determine:
-1. The ingredient name (clean, standardized format) - MUST be in the user's language
-2. Risk level: "low" (safe), "moderate" (limited evidence/moderate concern), or "high" (known health risks)
-3. A brief summary (1-2 sentences) explaining what it is and why it's flagged - MUST be in the user's language
-4. Detailed explanation (2-3 sentences) with more context about health impacts - MUST be in the user's language
-
-Return your analysis as JSON with this structure (ingredients array may be empty if batch has no valid ingredients):
-{
-  "productName": null,
-  "ingredients": [
-    {
-      "name": "Ingredient Name",
-      "riskLevel": "low|moderate|high",
-      "summary": "Brief explanation",
-      "details": "Detailed explanation",
-      "category": "Optional category"
-    }
-  ],
-  "overallRisk": "low|moderate|high"
-}`;
-
-  let lastError: Error | null = null;
-  
-  for (let attempt = 1; attempt <= maxRetries; attempt++) {
-    try {
-      const response = await openai.chat.completions.create({
-        model: "gpt-5.1",
-        messages: [
-          {
-            role: "system",
-            content: systemMessage
-          },
-          {
-            role: "user",
-            content: prompt
-          }
-        ],
-        response_format: { type: "json_object" },
-        max_completion_tokens: maxTokens,
-        temperature: 0.3
-      });
-      
-      const content = response.choices?.[0]?.message?.content;
-      if (!content) {
-        throw new Error('No response from AI');
-      }
-      
-      const analysis = JSON.parse(content);
-      return analysis;
-    } catch (error: any) {
-      lastError = error;
-      if (attempt < maxRetries) {
-        const waitTime = 1000 * Math.pow(2, attempt - 1);
-        await new Promise(resolve => setTimeout(resolve, waitTime));
-      }
-    }
-  }
-  
-  throw lastError || new Error('Batch analysis failed');
-}
-
 export async function analyzeIngredients(
   productType: ProductType,
   ingredientsText: string,
@@ -589,120 +476,6 @@ export async function analyzeIngredients(
   const languageInstruction = LANGUAGE_INSTRUCTIONS[userLanguage as keyof typeof LANGUAGE_INSTRUCTIONS] || LANGUAGE_INSTRUCTIONS['en'];
   console.log(`[ANALYZER] Language instruction: ${languageInstruction.substring(0, 100)}...`);
   
-  // PARALLEL BATCH OPTIMIZATION: Split into smaller batches to parallelize API calls
-  // Instead of one large batch to GPT-5.1, send 5-8 smaller batches in parallel
-  // This reduces total processing time for large ingredient lists
-  
-  // Extract ingredient lines for batch splitting
-  const ingredientLines = textToAnalyze
-    .split(/[\n;；]/)
-    .map(line => line.trim())
-    .filter(line => line.length > 1);
-  
-  console.log(`[ANALYZER] Extracted ${ingredientLines.length} ingredient lines for parallel processing`);
-  
-  // Create batches of ~5-8 ingredients each
-  const batchSize = Math.max(5, Math.min(8, Math.ceil(ingredientLines.length / 4)));
-  const batches: string[] = [];
-  
-  for (let i = 0; i < ingredientLines.length; i += batchSize) {
-    const batchLines = ingredientLines.slice(i, i + batchSize);
-    batches.push(batchLines.join('\n'));
-  }
-  
-  console.log(`[ANALYZER] Created ${batches.length} parallel batches (${batchSize} items per batch)`);
-  
-  if (batches.length > 1) {
-    // Use parallel batch processing for faster analysis
-    console.log(`[TIMING] Sending ${batches.length} batches in parallel to GPT-5.1...`);
-    const parallelStartTime = Date.now();
-    
-    try {
-      // Send all batches in parallel
-      const batchPromises = batches.map((batchText, idx) => {
-        const estimatedBatchCount = Math.ceil(estimatedIngredientCount / batches.length);
-        console.log(`[ANALYZER] Batch ${idx + 1}/${batches.length} - ${batchText.split('\n').length} lines, ~${estimatedBatchCount} ingredients`);
-        return analyzeIngredientBatch(
-          batchText,
-          productType,
-          userLanguage,
-          estimatedBatchCount,
-          context
-        );
-      });
-      
-      const batchResults = await Promise.all(batchPromises);
-      const parallelDuration = ((Date.now() - parallelStartTime) / 1000).toFixed(2);
-      console.log(`[TIMING] All ${batches.length} batches completed in parallel in ${parallelDuration}s`);
-      
-      // Merge batch results
-      const allIngredients: Ingredient[] = [];
-      let productName: string | undefined = undefined;
-      const riskLevels: RiskLevel[] = [];
-      
-      for (const batchResult of batchResults) {
-        if (batchResult.productName && !productName) {
-          productName = batchResult.productName;
-        }
-        
-        if (batchResult.ingredients && Array.isArray(batchResult.ingredients)) {
-          // Deduplicate by ingredient name (case-insensitive)
-          for (const ing of batchResult.ingredients) {
-            const exists = allIngredients.some(
-              existing => existing.name.toLowerCase() === ing.name.toLowerCase()
-            );
-            if (!exists) {
-              allIngredients.push(ing);
-            }
-          }
-        }
-        
-        if (batchResult.overallRisk) {
-          riskLevels.push(batchResult.overallRisk);
-        }
-      }
-      
-      // Determine overall risk (highest level from all batches)
-      const riskOrder = { high: 3, moderate: 2, low: 1 };
-      const overallRisk = riskLevels.length > 0
-        ? riskLevels.reduce((a, b) => 
-            riskOrder[a] >= riskOrder[b] ? a : b
-          )
-        : 'moderate';
-      
-      const detectedCount = allIngredients.length;
-      console.log(`[ANALYZER] Merged ${batches.length} batches into ${detectedCount} unique ingredients`);
-      console.log(`[ANALYZER] Product name: ${productName || 'Not detected'}`);
-      console.log(`[ANALYZER] Overall risk: ${overallRisk}`);
-      
-      // Validate merged result
-      const mergedResult = {
-        productType,
-        productName: productName || undefined,
-        ingredients: allIngredients,
-        overallRisk,
-        analyzedAt: new Date().toISOString(),
-        originalText: ingredientsText
-      };
-      
-      const validatedResult = analysisResultSchema.safeParse(mergedResult);
-      if (!validatedResult.success) {
-        console.error('Merged result validation failed:', validatedResult.error);
-        throw new Error('Merged analysis did not match expected format');
-      }
-      
-      // Cache the result before returning
-      cacheAnalysis(cacheKey, validatedResult.data, ingredientsText);
-      return validatedResult.data;
-      
-    } catch (parallelError: any) {
-      console.error('[ANALYZER] Parallel batch processing failed:', parallelError.message);
-      console.log('[ANALYZER] Falling back to single large batch analysis...');
-      // Fall through to single batch processing below
-    }
-  }
-  
-  // FALLBACK: Single large batch processing (for small ingredient lists or if parallel fails)
   const prompt = `You are a health-focused ingredient analyst. Analyze the following ingredient list from a ${productType} product.
 
 ${languageInstruction}
@@ -777,37 +550,66 @@ Return your analysis as JSON with this structure:
       const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
       
       // Adjust max_tokens based on estimated ingredient count and language
-      // Optimized token allocation for faster API response times
-      // Each ingredient needs ~80-100 tokens (name, risk, concise summary/details) in English/Spanish
-      // Chinese needs ~80 tokens per ingredient due to higher token density
-      const tokensPerIngredient = userLanguage === 'zh' ? 80 : 100;
-      const baseTokens = userLanguage === 'zh' ? 450 : 600;
-      const maxCap = userLanguage === 'zh' ? 3500 : 4500; // Optimized caps for faster analysis
+      // With GPT-4o, use moderate limits for speed while ensuring completeness
+      // Each ingredient needs ~120-150 tokens (name, risk, concise summary/details) in English/Spanish
+      // Chinese needs ~100-120 tokens per ingredient due to higher token density
+      const tokensPerIngredient = userLanguage === 'zh' ? 110 : 140;
+      const baseTokens = userLanguage === 'zh' ? 600 : 800;
+      const maxCap = userLanguage === 'zh' ? 4500 : 6000; // Lower cap for Chinese to improve speed
       
       const estimatedTokensNeeded = Math.min(estimatedIngredientCount * tokensPerIngredient + baseTokens, maxCap);
       const maxTokens = Math.max(2500, estimatedTokensNeeded);
       
-      console.log(`[ANALYZER] Using max_completion_tokens: ${maxTokens} for language: ${userLanguage} (estimated ${estimatedIngredientCount} ingredients)`);
+      console.log(`[ANALYZER] Using max_tokens: ${maxTokens} for language: ${userLanguage} (estimated ${estimatedIngredientCount} ingredients)`);
+      console.log('[ANALYZER] Calling GPT-5.1 for fast analysis');
       
       // Use GPT-5.1 for superior ingredient analysis
-      console.log('[ANALYZER] Calling GPT-5.1 for analysis');
-      const response = await openai.chat.completions.create({
-        model: "gpt-5.1",
-        messages: [
-          {
-            role: "system",
-            content: systemMessage
-          },
-          {
-            role: "user",
-            content: prompt
-          }
-        ],
-        response_format: { type: "json_object" },
-        max_completion_tokens: maxTokens,
-        temperature: 0.3
-      });
-      console.log('[ANALYZER] GPT-5.1 succeeded');
+      let response;
+      try {
+        console.log('[ANALYZER] Attempting GPT-5.1 for fast analysis');
+        response = await openai.chat.completions.create({
+          model: "gpt-5.1",
+          messages: [
+            {
+              role: "system",
+              content: systemMessage
+            },
+            {
+              role: "user",
+              content: prompt
+            }
+          ],
+          response_format: { type: "json_object" },
+          max_tokens: maxTokens,
+          temperature: 0.3
+        });
+        console.log('[ANALYZER] GPT-5.1 succeeded');
+      } catch (modelError: any) {
+        // If GPT-5.1 is unavailable, fall back to GPT-4o
+        if (modelError?.status === 400 || modelError?.code === 'unknown_model') {
+          console.log('[ANALYZER] GPT-5.1 unavailable, falling back to GPT-4o');
+          response = await openai.chat.completions.create({
+            model: "gpt-4o",
+            messages: [
+              {
+                role: "system",
+                content: systemMessage
+              },
+              {
+                role: "user",
+                content: prompt
+              }
+            ],
+            response_format: { type: "json_object" },
+            max_tokens: maxTokens,
+            temperature: 0.3
+          });
+          console.log('[ANALYZER] GPT-4o succeeded');
+        } else {
+          // If it's not a model availability error, re-throw
+          throw modelError;
+        }
+      }
 
       const aiDuration = ((Date.now() - aiStartTime) / 1000).toFixed(2);
       const tokensUsed = response.usage?.total_tokens || 0;
@@ -923,7 +725,6 @@ Return your analysis as JSON with this structure:
   
   // All retries failed
   console.error('[ANALYZER] All retry attempts exhausted');
-  console.error('[ANALYZER] Final error:', lastError);
   
   // Provide user-friendly error messages based on error type
   if (lastError) {
@@ -931,47 +732,24 @@ Return your analysis as JSON with this structure:
     const errorType = (lastError as any).type || '';
     const errorMessage = lastError.message || '';
     
-    console.error('[ANALYZER] Error details for user:', {
-      status: errorStatus,
-      type: errorType,
-      message: errorMessage
-    });
-    
-    // Check for API key / auth errors first (most common issue)
-    if (errorMessage.toLowerCase().includes('api key') || 
-        errorMessage.toLowerCase().includes('unauthorized') ||
-        errorMessage.toLowerCase().includes('authentication') ||
-        errorStatus === 401) {
-      throw new Error(`OpenAI API key issue: ${errorMessage}. Please verify your API key is valid and has appropriate permissions.`);
-    }
-    
-    // Check for quota/billing errors
-    if (errorMessage.toLowerCase().includes('quota') || 
-        errorMessage.toLowerCase().includes('insufficient') ||
-        errorStatus === 429) {
-      throw new Error(`OpenAI account issue: ${errorMessage}. Please check your OpenAI account quota and billing status.`);
-    }
-    
-    // Check for model not found
-    if (errorMessage.toLowerCase().includes('model') || 
-        errorMessage.toLowerCase().includes('gpt-5.1') ||
-        errorStatus === 404) {
-      throw new Error(`Model error: ${errorMessage}. GPT-5.1 may not be available in your OpenAI account. Contact OpenAI support or use a different model.`);
-    }
-    
     // Check for server errors (500, 502, 503)
     if (errorStatus === 500 || errorStatus === 502 || errorStatus === 503 || errorType === 'server_error') {
-      throw new Error(`OpenAI server error (${errorStatus}). Please try again in a few moments.`);
+      throw new Error(`The AI service is temporarily unavailable (tried ${maxRetries} times). This usually resolves within a few minutes. Please try again shortly.`);
     }
     
     // Check for timeout errors
     if (errorMessage.includes('timeout') || errorStatus === 'ETIMEDOUT') {
-      throw new Error('Analysis timed out. OpenAI is experiencing high load. Please try again in a few moments.');
+      throw new Error('Analysis is taking longer than expected. The AI service may be experiencing high load. Please try again in a few moments.');
+    }
+    
+    // Check for rate limit errors
+    if (errorMessage.includes('rate limit') || errorStatus === 429) {
+      throw new Error('The AI service is currently busy. Please wait a minute and try again.');
     }
     
     // Check for network errors
     if (errorMessage.includes('network') || errorMessage.includes('ECONNREFUSED') || errorMessage.includes('ENOTFOUND')) {
-      throw new Error('Network error connecting to OpenAI. Please check your internet connection and try again.');
+      throw new Error('Unable to connect to the AI service. Please check your internet connection and try again.');
     }
     
     // Preserve meaningful validation error messages
@@ -984,410 +762,9 @@ Return your analysis as JSON with this structure:
       throw lastError;
     }
     
-    // Generic fallback - include the actual error for debugging
-    throw new Error(`Analysis failed: ${errorMessage}. This may be due to an API key issue, insufficient quota, or the GPT-5.1 model not being available in your account.`);
+    // Generic fallback with context
+    throw new Error(`Analysis failed after ${maxRetries} attempts. The AI service may be temporarily unavailable. Please try again.`);
   }
   
   throw new Error('Failed to analyze ingredients after multiple attempts. Please try again.');
-}
-
-/**
- * Analyzes ingredients directly from an image using GPT-5.1 vision capability
- * Much faster than OCR + text analysis (single API call instead of two)
- * Caches results by image hash for instant repeat scans
- */
-/**
- * Analyzes a SINGLE ingredient with risk assessment
- * This is used for streaming - one GPT call per ingredient
- * Checks cache first, calls GPT if needed, streams result immediately
- */
-export async function analyzeSingleIngredient(
-  ingredientName: string,
-  productType: ProductType,
-  userLanguage: string
-): Promise<{ analysis: Ingredient; fromCache: boolean }> {
-  // Create cache key for this specific ingredient
-  const cacheKey = crypto.createHash('sha256')
-    .update(`${ingredientName.toLowerCase().trim()}__${productType}__${userLanguage}`)
-    .digest('hex');
-  
-  // Check cache first
-  const cached = analysisCache.get(cacheKey);
-  if (cached && isCacheFresh(cached.timestamp)) {
-    console.log(`[SINGLE-INGREDIENT-CACHE] HIT: ${ingredientName}`);
-    // Extract the first ingredient from cached result (should be this one ingredient)
-    return {
-      analysis: cached.result.ingredients[0] || {
-        name: ingredientName,
-        riskLevel: 'low',
-        summary: 'Cached result',
-        details: 'Previously analyzed'
-      },
-      fromCache: true
-    };
-  }
-  
-  console.log(`[SINGLE-INGREDIENT-ANALYZER] Analyzing: ${ingredientName}`);
-  
-  const context = PRODUCT_TYPE_CONTEXTS[productType];
-  const languageInstruction = LANGUAGE_INSTRUCTIONS[userLanguage as keyof typeof LANGUAGE_INSTRUCTIONS] || LANGUAGE_INSTRUCTIONS['en'];
-  
-  const systemMessage = `You are a health and safety expert analyzing a single ingredient for a ${productType} product.
-${languageInstruction}
-
-Respond ONLY with valid JSON matching this exact structure:
-{
-  "name": "ingredient name",
-  "riskLevel": "low" | "moderate" | "high",
-  "summary": "2-3 sentence health summary",
-  "details": "5-7 sentences with specific concerns and recommendations"
-}`;
-
-  const prompt = `Analyze this single ingredient for a ${productType} product:
-
-Ingredient: ${ingredientName}
-
-${context}
-
-IMPORTANT: 
-- Assess health/safety risks (allergies, toxins, hormonal effects, etc.)
-- Be specific and factual
-- If safe, explain why
-- If concerning, explain the specific health risks`;
-
-  try {
-    console.log(`[SINGLE-INGREDIENT-ANALYZER] Calling GPT-5.1 for: ${ingredientName}`);
-    
-    const response = await openai.chat.completions.create({
-      model: "gpt-5.1",
-      messages: [
-        {
-          role: "system",
-          content: systemMessage
-        },
-        {
-          role: "user",
-          content: prompt
-        }
-      ],
-      response_format: { type: "json_object" },
-      max_completion_tokens: 500,
-      temperature: 0.3
-    });
-    
-    const content = response.choices[0]?.message?.content;
-    if (!content) {
-      throw new Error('Empty response from GPT');
-    }
-    
-    const parsed = JSON.parse(content);
-    const validatedResult = analysisResultSchema.pick({ ingredients: true }).parse({
-      ingredients: [{ ...parsed, name: ingredientName }]
-    });
-    
-    const ingredient = validatedResult.ingredients[0];
-    console.log(`[SINGLE-INGREDIENT-ANALYZER] ✓ Analyzed: ${ingredientName} (${ingredient.riskLevel})`);
-    
-    // Cache the result
-    const fullResult: AnalysisResult = {
-      productType,
-      ingredients: [ingredient],
-      overallRisk: ingredient.riskLevel,
-      analyzedAt: new Date().toISOString()
-    };
-    
-    analysisCache.set(cacheKey, {
-      result: fullResult,
-      timestamp: Date.now(),
-      ocrText: ingredientName
-    });
-    saveCacheToDisk();
-    
-    return {
-      analysis: ingredient,
-      fromCache: false
-    };
-    
-  } catch (error: any) {
-    console.error(`[SINGLE-INGREDIENT-ANALYZER] Error analyzing ${ingredientName}:`, error.message);
-    // Return a safe default on error
-    return {
-      analysis: {
-        name: ingredientName,
-        riskLevel: 'moderate',
-        summary: 'Unable to analyze this ingredient. Please check with product manufacturer.',
-        details: 'Analysis temporarily unavailable. Please try again later.'
-      },
-      fromCache: false
-    };
-  }
-}
-
-export async function analyzeIngredientsFromImage(
-  imageData: string,
-  productType: ProductType,
-  userLanguage: string
-): Promise<AnalysisResult> {
-  // Extract base64 if imageData includes the data URL prefix
-  // Handle both "data:image/jpeg;base64,xxx" and just "xxx" formats
-  let base64Only = imageData;
-  let mimeType = 'image/jpeg'; // default
-  
-  if (imageData.startsWith('data:')) {
-    // Parse data URL: "data:image/jpeg;base64,xxx"
-    const match = imageData.match(/^data:([^;]+);base64,(.+)$/);
-    if (match) {
-      mimeType = match[1];
-      base64Only = match[2];
-      console.log(`[VISION-ANALYZER] Extracted base64 from data URL, mime type: ${mimeType}`);
-    } else {
-      console.warn('[VISION-ANALYZER] Malformed data URL, attempting to use as-is');
-    }
-  }
-  
-  // Create cache key from image hash
-  const imageHash = crypto.createHash('sha256')
-    .update(`${base64Only}__${productType}__${userLanguage}`)
-    .digest('hex');
-  
-  // Check cache first
-  const cached = analysisCache.get(imageHash);
-  if (cached && isCacheFresh(cached.timestamp)) {
-    console.log(`[VISION-CACHE] HIT: returning cached analysis (${cached.result.ingredients.length} ingredients)`);
-    return cached.result;
-  }
-  console.log(`[VISION-CACHE] Miss: will perform fresh analysis`);
-  
-  const context = PRODUCT_TYPE_CONTEXTS[productType];
-  const languageInstruction = LANGUAGE_INSTRUCTIONS[userLanguage as keyof typeof LANGUAGE_INSTRUCTIONS] || LANGUAGE_INSTRUCTIONS['en'];
-  
-  const prompt = `You are a health-focused ingredient analyst. Analyze the ingredient list visible in this product image for a ${productType} product.
-
-${languageInstruction}
-
-Product Type Context: ${context}
-
-CRITICAL EXTRACTION RULES:
-1. Extract EVERY SINGLE ingredient visible in the image
-2. If an ingredient appears multiple times, count it only ONCE (deduplicate)
-3. Include ALL: additives, vitamins, minerals, preservatives, colors, emulsifiers, starches, sweeteners, oils, and flavorings
-4. If an ingredient name is unclear due to image quality, correct it to the proper chemical/ingredient name
-
-For each ingredient, determine:
-1. The ingredient name (clean, standardized format) - MUST be in the user's language
-2. Risk level: "low" (safe), "moderate" (limited evidence/moderate concern), or "high" (known health risks)
-3. A brief summary (1-2 sentences) explaining what it is and why it's flagged - MUST be in the user's language
-4. Detailed explanation (2-3 sentences) with more context about health impacts - MUST be in the user's language
-
-INGREDIENT NAME TRANSLATION REQUIREMENTS:
-- ALWAYS translate ingredient names to the user's language accurately
-- Use proper chemical/scientific names when translating
-- Examples: "水" → "Water" (English) or "Agua" (Spanish), "甘油" → "Glycerin" (English) or "Glicerina" (Spanish)
-- For unclear text, correct to the nearest valid ingredient name based on context
-- NEVER leave ingredient names in the original language from the label
-- NEVER invent ingredients that don't exist in the image
-
-OTHER IMPORTANT NOTES:
-- ALL text output (name, summary, details) must be in the user's selected language
-- Extract the product name if visible (product name can stay in original language)
-- Determine overall product risk (low/moderate/high) based on the worst ingredients
-- Be friendly and clear in explanations, not alarmist
-- If an ingredient is generally safe, mark it as "low" risk
-
-Return your analysis as JSON with this structure:
-{
-  "productName": "Product name if visible or null",
-  "ingredients": [
-    {
-      "name": "Ingredient Name",
-      "riskLevel": "low|moderate|high",
-      "summary": "Brief explanation",
-      "details": "Detailed explanation",
-      "category": "Optional category like 'preservative', 'sweetener', etc"
-    }
-  ],
-  "overallRisk": "low|moderate|high"
-}`;
-
-  let lastError: Error | null = null;
-  const maxRetries = 3;
-  
-  for (let attempt = 1; attempt <= maxRetries; attempt++) {
-    try {
-      if (attempt > 1) {
-        console.log(`[VISION-ANALYZER] Retry attempt ${attempt}/${maxRetries} due to: ${lastError?.message || 'unknown error'}`);
-      }
-      
-      console.log('[TIMING] Sending image to GPT-5.1 Vision for direct analysis...');
-      const aiStartTime = Date.now();
-      
-      const systemMessages = {
-        'zh': "You are a helpful health and wellness assistant that analyzes product ingredients from images. Extract and analyze EVERY ingredient from the image. Count each distinct ingredient only once (deduplicate). Always respond with valid JSON. All text in your response must be in Simplified Chinese (简体中文), regardless of the input language.",
-        'en': "You are a helpful health and wellness assistant that analyzes product ingredients from images. Extract and analyze EVERY ingredient from the image. Count each distinct ingredient only once (deduplicate). Always respond with valid JSON. All text in your response must be in English, regardless of the input language.",
-        'es': "Eres un asistente de salud y bienestar que analiza ingredientes de productos desde imágenes. Extrae y analiza TODOS los ingredientes de la imagen. Cuenta cada ingrediente distinto solo una vez (deduplica). Siempre responde con JSON válido. Todo el texto en tu respuesta debe estar en español, sin importar el idioma de entrada."
-      };
-      const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
-      
-      const tokensPerIngredient = userLanguage === 'zh' ? 110 : 140;
-      const baseTokens = userLanguage === 'zh' ? 600 : 800;
-      const maxCap = userLanguage === 'zh' ? 4500 : 6000;
-      const estimatedTokensNeeded = Math.min(40 * tokensPerIngredient + baseTokens, maxCap); // Assume ~40 ingredients
-      const maxTokens = Math.max(2500, estimatedTokensNeeded);
-      
-      console.log(`[VISION-ANALYZER] Using max_completion_tokens: ${maxTokens} for language: ${userLanguage}`);
-      
-      console.log('[VISION-ANALYZER] Calling GPT-5.1 Vision analysis');
-      const response = await openai.chat.completions.create({
-        model: "gpt-5.1",
-        messages: [
-          {
-            role: "system",
-            content: systemMessage
-          },
-          {
-            role: "user",
-            content: [
-              {
-                type: "image_url",
-                image_url: {
-                  url: `data:${mimeType};base64,${base64Only}`
-                }
-              },
-              {
-                type: "text",
-                text: prompt
-              }
-            ]
-          }
-        ],
-        response_format: { type: "json_object" },
-        max_completion_tokens: maxTokens,
-        temperature: 0.3
-      });
-      console.log('[VISION-ANALYZER] GPT-5.1 Vision succeeded');
-      
-      const aiDuration = ((Date.now() - aiStartTime) / 1000).toFixed(2);
-      const tokensUsed = response.usage?.total_tokens || 0;
-      const completionTokens = response.usage?.completion_tokens || 0;
-      console.log(`[TIMING] GPT-5.1 Vision analysis completed in ${aiDuration}s (${tokensUsed} tokens, ${completionTokens} completion)`);
-      
-      const content = response.choices?.[0]?.message?.content;
-      if (!content) {
-        console.error('Empty AI response. Full response:', JSON.stringify(response));
-        throw new Error('No response from AI');
-      }
-
-      let analysis;
-      try {
-        analysis = JSON.parse(content);
-      } catch (parseError) {
-        console.error('Failed to parse AI response:', content.substring(0, 500));
-        throw new Error('AI returned invalid JSON format');
-      }
-      
-      // Validate the analysis result against our schema
-      const validatedResult = analysisResultSchema.safeParse({
-        productType,
-        productName: analysis.productName || undefined,
-        ingredients: analysis.ingredients || [],
-        overallRisk: analysis.overallRisk || 'moderate',
-        analyzedAt: new Date().toISOString(),
-        originalText: `[Image-based analysis - ${imageData.length} bytes]`
-      });
-      
-      if (!validatedResult.success) {
-        console.error('Validation failed:', validatedResult.error);
-        console.error(`Received ${analysis.ingredients?.length || 0} ingredients before validation failed`);
-        throw new Error('AI response did not match expected format');
-      }
-      
-      const detectedCount = validatedResult.data.ingredients.length;
-      console.log(`[VISION-ANALYZER] Successfully analyzed ${detectedCount} ingredients`);
-      console.log(`[VISION-ANALYZER] Product name: ${validatedResult.data.productName || 'Not detected'}`);
-      console.log(`[VISION-ANALYZER] Overall risk: ${validatedResult.data.overallRisk}`);
-      
-      // Cache the result (use extracted base64 for consistent cache key)
-      analysisCache.set(imageHash, {
-        result: validatedResult.data,
-        timestamp: Date.now(),
-        ocrText: `[Image-based analysis - ${base64Only.length} bytes]`
-      });
-      saveCacheToDisk();
-      
-      return validatedResult.data;
-      
-    } catch (error: any) {
-      lastError = error;
-      console.error(`[VISION-ANALYZER] Attempt ${attempt}/${maxRetries} failed:`, error.message);
-      
-      const nonRetryableErrors = [
-        'API key',
-        'unauthorized',
-        'forbidden',
-        'invalid_request_error',
-        'authentication_error',
-        'permission_denied',
-        'insufficient_quota',
-        'quota'
-      ];
-      
-      const shouldNotRetry = nonRetryableErrors.some(msg => 
-        error.message.toLowerCase().includes(msg.toLowerCase())
-      );
-      
-      if (shouldNotRetry) {
-        console.log(`[VISION-ANALYZER] Non-retryable error detected, failing immediately`);
-        break;
-      }
-      
-      if (attempt < maxRetries) {
-        const waitTime = 2000 * Math.pow(2, attempt - 1);
-        console.log(`[VISION-ANALYZER] Waiting ${waitTime}ms before retry...`);
-        await new Promise(resolve => setTimeout(resolve, waitTime));
-      }
-    }
-  }
-  
-  console.error('[VISION-ANALYZER] All retry attempts exhausted');
-  
-  if (lastError) {
-    const errorStatus = (lastError as any).status || (lastError as any).code;
-    const errorMessage = lastError.message || '';
-    
-    console.error('[VISION-ANALYZER] Error details:', { status: errorStatus, message: errorMessage });
-    
-    // Check for API key / auth errors
-    if (errorMessage.toLowerCase().includes('api key') || 
-        errorMessage.toLowerCase().includes('unauthorized') ||
-        errorStatus === 401) {
-      throw new Error(`OpenAI API key issue: ${errorMessage}. Please verify your API key is valid.`);
-    }
-    
-    // Check for quota/billing errors
-    if (errorMessage.toLowerCase().includes('quota') || 
-        errorMessage.toLowerCase().includes('insufficient')) {
-      throw new Error(`OpenAI account issue: ${errorMessage}. Please check your quota and billing status.`);
-    }
-    
-    // Check for model not found
-    if (errorMessage.toLowerCase().includes('gpt-5.1') || errorStatus === 404) {
-      throw new Error(`GPT-5.1 model error: ${errorMessage}. This model may not be available in your account.`);
-    }
-    
-    if (errorMessage.includes('timeout') || errorMessage.includes('ETIMEDOUT')) {
-      throw new Error('Image analysis is taking longer than expected. Please try again in a few moments.');
-    }
-    
-    if (errorMessage.includes('rate limit')) {
-      throw new Error('The AI service is currently busy. Please wait a minute and try again.');
-    }
-    
-    if (errorMessage.includes('network') || errorMessage.includes('ECONNREFUSED') || errorMessage.includes('ENOTFOUND')) {
-      throw new Error('Unable to connect to the AI service. Please check your internet connection and try again.');
-    }
-    
-    throw new Error(`Image analysis failed: ${errorMessage}. This may be due to an API key issue or GPT-5.1 not being available in your account.`);
-  }
-  
-  throw new Error('Failed to analyze image after multiple attempts. Please try again.');
 }

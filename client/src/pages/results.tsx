@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { flushSync } from "react-dom";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -8,8 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Camera, Loader2, Search, AlertCircle } from "lucide-react";
 import { IngredientCard } from "@/components/ingredient-card";
 import { RiskSummary } from "@/components/risk-summary";
-import { StreamingResults } from "@/components/streaming-results";
-import type { AnalysisResult, Ingredient, RiskLevel, ProductType } from "@shared/schema";
+import type { AnalysisResult, Ingredient, RiskLevel } from "@shared/schema";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useTranslation } from "react-i18next";
@@ -59,12 +57,10 @@ export default function ResultsPage() {
   const [progress, setProgress] = useState(0);
   const [cachedOcrText, setCachedOcrText] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
-  const [useStreaming, setUseStreaming] = useState(false);
-  const [streamingData, setStreamingData] = useState<{ ocrText: string; productType: ProductType; userLanguage: string } | null>(null);
 
   // Auto-retry mutation with Service Worker polling for mobile background support
-  const analyzeMutation = useMutation<AnalysisResult, Error, { productType: string; imageData: string; ocrText?: string }>({
-    mutationFn: async (data: { productType: string; imageData: string; ocrText?: string }): Promise<AnalysisResult> => {
+  const analyzeMutation = useMutation({
+    mutationFn: async (data: { productType: string; imageData: string; ocrText?: string }) => {
       // Normalize language code to 'en', 'es', or 'zh'
       let userLanguage = 'en';
       if (i18n.language.startsWith('zh')) {
@@ -141,7 +137,7 @@ export default function ResultsPage() {
     onSuccess: (data: AnalysisResult) => {
       setAnalysisResult(data);
       setRetryCount(0);
-      setCachedOcrText(null);
+      setCachedOcrText(null); // Clear cache after successful analysis
       
       // Save to scan history in localStorage
       const history = JSON.parse(localStorage.getItem('scanHistory') || '[]');
@@ -154,8 +150,9 @@ export default function ResultsPage() {
         ingredientCount: data.ingredients.length
       };
       history.unshift(historyItem);
-      localStorage.setItem('scanHistory', JSON.stringify(history.slice(0, 10)));
+      localStorage.setItem('scanHistory', JSON.stringify(history.slice(0, 10))); // Keep last 10 scans
       
+      // Clear pending analysis
       sessionStorage.removeItem('pendingAnalysis');
     },
     onError: () => {
@@ -167,32 +164,10 @@ export default function ResultsPage() {
   useEffect(() => {
     // Check if there's a pending analysis
     const pending = sessionStorage.getItem('pendingAnalysis');
-    if (pending && !analysisResult && !analyzeMutation.isPending && !useStreaming) {
+    if (pending && !analysisResult && !analyzeMutation.isPending) {
       const data = JSON.parse(pending);
-      
-      // Normalize language code to 'en', 'es', or 'zh'
-      let userLanguage = 'en';
-      if (i18n.language.startsWith('zh')) {
-        userLanguage = 'zh';
-      } else if (i18n.language.startsWith('es')) {
-        userLanguage = 'es';
-      }
-      
-      // Use streaming if we have OCR text (ingredient list)
-      // Extract ingredients from OCR text
-      if (data.ocrText) {
-        setStreamingData({
-          ocrText: data.ocrText,
-          productType: data.productType as ProductType,
-          userLanguage
-        });
-        setUseStreaming(true);
-        sessionStorage.removeItem('pendingAnalysis');
-      } else {
-        // Fallback to old polling method if no OCR text
-        analyzeMutation.mutate(data);
-      }
-    } else if (!pending && !analysisResult && !useStreaming) {
+      analyzeMutation.mutate(data);
+    } else if (!pending && !analysisResult) {
       // No analysis to show, redirect to upload
       setLocation('/upload');
     }
@@ -275,11 +250,6 @@ export default function ResultsPage() {
     );
   }
 
-  // If using streaming, render the streaming component
-  if (useStreaming && streamingData) {
-    return <StreamingResults {...streamingData} />;
-  }
-  
   if (analyzeMutation.isError) {
     let errorMessage = (analyzeMutation.error as any)?.message || 'We couldn\'t analyze the image.';
     

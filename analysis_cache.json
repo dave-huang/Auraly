@@ -1,684 +1,669 @@
 [
   [
-    "20f98ae8612aa8716b688d7bc31df488d16e090d913f4444887ab228e38265d7",
+    "5861d7c9a484b41fd993ab2941d014b6baab5842d312c6388869d432f62dbf58",
     {
       "result": {
         "productType": "food",
         "ingredients": [
           {
-            "name": "Palm oil",
+            "name": "Palm Oil",
             "riskLevel": "moderate",
-            "summary": "A common vegetable oil high in saturated fat, used for frying and texture.",
-            "details": "Palm oil is widely used in processed foods because it is cheap and stable at high temperatures. Its high saturated fat content may negatively affect blood lipids when consumed in excess, and it is also associated with environmental concerns, though those are not direct health effects.",
-            "category": "fat/oil"
+            "summary": "Palm oil is a common cooking oil derived from the fruit of oil palms.",
+            "details": "While palm oil is widely used, its production is associated with environmental concerns. It is high in saturated fats, which can impact heart health if consumed in large quantities.",
+            "category": "oil"
           },
           {
-            "name": "Canola oil",
+            "name": "Canola Oil",
             "riskLevel": "low",
-            "summary": "A vegetable oil relatively low in saturated fat, used for cooking and frying.",
-            "details": "Canola oil contains mostly monounsaturated and polyunsaturated fats, including some omega‑3 fatty acids. In typical amounts it is considered safe and may be preferable to more saturated fats, though highly refined oils contribute to overall calorie intake and are common in ultra‑processed foods.",
-            "category": "fat/oil"
+            "summary": "Canola oil is a vegetable oil derived from rapeseed.",
+            "details": "Canola oil is low in saturated fat and contains omega-3 fatty acids, making it a heart-healthy option when used in moderation.",
+            "category": "oil"
           },
           {
-            "name": "Soy lecithin",
+            "name": "Soy Lecithin",
             "riskLevel": "low",
-            "summary": "An emulsifier derived from soy that helps blend fats and water.",
-            "details": "Soy lecithin is used in many processed foods to improve texture and prevent separation. It is generally recognized as safe, but it does come from soy, which may be relevant for people with severe soy allergies, although the allergenic protein content is usually very low.",
+            "summary": "Soy lecithin is an emulsifier derived from soybeans.",
+            "details": "It is commonly used to stabilize and blend ingredients. Generally considered safe, but those with soy allergies should avoid it.",
             "category": "emulsifier"
           },
           {
-            "name": "Wheat flour",
+            "name": "Wheat Flour",
             "riskLevel": "moderate",
-            "summary": "Refined or semi‑refined flour from wheat, a source of carbohydrates and gluten.",
-            "details": "Wheat flour is a staple ingredient providing starch and some protein, but refined forms have less fiber and micronutrients than whole grain. It contains gluten, which is problematic for people with celiac disease or gluten sensitivity, and high intake of refined flour products is linked to blood sugar spikes and weight gain.",
-            "category": "grain/gluten"
+            "summary": "Wheat flour is a powder made from grinding wheat.",
+            "details": "It contains gluten, which can be problematic for individuals with celiac disease or gluten sensitivity.",
+            "category": "allergen"
           },
           {
             "name": "Sugar",
-            "riskLevel": "high",
-            "summary": "Added simple sugar used as a sweetener and for browning.",
-            "details": "Frequent or high intake of added sugars is associated with increased risk of obesity, type 2 diabetes, fatty liver disease, and dental caries. Processed foods with multiple sugar sources can significantly raise total sugar intake without providing substantial nutrients.",
+            "riskLevel": "moderate",
+            "summary": "Sugar is a sweetener derived from sugar cane or sugar beets.",
+            "details": "Excessive consumption of sugar can lead to health issues such as obesity, diabetes, and tooth decay.",
             "category": "sweetener"
           },
           {
             "name": "Salt",
             "riskLevel": "moderate",
-            "summary": "Common table salt (sodium chloride) used for flavor and preservation.",
-            "details": "While sodium is essential, excessive intake is linked to high blood pressure, increased cardiovascular risk, and kidney strain. This ingredient list includes salt many times, suggesting the final product may be high in sodium, which is a concern for people with hypertension or heart and kidney conditions.",
-            "category": "mineral/seasoning"
+            "summary": "Salt is a mineral composed primarily of sodium chloride.",
+            "details": "High sodium intake is linked to increased blood pressure and heart disease risk. Moderation is key.",
+            "category": "seasoning"
           },
           {
-            "name": "Corn starch",
+            "name": "Corn Starch",
             "riskLevel": "low",
-            "summary": "A refined starch from corn used as a thickener and texturizer.",
-            "details": "Corn starch is mostly pure carbohydrate with little fiber or micronutrients. It is generally safe but contributes to rapidly digestible carbs, which can raise blood sugar, especially when consumed in large amounts or in combination with other refined carbs.",
-            "category": "starch/thickener"
+            "summary": "Corn starch is a carbohydrate extracted from corn.",
+            "details": "It is used as a thickening agent in cooking and is generally considered safe.",
+            "category": "thickener"
           },
           {
             "name": "Spices",
             "riskLevel": "low",
-            "summary": "A blend of dried herbs and spices used for flavor.",
-            "details": "Spices can provide beneficial phytochemicals and antioxidants and are generally safe. Rarely, individuals may have specific spice allergies or intolerances, but these are uncommon compared with major allergens like nuts or dairy.",
-            "category": "flavoring"
+            "summary": "Spices are aromatic substances used to flavor food.",
+            "details": "They are generally safe and can provide health benefits, such as anti-inflammatory properties.",
+            "category": "seasoning"
           },
           {
             "name": "Garlic",
             "riskLevel": "low",
-            "summary": "A culinary herb used for strong savory flavor.",
-            "details": "Garlic is associated with potential cardiovascular and antimicrobial benefits in whole‑food form. In processed foods it is mainly a flavoring; some people may experience digestive discomfort or have an intolerance, but it is not a major allergen.",
-            "category": "flavoring"
+            "summary": "Garlic is a bulbous plant used for flavoring.",
+            "details": "Garlic is known for its health benefits, including potential cardiovascular benefits and immune support.",
+            "category": "seasoning"
           },
           {
-            "name": "Whole milk powder",
+            "name": "Whole Milk Powder",
             "riskLevel": "moderate",
-            "summary": "Dehydrated whole milk containing milk fat, protein, and lactose.",
-            "details": "Whole milk powder provides dairy proteins, fats, and sugars and is a clear source of milk allergens and lactose. It is nutritionally dense but can contribute to saturated fat intake; it is unsuitable for people with milk allergy and may cause symptoms in those with lactose intolerance.",
+            "summary": "Whole milk powder is dehydrated milk with fat content.",
+            "details": "It contains lactose and dairy proteins, which can be problematic for those with lactose intolerance or dairy allergies.",
             "category": "dairy"
           },
           {
-            "name": "Skim milk powder",
+            "name": "Skim Milk Powder",
             "riskLevel": "moderate",
-            "summary": "Dehydrated non‑fat milk, rich in protein and lactose but low in fat.",
-            "details": "Skim milk powder is used to add dairy protein and body without much fat. It still contains milk proteins (casein, whey) and lactose, so it is a significant allergen for those with milk allergy and can cause issues for people with lactose intolerance.",
+            "summary": "Skim milk powder is dehydrated milk with reduced fat content.",
+            "details": "Similar to whole milk powder, it contains lactose and dairy proteins, posing issues for those with lactose intolerance or dairy allergies.",
             "category": "dairy"
           },
           {
-            "name": "Caramel color",
+            "name": "Caramel Color",
             "riskLevel": "moderate",
-            "summary": "A brown food coloring made by heating sugars.",
-            "details": "Caramel color is widely used in sauces and snacks to give a brown hue. Some classes of caramel color can contain trace levels of 4‑MEI, a process contaminant with potential carcinogenicity in animal studies, though typical dietary exposures are usually low; people seeking to minimize additives may wish to limit it.",
-            "category": "color additive"
+            "summary": "Caramel color is a food coloring made by heating sugar.",
+            "details": "Some types of caramel color may contain 4-MEI, a potential carcinogen, but it is generally considered safe in food use.",
+            "category": "color"
           },
           {
-            "name": "Monosodium glutamate",
+            "name": "Monosodium Glutamate",
             "riskLevel": "moderate",
-            "summary": "A flavor enhancer (MSG) that boosts umami taste.",
-            "details": "MSG is considered safe by major regulatory agencies, but some individuals report sensitivity symptoms such as headache or flushing after consuming large amounts, though controlled studies are mixed. It can encourage higher intake of savory processed foods, indirectly contributing to excess sodium and calorie consumption.",
+            "summary": "Monosodium glutamate (MSG) is a flavor enhancer.",
+            "details": "While generally recognized as safe, some people report sensitivity to MSG, experiencing symptoms like headaches and nausea.",
             "category": "flavor enhancer"
           },
           {
-            "name": "Defatted soybean",
-            "riskLevel": "moderate",
-            "summary": "Soybeans with most of the fat removed, used as a protein source.",
-            "details": "Defatted soybean is rich in plant protein and is often used in processed foods and seasonings. Soy is a common allergen, so this ingredient is a concern for people with soy allergy, though for most others it is nutritionally acceptable.",
-            "category": "legume/protein"
+            "name": "Defatted Soybean",
+            "riskLevel": "low",
+            "summary": "Defatted soybean is soy flour with most of the oil removed.",
+            "details": "It is used as a protein source and is generally safe, but should be avoided by those with soy allergies.",
+            "category": "protein"
           },
           {
-            "name": "Yeast extract",
-            "riskLevel": "moderate",
-            "summary": "A savory flavoring rich in glutamates and nucleotides.",
-            "details": "Yeast extract is used to enhance umami flavor and can function similarly to MSG by providing free glutamate. It is generally safe but may be an issue for individuals who are sensitive to glutamate‑rich flavor enhancers or who are trying to avoid highly processed flavor boosters.",
+            "name": "Yeast Extract",
+            "riskLevel": "low",
+            "summary": "Yeast extract is a flavoring derived from yeast.",
+            "details": "It is used to enhance savory flavors and is generally considered safe.",
             "category": "flavor enhancer"
           },
           {
-            "name": "Natural and artificial flavors",
+            "name": "Natural and Artificial Flavors",
             "riskLevel": "moderate",
-            "summary": "A mixture of flavoring chemicals, some from natural sources and some synthetic.",
-            "details": "These flavorings are used to create or intensify taste and aroma and can include many different compounds under a single label. While approved for use, they increase the level of processing and may pose issues for people who are sensitive to certain flavor chemicals, though specific components are usually not disclosed.",
-            "category": "flavoring"
+            "summary": "These are substances added to food to impart flavor.",
+            "details": "While natural flavors are derived from natural sources, artificial flavors are synthetically created. Both are generally safe, but some individuals may prefer to avoid artificial additives.",
+            "category": "flavor"
           },
           {
             "name": "Honey",
-            "riskLevel": "moderate",
-            "summary": "A natural sweetener made by bees, composed mainly of sugars.",
-            "details": "Honey contains fructose, glucose, and small amounts of antioxidants and trace compounds. It is still an added sugar from a metabolic standpoint and can contribute to blood sugar spikes and excess calorie intake; it should not be given to infants under one year due to botulism risk (relevant more for pure honey than processed foods).",
+            "riskLevel": "low",
+            "summary": "Honey is a natural sweetener produced by bees.",
+            "details": "It contains natural sugars and antioxidants, but should be consumed in moderation due to its high sugar content.",
             "category": "sweetener"
           },
           {
             "name": "Dextrin",
             "riskLevel": "low",
-            "summary": "A group of short‑chain carbohydrates derived from starch, used as a filler or thickener.",
-            "details": "Dextrin is produced by breaking down starch and is easily digestible, contributing to carbohydrate intake. It is generally recognized as safe, but in large amounts it can raise blood glucose and may cause digestive discomfort in some individuals.",
-            "category": "starch/thickener"
+            "summary": "Dextrin is a carbohydrate derived from starch.",
+            "details": "It is used as a thickening agent and is generally considered safe.",
+            "category": "thickener"
           },
           {
-            "name": "Pasteurized milk",
+            "name": "Pasteurized Milk",
             "riskLevel": "moderate",
-            "summary": "Heat‑treated liquid milk used as a dairy ingredient.",
-            "details": "Pasteurization kills harmful bacteria, making milk safer to consume. However, it still contains milk proteins and lactose, so it is a major allergen and can cause reactions in people with milk allergy or lactose intolerance.",
+            "summary": "Pasteurized milk is milk that has been heat-treated to kill bacteria.",
+            "details": "It is safe for most people but contains lactose, which can be problematic for those with lactose intolerance.",
             "category": "dairy"
           },
           {
-            "name": "Cheese cultures",
+            "name": "Cheese Cultures",
             "riskLevel": "low",
-            "summary": "Beneficial bacteria used to ferment milk into cheese.",
-            "details": "Cheese cultures help develop flavor and texture in dairy products. They are generally safe and may contribute to beneficial bacteria exposure, though the overall health impact depends on the full food matrix and other ingredients.",
-            "category": "culture/microorganism"
+            "summary": "Cheese cultures are bacteria used in cheese production.",
+            "details": "They are essential for cheese fermentation and are generally safe.",
+            "category": "dairy"
           },
           {
             "name": "Enzymes",
             "riskLevel": "low",
-            "summary": "Processing aids (often from microbial, plant, or animal sources) used to modify texture or flavor.",
-            "details": "Enzymes such as rennet or proteases are used in cheese making and other food processes and are usually present in very small amounts in the final product. They are generally considered safe, though rarely some individuals may be sensitive to specific enzyme sources.",
-            "category": "processing aid"
+            "summary": "Enzymes are proteins that catalyze biochemical reactions.",
+            "details": "Used in food processing, they are generally safe and help in digestion and fermentation processes.",
+            "category": "additive"
           },
           {
-            "name": "Onion flake",
+            "name": "Onion Flake",
             "riskLevel": "low",
-            "summary": "Dehydrated pieces of onion used for flavor.",
-            "details": "Onion flakes provide concentrated onion flavor and some phytochemicals. They are generally safe, though some people with irritable bowel syndrome or specific intolerances may find onions trigger digestive symptoms.",
-            "category": "flavoring"
+            "summary": "Onion flake is dehydrated onion used for flavoring.",
+            "details": "It is a natural ingredient used to impart onion flavor and is generally safe.",
+            "category": "seasoning"
           },
           {
-            "name": "Natural flavor",
+            "name": "Onion Extract",
+            "riskLevel": "low",
+            "summary": "Onion extract is a concentrated form of onion flavor.",
+            "details": "It is used to enhance flavor and is generally considered safe.",
+            "category": "flavor"
+          },
+          {
+            "name": "Soy Sauce",
             "riskLevel": "moderate",
-            "summary": "Flavoring substances derived from natural sources such as plants or animals.",
-            "details": "Natural flavors can include many different compounds and are used to enhance taste. Although derived from natural sources, they are still processed and can contain solvents or carriers; specific allergens are sometimes present but not always clearly labeled, which can be an issue for highly sensitive individuals.",
-            "category": "flavoring"
+            "summary": "Soy sauce is a liquid condiment made from fermented soybeans, wheat, and salt.",
+            "details": "It contains gluten and high sodium levels, which can be a concern for those with gluten intolerance or high blood pressure.",
+            "category": "seasoning"
           },
           {
-            "name": "Onion extract",
+            "name": "Tomato Powder",
             "riskLevel": "low",
-            "summary": "A concentrated extract from onions used to boost flavor.",
-            "details": "Onion extract intensifies onion taste without adding bulk. It is generally safe, with similar considerations to onion itself, though the concentration of certain sulfur compounds may be higher and could bother those with strong sensitivities.",
-            "category": "flavoring"
+            "summary": "Tomato powder is dehydrated tomato used for flavoring.",
+            "details": "It is a natural ingredient used to impart tomato flavor and is generally safe.",
+            "category": "seasoning"
           },
           {
-            "name": "Soy sauce (soybean, wheat, salt)",
-            "riskLevel": "moderate",
-            "summary": "A fermented seasoning made from soybeans, wheat, and salt.",
-            "details": "Soy sauce contributes umami flavor and significant sodium, and it contains both soy and wheat, making it a concern for people with soy allergy, wheat allergy, or celiac disease. Fermented soy products are generally safe for most people but can be very high in salt, adding to overall sodium load.",
-            "category": "condiment"
-          },
-          {
-            "name": "Garlic extract",
+            "name": "Dried Onion",
             "riskLevel": "low",
-            "summary": "A concentrated form of garlic used as a flavoring.",
-            "details": "Garlic extract provides strong garlic flavor and some of the same sulfur compounds found in fresh garlic. It is generally safe, though it may cause digestive upset in sensitive individuals or those with garlic intolerance.",
-            "category": "flavoring"
-          },
-          {
-            "name": "Tomato powder",
-            "riskLevel": "low",
-            "summary": "Dehydrated and powdered tomato used for flavor and color.",
-            "details": "Tomato powder concentrates tomato flavor and some nutrients like lycopene. It is generally safe, though people with tomato allergy or acid sensitivity may need to be cautious.",
-            "category": "vegetable ingredient"
-          },
-          {
-            "name": "Dried onion",
-            "riskLevel": "low",
-            "summary": "Dehydrated onion pieces used as a seasoning.",
-            "details": "Dried onion is similar to onion flakes and provides flavor with a long shelf life. It is typically safe but may cause digestive symptoms in individuals sensitive to onions or high‑FODMAP foods.",
-            "category": "flavoring"
+            "summary": "Dried onion is dehydrated onion used for flavoring.",
+            "details": "It is a natural ingredient used to impart onion flavor and is generally safe.",
+            "category": "seasoning"
           },
           {
             "name": "Glucose",
-            "riskLevel": "high",
-            "summary": "A simple sugar used as a sweetener and energy source.",
-            "details": "Glucose is rapidly absorbed and can cause quick spikes in blood sugar and insulin. High intake of added simple sugars like glucose is associated with increased risk of metabolic disorders, including insulin resistance and type 2 diabetes, especially when consumed in excess over time.",
+            "riskLevel": "moderate",
+            "summary": "Glucose is a simple sugar used as a sweetener.",
+            "details": "It is a source of energy but can contribute to high blood sugar levels if consumed in excess.",
             "category": "sweetener"
           },
           {
-            "name": "Sucrose fatty acid esters",
-            "riskLevel": "moderate",
-            "summary": "Emulsifiers made by combining sucrose with fatty acids.",
-            "details": "Sucrose esters of fatty acids help mix oil and water and improve texture in processed foods. They are generally considered safe at approved levels, but like other emulsifiers, there is emerging research suggesting some may affect gut barrier function and microbiota in high or chronic exposures, though evidence in humans is still limited.",
+            "name": "Sucrose Fatty Acid Esters",
+            "riskLevel": "low",
+            "summary": "Sucrose fatty acid esters are emulsifiers made from sugar and fatty acids.",
+            "details": "They are used to stabilize food products and are generally considered safe.",
             "category": "emulsifier"
           },
           {
-            "name": "Dextrose anhydrous (glucose)",
-            "riskLevel": "high",
-            "summary": "A form of pure glucose used as a sweetener and bulking agent.",
-            "details": "Anhydrous dextrose is chemically the same as glucose and is quickly absorbed, raising blood sugar levels. Frequent consumption of foods with added dextrose contributes to excess sugar intake and is linked to weight gain, insulin resistance, and dental caries.",
+            "name": "Dextrose Anhydrous Glucose",
+            "riskLevel": "moderate",
+            "summary": "Dextrose anhydrous is a form of glucose used as a sweetener.",
+            "details": "It is a simple sugar that can raise blood sugar levels if consumed in large quantities.",
             "category": "sweetener"
           },
           {
             "name": "Banana",
             "riskLevel": "low",
-            "summary": "Fruit ingredient used for flavor and sweetness.",
-            "details": "Banana provides natural sugars, some fiber, and micronutrients like potassium when used in meaningful amounts. In processed foods it may be present in small quantities mainly for flavor; it is generally safe, though rare banana allergies do exist.",
+            "summary": "Banana is a fruit used for flavor and nutrition.",
+            "details": "It is a natural ingredient rich in potassium and generally safe for consumption.",
             "category": "fruit"
           },
           {
-            "name": "Processed honey",
-            "riskLevel": "moderate",
-            "summary": "Refined or heat‑treated honey used as a sweetener.",
-            "details": "Processing can reduce some of honey’s natural enzymes and antioxidants, leaving it primarily as a source of simple sugars. As with other added sugars, high intake can contribute to metabolic issues and weight gain, even though it is perceived as more natural.",
+            "name": "Processed Honey",
+            "riskLevel": "low",
+            "summary": "Processed honey is honey that has been filtered and pasteurized.",
+            "details": "It retains the natural sweetness of honey but may lose some beneficial enzymes during processing.",
             "category": "sweetener"
           },
           {
-            "name": "Tomato paste",
+            "name": "Tomato Paste",
             "riskLevel": "low",
-            "summary": "Concentrated tomato product used for flavor and color.",
-            "details": "Tomato paste is rich in tomato solids and can provide lycopene and other phytonutrients. It is generally safe, with similar considerations as tomato powder regarding potential issues for those with tomato allergy or acid sensitivity.",
-            "category": "vegetable ingredient"
+            "summary": "Tomato paste is a concentrated form of tomatoes used for flavoring.",
+            "details": "It is a natural ingredient used to impart tomato flavor and is generally safe.",
+            "category": "seasoning"
           },
           {
-            "name": "Fermented milk",
+            "name": "Fermented Milk",
             "riskLevel": "moderate",
-            "summary": "Milk that has been cultured with bacteria, similar to yogurt or kefir.",
-            "details": "Fermented milk can contain beneficial bacteria and may be easier to digest for some people than regular milk due to partial lactose breakdown. However, it still contains milk proteins and is an allergen for those with dairy allergy, and may still cause symptoms in some lactose‑intolerant individuals.",
+            "summary": "Fermented milk is milk that has been fermented with lactic acid bacteria.",
+            "details": "It is used in products like yogurt and kefir and is generally safe, but contains lactose.",
             "category": "dairy"
           },
           {
-            "name": "Citric acid",
+            "name": "Citric Acid",
             "riskLevel": "low",
-            "summary": "A common acidulant used for tart flavor and as a preservative.",
-            "details": "Citric acid is widely used in foods and beverages and is generally recognized as safe. A small number of people report mouth irritation or sensitivity, but it is not a major allergen; it can, however, contribute to dental enamel erosion when consumed frequently in acidic drinks.",
-            "category": "acidity regulator"
+            "summary": "Citric acid is a natural acid found in citrus fruits used as a preservative and flavoring.",
+            "details": "It is generally considered safe and is used to add a sour taste to foods and beverages.",
+            "category": "preservative"
           },
           {
-            "name": "Mono- and diglycerides",
-            "riskLevel": "moderate",
-            "summary": "Emulsifiers derived from glycerol and fatty acids, used to improve texture.",
-            "details": "Mono‑ and diglycerides help keep fats and water mixed and extend shelf life. They can be sources of additional fats, sometimes including trans fat in older or poorly controlled formulations, though modern regulations limit trans fat; they also contribute to the overall level of food processing.",
+            "name": "Mono- and Diglycerides",
+            "riskLevel": "low",
+            "summary": "Mono- and diglycerides are emulsifiers used to blend ingredients.",
+            "details": "They are generally considered safe and are used to improve texture and shelf life of food products.",
             "category": "emulsifier"
           },
           {
-            "name": "Alkali",
+            "name": "Processed with Alkali",
             "riskLevel": "low",
-            "summary": "Alkali refers to basic (high pH) substances used to adjust acidity in foods. Common food alkalis include sodium carbonate or potassium carbonate.",
-            "details": "Food-grade alkalis are generally recognized as safe when used within regulatory limits. They are used to control acidity, texture, and color in processed foods. Excessive intake from many processed foods could contribute to higher sodium or mineral load, but typical dietary exposure is low.",
-            "category": "acidity regulator"
+            "summary": "Processed with alkali refers to the treatment of cocoa with an alkaline solution.",
+            "details": "This process, also known as Dutch processing, reduces acidity and darkens the color of cocoa, and is generally safe.",
+            "category": "processing aid"
           },
           {
-            "name": "Tomato extract",
+            "name": "Soy Protein Hydrolysate",
             "riskLevel": "low",
-            "summary": "Tomato extract is a concentrated form of tomato, providing flavor, color, and beneficial compounds like lycopene.",
-            "details": "It is typically considered a wholesome ingredient and can provide antioxidants such as lycopene, which has been associated with cardiovascular and other health benefits. The main concern is for individuals with tomato allergies or reflux issues, as acidic tomato products can aggravate symptoms.",
-            "category": "vegetable extract / flavoring"
+            "summary": "Soy protein hydrolysate is a form of soy protein that has been broken down into smaller peptides.",
+            "details": "It is used as a protein source and is generally safe, but should be avoided by those with soy allergies.",
+            "category": "protein"
           },
           {
-            "name": "Soy protein hydrolysate",
-            "riskLevel": "moderate",
-            "summary": "Soy protein hydrolysate is enzymatically broken-down soy protein used as a flavor enhancer and protein source.",
-            "details": "Hydrolyzed proteins contain free amino acids and peptides, including glutamic acid, which can act similarly to MSG and may trigger symptoms in glutamate-sensitive individuals. It is also a clear source of soy, a common allergen that can cause reactions ranging from mild to severe. Otherwise, it is generally recognized as safe as a protein ingredient.",
-            "category": "protein / flavor enhancer / allergen"
-          },
-          {
-            "name": "Apple puree",
+            "name": "Apple Puree",
             "riskLevel": "low",
-            "summary": "Apple puree is mashed or processed apple used for flavor, sweetness, and texture.",
-            "details": "It is generally a wholesome fruit ingredient providing natural sugars, some fiber, and phytonutrients. The main health consideration is its sugar content, which can contribute to total sugar intake, especially in processed foods. People with apple allergies or certain oral allergy syndromes may need to avoid it.",
-            "category": "fruit ingredient"
-          },
-          {
-            "name": "Dried garlic",
-            "riskLevel": "low",
-            "summary": "Dried garlic is dehydrated garlic used for flavor.",
-            "details": "Garlic is generally health-promoting and associated with potential cardiovascular benefits due to sulfur compounds. Some individuals may experience digestive discomfort, heartburn, or have garlic allergy or intolerance. In processed form, it mainly serves as a flavoring with minimal safety concerns for most people.",
-            "category": "herb / spice"
+            "summary": "Apple puree is a smooth mixture of cooked apples used for flavor and sweetness.",
+            "details": "It is a natural ingredient and is generally safe for consumption.",
+            "category": "fruit"
           },
           {
             "name": "Maltose",
             "riskLevel": "moderate",
-            "summary": "Maltose is a disaccharide sugar composed of two glucose units, used as a sweetener.",
-            "details": "Maltose is broken down into glucose in the body and can raise blood sugar similarly to other refined sugars. High intake of added sugars, including maltose, is linked to weight gain, dental caries, and metabolic issues. People with blood sugar concerns should monitor total added sugar intake from all sources.",
-            "category": "sweetener / simple carbohydrate"
+            "summary": "Maltose is a sugar made from two glucose molecules.",
+            "details": "It is used as a sweetener and can contribute to high blood sugar levels if consumed in excess.",
+            "category": "sweetener"
           },
           {
-            "name": "Whey powder",
+            "name": "Whey Powder",
             "riskLevel": "moderate",
-            "summary": "Whey powder is the dried protein-rich fraction of milk, used for texture and protein.",
-            "details": "Whey is a high-quality protein source but is a clear dairy allergen and can trigger reactions in people with milk protein allergy. It also contains lactose, which can cause digestive symptoms in lactose-intolerant individuals. For most others it is safe, but those with kidney disease may need to moderate total protein intake.",
-            "category": "dairy / protein / allergen"
+            "summary": "Whey powder is a dairy product made from the liquid remaining after milk has been curdled and strained.",
+            "details": "It is a source of protein but contains lactose, which can be problematic for those with lactose intolerance.",
+            "category": "dairy"
           },
           {
-            "name": "Garlic flake",
+            "name": "Garlic Flake",
             "riskLevel": "low",
-            "summary": "Garlic flake is dehydrated, flaked garlic used as a seasoning.",
-            "details": "Its health profile is similar to other garlic forms, potentially offering beneficial sulfur compounds. The main concerns are possible digestive discomfort or allergy/intolerance in sensitive individuals. In typical culinary amounts it is considered safe.",
-            "category": "herb / spice"
+            "summary": "Garlic flake is dehydrated garlic used for flavoring.",
+            "details": "It is a natural ingredient used to impart garlic flavor and is generally safe.",
+            "category": "seasoning"
           },
           {
-            "name": "Paprika color",
+            "name": "Paprika Color",
             "riskLevel": "low",
-            "summary": "Paprika color is a natural colorant derived from paprika peppers, providing red-orange color.",
-            "details": "It is considered a natural coloring agent and is generally recognized as safe. People with pepper or paprika allergies may react, but this is relatively uncommon. Compared with synthetic dyes, paprika color is usually seen as a lower-risk coloring option.",
-            "category": "natural color"
+            "summary": "Paprika color is a natural coloring derived from paprika.",
+            "details": "It is used to add color to food products and is generally considered safe.",
+            "category": "color"
           },
           {
-            "name": "Disodium inosinate",
+            "name": "Disodium Inosinate",
             "riskLevel": "moderate",
-            "summary": "Disodium inosinate is a flavor enhancer often used with MSG to intensify savory (umami) taste.",
-            "details": "It is generally recognized as safe at typical use levels, but it is almost always used in combination with glutamate sources (like MSG or yeast extract), which may be an issue for glutamate-sensitive individuals. It is often derived from animal or microbial sources, which may matter for vegetarians, vegans, or certain religious diets. While not strongly linked to specific diseases, its presence signals a highly processed, flavor-enhanced product.",
+            "summary": "Disodium inosinate is a flavor enhancer often used with MSG.",
+            "details": "It is generally recognized as safe, but some individuals may experience sensitivity to flavor enhancers.",
             "category": "flavor enhancer"
           }
         ],
-        "overallRisk": "high",
-        "analyzedAt": "2025-11-26T04:15:01.404Z",
-        "originalText": "INGREDIENTS: VEGETABLE OIL (PALM OIL, CANOLA OIL, SOY LECITHIN), WHEAT FLOUR, SUGAR, SALT, CORN STARCH, CURRY POWDER\n(SPICES, GARLIC), SUGAR AND MILK POWDER MIXTURE (SUGAR, WHOLE MILK POWDER, SALT, SKIM MILK POWDER), CARAMEL COLOR,\nMONOSODIUM GLUTAMATE, WHOLE MILK POWDER, DEFATTED SOYBEAN, YEAST EXTRACT, NATURAL AND ARTIFICIAL FLAVORS, HONEY, CHEESE\nPRODUCT (DEXTRIN, ENZYME MODIFIED CHEESE [CHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), WHOLE MILK POWDER,\nSALT], YEAST EXTRACT, CORN STARCH, SALT), SOY LECITHIN, ROASTED ONION POWDER (ONION FLAKE, DEXTRIN, NATURAL FLAVOR), ONION\nSEASONING (ONION EXTRACT, DEXTRIN, SOY SAUCE [SOYBEAN, WHEAT, SALT], YEAST EXTRACT, CORN STARCH, SALT, GARLIC EXTRACT,\nNATURAL FLAVOR), TOMATO POWDER, ONION POWDER (DRIED ONION, DEFATTED SOYBEAN, GLUCOSE), SUCROSE FATTY ACID ESTERS, BROWN\nROUX (PALM OIL, SKIM MILK POWDER, WHEAT FLOUR, DEXTROSE ANHYDROUS GLUCOSE), FRUIT PASTE (BANANA, SUGAR, PROCESSED HONEY,\nTOMATO PASTE, FERMENTED MILK, CITRIC ACID, SALT), SPICES, CITRIC ACID, MONO- AND DIGLYCERIDES, COCOA POWDER (PROCESSED WITH\nALKALI), TOMATO SEASONING (DEXTRIN, TOMATO EXTRACT, YEAST EXTRACT, CORN STARCH, SALT), PROTEIN HYDROLYSATE (SOY PROTEIN\nHYDROLYSATE, DEXTRIN, MONOSODIUM GLUTAMATE), SKIM MILK POWDER, APPLE PASTE (APPLE PUREE, CITRIC ACID), GARLIC POWDER (DRIED\nGARLIC, DEFATTED SOYBEAN, GLUCOSE, MALTOSE), WHEY POWDER, ROASTED GARLIC POWDER (GARLIC FLAKE, DEXTRIN, NATURAL FLAVOR),\nCHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), ONION EXTRACT (ONION EXTRACT, YEAST EXTRACT), PAPRIKA COLOR,\nDISODIUM INOSINATE, TOMATO EXTRACT (TOMATO EXTRACT, PALM OIL, SALT, SUGAR, YEAST EXTRACT) .\nCONTAINS: SOYBEANS, WHEAT, AND MILK.\nMANUFACTURED BY House Foods Corporation\n6-3, KIOI-CHO, CHIYODA-KU, TOKYO 102-8560, JAPAN"
+        "overallRisk": "moderate",
+        "analyzedAt": "2025-11-23T02:55:12.813Z",
+        "originalText": "INGREDIENTS: VEGETABLE OIL (PALM OIL, CANOLA OIL, SOY LECITHIN), WHEAT FLOUR, SUGAR, SALT, CORN STARCH, CURRY POWDER\n(SPICES, GARLIC), SUGAR AND MILK POWDER MIXTURE (SUGAR, WHOLE MILK POWDER, SALT, SKIM MILK POWDER), CARAMEL COLOR,\nMONOSODIUM GLUTAMATE, WHOLE MILK POWDER, DEFATTED SOYBEAN, YEAST EXTRACT, NATURAL AND ARTIFICIAL FLAVORS, HONEY, CHEESE\nPRODUCT (DEXTRIN, ENZYME MODIFIED CHEESE [CHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), WHOLE MILK POWDER,\nSALT], YEAST EXTRACT, CORN STARCH, SALT), SOY LECITHIN, ROASTED ONION POWDER (ONION FLAKE, DEXTRIN, NATURAL FLAVOR), ONION\nSEASONING (ONION EXTRACT, DEXTRIN, SOY SAUCE [SOYBEAN, WHEAT, SALT], YEAST EXTRACT, CORN STARCH, SALT, GARLIC EXTRACT,\nNATURAL FLAVOR), TOMATO POWDER, ONION POWDER (DRIED ONION, DEFATTED SOYBEAN, GLUCOSE), SUCROSE FATTY ACID ESTERS, BROWN\nROUX (PALM OIL, SKIM MILK POWDER, WHEAT FLOUR, DEXTROSE ANHYDROUS GLUCOSE), FRUIT PASTE (BANANA, SUGAR, PROCESSED HONEY,\nTOMATO PASTE, FERMENTED MILK, CITRIC ACID, SALT), SPICES, CITRIC ACID, MONO- AND DIGLYCERIDES, COCOA POWDER (PROCESSED WITH\nALKALI), TOMATO SEASONING (DEXTRIN, TOMATO EXTRACT, YEAST EXTRACT, CORN STARCH, SALT), PROTEIN HYDROLYSATE (SOY PROTEIN\nHYDROLYSATE, DEXTRIN, MONOSODIUM GLUTAMATE), SKIM MILK POWDER, APPLE PASTE (APPLE PUREE, CITRIC ACID), GARLIC POWDER (DRIED\nGARLIC, DEFATTED SOYBEAN, GLUCOSE, MALTOSE), WHEY POWDER, ROASTED GARLIC POWDER (GARLIC FLAKE, DEXTRIN, NATURAL FLAVOR),\nCHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), ONION EXTRACT (ONION EXTRACT, YEAST EXTRACT), PAPRIKA COLOR,\nDISODIUM INOSINATE, TOMATO EXTRACT (TOMATO EXTRACT, PALM OIL, SALT, SUGAR, YEAST EXTRACT) .\nCONTAINS: SOYBEANS, WHEAT, AND MILK."
       },
-      "timestamp": 1764130501407,
-      "ocrText": "INGREDIENTS: VEGETABLE OIL (PALM OIL, CANOLA OIL, SOY LECITHIN), WHEAT FLOUR, SUGAR, SALT, CORN STARCH, CURRY POWDER\n(SPICES, GARLIC), SUGAR AND MILK POWDER MIXTURE (SUGAR, WHOLE MILK POWDER, SALT, SKIM MILK POWDER), CARAMEL COLOR,\nMONOSODIUM GLUTAMATE, WHOLE MILK POWDER, DEFATTED SOYBEAN, YEAST EXTRACT, NATURAL AND ARTIFICIAL FLAVORS, HONEY, CHEESE\nPRODUCT (DEXTRIN, ENZYME MODIFIED CHEESE [CHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), WHOLE MILK POWDER,\nSALT], YEAST EXTRACT, CORN STARCH, SALT), SOY LECITHIN, ROASTED ONION POWDER (ONION FLAKE, DEXTRIN, NATURAL FLAVOR), ONION\nSEASONING (ONION EXTRACT, DEXTRIN, SOY SAUCE [SOYBEAN, WHEAT, SALT], YEAST EXTRACT, CORN STARCH, SALT, GARLIC EXTRACT,\nNATURAL FLAVOR), TOMATO POWDER, ONION POWDER (DRIED ONION, DEFATTED SOYBEAN, GLUCOSE), SUCROSE FATTY ACID ESTERS, BROWN\nROUX (PALM OIL, SKIM MILK POWDER, WHEAT FLOUR, DEXTROSE ANHYDROUS GLUCOSE), FRUIT PASTE (BANANA, SUGAR, PROCESSED HONEY,\nTOMATO PASTE, FERMENTED MILK, CITRIC ACID, SALT), SPICES, CITRIC ACID, MONO- AND DIGLYCERIDES, COCOA POWDER (PROCESSED WITH\nALKALI), TOMATO SEASONING (DEXTRIN, TOMATO EXTRACT, YEAST EXTRACT, CORN STARCH, SALT), PROTEIN HYDROLYSATE (SOY PROTEIN\nHYDROLYSATE, DEXTRIN, MONOSODIUM GLUTAMATE), SKIM MILK POWDER, APPLE PASTE (APPLE PUREE, CITRIC ACID), GARLIC POWDER (DRIED\nGARLIC, DEFATTED SOYBEAN, GLUCOSE, MALTOSE), WHEY POWDER, ROASTED GARLIC POWDER (GARLIC FLAKE, DEXTRIN, NATURAL FLAVOR),\nCHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), ONION EXTRACT (ONION EXTRACT, YEAST EXTRACT), PAPRIKA COLOR,\nDISODIUM INOSINATE, TOMATO EXTRACT (TOMATO EXTRACT, PALM OIL, SALT, SUGAR, YEAST EXTRACT) .\nCONTAINS: SOYBEANS, WHEAT, AND MILK.\nMANUFACTURED BY House Foods Corporation\n6-3, KIOI-CHO, CHIYODA-KU, TOKYO 102-8560, JAPAN"
+      "timestamp": 1763866512817,
+      "ocrText": "INGREDIENTS: VEGETABLE OIL (PALM OIL, CANOLA OIL, SOY LECITHIN), WHEAT FLOUR, SUGAR, SALT, CORN STARCH, CURRY POWDER\n(SPICES, GARLIC), SUGAR AND MILK POWDER MIXTURE (SUGAR, WHOLE MILK POWDER, SALT, SKIM MILK POWDER), CARAMEL COLOR,\nMONOSODIUM GLUTAMATE, WHOLE MILK POWDER, DEFATTED SOYBEAN, YEAST EXTRACT, NATURAL AND ARTIFICIAL FLAVORS, HONEY, CHEESE\nPRODUCT (DEXTRIN, ENZYME MODIFIED CHEESE [CHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), WHOLE MILK POWDER,\nSALT], YEAST EXTRACT, CORN STARCH, SALT), SOY LECITHIN, ROASTED ONION POWDER (ONION FLAKE, DEXTRIN, NATURAL FLAVOR), ONION\nSEASONING (ONION EXTRACT, DEXTRIN, SOY SAUCE [SOYBEAN, WHEAT, SALT], YEAST EXTRACT, CORN STARCH, SALT, GARLIC EXTRACT,\nNATURAL FLAVOR), TOMATO POWDER, ONION POWDER (DRIED ONION, DEFATTED SOYBEAN, GLUCOSE), SUCROSE FATTY ACID ESTERS, BROWN\nROUX (PALM OIL, SKIM MILK POWDER, WHEAT FLOUR, DEXTROSE ANHYDROUS GLUCOSE), FRUIT PASTE (BANANA, SUGAR, PROCESSED HONEY,\nTOMATO PASTE, FERMENTED MILK, CITRIC ACID, SALT), SPICES, CITRIC ACID, MONO- AND DIGLYCERIDES, COCOA POWDER (PROCESSED WITH\nALKALI), TOMATO SEASONING (DEXTRIN, TOMATO EXTRACT, YEAST EXTRACT, CORN STARCH, SALT), PROTEIN HYDROLYSATE (SOY PROTEIN\nHYDROLYSATE, DEXTRIN, MONOSODIUM GLUTAMATE), SKIM MILK POWDER, APPLE PASTE (APPLE PUREE, CITRIC ACID), GARLIC POWDER (DRIED\nGARLIC, DEFATTED SOYBEAN, GLUCOSE, MALTOSE), WHEY POWDER, ROASTED GARLIC POWDER (GARLIC FLAKE, DEXTRIN, NATURAL FLAVOR),\nCHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), ONION EXTRACT (ONION EXTRACT, YEAST EXTRACT), PAPRIKA COLOR,\nDISODIUM INOSINATE, TOMATO EXTRACT (TOMATO EXTRACT, PALM OIL, SALT, SUGAR, YEAST EXTRACT) .\nCONTAINS: SOYBEANS, WHEAT, AND MILK."
     }
   ],
   [
-    "19454fae1788dcac73a1ee0a82f80e642a61882426e2ffb4cb6b1034f60f1349",
+    "ac725901a1f29f0baaf893a6984641417ecab134a065bbb521d11000335f32be",
     {
       "result": {
         "productType": "food",
         "ingredients": [
           {
-            "name": "Whole grain oat flakes",
-            "riskLevel": "low",
-            "summary": "Whole grain oat flakes are minimally processed oats that provide fiber, vitamins, and minerals and are generally considered safe and health-promoting for most people.",
-            "details": "Whole grain oats are a good source of soluble fiber (especially beta-glucan), which can help support healthy cholesterol levels, blood sugar control, and satiety. They are naturally low in sodium and free of artificial additives. People with celiac disease or gluten sensitivity should ensure the oats are certified gluten-free, as cross-contamination with gluten-containing grains can occur.",
-            "category": "whole grain"
+            "name": "Sugar",
+            "riskLevel": "moderate",
+            "summary": "Sugar is a common sweetener used in many food products.",
+            "details": "Excessive consumption of sugar can lead to health issues such as obesity, diabetes, and heart disease. It is important to consume sugar in moderation.",
+            "category": "sweetener"
           },
           {
-            "name": "Flax seeds",
-            "riskLevel": "low",
-            "summary": "Flax seeds are nutrient-dense seeds rich in omega-3 fatty acids, fiber, and lignans, and are generally safe and beneficial when eaten in typical food amounts.",
-            "details": "Flax seeds can support heart health, digestion, and blood sugar control due to their fiber and healthy fat content. They are naturally free of common artificial additives and sweeteners. People with certain hormone-sensitive conditions or those on blood-thinning medications should consult a healthcare professional before consuming very large amounts regularly.",
-            "category": "seed"
+            "name": "Bleached Wheat Flour",
+            "riskLevel": "moderate",
+            "summary": "Bleached wheat flour is flour that has been chemically treated to improve its baking qualities.",
+            "details": "The bleaching process can remove some nutrients from the flour, and it may contain chemical residues. It is often used in processed foods.",
+            "category": "flour"
           },
           {
-            "name": "Chia seeds",
+            "name": "Malted Barley Flour",
             "riskLevel": "low",
-            "summary": "Chia seeds are small seeds high in fiber, omega-3 fatty acids, and minerals, and are generally considered safe and health-supportive.",
-            "details": "Chia seeds can help with satiety, digestive health, and stable blood sugar due to their high soluble fiber content and ability to absorb water. They do not contain artificial colors, flavors, or preservatives. People with swallowing difficulties should consume them fully hydrated and with adequate liquid to avoid choking risk.",
-            "category": "seed"
+            "summary": "Malted barley flour is made from barley that has been allowed to sprout before being dried and ground.",
+            "details": "It is used to enhance flavor and improve the texture of baked goods. It is generally considered safe for consumption.",
+            "category": "flour"
           },
           {
-            "name": "Quinoa",
+            "name": "Niacin",
             "riskLevel": "low",
-            "summary": "Quinoa is a high-protein, gluten-free pseudocereal that provides fiber, minerals, and complete protein, and is generally safe for most people.",
-            "details": "Quinoa is naturally nutrient-dense and does not contain artificial additives, trans fats, or added sodium in its plain form. It is suitable for people avoiding gluten, though cross-contamination is possible if not processed in dedicated facilities. Some individuals may experience mild digestive discomfort if quinoa is not thoroughly rinsed to remove natural saponins.",
-            "category": "pseudocereal"
+            "summary": "Niacin, also known as vitamin B3, is a nutrient that helps convert food into energy.",
+            "details": "It is essential for maintaining healthy skin, nerves, and digestion. Niacin is often added to foods to fortify them.",
+            "category": "vitamin"
           },
           {
-            "name": "Amaranth flakes",
+            "name": "Reduced Iron",
             "riskLevel": "low",
-            "summary": "Amaranth flakes are made from the amaranth grain, a gluten-free pseudocereal rich in protein and minerals, and are generally safe and nutritious.",
-            "details": "Amaranth provides protein, fiber, and micronutrients such as iron and magnesium, and in flake form is typically minimally processed without added artificial ingredients. It is naturally gluten-free and does not contain trans fats, artificial sweeteners, or colorants. As with other high-fiber grains and seeds, very large intakes may cause digestive discomfort in sensitive individuals.",
-            "category": "pseudocereal"
-          }
-        ],
-        "overallRisk": "low",
-        "analyzedAt": "2025-11-26T05:17:49.414Z",
-        "originalText": "INGREDIENTS: WHOLE GRAIN OAT\nFLAKES, FLAX SEEDS, CHIA SEEDS,\nQUINOA, AMARANTH FLAKES.\n\nDIST. & SOLD EXCLUSIVELY BY:\nTRADER JOE'S, MONROVIA, CA 91016\nSTORE IN A COOL, DRY PLACE."
-      },
-      "timestamp": 1764134269417,
-      "ocrText": "INGREDIENTS: WHOLE GRAIN OAT\nFLAKES, FLAX SEEDS, CHIA SEEDS,\nQUINOA, AMARANTH FLAKES.\n\nDIST. & SOLD EXCLUSIVELY BY:\nTRADER JOE'S, MONROVIA, CA 91016\nSTORE IN A COOL, DRY PLACE."
-    }
-  ],
-  [
-    "e89c7a113cf6fce2fe2241550675d550d1fea40d2a1a5b1be076585c0be9ab5a",
-    {
-      "result": {
-        "productType": "skincare",
-        "ingredients": [
+            "summary": "Reduced iron is a form of iron used to fortify foods.",
+            "details": "Iron is an essential mineral that helps transport oxygen in the blood. It is used to prevent iron-deficiency anemia.",
+            "category": "mineral"
+          },
+          {
+            "name": "Ferrous Sulfate",
+            "riskLevel": "low",
+            "summary": "Ferrous sulfate is a type of iron supplement used to treat or prevent low blood levels of iron.",
+            "details": "It is commonly added to foods as a fortifying agent to help prevent iron deficiency.",
+            "category": "mineral"
+          },
+          {
+            "name": "Thiamine Mononitrate",
+            "riskLevel": "low",
+            "summary": "Thiamine mononitrate is a form of vitamin B1 used to fortify foods.",
+            "details": "Vitamin B1 is essential for energy metabolism and nerve function. It is often added to processed foods to enhance nutritional value.",
+            "category": "vitamin"
+          },
+          {
+            "name": "Riboflavin",
+            "riskLevel": "low",
+            "summary": "Riboflavin, or vitamin B2, is a vitamin that helps the body break down carbohydrates, proteins, and fats.",
+            "details": "It is important for body growth and red blood cell production. Riboflavin is often added to foods to fortify them.",
+            "category": "vitamin"
+          },
+          {
+            "name": "Folic Acid",
+            "riskLevel": "low",
+            "summary": "Folic acid is a form of vitamin B9 used to fortify foods.",
+            "details": "It is crucial for DNA synthesis and repair, and is especially important during periods of rapid growth such as pregnancy and infancy.",
+            "category": "vitamin"
+          },
           {
             "name": "Water",
             "riskLevel": "low",
-            "summary": "Water is the main solvent in the formula and helps dissolve other ingredients and hydrate the skin.",
-            "details": "In skincare, water acts as a base that allows humectants, emollients, and actives to be evenly distributed and absorbed. It is generally safe and essential for most cosmetic formulations, with no known direct toxicity at the levels used.",
-            "category": "solvent"
+            "summary": "Water is a universal solvent and essential for life.",
+            "details": "It is used in food products as a solvent and to adjust texture and consistency. Water is safe and necessary for hydration.",
+            "category": "base"
+          },
+          {
+            "name": "High Fructose Corn Syrup",
+            "riskLevel": "high",
+            "summary": "High fructose corn syrup is a sweetener made from corn starch.",
+            "details": "It is linked to obesity and metabolic disorders due to its high fructose content, which can lead to increased fat accumulation and insulin resistance.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Palm Oil",
+            "riskLevel": "moderate",
+            "summary": "Palm oil is a type of vegetable oil derived from the fruit of oil palms.",
+            "details": "While it is high in saturated fats, which can raise cholesterol levels, it is also a major contributor to deforestation and habitat destruction.",
+            "category": "oil"
+          },
+          {
+            "name": "Corn Syrup",
+            "riskLevel": "moderate",
+            "summary": "Corn syrup is a sweetener made from corn starch.",
+            "details": "It is used to soften texture, add volume, and prevent crystallization of sugar. Excessive consumption can contribute to health issues similar to those caused by sugar.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Cocoa",
+            "riskLevel": "low",
+            "summary": "Cocoa is a powder made from roasted and ground cacao seeds.",
+            "details": "It is used to add chocolate flavor to foods and is rich in antioxidants. Cocoa is generally considered safe and beneficial in moderation.",
+            "category": "flavor"
+          },
+          {
+            "name": "Tallow",
+            "riskLevel": "moderate",
+            "summary": "Tallow is a rendered form of beef or mutton fat.",
+            "details": "It is used in cooking and baking for its flavor and texture. High in saturated fats, it should be consumed in moderation to avoid cardiovascular risks.",
+            "category": "fat"
+          },
+          {
+            "name": "Soybean Oil",
+            "riskLevel": "low",
+            "summary": "Soybean oil is a vegetable oil extracted from the seeds of soybeans.",
+            "details": "It is commonly used in cooking and processed foods. It contains polyunsaturated fats, which are considered heart-healthy.",
+            "category": "oil"
           },
           {
             "name": "Glycerin",
             "riskLevel": "low",
-            "summary": "Glycerin is a humectant that attracts water to the skin, helping to keep it hydrated and soft.",
-            "details": "It is widely used in skincare because it binds moisture from the environment and deeper skin layers to the outer layer of the skin. Glycerin is considered very safe, well-tolerated by most skin types, and can support the skin barrier when used in appropriate concentrations.",
+            "summary": "Glycerin is a sugar alcohol used as a sweetener and humectant.",
+            "details": "It helps retain moisture in foods and is generally recognized as safe. Glycerin is also used in pharmaceuticals and cosmetics.",
             "category": "humectant"
           },
           {
-            "name": "Olive Fruit Oil",
+            "name": "Cocoa Processed with Alkali",
             "riskLevel": "low",
-            "summary": "Olive fruit oil is an emollient plant oil that moisturizes and softens the skin.",
-            "details": "Rich in fatty acids and antioxidants like vitamin E, olive oil helps reinforce the skin barrier and reduce dryness. It is generally safe, though very acne-prone or sensitive individuals may occasionally find it comedogenic or irritating.",
-            "category": "emollient"
+            "summary": "Cocoa processed with alkali, also known as Dutch-processed cocoa, has a milder flavor and darker color.",
+            "details": "The alkalization process reduces acidity and enhances solubility. It is safe for consumption and commonly used in baking.",
+            "category": "flavor"
           },
           {
-            "name": "Butylene Glycol",
+            "name": "Food Starch Modified",
             "riskLevel": "low",
-            "summary": "Butylene glycol is a humectant and solvent that helps products spread easily and retain moisture.",
-            "details": "It improves texture, enhances penetration of other ingredients, and helps keep formulas stable. It is considered low risk for most people, though a small number of individuals with very sensitive skin may experience mild irritation.",
-            "category": "humectant"
+            "summary": "Modified food starch is starch that has been chemically altered to improve its properties.",
+            "details": "It is used as a thickener, stabilizer, or emulsifier in foods. It is generally considered safe for consumption.",
+            "category": "starch"
           },
           {
-            "name": "Macadamia Ternifolia Seed Oil",
+            "name": "Corn Starch",
             "riskLevel": "low",
-            "summary": "Macadamia seed oil is an emollient oil that nourishes and softens the skin.",
-            "details": "It is rich in monounsaturated fatty acids, including palmitoleic acid, which is similar to skin’s natural sebum and can support barrier function. It is generally safe and non-irritating, though like most oils it can be comedogenic for some acne-prone users.",
-            "category": "emollient"
+            "summary": "Corn starch is a carbohydrate extracted from the endosperm of corn.",
+            "details": "It is used as a thickening agent in cooking and baking. Corn starch is safe for most people, but those with corn allergies should avoid it.",
+            "category": "starch"
           },
           {
-            "name": "Cyclopentasiloxane",
+            "name": "Baking Soda",
+            "riskLevel": "low",
+            "summary": "Baking soda, or sodium bicarbonate, is a leavening agent used in baking.",
+            "details": "It helps dough rise by releasing carbon dioxide when combined with an acid. Baking soda is safe for consumption in typical culinary uses.",
+            "category": "leavening agent"
+          },
+          {
+            "name": "Salt",
             "riskLevel": "moderate",
-            "summary": "Cyclopentasiloxane is a volatile silicone that gives a silky, spreadable feel and helps condition skin and hair.",
-            "details": "It evaporates after application, leaving a smooth finish and helping other ingredients spread evenly. Health concerns are relatively low for topical use, but silicones can build up on skin or hair and may be problematic for people who prefer to avoid non-biodegradable ingredients or who are prone to clogged pores. Environmental persistence is a main concern, leading to a moderate overall risk rating.",
-            "category": "silicone"
+            "summary": "Salt is a mineral composed primarily of sodium chloride, used to enhance flavor.",
+            "details": "Excessive salt intake can lead to high blood pressure and increased risk of heart disease. It is important to monitor salt consumption.",
+            "category": "seasoning"
           },
           {
-            "name": "Cetearyl Alcohol",
+            "name": "Whey",
             "riskLevel": "low",
-            "summary": "Cetearyl alcohol is a fatty alcohol that acts as an emollient and thickener, not a drying alcohol.",
-            "details": "It helps stabilize emulsions, adds creaminess, and softens the skin. Unlike simple alcohols, fatty alcohols are generally non-irritating and can actually support the skin barrier, making them safe for most skin types, including dry and sensitive skin.",
-            "category": "emollient"
+            "summary": "Whey is a byproduct of cheese production, rich in protein.",
+            "details": "It is used in food products to improve texture and nutritional content. Whey is safe for most people but should be avoided by those with dairy allergies.",
+            "category": "dairy"
           },
           {
-            "name": "Beeswax",
-            "riskLevel": "low",
-            "summary": "Beeswax is a natural wax that forms a protective barrier on the skin and helps thicken the product.",
-            "details": "It helps lock in moisture by creating an occlusive layer while still allowing some skin respiration. Beeswax is generally well tolerated, though individuals with bee-related allergies or very acne-prone skin may need to patch test due to potential comedogenicity.",
-            "category": "emollient"
-          },
-          {
-            "name": "Cetyl Ethylhexanoate",
-            "riskLevel": "low",
-            "summary": "Cetyl ethylhexanoate is an emollient ester that gives a light, silky feel and improves spreadability.",
-            "details": "It is used to reduce greasiness compared to heavier oils and to enhance the sensory profile of creams and lotions. It is considered low risk, with irritation or comedogenicity only rarely reported in very sensitive or acne-prone individuals.",
-            "category": "emollient"
-          },
-          {
-            "name": "Cyclohexasiloxane",
+            "name": "Corn Syrup Solids",
             "riskLevel": "moderate",
-            "summary": "Cyclohexasiloxane is a volatile silicone that provides slip and a smooth feel on the skin.",
-            "details": "Similar to cyclopentasiloxane, it evaporates after application and helps distribute other ingredients evenly. Direct human toxicity from topical use appears low, but concerns exist about environmental persistence and potential bioaccumulation, so it is rated moderate risk overall, especially for those avoiding silicones.",
-            "category": "silicone"
+            "summary": "Corn syrup solids are dehydrated corn syrup used as a sweetener.",
+            "details": "They are used to add sweetness and texture to foods. Like other sweeteners, they should be consumed in moderation to avoid health issues.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Calcium Sulfate",
+            "riskLevel": "low",
+            "summary": "Calcium sulfate is a food additive used as a firming agent and dough conditioner.",
+            "details": "It is generally recognized as safe and is also used in plaster and drywall. In food, it helps maintain texture and stability.",
+            "category": "additive"
+          },
+          {
+            "name": "Egg",
+            "riskLevel": "low",
+            "summary": "Eggs are a common ingredient used for their binding and leavening properties.",
+            "details": "They are a rich source of protein and nutrients but are a common allergen. People with egg allergies should avoid them.",
+            "category": "allergen"
+          },
+          {
+            "name": "Agave Syrup",
+            "riskLevel": "moderate",
+            "summary": "Agave syrup is a sweetener derived from the agave plant.",
+            "details": "It has a high fructose content, which can affect blood sugar levels and metabolism. It should be consumed in moderation.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Inulin",
+            "riskLevel": "low",
+            "summary": "Inulin is a type of soluble fiber found in many plants.",
+            "details": "It is used to improve digestive health and as a prebiotic. Inulin is generally safe and beneficial for gut health.",
+            "category": "fiber"
+          },
+          {
+            "name": "Egg Whites",
+            "riskLevel": "low",
+            "summary": "Egg whites are the clear liquid contained within an egg, used for their protein content.",
+            "details": "They are low in calories and fat, making them a healthy choice for many diets. However, they can trigger allergies in sensitive individuals.",
+            "category": "protein"
+          },
+          {
+            "name": "Dextrose",
+            "riskLevel": "moderate",
+            "summary": "Dextrose is a form of glucose used as a sweetener.",
+            "details": "It is a simple sugar that can rapidly increase blood sugar levels. It should be consumed in moderation, especially by those with diabetes.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Hydrogenated Tallow",
+            "riskLevel": "high",
+            "summary": "Hydrogenated tallow is animal fat that has been chemically altered to be solid at room temperature.",
+            "details": "The hydrogenation process creates trans fats, which are associated with increased risk of heart disease. It is advisable to avoid trans fats when possible.",
+            "category": "fat"
+          },
+          {
+            "name": "Sodium Acid Pyrophosphate",
+            "riskLevel": "moderate",
+            "summary": "Sodium acid pyrophosphate is a leavening agent used in baking.",
+            "details": "It is generally recognized as safe but can contribute to high sodium intake. It is used to control the pH and improve texture in baked goods.",
+            "category": "leavening agent"
+          },
+          {
+            "name": "Mono and Diglycerides",
+            "riskLevel": "low",
+            "summary": "Mono and diglycerides are emulsifiers used to blend ingredients that normally don't mix well.",
+            "details": "They are derived from fats and are used to improve texture and extend shelf life. They are generally considered safe for consumption.",
+            "category": "emulsifier"
           },
           {
             "name": "Polysorbate 60",
-            "riskLevel": "low",
-            "summary": "Polysorbate 60 is an emulsifier that helps mix oil and water components in the formula.",
-            "details": "It is derived from sorbitol and fatty acids and is widely used to stabilize creams and lotions. It is generally considered safe, though in rare cases it may cause mild irritation or sensitivity in very reactive skin.",
+            "riskLevel": "moderate",
+            "summary": "Polysorbate 60 is an emulsifier used to stabilize and thicken foods.",
+            "details": "While generally recognized as safe, some studies suggest it may affect gut health. It is used in a variety of processed foods.",
             "category": "emulsifier"
           },
           {
-            "name": "Stearic Acid",
+            "name": "Sodium Stearoyl Lactylate",
             "riskLevel": "low",
-            "summary": "Stearic acid is a fatty acid that acts as an emollient, thickener, and co-emulsifier.",
-            "details": "It helps stabilize formulations and contributes to a creamy texture while also softening the skin. It is typically low risk and well tolerated, with irritation being uncommon except in very sensitive individuals.",
-            "category": "emollient"
-          },
-          {
-            "name": "Polyglyceryl-3 Methylglucose Distearate",
-            "riskLevel": "low",
-            "summary": "Polyglyceryl-3 methylglucose distearate is a plant-derived emulsifier that helps blend oil and water.",
-            "details": "It is often used in more “natural” formulations because it is PEG-free and has a good safety profile. It stabilizes emulsions and contributes to a smooth texture, with low risk of irritation or sensitization for most users.",
+            "summary": "Sodium stearoyl lactylate is an emulsifier used to improve dough strength and texture.",
+            "details": "It is commonly used in baked goods and is generally recognized as safe. It helps improve the shelf life and quality of products.",
             "category": "emulsifier"
           },
           {
-            "name": "Isopropyl Myristate",
+            "name": "Cottonseed Oil",
             "riskLevel": "moderate",
-            "summary": "Isopropyl myristate is an emollient that improves spreadability but can be comedogenic for acne-prone skin.",
-            "details": "It gives products a light, non-greasy feel and can enhance penetration of other ingredients. While generally safe from a systemic toxicity standpoint, it is known to clog pores in some individuals and may worsen acne or folliculitis, which is why it is rated moderate risk, especially for oily or breakout-prone skin.",
-            "category": "emollient"
+            "summary": "Cottonseed oil is a vegetable oil extracted from the seeds of cotton plants.",
+            "details": "It is often used in processed foods and may contain pesticide residues. It is high in omega-6 fatty acids, which should be balanced with omega-3 intake.",
+            "category": "oil"
           },
           {
-            "name": "PEG-100 Stearate",
-            "riskLevel": "moderate",
-            "summary": "PEG-100 stearate is an emulsifier that helps oil and water mix, derived from polyethylene glycol and stearic acid.",
-            "details": "It stabilizes creams and improves texture. PEG ingredients themselves are typically low in acute toxicity, but they can be contaminated with trace impurities (like 1,4-dioxane) if not properly purified, and some people prefer to avoid them for this reason. Overall topical risk is moderate mainly due to these theoretical contamination and environmental concerns, not strong evidence of direct harm at cosmetic levels.",
+            "name": "Soy Lecithin",
+            "riskLevel": "low",
+            "summary": "Soy lecithin is an emulsifier derived from soybeans.",
+            "details": "It is used to stabilize and blend ingredients in food products. It is generally considered safe, but those with soy allergies should be cautious.",
             "category": "emulsifier"
           },
           {
-            "name": "Glyceryl Stearate",
+            "name": "Xanthan Gum",
             "riskLevel": "low",
-            "summary": "Glyceryl stearate is an emollient and emulsifier that helps soften the skin and stabilize formulations.",
-            "details": "It is formed from glycerin and stearic acid and is widely used in creams and lotions. It is considered safe and non-irritating for most skin types, contributing to a smooth, moisturized feel.",
-            "category": "emollient"
+            "summary": "Xanthan gum is a thickening and stabilizing agent used in food products.",
+            "details": "It is produced by fermenting sugar with a specific bacteria and is safe for most people. It helps improve texture and consistency in foods.",
+            "category": "thickener"
           },
           {
-            "name": "Witch Hazel Extract",
+            "name": "Agar",
+            "riskLevel": "low",
+            "summary": "Agar is a gelatinous substance derived from seaweed, used as a thickener.",
+            "details": "It is a vegetarian alternative to gelatin and is used in a variety of food products. Agar is safe and often used in desserts and jellies.",
+            "category": "thickener"
+          },
+          {
+            "name": "Cellulose Gum",
+            "riskLevel": "low",
+            "summary": "Cellulose gum is a thickening agent derived from cellulose, a natural component of plant cell walls.",
+            "details": "It is used to improve texture and stability in food products and is generally recognized as safe for consumption.",
+            "category": "thickener"
+          },
+          {
+            "name": "Natural and Artificial Flavors",
             "riskLevel": "moderate",
-            "summary": "Witch hazel extract is a botanical astringent that can soothe skin but may be irritating due to natural tannins and possible alcohol content.",
-            "details": "It is often used for its anti-inflammatory and pore-tightening properties. However, depending on how it is processed, witch hazel can contain tannins and sometimes added alcohol, which may dry or irritate sensitive or compromised skin. Because of this potential for irritation, it is rated moderate risk, especially for dry or reactive skin types.",
-            "category": "botanical extract"
+            "summary": "Natural and artificial flavors are used to enhance the taste of food products.",
+            "details": "While natural flavors are derived from natural sources, artificial flavors are chemically synthesized. Both are generally safe but can cause allergic reactions in sensitive individuals.",
+            "category": "flavor"
           },
           {
-            "name": "Dimethiconol",
+            "name": "Color",
             "riskLevel": "moderate",
-            "summary": "Dimethiconol is a silicone polymer that forms a protective, smoothing film on the skin or hair.",
-            "details": "It helps reduce transepidermal water loss and improves slip and spreadability. While generally considered safe and non-irritating, it is occlusive and can contribute to buildup or clogged pores in some individuals, and it raises environmental persistence concerns, leading to a moderate overall risk rating for those avoiding silicones.",
-            "category": "silicone"
+            "summary": "Color additives are used to enhance the appearance of food products.",
+            "details": "Some artificial colors have been linked to health concerns, including hyperactivity in children. It is important to be aware of specific color additives used.",
+            "category": "color"
           },
           {
-            "name": "Sodium Polyacrylate",
+            "name": "Monocalcium Phosphate",
             "riskLevel": "low",
-            "summary": "Sodium polyacrylate is a synthetic polymer used as a thickener and water-binding agent.",
-            "details": "It helps stabilize the formula and gives it a gel-like or creamy texture by absorbing and holding water. It is generally considered safe in cosmetics, with low risk of irritation; concerns are mainly environmental rather than related to typical consumer use.",
-            "category": "film-former"
+            "summary": "Monocalcium phosphate is a leavening agent used in baking.",
+            "details": "It helps dough rise and is generally recognized as safe. It is commonly used in baking powders and self-rising flours.",
+            "category": "leavening agent"
           },
           {
-            "name": "1,2-Hexanediol",
+            "name": "Enzymes",
             "riskLevel": "low",
-            "summary": "1,2-Hexanediol is a humectant and multifunctional preservative booster.",
-            "details": "It helps retain moisture and also has antimicrobial properties that support the preservation system, often allowing lower levels of traditional preservatives. It is considered low risk and is usually well tolerated, with irritation being uncommon.",
-            "category": "humectant"
+            "summary": "Enzymes are proteins that catalyze biochemical reactions, used in food processing.",
+            "details": "They are used to improve texture, flavor, and shelf life of food products. Enzymes are generally considered safe for consumption.",
+            "category": "additive"
           },
           {
-            "name": "Caprylyl Glycol",
+            "name": "Locust Bean Gum",
             "riskLevel": "low",
-            "summary": "Caprylyl glycol is a humectant and preservative booster with mild antimicrobial activity.",
-            "details": "It helps keep skin hydrated while also enhancing the effectiveness of the preservative system, often allowing for gentler formulas. It is generally safe and non-irritating, though as with any ingredient, very sensitive individuals should patch test.",
-            "category": "humectant"
+            "summary": "Locust bean gum is a thickening agent derived from the seeds of the carob tree.",
+            "details": "It is used to improve texture and stability in food products and is generally recognized as safe for consumption.",
+            "category": "thickener"
           },
           {
-            "name": "Shea Butter",
-            "riskLevel": "low",
-            "summary": "Shea butter is a rich plant butter that deeply moisturizes and helps protect the skin barrier.",
-            "details": "It contains fatty acids and antioxidants that can soothe dryness and support barrier repair. It is widely regarded as safe and beneficial, though its richness can be too heavy or comedogenic for some acne-prone skin types.",
-            "category": "emollient"
-          },
-          {
-            "name": "Anise Fruit Extract",
+            "name": "Dipotassium Phosphate",
             "riskLevel": "moderate",
-            "summary": "Anise fruit extract is a botanical ingredient that may provide antioxidant or fragrance-like properties.",
-            "details": "It can contribute mild aromatic and potential antioxidant effects, but like many aromatic plant extracts, it may cause irritation or sensitization in fragrance-sensitive individuals. Because it can behave similarly to fragrance components, it is rated moderate risk for those with reactive or allergy-prone skin.",
-            "category": "botanical extract"
+            "summary": "Dipotassium phosphate is a food additive used as an emulsifier and stabilizer.",
+            "details": "While generally recognized as safe, excessive intake can contribute to high phosphate levels, which may affect kidney function.",
+            "category": "additive"
           },
           {
-            "name": "Disodium EDTA",
-            "riskLevel": "moderate",
-            "summary": "Disodium EDTA is a chelating agent that binds metal ions to improve product stability and preservation.",
-            "details": "By sequestering metal ions, it helps prevent degradation and supports the effectiveness of preservatives. It is generally considered safe at cosmetic levels, but it is not biodegradable and can contribute to environmental persistence, and some people prefer to avoid it for this reason, leading to a moderate overall risk rating.",
-            "category": "chelating agent"
-          },
-          {
-            "name": "Betaine",
+            "name": "Chocolate Liquor",
             "riskLevel": "low",
-            "summary": "Betaine is a humectant and osmoprotectant that helps maintain skin hydration and comfort.",
-            "details": "Often derived from sugar beets, it helps cells manage water balance and can reduce irritation from other ingredients. It is considered very safe and beneficial for sensitive and dry skin types.",
-            "category": "humectant"
+            "summary": "Chocolate liquor is a pure cocoa mass in solid or semi-solid form.",
+            "details": "It is used as a base for chocolate products and is rich in cocoa solids and cocoa butter. Chocolate liquor is safe and enjoyed for its rich flavor.",
+            "category": "flavor"
           },
           {
-            "name": "Allantoin",
+            "name": "Defatted Soy Flour",
             "riskLevel": "low",
-            "summary": "Allantoin is a soothing and skin-conditioning ingredient that supports skin healing and comfort.",
-            "details": "It helps calm irritation, promotes gentle exfoliation of dead skin cells, and supports the skin’s natural repair processes. It is widely used in products for sensitive or compromised skin and is considered low risk with an excellent safety profile.",
-            "category": "soothing agent"
-          },
-          {
-            "name": "Trehalose",
-            "riskLevel": "low",
-            "summary": "Trehalose is a sugar-based humectant that helps retain moisture and protect skin cells from dehydration.",
-            "details": "It can stabilize proteins and cell membranes under stress and is often used for its protective and hydrating properties. It is considered safe and non-irritating, with no significant health concerns at cosmetic use levels.",
-            "category": "humectant"
-          },
-          {
-            "name": "Polysorbate 20",
-            "riskLevel": "low",
-            "summary": "Polysorbate 20 is an emulsifier and solubilizer that helps disperse oils and fragrances in water.",
-            "details": "It improves the uniform distribution of oil-soluble ingredients and helps keep the formula stable. It is generally considered safe, though in rare cases it may cause mild irritation in very sensitive skin.",
-            "category": "emulsifier"
-          },
-          {
-            "name": "Polyglutamic Acid",
-            "riskLevel": "low",
-            "summary": "Polyglutamic acid is a powerful humectant that can hold large amounts of water, enhancing skin hydration.",
-            "details": "It forms a film on the skin that helps lock in moisture and can complement other humectants like hyaluronic acid. It is considered safe and beneficial for most skin types, with a low risk of irritation.",
-            "category": "humectant"
-          },
-          {
-            "name": "Licorice Root Extract",
-            "riskLevel": "low",
-            "summary": "Licorice root extract is a botanical ingredient known for its soothing and brightening properties.",
-            "details": "It can help reduce the appearance of hyperpigmentation and calm redness due to components like glabridin. It is generally safe and well tolerated, though as with any botanical, a small number of people may experience sensitivity.",
-            "category": "botanical extract"
-          },
-          {
-            "name": "Camellia Sinensis Leaf Extract",
-            "riskLevel": "low",
-            "summary": "Camellia sinensis leaf extract (green tea extract) is rich in antioxidants and has soothing, anti-inflammatory properties.",
-            "details": "It helps protect the skin from environmental stressors and may reduce redness and irritation. It is widely used and considered low risk, with benefits for many skin types, including sensitive and aging skin.",
-            "category": "botanical extract"
-          },
-          {
-            "name": "Rosemary Leaf Extract",
-            "riskLevel": "moderate",
-            "summary": "Rosemary leaf extract is an antioxidant botanical that can also act as a mild preservative, but may be irritating for some.",
-            "details": "It provides antioxidant benefits and can help protect the formula from oxidation. However, rosemary contains aromatic components that may trigger irritation or allergic reactions in fragrance-sensitive individuals, so it is rated moderate risk for those with reactive or allergy-prone skin.",
-            "category": "botanical extract"
-          },
-          {
-            "name": "Centella Asiatica Extract",
-            "riskLevel": "low",
-            "summary": "Centella asiatica extract is a soothing botanical known for supporting skin repair and calming irritation.",
-            "details": "It contains compounds like asiaticoside and madecassoside that can help strengthen the skin barrier, reduce redness, and support wound healing. It is generally considered safe and beneficial, especially for sensitive or compromised skin.",
-            "category": "botanical extract"
-          },
-          {
-            "name": "Matricaria Flower Extract",
-            "riskLevel": "low",
-            "summary": "Matricaria flower extract (chamomile extract) is a soothing botanical with anti-inflammatory properties.",
-            "details": "It can help calm redness and irritation and is often used in products for sensitive skin. While generally safe, individuals with known allergies to plants in the daisy (Asteraceae) family should patch test due to potential cross-reactivity.",
-            "category": "botanical extract"
-          },
-          {
-            "name": "Scutellaria Baicalensis Root Extract",
-            "riskLevel": "low",
-            "summary": "Scutellaria baicalensis root extract (baikal skullcap) is a botanical rich in flavonoids with antioxidant and soothing effects.",
-            "details": "It may help protect skin from environmental stress and reduce inflammation. It is considered low risk in topical use, with limited reports of irritation or sensitization.",
-            "category": "botanical extract"
-          },
-          {
-            "name": "Polygonum Cuspidatum Root Extract",
-            "riskLevel": "low",
-            "summary": "Polygonum cuspidatum root extract (Japanese knotweed) is a source of resveratrol and other antioxidants.",
-            "details": "It provides antioxidant protection and may have anti-inflammatory benefits for the skin. It is generally regarded as safe at cosmetic levels, with low risk of irritation for most users.",
-            "category": "botanical extract"
-          },
-          {
-            "name": "Xylitol",
-            "riskLevel": "low",
-            "summary": "Xylitol is a sugar alcohol used as a humectant and skin-conditioning agent.",
-            "details": "It helps attract and retain moisture in the skin and can support the skin’s natural barrier function. It is considered safe in topical products, with minimal risk of irritation.",
-            "category": "humectant"
-          },
-          {
-            "name": "Ceramide NP",
-            "riskLevel": "low",
-            "summary": "Ceramide NP is a skin-identical lipid that helps restore and strengthen the skin barrier.",
-            "details": "Ceramides are naturally present in the skin and are crucial for retaining moisture and protecting against irritants. Topical ceramide NP can help improve dryness, sensitivity, and barrier damage, and is considered very safe and beneficial.",
-            "category": "skin-identical ingredient"
-          },
-          {
-            "name": "Citric Acid",
-            "riskLevel": "low",
-            "summary": "Citric acid is an alpha hydroxy acid used mainly to adjust pH and sometimes for mild exfoliation.",
-            "details": "In low concentrations, it primarily functions as a pH regulator to keep the product within a skin-friendly range. It is generally safe, though at higher levels or on very sensitive skin it can cause mild stinging or irritation; in this type of formula it is likely present at low, pH-adjusting levels.",
-            "category": "pH adjuster"
+            "summary": "Defatted soy flour is made from soybeans with most of the oil removed.",
+            "details": "It is high in protein and used to improve the nutritional content of food products. It is safe for most people but should be avoided by those with soy allergies.",
+            "category": "flour"
           }
         ],
-        "overallRisk": "moderate",
-        "analyzedAt": "2025-11-26T05:21:06.164Z",
-        "originalText": "INGREDIENTS Water, Glycerin, Olea Europaea (Olive) Fruit Oil, Butylene\nGlycol, Macadamia Ternifolia Seed Oil, Cyclopentasiloxane, Cetearyl Alc\nohol, Beeswax, Cetyl Ethylhexanoate, Cyclohexasiloxane, Polysorbate 60,\nStearic Acid, Polyglyceryl-3 Methylglucose Distearate, Isopropyl Myristate,\nPEG-100 Stearate, Glyceryl Stearate, Hamamelis Virginiana (Witch Hazel)\nExtract, Dimethiconol, Sodium Polyacrylate, 1,2-Hexanediol, Caprylyl Glycol,\nButyrospermum Parkii (Shea) Butter, Illicium Verum (Anise) Fruit Extract,\nDisodium EDTA, Betaine, Allantoin, Trehalose, Polysorbate 20, Polyglutamic\nAcid, Glycyrrhiza Glabra (Licorice) Root Extract, Camellia Sinensis Leaf Ex\ntract, Rosmarinus Officinalis (Rosemary) Leaf Extract, Centella Asiatica Ext\nract, Chamomilla Recutita (Matricaria) Flower Extract, Scutellaria Baicalen\nsis Root Extract, Polygonum Cuspidatum Root Extract, Xylitol, Ceramide NP,\nCitric Acid"
+        "overallRisk": "high",
+        "analyzedAt": "2025-11-23T03:02:25.781Z",
+        "originalText": "INGREDIENTS: SUGAR, ENRICHED FLOUR (BLEACHED\nWHEAT FLOUR, MALTED BARLEY FLOUR, NIACIN,\nREDUCED IRON OR FERROUS SULFATE, THIAMINE\nMONONITRATE, RIBOFLAVIN, FOLIC ACID), WATER,\nHIGH FRUCTOSE CORN SYRUP, PALM OIL, CORN SYRUP,\nCOCOA, TALLOW, SOYBEAN OIL, CONTAINS 2% OR\nLESS OF: GLYCERIN, COCOA PROCESSED WITH ALKALI,\nFOOD STARCH MODIFIED, CORN STARCH, BAKING\nSODA, SALT, WHEY, CORN SYRUP SOLIDS, CALCIUM\nSULFATE, EGG, SORBIC ACID AND POTASSIUM\nSORBATE (TO RETAIN FRESHNESS), AGAVE SYRUP,\nINULIN, EGG WHITES, DEXTROSE, HYDROGENATED\nTALLOW, SODIUM ACID PYROPHOSPHATE, ΜΟΝΟ\nAND DIGLYCERIDES, BAKING SODA, BLEACHED\nWHEAT FLOUR, POLYSORBATE 60, SODIUM STEAROYL\nLACTYLATE, COTTONSEED OIL, SOY LECITHIN,\nXANTHAN GUM, AGAR, CELLULOSE GUM, NATURAL\nAND ARTIFICIAL FLAVORS, TITANIUM DIOXIDE\n(COLOR), MONOCALCIUM PHOSPHATE, ENZYMES,\nSALT, LOCUST BEAN GUM, DIPOTASSIUM PHOSPHATE,\nCHOCOLATE LIQUOR, DEFATTED SOY FLOUR.\nCONTAINS EGG, MILK, SOYBEAN AND WHEAT\nINGREDIENTS.\nCONTAINS BIOENGINEERED FOOD INGREDIENTS"
       },
-      "timestamp": 1764134466166,
-      "ocrText": "INGREDIENTS Water, Glycerin, Olea Europaea (Olive) Fruit Oil, Butylene\nGlycol, Macadamia Ternifolia Seed Oil, Cyclopentasiloxane, Cetearyl Alc\nohol, Beeswax, Cetyl Ethylhexanoate, Cyclohexasiloxane, Polysorbate 60,\nStearic Acid, Polyglyceryl-3 Methylglucose Distearate, Isopropyl Myristate,\nPEG-100 Stearate, Glyceryl Stearate, Hamamelis Virginiana (Witch Hazel)\nExtract, Dimethiconol, Sodium Polyacrylate, 1,2-Hexanediol, Caprylyl Glycol,\nButyrospermum Parkii (Shea) Butter, Illicium Verum (Anise) Fruit Extract,\nDisodium EDTA, Betaine, Allantoin, Trehalose, Polysorbate 20, Polyglutamic\nAcid, Glycyrrhiza Glabra (Licorice) Root Extract, Camellia Sinensis Leaf Ex\ntract, Rosmarinus Officinalis (Rosemary) Leaf Extract, Centella Asiatica Ext\nract, Chamomilla Recutita (Matricaria) Flower Extract, Scutellaria Baicalen\nsis Root Extract, Polygonum Cuspidatum Root Extract, Xylitol, Ceramide NP,\nCitric Acid"
+      "timestamp": 1763866945785,
+      "ocrText": "INGREDIENTS: SUGAR, ENRICHED FLOUR (BLEACHED\nWHEAT FLOUR, MALTED BARLEY FLOUR, NIACIN,\nREDUCED IRON OR FERROUS SULFATE, THIAMINE\nMONONITRATE, RIBOFLAVIN, FOLIC ACID), WATER,\nHIGH FRUCTOSE CORN SYRUP, PALM OIL, CORN SYRUP,\nCOCOA, TALLOW, SOYBEAN OIL, CONTAINS 2% OR\nLESS OF: GLYCERIN, COCOA PROCESSED WITH ALKALI,\nFOOD STARCH MODIFIED, CORN STARCH, BAKING\nSODA, SALT, WHEY, CORN SYRUP SOLIDS, CALCIUM\nSULFATE, EGG, SORBIC ACID AND POTASSIUM\nSORBATE (TO RETAIN FRESHNESS), AGAVE SYRUP,\nINULIN, EGG WHITES, DEXTROSE, HYDROGENATED\nTALLOW, SODIUM ACID PYROPHOSPHATE, ΜΟΝΟ\nAND DIGLYCERIDES, BAKING SODA, BLEACHED\nWHEAT FLOUR, POLYSORBATE 60, SODIUM STEAROYL\nLACTYLATE, COTTONSEED OIL, SOY LECITHIN,\nXANTHAN GUM, AGAR, CELLULOSE GUM, NATURAL\nAND ARTIFICIAL FLAVORS, TITANIUM DIOXIDE\n(COLOR), MONOCALCIUM PHOSPHATE, ENZYMES,\nSALT, LOCUST BEAN GUM, DIPOTASSIUM PHOSPHATE,\nCHOCOLATE LIQUOR, DEFATTED SOY FLOUR.\nCONTAINS EGG, MILK, SOYBEAN AND WHEAT\nINGREDIENTS.\nCONTAINS BIOENGINEERED FOOD INGREDIENTS"
     }
   ]
 ]

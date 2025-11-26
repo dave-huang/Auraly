@@ -4,7 +4,7 @@ import multer from "multer";
 import z from "zod";
 import crypto from "crypto";
 import { extractTextFromImage } from "./services/ocr";
-import { analyzeIngredients, analyzeSingleIngredient } from "./services/analyzer";
+import { analyzeIngredients } from "./services/analyzer";
 import { batchAnalyzeIngredientsWithCache, getCacheStats } from "./services/cache";
 import { 
   ocrRequestSchema, 
@@ -198,7 +198,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
-  // Combined OCR + Analysis endpoint (exhaustive ingredient extraction)
+  // Combined OCR + Analysis endpoint (returns request ID immediately for mobile resilience)
   app.post("/api/scan-and-analyze", async (req, res) => {
     const body = req.body;
     
@@ -225,6 +225,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     (async () => {
       const startTime = Date.now();
       let ocrText: string | undefined;
+      let ocrDuration: string = '0.00';
+      let ocrStage: 'skipped' | 'success' | 'failed' = 'skipped';
+      let analysisStage: 'pending' | 'success' | 'failed' = 'pending';
       
       try {
         const { imageData, productType, userLanguage, ocrText: cachedOcrText } = body;
@@ -233,20 +236,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
         if (cachedOcrText) {
           console.log(`[SCAN-AND-ANALYZE-${requestId}] Using cached OCR text (${cachedOcrText.length} chars)`);
           ocrText = cachedOcrText;
+          ocrStage = 'skipped';
         } else {
           console.log(`[SCAN-AND-ANALYZE-${requestId}] Starting OCR for ${productType} in ${userLanguage}`);
           try {
             const ocrResult = await extractTextFromImage(imageData);
-            const ocrDuration = ((Date.now() - startTime) / 1000).toFixed(2);
+            ocrDuration = ((Date.now() - startTime) / 1000).toFixed(2);
             console.log(`[TIMING] [OCR-SUCCESS-${requestId}] OCR completed in ${ocrDuration}s`);
+            ocrStage = 'success';
             
             if (!ocrResult.text || ocrResult.text.trim().length < 10) {
+              ocrStage = 'failed';
               throw new Error('No ingredients found in image. Please ensure the ingredient list is clearly visible and try again.');
             }
             
             ocrText = ocrResult.text;
           } catch (ocrError: any) {
-            const ocrDuration = ((Date.now() - startTime) / 1000).toFixed(2);
+            ocrStage = 'failed';
+            ocrDuration = ((Date.now() - startTime) / 1000).toFixed(2);
             console.error(`[OCR-FAILED-${requestId}] OCR error after ${ocrDuration}s:`, ocrError.message);
             throw new Error(`OCR failed: ${ocrError.message}`);
           }
@@ -256,6 +263,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const analysisStartTime = Date.now();
         try {
           const analysisResult = await analyzeIngredients(productType as ProductType, ocrText!, userLanguage);
+          analysisStage = 'success';
           const analysisDuration = ((Date.now() - analysisStartTime) / 1000).toFixed(2);
           const totalDuration = ((Date.now() - startTime) / 1000).toFixed(2);
           
@@ -268,6 +276,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           analysisRequest.timestamp = Date.now();
           
         } catch (analysisError: any) {
+          analysisStage = 'failed';
           const analysisDuration = ((Date.now() - analysisStartTime) / 1000).toFixed(2);
           console.error(`[ANALYSIS-FAILED-${requestId}] Analysis error after ${analysisDuration}s:`, analysisError.message);
           throw analysisError;
@@ -277,124 +286,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         analysisRequest.status = 'failed';
         analysisRequest.error = error.message || 'Failed to analyze image. Please try again.';
         analysisRequest.timestamp = Date.now();
-      }
-    })();
-  });
-
-  // Streaming ingredient analysis endpoint - one ingredient at a time via SSE
-  app.post("/stream-ingredient-analysis", async (req, res) => {
-    const body = req.body;
-    
-    // Validate request
-    if (!body.ingredients || !Array.isArray(body.ingredients) || body.ingredients.length === 0) {
-      return res.status(400).json({ 
-        error: 'Missing required field: ingredients array is required.' 
-      });
-    }
-    if (!body.productType || !body.userLanguage) {
-      return res.status(400).json({ 
-        error: 'Missing required fields: productType and userLanguage are required.' 
-      });
-    }
-    
-    const ingredients = body.ingredients as string[];
-    const productType = body.productType as string;
-    const userLanguage = body.userLanguage as string;
-    
-    // Set SSE headers - ALL FOUR ARE REQUIRED to prevent buffering
-    res.writeHead(200, {
-      'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
-      'Connection': 'keep-alive',
-      'X-Accel-Buffering': 'no'
-    });
-    
-    // Flush headers immediately
-    res.flushHeaders();
-    console.log(`[SSE-STREAM] Starting stream for ${ingredients.length} ingredients`);
-    
-    // Process each ingredient sequentially and stream immediately
-    (async () => {
-      try {
-        for (let i = 0; i < ingredients.length; i++) {
-          const ingredient = ingredients[i].trim();
-          if (!ingredient) continue;
-          
-          try {
-            console.log(`[SSE-STREAM] Processing ingredient ${i + 1}/${ingredients.length}: ${ingredient}`);
-            
-            // Analyze single ingredient (checks cache first)
-            const result = await analyzeSingleIngredient(ingredient, productType as any, userLanguage);
-            
-            // Send SSE event IMMEDIATELY after this ingredient is done
-            const sseEvent = `event: ingredientResult\ndata: ${JSON.stringify({
-              ingredient: result.analysis,
-              index: i,
-              fromCache: result.fromCache
-            })}\n\n`;
-            
-            res.write(sseEvent);
-            
-            // FLUSH after each ingredient - critical for Replit proxy
-            const writable = res as any;
-            if (writable.flush) {
-              writable.flush();
-            }
-            
-            console.log(`[SSE-STREAM] ✓ Streamed ingredient ${i + 1}/${ingredients.length}: ${ingredient} (${result.fromCache ? 'cached' : 'fresh'})`);
-            console.log(`[SSE-STREAM] Written bytes, flushing...`);
-            
-            // Add small 50ms delay to allow socket to truly flush
-            // setImmediate alone isn't enough - we need actual time for network buffers to clear
-            if (i < ingredients.length - 1) {
-              await new Promise(resolve => setTimeout(resolve, 50));
-            }
-            
-          } catch (ingredientError: any) {
-            console.error(`[SSE-STREAM] Error analyzing ingredient: ${ingredient}`, ingredientError.message);
-            
-            // Send error event for this ingredient
-            const errorEvent = `event: ingredientError\ndata: ${JSON.stringify({
-              ingredient,
-              index: i,
-              error: ingredientError.message || 'Failed to analyze ingredient'
-            })}\n\n`;
-            
-            res.write(errorEvent);
-            const writable = res as any;
-            if (writable.flush) {
-              writable.flush();
-            }
-            
-            // Add delay after error too
-            if (i < ingredients.length - 1) {
-              await new Promise(resolve => setTimeout(resolve, 50));
-            }
-          }
-        }
-        
-        // Send final completion event
-        console.log(`[SSE-STREAM] All ingredients processed, sending done event`);
-        res.write('event: done\ndata: complete\n\n');
-        const writable = res as any;
-        if (writable.flush) {
-          writable.flush();
-        }
-        
-        // Close connection
-        res.end();
-        console.log(`[SSE-STREAM] ✓ Stream completed and closed`);
-        
-      } catch (error: any) {
-        console.error(`[SSE-STREAM] Critical error:`, error.message);
-        
-        // Send error event
-        const errorEvent = `event: streamError\ndata: ${JSON.stringify({
-          error: error.message || 'Stream processing failed'
-        })}\n\n`;
-        
-        res.write(errorEvent);
-        res.end();
       }
     })();
   });
