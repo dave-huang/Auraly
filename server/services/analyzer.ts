@@ -590,8 +590,8 @@ export async function analyzeIngredients(
   console.log(`[ANALYZER] Language instruction: ${languageInstruction.substring(0, 100)}...`);
   
   // PARALLEL BATCH OPTIMIZATION: Split into smaller batches to parallelize API calls
-  // Instead of one large batch to GPT-4o, send 5-8 smaller batches in parallel
-  // This dramatically reduces total processing time for large ingredient lists
+  // 1 ingredient per batch for maximum parallelization - all ingredients run through GPT-5.1 simultaneously
+  // This dramatically reduces total processing time by fully parallelizing API calls
   
   // Extract ingredient lines for batch splitting
   const ingredientLines = textToAnalyze
@@ -601,8 +601,8 @@ export async function analyzeIngredients(
   
   console.log(`[ANALYZER] Extracted ${ingredientLines.length} ingredient lines for parallel processing`);
   
-  // Create batches of ~5-8 ingredients each
-  const batchSize = Math.max(5, Math.min(8, Math.ceil(ingredientLines.length / 4)));
+  // Create batches of 1 ingredient each for maximum parallelization
+  const batchSize = 1;
   const batches: string[] = [];
   
   for (let i = 0; i < ingredientLines.length; i += batchSize) {
@@ -610,7 +610,7 @@ export async function analyzeIngredients(
     batches.push(batchLines.join('\n'));
   }
   
-  console.log(`[ANALYZER] Created ${batches.length} parallel batches (${batchSize} items per batch)`);
+  console.log(`[ANALYZER] Created ${batches.length} parallel batches (${batchSize} ingredient per batch)`);
   
   if (batches.length > 1) {
     // Use parallel batch processing for faster analysis
