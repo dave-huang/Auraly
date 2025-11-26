@@ -30,8 +30,8 @@
     "createdAt": 1764141259470
   },
   "salt__food": {
-    "analysis": "{\"name\":\"Salt\",\"riskLevel\":\"moderate\",\"summary\":\"Salt (sodium chloride) is essential in small amounts but can be harmful when consumed in excess, mainly due to its sodium content. High intake is linked to elevated blood pressure and increased risk of heart disease and stroke.\",\"details\":\"Salt provides sodium, a mineral needed for fluid balance, nerve function, and muscle contraction. However, many processed foods already contain high levels of salt, and consistently consuming too much sodium can contribute to hypertension, kidney strain, and cardiovascular disease, especially in salt-sensitive individuals. People with high blood pressure, kidney disease, or heart conditions are often advised to limit added salt and choose lower-sodium products.\",\"category\":\"Mineral / High-sodium ingredient\"}",
-    "lastUpdated": 1764141368711,
+    "analysis": "{\"name\":\"Salt\",\"riskLevel\":\"moderate\",\"summary\":\"Salt is a common seasoning that is safe in small amounts but can contribute to high blood pressure and heart disease when consumed in excess.\",\"details\":\"Salt (sodium chloride) is essential in small quantities for fluid balance and nerve and muscle function. However, typical diets often contain more sodium than recommended, which can increase the risk of hypertension, cardiovascular disease, and kidney strain, especially in sensitive individuals. People with high blood pressure, heart or kidney issues, or those on sodium-restricted diets should monitor their total daily sodium intake from all foods, not just added table salt.\",\"category\":\"Mineral / sodium source\"}",
+    "lastUpdated": 1764181773618,
     "createdAt": 1764141259470
   },
   "onion flake__food": {
@@ -290,8 +290,8 @@
     "createdAt": 1764141452508
   },
   "reduced iron / ferrous sulfate__food": {
-    "analysis": "{\"name\":\"Reduced Iron / Ferrous Sulfate\",\"riskLevel\":\"low\",\"summary\":\"A source of supplemental iron added to foods to prevent iron deficiency. Generally safe at levels used in fortified foods, but very high intakes can cause digestive upset and are dangerous for young children if taken in large accidental doses.\",\"details\":\"Reduced iron and ferrous sulfate are forms of iron used to fortify foods like cereals and flours, helping prevent iron-deficiency anemia in the general population. In typical food amounts they are considered safe for most people, though some individuals may experience mild gastrointestinal discomfort (such as constipation or nausea) with higher supplemental intakes. Excess iron intake, especially from supplements, can be harmful and is particularly risky for children if large amounts are ingested at once; people with iron overload conditions (like hemochromatosis) should also be cautious.\",\"category\":\"Mineral fortificant / nutrient\"}",
-    "lastUpdated": 1764141781428,
+    "analysis": "{\"name\":\"Reduced iron / Ferrous sulfate\",\"riskLevel\":\"low\",\"summary\":\"A source of dietary iron added to foods to prevent or correct iron deficiency.\",\"details\":\"Reduced iron and ferrous sulfate are common iron fortificants used in cereals, flours, and other staple foods to increase iron content and help prevent anemia in the general population. At the levels used in fortified foods, they are considered safe for most healthy people, though excessive supplemental iron can cause gastrointestinal discomfort and is risky for individuals with iron overload conditions (such as hemochromatosis). People already taking iron supplements or with known iron metabolism disorders should monitor total iron intake with a healthcare professional.\",\"category\":\"Nutrient fortification (mineral)\"}",
+    "lastUpdated": 1764181831704,
     "createdAt": 1764141453172
   },
   "thiamine__food": {
@@ -335,13 +335,13 @@
     "createdAt": 1764141454702
   },
   "artificial flavors__food": {
-    "analysis": "{\"name\":\"Artificial flavors\",\"riskLevel\":\"moderate\",\"summary\":\"Artificial flavors are synthetic chemicals designed to mimic natural flavors; they are generally recognized as safe but can cause sensitivity in some people and indicate a highly processed product.\",\"details\":\"“Artificial flavors” is a catch‑all term that can encompass dozens of different lab‑created flavoring chemicals, solvents, and carriers, without specifying each substance. Regulatory agencies typically consider approved artificial flavors safe at permitted levels, but some individuals (especially those with chemical sensitivities, migraines, or children with behavioral concerns) may report reactions. Their presence also usually signals an ultra‑processed food, which is associated with poorer overall diet quality and health outcomes when eaten frequently.\",\"category\":\"Artificial flavoring\"}",
-    "lastUpdated": 1764141782357,
+    "analysis": "{\"name\":\"Artificial flavors\",\"riskLevel\":\"moderate\",\"summary\":\"Artificial flavors are chemically synthesized compounds used to mimic natural tastes and generally considered safe, but they can cause sensitivity in some people and add to overall additive load.\",\"details\":\"Artificial flavors are complex mixtures of lab-created chemicals designed to reproduce the taste of natural ingredients at low cost and with consistent quality. While most approved flavoring agents have been evaluated for toxicity, the exact compositions are often proprietary, making it hard for consumers to know what they are ingesting. A minority of people report headaches, hyperactivity, or other sensitivity-type reactions to certain artificial flavors, and their presence can be a marker of highly processed foods rather than whole, minimally processed ingredients.\",\"category\":\"Artificial flavoring\"}",
+    "lastUpdated": 1764142239603,
     "createdAt": 1764141455686
   },
   "titanium dioxide (color)__food": {
-    "analysis": "{\"name\":\"Titanium dioxide (color)\",\"riskLevel\":\"moderate\",\"summary\":\"Titanium dioxide is a white pigment used to brighten and whiten foods; while once widely accepted as safe, its safety has been questioned due to concerns about possible DNA damage and nanoparticle effects.\",\"details\":\"Titanium dioxide (often labeled TiO₂ or E171) is an inorganic colorant that gives products an opaque, bright white appearance. Some newer research suggests that certain forms, particularly nanoparticle-sized titanium dioxide, may cause inflammation or genotoxic effects in lab models, leading the EU to ban it as a food additive, while other regulatory bodies (like the U.S. FDA) still allow it within limits. Because of this evolving evidence and regulatory disagreement, many health‑conscious consumers choose to limit or avoid it when possible.\",\"category\":\"Color additive\"}",
-    "lastUpdated": 1764141782357,
+    "analysis": "{\"name\":\"Titanium dioxide (color)\",\"riskLevel\":\"moderate\",\"summary\":\"Titanium dioxide is a white colorant used to brighten or whiten foods; while historically allowed in many countries, its safety has been questioned and its use has been restricted or banned in some regions.\",\"details\":\"Titanium dioxide (often labeled TiO₂ or E171) is an inert mineral pigment used to make foods, candies, and coatings appear bright white or more opaque. Some regulatory bodies, such as in the EU, have moved away from allowing it in foods due to concerns about potential genotoxicity and accumulation of small particles, especially in nanoparticle form, although other authorities still consider it acceptable at current exposure levels. For most healthy adults, occasional small exposures are unlikely to cause noticeable harm, but from a precautionary perspective, frequently consuming products colored with titanium dioxide may not be ideal, particularly for children and people aiming to minimize controversial additives.\",\"category\":\"Color additive\"}",
+    "lastUpdated": 1764142239603,
     "createdAt": 1764141455686
   },
   "monocalcium phosphate__food": {
@@ -380,8 +380,8 @@
     "createdAt": 1764141456184
   },
   "sorbic acid and potassium sorbate__food": {
-    "analysis": "{\"name\":\"Sorbic acid and potassium sorbate\",\"riskLevel\":\"low\",\"summary\":\"Sorbic acid and its salt, potassium sorbate, are common food preservatives used to inhibit mold and yeast growth. They are generally recognized as safe for most people at the levels used in foods.\",\"details\":\"Sorbic acid and potassium sorbate prevent spoilage by interfering with the growth of fungi and some bacteria, extending shelf life of many processed foods. Regulatory agencies such as the FDA and EFSA consider them safe within established limits, and they do not accumulate in the body because they are metabolized similarly to fatty acids. A small number of individuals may experience mild sensitivity or irritation (for example, oral or skin irritation) at higher exposures, but serious adverse effects are rare.\",\"category\":\"Preservative\"}",
-    "lastUpdated": 1764141781254,
+    "analysis": "{\"name\":\"Sorbic acid and potassium sorbate\",\"riskLevel\":\"low\",\"summary\":\"Sorbic acid and its salt potassium sorbate are common food preservatives used to inhibit mold, yeast, and some bacteria. They are generally recognized as safe at typical food-use levels.\",\"details\":\"Sorbic acid and potassium sorbate (E200–E202) are widely used in foods such as baked goods, cheeses, beverages, and sauces to extend shelf life by preventing microbial growth. Most people tolerate these preservatives well; adverse effects are uncommon and usually limited to mild sensitivities or irritation in susceptible individuals. Regulatory authorities, including the FDA and EFSA, consider them safe when used within approved limits, and they do not accumulate in the body because they are metabolized similarly to fatty acids.\",\"category\":\"Preservative\"}",
+    "lastUpdated": 1764181831414,
     "createdAt": 1764141456664
   },
   "potassium sorbate (to retain freshness)__food": {
@@ -500,13 +500,13 @@
     "createdAt": 1764141780624
   },
   "potassium sorbate__food": {
-    "analysis": "{\"name\":\"Potassium sorbate\",\"riskLevel\":\"low\",\"summary\":\"Potassium sorbate is a preservative used to retain freshness by preventing mold and yeast growth. It is widely approved as safe when used within regulatory limits.\",\"details\":\"As the potassium salt of sorbic acid, potassium sorbate is highly effective at extending the shelf life of foods such as baked goods, beverages, and dairy products by inhibiting microbial growth. Toxicological studies show low toxicity, and it is generally recognized as safe (GRAS) by major food safety authorities. Some people with chemical sensitivities may report mild irritation or intolerance, but for the general population, dietary exposures from normal food use are considered low risk.\",\"category\":\"Preservative\"}",
-    "lastUpdated": 1764141781256,
+    "analysis": "{\"name\":\"Potassium sorbate\",\"riskLevel\":\"low\",\"summary\":\"Potassium sorbate is a preservative added to foods to retain freshness by preventing mold and yeast growth. It is considered safe for most consumers at regulated levels.\",\"details\":\"Labeled as potassium sorbate (often written as sorbate) and assigned E202 in the EU, this additive helps stabilize products like baked goods, dairy items, and beverages by slowing spoilage. Toxicological studies show a wide safety margin, and global regulators classify it as generally recognized as safe when used as directed. A small number of people may experience mild intolerance or sensitivity reactions, but it is not associated with serious long-term health issues at normal dietary intakes.\",\"category\":\"Preservative\"}",
+    "lastUpdated": 1764181831415,
     "createdAt": 1764141781256
   },
   "thiamine mononitrate (vitamin b1)__food": {
-    "analysis": "{\"name\":\"Thiamine Mononitrate (Vitamin B1)\",\"riskLevel\":\"low\",\"summary\":\"A synthetic form of vitamin B1 used to enrich foods. It is considered very safe and helps prevent thiamine deficiency.\",\"details\":\"Mononitrate in food ingredient lists almost always refers to thiamine mononitrate, a stable form of vitamin B1 added to refined grains and other foods for nutritional enrichment. Thiamine is essential for energy metabolism and nervous system function, and deficiencies can cause serious health problems, so fortification is beneficial at the population level. It has a very low toxicity profile, and adverse effects from normal dietary fortification levels are extremely rare.\",\"category\":\"Vitamin / nutrient\"}",
-    "lastUpdated": 1764141781428,
+    "analysis": "{\"name\":\"Thiamine mononitrate (vitamin B1)\",\"riskLevel\":\"low\",\"summary\":\"A synthetic, stable form of vitamin B1 commonly added to enriched and fortified foods.\",\"details\":\"Thiamine mononitrate is used in many grain products (such as enriched flour and cereals) to replace or boost vitamin B1 levels, supporting normal energy metabolism and nervous system function. It has a long history of safe use in food fortification, and toxicity from thiamine is extremely rare because excess amounts are typically excreted. For the general population, intake from fortified foods is considered safe and beneficial, especially where dietary B1 might otherwise be low.\",\"category\":\"Nutrient fortification (vitamin)\"}",
+    "lastUpdated": 1764181831704,
     "createdAt": 1764141781428
   },
   "contains 2% or less of__food": {
@@ -558,5 +558,30 @@
     "analysis": "{\"name\":\"Bioengineered food ingredients (GMOs)\",\"riskLevel\":\"moderate\",\"summary\":\"Bioengineered food ingredients indicate the presence of genetically modified organisms (GMOs). Current evidence suggests they are generally safe to eat, but some consumers have environmental, ethical, or precautionary concerns.\",\"details\":\"The phrase \\\"contains bioengineered food ingredients\\\" is a regulatory disclosure that some components are genetically modified, often crops like soy, corn, or canola. Large scientific bodies (such as the WHO and major national academies) have not found consistent evidence that approved GMOs pose greater health risks than conventional counterparts. However, GMO use is sometimes associated with higher pesticide use or certain agricultural practices, and long-term ecological and sustainability issues remain points of debate, which leads some people to avoid them as a precaution or for personal preference.\",\"category\":\"Genetically modified / bioengineered\"}",
     "lastUpdated": 1764141783581,
     "createdAt": 1764141783581
+  },
+  "food starch modified__food": {
+    "analysis": "{\"name\":\"Food starch, modified\",\"riskLevel\":\"low\",\"summary\":\"Modified food starch is a processed form of starch used to thicken, stabilize, or improve the texture of foods and is generally considered safe for most people.\",\"details\":\"Modified food starch is typically derived from corn, potato, tapioca, or wheat and then physically or chemically treated so it behaves better in processed foods (e.g., stable when heated, frozen, or under acidic conditions). For most consumers it poses low health risk, but sensitive individuals (such as those with celiac disease or wheat allergies) may need to verify the source if it is not specified, and some people prefer to limit highly processed additives in their diet.\",\"category\":\"Food additive – thickener/stabilizer\"}",
+    "lastUpdated": 1764142236304,
+    "createdAt": 1764142236304
+  },
+  "mono- and diglycerides of fatty acids__food": {
+    "analysis": "{\"name\":\"Mono- and diglycerides of fatty acids\",\"riskLevel\":\"moderate\",\"summary\":\"Emulsifiers derived from glycerol and fatty acids, often used to improve texture and shelf life in processed foods.\",\"details\":\"Mono- and diglycerides are commonly produced from vegetable oils, but can also be derived from animal fats or partially hydrogenated oils, which may introduce small amounts of trans fats. For most people they are considered safe at typical intake levels, but those aiming to strictly minimize processed additives, avoid all trans fats, or who follow certain religious/ethical dietary rules may want to limit them or verify their source.\",\"category\":\"Emulsifier / food additive\"}",
+    "lastUpdated": 1764181829336,
+    "createdAt": 1764181829336
+  },
+  "bleached (refined bleached flour)__food": {
+    "analysis": "{\"name\":\"Bleached (refined bleached flour)\",\"riskLevel\":\"moderate\",\"summary\":\"Bleached flour is wheat flour treated to appear whiter and have a softer texture, often used in baked goods. It is generally safe for most people but is a source of gluten and is more processed and less nutritious than whole-grain flour.\",\"details\":\"Bleached flour is typically treated with bleaching agents (such as benzoyl peroxide or chlorine-based agents) to speed aging and improve baking properties; these agents are used in very small amounts and are considered safe by regulators, but they indicate a higher level of processing and nutrient loss compared with whole-wheat flour. It contains gluten, so it is unsuitable for people with celiac disease or gluten sensitivity, and its refined nature means it has less fiber and micronutrients and can contribute more to blood sugar spikes than less processed grains.\",\"category\":\"refined grain / processing aid\"}",
+    "lastUpdated": 1764181833495,
+    "createdAt": 1764181833495
+  },
+  "malted barley flour__food": {
+    "analysis": "{\"name\":\"Malted barley flour\",\"riskLevel\":\"low\",\"summary\":\"Malted barley flour is a ground form of sprouted barley used in small amounts to improve flavor, color, and yeast activity in baked goods. It is generally safe but does contain gluten.\",\"details\":\"Because it is made from barley, malted barley flour naturally contains gluten and is not appropriate for people with celiac disease or non-celiac gluten sensitivity. In typical use levels in bread and cereals, it mainly serves as an enzyme and flavor source and is not associated with specific toxic or additive-related risks for the general population, though it remains a gluten-containing grain for labeling and allergen considerations.\",\"category\":\"cereal grain / gluten source\"}",
+    "lastUpdated": 1764181833495,
+    "createdAt": 1764181833495
+  },
+  "niacin (vitamin b3)__food": {
+    "analysis": "{\"name\":\"Niacin (vitamin B3)\",\"riskLevel\":\"low\",\"summary\":\"Niacin is vitamin B3, commonly added to enriched flours and cereals to restore or boost nutrient content. At levels used in fortified foods, it is safe and beneficial for most people.\",\"details\":\"Niacin is an essential vitamin involved in energy metabolism and nervous system function, and fortification helps prevent deficiency in populations that rely on refined grains. Adverse effects such as skin flushing, itching, or liver strain occur mainly with high-dose supplements, not with the relatively low amounts typically present in enriched or fortified foods.\",\"category\":\"vitamin / nutrient fortification\"}",
+    "lastUpdated": 1764181833495,
+    "createdAt": 1764181833495
   }
 }
