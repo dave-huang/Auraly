@@ -400,21 +400,38 @@ async function analyzeIngredientBatch(
   const estimatedTokensNeeded = Math.min(estimatedCount * tokensPerIngredient + baseTokens, maxCap);
   const maxTokens = Math.max(2500, estimatedTokensNeeded);
   
-  const prompt = `Analyze this ${productType} ingredient list. ${languageInstruction}
+  const prompt = `You are a health-focused ingredient analyst. Analyze the following ingredient batch from a ${productType} product.
 
-Ingredients:
+${languageInstruction}
+
+Product Type Context: ${context}
+
+Ingredient List:
 ${ingredientsText}
 
-Return JSON only with no extra text:
+CRITICAL EXTRACTION RULES:
+1. Extract EVERY SINGLE ingredient from the list above
+2. If an ingredient appears multiple times, count it only ONCE (deduplicate)
+3. Include ALL: additives, vitamins, minerals, preservatives, colors, emulsifiers, starches, sweeteners, oils, and flavorings
+4. This batch contains approximately ${estimatedCount} ingredients
+5. If an ingredient name has OCR errors, correct them to the proper chemical/ingredient name
+
+For each ingredient, determine:
+1. The ingredient name (clean, standardized format) - MUST be in the user's language
+2. Risk level: "low" (safe), "moderate" (limited evidence/moderate concern), or "high" (known health risks)
+3. A brief summary (1-2 sentences) explaining what it is and why it's flagged - MUST be in the user's language
+4. Detailed explanation (2-3 sentences) with more context about health impacts - MUST be in the user's language
+
+Return your analysis as JSON with this structure (ingredients array may be empty if batch has no valid ingredients):
 {
   "productName": null,
   "ingredients": [
     {
-      "name": "name in user language",
+      "name": "Ingredient Name",
       "riskLevel": "low|moderate|high",
-      "summary": "1-2 sentence explanation",
-      "details": "1-2 sentence details",
-      "category": "category or null"
+      "summary": "Brief explanation",
+      "details": "Detailed explanation",
+      "category": "Optional category"
     }
   ],
   "overallRisk": "low|moderate|high"
@@ -686,21 +703,53 @@ export async function analyzeIngredients(
   }
   
   // FALLBACK: Single large batch processing (for small ingredient lists or if parallel fails)
-  const prompt = `Analyze this ${productType} ingredient list. ${languageInstruction}
+  const prompt = `You are a health-focused ingredient analyst. Analyze the following ingredient list from a ${productType} product.
 
-Ingredients:
+${languageInstruction}
+
+Product Type Context: ${context}
+
+Ingredient List (parenthetical groups have been pre-expanded):
 ${textToAnalyze}
 
-Return JSON only with no extra text:
+CRITICAL EXTRACTION RULES:
+1. Extract EVERY SINGLE ingredient from the list above
+2. If an ingredient appears multiple times, count it only ONCE (deduplicate)
+3. Include ALL: additives, vitamins, minerals, preservatives, colors, emulsifiers, starches, sweeteners, oils, and flavorings
+4. The list contains approximately ${estimatedIngredientCount} ingredients based on separators
+5. If an ingredient name has OCR errors, correct them to the proper chemical/ingredient name
+
+For each ingredient, determine:
+1. The ingredient name (clean, standardized format) - MUST be in the user's language
+2. Risk level: "low" (safe), "moderate" (limited evidence/moderate concern), or "high" (known health risks)
+3. A brief summary (1-2 sentences) explaining what it is and why it's flagged - MUST be in the user's language
+4. Detailed explanation (2-3 sentences) with more context about health impacts - MUST be in the user's language
+
+INGREDIENT NAME TRANSLATION REQUIREMENTS:
+- ALWAYS translate ingredient names to the user's language accurately
+- Use proper chemical/scientific names when translating
+- Examples: "水" → "Water" (English) or "Agua" (Spanish), "甘油" → "Glycerin" (English) or "Glicerina" (Spanish)
+- For unclear OCR text, correct to the nearest valid ingredient name based on context
+- NEVER leave ingredient names in the original language from the label
+- NEVER invent ingredients that don't exist in the text
+
+OTHER IMPORTANT NOTES:
+- ALL text output (name, summary, details) must be in the user's selected language
+- Extract the product name if mentioned (product name can stay in original language)
+- Determine overall product risk (low/moderate/high) based on the worst ingredients
+- Be friendly and clear in explanations, not alarmist
+- If an ingredient is generally safe, mark it as "low" risk
+
+Return your analysis as JSON with this structure:
 {
-  "productName": null,
+  "productName": "Product name if found or null",
   "ingredients": [
     {
-      "name": "name in user language",
+      "name": "Ingredient Name",
       "riskLevel": "low|moderate|high",
-      "summary": "1-2 sentence explanation",
-      "details": "1-2 sentence details",
-      "category": "category or null"
+      "summary": "Brief explanation",
+      "details": "Detailed explanation",
+      "category": "Optional category like 'preservative', 'sweetener', etc"
     }
   ],
   "overallRisk": "low|moderate|high"
