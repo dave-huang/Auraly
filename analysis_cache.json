@@ -1,0 +1,776 @@
+[
+  [
+    "5861d7c9a484b41fd993ab2941d014b6baab5842d312c6388869d432f62dbf58",
+    {
+      "result": {
+        "productType": "food",
+        "ingredients": [
+          {
+            "name": "Palm oil",
+            "riskLevel": "moderate",
+            "summary": "A vegetable oil high in saturated fat, commonly used for frying and texture in processed foods.",
+            "details": "Palm oil is semi-solid at room temperature and is widely used because it is cheap and stable. Its high saturated fat content may contribute to elevated LDL cholesterol and cardiovascular risk when consumed in large amounts, especially in a diet already rich in saturated fats. There are also environmental concerns around palm oil production, although these are not direct health effects.",
+            "category": "fat/oil"
+          },
+          {
+            "name": "Canola oil",
+            "riskLevel": "low",
+            "summary": "A vegetable oil low in saturated fat and commonly used in cooking and processed foods.",
+            "details": "Canola oil is relatively high in unsaturated fats, including omega‑9 and some omega‑3 fatty acids, and is generally considered heart‑friendly when used in place of saturated fats. In processed foods it may be refined and exposed to high heat, which can slightly reduce nutrient quality, but normal dietary use is considered safe for most people.",
+            "category": "fat/oil"
+          },
+          {
+            "name": "Soy lecithin",
+            "riskLevel": "low",
+            "summary": "An emulsifier derived from soy used to keep ingredients from separating.",
+            "details": "Soy lecithin contains phospholipids that help blend fats and water in processed foods. It is typically present in very small amounts and is considered safe for most people, though individuals with severe soy allergy may need to avoid it. It may contain trace amounts of soy protein, but usually not enough to trigger reactions in most soy‑sensitive individuals.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Wheat flour",
+            "riskLevel": "moderate",
+            "summary": "Refined flour from wheat grains used as a base for many baked and processed foods; contains gluten.",
+            "details": "Wheat flour is a major source of carbohydrates and is often refined, meaning it has reduced fiber and micronutrients compared with whole wheat flour. It is a key allergen because it contains gluten, which must be strictly avoided by people with celiac disease or gluten sensitivity. High intake of refined flours can also contribute to rapid blood sugar spikes.",
+            "category": "cereal/grain (gluten-containing)"
+          },
+          {
+            "name": "Sugar",
+            "riskLevel": "moderate",
+            "summary": "Refined sweetener (sucrose) added for sweetness and flavor.",
+            "details": "Frequent or high intake of added sugars is linked to weight gain, tooth decay, elevated triglycerides, and increased risk of type 2 diabetes and cardiovascular disease. In processed foods sugar also enhances palatability, which can promote overeating. The health impact depends on total daily intake rather than this product alone.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Salt",
+            "riskLevel": "moderate",
+            "summary": "Common sodium-based seasoning used for flavor and preservation.",
+            "details": "Salt (sodium chloride) is essential in small amounts, but excessive intake is associated with high blood pressure, increased risk of heart disease, stroke, and kidney problems. Processed foods are a major source of hidden sodium, and this ingredient list shows salt added multiple times, suggesting a potentially high sodium product.",
+            "category": "salt/mineral"
+          },
+          {
+            "name": "Corn starch",
+            "riskLevel": "low",
+            "summary": "Refined starch from corn used as a thickener and texture agent.",
+            "details": "Corn starch is mostly pure carbohydrate with little fiber or micronutrients. It thickens sauces and improves texture but can raise blood glucose relatively quickly due to its refined nature. For most people it is safe, though those managing blood sugar may want to limit large amounts.",
+            "category": "starch/thickener"
+          },
+          {
+            "name": "Spices",
+            "riskLevel": "low",
+            "summary": "A blend of dried herbs and spices used for flavoring.",
+            "details": "Spices can include a variety of plant-based seasonings such as pepper, paprika, cumin, or others, depending on the product. They are generally safe and may contain beneficial phytochemicals and antioxidants. The exact composition is not specified, which may matter only for individuals with known spice allergies or sensitivities.",
+            "category": "flavoring"
+          },
+          {
+            "name": "Garlic",
+            "riskLevel": "low",
+            "summary": "A common culinary herb used for strong savory flavor.",
+            "details": "Garlic is plant-based and is generally recognized as safe, with some evidence for cardiovascular and immune benefits. In high amounts it can cause digestive upset in sensitive individuals, and those with garlic allergy or on certain medications (e.g., blood thinners) may need to be cautious.",
+            "category": "flavoring"
+          },
+          {
+            "name": "Whole milk powder",
+            "riskLevel": "moderate",
+            "summary": "Dehydrated whole milk that contains milk fat, protein, and lactose.",
+            "details": "Whole milk powder is nutritionally similar to liquid whole milk and adds creaminess, protein, and lactose sugar to processed foods. It is a major allergen for people with milk allergy and not suitable for those with lactose intolerance unless used in very small amounts. The saturated fat content may contribute to overall saturated fat intake in the diet.",
+            "category": "dairy"
+          },
+          {
+            "name": "Skim milk powder",
+            "riskLevel": "moderate",
+            "summary": "Dehydrated non‑fat milk providing milk proteins and lactose without most of the fat.",
+            "details": "Skim milk powder is used to add protein and dairy flavor while limiting fat. It still contains lactose and milk proteins, so it is unsuitable for those with milk allergy and may cause symptoms in lactose intolerant individuals. For others, it is generally safe and contributes protein and calcium.",
+            "category": "dairy"
+          },
+          {
+            "name": "Caramel color",
+            "riskLevel": "moderate",
+            "summary": "A brown food coloring made by heating sugars, used to give a caramel-like color.",
+            "details": "Caramel color is widely used in beverages and processed foods and is generally recognized as safe; however, some manufacturing processes can generate 4‑MEI (4‑methylimidazole), a compound with potential carcinogenicity at high doses in animal studies. Regulatory agencies set limits to keep exposure low, but people seeking to minimize artificial colors may wish to limit products containing it.",
+            "category": "colorant"
+          },
+          {
+            "name": "Monosodium glutamate",
+            "riskLevel": "moderate",
+            "summary": "A flavor enhancer that provides umami (savory) taste.",
+            "details": "Monosodium glutamate (MSG) is the sodium salt of glutamic acid and boosts savory flavor in many processed foods. Large regulatory reviews have not confirmed serious health risks at normal intake levels, but some individuals report sensitivity symptoms such as headaches or flushing, often called “MSG symptom complex.” It also contributes to overall sodium intake, which can be relevant in high‑sodium diets.",
+            "category": "flavor enhancer"
+          },
+          {
+            "name": "Defatted soybean",
+            "riskLevel": "low",
+            "summary": "Soybeans with most of the oil removed, used as a protein-rich ingredient.",
+            "details": "Defatted soybean is high in protein and is used in many processed foods, sometimes as a flour or meal. It is generally safe and nutritious but is a common allergen for those with soy allergy. It may also be from genetically modified crops, which is a concern for some consumers though major health authorities consider approved GMO soy safe.",
+            "category": "protein (soy allergen)"
+          },
+          {
+            "name": "Yeast extract",
+            "riskLevel": "moderate",
+            "summary": "A savory flavoring made from yeast, rich in naturally occurring glutamates.",
+            "details": "Yeast extract is used to add umami taste similar to bouillon or MSG and naturally contains free glutamic acid. Although it is not the same as added MSG, people very sensitive to glutamates may notice similar symptoms. It is generally considered safe but can contribute to overall sodium and glutamate intake.",
+            "category": "flavor enhancer"
+          },
+          {
+            "name": "Natural and artificial flavors",
+            "riskLevel": "moderate",
+            "summary": "A mixture of flavoring substances from natural and synthetic sources used to enhance taste.",
+            "details": "“Natural and artificial flavors” is a broad category that can include dozens of different compounds, the specifics of which are not disclosed on the label. These are usually present in very small amounts and approved as safe by regulators, but some people with chemical sensitivities or allergies may react to specific components. The lack of transparency can be a concern for those trying to avoid certain flavoring agents.",
+            "category": "flavoring"
+          },
+          {
+            "name": "Honey",
+            "riskLevel": "low",
+            "summary": "A natural sweetener produced by bees from plant nectar.",
+            "details": "Honey consists mainly of fructose and glucose and provides sweetness along with small amounts of antioxidants and trace minerals. It still behaves like added sugar metabolically and should be consumed in moderation, especially for people managing blood sugar. It is not suitable for infants under one year due to the risk of botulism spores.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Dextrin",
+            "riskLevel": "low",
+            "summary": "A group of short-chain carbohydrates derived from starch, used as a bulking or binding agent.",
+            "details": "Dextrin is often produced from corn or other starches and is used to improve texture, adhesion, and sometimes as a carrier for flavors. It is quickly digested into glucose and can contribute to blood sugar rise, though it is typically present in modest amounts. For most people it is safe, but those strictly limiting refined carbohydrates may wish to be cautious.",
+            "category": "starch/thickener"
+          },
+          {
+            "name": "Pasteurized milk",
+            "riskLevel": "moderate",
+            "summary": "Heat-treated milk used for safety and extended shelf life.",
+            "details": "Pasteurization kills harmful bacteria in milk, making it safer to consume and extending shelf life. It retains lactose and milk proteins, so it poses the same issues for those with lactose intolerance or milk allergy. Nutritionally, it provides protein, calcium, and vitamins but also saturated fat if not reduced‑fat.",
+            "category": "dairy"
+          },
+          {
+            "name": "Cheese cultures",
+            "riskLevel": "low",
+            "summary": "Beneficial bacteria used to ferment milk into cheese and develop flavor.",
+            "details": "Cheese cultures are starter cultures of lactic acid bacteria that ferment lactose and create characteristic cheese flavors and textures. They are generally safe and can have probiotic potential, although in many processed foods they are present mainly for flavor rather than health benefits. People with dairy allergy react to milk proteins, not to the cultures themselves.",
+            "category": "culture/microorganism"
+          },
+          {
+            "name": "Enzymes",
+            "riskLevel": "low",
+            "summary": "Proteins that catalyze reactions in food processing, such as coagulating milk for cheese.",
+            "details": "Food enzymes may be derived from animal, plant, or microbial sources and are used in tiny amounts to modify texture, flavor, or processing characteristics. They are generally recognized as safe. Rarely, individuals with occupational exposure can develop sensitivities, but dietary exposure at typical levels is not considered harmful.",
+            "category": "processing aid"
+          },
+          {
+            "name": "Onion flake",
+            "riskLevel": "low",
+            "summary": "Dehydrated pieces of onion used for flavor.",
+            "details": "Onion flakes provide concentrated onion flavor and aroma without moisture. They are plant-based and generally safe, though some people with IBS or FODMAP sensitivities may experience digestive symptoms. True onion allergy is uncommon but possible.",
+            "category": "flavoring"
+          },
+          {
+            "name": "Natural flavor",
+            "riskLevel": "moderate",
+            "summary": "Flavoring substances derived from natural sources such as plants or animals.",
+            "details": "Natural flavors can still be highly processed and may contain many individual compounds, carriers, and solvents, but their primary flavor components originate from natural materials. While they are approved as safe at normal intake levels, people with allergies or sensitivities may have trouble identifying specific triggers due to the generic labeling. They are present in small quantities but contribute to the product’s overall flavor complexity.",
+            "category": "flavoring"
+          },
+          {
+            "name": "Onion extract",
+            "riskLevel": "low",
+            "summary": "A concentrated extract from onions used to intensify onion flavor.",
+            "details": "Onion extract is produced by concentrating the flavor compounds from onions and is used at low levels for strong savory taste. It is generally safe but may bother individuals sensitive to onions or FODMAPs. It carries the same allergen potential as onion, though onion allergy is relatively rare.",
+            "category": "flavoring"
+          },
+          {
+            "name": "Soy sauce (soybean, wheat, salt)",
+            "riskLevel": "moderate",
+            "summary": "A fermented seasoning made from soybeans, wheat, and salt, rich in umami flavor.",
+            "details": "Soy sauce contributes significant sodium and contains both soy and wheat, making it unsuitable for people with soy allergy, wheat allergy, or celiac disease unless specifically gluten‑free. Fermentation produces glutamates that enhance savory taste. While small amounts are safe for most people, those on low‑sodium diets or with related allergies need to be cautious.",
+            "category": "flavoring/condiment (soy and gluten allergen)"
+          },
+          {
+            "name": "Tomato powder",
+            "riskLevel": "low",
+            "summary": "Dehydrated, ground tomatoes used for flavor and color.",
+            "details": "Tomato powder concentrates tomato flavor, natural acids, and pigments like lycopene. It is generally safe and can provide some beneficial phytonutrients, though amounts in processed foods are usually modest. People with tomato allergy or sensitivity should avoid it.",
+            "category": "vegetable ingredient"
+          },
+          {
+            "name": "Dried onion",
+            "riskLevel": "low",
+            "summary": "Dehydrated onion used as a flavoring.",
+            "details": "Dried onion provides the taste and aroma of fresh onion without water content and is widely used in seasonings and mixes. It is considered safe for most individuals. As with other onion products, those with onion sensitivity or IBS may experience digestive discomfort.",
+            "category": "flavoring"
+          },
+          {
+            "name": "Glucose",
+            "riskLevel": "moderate",
+            "summary": "A simple sugar (monosaccharide) used as a sweetener and energy source.",
+            "details": "Glucose is rapidly absorbed into the bloodstream and can cause quick rises in blood sugar and insulin levels. In processed foods it is often used for sweetness, texture, or to control crystallization. Overconsumption of added simple sugars like glucose is associated with metabolic issues including insulin resistance, weight gain, and increased cardiovascular risk.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Sucrose fatty acid esters",
+            "riskLevel": "low",
+            "summary": "Emulsifiers made by combining sucrose with fatty acids to help mix oil and water.",
+            "details": "Sucrose esters of fatty acids are used in small amounts to stabilize emulsions and improve texture in processed foods. They are generally recognized as safe, and typical dietary exposures are much lower than levels associated with any adverse effects in studies. For most people they pose minimal health concern.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Dextrose anhydrous (glucose)",
+            "riskLevel": "moderate",
+            "summary": "A dry, crystalline form of glucose used as a sweetener and filler.",
+            "details": "Dextrose anhydrous is chemically identical to glucose and is rapidly absorbed, raising blood sugar levels quickly. It is used for sweetness, browning, and fermentation support in foods. High intake of added simple sugars such as dextrose can contribute to metabolic syndrome, weight gain, and dental caries when total sugar intake is excessive.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Banana",
+            "riskLevel": "low",
+            "summary": "Fruit ingredient adding natural sweetness and flavor.",
+            "details": "Banana provides natural sugars, potassium, and some fiber, although drying or processing may reduce fiber and alter texture. It is generally healthful and safe, but individuals with banana allergy or latex‑fruit syndrome should avoid it. In processed foods, the quantity may be small relative to added sugars.",
+            "category": "fruit ingredient"
+          },
+          {
+            "name": "Processed honey",
+            "riskLevel": "moderate",
+            "summary": "Refined or heated honey used as a sweetener.",
+            "details": "Processed honey may be filtered and heated, which can reduce some beneficial enzymes and volatile compounds compared with raw honey, but it remains primarily a source of fructose and glucose. It behaves like other added sugars metabolically and should be used in moderation, particularly for those managing blood sugar or caloric intake. As with all honey, it is unsafe for infants under one year.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Tomato paste",
+            "riskLevel": "low",
+            "summary": "Concentrated cooked tomatoes used for intense tomato flavor and color.",
+            "details": "Tomato paste provides concentrated tomato solids, including natural acids, sugars, and lycopene. It is generally considered healthy and can contribute beneficial antioxidants, although amounts in a complex product may be small. People with tomato allergy or reflux sensitivity may need to limit intake.",
+            "category": "vegetable ingredient"
+          },
+          {
+            "name": "Fermented milk",
+            "riskLevel": "moderate",
+            "summary": "Milk that has been cultured with bacteria, similar to yogurt or kefir, used for flavor and texture.",
+            "details": "Fermented milk contains lactic acid bacteria and may have some lactose converted to lactic acid, potentially improving digestibility for some. It still contains milk proteins and residual lactose, so it is not suitable for those with milk allergy and may still affect lactose-intolerant individuals. It can add tangy flavor and may offer some probiotic benefit depending on processing.",
+            "category": "dairy"
+          },
+          {
+            "name": "Citric acid",
+            "riskLevel": "low",
+            "summary": "A weak organic acid used as an acidulant and preservative, giving a sour taste.",
+            "details": "Citric acid is commonly produced by fermentation and is found naturally in citrus fruits. It helps control pH, preserve freshness, and enhance flavor. It is generally recognized as safe; in sensitive individuals, large local exposure (e.g., in candies) can irritate mouth tissues, but normal food use is not considered harmful.",
+            "category": "acidulant/preservative"
+          },
+          {
+            "name": "Mono- and diglycerides",
+            "riskLevel": "moderate",
+            "summary": "Emulsifiers derived from glycerol and fatty acids, used to blend fats with water.",
+            "details": "Mono- and diglycerides help stabilize emulsions and improve texture in baked and processed foods. They can be derived from vegetable or animal fats and may contain small amounts of trans fats as byproducts of processing, though typically far less than partially hydrogenated oils. People seeking to strictly avoid trans fats or animal-derived ingredients may wish to limit them, but at current typical use levels they are generally considered safe.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Processed with alkali (cocoa or similar component)",
+            "riskLevel": "low",
+            "summary": "Indicates a component (likely cocoa or a similar ingredient) has been treated with alkaline substances to modify flavor and color.",
+            "details": "“Processed with alkali” commonly refers to Dutch-processed cocoa or other ingredients whose acidity has been neutralized to produce a milder, less acidic flavor and darker color. This treatment can reduce some natural acidity and certain polyphenols but is not considered harmful at typical consumption levels. The alkali residues in the final product are very low and generally recognized as safe.",
+            "category": "processing descriptor"
+          },
+          {
+            "name": "Tomato extract",
+            "riskLevel": "low",
+            "summary": "A concentrated extract of tomato components used for flavor and color.",
+            "details": "Tomato extract may concentrate certain flavor compounds and pigments like lycopene. It is typically used at low levels and is considered safe, with potential antioxidant benefits from lycopene. The main concerns would be for individuals with tomato allergy or specific sensitivities.",
+            "category": "vegetable ingredient"
+          },
+          {
+            "name": "Soy protein hydrolysate",
+            "riskLevel": "moderate",
+            "summary": "Soy protein that has been broken down into smaller peptides and amino acids to enhance flavor.",
+            "details": "Soy protein hydrolysate acts as a flavor enhancer because hydrolysis releases glutamic acid and other savory-tasting components, somewhat similar in effect to MSG. It is still a soy-derived ingredient and must be avoided by those with soy allergy. While generally recognized as safe, it contributes to overall glutamate intake and may trouble very sensitive individuals.",
+            "category": "flavor enhancer/protein (soy allergen)"
+          },
+          {
+            "name": "Apple puree",
+            "riskLevel": "low",
+            "summary": "Mashed or blended apples used for sweetness, moisture, and flavor.",
+            "details": "Apple puree provides natural fruit sugars, some fiber, and phytonutrients, though processing can reduce fiber compared with whole apples. It is usually considered a relatively wholesome ingredient. Individuals with apple allergy or oral allergy syndrome related to birch pollen may react to it.",
+            "category": "fruit ingredient"
+          },
+          {
+            "name": "Dried garlic",
+            "riskLevel": "low",
+            "summary": "Dehydrated garlic used for concentrated garlic flavor.",
+            "details": "Dried garlic offers the pungent taste of fresh garlic in a shelf-stable form and is common in seasoning blends. It is safe for most people and may provide some of garlic’s beneficial sulfur compounds, though in smaller amounts. Those with garlic sensitivity or certain digestive conditions may experience discomfort.",
+            "category": "flavoring"
+          },
+          {
+            "name": "Maltose",
+            "riskLevel": "moderate",
+            "summary": "A disaccharide sugar composed of two glucose units, used as a sweetener.",
+            "details": "Maltose is less sweet than sucrose but still contributes calories and raises blood sugar levels. It is often derived from starch hydrolysis and can be used to control sweetness and texture. As with other added sugars, excessive intake can contribute to metabolic issues, weight gain, and dental problems.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Whey powder",
+            "riskLevel": "moderate",
+            "summary": "Dehydrated whey, the liquid by-product of cheese making, rich in milk proteins and lactose.",
+            "details": "Whey powder contains whey proteins (like beta-lactoglobulin) and lactose and is commonly used to boost protein content and improve texture. It is a major concern for people with milk allergy or lactose intolerance. For others, it is a convenient protein source but still counts as dairy with potential impacts for those monitoring saturated fat and animal protein intake.",
+            "category": "dairy protein"
+          },
+          {
+            "name": "Garlic flake",
+            "riskLevel": "low",
+            "summary": "Dehydrated pieces of garlic used as a seasoning.",
+            "details": "Garlic flakes are similar to dried garlic granules but typically larger pieces, providing noticeable garlic bits and flavor. They are plant-based and generally safe, sharing the same potential digestive or allergy issues as other garlic forms. Benefits and risks mirror those of garlic and dried garlic.",
+            "category": "flavoring"
+          },
+          {
+            "name": "Paprika color",
+            "riskLevel": "low",
+            "summary": "A natural red-orange color derived from paprika peppers.",
+            "details": "Paprika color contains carotenoid pigments such as capsanthin and capsorubin and is used to impart a red or orange hue. It is generally considered safe and may offer minor antioxidant benefits, though in small coloring amounts these are limited. People allergic to peppers or nightshades should be aware of potential reactions.",
+            "category": "colorant (natural)"
+          },
+          {
+            "name": "Disodium inosinate",
+            "riskLevel": "moderate",
+            "summary": "A flavor enhancer often used with MSG to intensify umami taste.",
+            "details": "Disodium inosinate is a nucleotide-based flavor enhancer that strongly boosts savory flavors, especially in combination with MSG and disodium guanylate. It is usually present in small amounts and considered safe, but people with gout or high uric acid sometimes choose to limit intake of purine-related compounds, although typical dietary levels are low. It can also be derived from animal or microbial sources, which may be relevant for strict vegetarians unless specified.",
+            "category": "flavor enhancer"
+          }
+        ],
+        "overallRisk": "high",
+        "analyzedAt": "2025-11-26T05:37:46.824Z",
+        "originalText": "INGREDIENTS: VEGETABLE OIL (PALM OIL, CANOLA OIL, SOY LECITHIN), WHEAT FLOUR, SUGAR, SALT, CORN STARCH, CURRY POWDER\n(SPICES, GARLIC), SUGAR AND MILK POWDER MIXTURE (SUGAR, WHOLE MILK POWDER, SALT, SKIM MILK POWDER), CARAMEL COLOR,\nMONOSODIUM GLUTAMATE, WHOLE MILK POWDER, DEFATTED SOYBEAN, YEAST EXTRACT, NATURAL AND ARTIFICIAL FLAVORS, HONEY, CHEESE\nPRODUCT (DEXTRIN, ENZYME MODIFIED CHEESE [CHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), WHOLE MILK POWDER,\nSALT], YEAST EXTRACT, CORN STARCH, SALT), SOY LECITHIN, ROASTED ONION POWDER (ONION FLAKE, DEXTRIN, NATURAL FLAVOR), ONION\nSEASONING (ONION EXTRACT, DEXTRIN, SOY SAUCE [SOYBEAN, WHEAT, SALT], YEAST EXTRACT, CORN STARCH, SALT, GARLIC EXTRACT,\nNATURAL FLAVOR), TOMATO POWDER, ONION POWDER (DRIED ONION, DEFATTED SOYBEAN, GLUCOSE), SUCROSE FATTY ACID ESTERS, BROWN\nROUX (PALM OIL, SKIM MILK POWDER, WHEAT FLOUR, DEXTROSE ANHYDROUS GLUCOSE), FRUIT PASTE (BANANA, SUGAR, PROCESSED HONEY,\nTOMATO PASTE, FERMENTED MILK, CITRIC ACID, SALT), SPICES, CITRIC ACID, MONO- AND DIGLYCERIDES, COCOA POWDER (PROCESSED WITH\nALKALI), TOMATO SEASONING (DEXTRIN, TOMATO EXTRACT, YEAST EXTRACT, CORN STARCH, SALT), PROTEIN HYDROLYSATE (SOY PROTEIN\nHYDROLYSATE, DEXTRIN, MONOSODIUM GLUTAMATE), SKIM MILK POWDER, APPLE PASTE (APPLE PUREE, CITRIC ACID), GARLIC POWDER (DRIED\nGARLIC, DEFATTED SOYBEAN, GLUCOSE, MALTOSE), WHEY POWDER, ROASTED GARLIC POWDER (GARLIC FLAKE, DEXTRIN, NATURAL FLAVOR),\nCHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), ONION EXTRACT (ONION EXTRACT, YEAST EXTRACT), PAPRIKA COLOR,\nDISODIUM INOSINATE, TOMATO EXTRACT (TOMATO EXTRACT, PALM OIL, SALT, SUGAR, YEAST EXTRACT) .\nCONTAINS: SOYBEANS, WHEAT, AND MILK."
+      },
+      "timestamp": 1764135466826,
+      "ocrText": "INGREDIENTS: VEGETABLE OIL (PALM OIL, CANOLA OIL, SOY LECITHIN), WHEAT FLOUR, SUGAR, SALT, CORN STARCH, CURRY POWDER\n(SPICES, GARLIC), SUGAR AND MILK POWDER MIXTURE (SUGAR, WHOLE MILK POWDER, SALT, SKIM MILK POWDER), CARAMEL COLOR,\nMONOSODIUM GLUTAMATE, WHOLE MILK POWDER, DEFATTED SOYBEAN, YEAST EXTRACT, NATURAL AND ARTIFICIAL FLAVORS, HONEY, CHEESE\nPRODUCT (DEXTRIN, ENZYME MODIFIED CHEESE [CHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), WHOLE MILK POWDER,\nSALT], YEAST EXTRACT, CORN STARCH, SALT), SOY LECITHIN, ROASTED ONION POWDER (ONION FLAKE, DEXTRIN, NATURAL FLAVOR), ONION\nSEASONING (ONION EXTRACT, DEXTRIN, SOY SAUCE [SOYBEAN, WHEAT, SALT], YEAST EXTRACT, CORN STARCH, SALT, GARLIC EXTRACT,\nNATURAL FLAVOR), TOMATO POWDER, ONION POWDER (DRIED ONION, DEFATTED SOYBEAN, GLUCOSE), SUCROSE FATTY ACID ESTERS, BROWN\nROUX (PALM OIL, SKIM MILK POWDER, WHEAT FLOUR, DEXTROSE ANHYDROUS GLUCOSE), FRUIT PASTE (BANANA, SUGAR, PROCESSED HONEY,\nTOMATO PASTE, FERMENTED MILK, CITRIC ACID, SALT), SPICES, CITRIC ACID, MONO- AND DIGLYCERIDES, COCOA POWDER (PROCESSED WITH\nALKALI), TOMATO SEASONING (DEXTRIN, TOMATO EXTRACT, YEAST EXTRACT, CORN STARCH, SALT), PROTEIN HYDROLYSATE (SOY PROTEIN\nHYDROLYSATE, DEXTRIN, MONOSODIUM GLUTAMATE), SKIM MILK POWDER, APPLE PASTE (APPLE PUREE, CITRIC ACID), GARLIC POWDER (DRIED\nGARLIC, DEFATTED SOYBEAN, GLUCOSE, MALTOSE), WHEY POWDER, ROASTED GARLIC POWDER (GARLIC FLAKE, DEXTRIN, NATURAL FLAVOR),\nCHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), ONION EXTRACT (ONION EXTRACT, YEAST EXTRACT), PAPRIKA COLOR,\nDISODIUM INOSINATE, TOMATO EXTRACT (TOMATO EXTRACT, PALM OIL, SALT, SUGAR, YEAST EXTRACT) .\nCONTAINS: SOYBEANS, WHEAT, AND MILK."
+    }
+  ],
+  [
+    "37bba32e0fef0eacb3bedd907f592c7fce6a43e5423c2f6f436efc97b6fc061e",
+    {
+      "result": {
+        "productType": "skincare",
+        "ingredients": [
+          {
+            "name": "Water",
+            "riskLevel": "low",
+            "summary": "Water is the main solvent in the formula and helps dissolve other ingredients and hydrate the skin and hair surface.",
+            "details": "In skincare and haircare, water forms the base of the product, allowing surfactants, humectants, and actives to be evenly distributed. It is considered safe and non-irritating for most people, with no known toxicity at the levels used in cosmetics.",
+            "category": "solvent"
+          },
+          {
+            "name": "Cocamidopropyl Betaine",
+            "riskLevel": "low",
+            "summary": "Cocamidopropyl betaine is a mild surfactant derived from coconut oil used for cleansing and foam boosting.",
+            "details": "It helps remove dirt and oils while keeping the formula gentler than harsh sulfates. A small subset of people may develop contact allergy or irritation, but it is generally considered safe and much milder than traditional sulfates like SLS/SLES.",
+            "category": "surfactant"
+          },
+          {
+            "name": "Glycerin",
+            "riskLevel": "low",
+            "summary": "Glycerin is a humectant that attracts and holds water in the skin and hair, helping maintain hydration.",
+            "details": "It is widely used in skincare and haircare to improve moisture levels and skin barrier function. Glycerin is generally non-irritating and safe, even for sensitive skin, and has a long history of use in cosmetic products.",
+            "category": "humectant"
+          },
+          {
+            "name": "Sodium Lauroamphoacetate",
+            "riskLevel": "low",
+            "summary": "Sodium lauroamphoacetate is a very mild amphoteric surfactant used for gentle cleansing and foam stabilization.",
+            "details": "It reduces the harshness of primary surfactants and is often used in baby and sensitive-skin products. It is considered safe and non-sensitizing for most users, with no strong evidence of systemic health risks at cosmetic use levels.",
+            "category": "surfactant"
+          },
+          {
+            "name": "Coco-Glucoside",
+            "riskLevel": "low",
+            "summary": "Coco-glucoside is a gentle, plant-derived nonionic surfactant used for mild cleansing and foaming.",
+            "details": "Made from coconut-derived fatty alcohols and glucose, it is known for being less irritating than many traditional detergents. It is generally regarded as safe and suitable for sensitive skin, with a low risk of allergy or systemic toxicity.",
+            "category": "surfactant"
+          },
+          {
+            "name": "Sodium Chloride",
+            "riskLevel": "low",
+            "summary": "Sodium chloride (table salt) is used to adjust viscosity and can also help stabilize surfactant systems.",
+            "details": "In rinse-off products it can slightly influence thickness and feel of the formula. At normal cosmetic concentrations it is safe, though very high levels can be drying or stinging on compromised skin, which is uncommon in this type of formula.",
+            "category": "viscosity controller"
+          },
+          {
+            "name": "Hydroxypropyl Starch Phosphate",
+            "riskLevel": "low",
+            "summary": "Hydroxypropyl starch phosphate is a modified starch used as a thickener, stabilizer, and texture enhancer.",
+            "details": "It helps create a smooth, gel-like consistency and can improve spreadability and suspension of ingredients. It is considered safe and inert in cosmetic use, with low risk of irritation or systemic effects.",
+            "category": "thickener"
+          },
+          {
+            "name": "Citric Acid",
+            "riskLevel": "low",
+            "summary": "Citric acid is an organic acid used mainly to adjust and stabilize the pH of the product.",
+            "details": "By controlling pH, it helps maintain formula stability and supports skin barrier compatibility. In higher concentrations it can be exfoliating or irritating, but at the low levels used for pH adjustment in rinse-off products it is generally safe and well tolerated.",
+            "category": "pH adjuster"
+          },
+          {
+            "name": "Acrylates/C10-30 Alkyl Acrylate Crosspolymer",
+            "riskLevel": "low",
+            "summary": "Acrylates/C10-30 alkyl acrylate crosspolymer is a synthetic polymer used as a thickener, stabilizer, and gelling agent.",
+            "details": "It helps create a stable, smooth gel texture and keeps ingredients evenly dispersed. Toxicological data show low irritation and sensitization potential at cosmetic concentrations, and it is not associated with systemic health risks when properly neutralized and used in finished products.",
+            "category": "thickener"
+          },
+          {
+            "name": "Sodium Benzoate",
+            "riskLevel": "low",
+            "summary": "Sodium benzoate is a preservative that helps prevent growth of bacteria and fungi in the product.",
+            "details": "It is widely used and generally recognized as safe at cosmetic levels, especially in water-based products. Rarely, some individuals may experience mild irritation or sensitivity, but it is not a paraben, not a formaldehyde releaser, and is not linked to major hormonal disruption at typical use levels.",
+            "category": "preservative"
+          },
+          {
+            "name": "Panthenol",
+            "riskLevel": "low",
+            "summary": "Panthenol (provitamin B5) is a moisturizing and soothing ingredient that supports skin and hair barrier health.",
+            "details": "It helps attract and hold moisture, can improve skin softness, and enhances hair’s smoothness and shine. It has an excellent safety profile and is generally well tolerated, even by sensitive or compromised skin.",
+            "category": "humectant"
+          },
+          {
+            "name": "Sodium Hydroxide",
+            "riskLevel": "low",
+            "summary": "Sodium hydroxide is a strong base used in tiny amounts to adjust the formula’s pH to a skin-compatible range.",
+            "details": "While pure sodium hydroxide is caustic, in cosmetics it is neutralized within the formulation and used at very low levels solely for pH control. In a properly formulated product it does not remain in a form that is corrosive to skin and is considered safe for this function.",
+            "category": "pH adjuster"
+          },
+          {
+            "name": "Glyceryl Oleate",
+            "riskLevel": "low",
+            "summary": "Glyceryl oleate is an emulsifier and skin-conditioning agent derived from glycerin and oleic acid.",
+            "details": "It helps blend oil and water phases and can deposit a light, conditioning film on skin and hair, improving softness and reducing dryness. It is generally well tolerated and considered safe, with a low risk of irritation or systemic toxicity.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Polyquaternium-7",
+            "riskLevel": "low",
+            "summary": "Polyquaternium-7 is a cationic polymer that conditions hair and skin by forming a light, smoothing film.",
+            "details": "It reduces static, improves combability, and can enhance the feel of both skin and hair after rinsing. Toxicological reviews indicate low irritation potential and minimal systemic absorption, and it is not classified among high-concern cosmetic ingredients.",
+            "category": "conditioning agent"
+          },
+          {
+            "name": "Avena Sativa (Oat) Kernel Flour",
+            "riskLevel": "low",
+            "summary": "Avena sativa (oat) kernel flour is a finely ground oat ingredient used for soothing, moisturizing, and skin-protective effects.",
+            "details": "Colloidal oat components like beta-glucans and avenanthramides can calm irritation and support the skin barrier, making it popular in sensitive-skin products. It is generally very safe, though people with true oat or gluten-related allergies should be aware of a small potential for reaction.",
+            "category": "soothing agent"
+          },
+          {
+            "name": "Disodium EDTA",
+            "riskLevel": "low",
+            "summary": "Disodium EDTA is a chelating agent that binds metal ions to stabilize the formula and enhance preservative performance.",
+            "details": "By sequestering metal ions, it helps prevent product degradation, discoloration, and microbial growth. It has low acute toxicity and poor skin penetration; environmental persistence is a concern, but from a direct human health perspective in cosmetics it is considered low risk at typical levels.",
+            "category": "chelating agent"
+          },
+          {
+            "name": "Aloe Barbadensis Leaf Extract",
+            "riskLevel": "low",
+            "summary": "Aloe barbadensis leaf extract (aloe vera) is a plant extract used for its soothing, hydrating, and calming properties.",
+            "details": "It can help reduce feelings of dryness or mild irritation and is popular in gentle skin and scalp care. Aloe is generally safe, though a small number of people may experience sensitivity; the decolorized, purified extracts used in cosmetics remove most problematic components like aloin.",
+            "category": "soothing agent"
+          },
+          {
+            "name": "Avena Sativa (Oat) Kernel Extract",
+            "riskLevel": "low",
+            "summary": "Avena sativa (oat) kernel extract is a concentrated oat-derived extract used for its soothing and barrier-supporting effects.",
+            "details": "It contains beneficial compounds such as antioxidants and anti-inflammatory avenanthramides that can calm sensitive or irritated skin and scalp. It is considered safe and low risk, with similar allergy considerations as other oat ingredients but an overall very favorable safety profile.",
+            "category": "soothing agent"
+          }
+        ],
+        "overallRisk": "low",
+        "analyzedAt": "2025-11-26T05:52:17.257Z",
+        "originalText": "Ingredients:\nWater, Cocamidopropyl Betaine, Glycerin, Sodium Lauroamphoacetate,\nCoco-Glucoside, Sodium Chloride, Hydroxypropyl Starch Phosphate, Citric Acid,\nAcrylates/C10-30 Alkyl Acrylate Crosspolymer, Sodium Benzoate, Panthenol, Sodium\nHydroxide, Glyceryl Oleate, Polyquaternium-7, Avena Sativa (Oat) Kernel Flour,\nDisodium EDTA, Aloe Barbadensis Leaf Extract, Avena Sativa (Oat) Kernel Extract"
+      },
+      "timestamp": 1764136337259,
+      "ocrText": "Ingredients:\nWater, Cocamidopropyl Betaine, Glycerin, Sodium Lauroamphoacetate,\nCoco-Glucoside, Sodium Chloride, Hydroxypropyl Starch Phosphate, Citric Acid,\nAcrylates/C10-30 Alkyl Acrylate Crosspolymer, Sodium Benzoate, Panthenol, Sodium\nHydroxide, Glyceryl Oleate, Polyquaternium-7, Avena Sativa (Oat) Kernel Flour,\nDisodium EDTA, Aloe Barbadensis Leaf Extract, Avena Sativa (Oat) Kernel Extract"
+    }
+  ],
+  [
+    "11ef18b2f3ec974799ca7fa745e5177ec5b9f6649ac4fa0e5c272de5b1604829",
+    {
+      "result": {
+        "productType": "skincare",
+        "ingredients": [
+          {
+            "name": "Water (Aqua)",
+            "riskLevel": "low",
+            "summary": "Water is the main solvent that dissolves other ingredients and helps spread the product on skin or hair.",
+            "details": "In skincare and haircare, water is used as a base to deliver surfactants, humectants, and conditioning agents. It is generally very safe and does not raise concerns about hormone disruption, irritation, or systemic toxicity by itself.",
+            "category": "solvent"
+          },
+          {
+            "name": "Sodium Lauroyl Isethionate",
+            "riskLevel": "low",
+            "summary": "Sodium lauroyl isethionate is a mild surfactant used for cleansing and foaming.",
+            "details": "It is commonly used in gentle cleansers and syndet bars as an alternative to harsher sulfates like SLS or SLES. It can cause mild irritation in very sensitive individuals but is widely considered a gentler option with a good safety profile.",
+            "category": "surfactant"
+          },
+          {
+            "name": "Sodium Methyl Lauroyl Taurate",
+            "riskLevel": "low",
+            "summary": "Sodium methyl lauroyl taurate is a mild, skin-friendly surfactant that helps cleanse and foam.",
+            "details": "This ingredient is designed to provide effective cleansing while minimizing irritation and dryness compared to traditional sulfates. It is not a sulfate (despite the similar sound) and is generally regarded as safe for regular use in skincare and haircare.",
+            "category": "surfactant"
+          },
+          {
+            "name": "Cocamidopropyl Betaine",
+            "riskLevel": "moderate",
+            "summary": "Cocamidopropyl betaine is a foaming and cleansing surfactant derived from coconut oil that can sometimes cause irritation or allergy.",
+            "details": "It is widely used to boost foam and reduce the harshness of primary surfactants in shampoos and body washes. While considered safe for most people, it has been associated with contact dermatitis in a minority of users, often due to impurities or sensitization with long-term use.",
+            "category": "surfactant"
+          },
+          {
+            "name": "Lauric Acid",
+            "riskLevel": "low",
+            "summary": "Lauric acid is a fatty acid used as an emulsifier, thickener, and cleansing agent.",
+            "details": "It can help stabilize formulations and contribute to the cleansing function when converted into surfactants. It is generally well tolerated, and while any surfactant-related fatty acid can be mildly drying in high amounts, it is not associated with systemic toxicity or hormone disruption.",
+            "category": "fatty acid / functional"
+          },
+          {
+            "name": "Sodium Hydroxypropyl Starch Phosphate",
+            "riskLevel": "low",
+            "summary": "Sodium hydroxypropyl starch phosphate is a modified starch used as a thickener and texture enhancer.",
+            "details": "It helps stabilize emulsions, improve spreadability, and control viscosity of the formula. It has a good safety profile, is not known to be irritating or sensitizing for most users, and is not linked to endocrine disruption.",
+            "category": "thickener / stabilizer"
+          },
+          {
+            "name": "Hydrogenated Soybean Oil (Glycine Soja Oil)",
+            "riskLevel": "low",
+            "summary": "Hydrogenated soybean oil (Glycine soja oil) is an emollient oil that moisturizes and softens skin and hair.",
+            "details": "Hydrogenation makes the oil more stable and less prone to oxidation, extending product shelf life. It is generally safe, though people with soy allergies may prefer to avoid it, and it is not associated with significant systemic toxicity or hormone disruption at cosmetic use levels.",
+            "category": "emollient / oil"
+          },
+          {
+            "name": "Sodium Chloride",
+            "riskLevel": "low",
+            "summary": "Sodium chloride (table salt) is used mainly to adjust viscosity and sometimes as a simple abrasive in cleansers.",
+            "details": "In liquid cleansers and shampoos it helps thicken the formula and can influence the feel of the lather. It is very low risk, though in high concentrations it can be slightly drying or stinging on broken or very sensitive skin.",
+            "category": "viscosity modifier"
+          },
+          {
+            "name": "Glycerin",
+            "riskLevel": "low",
+            "summary": "Glycerin is a humectant that draws water into the skin or hair to improve hydration.",
+            "details": "It is one of the most widely used and well-studied moisturizing ingredients, helping maintain the skin barrier and reducing dryness. It is well tolerated by most skin types and is not linked to hormone disruption, carcinogenicity, or other major health concerns.",
+            "category": "humectant"
+          },
+          {
+            "name": "Stearic Acid",
+            "riskLevel": "low",
+            "summary": "Stearic acid is a fatty acid used as an emollient, thickener, and co-emulsifier.",
+            "details": "It helps give creams and cleansers body and stability while also contributing to a soft, conditioned feel on skin or hair. It is considered safe and non-sensitizing for most users, with no strong evidence of systemic health risks at cosmetic concentrations.",
+            "category": "fatty acid / emulsifier"
+          },
+          {
+            "name": "Palmitic Acid",
+            "riskLevel": "low",
+            "summary": "Palmitic acid is a common fatty acid that acts as an emollient and thickener.",
+            "details": "It helps form stable emulsions and provides a protective, softening layer on the skin surface. It is generally low risk, with irritation being rare, and it is not known to be a hormone disruptor or carcinogen in cosmetic use.",
+            "category": "fatty acid / emulsifier"
+          },
+          {
+            "name": "Hydrogenated Vegetable Glycerides",
+            "riskLevel": "low",
+            "summary": "Hydrogenated vegetable glycerides are waxy emollients derived from vegetable oils that thicken and soften formulations.",
+            "details": "Hydrogenation increases stability and reduces rancidity while providing structure and a smooth texture in creams and cleansing bars. They are generally considered safe, inert fats with a low potential for irritation or systemic toxicity.",
+            "category": "emollient / structuring agent"
+          },
+          {
+            "name": "Glyceryl Stearate",
+            "riskLevel": "low",
+            "summary": "Glyceryl stearate is an emulsifier and emollient that helps oil and water mix and leaves skin feeling smooth.",
+            "details": "It is commonly used in creams, lotions, and cleansers to stabilize formulas and improve texture. It has a strong safety record, with low irritation potential and no evidence of endocrine disruption or serious health risks at typical use levels.",
+            "category": "emulsifier / emollient"
+          },
+          {
+            "name": "Hydroxystearic Acid",
+            "riskLevel": "low",
+            "summary": "Hydroxystearic acid is a modified fatty acid used as an emollient and viscosity-controlling agent.",
+            "details": "It contributes to the thickness and stability of the formula and can help improve spreadability. As a fatty-acid derivative, it is generally well tolerated and not associated with significant toxicity or endocrine effects in cosmetic use.",
+            "category": "fatty acid derivative / functional"
+          },
+          {
+            "name": "Sodium Benzoate",
+            "riskLevel": "low",
+            "summary": "Sodium benzoate is a preservative that helps prevent growth of bacteria and fungi in the product.",
+            "details": "It is widely used and considered safe at the low concentrations allowed in cosmetics, though very sensitive individuals may experience mild irritation. Concerns about benzene formation are mainly relevant when combined with certain ingredients like ascorbic acid under specific conditions; in rinse-off products the overall risk is considered low.",
+            "category": "preservative"
+          },
+          {
+            "name": "Guar Hydroxypropyltrimonium Chloride",
+            "riskLevel": "low",
+            "summary": "Guar hydroxypropyltrimonium chloride is a cationic polymer derived from guar gum that conditions hair and improves slip.",
+            "details": "It reduces static, improves combability, and can provide a smoother feel in both haircare and some skincare cleansers. It has a good safety profile, with low irritation potential and no strong evidence of systemic toxicity or hormone disruption.",
+            "category": "conditioning polymer"
+          },
+          {
+            "name": "Fragrance (Parfum)",
+            "riskLevel": "moderate",
+            "summary": "Fragrance (parfum) is a mixture of scent ingredients that can be allergenic or irritating for some people.",
+            "details": "The exact composition is often not disclosed, and fragrances may include known sensitizers, allergens, and occasionally phthalates, though many brands now avoid them. People with sensitive skin, eczema, or fragrance allergies may experience redness, itch, or dermatitis, so fragrance-free options are often preferable for highly reactive skin.",
+            "category": "fragrance"
+          },
+          {
+            "name": "Citric Acid",
+            "riskLevel": "low",
+            "summary": "Citric acid is used mainly to adjust the pH of the product and can also have mild chelating and exfoliating properties.",
+            "details": "At the low levels used for pH control in cleansers and lotions, it is generally safe and well tolerated, though very sensitive or compromised skin may sting if the concentration is higher. It is not associated with systemic toxicity or hormone disruption in cosmetic use.",
+            "category": "pH adjuster / chelating agent"
+          },
+          {
+            "name": "Capryloyl Glycine",
+            "riskLevel": "low",
+            "summary": "Capryloyl glycine is an amino acid derivative used for skin-conditioning and mild antimicrobial/anti-sebum effects.",
+            "details": "It can help support the skin barrier and is sometimes included in formulas aimed at oily or blemish-prone skin due to its sebum-regulating and antimicrobial properties. It is generally considered safe with a low risk of irritation and no evidence of major systemic health concerns.",
+            "category": "skin-conditioning / antimicrobial"
+          },
+          {
+            "name": "Undecylenoyl Glycine",
+            "riskLevel": "low",
+            "summary": "Undecylenoyl glycine is an amino acid–lipid derivative with antimicrobial and sebum-regulating properties.",
+            "details": "It is often used in products for oily, acne-prone, or scalp care to help rebalance the microbiome and reduce excess sebum. It has a favorable safety profile and is not known to be a carcinogen, endocrine disruptor, or major sensitizer at typical use levels.",
+            "category": "skin-conditioning / antimicrobial"
+          },
+          {
+            "name": "Sodium Gluconate",
+            "riskLevel": "low",
+            "summary": "Sodium gluconate is a chelating agent that binds metal ions and helps stabilize the formulation.",
+            "details": "By binding metal impurities, it can improve preservative efficacy and prevent product discoloration or degradation. It is considered safe with very low irritation potential and no significant evidence of systemic health risks in cosmetic applications.",
+            "category": "chelating agent"
+          }
+        ],
+        "overallRisk": "moderate",
+        "analyzedAt": "2025-11-26T05:53:29.430Z",
+        "originalText": "INGREDIENTS: WATER (AQUAL SODIUM LAURYL ISETHIONATE, SODIUM METHYL LAUROYL\nTAURATE, COCAMIDOPROPYL BETAINE, LAURIC ACID, SODIUM HYDROXYPROPYL STARCH\nPHOSPHATE, HYDROGENATED SOYBEAN DIE GLYCINE SOJA (SOYBEAN OIL, SODIUM CHLORIDE\nGLYCERIN, STEARIC ACID, PALMITIC ADD, HYDROGENATED VEGETABLE GLYCERIDES, GLYCERINL\nSTEARATE, HYDROXYSTEARIC ACID, SODIUM BENZOATE, GUAR HYDROXYPROPYLTRIMONIUM\nCHLORIDE, FRAGRANCE PARFUM CITRIC ACID, CAPRYLYL GLYCINE, UNDECYLENDHL GLYCINE\nSODIUM GLUCONATE"
+      },
+      "timestamp": 1764136409430,
+      "ocrText": "INGREDIENTS: WATER (AQUAL SODIUM LAURYL ISETHIONATE, SODIUM METHYL LAUROYL\nTAURATE, COCAMIDOPROPYL BETAINE, LAURIC ACID, SODIUM HYDROXYPROPYL STARCH\nPHOSPHATE, HYDROGENATED SOYBEAN DIE GLYCINE SOJA (SOYBEAN OIL, SODIUM CHLORIDE\nGLYCERIN, STEARIC ACID, PALMITIC ADD, HYDROGENATED VEGETABLE GLYCERIDES, GLYCERINL\nSTEARATE, HYDROXYSTEARIC ACID, SODIUM BENZOATE, GUAR HYDROXYPROPYLTRIMONIUM\nCHLORIDE, FRAGRANCE PARFUM CITRIC ACID, CAPRYLYL GLYCINE, UNDECYLENDHL GLYCINE\nSODIUM GLUCONATE"
+    }
+  ],
+  [
+    "ec8a17e5ff61a06f6a54a48f499e06230ff64de67aa7140e8da9c00bc78c99e4",
+    {
+      "result": {
+        "productType": "skincare",
+        "ingredients": [
+          {
+            "name": "Water",
+            "riskLevel": "low",
+            "summary": "Water is the main solvent in the formula, helping dissolve and distribute other ingredients on the skin and hair.",
+            "details": "In skincare and haircare, water acts as the base of the formulation, aiding in spreadability and absorption. It is generally inert and poses no direct health risk; any concern comes from other ingredients in the product, not from water itself.",
+            "category": "solvent"
+          },
+          {
+            "name": "Glycerin",
+            "riskLevel": "low",
+            "summary": "Glycerin is a humectant that attracts and holds moisture in the skin and hair.",
+            "details": "It is widely used to improve hydration, softness, and barrier function. Glycerin is considered very safe and non-irritating for most people, with a long history of use in cosmetic products.",
+            "category": "humectant"
+          },
+          {
+            "name": "Sodium Laureth Sulfate",
+            "riskLevel": "moderate",
+            "summary": "Sodium Laureth Sulfate (SLES) is a cleansing and foaming agent that can be irritating for some people, especially with frequent use.",
+            "details": "SLES is an ethoxylated sulfate surfactant used for its strong cleansing and foam-boosting properties. It is generally considered safer and milder than Sodium Lauryl Sulfate (SLS), but it can still strip oils, cause dryness, and irritate sensitive skin or scalp. Manufacturing may introduce trace impurities (like 1,4-dioxane), though regulated products keep these at low levels.",
+            "category": "surfactant"
+          },
+          {
+            "name": "Cocamidopropyl Betaine",
+            "riskLevel": "moderate",
+            "summary": "Cocamidopropyl Betaine is a mild surfactant that boosts foam and reduces irritation from stronger detergents but can occasionally cause allergic reactions.",
+            "details": "Derived from coconut oil and dimethylaminopropylamine, it is used to make cleansers gentler and more conditioning. While generally safe for most users, it is a documented contact allergen in a small percentage of people, especially when impurities from manufacturing remain in the final ingredient.",
+            "category": "surfactant"
+          },
+          {
+            "name": "Sodium Hydrolyzed Potato Starch Dodecenylsuccinate",
+            "riskLevel": "low",
+            "summary": "Sodium Hydrolyzed Potato Starch Dodecenylsuccinate is a modified starch used as a mild surfactant and texture/conditioning agent.",
+            "details": "This ingredient is made by chemically modifying potato starch to improve its compatibility with surfactant systems and enhance conditioning and creaminess in formulas. It is not known to have significant toxicity or hormone-disrupting effects and is generally considered safe for cosmetic use.",
+            "category": "conditioning agent"
+          },
+          {
+            "name": "Oat Kernel Flour",
+            "riskLevel": "low",
+            "summary": "Oat Kernel Flour is a finely ground form of oats used to soothe and protect the skin and scalp.",
+            "details": "Oat components are known for their anti-inflammatory and skin-calming properties, making them useful in products for dry, itchy, or sensitive skin. It is generally very safe, though individuals with severe oat allergies should be cautious.",
+            "category": "skin conditioning agent"
+          },
+          {
+            "name": "Oat Kernel Oil",
+            "riskLevel": "low",
+            "summary": "Oat Kernel Oil is a plant oil rich in lipids and antioxidants that helps moisturize and support the skin barrier.",
+            "details": "It contains fatty acids and beneficial compounds such as tocopherols that help reduce dryness and improve skin softness. It is usually well tolerated and considered safe, with low risk of irritation for most users.",
+            "category": "emollient"
+          },
+          {
+            "name": "Oat Kernel Extract",
+            "riskLevel": "low",
+            "summary": "Oat Kernel Extract provides soothing, anti-inflammatory, and moisturizing benefits to skin and scalp.",
+            "details": "It is used in many gentle and sensitive-skin products because oats contain avenanthramides and other components that calm redness and irritation. Safety data support a low irritation and sensitization profile, though people with oat allergy should be aware of potential reactions.",
+            "category": "skin conditioning agent"
+          },
+          {
+            "name": "Guar Hydroxypropyltrimonium Chloride",
+            "riskLevel": "low",
+            "summary": "Guar Hydroxypropyltrimonium Chloride is a cationic (positively charged) conditioning polymer that improves slip and detangling.",
+            "details": "Derived from guar gum, it deposits lightly on hair and sometimes skin to give a smoother feel and reduce static. It is widely used in shampoos and conditioners and is generally regarded as safe, with low irritation potential at typical use levels.",
+            "category": "conditioning polymer"
+          },
+          {
+            "name": "Polyquaternium-10",
+            "riskLevel": "low",
+            "summary": "Polyquaternium-10 is a conditioning polymer that improves hair manageability and reduces static and frizz.",
+            "details": "It forms a thin film on hair fibers, enhancing smoothness, combability, and a soft feel, especially after cleansing. This ingredient has a good safety profile in cosmetic use and is not associated with hormone disruption or systemic toxicity.",
+            "category": "conditioning polymer"
+          },
+          {
+            "name": "Tetrasodium Glutamate Diacetate",
+            "riskLevel": "low",
+            "summary": "Tetrasodium Glutamate Diacetate is a chelating agent that binds metal ions to stabilize the formula and boost preservative performance.",
+            "details": "By sequestering metal ions like iron and calcium, it helps prevent product discoloration and degradation and can enhance the effectiveness of preservatives. It is considered a safer, more biodegradable alternative to EDTA-type chelators and is generally low risk at typical cosmetic concentrations.",
+            "category": "chelating agent"
+          },
+          {
+            "name": "Glycol Distearate",
+            "riskLevel": "low",
+            "summary": "Glycol Distearate is used to create a pearly appearance and add thickness and a silky feel to the product.",
+            "details": "It is an ester of stearic acid and ethylene glycol commonly used in shampoos and body washes to provide an opaque, pearlescent look and improve texture. It has low toxicity and is generally well tolerated on skin and hair.",
+            "category": "opacifier"
+          },
+          {
+            "name": "Laureth-4",
+            "riskLevel": "moderate",
+            "summary": "Laureth-4 is an ethoxylated surfactant/emulsifier that helps solubilize oils but can be mildly irritating and may contain trace processing impurities.",
+            "details": "As an ethoxylated ingredient, Laureth-4 is produced using ethylene oxide and can contain residual 1,4-dioxane if not properly purified, though regulated products typically keep these at very low levels. It contributes to cleansing and foaming but can cause dryness or irritation in some individuals, particularly with frequent use or on sensitive skin.",
+            "category": "surfactant"
+          },
+          {
+            "name": "Acrylates/C10-30 Alkyl Acrylate Crosspolymer",
+            "riskLevel": "low",
+            "summary": "Acrylates/C10-30 Alkyl Acrylate Crosspolymer is a synthetic polymer used as a thickener and stabilizer in gels and creams.",
+            "details": "It helps control viscosity, stabilize emulsions, and give products a smooth, gel-like texture. This ingredient is generally considered safe with minimal penetration into the skin and low irritation potential at normal use levels.",
+            "category": "film-forming agent"
+          },
+          {
+            "name": "Sodium Benzoate",
+            "riskLevel": "low",
+            "summary": "Sodium Benzoate is a preservative that helps prevent the growth of bacteria and fungi in the product.",
+            "details": "It is widely used in foods and cosmetics and is considered safe at the low concentrations used, especially in rinse-off products like cleansers and shampoos. Some very sensitive individuals may experience mild irritation, but it is not a paraben, phthalate, or formaldehyde-releaser.",
+            "category": "preservative"
+          },
+          {
+            "name": "Citric Acid",
+            "riskLevel": "low",
+            "summary": "Citric Acid is used to adjust the pH of the formula and can provide mild exfoliating effects.",
+            "details": "It helps keep the product within a skin-friendly pH range, which supports barrier health and preservative effectiveness. At typical levels in rinse-off products, it is low risk; higher concentrations in leave-on products can cause stinging in sensitive or compromised skin.",
+            "category": "pH adjuster"
+          },
+          {
+            "name": "Sodium Hydroxide",
+            "riskLevel": "low",
+            "summary": "Sodium Hydroxide is a strong base used in very small amounts to adjust and stabilize the product’s pH.",
+            "details": "While concentrated sodium hydroxide is highly caustic, in cosmetics it is neutralized within the finished formula and used only in tiny quantities to reach the desired pH. In a properly formulated product, the residual free sodium hydroxide on skin or hair is minimal and not considered a significant risk.",
+            "category": "pH adjuster"
+          }
+        ],
+        "overallRisk": "moderate",
+        "analyzedAt": "2025-11-26T05:54:47.483Z",
+        "originalText": "INGREDIENTS:\nWater, Glycerin, Sodium Laureth Sulfate, Cocamidopropyl Betaine, Sodium Hydrolyzed Potato\nStarch Dodecenylsuccinate, Avena Sativa (Oat) Kernel Flour, Avena Sativa (Oat) Kernel Oil, Avena\nSativa (Oat) Kernel Extract, Guar Hydroxypropyltrimonium Chloride, Polyquaternium-10,\nTetrasodium Glutamate Diacetate, Glycol Distearate, Laureth-4, Acrylates/C10-30 Alkyl Acrylate\nCrosspolymer, Sodium Benzoate, Citric Acid, Sodium Hydroxide"
+      },
+      "timestamp": 1764136487483,
+      "ocrText": "INGREDIENTS:\nWater, Glycerin, Sodium Laureth Sulfate, Cocamidopropyl Betaine, Sodium Hydrolyzed Potato\nStarch Dodecenylsuccinate, Avena Sativa (Oat) Kernel Flour, Avena Sativa (Oat) Kernel Oil, Avena\nSativa (Oat) Kernel Extract, Guar Hydroxypropyltrimonium Chloride, Polyquaternium-10,\nTetrasodium Glutamate Diacetate, Glycol Distearate, Laureth-4, Acrylates/C10-30 Alkyl Acrylate\nCrosspolymer, Sodium Benzoate, Citric Acid, Sodium Hydroxide"
+    }
+  ]
+]
