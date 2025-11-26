@@ -30,8 +30,8 @@
     "createdAt": 1764141259470
   },
   "salt__food": {
-    "analysis": "{\"name\":\"Salt\",\"riskLevel\":\"moderate\",\"summary\":\"Salt is essential for bodily functions but can contribute to high blood pressure and cardiovascular risk when consumed in excess.\",\"details\":\"Dietary salt (sodium chloride) is necessary for fluid balance, nerve transmission, and muscle function, but modern diets are often very high in sodium, especially from processed foods. High sodium intake is associated with increased blood pressure, elevated risk of heart disease and stroke, and can worsen kidney and fluid-retention issues. For most healthy adults, moderate use in cooking is acceptable, but individuals with hypertension, kidney disease, or heart failure should particularly limit intake and watch for total sodium from all food sources.\",\"category\":\"Mineral / seasoning; high-sodium ingredient\"}",
-    "lastUpdated": 1764141259672,
+    "analysis": "{\"name\":\"Salt\",\"riskLevel\":\"moderate\",\"summary\":\"Salt (sodium chloride) is essential in small amounts but can be harmful when consumed in excess, mainly due to its sodium content. High intake is linked to elevated blood pressure and increased risk of heart disease and stroke.\",\"details\":\"Salt provides sodium, a mineral needed for fluid balance, nerve function, and muscle contraction. However, many processed foods already contain high levels of salt, and consistently consuming too much sodium can contribute to hypertension, kidney strain, and cardiovascular disease, especially in salt-sensitive individuals. People with high blood pressure, kidney disease, or heart conditions are often advised to limit added salt and choose lower-sodium products.\",\"category\":\"Mineral / High-sodium ingredient\"}",
+    "lastUpdated": 1764141368711,
     "createdAt": 1764141259470
   },
   "onion flake__food": {
@@ -95,8 +95,8 @@
     "createdAt": 1764141259721
   },
   "soy sauce (soybean)__food": {
-    "analysis": "{\"name\":\"Soy sauce (soybean)\",\"riskLevel\":\"moderate\",\"summary\":\"Soy sauce is a fermented seasoning made primarily from soybeans and wheat, and it is high in sodium and a common allergen source (soy and gluten).\",\"details\":\"Soy sauce typically contains high levels of sodium, which can contribute to elevated blood pressure and cardiovascular risk if consumed in large amounts or frequently. It also contains major allergens: soy and usually wheat (gluten), which can trigger reactions in people with soy allergy, wheat allergy, celiac disease, or non-celiac gluten sensitivity. Traditional soy sauce may contain small amounts of naturally occurring glutamates, which can enhance flavor, though these are not the same as added MSG. For most healthy individuals, moderate use as a condiment is generally safe, but people limiting salt or managing allergies should be cautious.\",\"category\":\"High sodium seasoning; major allergen (soy, gluten)\"}",
-    "lastUpdated": 1764141260022,
+    "analysis": "{\"name\":\"Soy sauce (soybean)\",\"riskLevel\":\"moderate\",\"summary\":\"Soy sauce made from soybeans is a common seasoning that is high in sodium and a major soy allergen source.\",\"details\":\"Traditional soy sauce is typically brewed from soybeans, wheat, salt, and water, resulting in a fermented sauce that is very high in sodium, which can contribute to elevated blood pressure and cardiovascular strain when consumed in excess. It is also a significant source of soy allergens and often contains gluten (from wheat), making it unsuitable for people with soy allergy, celiac disease, or gluten sensitivity; some varieties may also include added flavor enhancers like MSG or preservatives, so label checking is important.\",\"category\":\"Condiment / Allergen / High-sodium ingredient\"}",
+    "lastUpdated": 1764141368632,
     "createdAt": 1764141260022
   },
   "wheat__food": {
@@ -240,8 +240,18 @@
     "createdAt": 1764141265733
   },
   "yeast extract__food": {
-    "analysis": "{\"name\":\"Yeast Extract\",\"riskLevel\":\"moderate\",\"summary\":\"Yeast extract is a flavor enhancer rich in naturally occurring glutamates, used to impart savory (umami) taste; it is safe for most people but can be an issue for those sensitive to glutamates or needing to limit sodium.\",\"details\":\"Yeast extract is made by breaking down yeast cells to release amino acids, peptides, and other flavor compounds, and it is commonly added to soups, sauces, and snacks as a natural‑sounding alternative to MSG. Although it does not contain added MSG, it is naturally high in free glutamates, which can provoke similar sensitivity symptoms in susceptible individuals. It may also contribute a notable amount of sodium, so frequent consumption in processed foods can add to overall salt and flavor‑enhancer intake.\",\"category\":\"Flavor enhancer / yeast-derived\"}",
-    "lastUpdated": 1764141265733,
+    "analysis": "{\"name\":\"Yeast extract\",\"riskLevel\":\"moderate\",\"summary\":\"Yeast extract is a natural flavoring rich in glutamates that enhances savory (umami) taste. While generally safe, it can act similarly to MSG and may be an issue for people who are sensitive to glutamates or who need to monitor sodium intake.\",\"details\":\"Yeast extract is made from broken-down yeast cells and is commonly used in soups, broths, sauces, snacks, and processed foods to boost flavor without labeling MSG directly. It naturally contains free glutamates, which can trigger MSG-like symptoms in susceptible individuals, though this is not common. It may also contribute to overall sodium intake, so people with hypertension or those limiting processed foods may want to watch for frequent or large amounts in their diet.\",\"category\":\"Flavor enhancer / natural seasoning\"}",
+    "lastUpdated": 1764141372281,
     "createdAt": 1764141265733
+  },
+  "dried (unspecified dried ingredient)__food": {
+    "analysis": "{\"name\":\"Dried (unspecified dried ingredient)\",\"riskLevel\":\"low\",\"summary\":\"The term \\\"dried\\\" alone only indicates that an ingredient has had its moisture removed and does not specify what the actual food or additive is.\",\"details\":\"Drying is a common food preservation method that reduces water content to extend shelf life and prevent microbial growth. Without knowing what has been dried (e.g., fruit, vegetables, meat, herbs), it is not possible to assess specific allergens, additives, or nutrient impacts, but the drying process itself is generally considered low risk. Any health concern would depend on the underlying ingredient and whether additional additives (like sulfites, salt, sugar, or flavor enhancers) were used during processing.\",\"category\":\"Processing description / preservation method\"}",
+    "lastUpdated": 1764141369157,
+    "createdAt": 1764141369157
+  },
+  "disodium inosinate__food": {
+    "analysis": "{\"name\":\"Disodium inosinate\",\"riskLevel\":\"low\",\"summary\":\"Disodium inosinate is a flavor enhancer often used with MSG or disodium guanylate to boost savory (umami) taste. It is generally recognized as safe for most people at typical food-use levels.\",\"details\":\"Disodium inosinate (E631) is a nucleotide-based flavor enhancer commonly found in snacks, instant noodles, soups, and processed meats. It is usually present in very small amounts, but may indicate a highly processed, strongly flavored product, especially when combined with MSG. Most healthy individuals tolerate it well; however, people who are sensitive to MSG or trying to avoid intense flavor enhancers may prefer to limit it.\",\"category\":\"Flavor enhancer / food additive\"}",
+    "lastUpdated": 1764141372281,
+    "createdAt": 1764141372281
   }
 }
