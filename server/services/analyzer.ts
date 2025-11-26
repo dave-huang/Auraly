@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { openai } from '../openai';
-import { analysisResultSchema, type ProductType, type AnalysisResult, type RiskLevel } from '@shared/schema';
+import { analysisResultSchema, type ProductType, type AnalysisResult, type RiskLevel, type Ingredient } from '@shared/schema';
 import { getCachedIngredientAnalysis, setCachedIngredientAnalysis } from './cache';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -899,7 +899,7 @@ Return as JSON array:
       let freshResults: Ingredient[] = [];
       try {
         const parsed = JSON.parse(content);
-        freshResults = Array.isArray(parsed) ? parsed : Object.values(parsed)[0] || [];
+        freshResults = Array.isArray(parsed) ? parsed : (Array.isArray(Object.values(parsed)[0]) ? Object.values(parsed)[0] as Ingredient[] : []);
       } catch {
         console.error(`[PARALLEL-BATCH-${batchIdx}] Failed to parse GPT response:`, content);
         throw new Error('Invalid JSON from GPT');
