@@ -1,0 +1,330 @@
+[
+  [
+    "5861d7c9a484b41fd993ab2941d014b6baab5842d312c6388869d432f62dbf58",
+    {
+      "result": {
+        "productName": null,
+        "ingredients": [
+          {
+            "name": "Palm oil",
+            "riskLevel": "moderate",
+            "summary": "A common vegetable oil high in saturated fat, often used in processed foods.",
+            "details": "Palm oil is widely used because it is cheap and stable at high temperatures, but it is relatively high in saturated fat, which can negatively affect blood lipids when consumed in excess. It is also strongly associated with environmental and sustainability concerns, though these are not direct health effects.",
+            "category": "fat/oil"
+          },
+          {
+            "name": "Canola oil",
+            "riskLevel": "low",
+            "summary": "A vegetable oil low in saturated fat and commonly used for cooking and in processed foods.",
+            "details": "Canola oil contains mostly monounsaturated and polyunsaturated fats, which are generally considered heart‑healthier than saturated fats. Health concerns mainly arise when it is highly refined and repeatedly heated (as in deep frying), which can generate oxidation products, but in normal dietary use it is considered safe.",
+            "category": "fat/oil"
+          },
+          {
+            "name": "Soy lecithin",
+            "riskLevel": "low",
+            "summary": "An emulsifier derived from soy used to keep ingredients from separating.",
+            "details": "Soy lecithin is a source of phospholipids and is generally recognized as safe at the levels used in foods. People with severe soy allergy may wish to be cautious, but most can tolerate lecithin because it contains very little soy protein.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Wheat flour",
+            "riskLevel": "moderate",
+            "summary": "Refined or semi‑refined flour made from wheat, a major source of gluten and carbohydrates.",
+            "details": "Wheat flour contributes calories mainly as starch and is low in fiber if refined, which can promote rapid blood sugar spikes. It contains gluten, which is problematic for people with celiac disease or non‑celiac gluten sensitivity, but is generally safe for others when eaten in moderation.",
+            "category": "cereal/grain"
+          },
+          {
+            "name": "Sugar",
+            "riskLevel": "high",
+            "summary": "Simple added sugar that increases sweetness and calorie content without nutrients.",
+            "details": "High intake of added sugars is linked to weight gain, fatty liver, insulin resistance, and increased risk of type 2 diabetes and heart disease. Frequent consumption also promotes dental cavities and can displace more nutrient‑dense foods from the diet.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Salt",
+            "riskLevel": "moderate",
+            "summary": "Sodium chloride used for flavor and preservation; excessive intake is a health concern.",
+            "details": "High sodium intake is associated with elevated blood pressure and increased risk of cardiovascular disease and stroke, especially in salt‑sensitive individuals. Processed foods are a major source of hidden sodium, so repeated appearance of salt in the ingredient list suggests the product may be high in sodium overall.",
+            "category": "mineral/seasoning"
+          },
+          {
+            "name": "Corn starch",
+            "riskLevel": "low",
+            "summary": "A refined starch from corn used as a thickener and texturizer.",
+            "details": "Corn starch is almost pure carbohydrate and rapidly digested, which can raise blood glucose quickly, but it is generally recognized as safe. The main concern is its contribution to refined carbohydrate load rather than any direct toxicity.",
+            "category": "starch/thickener"
+          },
+          {
+            "name": "Spices",
+            "riskLevel": "low",
+            "summary": "A blend of ground herbs and spices used for flavor.",
+            "details": "Generic “spices” can include many plant‑derived seasonings such as pepper, paprika, and others, which often contain beneficial phytochemicals. Allergic reactions are rare but possible in sensitive individuals; otherwise, they are generally safe and may offer antioxidant benefits.",
+            "category": "flavoring"
+          },
+          {
+            "name": "Garlic",
+            "riskLevel": "low",
+            "summary": "A culinary herb used for flavor that may have cardiovascular benefits.",
+            "details": "Garlic contains sulfur compounds that have been associated with modest blood pressure and cholesterol benefits in some studies. It is safe for most people, though large amounts can cause digestive discomfort or interact with blood‑thinning medications.",
+            "category": "flavoring"
+          },
+          {
+            "name": "Whole milk powder",
+            "riskLevel": "moderate",
+            "summary": "Dehydrated whole milk containing lactose, milk proteins, and milk fat.",
+            "details": "Whole milk powder provides protein, calcium, and fat, including saturated fat, which can impact blood lipids when consumed in excess. It is a significant allergen for people with cow’s milk allergy or lactose intolerance and should be avoided by them.",
+            "category": "dairy"
+          },
+          {
+            "name": "Skim milk powder",
+            "riskLevel": "moderate",
+            "summary": "Dehydrated non‑fat milk providing milk proteins and lactose without most of the fat.",
+            "details": "Skim milk powder is a concentrated source of milk proteins (casein and whey) and lactose and is nutritionally dense. It is a common allergen for those with milk allergy or lactose intolerance but is otherwise safe for most people.",
+            "category": "dairy"
+          },
+          {
+            "name": "Caramel color",
+            "riskLevel": "moderate",
+            "summary": "A brown food coloring made by heating sugars, used to give a caramel color.",
+            "details": "Some types of caramel color (especially Class III and IV) can contain 4‑methylimidazole (4‑MEI), a contaminant that has shown carcinogenicity in animal studies, though typical dietary exposures are usually low. People aiming to minimize exposure to potentially carcinogenic process contaminants may wish to limit frequent intake.",
+            "category": "colorant"
+          },
+          {
+            "name": "Monosodium glutamate",
+            "riskLevel": "moderate",
+            "summary": "A flavor enhancer that provides umami taste, commonly known as MSG.",
+            "details": "MSG is considered safe by major regulatory agencies, and controlled studies have not consistently confirmed serious adverse effects at normal intake levels. A subset of individuals report sensitivity symptoms (such as headache or flushing) after high doses, and it may encourage overconsumption by making processed foods more palatable.",
+            "category": "flavor enhancer"
+          },
+          {
+            "name": "Defatted soybean",
+            "riskLevel": "moderate",
+            "summary": "Soybeans with most of the fat removed, used as a protein source.",
+            "details": "Defatted soybean is rich in plant protein and is commonly used in processed foods and soy flours. It is a major allergen for people with soy allergy and may contain antinutritional factors if not properly processed, but is generally safe for most consumers.",
+            "category": "legume/protein"
+          },
+          {
+            "name": "Yeast extract",
+            "riskLevel": "moderate",
+            "summary": "A flavoring ingredient rich in glutamates that enhances savory (umami) taste.",
+            "details": "Yeast extract naturally contains free glutamic acid, which can act similarly to MSG in boosting flavor, though it is not the same as added MSG. It is generally recognized as safe, but people who are sensitive to glutamates or trying to avoid flavor enhancers may wish to limit it.",
+            "category": "flavor enhancer"
+          },
+          {
+            "name": "Natural and artificial flavors",
+            "riskLevel": "moderate",
+            "summary": "A mixture of flavoring substances, some derived from natural sources and some synthesized.",
+            "details": "“Natural and artificial flavors” is a broad category that can include many different chemicals, often in very small amounts, to create or enhance taste. They are regulated for safety, but the lack of specificity reduces transparency, and some individuals prefer to limit artificial flavorings or may be sensitive to particular compounds.",
+            "category": "flavoring"
+          },
+          {
+            "name": "Honey",
+            "riskLevel": "moderate",
+            "summary": "A natural sweetener composed mainly of fructose and glucose.",
+            "details": "Honey provides simple sugars and calories similar to other sweeteners, with minimal vitamins and minerals. It may contain small amounts of antioxidants, but excessive intake can still contribute to weight gain and blood sugar spikes; it should not be given to infants under one year due to botulism risk (not relevant once processed in most foods but still a general caution).",
+            "category": "sweetener"
+          },
+          {
+            "name": "Dextrin",
+            "riskLevel": "low",
+            "summary": "A group of short‑chain carbohydrates derived from starch, used as a filler or thickener.",
+            "details": "Dextrins are easily digestible carbohydrates that can be used to modify texture or as a carrier for flavors. They are generally recognized as safe, though they add to the refined carbohydrate load of the product and can affect blood glucose when consumed in large amounts.",
+            "category": "starch/thickener"
+          },
+          {
+            "name": "Pasteurized milk",
+            "riskLevel": "moderate",
+            "summary": "Heat‑treated cow’s milk used as a dairy ingredient.",
+            "details": "Pasteurization kills harmful bacteria and makes milk safer while preserving most nutrients. It remains a source of lactose and milk proteins, so it is a common allergen and can cause issues for those with lactose intolerance or milk allergy.",
+            "category": "dairy"
+          },
+          {
+            "name": "Cheese cultures",
+            "riskLevel": "low",
+            "summary": "Beneficial bacteria used to ferment milk into cheese.",
+            "details": "Cheese cultures are specific strains of lactic acid bacteria that help develop flavor and texture in cheese. They are generally safe and may contribute to a healthy gut microbiota, though the overall health impact depends on the full product matrix.",
+            "category": "culture/microorganism"
+          },
+          {
+            "name": "Enzymes",
+            "riskLevel": "low",
+            "summary": "Proteins that catalyze reactions in food processing, such as coagulating milk.",
+            "details": "Food enzymes (like rennet or proteases) are used in very small amounts to modify texture or aid processing and are usually inactivated by heat. They are generally recognized as safe, though rarely some individuals may be allergic to specific enzyme preparations.",
+            "category": "processing aid"
+          },
+          {
+            "name": "Onion flake",
+            "riskLevel": "low",
+            "summary": "Dehydrated pieces of onion used for flavor.",
+            "details": "Onion flakes provide concentrated onion flavor and some phytochemicals, though in small amounts in processed foods. They are safe for most people but can cause digestive discomfort in those sensitive to alliums.",
+            "category": "flavoring"
+          },
+          {
+            "name": "Natural flavor",
+            "riskLevel": "moderate",
+            "summary": "Flavoring substances derived from natural sources such as plants or animals.",
+            "details": "Natural flavors can include many different compounds extracted or distilled from natural materials, used in small amounts to enhance taste. They are regulated for safety, but the term is non‑specific, which may be a concern for people with allergies or those seeking full transparency.",
+            "category": "flavoring"
+          },
+          {
+            "name": "Onion extract",
+            "riskLevel": "low",
+            "summary": "A concentrated extract from onions used to provide flavor.",
+            "details": "Onion extract delivers onion flavor without bulk and is typically used in small quantities. It is generally safe, though individuals with onion sensitivity or certain digestive issues (like IBS) may experience discomfort.",
+            "category": "flavoring"
+          },
+          {
+            "name": "Soy sauce (soybean, wheat, salt)",
+            "riskLevel": "moderate",
+            "summary": "A fermented seasoning made from soybeans, wheat, and salt, high in sodium and containing gluten and soy.",
+            "details": "Soy sauce is rich in umami flavor but also very high in sodium, which can contribute to elevated blood pressure when consumed frequently. It contains both soy and wheat, making it unsuitable for people with soy allergy, wheat allergy, or celiac disease unless a gluten‑free version is specified.",
+            "category": "condiment"
+          },
+          {
+            "name": "Tomato powder",
+            "riskLevel": "low",
+            "summary": "Dehydrated tomato used for flavor and color.",
+            "details": "Tomato powder concentrates tomato flavor and some nutrients like lycopene, though processing may reduce some vitamins. It is generally safe and can contribute beneficial plant compounds in small amounts.",
+            "category": "vegetable ingredient"
+          },
+          {
+            "name": "Dried onion",
+            "riskLevel": "low",
+            "summary": "Dehydrated onion pieces or granules used as a seasoning.",
+            "details": "Dried onion provides flavor similar to fresh onion with a longer shelf life. It is safe for most people but may cause digestive discomfort in those sensitive to onions or high‑FODMAP foods.",
+            "category": "flavoring"
+          },
+          {
+            "name": "Glucose",
+            "riskLevel": "high",
+            "summary": "A simple sugar used as a sweetener and energy source.",
+            "details": "Glucose is rapidly absorbed and can cause quick spikes in blood sugar and insulin, which is particularly concerning for people with insulin resistance or diabetes. Frequent high intake of glucose and other simple sugars is linked to weight gain, metabolic syndrome, and increased risk of chronic disease.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Sucrose fatty acid esters",
+            "riskLevel": "low",
+            "summary": "Emulsifiers made from sucrose and fatty acids used to blend fats and water.",
+            "details": "Sucrose esters of fatty acids are approved food additives used in small amounts to stabilize emulsions and improve texture. Current evidence suggests they are generally safe at permitted levels, though very high doses in animal studies can affect fat digestion; such doses are far above typical human intake.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Banana",
+            "riskLevel": "low",
+            "summary": "Fruit ingredient providing flavor and natural sugars.",
+            "details": "Banana contributes natural sugars, some fiber, and micronutrients like potassium, though processing may reduce some nutrients. It is safe for most people but can be an allergen for a small number of individuals.",
+            "category": "fruit ingredient"
+          },
+          {
+            "name": "Processed honey",
+            "riskLevel": "moderate",
+            "summary": "Honey that has been heated or filtered, used as a sweetener.",
+            "details": "Processing honey can reduce some of its natural enzymes and antioxidants, but it remains primarily a source of simple sugars. As with other added sugars, excessive intake can contribute to weight gain, elevated blood sugar, and dental caries.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Tomato paste",
+            "riskLevel": "low",
+            "summary": "Concentrated tomato product used for flavor and color.",
+            "details": "Tomato paste is rich in tomato flavor and contains lycopene, an antioxidant associated with some health benefits. It is generally safe and can be a positive component of the diet when not overshadowed by high levels of salt or sugar in the overall product.",
+            "category": "vegetable ingredient"
+          },
+          {
+            "name": "Fermented milk",
+            "riskLevel": "moderate",
+            "summary": "Milk that has been fermented with bacteria, similar to yogurt or kefir.",
+            "details": "Fermented milk can contain beneficial probiotics and may be easier to digest for some people with mild lactose intolerance. However, it still contains milk proteins and lactose, so it remains an allergen for those with cow’s milk allergy and may cause issues in sensitive individuals.",
+            "category": "dairy"
+          },
+          {
+            "name": "Citric acid",
+            "riskLevel": "low",
+            "summary": "A common food acid used for tartness and as a preservative.",
+            "details": "Citric acid is widely used and generally recognized as safe; it occurs naturally in citrus fruits but is usually produced by fermentation. Rarely, some people report mouth irritation or sensitivity, but for most consumers it poses minimal health risk at typical intake levels.",
+            "category": "acidity regulator"
+          },
+          {
+            "name": "Mono- and diglycerides",
+            "riskLevel": "moderate",
+            "summary": "Emulsifiers derived from glycerol and fatty acids, used to blend fats and water.",
+            "details": "Mono‑ and diglycerides help stabilize processed foods and can be derived from vegetable or animal fats; they may contain small amounts of trans fats depending on processing. While considered safe at permitted levels, people aiming to strictly minimize trans fat intake or avoid highly processed additives may wish to limit them.",
+            "category": "emulsifier"
+          },
+          {
+            "name": "Processed with alkali (cocoa or similar)",
+            "riskLevel": "low",
+            "summary": "Indicates an ingredient (often cocoa) has been treated with alkali to modify flavor and color.",
+            "details": "Alkalization (Dutch processing) reduces acidity and can change color and taste, and may decrease some natural antioxidants in cocoa if that is the ingredient. The process itself is considered safe, but it can modestly reduce potential health benefits of the original ingredient.",
+            "category": "processing description"
+          },
+          {
+            "name": "Tomato extract",
+            "riskLevel": "low",
+            "summary": "A concentrated extract from tomatoes used for flavor and color.",
+            "details": "Tomato extract provides tomato flavor and may concentrate certain compounds like lycopene. It is generally safe and may offer some antioxidant benefits, though amounts in processed foods are usually small.",
+            "category": "vegetable ingredient"
+          },
+          {
+            "name": "Soy protein hydrolysate",
+            "riskLevel": "moderate",
+            "summary": "Enzymatically broken‑down soy protein used as a flavor enhancer and protein source.",
+            "details": "Hydrolyzed soy protein contains free amino acids and peptides, including glutamic acid, which can act as a flavor enhancer similar to MSG. It is a significant allergen for people with soy allergy and may be of concern to those trying to avoid added glutamates.",
+            "category": "protein/flavor enhancer"
+          },
+          {
+            "name": "Apple purée",
+            "riskLevel": "low",
+            "summary": "Mashed or processed apple used for flavor and sweetness.",
+            "details": "Apple purée provides natural sugars, some fiber, and phytochemicals, though processing can reduce fiber compared with whole apples. It is generally safe, but in large amounts still contributes to overall sugar intake.",
+            "category": "fruit ingredient"
+          },
+          {
+            "name": "Dried garlic",
+            "riskLevel": "low",
+            "summary": "Dehydrated garlic used as a seasoning.",
+            "details": "Dried garlic offers concentrated garlic flavor and some bioactive compounds, though processing may alter some components. It is safe for most people but can cause digestive upset or interact with blood‑thinning medications at high intakes.",
+            "category": "flavoring"
+          },
+          {
+            "name": "Maltose",
+            "riskLevel": "high",
+            "summary": "A disaccharide sugar composed of two glucose units, used as a sweetener.",
+            "details": "Maltose is rapidly broken down into glucose in the body, contributing to quick rises in blood sugar. As with other added sugars, high intake can promote weight gain, insulin resistance, and increased risk of metabolic diseases.",
+            "category": "sweetener"
+          },
+          {
+            "name": "Whey powder",
+            "riskLevel": "moderate",
+            "summary": "Dehydrated whey, the liquid portion of milk remaining after cheese making.",
+            "details": "Whey powder is rich in high‑quality protein and lactose and is used to boost protein content and improve texture. It is a milk‑derived allergen and can cause problems for those with milk allergy or lactose intolerance, but is otherwise safe for most people.",
+            "category": "dairy"
+          },
+          {
+            "name": "Garlic flake",
+            "riskLevel": "low",
+            "summary": "Dehydrated pieces of garlic used for flavor.",
+            "details": "Garlic flakes provide texture and flavor similar to fresh garlic in a shelf‑stable form. They are safe for most people, with the same caveats as other garlic forms regarding digestive tolerance and potential interaction with blood‑thinning medications at high doses.",
+            "category": "flavoring"
+          },
+          {
+            "name": "Paprika color",
+            "riskLevel": "low",
+            "summary": "A natural colorant extracted from paprika peppers.",
+            "details": "Paprika color provides red to orange hues and may contain carotenoids like capsanthin and beta‑carotene. It is generally considered safe and may offer minor antioxidant benefits, though amounts used for coloring are small.",
+            "category": "colorant"
+          },
+          {
+            "name": "Disodium inosinate",
+            "riskLevel": "moderate",
+            "summary": "A flavor enhancer often used with MSG to intensify umami taste.",
+            "details": "Disodium inosinate is typically used in very small amounts and is considered safe by regulators, but it is usually combined with MSG or other glutamate sources to boost savory flavor. People who are sensitive to flavor enhancers or trying to avoid highly processed seasonings may wish to limit it.",
+            "category": "flavor enhancer"
+          }
+        ],
+        "overallRisk": "high"
+      },
+      "timestamp": 1764129508538,
+      "ocrText": "INGREDIENTS: VEGETABLE OIL (PALM OIL, CANOLA OIL, SOY LECITHIN), WHEAT FLOUR, SUGAR, SALT, CORN STARCH, CURRY POWDER\n(SPICES, GARLIC), SUGAR AND MILK POWDER MIXTURE (SUGAR, WHOLE MILK POWDER, SALT, SKIM MILK POWDER), CARAMEL COLOR,\nMONOSODIUM GLUTAMATE, WHOLE MILK POWDER, DEFATTED SOYBEAN, YEAST EXTRACT, NATURAL AND ARTIFICIAL FLAVORS, HONEY, CHEESE\nPRODUCT (DEXTRIN, ENZYME MODIFIED CHEESE [CHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), WHOLE MILK POWDER,\nSALT], YEAST EXTRACT, CORN STARCH, SALT), SOY LECITHIN, ROASTED ONION POWDER (ONION FLAKE, DEXTRIN, NATURAL FLAVOR), ONION\nSEASONING (ONION EXTRACT, DEXTRIN, SOY SAUCE [SOYBEAN, WHEAT, SALT], YEAST EXTRACT, CORN STARCH, SALT, GARLIC EXTRACT,\nNATURAL FLAVOR), TOMATO POWDER, ONION POWDER (DRIED ONION, DEFATTED SOYBEAN, GLUCOSE), SUCROSE FATTY ACID ESTERS, BROWN\nROUX (PALM OIL, SKIM MILK POWDER, WHEAT FLOUR, DEXTROSE ANHYDROUS GLUCOSE), FRUIT PASTE (BANANA, SUGAR, PROCESSED HONEY,\nTOMATO PASTE, FERMENTED MILK, CITRIC ACID, SALT), SPICES, CITRIC ACID, MONO- AND DIGLYCERIDES, COCOA POWDER (PROCESSED WITH\nALKALI), TOMATO SEASONING (DEXTRIN, TOMATO EXTRACT, YEAST EXTRACT, CORN STARCH, SALT), PROTEIN HYDROLYSATE (SOY PROTEIN\nHYDROLYSATE, DEXTRIN, MONOSODIUM GLUTAMATE), SKIM MILK POWDER, APPLE PASTE (APPLE PUREE, CITRIC ACID), GARLIC POWDER (DRIED\nGARLIC, DEFATTED SOYBEAN, GLUCOSE, MALTOSE), WHEY POWDER, ROASTED GARLIC POWDER (GARLIC FLAKE, DEXTRIN, NATURAL FLAVOR),\nCHEESE (PASTEURIZED MILK, CHEESE CULTURES, SALT, ENZYMES), ONION EXTRACT (ONION EXTRACT, YEAST EXTRACT), PAPRIKA COLOR,\nDISODIUM INOSINATE, TOMATO EXTRACT (TOMATO EXTRACT, PALM OIL, SALT, SUGAR, YEAST EXTRACT) .\nCONTAINS: SOYBEANS, WHEAT, AND MILK."
+    }
+  ]
+]
