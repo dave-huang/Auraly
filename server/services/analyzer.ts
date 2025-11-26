@@ -577,7 +577,7 @@ Return your analysis as JSON with this structure:
           }
         ],
         response_format: { type: "json_object" },
-        max_tokens: maxTokens,
+        max_completion_tokens: maxTokens,
         temperature: 0.3
       });
       console.log('[ANALYZER] GPT-5.1 succeeded');
