@@ -189,5 +189,181 @@
       "timestamp": 1764124705173,
       "ocrText": "Ingredients:\nWater, Cocamidopropyl Betaine, Glycerin, Sodium Lauroamphoacetate,\nCoco-Glucoside, Sodium Chloride, Hydroxypropyl Starch Phosphate, Citric Acid,\nAcrylates/C10-30 Alkyl Acrylate Crosspolymer, Sodium Benzoate, Panthenol, Sodium\nHydroxide, Glyceryl Oleate, Polyquaternium-7, Avena Sativa (Oat) Kernel Flour,\nDisodium EDTA, Aloe Barbadensis Leaf Extract, Avena Sativa (Oat) Kernel Extract"
     }
+  ],
+  [
+    "3b7faea05beca17db8fbc175c5c1b7ab7812377e55dc036d1d383475ef617b92",
+    {
+      "result": {
+        "productType": "skincare",
+        "ingredients": [
+          {
+            "name": "Aqua (Water)",
+            "riskLevel": "low",
+            "summary": "Water is the primary solvent in skincare and helps dissolve and distribute other ingredients.",
+            "details": "Aqua is used as a base in almost all skincare and haircare products to create a workable texture and allow other ingredients to be applied evenly. It has no known toxicity at cosmetic use levels and poses no specific health concerns.",
+            "category": "solvent"
+          },
+          {
+            "name": "Sodium Lauryl Isethionate",
+            "riskLevel": "moderate",
+            "summary": "Sodium Lauryl Isethionate is a synthetic surfactant and cleansing agent that creates foam and removes oils and dirt.",
+            "details": "This ingredient is generally milder than classic sulfates like Sodium Lauryl Sulfate (SLS), but as a surfactant it can still cause dryness or irritation in some people, especially with frequent use or on sensitive skin. It is not the same as SLS/SLES, but it is related in function as a cleanser and may disrupt the skin barrier if overused.",
+            "category": "surfactant/cleansing agent"
+          },
+          {
+            "name": "Sodium Methyl Lauroyl Taurate",
+            "riskLevel": "low",
+            "summary": "Sodium Methyl Lauroyl Taurate is a mild surfactant used for gentle cleansing and foaming.",
+            "details": "This taurine-based surfactant is considered milder and less irritating than traditional sulfates like SLS and SLES. It helps create a creamy lather while being relatively skin-friendly, and there is no strong evidence of systemic health risks at cosmetic concentrations.",
+            "category": "surfactant/cleansing agent"
+          },
+          {
+            "name": "Cocamidopropyl Betaine",
+            "riskLevel": "moderate",
+            "summary": "Cocamidopropyl Betaine is an amphoteric surfactant used to boost foam and reduce irritation from harsher cleansers.",
+            "details": "Derived from coconut oil and dimethylaminopropylamine, it is widely used in shampoos and body washes. While generally considered mild, it is a known cause of allergic contact dermatitis in some individuals, often due to impurities or breakdown products, so people with very sensitive or reactive skin should be cautious.",
+            "category": "surfactant/foaming agent"
+          },
+          {
+            "name": "Lauric Acid",
+            "riskLevel": "low",
+            "summary": "Lauric acid is a fatty acid used as an emollient, thickener, and cleansing agent.",
+            "details": "It helps stabilize formulations and can provide some moisturizing and antimicrobial benefits. In some acne-prone individuals, lauric acid and related fatty acids may contribute to comedogenicity, but it is not considered a major systemic health concern.",
+            "category": "fatty acid/emollient"
+          },
+          {
+            "name": "Sodium Hydroxypropyl Starch Phosphate",
+            "riskLevel": "low",
+            "summary": "Sodium Hydroxypropyl Starch Phosphate is a modified starch used as a thickener and stabilizer.",
+            "details": "It improves texture, viscosity, and spreadability of skincare and haircare products. It has a good safety profile, with low irritation potential and no known systemic toxicity at cosmetic use levels.",
+            "category": "thickener/stabilizer"
+          },
+          {
+            "name": "Hydrogenated Soybean Oil",
+            "riskLevel": "low",
+            "summary": "Hydrogenated soybean oil is a hydrogenated plant oil used as an emollient and texture enhancer.",
+            "details": "It helps soften and condition the skin or hair and gives products a richer, more stable consistency. While dietary hydrogenated oils raise concerns about trans fats, in topical cosmetics they are not associated with systemic health risks at normal use levels, though very acne-prone skin may find some plant oils comedogenic.",
+            "category": "emollient/occlusive"
+          },
+          {
+            "name": "Soybean Oil",
+            "riskLevel": "low",
+            "summary": "Soybean oil is a plant-derived oil used as an emollient and skin-conditioning agent.",
+            "details": "It provides lipids that help support the skin barrier and improve softness and smoothness. It is generally safe, though people with very oily or acne-prone skin may find some plant oils contribute to clogged pores, and those with soy allergies should be aware of potential sensitivity.",
+            "category": "emollient/plant oil"
+          },
+          {
+            "name": "Sodium Chloride",
+            "riskLevel": "low",
+            "summary": "Sodium chloride (table salt) is used to adjust viscosity and stabilize formulations.",
+            "details": "In cleansers, it helps control thickness and can influence foaming behavior. It is considered safe in topical products, though very high concentrations can be drying or mildly irritating, which is uncommon at typical cosmetic levels.",
+            "category": "viscosity modifier"
+          },
+          {
+            "name": "Glycerin",
+            "riskLevel": "low",
+            "summary": "Glycerin is a humectant that attracts and retains moisture in the skin and hair.",
+            "details": "It is one of the most widely used moisturizing ingredients and helps maintain skin hydration and barrier function. It has an excellent safety profile, with very low irritation potential and no known systemic toxicity at cosmetic use levels.",
+            "category": "humectant/moisturizer"
+          },
+          {
+            "name": "Stearic Acid",
+            "riskLevel": "low",
+            "summary": "Stearic acid is a fatty acid used as an emollient, thickener, and emulsifier.",
+            "details": "It helps stabilize oil-in-water emulsions and gives creams and cleansers a richer, more stable texture. It is generally non-irritating and safe, though in some very acne-prone individuals, certain fatty acids can contribute slightly to comedogenicity.",
+            "category": "fatty acid/emollient/emulsifier"
+          },
+          {
+            "name": "Palmitic Acid",
+            "riskLevel": "low",
+            "summary": "Palmitic acid is a saturated fatty acid used as an emollient, thickener, and surfactant co-agent.",
+            "details": "It supports the structure of creams and cleansing bars and helps condition the skin. It is considered safe, though like other fatty acids it may be mildly comedogenic for some acne-prone users, without strong evidence of systemic health risks.",
+            "category": "fatty acid/emollient"
+          },
+          {
+            "name": "Hydrogenated Vegetable Glycerides",
+            "riskLevel": "low",
+            "summary": "Hydrogenated vegetable glycerides are hydrogenated plant-derived lipids used as emollients and structuring agents.",
+            "details": "They help create a solid or semi-solid texture and provide occlusive and softening benefits to the skin. These ingredients are generally considered safe, with low irritation potential and no significant systemic toxicity at cosmetic use levels.",
+            "category": "emollient/structuring agent"
+          },
+          {
+            "name": "Glyceryl Stearate",
+            "riskLevel": "low",
+            "summary": "Glyceryl stearate is an emulsifier and emollient that helps blend oil and water and soften the skin.",
+            "details": "It stabilizes formulations and improves spreadability while providing a light moisturizing effect. It is widely used and considered safe, with a low risk of irritation or sensitization for most users.",
+            "category": "emulsifier/emollient"
+          },
+          {
+            "name": "Hydroxystearic Acid",
+            "riskLevel": "low",
+            "summary": "Hydroxystearic acid is a modified fatty acid used as an emollient and structuring agent.",
+            "details": "It can help adjust texture, viscosity, and stability of formulations while providing some conditioning benefits. There is limited but generally reassuring safety data, and it is not associated with major systemic health concerns at cosmetic levels.",
+            "category": "fatty acid derivative/emollient"
+          },
+          {
+            "name": "Sodium Benzoate",
+            "riskLevel": "low",
+            "summary": "Sodium benzoate is a preservative used to prevent microbial growth in cosmetic products.",
+            "details": "It is widely used and generally recognized as safe at regulated concentrations, though a small number of individuals may experience mild irritation or sensitivity. Concerns about benzene formation mainly apply to combinations with ascorbic acid in beverages under specific conditions, not typical topical cosmetic use.",
+            "category": "preservative"
+          },
+          {
+            "name": "Guar Hydroxypropyltrimonium Chloride",
+            "riskLevel": "low",
+            "summary": "Guar Hydroxypropyltrimonium Chloride is a cationic polymer derived from guar gum used for conditioning and improving slip.",
+            "details": "It helps reduce friction, improve detangling in hair products, and give a smoother feel to skin and hair. It is generally considered safe with low irritation potential, and there is no strong evidence of systemic toxicity at cosmetic use levels.",
+            "category": "conditioning agent/polymer"
+          },
+          {
+            "name": "Chloride",
+            "riskLevel": "low",
+            "summary": "Chloride refers to chloride salts (such as sodium chloride) commonly used in cosmetics for viscosity control or as a stabilizer. It is generally considered low risk in skincare and haircare products.",
+            "details": "In cosmetic formulations, chloride usually appears as part of a salt (e.g., sodium chloride) that helps adjust thickness, stability, or ionic balance of the product. At typical use levels, it is not associated with systemic toxicity or hormone disruption, and it is not a paraben, sulfate, phthalate, formaldehyde releaser, or heavy metal. Skin irritation is uncommon and usually related to very high concentrations or pre‑existing skin barrier damage.",
+            "category": "functional additive / viscosity modifier"
+          },
+          {
+            "name": "Parfum (Fragrance)",
+            "riskLevel": "moderate",
+            "summary": "Parfum (fragrance) is a mixture of aromatic compounds used to scent products and is a common source of skin irritation and allergies. Its exact composition is usually undisclosed, which raises concerns for sensitive users.",
+            "details": "Fragrance blends can contain dozens to hundreds of chemicals, including potential allergens (like certain fragrance allergens), sensitizers, and in some cases trace contaminants such as phthalates, though many modern formulations avoid them. For most people, fragrance is tolerated, but in those with sensitive skin, eczema, rosacea, or fragrance allergy, it can trigger redness, itching, or dermatitis. Because of the lack of full transparency and the higher risk of irritation, it is considered a moderate‑risk ingredient category even though it is not inherently toxic at cosmetic levels.",
+            "category": "fragrance"
+          },
+          {
+            "name": "Citric Acid",
+            "riskLevel": "low",
+            "summary": "Citric acid is a fruit‑derived alpha hydroxy acid used mainly to adjust pH and sometimes for mild exfoliation. It is generally safe but can be irritating at high concentrations or on very sensitive skin.",
+            "details": "In most skincare and haircare products, citric acid is present at low levels to keep the formula at a skin‑friendly pH, which helps product stability and can support preservative systems. At higher concentrations (as in peels), it can provide exfoliating effects but may cause stinging, redness, or barrier disruption, especially on compromised skin. It is not associated with hormone disruption, carcinogenicity, or systemic toxicity at cosmetic use levels.",
+            "category": "pH adjuster / exfoliant (AHA)"
+          },
+          {
+            "name": "Caprylyl Glycine",
+            "riskLevel": "low",
+            "summary": "Caprylyl glycine is a derivative of caprylic acid and glycine used for its skin‑conditioning and antimicrobial properties. It is generally considered safe and well tolerated.",
+            "details": "This ingredient can help support the skin’s natural barrier and contributes to the preservation system by inhibiting the growth of certain microorganisms, allowing for milder preservative combinations. It is not a paraben, sulfate, phthalate, or formaldehyde releaser, and there is no strong evidence of systemic toxicity at cosmetic concentrations. Occasional irritation is possible but uncommon and usually formulation‑dependent.",
+            "category": "skin conditioning / antimicrobial"
+          },
+          {
+            "name": "Undecylenoyl Glycine",
+            "riskLevel": "low",
+            "summary": "Undecylenoyl glycine is a lipo‑amino acid with sebum‑regulating and antimicrobial properties, often used in products for oily or blemish‑prone skin. It is generally regarded as safe at typical cosmetic levels.",
+            "details": "This ingredient combines undecylenic acid and glycine to help rebalance the skin’s microbiome and reduce excess oil, which can be beneficial in acne‑prone or scalp‑care formulas. Available safety data do not indicate significant systemic toxicity, endocrine disruption, or carcinogenicity at the concentrations used in cosmetics. Mild irritation is possible in very sensitive individuals, but it is not classified among high‑concern groups like parabens, sulfates, phthalates, or formaldehyde‑releasing preservatives.",
+            "category": "sebum regulator / antimicrobial"
+          },
+          {
+            "name": "Sodium Gluconate",
+            "riskLevel": "low",
+            "summary": "Sodium gluconate is the sodium salt of gluconic acid used as a chelating agent and stabilizer in cosmetic formulations. It is considered low risk and is generally well tolerated on skin and hair.",
+            "details": "By binding metal ions, sodium gluconate helps prevent product discoloration, rancidity, and loss of efficacy, improving overall stability. It is derived from glucose fermentation and has a good safety profile, with low irritation potential at typical use levels. It is not associated with hormone disruption, sulfates, phthalates, formaldehyde release, or heavy metal contamination concerns.",
+            "category": "chelating agent / stabilizer"
+          }
+        ],
+        "overallRisk": "moderate",
+        "analyzedAt": "2025-11-26T02:40:20.542Z",
+        "originalText": "INGREDIENTS: WATER (AQUA), SODIUM LAURYL ISETHIONATE, SODIUM METHYL LAUROYL\nTAURATE, COCAMIDOPROPYL BETAINE, LAURIC ACID, SODIUM HYDROXYPROPYL STARCH\nPHOSPHATE, HYDROGENATED SOYBEAN OIL, GLYCINE SOJA (SOYBEAN OIL), SODIUM CHLORIDE,\nGLYCERIN, STEARIC ACID, PALMITIC ACID, HYDROGENATED VEGETABLE GLYCERIDES, GLYCERIN\nSTEARATE, HYDROXYSTEARIC ACID, SODIUM BENZOATE, GUAR HYDROXYPROPYLTRIMONIUM\nCHLORIDE, FRAGRANCE (PARFUM), CITRIC ACID, CAPRYLYL GLYCINE, UNDECYLENOYL GLYCINE,\nSODIUM GLUCONATE"
+      },
+      "timestamp": 1764124820542,
+      "ocrText": "INGREDIENTS: WATER (AQUA), SODIUM LAURYL ISETHIONATE, SODIUM METHYL LAUROYL\nTAURATE, COCAMIDOPROPYL BETAINE, LAURIC ACID, SODIUM HYDROXYPROPYL STARCH\nPHOSPHATE, HYDROGENATED SOYBEAN OIL, GLYCINE SOJA (SOYBEAN OIL), SODIUM CHLORIDE,\nGLYCERIN, STEARIC ACID, PALMITIC ACID, HYDROGENATED VEGETABLE GLYCERIDES, GLYCERIN\nSTEARATE, HYDROXYSTEARIC ACID, SODIUM BENZOATE, GUAR HYDROXYPROPYLTRIMONIUM\nCHLORIDE, FRAGRANCE (PARFUM), CITRIC ACID, CAPRYLYL GLYCINE, UNDECYLENOYL GLYCINE,\nSODIUM GLUCONATE"
+    }
   ]
 ]
