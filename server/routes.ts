@@ -4,7 +4,7 @@ import multer from "multer";
 import z from "zod";
 import crypto from "crypto";
 import { extractTextFromImage } from "./services/ocr";
-import { analyzeIngredients } from "./services/analyzer";
+import { analyzeIngredients, analyzeIngredientsParallel } from "./services/analyzer";
 import { batchAnalyzeIngredientsWithCache, getCacheStats } from "./services/cache";
 import { 
   ocrRequestSchema, 
@@ -259,10 +259,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         }
         
-        // Step 2: Run Analysis
+        // Step 2: Run Parallel Micro-Batched Analysis
         const analysisStartTime = Date.now();
         try {
-          const analysisResult = await analyzeIngredients(productType as ProductType, ocrText!, userLanguage);
+          const analysisResult = await analyzeIngredientsParallel(productType as ProductType, ocrText!, userLanguage);
           analysisStage = 'success';
           const analysisDuration = ((Date.now() - analysisStartTime) / 1000).toFixed(2);
           const totalDuration = ((Date.now() - startTime) / 1000).toFixed(2);

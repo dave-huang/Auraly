@@ -729,3 +729,232 @@ Return your analysis as JSON with this structure:
   
   throw new Error('Failed to analyze ingredients after multiple attempts. Please try again.');
 }
+
+/**
+ * Parallel micro-batched ingredient analysis with intelligent caching
+ * - Parses ingredients from OCR text
+ * - Splits into batches of 5 ingredients
+ * - Checks cache before calling GPT
+ * - Processes all batches in parallel
+ * - Merges cached + fresh results
+ */
+export async function analyzeIngredientsParallel(
+  productType: ProductType,
+  ingredientsText: string,
+  userLanguage: string = 'en'
+): Promise<AnalysisResult> {
+  const startTime = Date.now();
+  console.log(`[PARALLEL-ANALYZER] Starting micro-batched analysis for ${productType} in ${userLanguage}`);
+  
+  // Check full-text cache first (fastest path)
+  const cacheKey = getCacheKey(ingredientsText, productType, userLanguage);
+  const cachedResult = getCachedAnalysis(cacheKey, ingredientsText, productType, userLanguage);
+  if (cachedResult) {
+    console.log(`[PARALLEL-ANALYZER] Full-text cache HIT, returning immediately`);
+    return cachedResult;
+  }
+  
+  // Pre-process text
+  const expandedText = expandParentheticalIngredients(ingredientsText);
+  console.log(`[PARALLEL-ANALYZER] After expanding parentheticals: ${expandedText.length} chars`);
+  
+  // Extract ingredients section
+  let textToAnalyze = expandedText;
+  const ingredientsMarkers = [
+    /INGREDIENTS?\s*[:：]/i,
+    /成分\s*[:：]/,
+    /原料\s*[:：]/,
+    /配料\s*[:：]/,
+    /INGREDIENTES?\s*[:：]/i,
+    /INGRÉDIENTS?\s*[:：]/i
+  ];
+  
+  for (const marker of ingredientsMarkers) {
+    const match = expandedText.match(marker);
+    if (match && match.index !== undefined) {
+      textToAnalyze = expandedText.substring(match.index + match[0].length);
+      const endMarkers = [
+        /CONTAINS?\s*[:：]/i, /ALLERGENS?\s*[:：]/i, /DIRECTIONS?\s*[:：]/i,
+        /INSTRUCTIONS?\s*[:：]/i, /NUTRITION\s+FACTS?\s*[:：]/i, /MANUFACTURED BY/i,
+        /PRODUCT OF/i, /含\s*[:：]/, /过敏原\s*[:：]/, /使用方法\s*[:：]/,
+        /CONTIENE\s*[:：]/i, /MODO DE USO\s*[:：]/i
+      ];
+      for (const endMarker of endMarkers) {
+        const endMatch = textToAnalyze.match(endMarker);
+        if (endMatch && endMatch.index !== undefined && endMatch.index > 20) {
+          textToAnalyze = textToAnalyze.substring(0, endMatch.index);
+          break;
+        }
+      }
+      break;
+    }
+  }
+  
+  // Parse individual ingredients by splitting on common separators
+  const rawIngredients = textToAnalyze
+    .split(/[,，、;；\n]/)
+    .map(ing => ing.trim())
+    .filter(ing => ing.length > 2 && !ing.match(/^[\d.]+%?$/))
+    .slice(0, 150); // Cap at 150 to avoid huge batches
+  
+  if (rawIngredients.length === 0) {
+    throw new Error('No valid ingredients found to analyze');
+  }
+  
+  const uniqueIngredients = Array.from(new Set(rawIngredients));
+  console.log(`[PARALLEL-ANALYZER] Extracted ${uniqueIngredients.length} unique ingredients from OCR`);
+  
+  // Create micro-batches of 5 ingredients
+  const BATCH_SIZE = 5;
+  const batches: string[][] = [];
+  for (let i = 0; i < uniqueIngredients.length; i += BATCH_SIZE) {
+    batches.push(uniqueIngredients.slice(i, i + BATCH_SIZE));
+  }
+  console.log(`[PARALLEL-ANALYZER] Created ${batches.length} batches of max ${BATCH_SIZE} ingredients each`);
+  
+  // Process all batches in parallel
+  const context = PRODUCT_TYPE_CONTEXTS[productType];
+  const languageInstruction = LANGUAGE_INSTRUCTIONS[userLanguage as keyof typeof LANGUAGE_INSTRUCTIONS] || LANGUAGE_INSTRUCTIONS['en'];
+  
+  const systemMessages = {
+    'zh': "You are a helpful health and wellness assistant that analyzes product ingredients. Always respond with valid JSON. All text in your response must be in Simplified Chinese (简体中文).",
+    'en': "You are a helpful health and wellness assistant that analyzes product ingredients. Always respond with valid JSON. All text in your response must be in English.",
+    'es': "Eres un asistente de salud y bienestar que analiza ingredientes de productos. Siempre responde con JSON válido. Todo el texto en tu respuesta debe estar en español."
+  };
+  const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
+  
+  const batchPromises = batches.map(async (batch, batchIdx) => {
+    const batchStartTime = Date.now();
+    console.log(`[PARALLEL-BATCH-${batchIdx}] Processing batch: ${batch.join(', ')}`);
+    
+    // Check cache for each ingredient
+    const cachedResults: Array<{ name: string; cached: true; data: Ingredient }> = [];
+    const missingIngredients: string[] = [];
+    
+    for (const ingredient of batch) {
+      const cached = getCachedIngredientAnalysis(ingredient, productType);
+      if (cached) {
+        cachedResults.push({
+          name: ingredient,
+          cached: true,
+          data: JSON.parse(cached.analysis)
+        });
+        console.log(`[PARALLEL-BATCH-${batchIdx}] Cache HIT: ${ingredient}`);
+      } else {
+        missingIngredients.push(ingredient);
+        console.log(`[PARALLEL-BATCH-${batchIdx}] Cache MISS: ${ingredient}`);
+      }
+    }
+    
+    // If all cached, return immediately
+    if (missingIngredients.length === 0) {
+      console.log(`[PARALLEL-BATCH-${batchIdx}] All ingredients cached, returning ${cachedResults.length} results`);
+      return cachedResults.map(r => r.data);
+    }
+    
+    // Query GPT only for missing ingredients
+    const missingList = missingIngredients.map((ing, idx) => `${idx + 1}. ${ing}`).join('\n');
+    const batchPrompt = `Analyze these ${missingIngredients.length} ingredients from a ${productType} product:
+
+${missingList}
+
+For each, provide:
+1. Name (in user's language)
+2. Risk level: "low", "moderate", or "high"
+3. 1-2 sentence summary
+4. 2-3 sentence detailed explanation
+5. Optional category
+
+${languageInstruction}
+
+Product context: ${context}
+
+Return as JSON array:
+[
+  {
+    "name": "Ingredient Name",
+    "riskLevel": "low|moderate|high",
+    "summary": "Brief explanation",
+    "details": "Detailed explanation",
+    "category": "Optional category"
+  }
+]`;
+    
+    try {
+      const response = await openai.chat.completions.create({
+        model: "gpt-5.1",
+        messages: [
+          { role: "system", content: systemMessage },
+          { role: "user", content: batchPrompt }
+        ],
+        response_format: { type: "json_object" },
+        max_completion_tokens: Math.min(2000, missingIngredients.length * 200),
+        reasoning_effort: "none"
+      } as any);
+      
+      const content = response.choices?.[0]?.message?.content;
+      if (!content) throw new Error('Empty GPT response');
+      
+      // Parse response - try both array and object with array key
+      let freshResults: Ingredient[] = [];
+      try {
+        const parsed = JSON.parse(content);
+        freshResults = Array.isArray(parsed) ? parsed : Object.values(parsed)[0] || [];
+      } catch {
+        console.error(`[PARALLEL-BATCH-${batchIdx}] Failed to parse GPT response:`, content);
+        throw new Error('Invalid JSON from GPT');
+      }
+      
+      // Cache fresh results
+      for (const result of freshResults) {
+        setCachedIngredientAnalysis(result.name, productType, JSON.stringify(result));
+        console.log(`[PARALLEL-BATCH-${batchIdx}] Cached: ${result.name}`);
+      }
+      
+      const batchDuration = ((Date.now() - batchStartTime) / 1000).toFixed(2);
+      console.log(`[PARALLEL-BATCH-${batchIdx}] Completed in ${batchDuration}s: ${cachedResults.length} cached + ${freshResults.length} fresh`);
+      
+      // Return all results for this batch
+      return [...cachedResults.map(r => r.data), ...freshResults];
+    } catch (error) {
+      console.error(`[PARALLEL-BATCH-${batchIdx}] Error:`, error);
+      // Return at least cached results on error
+      return cachedResults.map(r => r.data);
+    }
+  });
+  
+  // Wait for all batches to complete in parallel
+  const allBatchResults = await Promise.all(batchPromises);
+  const allIngredients = allBatchResults.flat();
+  
+  console.log(`[PARALLEL-ANALYZER] Merged ${allIngredients.length} total ingredients from ${batches.length} batches`);
+  
+  // Determine overall risk
+  const hasHigh = allIngredients.some(i => i.riskLevel === 'high');
+  const hasModerate = allIngredients.some(i => i.riskLevel === 'moderate');
+  const overallRisk: RiskLevel = hasHigh ? 'high' : (hasModerate ? 'moderate' : 'low');
+  
+  // Build final result
+  const result: AnalysisResult = {
+    productType,
+    productName: null,
+    ingredients: allIngredients,
+    overallRisk,
+    analyzedAt: new Date().toISOString(),
+    originalText: ingredientsText
+  };
+  
+  // Validate result
+  const validated = analysisResultSchema.safeParse(result);
+  if (!validated.success) {
+    console.error('[PARALLEL-ANALYZER] Validation failed:', validated.error);
+    throw new Error('AI response did not match expected format');
+  }
+  
+  const totalDuration = ((Date.now() - startTime) / 1000).toFixed(2);
+  console.log(`[PARALLEL-ANALYZER] Completed in ${totalDuration}s: ${allIngredients.length} ingredients, risk: ${overallRisk}`);
+  
+  // Cache full result before returning
+  cacheAnalysis(cacheKey, validated.data, ingredientsText);
+  return validated.data;
+}
