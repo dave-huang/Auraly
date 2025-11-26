@@ -590,8 +590,8 @@ export async function analyzeIngredients(
   console.log(`[ANALYZER] Language instruction: ${languageInstruction.substring(0, 100)}...`);
   
   // PARALLEL BATCH OPTIMIZATION: Split into smaller batches to parallelize API calls
-  // 1 ingredient per batch for maximum parallelization - all ingredients run through GPT-5.1 simultaneously
-  // This dramatically reduces total processing time by fully parallelizing API calls
+  // Instead of one large batch to GPT-4o, send 5-8 smaller batches in parallel
+  // This dramatically reduces total processing time for large ingredient lists
   
   // Extract ingredient lines for batch splitting
   const ingredientLines = textToAnalyze
@@ -601,8 +601,8 @@ export async function analyzeIngredients(
   
   console.log(`[ANALYZER] Extracted ${ingredientLines.length} ingredient lines for parallel processing`);
   
-  // Create batches of 5 ingredients each for balanced API calls and parallelization
-  const batchSize = 5;
+  // Create batches of ~5-8 ingredients each
+  const batchSize = Math.max(5, Math.min(8, Math.ceil(ingredientLines.length / 4)));
   const batches: string[] = [];
   
   for (let i = 0; i < ingredientLines.length; i += batchSize) {
@@ -610,7 +610,7 @@ export async function analyzeIngredients(
     batches.push(batchLines.join('\n'));
   }
   
-  console.log(`[ANALYZER] Created ${batches.length} parallel batches (${batchSize} ingredients per batch)`);
+  console.log(`[ANALYZER] Created ${batches.length} parallel batches (${batchSize} items per batch)`);
   
   if (batches.length > 1) {
     // Use parallel batch processing for faster analysis
@@ -665,7 +665,7 @@ export async function analyzeIngredients(
       // Determine overall risk (highest level from all batches)
       const riskOrder = { high: 3, moderate: 2, low: 1 };
       const overallRisk = riskLevels.length > 0
-        ? riskLevels.reduce((a, b) => 
+        ? (Object.keys(riskOrder) as RiskLevel[]).reduce((a, b) => 
             riskOrder[a] >= riskOrder[b] ? a : b
           )
         : 'moderate';
@@ -777,7 +777,7 @@ Return your analysis as JSON with this structure:
       const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
       
       // Adjust max_tokens based on estimated ingredient count and language
-      // With GPT-5.1, use moderate limits for speed while ensuring completeness
+      // With GPT-4o, use moderate limits for speed while ensuring completeness
       // Each ingredient needs ~120-150 tokens (name, risk, concise summary/details) in English/Spanish
       // Chinese needs ~100-120 tokens per ingredient due to higher token density
       const tokensPerIngredient = userLanguage === 'zh' ? 110 : 140;
