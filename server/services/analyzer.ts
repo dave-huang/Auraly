@@ -1019,62 +1019,16 @@ export async function analyzeIngredientsParallel(
     
     // Query GPT only for missing ingredients using Auraly framework
     const missingList = missingIngredients.map((ing, idx) => `${idx + 1}. ${ing}`).join('\n');
-    const batchPrompt = `You are Auraly, an ingredient-safety analyst trained to evaluate food, skincare, haircare, cosmetics, oral care, fragrance, and personal-care ingredients using a dimension-based safety framework. You must return structured JSON only.
+    
+    // SIMPLIFIED prompt that GPT handles better
+    const batchPrompt = `Analyze these ${missingIngredients.length} ingredients. For each, assess health risk (toxicity/carcinogenicity) as High/Medium/Low (not allergens). Return a JSON array with this exact structure - respond ONLY with the JSON array, nothing else:
 
-CRITICAL: Analyze ALL ${missingIngredients.length} ingredients provided below. Your response must include exactly ${missingIngredients.length} items in the array.
-
-IMPORTANT: Ingredients may be listed in ANY language (English, Chinese, Spanish, etc.). Analyze all ingredients as provided without requesting translation. Use your knowledge of ingredient names across languages to provide accurate health risk assessments.
-
-Your job is to evaluate each ingredient using the following methodology:
-
-AURALY RISK FRAMEWORK
-A) HEALTH RISK (PRIMARY RISK SCORE)
-Focus ONLY on:
-1. Toxicity
-2. Carcinogenicity
-3. Endocrine disruption
-4. Metabolic effects
-5. Chronic ingestion risks
-6. Additive/process risk (e.g., ultra-processed additives, stabilizers, synthetic preservatives)
-
-DO NOT classify allergens as "high risk."
-Health risk is based on impact on the general population in normal exposure amounts.
-
-Health risk may be:
-- "High"
-- "Medium"
-- "Low"
-
-B) ALLERGEN RISK (SECONDARY, NOT PART OF HEALTH RISK SCORE)
-Only mark true if the ingredient is a top allergen:
-milk, egg, peanut, tree nuts, soy, wheat, sesame, shellfish, fish, gluten.
-Allergen status must NOT raise the health risk score.
-
-C) DIETARY & RESTRICTION FLAGS (SECONDARY, NOT PART OF HEALTH RISK SCORE)
-Identify as applicable:
-- vegan: yes/no
-- vegetarian: yes/no
-- containsAnimalProducts: yes/no
-- containsGluten: yes/no
-- containsLactose: yes/no
-- containsAddedSugars: yes/no
-- ultraProcessedAdditive: yes/no
-
-Analyze these ${missingIngredients.length} ingredients from a ${productType} product:
-
-${missingList}
-
-Product context: ${context}
-
-${languageInstruction}
-
-Return as JSON array with this exact structure. RESPOND WITH ONLY THE JSON ARRAY. NO MARKDOWN, NO EXTRA TEXT:
 [
   {
-    "ingredient": "NAME",
+    "ingredient": "ingredient name as provided",
     "category": "${productType}",
     "healthRisk": "High|Medium|Low",
-    "allergen": true/false,
+    "allergen": true or false,
     "dietaryFlags": {
       "vegan": true/false,
       "vegetarian": true/false,
@@ -1084,10 +1038,12 @@ Return as JSON array with this exact structure. RESPOND WITH ONLY THE JSON ARRAY
       "containsAddedSugars": true/false,
       "ultraProcessedAdditive": true/false
     },
-    "summary": "Short explanation of health risk and any notable concerns.",
-    "sourcesOrNotes": "Optional contextual detail for nuanced cases or null"
+    "summary": "1-2 sentence explanation"
   }
-]`;
+]
+
+Ingredients to analyze:
+${missingList}`;
     
     try {
       const response = await openai.chat.completions.create({
