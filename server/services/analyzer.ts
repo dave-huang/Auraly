@@ -943,7 +943,7 @@ export async function analyzeIngredientsParallel(
       if (ing.length < 2) return false;
       if (ing.match(/^[\d.]+%?$/)) return false; // Pure numbers/percentages
       if (isStructuralMarker(ing)) return false;
-      if (ing.match(/^(and|or|with|contains|less|of)$/i)) return false; // Common connectors/structural words alone
+      if (ing.match(/^(and|or|with|contains|less|of|to|the|a|be|not|this|that)[\s]*$/i)) return false; // Connector words alone
       
       // Remove section headers attached to ingredients (e.g., "其他微量成分:异丙醇" → "异丙醇")
       // Match patterns like "SectionHeader:ingredient" or "SectionHeader：ingredient" 
@@ -951,18 +951,34 @@ export async function analyzeIngredientsParallel(
       if (cleanedIng.length < 2) return false;
       
       // Remove trailing punctuation that's not part of the ingredient name
-      const depunctuated = cleanedIng.replace(/[.,;:)\]}]+$/, '').trim();
+      let depunctuated = cleanedIng.replace(/[.,;:)\]}]+$/, '').trim();
       if (depunctuated.length < 2) return false;
       
-      // Filter out OCR artifacts: single Greek letters, lone special chars, broken fragments
+      // CRITICAL: Reject if unmatched parentheses/brackets - GPT will reject these
+      const openParens = (depunctuated.match(/[\(\[]/g) || []).length;
+      const closeParens = (depunctuated.match(/[\)\]]/g) || []).length;
+      if (openParens !== closeParens) return false;
+      
+      // Reject items starting with CONTAINS (they're measurement markers, not ingredients)
+      if (depunctuated.match(/^CONTAINS\s+/i)) return false;
+      
+      // Filter out OCR artifacts: single Greek letters, lone special chars, very short non-ASCII
       // "ΜΟΝΟ" is Greek MONO character - it's an OCR error
       const hasOnlyNonLatin = /^[^\x00-\x7F]+$/.test(depunctuated); // Only non-ASCII chars
       if (depunctuated.length <= 3 && hasOnlyNonLatin) return false;
       
+      // Reject very short items that are likely fragments (single English letter or common fragment)
+      if (depunctuated.length === 1) return false;
+      if (depunctuated.match(/^[A-Z]$/) && !depunctuated.match(/^[ABCDEFGH]$/)) return false; // Single letters unless special (like "E" for additives)
+      
       // Filter fragments that are just connectors or parts of split words from line breaks
       if (depunctuated.match(/^(and|or|of|the|a|be|to|with|not|this|that)[\s]*$/i)) return false;
       
-      // Exclude facility/allergen statements
+      // Reject items that look like they have been truncated or split mid-word  
+      // E.g., "POTASSIUM SORBATE(TO" or "TITANIUM DIOXIDE(COLOR" - missing closing paren
+      if (depunctuated.match(/\([^)]*$/)) return false; // Starts paren but no close
+      
+      // Exclude facility/allergen statements and very long phrases
       if (depunctuated.match(/facility|process|manufacture|made in|may contain|allergen|cross-contact|equipment/i)) return false;
       if (depunctuated.length > 40 && depunctuated.match(/\s.{20,}/)) return false; // Very long phrases (usually not ingredients)
       
