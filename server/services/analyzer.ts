@@ -930,10 +930,10 @@ export async function analyzeIngredientsParallel(
   const placeholder = '\x00COMMA_PLACEHOLDER\x00';
   textForSplitting = textForSplitting.replace(digitSeparatorPattern, `$1${placeholder}`);
   
-  // Split ONLY on actual delimiters: commas, semicolons, newlines
-  // DO NOT split on "AND"/"OR" - these are typically connectors within ingredient names (e.g., "MONO AND DIGLYCERIDES")
+  // Split on delimiters AND on "AND"/"OR" when they connect ingredients (e.g., "SORBIC ACID AND POTASSIUM SORBATE")
+  // But be careful: "MONO AND DIGLYCERIDES" should split into "MONO" and "DIGLYCERIDES" too
   const rawIngredients = textForSplitting
-    .split(/[,،、;；\n]+/)
+    .split(/[,،、;；\n]|\s+(?:and|or)\s+/i)  // Split on commas, semicolons, newlines, or " AND "/" OR "
     .map(ing => {
       // Restore the preserved commas/separators as ASCII commas
       return ing.replace(new RegExp(placeholder, 'g'), ',').trim();
@@ -943,7 +943,7 @@ export async function analyzeIngredientsParallel(
       if (ing.length < 2) return false;
       if (ing.match(/^[\d.]+%?$/)) return false; // Pure numbers/percentages
       if (isStructuralMarker(ing)) return false;
-      if (ing.match(/^(and|or|with)$/i)) return false; // Common connectors alone
+      if (ing.match(/^(and|or|with|contains|less|of)$/i)) return false; // Common connectors/structural words alone
       
       // Remove section headers attached to ingredients (e.g., "其他微量成分:异丙醇" → "异丙醇")
       // Match patterns like "SectionHeader:ingredient" or "SectionHeader：ingredient" 
@@ -954,12 +954,15 @@ export async function analyzeIngredientsParallel(
       const depunctuated = cleanedIng.replace(/[.,;:)\]}]+$/, '').trim();
       if (depunctuated.length < 2) return false;
       
-      // Filter out artifact fragments - very short strings with mostly non-ASCII or special chars
-      // These are often OCR errors or broken parts of multi-word ingredients
-      const nonAsciiCount = depunctuated.replace(/[a-zA-Z0-9\s\-()]/g, '').length;
-      if (depunctuated.length < 4 && nonAsciiCount > depunctuated.length * 0.3) return false;
+      // Filter out OCR artifacts: single Greek letters, lone special chars, broken fragments
+      // "ΜΟΝΟ" is Greek MONO character - it's an OCR error
+      const hasOnlyNonLatin = /^[^\x00-\x7F]+$/.test(depunctuated); // Only non-ASCII chars
+      if (depunctuated.length <= 3 && hasOnlyNonLatin) return false;
       
-      // Exclude facility/allergen statements (long phrases with "facility", "processes", "may contain", etc.)
+      // Filter fragments that are just connectors or parts of split words from line breaks
+      if (depunctuated.match(/^(and|or|of|the|a|be|to|with|not|this|that)[\s]*$/i)) return false;
+      
+      // Exclude facility/allergen statements
       if (depunctuated.match(/facility|process|manufacture|made in|may contain|allergen|cross-contact|equipment/i)) return false;
       if (depunctuated.length > 40 && depunctuated.match(/\s.{20,}/)) return false; // Very long phrases (usually not ingredients)
       
