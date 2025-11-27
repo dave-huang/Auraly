@@ -863,19 +863,20 @@ export async function analyzeIngredientsParallel(
           break;
         }
         
-        // Join if current line ends with word/digit AND next line looks like continuation
-        const endsWithWord = /[a-zA-Z0-9]$/.test(merged);
+        // Join if current line ends with word/digit/CJK AND next line looks like continuation
+        const endsWithWord = /[a-zA-Z0-9\u4E00-\u9FFF\u3040-\u309F\u30A0-\u30FF]$/.test(merged); // Support CJK endings too
         
         // Next line is a continuation if:
-        // 1. Starts with a letter or digit (any case) - most wrapped words
+        // 1. Starts with a letter, digit, or CJK character - most wrapped words
         // 2. Is NOT a structural keyword or new ingredient marker
         // 3. Doesn't look like a label section (all caps with 2+ words is usually a new section)
-        const nextStartsWithLetterOrDigit = /^[a-zA-Z0-9]/.test(nextLine);
-        const isNotKeyword = !nextLine.match(/^(AND|OR|WITH|CONTAINS|MADE|MAY|DIRECTIONS?|INSTRUCTIONS?|NUTRITION|INGREDIENTS?|ALLERGENS?)/i);
+        const nextStartsWithLetterOrDigit = /^[a-zA-Z0-9\u4E00-\u9FFF\u3040-\u309F\u30A0-\u30FF]/.test(nextLine); // ASCII, CJK, Hiragana, Katakana
+        const isNotKeyword = !nextLine.match(/^(AND|OR|WITH|CONTAINS|MADE|MAY|DIRECTIONS?|INSTRUCTIONS?|NUTRITION|INGREDIENTS?|ALLERGENS?|成分|其他|方向|说明)/i);
         const isNotAllCapsSection = !(nextLine.match(/^[A-Z\s]{4,}$/) && nextLine.split(/\s+/).length > 1);
         
-        // Also check: if it's longer than 2 chars and mostly letters (allowing hyphens, apostrophes), it's likely a continued word
-        const looksLikeContinuedWord = nextLine.length <= 50 && /^[a-zA-Z\-']+(\s[a-zA-Z\-']+)?$/.test(nextLine);
+        // Check: if it's longer than 2 chars and mostly word characters (ASCII, CJK, hyphens, apostrophes), it's likely a continued word
+        // This regex now supports Chinese, Japanese, and ASCII letters
+        const looksLikeContinuedWord = nextLine.length <= 50 && /^[\w\u4E00-\u9FFF\u3040-\u309F\u30A0-\u30FF\-'()（）]+(\s[\w\u4E00-\u9FFF\u3040-\u309F\u30A0-\u30FF\-'()（）]+)?$/.test(nextLine);
         
         const nextLooksLikeContinuation = nextStartsWithLetterOrDigit && isNotKeyword && (looksLikeContinuedWord || isNotAllCapsSection);
         
@@ -930,12 +931,18 @@ export async function analyzeIngredientsParallel(
       if (isStructuralMarker(ing)) return false;
       if (ing.match(/^(and|or|with)$/i)) return false; // Common connectors
       
+      // Remove section headers attached to ingredients (e.g., "其他微量成分:异丙醇" → "异丙醇")
+      // Match patterns like "SectionHeader:ingredient" or "SectionHeader：ingredient" 
+      const cleanedIng = ing.replace(/^[^:：]*([:：])\s*/, '').trim();
+      if (cleanedIng.length < 2) return false;
+      
       // Exclude facility/allergen statements (long phrases with "facility", "processes", "may contain", etc.)
-      if (ing.match(/facility|process|manufacture|made in|may contain|allergen|cross-contact|equipment/i)) return false;
-      if (ing.length > 40 && ing.match(/\s.{20,}/)) return false; // Very long phrases (usually not ingredients)
+      if (cleanedIng.match(/facility|process|manufacture|made in|may contain|allergen|cross-contact|equipment/i)) return false;
+      if (cleanedIng.length > 40 && cleanedIng.match(/\s.{20,}/)) return false; // Very long phrases (usually not ingredients)
       
       return true;
     })
+    .map(ing => ing.replace(/^[^:：]*([:：])\s*/, '').trim()) // Apply the same cleaning to returned ingredients
     .slice(0, 200); // Increase cap to 200 to handle larger ingredient lists
   
   if (rawIngredients.length === 0) {
