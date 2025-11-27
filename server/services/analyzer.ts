@@ -1021,7 +1021,10 @@ export async function analyzeIngredientsParallel(
     const missingList = missingIngredients.map((ing, idx) => `${idx + 1}. ${ing}`).join('\n');
     
     // SIMPLIFIED prompt that GPT handles better
-    const batchPrompt = `Analyze these ${missingIngredients.length} ingredients. For each, assess health risk (toxicity/carcinogenicity) as High/Medium/Low (not allergens). Return a JSON array with this exact structure - respond ONLY with the JSON array, nothing else:
+    // IMPORTANT: explicitly tell GPT the ingredient names are already provided in their source language
+    const batchPrompt = `IMPORTANT: The ingredient names below are provided in their source language (may include English, Chinese, Spanish, or other languages). Analyze each ingredient AS PROVIDED - do not request translation. Respond ONLY with the JSON array below, nothing else.
+
+Analyze these ${missingIngredients.length} ingredients for health risk (toxicity/carcinogenicity): High/Medium/Low. Return JSON array:
 
 [
   {
@@ -1042,7 +1045,7 @@ export async function analyzeIngredientsParallel(
   }
 ]
 
-Ingredients to analyze:
+Ingredients:
 ${missingList}`;
     
     try {
