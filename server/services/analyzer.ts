@@ -795,15 +795,18 @@ export async function analyzeIngredientsParallel(
     const match = expandedText.match(marker);
     if (match && match.index !== undefined) {
       textToAnalyze = expandedText.substring(match.index + match[0].length);
+      // Only trim at CONTAINS/ALLERGENS if it's clearly a separate section with enough content before it
       const endMarkers = [
-        /CONTAINS?\s*[:：]/i, /ALLERGENS?\s*[:：]/i, /DIRECTIONS?\s*[:：]/i,
+        /CONTAINS\s+(SOYBEANS|WHEAT|MILK|EGG|PEANUT|TREE|NUT|FISH|SHELLFISH|SESAME|SOY)\s*[,:]/i, // Allergen declarations
+        /ALLERGENS?\s*[:：]/i, /DIRECTIONS?\s*[:：]/i,
         /INSTRUCTIONS?\s*[:：]/i, /NUTRITION\s+FACTS?\s*[:：]/i, /MANUFACTURED BY/i,
         /PRODUCT OF/i, /含\s*[:：]/, /过敏原\s*[:：]/, /使用方法\s*[:：]/,
         /CONTIENE\s*[:：]/i, /MODO DE USO\s*[:：]/i
       ];
       for (const endMarker of endMarkers) {
         const endMatch = textToAnalyze.match(endMarker);
-        if (endMatch && endMatch.index !== undefined && endMatch.index > 20) {
+        // Require much longer content (100+ chars) before cutting to avoid premature truncation
+        if (endMatch && endMatch.index !== undefined && endMatch.index > 100) {
           textToAnalyze = textToAnalyze.substring(0, endMatch.index);
           break;
         }
@@ -811,6 +814,18 @@ export async function analyzeIngredientsParallel(
       break;
     }
   }
+  
+  // Estimate ingredient count for better GPT context
+  const commaCount = (textToAnalyze.match(/[,，]/g) || []).length + 1;
+  const chineseSeparatorCount = (textToAnalyze.match(/[、]/g) || []).length + 1;
+  const semicolonCount = (textToAnalyze.match(/[;；]/g) || []).length + 1;
+  const validCounts = [
+    commaCount > 1 ? commaCount : 0,
+    chineseSeparatorCount > 1 ? chineseSeparatorCount : 0,
+    semicolonCount > 1 ? semicolonCount : 0
+  ].filter(c => c > 0);
+  const estimatedCount = validCounts.length > 0 ? Math.min(Math.max(...validCounts), 150) : 20;
+  console.log(`[PARALLEL-ANALYZER] Estimated ${estimatedCount} ingredients from separators`);
   
   // Helper function to join wrapped lines
   // When a line ends with a word and next line starts with lowercase or is a continuation, join them
@@ -872,14 +887,15 @@ export async function analyzeIngredientsParallel(
   
   // Parse individual ingredients by splitting on common separators
   const rawIngredients = joinedText
-    .split(/[,，、;；\n]/)
+    .split(/[,،、;；\n]/)
     .map(ing => ing.trim())
     .filter(ing => 
-      ing.length > 2 && 
+      ing.length > 1 && // Only require 1 char minimum (was 2)
       !ing.match(/^[\d.]+%?$/) && 
-      !isStructuralMarker(ing)
+      !isStructuralMarker(ing) &&
+      !ing.match(/^(and|or|with)$/i) // Filter out common connectors
     )
-    .slice(0, 150); // Cap at 150 to avoid huge batches
+    .slice(0, 200); // Increase cap to 200 to handle larger ingredient lists
   
   if (rawIngredients.length === 0) {
     throw new Error('No valid ingredients found to analyze');
@@ -941,6 +957,8 @@ export async function analyzeIngredientsParallel(
     const missingList = missingIngredients.map((ing, idx) => `${idx + 1}. ${ing}`).join('\n');
     const batchPrompt = `You are Auraly, an ingredient-safety analyst trained to evaluate food, skincare, haircare, cosmetics, oral care, fragrance, and personal-care ingredients using a dimension-based safety framework. You must return structured JSON only.
 
+CRITICAL: Analyze ALL ${missingIngredients.length} ingredients provided below. Your response must include exactly ${missingIngredients.length} items in the array.
+
 Your job is to evaluate each ingredient using the following methodology:
 
 AURALY RISK FRAMEWORK
@@ -984,7 +1002,7 @@ Product context: ${context}
 
 ${languageInstruction}
 
-Return as JSON array with this exact structure:
+Return as JSON array with this exact structure. RESPOND WITH ONLY THE JSON ARRAY. NO MARKDOWN, NO EXTRA TEXT:
 [
   {
     "ingredient": "NAME",
@@ -1013,7 +1031,7 @@ Return as JSON array with this exact structure:
           { role: "user", content: batchPrompt }
         ],
         response_format: { type: "json_object" },
-        max_completion_tokens: Math.min(2000, missingIngredients.length * 200),
+        max_completion_tokens: Math.min(4000, missingIngredients.length * 400),
         reasoning_effort: "none"
       } as any);
       
