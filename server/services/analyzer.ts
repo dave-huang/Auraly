@@ -828,39 +828,62 @@ export async function analyzeIngredientsParallel(
   console.log(`[PARALLEL-ANALYZER] Estimated ${estimatedCount} ingredients from separators`);
   
   // Helper function to join wrapped lines
-  // When a line ends with a word and next line starts with lowercase or is a continuation, join them
+  // Much more aggressive: join lines that likely belong together
   function joinWrappedLines(text: string): string {
-    return text
-      .split('\n')
-      .reduce((acc: string[], line: string, idx: number, arr: string[]) => {
-        const trimmedLine = line.trim();
-        
-        // Skip empty lines
-        if (!trimmedLine) return acc;
-        
-        // Check if this line should be joined with previous line
-        // (previous line ends with word, this line is lowercase start or continuation)
-        if (acc.length > 0) {
-          const lastLine = acc[acc.length - 1];
-          const lastChar = lastLine[lastLine.length - 1];
-          
-          // If last line doesn't end with punctuation and current line doesn't start uppercase
-          // and current line isn't a structural marker, it's likely a wrapped continuation
-          const isWrappedContinuation = 
-            /[a-zA-Z]$/.test(lastLine) && // Last line ends with letter
-            /^[a-z]/.test(trimmedLine) && // This line starts with lowercase
-            !/^(CONTAINS|LESS|OF:|OR|AND|WITH|TO|IN|AS|IS)/.test(trimmedLine); // Not a structural marker
-          
-          if (isWrappedContinuation) {
-            acc[acc.length - 1] = lastLine + ' ' + trimmedLine;
-            return acc;
-          }
+    const lines = text.split('\n').map(l => l.trim()).filter(l => l);
+    const result: string[] = [];
+    
+    for (let i = 0; i < lines.length; i++) {
+      const current = lines[i];
+      
+      // Skip structural markers and empty lines
+      if (!current || isStructuralMarker(current)) {
+        result.push(current);
+        continue;
+      }
+      
+      // Check if next line should be joined with current line
+      let merged = current;
+      let j = i + 1;
+      
+      while (j < lines.length) {
+        const nextLine = lines[j];
+        if (!nextLine) {
+          j++;
+          continue; // Skip empty lines
         }
         
-        acc.push(trimmedLine);
-        return acc;
-      }, [])
-      .join('\n');
+        // Stop joining if we hit a structural marker, percentage, or bullet point
+        if (isStructuralMarker(nextLine) || 
+            nextLine.match(/^[\d.]+%/) ||
+            nextLine.match(/^[•·∙\*]\s/)) {
+          break;
+        }
+        
+        // Join if:
+        // 1. Current line is short (< 20 chars) - likely incomplete
+        // 2. Current line doesn't end with punctuation (except comma which is separator)
+        // 3. Next line doesn't look like a new ingredient bullet
+        const endsWithWord = /[a-zA-Z]$/.test(merged);
+        const isMergedShort = merged.length < 30;
+        const nextLooksLikeNewItem = /^[\w\d]{2,}\s+/.test(nextLine); // Starts with word/number
+        const nextIsStructural = nextLine.match(/^(CONTAINS|ALLERGENS|DIRECTIONS|MADE|MANUFACTURED)/i);
+        
+        // Heuristic: if merged is short and ends with word, likely wrapped
+        // OR if merged is very short (< 10 chars) and next line looks like continuation
+        if (endsWithWord && (isMergedShort || merged.length < 10)) {
+          merged = merged + ' ' + nextLine;
+          j++;
+        } else {
+          break;
+        }
+      }
+      
+      result.push(merged);
+      i = j - 1; // Skip the lines we merged
+    }
+    
+    return result.join('\n');
   }
   
   // Helper function to filter out structural markers
@@ -884,6 +907,8 @@ export async function analyzeIngredientsParallel(
   
   // Pre-process to join wrapped lines
   const joinedText = joinWrappedLines(textToAnalyze);
+  console.log(`[PARALLEL-ANALYZER] After joining wrapped lines: ${joinedText.length} chars`);
+  console.log(`[PARALLEL-ANALYZER] Text preview: ${joinedText.substring(0, 200)}...`);
   
   // Parse individual ingredients by splitting on common separators
   const rawIngredients = joinedText
@@ -902,7 +927,11 @@ export async function analyzeIngredientsParallel(
   }
   
   const uniqueIngredients = Array.from(new Set(rawIngredients));
-  console.log(`[PARALLEL-ANALYZER] Extracted ${uniqueIngredients.length} unique ingredients from OCR`);
+  console.log(`[PARALLEL-ANALYZER] Extracted ${rawIngredients.length} raw ingredients, ${uniqueIngredients.length} unique`);
+  console.log(`[PARALLEL-ANALYZER] ALL EXTRACTED INGREDIENTS:`);
+  uniqueIngredients.forEach((ing, idx) => {
+    console.log(`  ${idx + 1}. ${ing}`);
+  });
   console.log(`[PARALLEL-ANALYZER] Sample ingredients: ${uniqueIngredients.slice(0, 5).join(', ')}`);
   
   // Create micro-batches of 5 ingredients
