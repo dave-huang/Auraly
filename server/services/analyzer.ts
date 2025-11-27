@@ -863,6 +863,16 @@ export async function analyzeIngredientsParallel(
           break;
         }
         
+        // FOR CHINESE: Only join if next line is clearly a continuation (parenthetical, suffix, etc)
+        // Most Chinese lines separated by 、 are complete ingredients - don't merge them!
+        const hasChinese = /[\u4E00-\u9FFF\u3040-\u309F\u30A0-\u30FF]/.test(current + nextLine);
+        if (hasChinese) {
+          // Only join Chinese if next line starts with parenthesis or is a known suffix marker
+          if (!/^[（(]|^(酯|SE|酸|醇|盐|等|和|及)[\s,、，；;]*$/i.test(nextLine)) {
+            break;
+          }
+        }
+        
         // Join if current line ends with word/digit/CJK AND next line looks like continuation
         const endsWithWord = /[a-zA-Z0-9\u4E00-\u9FFF\u3040-\u309F\u30A0-\u30FF]$/.test(merged); // Support CJK endings too
         
