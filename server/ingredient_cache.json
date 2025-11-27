@@ -240,13 +240,13 @@
     "createdAt": 1764226192874
   },
   "water__skincare": {
-    "analysis": "{\"ingredient\":\"Water\",\"name\":\"Water\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Eau is French for water and refers to purified water used as the main solvent in cosmetic formulations. It is considered very safe and typically non-allergenic.\",\"details\":\"Eau is French for water and refers to purified water used as the main solvent in cosmetic formulations. It is considered very safe and typically non-allergenic.\"}",
-    "lastUpdated": 1764226193221,
+    "analysis": "{\"ingredient\":\"Water\",\"name\":\"Water\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Water is a common base ingredient in skincare used as a solvent and to provide hydration. It is generally safe for most skin types.\",\"details\":\"Water is a common base ingredient in skincare used as a solvent and to provide hydration. It is generally safe for most skin types.\"}",
+    "lastUpdated": 1764226963304,
     "createdAt": 1764226193221
   },
   "cetearyl alcohol__skincare": {
-    "analysis": "{\"ingredient\":\"Cetearyl Alcohol\",\"name\":\"Cetearyl Alcohol\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Cetearyl alcohol is a fatty alcohol used as an emollient and thickener to improve texture and moisturize the skin. It is generally well tolerated and not the same as drying or irritating alcohols.\",\"details\":\"Cetearyl alcohol is a fatty alcohol used as an emollient and thickener to improve texture and moisturize the skin. It is generally well tolerated and not the same as drying or irritating alcohols.\"}",
-    "lastUpdated": 1764226193221,
+    "analysis": "{\"ingredient\":\"Cetearyl Alcohol\",\"name\":\"Cetearyl Alcohol\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Cetearyl alcohol is a fatty alcohol derived from plant or synthetic sources that functions as an emollient and thickener. It is usually non‑irritating and not the same as drying alcohols, though extremely sensitive individuals may react.\",\"details\":\"Cetearyl alcohol is a fatty alcohol derived from plant or synthetic sources that functions as an emollient and thickener. It is usually non‑irritating and not the same as drying alcohols, though extremely sensitive individuals may react.\"}",
+    "lastUpdated": 1764226964740,
     "createdAt": 1764226193221
   },
   "dimethicone__skincare": {
@@ -315,18 +315,18 @@
     "createdAt": 1764226254448
   },
   "yeast extract__food": {
-    "analysis": "{\"ingredient\":\"Yeast Extract\",\"name\":\"Yeast Extract\",\"category\":\"food\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Yeast extract is a savory flavoring made from broken‑down yeast cells and naturally contains glutamates. It is typically safe but may cause issues for individuals sensitive to glutamates or on low‑sodium diets.\",\"details\":\"Yeast extract is a savory flavoring made from broken‑down yeast cells and naturally contains glutamates. It is typically safe but may cause issues for individuals sensitive to glutamates or on low‑sodium diets.\"}",
-    "lastUpdated": 1764226255699,
+    "analysis": "{\"ingredient\":\"Yeast Extract\",\"name\":\"Yeast Extract\",\"category\":\"food\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Yeast extract is a flavor-enhancing ingredient made from yeast, commonly used in soups, sauces, and snacks. It is generally safe for most people, but those sensitive to glutamates may wish to limit intake.\",\"details\":\"Yeast extract is a flavor-enhancing ingredient made from yeast, commonly used in soups, sauces, and snacks. It is generally safe for most people, but those sensitive to glutamates may wish to limit intake.\"}",
+    "lastUpdated": 1764226874167,
     "createdAt": 1764226254448
   },
   "milk__food": {
-    "analysis": "{\"ingredient\":\"Milk\",\"name\":\"Milk\",\"category\":\"food\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":true,\"summary\":\"Milk is a common dairy product and a major allergen; it can cause allergic reactions or intolerance symptoms in people with milk allergy or lactose intolerance.\",\"details\":\"Milk is a common dairy product and a major allergen; it can cause allergic reactions or intolerance symptoms in people with milk allergy or lactose intolerance.\"}",
-    "lastUpdated": 1764226254448,
+    "analysis": "{\"ingredient\":\"Milk\",\"name\":\"Milk\",\"category\":\"food\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":true,\"summary\":\"Milk is a dairy product rich in protein, calcium, and vitamins, generally safe for most people. However, it is a common allergen and can cause reactions or intolerance in sensitive individuals.\",\"details\":\"Milk is a dairy product rich in protein, calcium, and vitamins, generally safe for most people. However, it is a common allergen and can cause reactions or intolerance in sensitive individuals.\"}",
+    "lastUpdated": 1764226871558,
     "createdAt": 1764226254448
   },
   "salt__food": {
-    "analysis": "{\"ingredient\":\"Salt\",\"name\":\"Salt\",\"category\":\"food\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":false,\"summary\":\"Salt (sodium chloride) is commonly used for flavor and preservation. Excessive intake is associated with high blood pressure and cardiovascular risk, so moderation is recommended.\",\"details\":\"Salt (sodium chloride) is commonly used for flavor and preservation. Excessive intake is associated with high blood pressure and cardiovascular risk, so moderation is recommended.\"}",
-    "lastUpdated": 1764226255782,
+    "analysis": "{\"ingredient\":\"Salt\",\"name\":\"Salt\",\"category\":\"food\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Salt is a common seasoning composed mainly of sodium chloride. In typical culinary amounts it is safe for most people, but excessive intake can contribute to high blood pressure and cardiovascular issues.\",\"details\":\"Salt is a common seasoning composed mainly of sodium chloride. In typical culinary amounts it is safe for most people, but excessive intake can contribute to high blood pressure and cardiovascular issues.\"}",
+    "lastUpdated": 1764226871436,
     "createdAt": 1764226254695
   },
   "corn starch__food": {
@@ -600,8 +600,8 @@
     "createdAt": 1764226327210
   },
   "soybean oil__food": {
-    "analysis": "{\"ingredient\":\"Soybean Oil\",\"name\":\"Soybean Oil\",\"category\":\"food\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":true,\"summary\":\"Soybean oil is a widely used vegetable oil extracted from soybeans and commonly found in processed foods. While it provides polyunsaturated fats, it is a major source of omega-6 fatty acids and is an allergen for people with soy allergy.\",\"details\":\"Soybean oil is a widely used vegetable oil extracted from soybeans and commonly found in processed foods. While it provides polyunsaturated fats, it is a major source of omega-6 fatty acids and is an allergen for people with soy allergy.\"}",
-    "lastUpdated": 1764226327210,
+    "analysis": "{\"ingredient\":\"Soybean Oil\",\"name\":\"Soybean Oil\",\"category\":\"food\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":true,\"summary\":\"An edible vegetable oil extracted from soybeans, commonly used for cooking and in processed foods. While generally safe for most people, it can trigger reactions in individuals with soy allergy.\",\"details\":\"An edible vegetable oil extracted from soybeans, commonly used for cooking and in processed foods. While generally safe for most people, it can trigger reactions in individuals with soy allergy.\"}",
+    "lastUpdated": 1764226763117,
     "createdAt": 1764226327210
   },
   "thiamine mononitrate__food": {
@@ -620,8 +620,8 @@
     "createdAt": 1764226327407
   },
   "water__food": {
-    "analysis": "{\"ingredient\":\"Water\",\"name\":\"Water\",\"category\":\"food\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Water is the primary hydration component in foods and beverages and is essential for normal body functions when clean and safe.\",\"details\":\"Water is the primary hydration component in foods and beverages and is essential for normal body functions when clean and safe.\"}",
-    "lastUpdated": 1764226327407,
+    "analysis": "{\"ingredient\":\"Water\",\"name\":\"Water\",\"category\":\"food\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Water (aqua) is plain water, commonly used as a base or solvent in food and cosmetic products and is generally safe for consumption.\",\"details\":\"Water (aqua) is plain water, commonly used as a base or solvent in food and cosmetic products and is generally safe for consumption.\"}",
+    "lastUpdated": 1764226764048,
     "createdAt": 1764226327407
   },
   "high fructose corn syrup__food": {
@@ -855,8 +855,8 @@
     "createdAt": 1764226444534
   },
   "soybean oil__skincare": {
-    "analysis": "{\"ingredient\":\"Soybean Oil\",\"name\":\"Soybean Oil\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":true,\"summary\":\"Soybean oil (Glycine soja oil) is a plant-derived oil used as an emollient and moisturizing ingredient. It is usually well tolerated on skin but may cause issues for individuals with soy allergies.\",\"details\":\"Soybean oil (Glycine soja oil) is a plant-derived oil used as an emollient and moisturizing ingredient. It is usually well tolerated on skin but may cause issues for individuals with soy allergies.\"}",
-    "lastUpdated": 1764226444534,
+    "analysis": "{\"ingredient\":\"Soybean Oil\",\"name\":\"Soybean Oil\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":true,\"summary\":\"Soybean oil is a plant-derived oil used as an emollient and moisturizer in skincare products. It is generally safe for most people but can trigger reactions in individuals with soy allergies.\",\"details\":\"Soybean oil is a plant-derived oil used as an emollient and moisturizer in skincare products. It is generally safe for most people but can trigger reactions in individuals with soy allergies.\"}",
+    "lastUpdated": 1764226820007,
     "createdAt": 1764226444534
   },
   "sodium chloride and glycerin__skincare": {
@@ -878,5 +878,305 @@
     "analysis": "{\"ingredient\":\"Guar Hydroxypropyltrimonium Chloride\",\"name\":\"Guar Hydroxypropyltrimonium Chloride\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Guar hydroxypropyltrimonium chloride is a cationic derivative of guar gum used as a conditioning and anti-static agent, especially in hair and skin products. It is typically low risk, but people with known sensitivities to guar or similar gums should monitor for irritation.\",\"details\":\"Guar hydroxypropyltrimonium chloride is a cationic derivative of guar gum used as a conditioning and anti-static agent, especially in hair and skin products. It is typically low risk, but people with known sensitivities to guar or similar gums should monitor for irritation.\"}",
     "lastUpdated": 1764226445454,
     "createdAt": 1764226445454
+  },
+  "hydroxypropyl starch phosphate__skincare": {
+    "analysis": "{\"ingredient\":\"Hydroxypropyl Starch Phosphate\",\"name\":\"Hydroxypropyl Starch Phosphate\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Hydroxypropyl starch phosphate is a modified starch used as a thickener and texture enhancer in skincare products. It is generally considered low risk and well tolerated, with irritation or allergy being uncommon.\",\"details\":\"Hydroxypropyl starch phosphate is a modified starch used as a thickener and texture enhancer in skincare products. It is generally considered low risk and well tolerated, with irritation or allergy being uncommon.\"}",
+    "lastUpdated": 1764226710506,
+    "createdAt": 1764226710506
+  },
+  "glyceryl oleate__skincare": {
+    "analysis": "{\"ingredient\":\"Glyceryl Oleate\",\"name\":\"Glyceryl Oleate\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Glyceryl oleate is an ester of glycerin and oleic acid used as an emulsifier and skin-conditioning agent. It is generally well tolerated, though very sensitive skin may experience mild irritation.\",\"details\":\"Glyceryl oleate is an ester of glycerin and oleic acid used as an emulsifier and skin-conditioning agent. It is generally well tolerated, though very sensitive skin may experience mild irritation.\"}",
+    "lastUpdated": 1764226711035,
+    "createdAt": 1764226711035
+  },
+  "oat kernel flour__skincare": {
+    "analysis": "{\"ingredient\":\"Oat Kernel Flour\",\"name\":\"Oat Kernel Flour\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":true,\"summary\":\"Avena sativa (oat) kernel flour is a powdered form of oat kernels used for soothing and moisturizing the skin. It is usually safe but can trigger reactions in people with oat allergies or, rarely, gluten-sensitive individuals depending on contamination.\",\"details\":\"Avena sativa (oat) kernel flour is a powdered form of oat kernels used for soothing and moisturizing the skin. It is usually safe but can trigger reactions in people with oat allergies or, rarely, gluten-sensitive individuals depending on contamination.\"}",
+    "lastUpdated": 1764226711035,
+    "createdAt": 1764226711035
+  },
+  "aloe barbadensis leaf extract__skincare": {
+    "analysis": "{\"ingredient\":\"Aloe Barbadensis Leaf Extract\",\"name\":\"Aloe Barbadensis Leaf Extract\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Extract from the leaves of the aloe vera plant, commonly used for its soothing, hydrating, and anti-inflammatory properties on the skin. It is generally well tolerated, though some individuals may experience irritation or sensitivity.\",\"details\":\"Extract from the leaves of the aloe vera plant, commonly used for its soothing, hydrating, and anti-inflammatory properties on the skin. It is generally well tolerated, though some individuals may experience irritation or sensitivity.\"}",
+    "lastUpdated": 1764226711044,
+    "createdAt": 1764226711044
+  },
+  "oat kernel extract__skincare": {
+    "analysis": "{\"ingredient\":\"Oat Kernel Extract\",\"name\":\"Oat Kernel Extract\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":true,\"summary\":\"Extract from the kernels of oats, used for its soothing, anti-itch, and moisturizing effects on the skin. While typically gentle, it can trigger reactions in people with oat or gluten-related allergies or sensitivities.\",\"details\":\"Extract from the kernels of oats, used for its soothing, anti-itch, and moisturizing effects on the skin. While typically gentle, it can trigger reactions in people with oat or gluten-related allergies or sensitivities.\"}",
+    "lastUpdated": 1764226711044,
+    "createdAt": 1764226711044
+  },
+  "sodium lauroamphoacetate__skincare": {
+    "analysis": "{\"ingredient\":\"Sodium Lauroamphoacetate\",\"name\":\"Sodium Lauroamphoacetate\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Sodium lauroamphoacetate is a mild, amphoteric surfactant derived from lauric acid used for gentle cleansing in skincare and haircare products. It is generally considered low risk and well tolerated, though very sensitive individuals may experience mild irritation.\",\"details\":\"Sodium lauroamphoacetate is a mild, amphoteric surfactant derived from lauric acid used for gentle cleansing in skincare and haircare products. It is generally considered low risk and well tolerated, though very sensitive individuals may experience mild irritation.\"}",
+    "lastUpdated": 1764226711394,
+    "createdAt": 1764226711394
+  },
+  "coco-glucoside__skincare": {
+    "analysis": "{\"ingredient\":\"Coco-glucoside\",\"name\":\"Coco-glucoside\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Coco-glucoside is a gentle, plant-derived cleansing agent (a non-ionic surfactant) made from coconut fatty alcohols and glucose. It is usually low risk and suitable for sensitive skin, with allergic reactions being uncommon.\",\"details\":\"Coco-glucoside is a gentle, plant-derived cleansing agent (a non-ionic surfactant) made from coconut fatty alcohols and glucose. It is usually low risk and suitable for sensitive skin, with allergic reactions being uncommon.\"}",
+    "lastUpdated": 1764226711394,
+    "createdAt": 1764226711394
+  },
+  "undecylenoyl glycine__food": {
+    "analysis": "{\"ingredient\":\"Undecylenoyl Glycine\",\"name\":\"Undecylenoyl Glycine\",\"category\":\"other\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Undecylenoyl glycine is a synthetic derivative of the amino acid glycine used mainly in cosmetics for its mild cleansing and antimicrobial properties; it is generally considered low risk at typical use levels.\",\"details\":\"Undecylenoyl glycine is a synthetic derivative of the amino acid glycine used mainly in cosmetics for its mild cleansing and antimicrobial properties; it is generally considered low risk at typical use levels.\"}",
+    "lastUpdated": 1764226762584,
+    "createdAt": 1764226762584
+  },
+  "sodium gluconate__food": {
+    "analysis": "{\"ingredient\":\"Sodium Gluconate\",\"name\":\"Sodium Gluconate\",\"category\":\"food\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Sodium gluconate is the sodium salt of gluconic acid used as a food additive and chelating agent; it is typically well tolerated and considered low risk for most people.\",\"details\":\"Sodium gluconate is the sodium salt of gluconic acid used as a food additive and chelating agent; it is typically well tolerated and considered low risk for most people.\"}",
+    "lastUpdated": 1764226762584,
+    "createdAt": 1764226762584
+  },
+  "sodium hydroxypropyl starch phosphate__food": {
+    "analysis": "{\"ingredient\":\"Sodium Hydroxypropyl Starch Phosphate\",\"name\":\"Sodium Hydroxypropyl Starch Phosphate\",\"category\":\"food\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"A modified starch used as a thickener and stabilizer in foods; it is generally recognized as safe when consumed in typical amounts. It may contribute minor processed carbohydrate but is not a common allergen.\",\"details\":\"A modified starch used as a thickener and stabilizer in foods; it is generally recognized as safe when consumed in typical amounts. It may contribute minor processed carbohydrate but is not a common allergen.\"}",
+    "lastUpdated": 1764226763116,
+    "createdAt": 1764226763116
+  },
+  "hydrogenated soybean oil__food": {
+    "analysis": "{\"ingredient\":\"Hydrogenated Soybean Oil\",\"name\":\"Hydrogenated Soybean Oil\",\"category\":\"food\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":true,\"summary\":\"Soybean oil that has been hydrogenated to make it more solid and shelf-stable, which can create trans fats linked to cardiovascular risk. It is derived from soy and can be a concern for people with soy allergy.\",\"details\":\"Soybean oil that has been hydrogenated to make it more solid and shelf-stable, which can create trans fats linked to cardiovascular risk. It is derived from soy and can be a concern for people with soy allergy.\"}",
+    "lastUpdated": 1764226763117,
+    "createdAt": 1764226763117
+  },
+  "guar hydroxypropyltrimonium chloride__food": {
+    "analysis": "{\"ingredient\":\"Guar Hydroxypropyltrimonium Chloride\",\"name\":\"Guar Hydroxypropyltrimonium Chloride\",\"category\":\"non-food\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":false,\"summary\":\"Guar hydroxypropyltrimonium chloride is a chemically modified guar gum used in hair and skin products as a conditioning and thickening agent. It is generally considered safe but may cause irritation in people with very sensitive skin.\",\"details\":\"Guar hydroxypropyltrimonium chloride is a chemically modified guar gum used in hair and skin products as a conditioning and thickening agent. It is generally considered safe but may cause irritation in people with very sensitive skin.\"}",
+    "lastUpdated": 1764226763231,
+    "createdAt": 1764226763231
+  },
+  "fragrance (perfume)__food": {
+    "analysis": "{\"ingredient\":\"Fragrance (perfume)\",\"name\":\"Fragrance (perfume)\",\"category\":\"non-food\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":true,\"summary\":\"Fragrance (perfume) is a mixture of aromatic compounds used to scent cosmetic and personal care products. It is a common cause of skin irritation and allergic reactions, especially in sensitive individuals.\",\"details\":\"Fragrance (perfume) is a mixture of aromatic compounds used to scent cosmetic and personal care products. It is a common cause of skin irritation and allergic reactions, especially in sensitive individuals.\"}",
+    "lastUpdated": 1764226763231,
+    "createdAt": 1764226763231
+  },
+  "caprylyl glycine__food": {
+    "analysis": "{\"ingredient\":\"Caprylyl Glycine\",\"name\":\"Caprylyl Glycine\",\"category\":\"non-food\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Caprylyl glycine is a derivative of the amino acid glycine and caprylic acid used in skincare as a conditioning and skin-balancing agent. It is generally well tolerated with a low risk of irritation or allergy.\",\"details\":\"Caprylyl glycine is a derivative of the amino acid glycine and caprylic acid used in skincare as a conditioning and skin-balancing agent. It is generally well tolerated with a low risk of irritation or allergy.\"}",
+    "lastUpdated": 1764226763231,
+    "createdAt": 1764226763231
+  },
+  "sodium lauroyl isethionate__food": {
+    "analysis": "{\"ingredient\":\"Sodium Lauroyl Isethionate\",\"name\":\"Sodium Lauroyl Isethionate\",\"category\":\"food\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":false,\"summary\":\"Sodium lauroyl isethionate is a synthetic surfactant mainly used in personal care products, not typically as a food ingredient; ingestion in normal trace amounts from such products is unlikely but not intended for regular dietary intake.\",\"details\":\"Sodium lauroyl isethionate is a synthetic surfactant mainly used in personal care products, not typically as a food ingredient; ingestion in normal trace amounts from such products is unlikely but not intended for regular dietary intake.\"}",
+    "lastUpdated": 1764226764048,
+    "createdAt": 1764226764048
+  },
+  "sodium methyl lauroyl taurate__food": {
+    "analysis": "{\"ingredient\":\"Sodium Methyl Lauroyl Taurate\",\"name\":\"Sodium Methyl Lauroyl Taurate\",\"category\":\"food\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":false,\"summary\":\"Sodium methyl lauroyl taurate is a surfactant used in cleansers and shampoos rather than foods, and while it is generally regarded as low-to-moderate risk for topical use, it is not meant for ingestion.\",\"details\":\"Sodium methyl lauroyl taurate is a surfactant used in cleansers and shampoos rather than foods, and while it is generally regarded as low-to-moderate risk for topical use, it is not meant for ingestion.\"}",
+    "lastUpdated": 1764226764048,
+    "createdAt": 1764226764048
+  },
+  "lauric acid__food": {
+    "analysis": "{\"ingredient\":\"Lauric Acid\",\"name\":\"Lauric Acid\",\"category\":\"food\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Lauric acid is a saturated fatty acid naturally found in coconut oil and palm kernel oil and is generally considered safe in normal dietary amounts, contributing to the fat content of foods.\",\"details\":\"Lauric acid is a saturated fatty acid naturally found in coconut oil and palm kernel oil and is generally considered safe in normal dietary amounts, contributing to the fat content of foods.\"}",
+    "lastUpdated": 1764226764048,
+    "createdAt": 1764226764048
+  },
+  "stearic acid__food": {
+    "analysis": "{\"ingredient\":\"Stearic Acid\",\"name\":\"Stearic Acid\",\"category\":\"food\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Stearic acid is a saturated fatty acid commonly used as an emulsifier or hardener in foods and cosmetics; it is generally regarded as safe for most people when consumed in normal amounts.\",\"details\":\"Stearic acid is a saturated fatty acid commonly used as an emulsifier or hardener in foods and cosmetics; it is generally regarded as safe for most people when consumed in normal amounts.\"}",
+    "lastUpdated": 1764226764692,
+    "createdAt": 1764226764692
+  },
+  "palmitic acid__food": {
+    "analysis": "{\"ingredient\":\"Palmitic Acid\",\"name\":\"Palmitic Acid\",\"category\":\"food\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":false,\"summary\":\"Palmitic acid is a saturated fatty acid found in palm oil and animal fats; high intake of saturated fats has been associated with increased cardiovascular risk, so moderation is advised.\",\"details\":\"Palmitic acid is a saturated fatty acid found in palm oil and animal fats; high intake of saturated fats has been associated with increased cardiovascular risk, so moderation is advised.\"}",
+    "lastUpdated": 1764226764693,
+    "createdAt": 1764226764693
+  },
+  "hydrogenated vegetable glycerides__food": {
+    "analysis": "{\"ingredient\":\"Hydrogenated Vegetable Glycerides\",\"name\":\"Hydrogenated Vegetable Glycerides\",\"category\":\"food\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":false,\"summary\":\"Hydrogenated vegetable glycerides are fats derived from vegetable oils that have been hydrogenated to change their texture and stability; depending on processing, they may contain saturated and sometimes trans fats, which should be limited in the diet.\",\"details\":\"Hydrogenated vegetable glycerides are fats derived from vegetable oils that have been hydrogenated to change their texture and stability; depending on processing, they may contain saturated and sometimes trans fats, which should be limited in the diet.\"}",
+    "lastUpdated": 1764226764693,
+    "createdAt": 1764226764693
+  },
+  "stearate__food": {
+    "analysis": "{\"ingredient\":\"Stearate\",\"name\":\"Stearate\",\"category\":\"food\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Stearate refers to salts or esters of stearic acid (such as magnesium stearate), used mainly as anti-caking or flow agents; they are generally considered safe at typical use levels.\",\"details\":\"Stearate refers to salts or esters of stearic acid (such as magnesium stearate), used mainly as anti-caking or flow agents; they are generally considered safe at typical use levels.\"}",
+    "lastUpdated": 1764226764693,
+    "createdAt": 1764226764693
+  },
+  "hydroxystearic acid__food": {
+    "analysis": "{\"ingredient\":\"Hydroxystearic Acid\",\"name\":\"Hydroxystearic Acid\",\"category\":\"food\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Hydroxystearic acid is a chemically modified form of stearic acid used mostly in cosmetics and sometimes specialty food applications; available safety data suggests low toxicity at conventional exposure levels.\",\"details\":\"Hydroxystearic acid is a chemically modified form of stearic acid used mostly in cosmetics and sometimes specialty food applications; available safety data suggests low toxicity at conventional exposure levels.\"}",
+    "lastUpdated": 1764226764693,
+    "createdAt": 1764226764693
+  },
+  "stearate__skincare": {
+    "analysis": "{\"ingredient\":\"Stearate\",\"name\":\"Stearate\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Stearate refers to salts or esters of stearic acid, commonly used in skincare as emulsifiers, thickeners, or lubricants. They are generally considered low risk for most people, though very sensitive individuals may experience mild irritation.\",\"details\":\"Stearate refers to salts or esters of stearic acid, commonly used in skincare as emulsifiers, thickeners, or lubricants. They are generally considered low risk for most people, though very sensitive individuals may experience mild irritation.\"}",
+    "lastUpdated": 1764226820286,
+    "createdAt": 1764226820286
+  },
+  "fragrance (perfume)__skincare": {
+    "analysis": "{\"ingredient\":\"Fragrance (perfume)\",\"name\":\"Fragrance (perfume)\",\"category\":\"skincare\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":true,\"summary\":\"Fragrance refers to a mixture of aromatic compounds used to add scent to skincare products. It is a common cause of skin irritation and allergic reactions, especially for sensitive or reactive skin.\",\"details\":\"Fragrance refers to a mixture of aromatic compounds used to add scent to skincare products. It is a common cause of skin irritation and allergic reactions, especially for sensitive or reactive skin.\"}",
+    "lastUpdated": 1764226820692,
+    "createdAt": 1764226820692
+  },
+  "sodium lauryl isethionate__skincare": {
+    "analysis": "{\"ingredient\":\"Sodium Lauryl Isethionate\",\"name\":\"Sodium Lauryl Isethionate\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Sodium lauryl isethionate is a mild surfactant used for cleansing and foaming in skincare and personal care products. It is typically gentler than many other sulfated surfactants but may cause irritation in very sensitive individuals.\",\"details\":\"Sodium lauryl isethionate is a mild surfactant used for cleansing and foaming in skincare and personal care products. It is typically gentler than many other sulfated surfactants but may cause irritation in very sensitive individuals.\"}",
+    "lastUpdated": 1764226820953,
+    "createdAt": 1764226820953
+  },
+  "undecylenoyl glycine__skincare": {
+    "analysis": "{\"ingredient\":\"Undecylenoyl Glycine\",\"name\":\"Undecylenoyl Glycine\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Undecylenoyl glycine is an amino acid–derived compound used for its gentle cleansing, sebum-regulating, and antimicrobial properties. It is generally considered safe in cosmetic concentrations with low irritation potential.\",\"details\":\"Undecylenoyl glycine is an amino acid–derived compound used for its gentle cleansing, sebum-regulating, and antimicrobial properties. It is generally considered safe in cosmetic concentrations with low irritation potential.\"}",
+    "lastUpdated": 1764226821388,
+    "createdAt": 1764226821388
+  },
+  "sodium gluconate__skincare": {
+    "analysis": "{\"ingredient\":\"Sodium Gluconate\",\"name\":\"Sodium Gluconate\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Sodium gluconate is the sodium salt of gluconic acid used as a chelating agent and stabilizer in cosmetic formulations. It is typically well tolerated and considered low risk for most users.\",\"details\":\"Sodium gluconate is the sodium salt of gluconic acid used as a chelating agent and stabilizer in cosmetic formulations. It is typically well tolerated and considered low risk for most users.\"}",
+    "lastUpdated": 1764226821388,
+    "createdAt": 1764226821388
+  },
+  "mono- (incomplete term likely part of 'monoglycerides')__food": {
+    "analysis": "{\"ingredient\":\"Mono- (incomplete Term, Likely Part Of 'monoglycerides')\",\"name\":\"Mono- (incomplete Term, Likely Part Of 'monoglycerides')\",\"category\":\"food additive\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"This appears to be an incomplete word, most likely the prefix of 'monoglycerides', which are common food emulsifiers. By itself it is not a full ingredient name and cannot be fully assessed, but monoglycerides in general are considered low risk for most people.\",\"details\":\"This appears to be an incomplete word, most likely the prefix of 'monoglycerides', which are common food emulsifiers. By itself it is not a full ingredient name and cannot be fully assessed, but monoglycerides in general are considered low risk for most people.\"}",
+    "lastUpdated": 1764226875041,
+    "createdAt": 1764226875041
+  },
+  "diglycerides__food": {
+    "analysis": "{\"ingredient\":\"Diglycerides\",\"name\":\"Diglycerides\",\"category\":\"food additive\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Diglycerides (often listed as part of mono- and diglycerides) are emulsifiers made from glycerol and fatty acids used to improve texture and shelf life in processed foods. They are generally regarded as safe for most people, though they contribute small amounts of added fats.\",\"details\":\"Diglycerides (often listed as part of mono- and diglycerides) are emulsifiers made from glycerol and fatty acids used to improve texture and shelf life in processed foods. They are generally regarded as safe for most people, though they contribute small amounts of added fats.\"}",
+    "lastUpdated": 1764226875041,
+    "createdAt": 1764226875041
+  },
+  "ceramide np__skincare": {
+    "analysis": "{\"ingredient\":\"Ceramide Np\",\"name\":\"Ceramide Np\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Ceramide NP is a skin-identical lipid (a type of ceramide) used to strengthen the skin barrier and improve moisture retention. It is generally well tolerated and considered low risk for most skin types.\",\"details\":\"Ceramide NP is a skin-identical lipid (a type of ceramide) used to strengthen the skin barrier and improve moisture retention. It is generally well tolerated and considered low risk for most skin types.\"}",
+    "lastUpdated": 1764226960257,
+    "createdAt": 1764226960257
+  },
+  "polyglyceryl-3 methylglucose distearate__skincare": {
+    "analysis": "{\"ingredient\":\"Polyglyceryl-3 Methylglucose Distearate\",\"name\":\"Polyglyceryl-3 Methylglucose Distearate\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Polyglyceryl-3 methylglucose distearate is an emulsifier derived from glycerin, glucose, and stearic acid that helps mix oil and water in skincare products. It is generally considered safe and well tolerated for most skin types.\",\"details\":\"Polyglyceryl-3 methylglucose distearate is an emulsifier derived from glycerin, glucose, and stearic acid that helps mix oil and water in skincare products. It is generally considered safe and well tolerated for most skin types.\"}",
+    "lastUpdated": 1764226962683,
+    "createdAt": 1764226962683
+  },
+  "isopropyl myristate__skincare": {
+    "analysis": "{\"ingredient\":\"Isopropyl Myristate\",\"name\":\"Isopropyl Myristate\",\"category\":\"skincare\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":false,\"summary\":\"Isopropyl myristate is an emollient and texture enhancer that makes products feel smooth and helps spreadability. It is usually safe but can be comedogenic for some people and may worsen acne-prone or very oily skin.\",\"details\":\"Isopropyl myristate is an emollient and texture enhancer that makes products feel smooth and helps spreadability. It is usually safe but can be comedogenic for some people and may worsen acne-prone or very oily skin.\"}",
+    "lastUpdated": 1764226962683,
+    "createdAt": 1764226962683
+  },
+  "peg-100 stearate__skincare": {
+    "analysis": "{\"ingredient\":\"Peg-100 Stearate\",\"name\":\"Peg-100 Stearate\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"PEG-100 stearate is an emulsifier made from polyethylene glycol and stearic acid that helps blend oil and water and stabilize creams and lotions. It is generally considered safe, though very sensitive individuals may prefer to limit PEG-containing ingredients.\",\"details\":\"PEG-100 stearate is an emulsifier made from polyethylene glycol and stearic acid that helps blend oil and water and stabilize creams and lotions. It is generally considered safe, though very sensitive individuals may prefer to limit PEG-containing ingredients.\"}",
+    "lastUpdated": 1764226962685,
+    "createdAt": 1764226962685
+  },
+  "hamamelis virginiana (witch hazel)__skincare": {
+    "analysis": "{\"ingredient\":\"Hamamelis Virginiana (witch Hazel)\",\"name\":\"Hamamelis Virginiana (witch Hazel)\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":true,\"summary\":\"Witch hazel is a botanical extract used as an astringent and soothing agent in skincare. It is generally well tolerated but can cause irritation or allergic reactions in sensitive or allergy‑prone individuals.\",\"details\":\"Witch hazel is a botanical extract used as an astringent and soothing agent in skincare. It is generally well tolerated but can cause irritation or allergic reactions in sensitive or allergy‑prone individuals.\"}",
+    "lastUpdated": 1764226962881,
+    "createdAt": 1764226962881
+  },
+  "extract__skincare": {
+    "analysis": "{\"ingredient\":\"Extract\",\"name\":\"Extract\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"An extract is a concentrated preparation obtained from a raw material (often plants) used for its active components. Health risk and allergen potential depend on the specific source, which is not specified here.\",\"details\":\"An extract is a concentrated preparation obtained from a raw material (often plants) used for its active components. Health risk and allergen potential depend on the specific source, which is not specified here.\"}",
+    "lastUpdated": 1764226962881,
+    "createdAt": 1764226962881
+  },
+  "dimethiconol__skincare": {
+    "analysis": "{\"ingredient\":\"Dimethiconol\",\"name\":\"Dimethiconol\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Dimethiconol is a silicone-based polymer used as an emollient and skin protectant that provides a smooth feel and helps reduce water loss. It is considered low risk and is rarely associated with allergic reactions.\",\"details\":\"Dimethiconol is a silicone-based polymer used as an emollient and skin protectant that provides a smooth feel and helps reduce water loss. It is considered low risk and is rarely associated with allergic reactions.\"}",
+    "lastUpdated": 1764226962881,
+    "createdAt": 1764226962881
+  },
+  "sodium polyacrylate__skincare": {
+    "analysis": "{\"ingredient\":\"Sodium Polyacrylate\",\"name\":\"Sodium Polyacrylate\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Sodium polyacrylate is a synthetic polymer used as a thickener and absorbent in cosmetic formulations. It is generally regarded as low risk, though very sensitive individuals may experience mild irritation.\",\"details\":\"Sodium polyacrylate is a synthetic polymer used as a thickener and absorbent in cosmetic formulations. It is generally regarded as low risk, though very sensitive individuals may experience mild irritation.\"}",
+    "lastUpdated": 1764226962881,
+    "createdAt": 1764226962881
+  },
+  "12-hexanediol__skincare": {
+    "analysis": "{\"ingredient\":\"1,2-hexanediol\",\"name\":\"1,2-hexanediol\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"1,2-Hexanediol is a synthetic humectant and preservative booster used to help products retain moisture and improve preservation. It is generally considered low risk, with irritation uncommon except in very sensitive skin.\",\"details\":\"1,2-Hexanediol is a synthetic humectant and preservative booster used to help products retain moisture and improve preservation. It is generally considered low risk, with irritation uncommon except in very sensitive skin.\"}",
+    "lastUpdated": 1764226963288,
+    "createdAt": 1764226963288
+  },
+  "caprylyl glycol__skincare": {
+    "analysis": "{\"ingredient\":\"Caprylyl Glycol\",\"name\":\"Caprylyl Glycol\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Caprylyl glycol is a skin-conditioning agent and preservative booster derived from caprylic acid that helps moisturize and stabilize formulations. It is typically low risk, though very sensitive individuals may experience mild irritation.\",\"details\":\"Caprylyl glycol is a skin-conditioning agent and preservative booster derived from caprylic acid that helps moisturize and stabilize formulations. It is typically low risk, though very sensitive individuals may experience mild irritation.\"}",
+    "lastUpdated": 1764226963288,
+    "createdAt": 1764226963288
+  },
+  "shea butter (butyrospermum parkii)__skincare": {
+    "analysis": "{\"ingredient\":\"Shea Butter (butyrospermum Parkii)\",\"name\":\"Shea Butter (butyrospermum Parkii)\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":true,\"summary\":\"Shea butter is a natural fat from the nuts of the shea tree used as a rich emollient and moisturizer. It is generally safe but can be an allergen for people with nut sensitivities or very reactive skin.\",\"details\":\"Shea butter is a natural fat from the nuts of the shea tree used as a rich emollient and moisturizer. It is generally safe but can be an allergen for people with nut sensitivities or very reactive skin.\"}",
+    "lastUpdated": 1764226963288,
+    "createdAt": 1764226963288
+  },
+  "anise fruit extract (illicium verum)__skincare": {
+    "analysis": "{\"ingredient\":\"Anise Fruit Extract (illicium Verum)\",\"name\":\"Anise Fruit Extract (illicium Verum)\",\"category\":\"skincare\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":true,\"summary\":\"Anise fruit extract is a botanical extract used for fragrance and potential antioxidant properties. Fragrant plant extracts can cause irritation or allergic reactions in sensitive or allergy-prone individuals.\",\"details\":\"Anise fruit extract is a botanical extract used for fragrance and potential antioxidant properties. Fragrant plant extracts can cause irritation or allergic reactions in sensitive or allergy-prone individuals.\"}",
+    "lastUpdated": 1764226963289,
+    "createdAt": 1764226963289
+  },
+  "olive (olea europaea) fruit oil__skincare": {
+    "analysis": "{\"ingredient\":\"Olive (olea Europaea) Fruit Oil\",\"name\":\"Olive (olea Europaea) Fruit Oil\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":true,\"summary\":\"Olive fruit oil is an emollient oil that helps moisturize and soften the skin. It is usually well tolerated but can cause reactions in people with olive or lipid sensitivities.\",\"details\":\"Olive fruit oil is an emollient oil that helps moisturize and soften the skin. It is usually well tolerated but can cause reactions in people with olive or lipid sensitivities.\"}",
+    "lastUpdated": 1764226963304,
+    "createdAt": 1764226963304
+  },
+  "butylene glycol__skincare": {
+    "analysis": "{\"ingredient\":\"Butylene Glycol\",\"name\":\"Butylene Glycol\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Butylene glycol is a humectant and solvent that helps the skin retain moisture and improves product texture. It is generally safe but may cause irritation in very sensitive individuals.\",\"details\":\"Butylene glycol is a humectant and solvent that helps the skin retain moisture and improves product texture. It is generally safe but may cause irritation in very sensitive individuals.\"}",
+    "lastUpdated": 1764226963304,
+    "createdAt": 1764226963304
+  },
+  "macadamia ternifolia seed oil__skincare": {
+    "analysis": "{\"ingredient\":\"Macadamia Ternifolia Seed Oil\",\"name\":\"Macadamia Ternifolia Seed Oil\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":true,\"summary\":\"Macadamia seed oil is a nourishing plant oil rich in fatty acids that helps moisturize and protect the skin barrier. It can trigger reactions in people with macadamia or tree nut allergies.\",\"details\":\"Macadamia seed oil is a nourishing plant oil rich in fatty acids that helps moisturize and protect the skin barrier. It can trigger reactions in people with macadamia or tree nut allergies.\"}",
+    "lastUpdated": 1764226963304,
+    "createdAt": 1764226963304
+  },
+  "betaine__skincare": {
+    "analysis": "{\"ingredient\":\"Betaine\",\"name\":\"Betaine\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Betaine is a moisturizing and skin-conditioning ingredient derived from sugar beets that helps maintain skin hydration and smoothness. It is generally well tolerated with a low risk of irritation for most skin types.\",\"details\":\"Betaine is a moisturizing and skin-conditioning ingredient derived from sugar beets that helps maintain skin hydration and smoothness. It is generally well tolerated with a low risk of irritation for most skin types.\"}",
+    "lastUpdated": 1764226963646,
+    "createdAt": 1764226963646
+  },
+  "allantoin__skincare": {
+    "analysis": "{\"ingredient\":\"Allantoin\",\"name\":\"Allantoin\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Allantoin is a soothing and skin-protective compound that helps calm irritation and support skin repair. It is widely used in skincare products and is usually non-irritating and well tolerated.\",\"details\":\"Allantoin is a soothing and skin-protective compound that helps calm irritation and support skin repair. It is widely used in skincare products and is usually non-irritating and well tolerated.\"}",
+    "lastUpdated": 1764226963646,
+    "createdAt": 1764226963646
+  },
+  "trehalose__skincare": {
+    "analysis": "{\"ingredient\":\"Trehalose\",\"name\":\"Trehalose\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Trehalose is a sugar-based humectant that helps attract and retain moisture in the skin. It is considered safe and non-irritating in cosmetic formulations.\",\"details\":\"Trehalose is a sugar-based humectant that helps attract and retain moisture in the skin. It is considered safe and non-irritating in cosmetic formulations.\"}",
+    "lastUpdated": 1764226963646,
+    "createdAt": 1764226963646
+  },
+  "polysorbate 20__skincare": {
+    "analysis": "{\"ingredient\":\"Polysorbate 20\",\"name\":\"Polysorbate 20\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Polysorbate 20 is an emulsifier and surfactant used to help mix oil and water and solubilize fragrances or essential oils. It is generally safe, though very sensitive individuals may experience mild irritation at higher concentrations.\",\"details\":\"Polysorbate 20 is an emulsifier and surfactant used to help mix oil and water and solubilize fragrances or essential oils. It is generally safe, though very sensitive individuals may experience mild irritation at higher concentrations.\"}",
+    "lastUpdated": 1764226963646,
+    "createdAt": 1764226963646
+  },
+  "polyglutamic acid__skincare": {
+    "analysis": "{\"ingredient\":\"Polyglutamic Acid\",\"name\":\"Polyglutamic Acid\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Polyglutamic acid is a hydrating polymer derived from fermented soybeans that can hold large amounts of water on the skin’s surface. It is typically well tolerated and used to improve skin moisture and smoothness.\",\"details\":\"Polyglutamic acid is a hydrating polymer derived from fermented soybeans that can hold large amounts of water on the skin’s surface. It is typically well tolerated and used to improve skin moisture and smoothness.\"}",
+    "lastUpdated": 1764226963646,
+    "createdAt": 1764226963646
+  },
+  "camellia sinensis leaf extract (green tea leaf extract)__skincare": {
+    "analysis": "{\"ingredient\":\"Camellia Sinensis Leaf Extract (green Tea Leaf Extract)\",\"name\":\"Camellia Sinensis Leaf Extract (green Tea Leaf Extract)\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Extract from the leaves of the tea plant, commonly used as an antioxidant and soothing ingredient in skincare. It is generally well tolerated and considered safe for most skin types.\",\"details\":\"Extract from the leaves of the tea plant, commonly used as an antioxidant and soothing ingredient in skincare. It is generally well tolerated and considered safe for most skin types.\"}",
+    "lastUpdated": 1764226963899,
+    "createdAt": 1764226963899
+  },
+  "centella asiatica extract (gotu kola extract)__skincare": {
+    "analysis": "{\"ingredient\":\"Centella Asiatica Extract (gotu Kola Extract)\",\"name\":\"Centella Asiatica Extract (gotu Kola Extract)\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Herbal extract from the Centella asiatica plant, used for soothing, healing, and supporting the skin barrier. It is usually safe, with irritation being uncommon and mostly in very sensitive individuals.\",\"details\":\"Herbal extract from the Centella asiatica plant, used for soothing, healing, and supporting the skin barrier. It is usually safe, with irritation being uncommon and mostly in very sensitive individuals.\"}",
+    "lastUpdated": 1764226963899,
+    "createdAt": 1764226963899
+  },
+  "scutellaria baicalensis root extract (baikal skullcap root extract)__skincare": {
+    "analysis": "{\"ingredient\":\"Scutellaria Baicalensis Root Extract (baikal Skullcap Root Extract)\",\"name\":\"Scutellaria Baicalensis Root Extract (baikal Skullcap Root Extract)\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Plant root extract from Baikal skullcap, valued for antioxidant and anti-inflammatory properties in skincare. Most people tolerate it well, though rare sensitivities can occur.\",\"details\":\"Plant root extract from Baikal skullcap, valued for antioxidant and anti-inflammatory properties in skincare. Most people tolerate it well, though rare sensitivities can occur.\"}",
+    "lastUpdated": 1764226963899,
+    "createdAt": 1764226963899
+  },
+  "polygonum cuspidatum root extract (japanese knotweed root extract)__skincare": {
+    "analysis": "{\"ingredient\":\"Polygonum Cuspidatum Root Extract (japanese Knotweed Root Extract)\",\"name\":\"Polygonum Cuspidatum Root Extract (japanese Knotweed Root Extract)\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Root extract from Japanese knotweed, rich in resveratrol and used for antioxidant and anti-aging benefits. It is generally considered low risk, with mild irritation possible in very sensitive skin.\",\"details\":\"Root extract from Japanese knotweed, rich in resveratrol and used for antioxidant and anti-aging benefits. It is generally considered low risk, with mild irritation possible in very sensitive skin.\"}",
+    "lastUpdated": 1764226963899,
+    "createdAt": 1764226963899
+  },
+  "xylitol__skincare": {
+    "analysis": "{\"ingredient\":\"Xylitol\",\"name\":\"Xylitol\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"A sugar alcohol used as a humectant and moisturizing agent in skincare products. It is typically non-irritating and safe for most users when applied topically.\",\"details\":\"A sugar alcohol used as a humectant and moisturizing agent in skincare products. It is typically non-irritating and safe for most users when applied topically.\"}",
+    "lastUpdated": 1764226963899,
+    "createdAt": 1764226963899
+  },
+  "cyclopentasiloxane__skincare": {
+    "analysis": "{\"ingredient\":\"Cyclopentasiloxane\",\"name\":\"Cyclopentasiloxane\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Cyclopentasiloxane is a volatile silicone used to give products a smooth, silky texture and help spread other ingredients. It is generally considered low risk, though some people with very sensitive skin may experience mild irritation.\",\"details\":\"Cyclopentasiloxane is a volatile silicone used to give products a smooth, silky texture and help spread other ingredients. It is generally considered low risk, though some people with very sensitive skin may experience mild irritation.\"}",
+    "lastUpdated": 1764226964740,
+    "createdAt": 1764226964740
+  },
+  "beeswax__skincare": {
+    "analysis": "{\"ingredient\":\"Beeswax\",\"name\":\"Beeswax\",\"category\":\"skincare\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":true,\"summary\":\"Beeswax is a natural wax produced by honeybees used to thicken products and create a protective barrier on the skin. It is generally safe but can be an allergen for people with bee or pollen sensitivities.\",\"details\":\"Beeswax is a natural wax produced by honeybees used to thicken products and create a protective barrier on the skin. It is generally safe but can be an allergen for people with bee or pollen sensitivities.\"}",
+    "lastUpdated": 1764226964740,
+    "createdAt": 1764226964740
+  },
+  "cetyl ethylhexanoate__skincare": {
+    "analysis": "{\"ingredient\":\"Cetyl Ethylhexanoate\",\"name\":\"Cetyl Ethylhexanoate\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Cetyl ethylhexanoate is an ester used as an emollient to provide a light, non‑greasy feel and improve spreadability. It is typically low risk, with occasional irritation possible in very sensitive skin.\",\"details\":\"Cetyl ethylhexanoate is an ester used as an emollient to provide a light, non‑greasy feel and improve spreadability. It is typically low risk, with occasional irritation possible in very sensitive skin.\"}",
+    "lastUpdated": 1764226964740,
+    "createdAt": 1764226964740
+  },
+  "cyclohexasiloxane__skincare": {
+    "analysis": "{\"ingredient\":\"Cyclohexasiloxane\",\"name\":\"Cyclohexasiloxane\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Cyclohexasiloxane is a volatile silicone that helps products glide smoothly and evaporate without leaving a heavy residue. It is generally considered low risk, though some users concerned about silicones or with reactive skin may prefer to avoid it.\",\"details\":\"Cyclohexasiloxane is a volatile silicone that helps products glide smoothly and evaporate without leaving a heavy residue. It is generally considered low risk, though some users concerned about silicones or with reactive skin may prefer to avoid it.\"}",
+    "lastUpdated": 1764226964740,
+    "createdAt": 1764226964740
+  },
+  "燕麦仁提取物__skincare": {
+    "analysis": "{\"ingredient\":\"燕麦仁提取物\",\"name\":\"燕麦仁提取物\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":true,\"summary\":\"燕麦仁提取物具有舒缓、保湿和抗炎作用，常用于敏感肌和干性皮肤护理产品中。对燕麦或谷物蛋白过敏人群可能引发接触性过敏反应，应先做皮肤测试。\",\"details\":\"燕麦仁提取物具有舒缓、保湿和抗炎作用，常用于敏感肌和干性皮肤护理产品中。对燕麦或谷物蛋白过敏人群可能引发接触性过敏反应，应先做皮肤测试。\"}",
+    "lastUpdated": 1764227030137,
+    "createdAt": 1764227030137
+  },
+  "燕麦仁粉（燕麦籽粉）__skincare": {
+    "analysis": "{\"ingredient\":\"燕麦仁粉（燕麦籽粉）\",\"name\":\"燕麦仁粉（燕麦籽粉）\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":true,\"summary\":\"燕麦仁粉常用于护肤品中，具有舒缓、保湿和修复皮肤屏障的作用，一般较为温和安全。对燕麦或谷物蛋白过敏人群可能出现过敏反应，需先做局部测试。\",\"details\":\"燕麦仁粉常用于护肤品中，具有舒缓、保湿和修复皮肤屏障的作用，一般较为温和安全。对燕麦或谷物蛋白过敏人群可能出现过敏反应，需先做局部测试。\"}",
+    "lastUpdated": 1764227030435,
+    "createdAt": 1764227030435
   }
 }
