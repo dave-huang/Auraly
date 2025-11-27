@@ -921,18 +921,19 @@ export async function analyzeIngredientsParallel(
   console.log(`[PARALLEL-ANALYZER] Text preview: ${joinedText.substring(0, 200)}...`);
   
   // Parse individual ingredients by splitting on common separators
-  // But NOT on commas between digits (e.g., "1,4-dicarboxylic" in chemical names)
+  // But NOT on any comma/separator between digits (e.g., "1,4-dicarboxylic" in chemical names)
   let textForSplitting = joinedText;
   
-  // Temporarily replace "digit,digit" with a placeholder to preserve chemical formulas
-  const digitCommaPattern = /(\d),(\d)/g;
+  // Temporarily replace all commas/separators between digits with a placeholder
+  // Handles: ASCII comma, Arabic comma (،), Chinese comma (、), and spaces around them
+  const digitSeparatorPattern = /(\d)\s*[,،、]\s*(?=\d)/g;  // digit + optional space + any comma + optional space + lookahead digit
   const placeholder = '\x00COMMA_PLACEHOLDER\x00';
-  textForSplitting = textForSplitting.replace(digitCommaPattern, `$1${placeholder}$2`);
+  textForSplitting = textForSplitting.replace(digitSeparatorPattern, `$1${placeholder}`);
   
   const rawIngredients = textForSplitting
     .split(/[,،、;；\n]/)
     .map(ing => {
-      // Restore the preserved commas
+      // Restore the preserved commas/separators as ASCII commas
       return ing.replace(new RegExp(placeholder, 'g'), ',').trim();
     })
     .filter(ing => {
