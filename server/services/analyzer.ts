@@ -930,8 +930,10 @@ export async function analyzeIngredientsParallel(
   const placeholder = '\x00COMMA_PLACEHOLDER\x00';
   textForSplitting = textForSplitting.replace(digitSeparatorPattern, `$1${placeholder}`);
   
+  // Split on separators: commas, AND/OR between ingredients (when surrounded by word chars), semicolons, newlines
+  // Use word boundary \b to ensure AND/OR are whole words, not part of ingredient names
   const rawIngredients = textForSplitting
-    .split(/[,،、;；\n]/)
+    .split(/[,،、;；\n]|\s+(?:and|or)\s+/i)
     .map(ing => {
       // Restore the preserved commas/separators as ASCII commas
       return ing.replace(new RegExp(placeholder, 'g'), ',').trim();
