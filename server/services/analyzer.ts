@@ -954,11 +954,6 @@ export async function analyzeIngredientsParallel(
       let depunctuated = cleanedIng.replace(/[.,;:)\]}]+$/, '').trim();
       if (depunctuated.length < 2) return false;
       
-      // CRITICAL: Reject if unmatched parentheses/brackets - GPT will reject these
-      const openParens = (depunctuated.match(/[\(\[]/g) || []).length;
-      const closeParens = (depunctuated.match(/[\)\]]/g) || []).length;
-      if (openParens !== closeParens) return false;
-      
       // Reject items starting with CONTAINS (they're measurement markers, not ingredients)
       if (depunctuated.match(/^CONTAINS\s+/i)) return false;
       
