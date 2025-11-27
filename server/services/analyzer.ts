@@ -841,7 +841,7 @@ export async function analyzeIngredientsParallel(
   textForSplitting = textForSplitting.replace(digitSeparatorPattern, `$1${placeholder}`);
   
   // Split on delimiters - keep it simple and trust the delimiters
-  const rawIngredients = textForSplitting
+  let splitIngredients = textForSplitting
     .split(/[,،、;；\n]/)  // Split on commas, semicolons, newlines
     .map(ing => {
       // Restore the preserved commas/separators as ASCII commas
@@ -866,8 +866,40 @@ export async function analyzeIngredientsParallel(
       
       return true;
     })
-    .map(ing => ing.replace(/^[^:：]*([:：])\s*/, '').replace(/[.,;:)\]}]+$/, '').trim())
-    .slice(0, 200);
+    .map(ing => ing.replace(/^[^:：]*([:：])\s*/, '').replace(/[.,;:)\]}]+$/, '').trim());
+
+  // CRITICAL: Merge ingredients with unmatched parentheses with the next ingredient
+  // This fixes cases like "生育" + "酚(维生素E)" being split into separate entries
+  const mergedIngredients: string[] = [];
+  for (let i = 0; i < splitIngredients.length; i++) {
+    let ing = splitIngredients[i];
+    // Count unmatched opening and closing parentheses
+    const openCount = (ing.match(/[（(]/g) || []).length;
+    const closeCount = (ing.match(/[）)]/g) || []).length;
+    
+    // If unmatched opening parens, merge with next ingredient
+    if (openCount > closeCount && i + 1 < splitIngredients.length) {
+      let merged = ing;
+      let j = i + 1;
+      let currentOpen = openCount;
+      let currentClose = closeCount;
+      
+      while (j < splitIngredients.length && currentOpen > currentClose) {
+        const nextIng = splitIngredients[j];
+        merged += ' ' + nextIng;
+        currentOpen += (nextIng.match(/[（(]/g) || []).length;
+        currentClose += (nextIng.match(/[）)]/g) || []).length;
+        j++;
+      }
+      
+      mergedIngredients.push(merged);
+      i = j - 1; // Skip the ingredients we merged
+    } else {
+      mergedIngredients.push(ing);
+    }
+  }
+
+  const rawIngredients = mergedIngredients.slice(0, 200);
   
   if (rawIngredients.length === 0) {
     throw new Error('No valid ingredients found to analyze');
