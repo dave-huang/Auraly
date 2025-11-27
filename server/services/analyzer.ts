@@ -1011,6 +1011,8 @@ export async function analyzeIngredientsParallel(
 
 CRITICAL: Analyze ALL ${missingIngredients.length} ingredients provided below. Your response must include exactly ${missingIngredients.length} items in the array.
 
+IMPORTANT: Ingredients may be listed in ANY language (English, Chinese, Spanish, etc.). Analyze all ingredients as provided without requesting translation. Use your knowledge of ingredient names across languages to provide accurate health risk assessments.
+
 Your job is to evaluate each ingredient using the following methodology:
 
 AURALY RISK FRAMEWORK
