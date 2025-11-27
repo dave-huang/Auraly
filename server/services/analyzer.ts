@@ -1021,14 +1021,19 @@ export async function analyzeIngredientsParallel(
     const missingList = missingIngredients.map((ing, idx) => `${idx + 1}. ${ing}`).join('\n');
     
     // SIMPLIFIED prompt that GPT handles better
-    // IMPORTANT: explicitly tell GPT the ingredient names are already provided in their source language
-    const batchPrompt = `IMPORTANT: The ingredient names below are provided in their source language (may include English, Chinese, Spanish, or other languages). Analyze each ingredient AS PROVIDED - do not request translation. Respond ONLY with the JSON array below, nothing else.
-
-Analyze these ${missingIngredients.length} ingredients for health risk (toxicity/carcinogenicity): High/Medium/Low. Return JSON array:
+    // Get language code for display
+    const languageMap: { [key: string]: string } = {
+      'en': 'English',
+      'zh': 'Chinese',
+      'es': 'Spanish'
+    };
+    const displayLanguage = languageMap[userLanguage] || 'English';
+    
+    const batchPrompt = `The ingredient names below are in their source language (Chinese, Spanish, English, etc). Analyze each ingredient and TRANSLATE the ingredient name to ${displayLanguage}. Respond ONLY with the JSON array, nothing else:
 
 [
   {
-    "ingredient": "ingredient name as provided",
+    "ingredient": "ingredient name translated to ${displayLanguage}",
     "category": "${productType}",
     "healthRisk": "High|Medium|Low",
     "allergen": true or false,
@@ -1041,11 +1046,11 @@ Analyze these ${missingIngredients.length} ingredients for health risk (toxicity
       "containsAddedSugars": true/false,
       "ultraProcessedAdditive": true/false
     },
-    "summary": "1-2 sentence explanation"
+    "summary": "1-2 sentence explanation in ${displayLanguage}"
   }
 ]
 
-Ingredients:
+Ingredients to analyze:
 ${missingList}`;
     
     try {
