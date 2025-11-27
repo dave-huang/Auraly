@@ -930,10 +930,10 @@ export async function analyzeIngredientsParallel(
   const placeholder = '\x00COMMA_PLACEHOLDER\x00';
   textForSplitting = textForSplitting.replace(digitSeparatorPattern, `$1${placeholder}`);
   
-  // Split on separators: commas, AND/OR between ingredients (when surrounded by word chars), semicolons, newlines
-  // Use word boundary \b to ensure AND/OR are whole words, not part of ingredient names
+  // Split ONLY on actual delimiters: commas, semicolons, newlines
+  // DO NOT split on "AND"/"OR" - these are typically connectors within ingredient names (e.g., "MONO AND DIGLYCERIDES")
   const rawIngredients = textForSplitting
-    .split(/[,،、;；\n]|\s+(?:and|or)\s+/i)
+    .split(/[,،、;；\n]+/)
     .map(ing => {
       // Restore the preserved commas/separators as ASCII commas
       return ing.replace(new RegExp(placeholder, 'g'), ',').trim();
@@ -943,20 +943,29 @@ export async function analyzeIngredientsParallel(
       if (ing.length < 2) return false;
       if (ing.match(/^[\d.]+%?$/)) return false; // Pure numbers/percentages
       if (isStructuralMarker(ing)) return false;
-      if (ing.match(/^(and|or|with)$/i)) return false; // Common connectors
+      if (ing.match(/^(and|or|with)$/i)) return false; // Common connectors alone
       
       // Remove section headers attached to ingredients (e.g., "其他微量成分:异丙醇" → "异丙醇")
       // Match patterns like "SectionHeader:ingredient" or "SectionHeader：ingredient" 
       const cleanedIng = ing.replace(/^[^:：]*([:：])\s*/, '').trim();
       if (cleanedIng.length < 2) return false;
       
+      // Remove trailing punctuation that's not part of the ingredient name
+      const depunctuated = cleanedIng.replace(/[.,;:)\]}]+$/, '').trim();
+      if (depunctuated.length < 2) return false;
+      
+      // Filter out artifact fragments - very short strings with mostly non-ASCII or special chars
+      // These are often OCR errors or broken parts of multi-word ingredients
+      const nonAsciiCount = depunctuated.replace(/[a-zA-Z0-9\s\-()]/g, '').length;
+      if (depunctuated.length < 4 && nonAsciiCount > depunctuated.length * 0.3) return false;
+      
       // Exclude facility/allergen statements (long phrases with "facility", "processes", "may contain", etc.)
-      if (cleanedIng.match(/facility|process|manufacture|made in|may contain|allergen|cross-contact|equipment/i)) return false;
-      if (cleanedIng.length > 40 && cleanedIng.match(/\s.{20,}/)) return false; // Very long phrases (usually not ingredients)
+      if (depunctuated.match(/facility|process|manufacture|made in|may contain|allergen|cross-contact|equipment/i)) return false;
+      if (depunctuated.length > 40 && depunctuated.match(/\s.{20,}/)) return false; // Very long phrases (usually not ingredients)
       
       return true;
     })
-    .map(ing => ing.replace(/^[^:：]*([:：])\s*/, '').trim()) // Apply the same cleaning to returned ingredients
+    .map(ing => ing.replace(/^[^:：]*([:：])\s*/, '').replace(/[.,;:)\]}]+$/, '').trim()) // Apply the same cleaning to returned ingredients
     .slice(0, 200); // Increase cap to 200 to handle larger ingredient lists
   
   if (rawIngredients.length === 0) {
