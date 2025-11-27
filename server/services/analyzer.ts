@@ -863,14 +863,21 @@ export async function analyzeIngredientsParallel(
           break;
         }
         
-        // Join if current line ends with word AND next line looks like continuation:
-        // - Starts with lowercase letter (most common case for wrapped words)
-        // - Is a short fragment (< 15 chars) and starts with letter/digit
-        // - Looks like part of a word (mostly letters, hyphens, no commas at start)
+        // Join if current line ends with word/digit AND next line looks like continuation
         const endsWithWord = /[a-zA-Z0-9]$/.test(merged);
-        const nextStartsLowercase = /^[a-z]/.test(nextLine);
-        const nextIsShortFragment = nextLine.length < 15 && /^[a-zA-Z0-9\-']/.test(nextLine);
-        const nextLooksLikeContinuation = nextStartsLowercase || (nextIsShortFragment && !nextLine.match(/^(AND|OR|WITH|CONTAINS)/i));
+        
+        // Next line is a continuation if:
+        // 1. Starts with a letter or digit (any case) - most wrapped words
+        // 2. Is NOT a structural keyword or new ingredient marker
+        // 3. Doesn't look like a label section (all caps with 2+ words is usually a new section)
+        const nextStartsWithLetterOrDigit = /^[a-zA-Z0-9]/.test(nextLine);
+        const isNotKeyword = !nextLine.match(/^(AND|OR|WITH|CONTAINS|MADE|MAY|DIRECTIONS?|INSTRUCTIONS?|NUTRITION|INGREDIENTS?|ALLERGENS?)/i);
+        const isNotAllCapsSection = !(nextLine.match(/^[A-Z\s]{4,}$/) && nextLine.split(/\s+/).length > 1);
+        
+        // Also check: if it's longer than 2 chars and mostly letters (allowing hyphens, apostrophes), it's likely a continued word
+        const looksLikeContinuedWord = nextLine.length <= 50 && /^[a-zA-Z\-']+(\s[a-zA-Z\-']+)?$/.test(nextLine);
+        
+        const nextLooksLikeContinuation = nextStartsWithLetterOrDigit && isNotKeyword && (looksLikeContinuedWord || isNotAllCapsSection);
         
         // Only join if current ends with word AND next looks like continuation
         if (endsWithWord && nextLooksLikeContinuation) {
