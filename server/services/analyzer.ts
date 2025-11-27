@@ -828,7 +828,7 @@ export async function analyzeIngredientsParallel(
   console.log(`[PARALLEL-ANALYZER] Estimated ${estimatedCount} ingredients from separators`);
   
   // Helper function to join wrapped lines
-  // Much more aggressive: join lines that likely belong together
+  // Join lines that look like wrapped text (current ends with word, next starts lowercase/fragment)
   function joinWrappedLines(text: string): string {
     const lines = text.split('\n').map(l => l.trim()).filter(l => l);
     const result: string[] = [];
@@ -860,18 +860,17 @@ export async function analyzeIngredientsParallel(
           break;
         }
         
-        // Join if:
-        // 1. Current line is short (< 20 chars) - likely incomplete
-        // 2. Current line doesn't end with punctuation (except comma which is separator)
-        // 3. Next line doesn't look like a new ingredient bullet
-        const endsWithWord = /[a-zA-Z]$/.test(merged);
-        const isMergedShort = merged.length < 30;
-        const nextLooksLikeNewItem = /^[\w\d]{2,}\s+/.test(nextLine); // Starts with word/number
-        const nextIsStructural = nextLine.match(/^(CONTAINS|ALLERGENS|DIRECTIONS|MADE|MANUFACTURED)/i);
+        // Join if current line ends with word AND next line looks like continuation:
+        // - Starts with lowercase letter (most common case for wrapped words)
+        // - Is a short fragment (< 15 chars) and starts with letter/digit
+        // - Looks like part of a word (mostly letters, hyphens, no commas at start)
+        const endsWithWord = /[a-zA-Z0-9]$/.test(merged);
+        const nextStartsLowercase = /^[a-z]/.test(nextLine);
+        const nextIsShortFragment = nextLine.length < 15 && /^[a-zA-Z0-9\-']/.test(nextLine);
+        const nextLooksLikeContinuation = nextStartsLowercase || (nextIsShortFragment && !nextLine.match(/^(AND|OR|WITH|CONTAINS)/i));
         
-        // Heuristic: if merged is short and ends with word, likely wrapped
-        // OR if merged is very short (< 10 chars) and next line looks like continuation
-        if (endsWithWord && (isMergedShort || merged.length < 10)) {
+        // Only join if current ends with word AND next looks like continuation
+        if (endsWithWord && nextLooksLikeContinuation) {
           merged = merged + ' ' + nextLine;
           j++;
         } else {
