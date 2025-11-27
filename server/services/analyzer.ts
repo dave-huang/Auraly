@@ -1135,15 +1135,6 @@ ${missingList}`;
             healthRisk: result.healthRisk || 'Medium',
             riskLevel: legacyRiskLevel,
             allergen: result.allergen || false,
-            dietaryFlags: result.dietaryFlags || {
-              vegan: false,
-              vegetarian: false,
-              containsAnimalProducts: false,
-              containsGluten: false,
-              containsLactose: false,
-              containsAddedSugars: false,
-              ultraProcessedAdditive: false
-            },
             summary: result.summary || 'No summary available',
             sourcesOrNotes: result.sourcesOrNotes,
             details: result.summary || 'No details available'
