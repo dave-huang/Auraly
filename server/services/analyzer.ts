@@ -1037,15 +1037,6 @@ export async function analyzeIngredientsParallel(
     "category": "${productType}",
     "healthRisk": "High|Medium|Low",
     "allergen": true or false,
-    "dietaryFlags": {
-      "vegan": true/false,
-      "vegetarian": true/false,
-      "containsAnimalProducts": true/false,
-      "containsGluten": true/false,
-      "containsLactose": true/false,
-      "containsAddedSugars": true/false,
-      "ultraProcessedAdditive": true/false
-    },
     "summary": "1-2 sentence explanation in ${displayLanguage}"
   }
 ]

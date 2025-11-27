@@ -18,34 +18,12 @@ export type HealthRiskLevel = typeof healthRiskLevels[number];
 export const riskLevels = ["low", "moderate", "high"] as const;
 export type RiskLevel = typeof riskLevels[number];
 
-// Dietary flags schema
-export const dietaryFlagsSchema = z.object({
-  vegan: z.boolean().default(false),
-  vegetarian: z.boolean().default(false),
-  containsAnimalProducts: z.boolean().default(false),
-  containsGluten: z.boolean().default(false),
-  containsLactose: z.boolean().default(false),
-  containsAddedSugars: z.boolean().default(false),
-  ultraProcessedAdditive: z.boolean().default(false),
-});
-
-export type DietaryFlags = z.infer<typeof dietaryFlagsSchema>;
-
 // New Auraly ingredient analysis schema
 export const ingredientSchema = z.object({
   ingredient: z.string().or(z.undefined()).transform(v => v || ''),
   category: z.string().nullish(),
   healthRisk: z.enum(healthRiskLevels).or(z.undefined()).transform(v => v || 'Medium'),
   allergen: z.boolean().optional().default(false),
-  dietaryFlags: dietaryFlagsSchema.optional().default({
-    vegan: false,
-    vegetarian: false,
-    containsAnimalProducts: false,
-    containsGluten: false,
-    containsLactose: false,
-    containsAddedSugars: false,
-    ultraProcessedAdditive: false,
-  }),
   summary: z.string().or(z.undefined()).transform(v => v || 'No summary available'),
   sourcesOrNotes: z.string().nullish(),
   // Legacy fields for backward compatibility

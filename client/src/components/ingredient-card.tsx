@@ -58,24 +58,13 @@ export function IngredientCard({ ingredient }: IngredientCardProps) {
                   className="text-xs font-semibold bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400 border-red-200 dark:border-red-800"
                   data-testid="badge-allergen"
                 >
-                  {t('results.allergen')}
+                  Allergen
                 </Badge>
               )}
             </div>
           </div>
           <div className={`w-3 h-3 rounded-full ${config.color} mt-1 flex-shrink-0`} />
         </div>
-
-        {/* Dietary Flags */}
-        {ingredient.dietaryFlags && Object.values(ingredient.dietaryFlags).some(Boolean) && (
-          <div className="mb-3 flex flex-wrap gap-1">
-            {ingredient.dietaryFlags.vegan && <Badge variant="secondary" className="text-xs">{t('dietary.vegan')}</Badge>}
-            {ingredient.dietaryFlags.vegetarian && <Badge variant="secondary" className="text-xs">{t('dietary.vegetarian')}</Badge>}
-            {ingredient.dietaryFlags.containsGluten && <Badge variant="secondary" className="text-xs">{t('dietary.gluten')}</Badge>}
-            {ingredient.dietaryFlags.containsLactose && <Badge variant="secondary" className="text-xs">{t('dietary.lactose')}</Badge>}
-            {ingredient.dietaryFlags.ultraProcessedAdditive && <Badge variant="secondary" className="text-xs">{t('dietary.processed')}</Badge>}
-          </div>
-        )}
 
         {/* Summary */}
         <p className="text-sm text-foreground mb-3">
