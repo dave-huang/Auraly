@@ -1031,19 +1031,23 @@ export async function analyzeIngredientsParallel(
     };
     const displayLanguage = languageMap[userLanguage] || 'English';
     
-    const batchPrompt = `The ingredient names below are in their source language (Chinese, Spanish, English, etc). Analyze each ingredient and TRANSLATE the ingredient name to ${displayLanguage}. Respond ONLY with the JSON array, nothing else:
+    const batchPrompt = `Analyze each ingredient below. IMPORTANT: Each input line is ONE ingredient. If an ingredient name looks like multiple items separated by commas or "and", treat it as ONE ingredient for analysis purposes.
+
+CRITICAL: For ALL responses, use ONLY these English values for healthRisk: "High", "Medium", or "Low". Never use non-English values.
+
+Translate ingredient names to ${displayLanguage} and respond ONLY with a valid JSON array, nothing else. Each item in the array corresponds to one input ingredient:
 
 [
   {
     "ingredient": "ingredient name translated to ${displayLanguage}",
     "category": "${productType}",
-    "healthRisk": "High|Medium|Low",
+    "healthRisk": "High",
     "allergen": true or false,
     "summary": "1-2 sentence explanation in ${displayLanguage}"
   }
 ]
 
-Ingredients to analyze:
+Ingredients to analyze (one per line):
 ${missingList}`;
     
     try {
@@ -1122,19 +1126,32 @@ ${missingList}`;
             return null;
           }
           
+          // Normalize healthRisk: handle Chinese/Spanish values that might slip through
+          const healthRiskNormalizationMap: Record<string, string> = {
+            'High': 'High', 'high': 'High', '高': 'High', 'Alto': 'High',
+            'Medium': 'Medium', 'moderate': 'Medium', 'Moderate': 'Medium', '中等': 'Medium', '中': 'Medium', 'Moderado': 'Medium',
+            'Low': 'Low', 'low': 'Low', '低': 'Low', 'Bajo': 'Low'
+          };
+          let normalizedHealthRisk = result.healthRisk as string;
+          if (healthRiskNormalizationMap[normalizedHealthRisk]) {
+            normalizedHealthRisk = healthRiskNormalizationMap[normalizedHealthRisk];
+          } else {
+            normalizedHealthRisk = 'Medium'; // Default to Medium if unrecognized
+          }
+          
           // Convert healthRisk (High/Medium/Low) to legacy riskLevel (high/moderate/low)
           const healthRiskMap: Record<string, RiskLevel> = {
             'High': 'high',
             'Medium': 'moderate',
             'Low': 'low'
           };
-          const legacyRiskLevel: RiskLevel = healthRiskMap[result.healthRisk as keyof typeof healthRiskMap] || 'moderate';
+          const legacyRiskLevel: RiskLevel = healthRiskMap[normalizedHealthRisk as keyof typeof healthRiskMap] || 'moderate';
           
           return {
             ingredient: ingredientName,
             name: ingredientName,
             category: result.category || productType,
-            healthRisk: result.healthRisk || 'Medium',
+            healthRisk: normalizedHealthRisk,
             riskLevel: legacyRiskLevel,
             allergen: result.allergen || false,
             summary: result.summary || 'No summary available',

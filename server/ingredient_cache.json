@@ -1178,5 +1178,40 @@
     "analysis": "{\"ingredient\":\"燕麦仁粉（燕麦籽粉）\",\"name\":\"燕麦仁粉（燕麦籽粉）\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":true,\"summary\":\"燕麦仁粉常用于护肤品中，具有舒缓、保湿和修复皮肤屏障的作用，一般较为温和安全。对燕麦或谷物蛋白过敏人群可能出现过敏反应，需先做局部测试。\",\"details\":\"燕麦仁粉常用于护肤品中，具有舒缓、保湿和修复皮肤屏障的作用，一般较为温和安全。对燕麦或谷物蛋白过敏人群可能出现过敏反应，需先做局部测试。\"}",
     "lastUpdated": 1764227030435,
     "createdAt": 1764227030435
+  },
+  "甘油硬脂酸酯__skincare": {
+    "analysis": "{\"ingredient\":\"甘油硬脂酸酯\",\"name\":\"甘油硬脂酸酯\",\"category\":\"护肤品\",\"healthRisk\":\"低\",\"riskLevel\":\"moderate\",\"allergen\":false,\"summary\":\"甘油硬脂酸酯是一种常见的乳化剂和润肤剂，用于稳定配方并改善皮肤柔软度。一般认为安全性较高，刺激性较低，仅极少数敏感人群可能出现不适。\",\"details\":\"甘油硬脂酸酯是一种常见的乳化剂和润肤剂，用于稳定配方并改善皮肤柔软度。一般认为安全性较高，刺激性较低，仅极少数敏感人群可能出现不适。\"}",
+    "lastUpdated": 1764227169525,
+    "createdAt": 1764227169525
+  },
+  "香精（香料）、柠檬酸__skincare": {
+    "analysis": "{\"ingredient\":\"香精（香料）、柠檬酸\",\"name\":\"香精（香料）、柠檬酸\",\"category\":\"skincare\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":true,\"summary\":\"香精（香料）可能刺激敏感肌肤并诱发过敏或香料不耐受，柠檬酸为常用pH调节剂，一般较安全但高浓度时也可能轻微刺激。\",\"details\":\"香精（香料）可能刺激敏感肌肤并诱发过敏或香料不耐受，柠檬酸为常用pH调节剂，一般较安全但高浓度时也可能轻微刺激。\"}",
+    "lastUpdated": 1764227171599,
+    "createdAt": 1764227171599
+  },
+  "十一烯基甘氨酸、葡萄糖酸钠__skincare": {
+    "analysis": "{\"ingredient\":\"十一烯基甘氨酸、葡萄糖酸钠\",\"name\":\"十一烯基甘氨酸、葡萄糖酸钠\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"十一烯基甘氨酸为温和表面活性剂或调理成分，具有一定抗菌和控油作用，一般耐受性较好；葡萄糖酸钠为螯合剂和保湿成分，安全性较高。\",\"details\":\"十一烯基甘氨酸为温和表面活性剂或调理成分，具有一定抗菌和控油作用，一般耐受性较好；葡萄糖酸钠为螯合剂和保湿成分，安全性较高。\"}",
+    "lastUpdated": 1764227171600,
+    "createdAt": 1764227171600
+  },
+  "氢化大豆油__skincare": {
+    "analysis": "{\"ingredient\":\"氢化大豆油\",\"name\":\"氢化大豆油\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":true,\"summary\":\"氢化大豆油是一种由大豆油氢化得到的脂类成分，用于保湿和增加产品质地稳定性。对大豆过敏人群可能引发过敏反应，需谨慎使用。\",\"details\":\"氢化大豆油是一种由大豆油氢化得到的脂类成分，用于保湿和增加产品质地稳定性。对大豆过敏人群可能引发过敏反应，需谨慎使用。\"}",
+    "lastUpdated": 1764227173520,
+    "createdAt": 1764227173520
+  },
+  "大豆油（glycine soja）__skincare": {
+    "analysis": "{\"ingredient\":\"大豆油（GLYCINE SOJA）\",\"name\":\"大豆油（GLYCINE SOJA）\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":true,\"summary\":\"大豆油是一种常见的植物油，具有润肤、保湿和柔润皮肤的作用。对大豆或大豆制品过敏的人可能出现过敏反应。\",\"details\":\"大豆油是一种常见的植物油，具有润肤、保湿和柔润皮肤的作用。对大豆或大豆制品过敏的人可能出现过敏反应。\"}",
+    "lastUpdated": 1764227173520,
+    "createdAt": 1764227173520
+  },
+  "氯化钠，甘油__skincare": {
+    "analysis": "{\"ingredient\":\"氯化钠，甘油\",\"name\":\"氯化钠，甘油\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"氯化钠是食盐，常用于调节产品黏度；甘油是一种安全常用的保湿剂，有助于锁水和柔软皮肤。一般耐受性好，过敏情况较少见。\",\"details\":\"氯化钠是食盐，常用于调节产品黏度；甘油是一种安全常用的保湿剂，有助于锁水和柔软皮肤。一般耐受性好，过敏情况较少见。\"}",
+    "lastUpdated": 1764227173520,
+    "createdAt": 1764227173520
+  },
+  "棕榈酸__skincare": {
+    "analysis": "{\"ingredient\":\"棕榈酸\",\"name\":\"棕榈酸\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"棕榈酸是一种脂肪酸，常作为表面活性剂、乳化剂或脂类基质用于护肤品中。通常安全性较高，但极敏感肌肤人群可能需先做局部测试。\",\"details\":\"棕榈酸是一种脂肪酸，常作为表面活性剂、乳化剂或脂类基质用于护肤品中。通常安全性较高，但极敏感肌肤人群可能需先做局部测试。\"}",
+    "lastUpdated": 1764227173520,
+    "createdAt": 1764227173520
   }
 }
