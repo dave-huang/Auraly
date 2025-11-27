@@ -797,6 +797,9 @@ export async function analyzeIngredientsParallel(
       textToAnalyze = expandedText.substring(match.index + match[0].length);
       // Only trim at CONTAINS/ALLERGENS if it's clearly a separate section with enough content before it
       const endMarkers = [
+        /MADE\s+IN\s+A\s+FACILITY/i, // "MADE IN A FACILITY..."
+        /MAY\s+CONTAIN/i,              // "MAY CONTAIN..."
+        /MADE\s+IN\s+/i,               // "MADE IN..." (generic)
         /CONTAINS\s+(SOYBEANS|WHEAT|MILK|EGG|PEANUT|TREE|NUT|FISH|SHELLFISH|SESAME|SOY)\s*[,:]/i, // Allergen declarations
         /ALLERGENS?\s*[:：]/i, /DIRECTIONS?\s*[:：]/i,
         /INSTRUCTIONS?\s*[:：]/i, /NUTRITION\s+FACTS?\s*[:：]/i, /MANUFACTURED BY/i,
@@ -913,12 +916,19 @@ export async function analyzeIngredientsParallel(
   const rawIngredients = joinedText
     .split(/[,،、;；\n]/)
     .map(ing => ing.trim())
-    .filter(ing => 
-      ing.length > 1 && // Only require 1 char minimum (was 2)
-      !ing.match(/^[\d.]+%?$/) && 
-      !isStructuralMarker(ing) &&
-      !ing.match(/^(and|or|with)$/i) // Filter out common connectors
-    )
+    .filter(ing => {
+      // Exclude structural markers and non-ingredients
+      if (ing.length < 2) return false;
+      if (ing.match(/^[\d.]+%?$/)) return false; // Pure numbers/percentages
+      if (isStructuralMarker(ing)) return false;
+      if (ing.match(/^(and|or|with)$/i)) return false; // Common connectors
+      
+      // Exclude facility/allergen statements (long phrases with "facility", "processes", "may contain", etc.)
+      if (ing.match(/facility|process|manufacture|made in|may contain|allergen|cross-contact|equipment/i)) return false;
+      if (ing.length > 40 && ing.match(/\s.{20,}/)) return false; // Very long phrases (usually not ingredients)
+      
+      return true;
+    })
     .slice(0, 200); // Increase cap to 200 to handle larger ingredient lists
   
   if (rawIngredients.length === 0) {
