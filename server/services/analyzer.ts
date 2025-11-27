@@ -887,6 +887,7 @@ export async function analyzeIngredientsParallel(
   
   const uniqueIngredients = Array.from(new Set(rawIngredients));
   console.log(`[PARALLEL-ANALYZER] Extracted ${uniqueIngredients.length} unique ingredients from OCR`);
+  console.log(`[PARALLEL-ANALYZER] Sample ingredients: ${uniqueIngredients.slice(0, 5).join(', ')}`);
   
   // Create micro-batches of 5 ingredients
   const BATCH_SIZE = 5;
@@ -1023,44 +1024,82 @@ Return as JSON array with this exact structure:
       let freshResults: Ingredient[] = [];
       try {
         const parsed = JSON.parse(content);
-        freshResults = Array.isArray(parsed) ? parsed : (Array.isArray(Object.values(parsed)[0]) ? Object.values(parsed)[0] as Ingredient[] : []);
-      } catch {
-        console.error(`[PARALLEL-BATCH-${batchIdx}] Failed to parse GPT response:`, content);
-        throw new Error('Invalid JSON from GPT');
+        console.log(`[PARALLEL-BATCH-${batchIdx}] Raw GPT response type: ${typeof parsed}, is array: ${Array.isArray(parsed)}`);
+        
+        if (Array.isArray(parsed)) {
+          freshResults = parsed;
+          console.log(`[PARALLEL-BATCH-${batchIdx}] Direct array: ${freshResults.length} items`);
+        } else if (typeof parsed === 'object' && parsed !== null) {
+          // Try to find array in object
+          const values = Object.values(parsed);
+          for (const val of values) {
+            if (Array.isArray(val)) {
+              freshResults = val as Ingredient[];
+              console.log(`[PARALLEL-BATCH-${batchIdx}] Found array in object key: ${freshResults.length} items`);
+              break;
+            }
+          }
+          if (freshResults.length === 0) {
+            console.error(`[PARALLEL-BATCH-${batchIdx}] No array found in object. Keys: ${Object.keys(parsed)}`);
+          }
+        }
+        
+        if (freshResults.length === 0) {
+          console.error(`[PARALLEL-BATCH-${batchIdx}] Failed to extract ingredients from response`, { parsed, content: content.substring(0, 200) });
+          throw new Error(`GPT returned empty array (${missingIngredients.length} ingredients missing)`);
+        }
+      } catch (parseError: any) {
+        console.error(`[PARALLEL-BATCH-${batchIdx}] JSON parse failed:`, parseError.message);
+        console.error(`[PARALLEL-BATCH-${batchIdx}] Response content:`, content.substring(0, 500));
+        throw new Error(`Invalid JSON from GPT: ${parseError.message}`);
       }
       
       // Map Auraly response fields: normalize and add legacy fields for backward compatibility
-      freshResults = freshResults.map(result => {
-        const ingredientName = normalizeIngredientCapitalization(result.ingredient || result.name || '', userLanguage);
-        // Convert healthRisk (High/Medium/Low) to legacy riskLevel (high/moderate/low) for backward compatibility
-        const healthRiskMap: Record<string, RiskLevel> = {
-          'High': 'high',
-          'Medium': 'moderate',
-          'Low': 'low'
-        };
-        const legacyRiskLevel: RiskLevel = healthRiskMap[result.healthRisk as keyof typeof healthRiskMap] || 'moderate';
-        
-        return {
-          ingredient: ingredientName,
-          name: ingredientName, // For backward compatibility
-          category: result.category || productType,
-          healthRisk: result.healthRisk,
-          riskLevel: legacyRiskLevel, // Legacy field
-          allergen: result.allergen || false,
-          dietaryFlags: result.dietaryFlags || {
-            vegan: false,
-            vegetarian: false,
-            containsAnimalProducts: false,
-            containsGluten: false,
-            containsLactose: false,
-            containsAddedSugars: false,
-            ultraProcessedAdditive: false
-          },
-          summary: result.summary,
-          sourcesOrNotes: result.sourcesOrNotes,
-          details: result.summary // Legacy field
-        };
-      });
+      freshResults = freshResults
+        .filter(result => result && (result.ingredient || result.name)) // Filter invalid entries
+        .map(result => {
+          const ingredientName = normalizeIngredientCapitalization(
+            (result.ingredient || result.name || '').trim(), 
+            userLanguage
+          );
+          
+          if (!ingredientName) {
+            console.warn(`[PARALLEL-BATCH-${batchIdx}] Skipping empty ingredient`);
+            return null;
+          }
+          
+          // Convert healthRisk (High/Medium/Low) to legacy riskLevel (high/moderate/low)
+          const healthRiskMap: Record<string, RiskLevel> = {
+            'High': 'high',
+            'Medium': 'moderate',
+            'Low': 'low'
+          };
+          const legacyRiskLevel: RiskLevel = healthRiskMap[result.healthRisk as keyof typeof healthRiskMap] || 'moderate';
+          
+          return {
+            ingredient: ingredientName,
+            name: ingredientName,
+            category: result.category || productType,
+            healthRisk: result.healthRisk || 'Medium',
+            riskLevel: legacyRiskLevel,
+            allergen: result.allergen || false,
+            dietaryFlags: result.dietaryFlags || {
+              vegan: false,
+              vegetarian: false,
+              containsAnimalProducts: false,
+              containsGluten: false,
+              containsLactose: false,
+              containsAddedSugars: false,
+              ultraProcessedAdditive: false
+            },
+            summary: result.summary || 'No summary available',
+            sourcesOrNotes: result.sourcesOrNotes,
+            details: result.summary || 'No details available'
+          };
+        })
+        .filter(result => result !== null) as Ingredient[];
+      
+      console.log(`[PARALLEL-BATCH-${batchIdx}] Mapped and filtered: ${freshResults.length} valid ingredients from ${cachedResults.length + missingIngredients.length} requested`);
       
       // Cache fresh results
       for (const result of freshResults) {
