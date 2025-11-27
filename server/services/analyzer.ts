@@ -999,7 +999,7 @@ export async function analyzeIngredientsParallel(
     const missingIngredients: string[] = [];
     
     for (const ingredient of batch) {
-      const cached = getCachedIngredientAnalysis(ingredient, productType);
+      const cached = getCachedIngredientAnalysis(ingredient, productType, userLanguage);
       if (cached) {
         cachedResults.push({
           name: ingredient,
@@ -1166,7 +1166,7 @@ ${missingList}`;
       // Cache fresh results
       for (const result of freshResults) {
         const cacheKey = result.ingredient || result.name || '';
-        setCachedIngredientAnalysis(cacheKey, productType, JSON.stringify(result));
+        setCachedIngredientAnalysis(cacheKey, productType, JSON.stringify(result), userLanguage);
         console.log(`[PARALLEL-BATCH-${batchIdx}] Cached: ${cacheKey}`);
       }
       

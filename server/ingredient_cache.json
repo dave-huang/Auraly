@@ -1175,8 +1175,8 @@
     "createdAt": 1764227030137
   },
   "燕麦仁粉（燕麦籽粉）__skincare": {
-    "analysis": "{\"ingredient\":\"燕麦仁粉（燕麦籽粉）\",\"name\":\"燕麦仁粉（燕麦籽粉）\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":true,\"summary\":\"燕麦仁粉具有舒缓、保湿和抗炎特性，常用于敏感肌和干性皮肤护肤品中，一般安全性较高。对燕麦或谷物过敏人群仍可能引发过敏反应，严重谷物过敏者应先做局部测试或避免使用。\",\"details\":\"燕麦仁粉具有舒缓、保湿和抗炎特性，常用于敏感肌和干性皮肤护肤品中，一般安全性较高。对燕麦或谷物过敏人群仍可能引发过敏反应，严重谷物过敏者应先做局部测试或避免使用。\"}",
-    "lastUpdated": 1764227258615,
+    "analysis": "{\"ingredient\":\"燕麦仁粉（燕麦籽粉）\",\"name\":\"燕麦仁粉（燕麦籽粉）\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":true,\"summary\":\"燕麦仁粉具有舒缓、保湿和抗炎作用，常用于缓解干燥、瘙痒和敏感。少数对燕麦或谷物过敏的人可能出现接触性过敏或刺激反应，首次使用建议局部试用。\",\"details\":\"燕麦仁粉具有舒缓、保湿和抗炎作用，常用于缓解干燥、瘙痒和敏感。少数对燕麦或谷物过敏的人可能出现接触性过敏或刺激反应，首次使用建议局部试用。\"}",
+    "lastUpdated": 1764227438020,
     "createdAt": 1764227030435
   },
   "甘油硬脂酸酯__skincare": {
@@ -1215,8 +1215,8 @@
     "createdAt": 1764227173520
   },
   "月桂醇聚醚硫酸钠__skincare": {
-    "analysis": "{\"ingredient\":\"月桂醇聚醚硫酸钠\",\"name\":\"月桂醇聚醚硫酸钠\",\"category\":\"skincare\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":false,\"summary\":\"月桂醇聚醚硫酸钠是一种常用表面活性剂与清洁起泡成分，清洁力较强，可能导致部分人皮肤或头皮干燥、刺激或屏障受损。敏感肌、干性肌或已有皮炎问题的人群使用含量较高产品时需谨慎，并注意后续保湿。\",\"details\":\"月桂醇聚醚硫酸钠是一种常用表面活性剂与清洁起泡成分，清洁力较强，可能导致部分人皮肤或头皮干燥、刺激或屏障受损。敏感肌、干性肌或已有皮炎问题的人群使用含量较高产品时需谨慎，并注意后续保湿。\"}",
-    "lastUpdated": 1764227258615,
+    "analysis": "{\"ingredient\":\"月桂醇聚醚硫酸钠\",\"name\":\"月桂醇聚醚硫酸钠\",\"category\":\"skincare\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":false,\"summary\":\"月桂醇聚醚硫酸钠是一种常见的表面活性剂和起泡剂，清洁力较强，可能导致皮肤屏障受损、干燥或刺激。敏感肌或屏障受损肌肤长期使用可能增加泛红、刺痛等不适风险。\",\"details\":\"月桂醇聚醚硫酸钠是一种常见的表面活性剂和起泡剂，清洁力较强，可能导致皮肤屏障受损、干燥或刺激。敏感肌或屏障受损肌肤长期使用可能增加泛红、刺痛等不适风险。\"}",
+    "lastUpdated": 1764227438019,
     "createdAt": 1764227258615
   },
   "燕麦仁油（燕麦籽油）__skincare": {
@@ -1238,5 +1238,25 @@
     "analysis": "{\"ingredient\":\"谷氨酸四钠二乙酸盐\",\"name\":\"谷氨酸四钠二乙酸盐\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"一种螯合剂，用于络合水中金属离子，帮助稳定配方并提升清洁类产品效果，安全性较好。总体致敏率较低，极少数高度敏感皮肤可能对配方整体出现刺激反应。\",\"details\":\"一种螯合剂，用于络合水中金属离子，帮助稳定配方并提升清洁类产品效果，安全性较好。总体致敏率较低，极少数高度敏感皮肤可能对配方整体出现刺激反应。\"}",
     "lastUpdated": 1764227260738,
     "createdAt": 1764227260738
+  },
+  "燕麦仁油（avena sativa kernel oil）__skincare": {
+    "analysis": "{\"ingredient\":\"燕麦仁油（Avena Sativa Kernel Oil）\",\"name\":\"燕麦仁油（Avena Sativa Kernel Oil）\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":true,\"summary\":\"源自燕麦的植物油，富含脂肪酸和抗氧化物，具有保湿和舒缓功效。对燕麦/谷物过敏或有麸质相关疾病者需谨慎使用。\",\"details\":\"源自燕麦的植物油，富含脂肪酸和抗氧化物，具有保湿和舒缓功效。对燕麦/谷物过敏或有麸质相关疾病者需谨慎使用。\"}",
+    "lastUpdated": 1764227439546,
+    "createdAt": 1764227439546
+  },
+  "燕麦仁提取物（avena sativa kernel extract）__skincare": {
+    "analysis": "{\"ingredient\":\"燕麦仁提取物（Avena Sativa Kernel Extract）\",\"name\":\"燕麦仁提取物（Avena Sativa Kernel Extract）\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":true,\"summary\":\"来自燕麦籽仁的提取物，常用于舒缓、保湿和减轻刺激。对燕麦、谷物或麸质敏感人群可能引发过敏反应，应先做局部测试。\",\"details\":\"来自燕麦籽仁的提取物，常用于舒缓、保湿和减轻刺激。对燕麦、谷物或麸质敏感人群可能引发过敏反应，应先做局部测试。\"}",
+    "lastUpdated": 1764227439546,
+    "createdAt": 1764227439546
+  },
+  "聚季铵盐-10（polyquaternium-10）__skincare": {
+    "analysis": "{\"ingredient\":\"聚季铵盐-10（Polyquaternium-10）\",\"name\":\"聚季铵盐-10（Polyquaternium-10）\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"一种阳离子聚合物，常用于护发和清洁产品中增加顺滑感并减少静电。总体耐受性较好，极少数人可能出现轻微刺激。\",\"details\":\"一种阳离子聚合物，常用于护发和清洁产品中增加顺滑感并减少静电。总体耐受性较好，极少数人可能出现轻微刺激。\"}",
+    "lastUpdated": 1764227439546,
+    "createdAt": 1764227439546
+  },
+  "谷氨酸四钠二乙酸盐（tetrasodium glutamate diacetate）__skincare": {
+    "analysis": "{\"ingredient\":\"谷氨酸四钠二乙酸盐（Tetrasodium Glutamate Diacetate）\",\"name\":\"谷氨酸四钠二乙酸盐（Tetrasodium Glutamate Diacetate）\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"以氨基酸为基础的螯合剂，用于稳定配方并提高防腐剂效果，被视为比EDTA更温和且更易生物降解。一般刺激性较低，过敏风险较小。\",\"details\":\"以氨基酸为基础的螯合剂，用于稳定配方并提高防腐剂效果，被视为比EDTA更温和且更易生物降解。一般刺激性较低，过敏风险较小。\"}",
+    "lastUpdated": 1764227439546,
+    "createdAt": 1764227439546
   }
 }

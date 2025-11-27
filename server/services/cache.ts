@@ -53,9 +53,9 @@ function normalizeIngredient(ingredient: string): string {
     .replace(/\s+/g, ' ');
 }
 
-// Generate cache key
-function getCacheKey(ingredient: string, category: string): string {
-  return `${normalizeIngredient(ingredient)}__${category}`;
+// Generate cache key (includes language to ensure language-specific caching)
+function getCacheKey(ingredient: string, category: string, language: string = 'en'): string {
+  return `${normalizeIngredient(ingredient)}__${category}__${language}`;
 }
 
 // Check if cache entry needs refresh (older than 30 days)
@@ -68,9 +68,10 @@ function shouldRefreshCache(lastUpdatedTimestamp: number): boolean {
 // Get cached ingredient analysis
 export function getCachedIngredientAnalysis(
   ingredient: string,
-  category: string
+  category: string,
+  language: string = 'en'
 ): { analysis: string; fromCache: boolean } | null {
-  const key = getCacheKey(ingredient, category);
+  const key = getCacheKey(ingredient, category, language);
   const entry = cacheData[key];
   
   if (!entry) {
@@ -95,9 +96,10 @@ export function getCachedIngredientAnalysis(
 export function setCachedIngredientAnalysis(
   ingredient: string,
   category: string,
-  analysis: string
+  analysis: string,
+  language: string = 'en'
 ): void {
-  const key = getCacheKey(ingredient, category);
+  const key = getCacheKey(ingredient, category, language);
   const now = Date.now();
   
   cacheData[key] = {
