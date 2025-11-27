@@ -830,109 +830,9 @@ export async function analyzeIngredientsParallel(
   const estimatedCount = validCounts.length > 0 ? Math.min(Math.max(...validCounts), 150) : 20;
   console.log(`[PARALLEL-ANALYZER] Estimated ${estimatedCount} ingredients from separators`);
   
-  // Helper function to join wrapped lines
-  // Join lines that look like wrapped text (current ends with word, next starts lowercase/fragment)
-  function joinWrappedLines(text: string): string {
-    const lines = text.split('\n').map(l => l.trim()).filter(l => l);
-    const result: string[] = [];
-    
-    for (let i = 0; i < lines.length; i++) {
-      const current = lines[i];
-      
-      // Skip structural markers and empty lines
-      if (!current || isStructuralMarker(current)) {
-        result.push(current);
-        continue;
-      }
-      
-      // Check if next line should be joined with current line
-      let merged = current;
-      let j = i + 1;
-      
-      while (j < lines.length) {
-        const nextLine = lines[j];
-        if (!nextLine) {
-          j++;
-          continue; // Skip empty lines
-        }
-        
-        // Stop joining if we hit a structural marker, percentage, or bullet point
-        if (isStructuralMarker(nextLine) || 
-            nextLine.match(/^[\d.]+%/) ||
-            nextLine.match(/^[•·∙\*]\s/)) {
-          break;
-        }
-        
-        // FOR CHINESE: Only join if next line is clearly a continuation (parenthetical, suffix, etc)
-        // Most Chinese lines separated by 、 are complete ingredients - don't merge them!
-        const hasChinese = /[\u4E00-\u9FFF\u3040-\u309F\u30A0-\u30FF]/.test(current + nextLine);
-        if (hasChinese) {
-          // Only join Chinese if next line starts with parenthesis or is a known suffix marker
-          if (!/^[（(]|^(酯|SE|酸|醇|盐|等|和|及)[\s,、，；;]*$/i.test(nextLine)) {
-            break;
-          }
-        }
-        
-        // Join if current line ends with word/digit/CJK AND next line looks like continuation
-        const endsWithWord = /[a-zA-Z0-9\u4E00-\u9FFF\u3040-\u309F\u30A0-\u30FF]$/.test(merged); // Support CJK endings too
-        
-        // Next line is a continuation if:
-        // 1. Starts with a letter, digit, or CJK character - most wrapped words
-        // 2. Is NOT a structural keyword or new ingredient marker
-        // 3. Doesn't look like a label section (all caps with 2+ words is usually a new section)
-        const nextStartsWithLetterOrDigit = /^[a-zA-Z0-9\u4E00-\u9FFF\u3040-\u309F\u30A0-\u30FF]/.test(nextLine); // ASCII, CJK, Hiragana, Katakana
-        const isNotKeyword = !nextLine.match(/^(AND|OR|WITH|CONTAINS|MADE|MAY|DIRECTIONS?|INSTRUCTIONS?|NUTRITION|INGREDIENTS?|ALLERGENS?|成分|其他|方向|说明)/i);
-        const isNotAllCapsSection = !(nextLine.match(/^[A-Z\s]{4,}$/) && nextLine.split(/\s+/).length > 1);
-        
-        // Check: if it's longer than 2 chars and mostly word characters (ASCII, CJK, hyphens, apostrophes), it's likely a continued word
-        // This regex now supports Chinese, Japanese, and ASCII letters
-        const looksLikeContinuedWord = nextLine.length <= 50 && /^[\w\u4E00-\u9FFF\u3040-\u309F\u30A0-\u30FF\-'()（）]+(\s[\w\u4E00-\u9FFF\u3040-\u309F\u30A0-\u30FF\-'()（）]+)?$/.test(nextLine);
-        
-        const nextLooksLikeContinuation = nextStartsWithLetterOrDigit && isNotKeyword && (looksLikeContinuedWord || isNotAllCapsSection);
-        
-        // Only join if current ends with word AND next looks like continuation
-        if (endsWithWord && nextLooksLikeContinuation) {
-          merged = merged + ' ' + nextLine;
-          j++;
-        } else {
-          break;
-        }
-      }
-      
-      result.push(merged);
-      i = j - 1; // Skip the lines we merged
-    }
-    
-    return result.join('\n');
-  }
-  
-  // Helper function to filter out structural markers
-  function isStructuralMarker(line: string): boolean {
-    const upperLine = line.toUpperCase();
-    
-    // Filter out percent/quantity markers and section headers
-    const structuralPatterns = [
-      /^CONTAINS\s+[\d.]+%\s+(OR|LESS)/i,  // "CONTAINS 2% OR", "CONTAINS 1% LESS"
-      /^LESS\s+OF:/i,                       // "LESS OF:"
-      /^OF:\s+/i,                           // "OF:" alone
-      /^OR\s+(LESS|MORE)/i,                 // "OR LESS", "OR MORE"
-      /^CONTAINS\s+(EGG|MILK|SOY|WHEAT|PEANUT|TREE|NUT|FISH|SHELLFISH|SESAME)/i, // Allergen declarations
-      /^CONTAINS:\s+(EGG|MILK|SOY|WHEAT)/i, // CONTAINS: declarations
-      /^\d+%\s*(OR|AND|LESS)?\s*(MORE|LESS)?$/i, // Pure percentage
-      /^(INGREDIENTS?|ALLERGENS?|DIRECTIONS?|INSTRUCTIONS?|MADE IN|MANUFACTURED)\.?$/i // Section headers
-    ];
-    
-    return structuralPatterns.some(pattern => pattern.test(line));
-  }
-  
-  // Pre-process to join wrapped lines
-  const joinedText = joinWrappedLines(textToAnalyze);
-  console.log(`[PARALLEL-ANALYZER] After joining wrapped lines: ${joinedText.length} chars`);
-  console.log(`[PARALLEL-ANALYZER] Text preview: ${joinedText.substring(0, 200)}...`);
-  
-  // Parse individual ingredients by splitting on common separators
-  // But NOT on any comma/separator between digits (e.g., "1,4-dicarboxylic" in chemical names)
-  let textForSplitting = joinedText;
+  // Simple extraction: just split on delimiters with minimal filtering
+  // Don't try to be clever about line joining - let the delimiter-based parsing handle it
+  let textForSplitting = textToAnalyze;
   
   // Temporarily replace all commas/separators between digits with a placeholder
   // Handles: ASCII comma, Arabic comma (،), Chinese comma (、), and spaces around them
@@ -940,57 +840,34 @@ export async function analyzeIngredientsParallel(
   const placeholder = '\x00COMMA_PLACEHOLDER\x00';
   textForSplitting = textForSplitting.replace(digitSeparatorPattern, `$1${placeholder}`);
   
-  // Split on delimiters AND on "AND"/"OR" when they connect ingredients (e.g., "SORBIC ACID AND POTASSIUM SORBATE")
-  // But be careful: "MONO AND DIGLYCERIDES" should split into "MONO" and "DIGLYCERIDES" too
+  // Split on delimiters - keep it simple and trust the delimiters
   const rawIngredients = textForSplitting
-    .split(/[,،、;；\n]|\s+(?:and|or)\s+/i)  // Split on commas, semicolons, newlines, or " AND "/" OR "
+    .split(/[,،、;；\n]/)  // Split on commas, semicolons, newlines
     .map(ing => {
       // Restore the preserved commas/separators as ASCII commas
       return ing.replace(new RegExp(placeholder, 'g'), ',').trim();
     })
     .filter(ing => {
-      // Exclude structural markers and non-ingredients
+      // Minimal filtering - only remove obvious non-ingredients
       if (ing.length < 2) return false;
       if (ing.match(/^[\d.]+%?$/)) return false; // Pure numbers/percentages
-      if (isStructuralMarker(ing)) return false;
-      if (ing.match(/^(and|or|with|contains|less|of|to|the|a|be|not|this|that)[\s]*$/i)) return false; // Connector words alone
       
       // Remove section headers attached to ingredients (e.g., "其他微量成分:异丙醇" → "异丙醇")
-      // Match patterns like "SectionHeader:ingredient" or "SectionHeader：ingredient" 
       const cleanedIng = ing.replace(/^[^:：]*([:：])\s*/, '').trim();
       if (cleanedIng.length < 2) return false;
       
-      // Remove trailing punctuation that's not part of the ingredient name
+      // Remove trailing punctuation
       let depunctuated = cleanedIng.replace(/[.,;:)\]}]+$/, '').trim();
       if (depunctuated.length < 2) return false;
       
-      // Reject items starting with CONTAINS (they're measurement markers, not ingredients)
-      if (depunctuated.match(/^CONTAINS\s+/i)) return false;
-      
-      // Filter out OCR artifacts: single Greek letters, lone special chars, very short non-ASCII
-      // "ΜΟΝΟ" is Greek MONO character - it's an OCR error
-      const hasOnlyNonLatin = /^[^\x00-\x7F]+$/.test(depunctuated); // Only non-ASCII chars
-      if (depunctuated.length <= 3 && hasOnlyNonLatin) return false;
-      
-      // Reject very short items that are likely fragments (single English letter or common fragment)
-      if (depunctuated.length === 1) return false;
-      if (depunctuated.match(/^[A-Z]$/) && !depunctuated.match(/^[ABCDEFGH]$/)) return false; // Single letters unless special (like "E" for additives)
-      
-      // Filter fragments that are just connectors or parts of split words from line breaks
-      if (depunctuated.match(/^(and|or|of|the|a|be|to|with|not|this|that)[\s]*$/i)) return false;
-      
-      // Reject items that look like they have been truncated or split mid-word  
-      // E.g., "POTASSIUM SORBATE(TO" or "TITANIUM DIOXIDE(COLOR" - missing closing paren
-      if (depunctuated.match(/\([^)]*$/)) return false; // Starts paren but no close
-      
-      // Exclude facility/allergen statements and very long phrases
-      if (depunctuated.match(/facility|process|manufacture|made in|may contain|allergen|cross-contact|equipment/i)) return false;
-      if (depunctuated.length > 40 && depunctuated.match(/\s.{20,}/)) return false; // Very long phrases (usually not ingredients)
+      // Only reject obvious structural markers and section keywords
+      if (depunctuated.match(/^(INGREDIENTS?|ALLERGENS?|DIRECTIONS?|INSTRUCTIONS?|NUTRITION|CONTAINS)[\s]*:/i)) return false;
+      if (depunctuated.match(/^(成分|其他|方向|说明|营养)\s*[:：]/i)) return false;
       
       return true;
     })
-    .map(ing => ing.replace(/^[^:：]*([:：])\s*/, '').replace(/[.,;:)\]}]+$/, '').trim()) // Apply the same cleaning to returned ingredients
-    .slice(0, 200); // Increase cap to 200 to handle larger ingredient lists
+    .map(ing => ing.replace(/^[^:：]*([:：])\s*/, '').replace(/[.,;:)\]}]+$/, '').trim())
+    .slice(0, 200);
   
   if (rawIngredients.length === 0) {
     throw new Error('No valid ingredients found to analyze');
