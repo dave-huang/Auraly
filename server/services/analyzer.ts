@@ -1067,37 +1067,50 @@ Return as JSON array with this exact structure. RESPOND WITH ONLY THE JSON ARRAY
       const content = response.choices?.[0]?.message?.content;
       if (!content) throw new Error('Empty GPT response');
       
+      console.log(`[PARALLEL-BATCH-${batchIdx}] RAW GPT RESPONSE (first 500 chars):`, content.substring(0, 500));
+      
       // Parse response - try both array and object with array key
       let freshResults: Ingredient[] = [];
       try {
         const parsed = JSON.parse(content);
-        console.log(`[PARALLEL-BATCH-${batchIdx}] Raw GPT response type: ${typeof parsed}, is array: ${Array.isArray(parsed)}`);
+        console.log(`[PARALLEL-BATCH-${batchIdx}] Parsed JSON type: ${typeof parsed}, is array: ${Array.isArray(parsed)}`);
         
         if (Array.isArray(parsed)) {
           freshResults = parsed;
-          console.log(`[PARALLEL-BATCH-${batchIdx}] Direct array: ${freshResults.length} items`);
+          console.log(`[PARALLEL-BATCH-${batchIdx}] Using direct array: ${freshResults.length} items`);
         } else if (typeof parsed === 'object' && parsed !== null) {
           // Try to find array in object
-          const values = Object.values(parsed);
-          for (const val of values) {
+          const keys = Object.keys(parsed);
+          console.log(`[PARALLEL-BATCH-${batchIdx}] Object keys: ${keys.join(', ')}`);
+          
+          for (const key of keys) {
+            const val = parsed[key];
             if (Array.isArray(val)) {
               freshResults = val as Ingredient[];
-              console.log(`[PARALLEL-BATCH-${batchIdx}] Found array in object key: ${freshResults.length} items`);
+              console.log(`[PARALLEL-BATCH-${batchIdx}] Found array in key '${key}': ${freshResults.length} items`);
               break;
             }
           }
           if (freshResults.length === 0) {
-            console.error(`[PARALLEL-BATCH-${batchIdx}] No array found in object. Keys: ${Object.keys(parsed)}`);
+            console.error(`[PARALLEL-BATCH-${batchIdx}] No array found in object. Using object as is.`);
+            // Treat object as single-item array if it has ingredient field
+            if (parsed.ingredient) {
+              freshResults = [parsed];
+              console.log(`[PARALLEL-BATCH-${batchIdx}] Treated object as single ingredient`);
+            }
           }
         }
         
+        console.log(`[PARALLEL-BATCH-${batchIdx}] After extraction: ${freshResults.length} items. First item:`, JSON.stringify(freshResults[0] || {}).substring(0, 100));
+        
         if (freshResults.length === 0) {
-          console.error(`[PARALLEL-BATCH-${batchIdx}] Failed to extract ingredients from response`, { parsed, content: content.substring(0, 200) });
-          throw new Error(`GPT returned empty array (${missingIngredients.length} ingredients missing)`);
+          console.error(`[PARALLEL-BATCH-${batchIdx}] CRITICAL: No ingredients extracted from response`);
+          console.error(`[PARALLEL-BATCH-${batchIdx}] Full parsed content:`, JSON.stringify(parsed).substring(0, 1000));
+          throw new Error(`GPT returned empty array (${missingIngredients.length} ingredients to analyze)`);
         }
       } catch (parseError: any) {
-        console.error(`[PARALLEL-BATCH-${batchIdx}] JSON parse failed:`, parseError.message);
-        console.error(`[PARALLEL-BATCH-${batchIdx}] Response content:`, content.substring(0, 500));
+        console.error(`[PARALLEL-BATCH-${batchIdx}] JSON parse FAILED:`, parseError.message);
+        console.error(`[PARALLEL-BATCH-${batchIdx}] Full response content:`, content);
         throw new Error(`Invalid JSON from GPT: ${parseError.message}`);
       }
       

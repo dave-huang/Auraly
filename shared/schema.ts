@@ -33,12 +33,20 @@ export type DietaryFlags = z.infer<typeof dietaryFlagsSchema>;
 
 // New Auraly ingredient analysis schema
 export const ingredientSchema = z.object({
-  ingredient: z.string(),
+  ingredient: z.string().or(z.undefined()).transform(v => v || ''),
   category: z.string().nullish(),
-  healthRisk: z.enum(healthRiskLevels),
-  allergen: z.boolean().default(false),
-  dietaryFlags: dietaryFlagsSchema,
-  summary: z.string(),
+  healthRisk: z.enum(healthRiskLevels).or(z.undefined()).transform(v => v || 'Medium'),
+  allergen: z.boolean().optional().default(false),
+  dietaryFlags: dietaryFlagsSchema.optional().default({
+    vegan: false,
+    vegetarian: false,
+    containsAnimalProducts: false,
+    containsGluten: false,
+    containsLactose: false,
+    containsAddedSugars: false,
+    ultraProcessedAdditive: false,
+  }),
+  summary: z.string().or(z.undefined()).transform(v => v || 'No summary available'),
   sourcesOrNotes: z.string().nullish(),
   // Legacy fields for backward compatibility
   name: z.string().optional(),
