@@ -842,8 +842,10 @@ export async function analyzeIngredientsParallel(
   textForSplitting = textForSplitting.replace(digitSeparatorPattern, `$1${placeholder}`);
   
   // Split on delimiters - keep it simple and trust the delimiters
+  // CRITICAL: Remove \n from split pattern! Newlines are OCR line-wrapping artifacts, not real delimiters
+  // In Chinese, actual delimiter is 、 (enumeration comma), not newlines
   let splitIngredients = textForSplitting
-    .split(/[,،、;；\n]/)  // Split on commas, semicolons, newlines
+    .split(/[,،、;；]/)  // Split on commas/semicolons ONLY, NOT newlines
     .map(ing => {
       // Restore the preserved commas/separators as ASCII commas
       return ing.replace(new RegExp(placeholder, 'g'), ',').trim();
