@@ -33,8 +33,7 @@ const riskConfig = {
 export function IngredientCard({ ingredient }: IngredientCardProps) {
   const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
-  const riskLevel = ingredient.riskLevel || 'moderate';
-  const config = riskConfig[riskLevel];
+  const config = riskConfig[ingredient.riskLevel];
 
   return (
     <Card className={`border-l-4 ${config.borderColor} overflow-hidden`}>
@@ -42,26 +41,15 @@ export function IngredientCard({ ingredient }: IngredientCardProps) {
         {/* Header */}
         <div className="flex items-start justify-between gap-4 mb-3">
           <div className="flex-1">
-            <h3 className="font-semibold text-lg mb-2" data-testid={`text-ingredient-name-${ingredient.name || ingredient.ingredient}`}>
-              {ingredient.name || ingredient.ingredient}
+            <h3 className="font-semibold text-lg mb-2" data-testid={`text-ingredient-name-${ingredient.name}`}>
+              {ingredient.name}
             </h3>
-            <div className="flex flex-wrap gap-2 items-center">
-              <Badge 
-                className={`${config.bgColor} ${config.textColor} border-0 text-xs font-semibold`}
-                data-testid={`badge-risk-${riskLevel}`}
-              >
-                {t(`results.riskLevels.${riskLevel}`)}
-              </Badge>
-              {ingredient.allergen && (
-                <Badge 
-                  variant="outline"
-                  className="text-xs font-semibold bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400 border-red-200 dark:border-red-800"
-                  data-testid="badge-allergen"
-                >
-                  {t('results.allergen')}
-                </Badge>
-              )}
-            </div>
+            <Badge 
+              className={`${config.bgColor} ${config.textColor} border-0 text-xs font-semibold`}
+              data-testid={`badge-risk-${ingredient.riskLevel}`}
+            >
+              {t(`results.riskLevels.${ingredient.riskLevel}`)}
+            </Badge>
           </div>
           <div className={`w-3 h-3 rounded-full ${config.color} mt-1 flex-shrink-0`} />
         </div>
@@ -72,12 +60,12 @@ export function IngredientCard({ ingredient }: IngredientCardProps) {
         </p>
 
         {/* Learn More Toggle */}
-        {(ingredient.details || ingredient.sourcesOrNotes) && (
+        {ingredient.details && (
           <>
             <button
               onClick={() => setIsExpanded(!isExpanded)}
               className="flex items-center gap-1 text-sm font-medium text-primary hover-elevate active-elevate-2 px-3 py-1.5 rounded-md -ml-3 transition-colors"
-              data-testid={`button-toggle-details-${ingredient.name || ingredient.ingredient}`}
+              data-testid={`button-toggle-details-${ingredient.name}`}
             >
               {isExpanded ? (
                 <>
@@ -94,14 +82,9 @@ export function IngredientCard({ ingredient }: IngredientCardProps) {
 
             {isExpanded && (
               <div className={`mt-4 p-4 rounded-lg ${config.bgColor} border ${config.borderColor.replace('border-l-', 'border-')}`}>
-                <p className="text-sm text-foreground/90" data-testid={`text-ingredient-details-${ingredient.name || ingredient.ingredient}`}>
-                  {ingredient.details || ingredient.summary}
+                <p className="text-sm text-foreground/90" data-testid={`text-ingredient-details-${ingredient.name}`}>
+                  {ingredient.details}
                 </p>
-                {ingredient.sourcesOrNotes && (
-                  <p className="text-xs text-foreground/70 mt-2 italic">
-                    {ingredient.sourcesOrNotes}
-                  </p>
-                )}
               </div>
             )}
           </>

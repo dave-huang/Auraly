@@ -795,22 +795,15 @@ export async function analyzeIngredientsParallel(
     const match = expandedText.match(marker);
     if (match && match.index !== undefined) {
       textToAnalyze = expandedText.substring(match.index + match[0].length);
-      
-      // CRITICAL: Find where ingredients section ends
-      // Chinese/Japanese end markers (with or without delimiter before them)
       const endMarkers = [
-        /(?:[\n使注方成]*)(使用方法|使用上の注意|注意事項|ご使用方法|正确使用|不适合|对肌肤的承诺|特点|成份|其他成分)\s*[:：]/,
-        /(?:[\n]*)(使用方法|使用上の注意|注意事項|ご使用方法)(?:\s|$)/,
-        // English end markers
-        /(?:[\n]*)(DIRECTIONS?|INSTRUCTIONS?|HOW TO USE|APPLICATION|USAGE)\s*[:：]/i,
-        /(?:[\n]*)(MADE IN|MANUFACTURED|PRODUCT OF|CONTAINS\s*\(ALLERGEN|ALLERGENS?)\s*[:：]/i,
-        /(?:[\n]*)(WARNING|CAUTION|注意)/,
+        /CONTAINS?\s*[:：]/i, /ALLERGENS?\s*[:：]/i, /DIRECTIONS?\s*[:：]/i,
+        /INSTRUCTIONS?\s*[:：]/i, /NUTRITION\s+FACTS?\s*[:：]/i, /MANUFACTURED BY/i,
+        /PRODUCT OF/i, /含\s*[:：]/, /过敏原\s*[:：]/, /使用方法\s*[:：]/,
+        /CONTIENE\s*[:：]/i, /MODO DE USO\s*[:：]/i
       ];
-      
       for (const endMarker of endMarkers) {
         const endMatch = textToAnalyze.match(endMarker);
-        // Cut at first match with reasonable content (50+ chars) before it
-        if (endMatch && endMatch.index !== undefined && endMatch.index > 50) {
+        if (endMatch && endMatch.index !== undefined && endMatch.index > 20) {
           textToAnalyze = textToAnalyze.substring(0, endMatch.index);
           break;
         }
@@ -819,102 +812,81 @@ export async function analyzeIngredientsParallel(
     }
   }
   
-  // Estimate ingredient count for better GPT context
-  const commaCount = (textToAnalyze.match(/[,，]/g) || []).length + 1;
-  const chineseSeparatorCount = (textToAnalyze.match(/[、]/g) || []).length + 1;
-  const semicolonCount = (textToAnalyze.match(/[;；]/g) || []).length + 1;
-  const validCounts = [
-    commaCount > 1 ? commaCount : 0,
-    chineseSeparatorCount > 1 ? chineseSeparatorCount : 0,
-    semicolonCount > 1 ? semicolonCount : 0
-  ].filter(c => c > 0);
-  const estimatedCount = validCounts.length > 0 ? Math.min(Math.max(...validCounts), 150) : 20;
-  console.log(`[PARALLEL-ANALYZER] Estimated ${estimatedCount} ingredients from separators`);
-  
-  // Simple extraction: just split on delimiters with minimal filtering
-  // Don't try to be clever about line joining - let the delimiter-based parsing handle it
-  let textForSplitting = textToAnalyze;
-  
-  // Temporarily replace all commas/separators between digits with a placeholder
-  // Handles: ASCII comma, Arabic comma (،), Chinese comma (、), and spaces around them
-  const digitSeparatorPattern = /(\d)\s*[,،、]\s*(?=\d)/g;  // digit + optional space + any comma + optional space + lookahead digit
-  const placeholder = '\x00COMMA_PLACEHOLDER\x00';
-  textForSplitting = textForSplitting.replace(digitSeparatorPattern, `$1${placeholder}`);
-  
-  // Split on delimiters - keep it simple and trust the delimiters
-  // CRITICAL: Remove \n from split pattern! Newlines are OCR line-wrapping artifacts, not real delimiters
-  // In Chinese, actual delimiter is 、 (enumeration comma), not newlines
-  let splitIngredients = textForSplitting
-    .split(/[,،、;；]/)  // Split on commas/semicolons ONLY, NOT newlines
-    .map(ing => {
-      // Restore the preserved commas/separators as ASCII commas
-      return ing.replace(new RegExp(placeholder, 'g'), ',').trim();
-    })
-    .filter(ing => {
-      // Minimal filtering - only remove obvious non-ingredients
-      if (ing.length < 2) return false;
-      if (ing.match(/^[\d.]+%?$/)) return false; // Pure numbers/percentages
-      
-      // Remove section headers attached to ingredients (e.g., "其他微量成分:异丙醇" → "异丙醇")
-      const cleanedIng = ing.replace(/^[^:：]*([:：])\s*/, '').trim();
-      if (cleanedIng.length < 2) return false;
-      
-      // Remove trailing punctuation
-      let depunctuated = cleanedIng.replace(/[.,;:)\]}]+$/, '').trim();
-      if (depunctuated.length < 2) return false;
-      
-      // Only reject obvious structural markers and section keywords
-      if (depunctuated.match(/^(INGREDIENTS?|ALLERGENS?|DIRECTIONS?|INSTRUCTIONS?|NUTRITION|CONTAINS)[\s]*:/i)) return false;
-      if (depunctuated.match(/^(成分|其他|方向|说明|营养)\s*[:：]/i)) return false;
-      
-      return true;
-    })
-    .map(ing => ing.replace(/^[^:：]*([:：])\s*/, '').replace(/[.,;:)\]}]+$/, '').trim());
-
-  // CRITICAL: Merge ingredients with unmatched parentheses with the next ingredient
-  // This fixes cases like "生育" + "酚(维生素E)" being split into separate entries
-  const mergedIngredients: string[] = [];
-  for (let i = 0; i < splitIngredients.length; i++) {
-    let ing = splitIngredients[i];
-    // Count unmatched opening and closing parentheses
-    const openCount = (ing.match(/[（(]/g) || []).length;
-    const closeCount = (ing.match(/[）)]/g) || []).length;
-    
-    // If unmatched opening parens, merge with next ingredient
-    if (openCount > closeCount && i + 1 < splitIngredients.length) {
-      let merged = ing;
-      let j = i + 1;
-      let currentOpen = openCount;
-      let currentClose = closeCount;
-      
-      while (j < splitIngredients.length && currentOpen > currentClose) {
-        const nextIng = splitIngredients[j];
-        merged += ' ' + nextIng;
-        currentOpen += (nextIng.match(/[（(]/g) || []).length;
-        currentClose += (nextIng.match(/[）)]/g) || []).length;
-        j++;
-      }
-      
-      mergedIngredients.push(merged);
-      i = j - 1; // Skip the ingredients we merged
-    } else {
-      mergedIngredients.push(ing);
-    }
+  // Helper function to join wrapped lines
+  // When a line ends with a word and next line starts with lowercase or is a continuation, join them
+  function joinWrappedLines(text: string): string {
+    return text
+      .split('\n')
+      .reduce((acc: string[], line: string, idx: number, arr: string[]) => {
+        const trimmedLine = line.trim();
+        
+        // Skip empty lines
+        if (!trimmedLine) return acc;
+        
+        // Check if this line should be joined with previous line
+        // (previous line ends with word, this line is lowercase start or continuation)
+        if (acc.length > 0) {
+          const lastLine = acc[acc.length - 1];
+          const lastChar = lastLine[lastLine.length - 1];
+          
+          // If last line doesn't end with punctuation and current line doesn't start uppercase
+          // and current line isn't a structural marker, it's likely a wrapped continuation
+          const isWrappedContinuation = 
+            /[a-zA-Z]$/.test(lastLine) && // Last line ends with letter
+            /^[a-z]/.test(trimmedLine) && // This line starts with lowercase
+            !/^(CONTAINS|LESS|OF:|OR|AND|WITH|TO|IN|AS|IS)/.test(trimmedLine); // Not a structural marker
+          
+          if (isWrappedContinuation) {
+            acc[acc.length - 1] = lastLine + ' ' + trimmedLine;
+            return acc;
+          }
+        }
+        
+        acc.push(trimmedLine);
+        return acc;
+      }, [])
+      .join('\n');
   }
-
-  const rawIngredients = mergedIngredients.slice(0, 200);
+  
+  // Helper function to filter out structural markers
+  function isStructuralMarker(line: string): boolean {
+    const upperLine = line.toUpperCase();
+    
+    // Filter out percent/quantity markers and section headers
+    const structuralPatterns = [
+      /^CONTAINS\s+[\d.]+%\s+(OR|LESS)/i,  // "CONTAINS 2% OR", "CONTAINS 1% LESS"
+      /^LESS\s+OF:/i,                       // "LESS OF:"
+      /^OF:\s+/i,                           // "OF:" alone
+      /^OR\s+(LESS|MORE)/i,                 // "OR LESS", "OR MORE"
+      /^CONTAINS\s+(EGG|MILK|SOY|WHEAT|PEANUT|TREE|NUT|FISH|SHELLFISH|SESAME)/i, // Allergen declarations
+      /^CONTAINS:\s+(EGG|MILK|SOY|WHEAT)/i, // CONTAINS: declarations
+      /^\d+%\s*(OR|AND|LESS)?\s*(MORE|LESS)?$/i, // Pure percentage
+      /^(INGREDIENTS?|ALLERGENS?|DIRECTIONS?|INSTRUCTIONS?|MADE IN|MANUFACTURED)\.?$/i // Section headers
+    ];
+    
+    return structuralPatterns.some(pattern => pattern.test(line));
+  }
+  
+  // Pre-process to join wrapped lines
+  const joinedText = joinWrappedLines(textToAnalyze);
+  
+  // Parse individual ingredients by splitting on common separators
+  const rawIngredients = joinedText
+    .split(/[,，、;；\n]/)
+    .map(ing => ing.trim())
+    .filter(ing => 
+      ing.length > 2 && 
+      !ing.match(/^[\d.]+%?$/) && 
+      !isStructuralMarker(ing)
+    )
+    .slice(0, 150); // Cap at 150 to avoid huge batches
   
   if (rawIngredients.length === 0) {
     throw new Error('No valid ingredients found to analyze');
   }
   
   const uniqueIngredients = Array.from(new Set(rawIngredients));
-  console.log(`[PARALLEL-ANALYZER] Extracted ${rawIngredients.length} raw ingredients, ${uniqueIngredients.length} unique`);
-  console.log(`[PARALLEL-ANALYZER] ALL EXTRACTED INGREDIENTS:`);
-  uniqueIngredients.forEach((ing, idx) => {
-    console.log(`  ${idx + 1}. ${ing}`);
-  });
-  console.log(`[PARALLEL-ANALYZER] Sample ingredients: ${uniqueIngredients.slice(0, 5).join(', ')}`);
+  console.log(`[PARALLEL-ANALYZER] Extracted ${uniqueIngredients.length} unique ingredients from OCR`);
   
   // Create micro-batches of 5 ingredients
   const BATCH_SIZE = 5;
@@ -944,7 +916,7 @@ export async function analyzeIngredientsParallel(
     const missingIngredients: string[] = [];
     
     for (const ingredient of batch) {
-      const cached = getCachedIngredientAnalysis(ingredient, productType, userLanguage);
+      const cached = getCachedIngredientAnalysis(ingredient, productType);
       if (cached) {
         cachedResults.push({
           name: ingredient,
@@ -964,36 +936,33 @@ export async function analyzeIngredientsParallel(
       return cachedResults.map(r => r.data);
     }
     
-    // Query GPT only for missing ingredients using Auraly framework
+    // Query GPT only for missing ingredients
     const missingList = missingIngredients.map((ing, idx) => `${idx + 1}. ${ing}`).join('\n');
-    
-    // SIMPLIFIED prompt that GPT handles better
-    // Get language code for display
-    const languageMap: { [key: string]: string } = {
-      'en': 'English',
-      'zh': 'Chinese',
-      'es': 'Spanish'
-    };
-    const displayLanguage = languageMap[userLanguage] || 'English';
-    
-    const batchPrompt = `Analyze each ingredient below. IMPORTANT: Each input line is ONE ingredient. If an ingredient name looks like multiple items separated by commas or "and", treat it as ONE ingredient for analysis purposes.
+    const batchPrompt = `Analyze these ${missingIngredients.length} ingredients from a ${productType} product:
 
-CRITICAL: For ALL responses, use ONLY these English values for healthRisk: "High", "Medium", or "Low". Never use non-English values.
+${missingList}
 
-Translate ingredient names to ${displayLanguage} and respond ONLY with a valid JSON array, nothing else. Each item in the array corresponds to one input ingredient:
+For each, provide:
+1. Name (in user's language)
+2. Risk level: "low", "moderate", or "high"
+3. 1-2 sentence summary
+4. 2-3 sentence detailed explanation
+5. Optional category
 
+${languageInstruction}
+
+Product context: ${context}
+
+Return as JSON array:
 [
   {
-    "ingredient": "ingredient name translated to ${displayLanguage}",
-    "category": "${productType}",
-    "healthRisk": "High",
-    "allergen": true or false,
-    "summary": "1-2 sentence explanation in ${displayLanguage}"
+    "name": "Ingredient Name",
+    "riskLevel": "low|moderate|high",
+    "summary": "Brief explanation",
+    "details": "Detailed explanation",
+    "category": "Optional category"
   }
-]
-
-Ingredients to analyze (one per line):
-${missingList}`;
+]`;
     
     try {
       const response = await openai.chat.completions.create({
@@ -1003,116 +972,33 @@ ${missingList}`;
           { role: "user", content: batchPrompt }
         ],
         response_format: { type: "json_object" },
-        max_completion_tokens: Math.min(4000, missingIngredients.length * 400),
+        max_completion_tokens: Math.min(2000, missingIngredients.length * 200),
         reasoning_effort: "none"
       } as any);
       
       const content = response.choices?.[0]?.message?.content;
       if (!content) throw new Error('Empty GPT response');
       
-      console.log(`[PARALLEL-BATCH-${batchIdx}] RAW GPT RESPONSE (first 500 chars):`, content.substring(0, 500));
-      
       // Parse response - try both array and object with array key
       let freshResults: Ingredient[] = [];
       try {
         const parsed = JSON.parse(content);
-        console.log(`[PARALLEL-BATCH-${batchIdx}] Parsed JSON type: ${typeof parsed}, is array: ${Array.isArray(parsed)}`);
-        
-        if (Array.isArray(parsed)) {
-          freshResults = parsed;
-          console.log(`[PARALLEL-BATCH-${batchIdx}] Using direct array: ${freshResults.length} items`);
-        } else if (typeof parsed === 'object' && parsed !== null) {
-          // Try to find array in object
-          const keys = Object.keys(parsed);
-          console.log(`[PARALLEL-BATCH-${batchIdx}] Object keys: ${keys.join(', ')}`);
-          
-          for (const key of keys) {
-            const val = parsed[key];
-            if (Array.isArray(val)) {
-              freshResults = val as Ingredient[];
-              console.log(`[PARALLEL-BATCH-${batchIdx}] Found array in key '${key}': ${freshResults.length} items`);
-              break;
-            }
-          }
-          if (freshResults.length === 0) {
-            console.error(`[PARALLEL-BATCH-${batchIdx}] No array found in object. Using object as is.`);
-            // Treat object as single-item array if it has ingredient field
-            if (parsed.ingredient) {
-              freshResults = [parsed];
-              console.log(`[PARALLEL-BATCH-${batchIdx}] Treated object as single ingredient`);
-            }
-          }
-        }
-        
-        console.log(`[PARALLEL-BATCH-${batchIdx}] After extraction: ${freshResults.length} items. First item:`, JSON.stringify(freshResults[0] || {}).substring(0, 100));
-        
-        if (freshResults.length === 0) {
-          console.error(`[PARALLEL-BATCH-${batchIdx}] CRITICAL: No ingredients extracted from response`);
-          console.error(`[PARALLEL-BATCH-${batchIdx}] Full parsed content:`, JSON.stringify(parsed).substring(0, 1000));
-          throw new Error(`GPT returned empty array (${missingIngredients.length} ingredients to analyze)`);
-        }
-      } catch (parseError: any) {
-        console.error(`[PARALLEL-BATCH-${batchIdx}] JSON parse FAILED:`, parseError.message);
-        console.error(`[PARALLEL-BATCH-${batchIdx}] Full response content:`, content);
-        throw new Error(`Invalid JSON from GPT: ${parseError.message}`);
+        freshResults = Array.isArray(parsed) ? parsed : (Array.isArray(Object.values(parsed)[0]) ? Object.values(parsed)[0] as Ingredient[] : []);
+      } catch {
+        console.error(`[PARALLEL-BATCH-${batchIdx}] Failed to parse GPT response:`, content);
+        throw new Error('Invalid JSON from GPT');
       }
       
-      // Map Auraly response fields: normalize and add legacy fields for backward compatibility
-      freshResults = freshResults
-        .filter(result => result && (result.ingredient || result.name)) // Filter invalid entries
-        .map(result => {
-          const ingredientName = normalizeIngredientCapitalization(
-            (result.ingredient || result.name || '').trim(), 
-            userLanguage
-          );
-          
-          if (!ingredientName) {
-            console.warn(`[PARALLEL-BATCH-${batchIdx}] Skipping empty ingredient`);
-            return null;
-          }
-          
-          // Normalize healthRisk: handle Chinese/Spanish values that might slip through
-          const healthRiskNormalizationMap: Record<string, string> = {
-            'High': 'High', 'high': 'High', '高': 'High', 'Alto': 'High',
-            'Medium': 'Medium', 'moderate': 'Medium', 'Moderate': 'Medium', '中等': 'Medium', '中': 'Medium', 'Moderado': 'Medium',
-            'Low': 'Low', 'low': 'Low', '低': 'Low', 'Bajo': 'Low'
-          };
-          let normalizedHealthRisk = result.healthRisk as string;
-          if (healthRiskNormalizationMap[normalizedHealthRisk]) {
-            normalizedHealthRisk = healthRiskNormalizationMap[normalizedHealthRisk];
-          } else {
-            normalizedHealthRisk = 'Medium'; // Default to Medium if unrecognized
-          }
-          
-          // Convert healthRisk (High/Medium/Low) to legacy riskLevel (high/moderate/low)
-          const healthRiskMap: Record<string, RiskLevel> = {
-            'High': 'high',
-            'Medium': 'moderate',
-            'Low': 'low'
-          };
-          const legacyRiskLevel: RiskLevel = healthRiskMap[normalizedHealthRisk as keyof typeof healthRiskMap] || 'moderate';
-          
-          return {
-            ingredient: ingredientName,
-            name: ingredientName,
-            category: result.category || productType,
-            healthRisk: normalizedHealthRisk,
-            riskLevel: legacyRiskLevel,
-            allergen: result.allergen || false,
-            summary: result.summary || 'No summary available',
-            sourcesOrNotes: result.sourcesOrNotes,
-            details: result.summary || 'No details available'
-          };
-        })
-        .filter(result => result !== null) as Ingredient[];
-      
-      console.log(`[PARALLEL-BATCH-${batchIdx}] Mapped and filtered: ${freshResults.length} valid ingredients from ${cachedResults.length + missingIngredients.length} requested`);
+      // Normalize ingredient name capitalization for consistency
+      freshResults = freshResults.map(result => ({
+        ...result,
+        name: normalizeIngredientCapitalization(result.name, userLanguage)
+      }));
       
       // Cache fresh results
       for (const result of freshResults) {
-        const cacheKey = result.ingredient || result.name || '';
-        setCachedIngredientAnalysis(cacheKey, productType, JSON.stringify(result), userLanguage);
-        console.log(`[PARALLEL-BATCH-${batchIdx}] Cached: ${cacheKey}`);
+        setCachedIngredientAnalysis(result.name, productType, JSON.stringify(result));
+        console.log(`[PARALLEL-BATCH-${batchIdx}] Cached: ${result.name}`);
       }
       
       const batchDuration = ((Date.now() - batchStartTime) / 1000).toFixed(2);
@@ -1133,15 +1019,9 @@ ${missingList}`;
   
   console.log(`[PARALLEL-ANALYZER] Merged ${allIngredients.length} total ingredients from ${batches.length} batches`);
   
-  // Determine overall risk based on healthRisk field (ignore allergens per Auraly framework)
-  const hasHigh = allIngredients.some(i => {
-    const healthRisk = (i as any).healthRisk;
-    return healthRisk === 'High' || i.riskLevel === 'high';
-  });
-  const hasModerate = allIngredients.some(i => {
-    const healthRisk = (i as any).healthRisk;
-    return healthRisk === 'Medium' || i.riskLevel === 'moderate';
-  });
+  // Determine overall risk
+  const hasHigh = allIngredients.some(i => i.riskLevel === 'high');
+  const hasModerate = allIngredients.some(i => i.riskLevel === 'moderate');
   const overallRisk: RiskLevel = hasHigh ? 'high' : (hasModerate ? 'moderate' : 'low');
   
   // Build final result

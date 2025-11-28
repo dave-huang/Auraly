@@ -170,29 +170,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Debug endpoint to test Auraly risk classifications
-  app.get("/debug/auraly-risk-test", async (req, res) => {
-    try {
-      const testIngredients = ['Milk', 'Peanuts', 'Titanium Dioxide', 'BHA', 'Polysorbate 80', 'Sugar', 'Red 3'];
-      const results = await analyzeIngredientsParallel('food', testIngredients.join(', '), 'en');
-      
-      res.json({
-        framework: 'Auraly Multi-Dimensional Risk Assessment',
-        testDate: new Date().toISOString(),
-        ingredients: results.ingredients.map(ing => ({
-          name: ing.name || (ing as any).ingredient,
-          healthRisk: (ing as any).healthRisk || ing.riskLevel,
-          allergen: (ing as any).allergen || false,
-          dietaryFlags: (ing as any).dietaryFlags || {},
-          summary: ing.summary
-        })),
-        overallRisk: results.overallRisk
-      });
-    } catch (error: any) {
-      res.status(500).json({ error: error.message });
-    }
-  });
-
   // Check analysis status (for polling from mobile when tab is backgrounded)
   app.get("/api/analysis-status/:requestId", (req, res) => {
     const { requestId } = req.params;
