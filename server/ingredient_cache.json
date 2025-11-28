@@ -30,8 +30,8 @@
     "createdAt": 1764280646888
   },
   "disodium edta__skincare__en": {
-    "analysis": "{\"ingredient\":\"Disodium Edta\",\"name\":\"Disodium Edta\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Disodium EDTA is a chelating agent used to bind metal ions and stabilize skincare formulas. At typical cosmetic concentrations it is considered low risk, though very sensitive individuals may experience mild irritation.\",\"details\":\"Disodium EDTA is a chelating agent used to bind metal ions and stabilize skincare formulas. At typical cosmetic concentrations it is considered low risk, though very sensitive individuals may experience mild irritation.\"}",
-    "lastUpdated": 1764300413602,
+    "analysis": "{\"ingredient\":\"Disodium Edta\",\"name\":\"Disodium Edta\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Disodium EDTA is a chelating agent used to bind metal ions and stabilize cosmetic formulas. It is generally considered safe at typical skincare concentrations, with low irritation potential for most users.\",\"details\":\"Disodium EDTA is a chelating agent used to bind metal ions and stabilize cosmetic formulas. It is generally considered safe at typical skincare concentrations, with low irritation potential for most users.\"}",
+    "lastUpdated": 1764300562184,
     "createdAt": 1764280646888
   },
   "bis-diethoxydiglycol cyclohexane 14-dicarboxylate__skincare__en": {
@@ -40,8 +40,8 @@
     "createdAt": 1764280646888
   },
   "sodium acetylated hyaluronate__skincare__en": {
-    "analysis": "{\"ingredient\":\"Sodium Acetylated Hyaluronate\",\"name\":\"Sodium Acetylated Hyaluronate\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Sodium acetylated hyaluronate is a modified form of hyaluronic acid used for hydration and skin barrier support. It is generally well tolerated and considered low risk for most skin types.\",\"details\":\"Sodium acetylated hyaluronate is a modified form of hyaluronic acid used for hydration and skin barrier support. It is generally well tolerated and considered low risk for most skin types.\"}",
-    "lastUpdated": 1764300413602,
+    "analysis": "{\"ingredient\":\"Sodium Acetylated Hyaluronate\",\"name\":\"Sodium Acetylated Hyaluronate\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Sodium acetylated hyaluronate is a modified form of hyaluronic acid used for hydration and skin conditioning. It is generally well tolerated and considered low risk for most skin types.\",\"details\":\"Sodium acetylated hyaluronate is a modified form of hyaluronic acid used for hydration and skin conditioning. It is generally well tolerated and considered low risk for most skin types.\"}",
+    "lastUpdated": 1764300562184,
     "createdAt": 1764280646888
   },
   "silk protein__skincare__en": {
@@ -50,48 +50,48 @@
     "createdAt": 1764280646888
   },
   "dipropylene glycol__skincare__en": {
-    "analysis": "{\"ingredient\":\"Dipropylene Glycol\",\"name\":\"Dipropylene Glycol\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Dipropylene glycol is a common solvent and humectant used in skincare to help dissolve ingredients and retain moisture. It is generally well tolerated with low irritation potential at typical cosmetic concentrations.\",\"details\":\"Dipropylene glycol is a common solvent and humectant used in skincare to help dissolve ingredients and retain moisture. It is generally well tolerated with low irritation potential at typical cosmetic concentrations.\"}",
-    "lastUpdated": 1764300412755,
+    "analysis": "{\"ingredient\":\"Dipropylene Glycol\",\"name\":\"Dipropylene Glycol\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Dipropylene glycol is a humectant and solvent commonly used in skincare to help retain moisture and improve texture. It is generally considered low risk and well tolerated, with irritation being rare at typical cosmetic concentrations.\",\"details\":\"Dipropylene glycol is a humectant and solvent commonly used in skincare to help retain moisture and improve texture. It is generally considered low risk and well tolerated, with irritation being rare at typical cosmetic concentrations.\"}",
+    "lastUpdated": 1764300562941,
     "createdAt": 1764280646889
   },
   "sorbitol__skincare__en": {
-    "analysis": "{\"ingredient\":\"Sorbitol\",\"name\":\"Sorbitol\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Sorbitol is a sugar alcohol used as a humectant to help skin retain moisture. It is considered low risk, though very sensitive individuals may experience mild irritation at high concentrations.\",\"details\":\"Sorbitol is a sugar alcohol used as a humectant to help skin retain moisture. It is considered low risk, though very sensitive individuals may experience mild irritation at high concentrations.\"}",
-    "lastUpdated": 1764300412755,
+    "analysis": "{\"ingredient\":\"Sorbitol\",\"name\":\"Sorbitol\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Sorbitol is a sugar alcohol used as a humectant to attract and hold moisture in the skin. It is usually low risk, though very sensitive individuals may experience mild irritation in rare cases.\",\"details\":\"Sorbitol is a sugar alcohol used as a humectant to attract and hold moisture in the skin. It is usually low risk, though very sensitive individuals may experience mild irritation in rare cases.\"}",
+    "lastUpdated": 1764300562941,
     "createdAt": 1764280646889
   },
   "lauric acid__skincare__en": {
-    "analysis": "{\"ingredient\":\"Lauric Acid\",\"name\":\"Lauric Acid\",\"category\":\"skincare\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":false,\"summary\":\"Lauric acid is a fatty acid used as an emulsifier and surfactant, and it can have antimicrobial properties. It may be comedogenic for some people and can cause irritation in sensitive or acne-prone skin when used at higher levels.\",\"details\":\"Lauric acid is a fatty acid used as an emulsifier and surfactant, and it can have antimicrobial properties. It may be comedogenic for some people and can cause irritation in sensitive or acne-prone skin when used at higher levels.\"}",
-    "lastUpdated": 1764300412755,
+    "analysis": "{\"ingredient\":\"Lauric Acid\",\"name\":\"Lauric Acid\",\"category\":\"skincare\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":false,\"summary\":\"Lauric acid is a fatty acid used as an emollient, surfactant, and thickener in skincare. It is generally safe but can be comedogenic for some people and may aggravate acne-prone or very sensitive skin.\",\"details\":\"Lauric acid is a fatty acid used as an emollient, surfactant, and thickener in skincare. It is generally safe but can be comedogenic for some people and may aggravate acne-prone or very sensitive skin.\"}",
+    "lastUpdated": 1764300562941,
     "createdAt": 1764280646889
   },
   "stearic acid__skincare__en": {
-    "analysis": "{\"ingredient\":\"Stearic Acid\",\"name\":\"Stearic Acid\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Stearic acid is a fatty acid commonly used as an emulsifier and thickener in creams and cleansers. It is generally considered safe and non-irritating, though it may be mildly comedogenic for some individuals.\",\"details\":\"Stearic acid is a fatty acid commonly used as an emulsifier and thickener in creams and cleansers. It is generally considered safe and non-irritating, though it may be mildly comedogenic for some individuals.\"}",
-    "lastUpdated": 1764300412755,
+    "analysis": "{\"ingredient\":\"Stearic Acid\",\"name\":\"Stearic Acid\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Stearic acid is a fatty acid used as an emulsifier and thickener that helps stabilize creams and cleansers. It is typically well tolerated, with a low risk of irritation or sensitization for most skin types.\",\"details\":\"Stearic acid is a fatty acid used as an emulsifier and thickener that helps stabilize creams and cleansers. It is typically well tolerated, with a low risk of irritation or sensitization for most skin types.\"}",
+    "lastUpdated": 1764300562941,
     "createdAt": 1764280646889
   },
   "lauryl betaine__skincare__en": {
-    "analysis": "{\"ingredient\":\"Lauryl Betaine\",\"name\":\"Lauryl Betaine\",\"category\":\"skincare\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":false,\"summary\":\"Lauryl betaine is an amphoteric surfactant used for mild foaming and cleansing in skincare products. It is usually gentler than many harsh detergents but can still cause irritation or dryness in people with very sensitive skin.\",\"details\":\"Lauryl betaine is an amphoteric surfactant used for mild foaming and cleansing in skincare products. It is usually gentler than many harsh detergents but can still cause irritation or dryness in people with very sensitive skin.\"}",
-    "lastUpdated": 1764300412755,
+    "analysis": "{\"ingredient\":\"Lauryl Betaine\",\"name\":\"Lauryl Betaine\",\"category\":\"skincare\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":false,\"summary\":\"Lauryl betaine is a mild amphoteric surfactant used for foaming and cleansing in skincare products. It is generally mild but can cause irritation or dryness in some individuals, especially with frequent use or in high concentrations.\",\"details\":\"Lauryl betaine is a mild amphoteric surfactant used for foaming and cleansing in skincare products. It is generally mild but can cause irritation or dryness in some individuals, especially with frequent use or in high concentrations.\"}",
+    "lastUpdated": 1764300562941,
     "createdAt": 1764280646889
   },
   "glycerin__skincare__en": {
-    "analysis": "{\"ingredient\":\"Glycerin\",\"name\":\"Glycerin\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Glycerin is a common humectant that helps attract and retain moisture in the skin and is generally well tolerated. It is considered safe for most skin types, including sensitive skin.\",\"details\":\"Glycerin is a common humectant that helps attract and retain moisture in the skin and is generally well tolerated. It is considered safe for most skin types, including sensitive skin.\"}",
-    "lastUpdated": 1764300412297,
+    "analysis": "{\"ingredient\":\"Glycerin\",\"name\":\"Glycerin\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Glycerin is a common humectant that helps attract and retain moisture in the skin and is generally well tolerated. It has a low risk of irritation or allergy for most people.\",\"details\":\"Glycerin is a common humectant that helps attract and retain moisture in the skin and is generally well tolerated. It has a low risk of irritation or allergy for most people.\"}",
+    "lastUpdated": 1764300562466,
     "createdAt": 1764280646903
   },
   "myristic acid__skincare__en": {
-    "analysis": "{\"ingredient\":\"Myristic Acid\",\"name\":\"Myristic Acid\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Myristic acid is a fatty acid used as an emulsifier and cleansing agent in skincare products. It is generally safe, though in higher amounts it can be mildly irritating for very sensitive or acne-prone skin.\",\"details\":\"Myristic acid is a fatty acid used as an emulsifier and cleansing agent in skincare products. It is generally safe, though in higher amounts it can be mildly irritating for very sensitive or acne-prone skin.\"}",
-    "lastUpdated": 1764300412297,
+    "analysis": "{\"ingredient\":\"Myristic Acid\",\"name\":\"Myristic Acid\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Myristic acid is a fatty acid used as an emulsifier and cleansing agent in skincare. It is usually low risk, though very sensitive or acne-prone skin may experience mild irritation or comedogenic effects.\",\"details\":\"Myristic acid is a fatty acid used as an emulsifier and cleansing agent in skincare. It is usually low risk, though very sensitive or acne-prone skin may experience mild irritation or comedogenic effects.\"}",
+    "lastUpdated": 1764300562466,
     "createdAt": 1764280646903
   },
   "palmitic acid__skincare__en": {
-    "analysis": "{\"ingredient\":\"Palmitic Acid\",\"name\":\"Palmitic Acid\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Palmitic acid is a fatty acid used as an emollient and thickener in skincare formulations. It is typically safe and non-irritating, though very acne-prone individuals may find it slightly comedogenic in some formulas.\",\"details\":\"Palmitic acid is a fatty acid used as an emollient and thickener in skincare formulations. It is typically safe and non-irritating, though very acne-prone individuals may find it slightly comedogenic in some formulas.\"}",
-    "lastUpdated": 1764300412298,
+    "analysis": "{\"ingredient\":\"Palmitic Acid\",\"name\":\"Palmitic Acid\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Palmitic acid is a fatty acid used as an emollient and thickener in skincare products. It is generally considered safe, but in some acne-prone individuals it can be mildly comedogenic.\",\"details\":\"Palmitic acid is a fatty acid used as an emollient and thickener in skincare products. It is generally considered safe, but in some acne-prone individuals it can be mildly comedogenic.\"}",
+    "lastUpdated": 1764300562466,
     "createdAt": 1764280646904
   },
   "potassium hydroxide__skincare__en": {
-    "analysis": "{\"ingredient\":\"Potassium Hydroxide\",\"name\":\"Potassium Hydroxide\",\"category\":\"skincare\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":false,\"summary\":\"Potassium hydroxide is a strong alkali used in small amounts to adjust pH or to saponify oils in cleansers. In leave-on products or high concentrations it can be irritating or caustic, but in properly formulated cosmetics it is usually safe.\",\"details\":\"Potassium hydroxide is a strong alkali used in small amounts to adjust pH or to saponify oils in cleansers. In leave-on products or high concentrations it can be irritating or caustic, but in properly formulated cosmetics it is usually safe.\"}",
-    "lastUpdated": 1764300412298,
+    "analysis": "{\"ingredient\":\"Potassium Hydroxide\",\"name\":\"Potassium Hydroxide\",\"category\":\"skincare\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":false,\"summary\":\"Potassium hydroxide is a strong alkali used to adjust pH or saponify oils in cleansers. In finished products it is usually present at low levels, but in higher concentrations it can be irritating or caustic to the skin.\",\"details\":\"Potassium hydroxide is a strong alkali used to adjust pH or saponify oils in cleansers. In finished products it is usually present at low levels, but in higher concentrations it can be irritating or caustic to the skin.\"}",
+    "lastUpdated": 1764300562466,
     "createdAt": 1764280646904
   },
   "ethylene glycol distearate__skincare__en": {
@@ -360,8 +360,8 @@
     "createdAt": 1764282528423
   },
   "glycol distearate__skincare__en": {
-    "analysis": "{\"ingredient\":\"Glycol Distearate\",\"name\":\"Glycol Distearate\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Glycol distearate is an ester used as an opacifier and emollient that gives products a pearly appearance. It is generally considered safe and non-irritating for most skin types.\",\"details\":\"Glycol distearate is an ester used as an opacifier and emollient that gives products a pearly appearance. It is generally considered safe and non-irritating for most skin types.\"}",
-    "lastUpdated": 1764300412298,
+    "analysis": "{\"ingredient\":\"Glycol Distearate\",\"name\":\"Glycol Distearate\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Glycol distearate is an ester used as an opacifier and conditioning agent that gives products a pearly appearance. It is generally considered safe and non-irritating for most skin types.\",\"details\":\"Glycol distearate is an ester used as an opacifier and conditioning agent that gives products a pearly appearance. It is generally considered safe and non-irritating for most skin types.\"}",
+    "lastUpdated": 1764300562466,
     "createdAt": 1764286476926
   },
   "myristyl betaine__skincare__en": {
@@ -370,18 +370,18 @@
     "createdAt": 1764287201644
   },
   "bis-diethoxydiglycol cyclohexane-14-dicarboxylate__skincare__en": {
-    "analysis": "{\"ingredient\":\"Bis-diethoxydiglycol Cyclohexane-1,4-dicarboxylate\",\"name\":\"Bis-diethoxydiglycol Cyclohexane-1,4-dicarboxylate\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Bis-diethoxydiglycol cyclohexane-1,4-dicarboxylate is an emollient or texture-enhancing ester used to improve skin feel and spreadability of products. Available data and its chemical class suggest low irritation and sensitization potential at cosmetic use levels.\",\"details\":\"Bis-diethoxydiglycol cyclohexane-1,4-dicarboxylate is an emollient or texture-enhancing ester used to improve skin feel and spreadability of products. Available data and its chemical class suggest low irritation and sensitization potential at cosmetic use levels.\"}",
-    "lastUpdated": 1764300092443,
+    "analysis": "{\"ingredient\":\"Bis-diethoxydiglycol Cyclohexane-1,4-dicarboxylate\",\"name\":\"Bis-diethoxydiglycol Cyclohexane-1,4-dicarboxylate\",\"category\":\"skincare\",\"healthRisk\":\"Low\",\"riskLevel\":\"low\",\"allergen\":false,\"summary\":\"Bis-diethoxydiglycol cyclohexane-1,4-dicarboxylate is an ester used mainly as an emollient or texture enhancer in cosmetics. Available data do not indicate major safety concerns at normal use levels.\",\"details\":\"Bis-diethoxydiglycol cyclohexane-1,4-dicarboxylate is an ester used mainly as an emollient or texture enhancer in cosmetics. Available data do not indicate major safety concerns at normal use levels.\"}",
+    "lastUpdated": 1764300562184,
     "createdAt": 1764287201661
   },
   "silk sericin protein__skincare__en": {
-    "analysis": "{\"ingredient\":\"Silk Sericin Protein\",\"name\":\"Silk Sericin Protein\",\"category\":\"skincare\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":true,\"summary\":\"Silk sericin protein is a conditioning and film-forming ingredient derived from silk. While beneficial for texture and hydration, it can cause allergic reactions or sensitization in some individuals, especially those with silk or insect-related allergies.\",\"details\":\"Silk sericin protein is a conditioning and film-forming ingredient derived from silk. While beneficial for texture and hydration, it can cause allergic reactions or sensitization in some individuals, especially those with silk or insect-related allergies.\"}",
-    "lastUpdated": 1764287201661,
+    "analysis": "{\"ingredient\":\"Silk Sericin Protein\",\"name\":\"Silk Sericin Protein\",\"category\":\"skincare\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":true,\"summary\":\"Silk sericin protein is derived from silk and used as a conditioning and moisturizing ingredient. While often well tolerated, it is a protein that can act as an allergen in sensitive individuals or those with silk-related allergies.\",\"details\":\"Silk sericin protein is derived from silk and used as a conditioning and moisturizing ingredient. While often well tolerated, it is a protein that can act as an allergen in sensitive individuals or those with silk-related allergies.\"}",
+    "lastUpdated": 1764300562184,
     "createdAt": 1764287201661
   },
   "butylated hydroxytoluene (bht)__skincare__en": {
-    "analysis": "{\"ingredient\":\"Butylated Hydroxytoluene (bht)\",\"name\":\"Butylated Hydroxytoluene (bht)\",\"category\":\"skincare\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":false,\"summary\":\"BHT is a synthetic antioxidant used to prevent product oxidation and extend shelf life. It is generally permitted in low cosmetic concentrations, but it is somewhat controversial due to potential irritation and long-term safety concerns at higher exposures.\",\"details\":\"BHT is a synthetic antioxidant used to prevent product oxidation and extend shelf life. It is generally permitted in low cosmetic concentrations, but it is somewhat controversial due to potential irritation and long-term safety concerns at higher exposures.\"}",
-    "lastUpdated": 1764300413602,
+    "analysis": "{\"ingredient\":\"Butylated Hydroxytoluene (bht)\",\"name\":\"Butylated Hydroxytoluene (bht)\",\"category\":\"skincare\",\"healthRisk\":\"Medium\",\"riskLevel\":\"moderate\",\"allergen\":false,\"summary\":\"BHT is a synthetic antioxidant used to prevent product oxidation and extend shelf life. It is generally safe at low cosmetic levels but is somewhat controversial due to irritation potential and limited data on long-term high exposure.\",\"details\":\"BHT is a synthetic antioxidant used to prevent product oxidation and extend shelf life. It is generally safe at low cosmetic levels but is somewhat controversial due to irritation potential and limited data on long-term high exposure.\"}",
+    "lastUpdated": 1764300562184,
     "createdAt": 1764287201661
   },
   "silk hydrolyzed protein__skincare__en": {
