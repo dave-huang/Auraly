@@ -795,21 +795,22 @@ export async function analyzeIngredientsParallel(
     const match = expandedText.match(marker);
     if (match && match.index !== undefined) {
       textToAnalyze = expandedText.substring(match.index + match[0].length);
-      // Only trim at CONTAINS/ALLERGENS if it's clearly a separate section with enough content before it
+      
+      // CRITICAL: Find where ingredients section ends
+      // Chinese/Japanese end markers (with or without delimiter before them)
       const endMarkers = [
-        /MADE\s+IN\s+A\s+FACILITY/i, // "MADE IN A FACILITY..."
-        /MAY\s+CONTAIN/i,              // "MAY CONTAIN..."
-        /MADE\s+IN\s+/i,               // "MADE IN..." (generic)
-        /CONTAINS\s+(SOYBEANS|WHEAT|MILK|EGG|PEANUT|TREE|NUT|FISH|SHELLFISH|SESAME|SOY)\s*[,:]/i, // Allergen declarations
-        /ALLERGENS?\s*[:：]/i, /DIRECTIONS?\s*[:：]/i,
-        /INSTRUCTIONS?\s*[:：]/i, /NUTRITION\s+FACTS?\s*[:：]/i, /MANUFACTURED BY/i,
-        /PRODUCT OF/i, /含\s*[:：]/, /过敏原\s*[:：]/, /使用方法\s*[:：]/,
-        /CONTIENE\s*[:：]/i, /MODO DE USO\s*[:：]/i
+        /(?:[\n使注方成]*)(使用方法|使用上の注意|注意事項|ご使用方法|正确使用|不适合|对肌肤的承诺|特点|成份|其他成分)\s*[:：]/,
+        /(?:[\n]*)(使用方法|使用上の注意|注意事項|ご使用方法)(?:\s|$)/,
+        // English end markers
+        /(?:[\n]*)(DIRECTIONS?|INSTRUCTIONS?|HOW TO USE|APPLICATION|USAGE)\s*[:：]/i,
+        /(?:[\n]*)(MADE IN|MANUFACTURED|PRODUCT OF|CONTAINS\s*\(ALLERGEN|ALLERGENS?)\s*[:：]/i,
+        /(?:[\n]*)(WARNING|CAUTION|注意)/,
       ];
+      
       for (const endMarker of endMarkers) {
         const endMatch = textToAnalyze.match(endMarker);
-        // Require much longer content (100+ chars) before cutting to avoid premature truncation
-        if (endMatch && endMatch.index !== undefined && endMatch.index > 100) {
+        // Cut at first match with reasonable content (50+ chars) before it
+        if (endMatch && endMatch.index !== undefined && endMatch.index > 50) {
           textToAnalyze = textToAnalyze.substring(0, endMatch.index);
           break;
         }
