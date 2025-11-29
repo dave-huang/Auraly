@@ -233,13 +233,28 @@ export function extractIngredientsFromText(ingredientsText: string): { ingredien
   const joinedText = joinWrappedLines(textToAnalyze);
   console.log(`[EXTRACT] After joining wrapped lines: ${joinedText.length} chars`);
   
+  // Clean text before splitting: remove allergen fragments and bracket artifacts
+  // Replace bracket+fragment patterns that indicate malformed splits (e.g., "SALT]", "SOY SAUCE [SOYBEAN")
+  let cleanedText = joinedText;
+  
+  // Remove allergen statements that bled into ingredient list (e.g., ". CONTAINS: SOYBEANS")
+  cleanedText = cleanedText.replace(/\.\s*CONTAINS\s*:\s*[^,;，；\n]+/gi, '');
+  cleanedText = cleanedText.replace(/\.\s*含\s*[:：]\s*[^,;，；\n]+/, '');
+  cleanedText = cleanedText.replace(/\.\s*CONTIENE\s*:\s*[^,;，；\n]+/gi, '');
+  
+  // Split on brackets to separate malformed ingredients (e.g., "SOY SAUCE [SOYBEAN, WHEAT" → take "SOY SAUCE")
+  // This handles cases where brackets aren't properly closed
+  cleanedText = cleanedText.replace(/\[/g, ', ').replace(/\]/g, ', ');
+  
   // Parse individual ingredients - CONSISTENT logic for all languages
-  const rawIngredients = joinedText
+  const rawIngredients = cleanedText
     .split(/[,，、;；\n]/)  // Split on common separators (English and Chinese)
     .map(ing => ing.trim())
+    .map(ing => ing.replace(/^[.\s]+|[.\s]+$/g, ''))  // Remove leading/trailing dots and spaces
     .filter(ing => 
       ing.length > 2 && 
       !ing.match(/^[\d.]+%?$/) &&  // Filter out pure numbers/percentages
+      !ing.match(/^(AND|OR)\s+\w+/) &&  // Filter out fragments like "AND MILK", "OR LESS"
       !isStructuralMarker(ing)     // Filter out structural markers
     )
     .slice(0, 150); // Cap at 150 to avoid huge batches
