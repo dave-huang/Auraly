@@ -149,8 +149,8 @@ function isStructuralMarker(line: string): boolean {
 }
 
 // UNIFIED, LANGUAGE-AGNOSTIC ingredient extraction function
-// This ensures consistent ingredient extraction regardless of user language
-export function extractIngredientsFromText(ingredientsText: string): string[] {
+// Returns both the processed text for GPT and the extracted ingredients list
+export function extractIngredientsFromText(ingredientsText: string): { ingredients: string[]; processedText: string; count: number } {
   console.log(`[EXTRACT] Starting language-agnostic ingredient extraction`);
   
   // Expand parenthetical ingredients
@@ -210,15 +210,15 @@ export function extractIngredientsFromText(ingredientsText: string): string[] {
     .slice(0, 150); // Cap at 150 to avoid huge batches
   
   if (rawIngredients.length === 0) {
-    console.log(`[EXTRACT] No ingredients found, returning empty array`);
-    return [];
+    console.log(`[EXTRACT] No ingredients found`);
+    return { ingredients: [], processedText: joinedText, count: 0 };
   }
   
   // Deduplicate
   const uniqueIngredients = Array.from(new Set(rawIngredients));
   console.log(`[EXTRACT] Extracted ${uniqueIngredients.length} unique ingredients (${rawIngredients.length} total before dedup)`);
   
-  return uniqueIngredients;
+  return { ingredients: uniqueIngredients, processedText: joinedText, count: uniqueIngredients.length };
 }
 
 // Calculate Levenshtein similarity between two strings (0-1, where 1 is identical)
@@ -521,12 +521,13 @@ export async function analyzeIngredients(
   console.log(`[CACHE] Miss: will perform fresh analysis`);
   
   // USE UNIFIED, LANGUAGE-AGNOSTIC EXTRACTION
-  const extractedIngredients = extractIngredientsFromText(ingredientsText);
-  if (extractedIngredients.length === 0) {
+  const extraction = extractIngredientsFromText(ingredientsText);
+  if (extraction.count === 0) {
     throw new Error('No valid ingredients found to analyze. Please ensure the ingredient list is clearly visible.');
   }
   
-  const estimatedIngredientCount = extractedIngredients.length;
+  const estimatedIngredientCount = extraction.count;
+  const processedText = extraction.processedText;
   console.log(`[ANALYZER] Extracted ${estimatedIngredientCount} unique ingredients for prompt`);
   
   const context = PRODUCT_TYPE_CONTEXTS[productType];
@@ -540,7 +541,7 @@ ${languageInstruction}
 Product Type Context: ${context}
 
 Ingredient List (parenthetical groups have been pre-expanded):
-${ingredientsText}
+${processedText}
 
 CRITICAL EXTRACTION RULES:
 1. Extract EVERY SINGLE ingredient from the list above
