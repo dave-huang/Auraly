@@ -910,53 +910,72 @@ Return as JSON array:
   }
 ]`;
     
-    try {
-      const response = await openai.chat.completions.create({
-        model: "gpt-5.1",
-        messages: [
-          { role: "system", content: systemMessage },
-          { role: "user", content: batchPrompt }
-        ],
-        response_format: { type: "json_object" },
-        max_completion_tokens: Math.min(2000, missingIngredients.length * 200),
-        reasoning_effort: "none"
-      } as any);
-      
-      const content = response.choices?.[0]?.message?.content;
-      if (!content) throw new Error('Empty GPT response');
-      
-      // Parse response - try both array and object with array key
-      let freshResults: Ingredient[] = [];
+    // Retry logic for failed GPT calls
+    const MAX_RETRIES = 3;
+    let lastError: any = null;
+    
+    for (let retryAttempt = 0; retryAttempt < MAX_RETRIES; retryAttempt++) {
       try {
-        const parsed = JSON.parse(content);
-        freshResults = Array.isArray(parsed) ? parsed : (Array.isArray(Object.values(parsed)[0]) ? Object.values(parsed)[0] as Ingredient[] : []);
-      } catch {
-        console.error(`[PARALLEL-BATCH-${batchIdx}] Failed to parse GPT response:`, content);
-        throw new Error('Invalid JSON from GPT');
+        const response = await openai.chat.completions.create({
+          model: "gpt-4o",
+          messages: [
+            { role: "system", content: systemMessage },
+            { role: "user", content: batchPrompt }
+          ],
+          temperature: 0.3,
+          max_tokens: Math.min(2000, missingIngredients.length * 200)
+        } as any);
+        
+        const content = response.choices?.[0]?.message?.content;
+        if (!content) {
+          lastError = new Error('Empty GPT response');
+          if (retryAttempt < MAX_RETRIES - 1) {
+            console.log(`[PARALLEL-BATCH-${batchIdx}] Retry ${retryAttempt + 1}/${MAX_RETRIES} due to empty response`);
+            await new Promise(resolve => setTimeout(resolve, 1000 * (retryAttempt + 1))); // Exponential backoff
+            continue;
+          }
+          throw lastError;
+        }
+        
+        // Parse response - try both array and object with array key
+        let freshResults: Ingredient[] = [];
+        try {
+          const parsed = JSON.parse(content);
+          freshResults = Array.isArray(parsed) ? parsed : (Array.isArray(Object.values(parsed)[0]) ? Object.values(parsed)[0] as Ingredient[] : []);
+        } catch {
+          console.error(`[PARALLEL-BATCH-${batchIdx}] Failed to parse GPT response:`, content.substring(0, 100));
+          throw new Error('Invalid JSON from GPT');
+        }
+        
+        // Normalize ingredient name capitalization for consistency
+        freshResults = freshResults.map(result => ({
+          ...result,
+          name: normalizeIngredientCapitalization(result.name, userLanguage)
+        }));
+        
+        // Cache fresh results with language tag
+        for (const result of freshResults) {
+          setCachedIngredientAnalysis(result.name, productType, JSON.stringify(result), userLanguage);
+          console.log(`[PARALLEL-BATCH-${batchIdx}] Cached: ${result.name} (${userLanguage})`);
+        }
+        
+        const batchDuration = ((Date.now() - batchStartTime) / 1000).toFixed(2);
+        console.log(`[PARALLEL-BATCH-${batchIdx}] Completed in ${batchDuration}s: ${cachedResults.length} cached + ${freshResults.length} fresh`);
+        
+        // Return all results for this batch
+        return [...cachedResults.map(r => r.data), ...freshResults];
+      } catch (error) {
+        lastError = error;
+        if (retryAttempt < MAX_RETRIES - 1) {
+          console.log(`[PARALLEL-BATCH-${batchIdx}] Retry ${retryAttempt + 1}/${MAX_RETRIES}:`, (error as any).message);
+          await new Promise(resolve => setTimeout(resolve, 1000 * (retryAttempt + 1))); // Exponential backoff
+        }
       }
-      
-      // Normalize ingredient name capitalization for consistency
-      freshResults = freshResults.map(result => ({
-        ...result,
-        name: normalizeIngredientCapitalization(result.name, userLanguage)
-      }));
-      
-      // Cache fresh results with language tag
-      for (const result of freshResults) {
-        setCachedIngredientAnalysis(result.name, productType, JSON.stringify(result), userLanguage);
-        console.log(`[PARALLEL-BATCH-${batchIdx}] Cached: ${result.name} (${userLanguage})`);
-      }
-      
-      const batchDuration = ((Date.now() - batchStartTime) / 1000).toFixed(2);
-      console.log(`[PARALLEL-BATCH-${batchIdx}] Completed in ${batchDuration}s: ${cachedResults.length} cached + ${freshResults.length} fresh`);
-      
-      // Return all results for this batch
-      return [...cachedResults.map(r => r.data), ...freshResults];
-    } catch (error) {
-      console.error(`[PARALLEL-BATCH-${batchIdx}] Error:`, error);
-      // Return at least cached results on error
-      return cachedResults.map(r => r.data);
     }
+    
+    console.error(`[PARALLEL-BATCH-${batchIdx}] Failed after ${MAX_RETRIES} retries:`, lastError);
+    // Return at least cached results on error
+    return cachedResults.map(r => r.data);
   });
   
   // Wait for all batches to complete in parallel
