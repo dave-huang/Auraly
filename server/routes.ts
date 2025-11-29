@@ -254,30 +254,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
       try {
         const { imageData, productType, userLanguage, ocrText: cachedOcrText } = body;
         
-        // Step 1: Run OCR or use cached
+        // Step 1: Run OCR or use cached (language-independent - same OCR for all languages)
         if (cachedOcrText) {
-          console.log(`[SCAN-AND-ANALYZE-${requestId}] Using cached OCR text (${cachedOcrText.length} chars)`);
+          console.log(`[SCAN-AND-ANALYZE-${requestId}] Using frontend-provided OCR text (${cachedOcrText.length} chars)`);
           ocrText = cachedOcrText;
           ocrStage = 'skipped';
-        } else {
-          console.log(`[SCAN-AND-ANALYZE-${requestId}] Starting OCR for ${productType} in ${userLanguage}`);
-          try {
-            const ocrResult = await extractTextFromImage(imageData);
-            ocrDuration = ((Date.now() - startTime) / 1000).toFixed(2);
-            console.log(`[TIMING] [OCR-SUCCESS-${requestId}] OCR completed in ${ocrDuration}s`);
-            ocrStage = 'success';
-            
-            if (!ocrResult.text || ocrResult.text.trim().length < 10) {
+        } else if (imageData) {
+          // Check global OCR cache first (keyed by image hash, not language)
+          const imageHash = hashImageData(imageData);
+          const cachedOCREntry = ocrCache.get(imageHash);
+          
+          if (cachedOCREntry) {
+            console.log(`[SCAN-AND-ANALYZE-${requestId}] OCR cache HIT - reusing result for all languages`);
+            ocrText = cachedOCREntry.text;
+            ocrStage = 'skipped';
+          } else {
+            // Cache miss - run OCR once, will be reused for all language variants
+            console.log(`[SCAN-AND-ANALYZE-${requestId}] OCR cache MISS - running Gemini OCR once`);
+            try {
+              const ocrResult = await extractTextFromImage(imageData);
+              ocrDuration = ((Date.now() - startTime) / 1000).toFixed(2);
+              console.log(`[TIMING] [OCR-SUCCESS-${requestId}] OCR completed in ${ocrDuration}s`);
+              ocrStage = 'success';
+              
+              if (!ocrResult.text || ocrResult.text.trim().length < 10) {
+                ocrStage = 'failed';
+                throw new Error('No ingredients found in image. Please ensure the ingredient list is clearly visible and try again.');
+              }
+              
+              ocrText = ocrResult.text;
+              
+              // Store in global cache for future requests (all languages will use this same text)
+              ocrCache.set(imageHash, {
+                text: ocrText,
+                timestamp: Date.now()
+              });
+              console.log(`[SCAN-AND-ANALYZE-${requestId}] OCR result cached - will be reused for other languages`);
+            } catch (ocrError: any) {
               ocrStage = 'failed';
-              throw new Error('No ingredients found in image. Please ensure the ingredient list is clearly visible and try again.');
+              ocrDuration = ((Date.now() - startTime) / 1000).toFixed(2);
+              console.error(`[OCR-FAILED-${requestId}] OCR error after ${ocrDuration}s:`, ocrError.message);
+              throw new Error(`OCR failed: ${ocrError.message}`);
             }
-            
-            ocrText = ocrResult.text;
-          } catch (ocrError: any) {
-            ocrStage = 'failed';
-            ocrDuration = ((Date.now() - startTime) / 1000).toFixed(2);
-            console.error(`[OCR-FAILED-${requestId}] OCR error after ${ocrDuration}s:`, ocrError.message);
-            throw new Error(`OCR failed: ${ocrError.message}`);
           }
         }
         
