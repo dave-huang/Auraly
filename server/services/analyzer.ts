@@ -822,116 +822,13 @@ export async function analyzeIngredientsParallel(
     return cachedResult;
   }
   
-  // Pre-process text
-  const expandedText = expandParentheticalIngredients(ingredientsText);
-  console.log(`[PARALLEL-ANALYZER] After expanding parentheticals: ${expandedText.length} chars`);
-  
-  // Extract ingredients section
-  let textToAnalyze = expandedText;
-  const ingredientsMarkers = [
-    /INGREDIENTS?\s*[:：]/i,
-    /成分\s*[:：]/,
-    /原料\s*[:：]/,
-    /配料\s*[:：]/,
-    /INGREDIENTES?\s*[:：]/i,
-    /INGRÉDIENTS?\s*[:：]/i
-  ];
-  
-  for (const marker of ingredientsMarkers) {
-    const match = expandedText.match(marker);
-    if (match && match.index !== undefined) {
-      textToAnalyze = expandedText.substring(match.index + match[0].length);
-      const endMarkers = [
-        /CONTAINS?\s*[:：]/i, /ALLERGENS?\s*[:：]/i, /DIRECTIONS?\s*[:：]/i,
-        /INSTRUCTIONS?\s*[:：]/i, /NUTRITION\s+FACTS?\s*[:：]/i, /MANUFACTURED BY/i,
-        /PRODUCT OF/i, /含\s*[:：]/, /过敏原\s*[:：]/, /使用方法\s*[:：]/,
-        /CONTIENE\s*[:：]/i, /MODO DE USO\s*[:：]/i
-      ];
-      for (const endMarker of endMarkers) {
-        const endMatch = textToAnalyze.match(endMarker);
-        if (endMatch && endMatch.index !== undefined && endMatch.index > 20) {
-          textToAnalyze = textToAnalyze.substring(0, endMatch.index);
-          break;
-        }
-      }
-      break;
-    }
-  }
-  
-  // Helper function to join wrapped lines
-  // When a line ends with a word and next line starts with lowercase or is a continuation, join them
-  function joinWrappedLines(text: string): string {
-    return text
-      .split('\n')
-      .reduce((acc: string[], line: string, idx: number, arr: string[]) => {
-        const trimmedLine = line.trim();
-        
-        // Skip empty lines
-        if (!trimmedLine) return acc;
-        
-        // Check if this line should be joined with previous line
-        // (previous line ends with word, this line is lowercase start or continuation)
-        if (acc.length > 0) {
-          const lastLine = acc[acc.length - 1];
-          const lastChar = lastLine[lastLine.length - 1];
-          
-          // If last line doesn't end with punctuation and current line doesn't start uppercase
-          // and current line isn't a structural marker, it's likely a wrapped continuation
-          const isWrappedContinuation = 
-            /[a-zA-Z]$/.test(lastLine) && // Last line ends with letter
-            /^[a-z]/.test(trimmedLine) && // This line starts with lowercase
-            !/^(CONTAINS|LESS|OF:|OR|AND|WITH|TO|IN|AS|IS)/.test(trimmedLine); // Not a structural marker
-          
-          if (isWrappedContinuation) {
-            acc[acc.length - 1] = lastLine + ' ' + trimmedLine;
-            return acc;
-          }
-        }
-        
-        acc.push(trimmedLine);
-        return acc;
-      }, [])
-      .join('\n');
-  }
-  
-  // Helper function to filter out structural markers
-  function isStructuralMarker(line: string): boolean {
-    const upperLine = line.toUpperCase();
-    
-    // Filter out percent/quantity markers and section headers
-    const structuralPatterns = [
-      /^CONTAINS\s+[\d.]+%\s+(OR|LESS)/i,  // "CONTAINS 2% OR", "CONTAINS 1% LESS"
-      /^LESS\s+OF:/i,                       // "LESS OF:"
-      /^OF:\s+/i,                           // "OF:" alone
-      /^OR\s+(LESS|MORE)/i,                 // "OR LESS", "OR MORE"
-      /^CONTAINS\s+(EGG|MILK|SOY|WHEAT|PEANUT|TREE|NUT|FISH|SHELLFISH|SESAME)/i, // Allergen declarations
-      /^CONTAINS:\s+(EGG|MILK|SOY|WHEAT)/i, // CONTAINS: declarations
-      /^\d+%\s*(OR|AND|LESS)?\s*(MORE|LESS)?$/i, // Pure percentage
-      /^(INGREDIENTS?|ALLERGENS?|DIRECTIONS?|INSTRUCTIONS?|MADE IN|MANUFACTURED)\.?$/i // Section headers
-    ];
-    
-    return structuralPatterns.some(pattern => pattern.test(line));
-  }
-  
-  // Pre-process to join wrapped lines
-  const joinedText = joinWrappedLines(textToAnalyze);
-  
-  // Parse individual ingredients by splitting on common separators
-  const rawIngredients = joinedText
-    .split(/[,，、;；\n]/)
-    .map(ing => ing.trim())
-    .filter(ing => 
-      ing.length > 2 && 
-      !ing.match(/^[\d.]+%?$/) && 
-      !isStructuralMarker(ing)
-    )
-    .slice(0, 150); // Cap at 150 to avoid huge batches
-  
-  if (rawIngredients.length === 0) {
+  // USE UNIFIED, LANGUAGE-AGNOSTIC EXTRACTION
+  const extraction = extractIngredientsFromText(ingredientsText);
+  if (extraction.count === 0) {
     throw new Error('No valid ingredients found to analyze');
   }
   
-  const uniqueIngredients = Array.from(new Set(rawIngredients));
+  const uniqueIngredients = extraction.ingredients;
   console.log(`[PARALLEL-ANALYZER] Extracted ${uniqueIngredients.length} unique ingredients from OCR`);
   
   // Create micro-batches of 5 ingredients
