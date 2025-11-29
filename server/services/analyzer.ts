@@ -917,13 +917,13 @@ Return as JSON array:
     for (let retryAttempt = 0; retryAttempt < MAX_RETRIES; retryAttempt++) {
       try {
         const response = await openai.chat.completions.create({
-          model: "gpt-4o",
+          model: "gpt-5.1",
           messages: [
             { role: "system", content: systemMessage },
             { role: "user", content: batchPrompt }
           ],
-          temperature: 0.3,
-          max_tokens: Math.min(2000, missingIngredients.length * 200)
+          max_completion_tokens: Math.min(2000, missingIngredients.length * 200),
+          reasoning_effort: "none"
         } as any);
         
         const content = response.choices?.[0]?.message?.content;
