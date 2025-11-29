@@ -916,17 +916,17 @@ export async function analyzeIngredientsParallel(
     const missingIngredients: string[] = [];
     
     for (const ingredient of batch) {
-      const cached = getCachedIngredientAnalysis(ingredient, productType);
+      const cached = getCachedIngredientAnalysis(ingredient, productType, userLanguage);
       if (cached) {
         cachedResults.push({
           name: ingredient,
           cached: true,
           data: JSON.parse(cached.analysis)
         });
-        console.log(`[PARALLEL-BATCH-${batchIdx}] Cache HIT: ${ingredient}`);
+        console.log(`[PARALLEL-BATCH-${batchIdx}] Cache HIT: ${ingredient} (${userLanguage})`);
       } else {
         missingIngredients.push(ingredient);
-        console.log(`[PARALLEL-BATCH-${batchIdx}] Cache MISS: ${ingredient}`);
+        console.log(`[PARALLEL-BATCH-${batchIdx}] Cache MISS: ${ingredient} (${userLanguage})`);
       }
     }
     
@@ -938,16 +938,19 @@ export async function analyzeIngredientsParallel(
     
     // Query GPT only for missing ingredients
     const missingList = missingIngredients.map((ing, idx) => `${idx + 1}. ${ing}`).join('\n');
+    const languageMap = { 'en': 'English', 'es': 'Spanish', 'zh': 'Simplified Chinese' };
+    const targetLanguage = languageMap[userLanguage as keyof typeof languageMap] || 'English';
+    
     const batchPrompt = `Analyze these ${missingIngredients.length} ingredients from a ${productType} product:
 
 ${missingList}
 
-For each, provide:
-1. Name (in user's language)
+IMPORTANT: Respond ONLY in ${targetLanguage}. For each ingredient, provide:
+1. Name (MUST be in ${targetLanguage} - translate from English if needed)
 2. Risk level: "low", "moderate", or "high"
-3. 1-2 sentence summary
-4. 2-3 sentence detailed explanation
-5. Optional category
+3. 1-2 sentence summary (in ${targetLanguage})
+4. 2-3 sentence detailed explanation (in ${targetLanguage})
+5. Optional category (in ${targetLanguage})
 
 ${languageInstruction}
 
@@ -956,11 +959,11 @@ Product context: ${context}
 Return as JSON array:
 [
   {
-    "name": "Ingredient Name",
+    "name": "Ingredient Name in ${targetLanguage}",
     "riskLevel": "low|moderate|high",
-    "summary": "Brief explanation",
-    "details": "Detailed explanation",
-    "category": "Optional category"
+    "summary": "Brief explanation in ${targetLanguage}",
+    "details": "Detailed explanation in ${targetLanguage}",
+    "category": "Optional category in ${targetLanguage}"
   }
 ]`;
     
@@ -995,10 +998,10 @@ Return as JSON array:
         name: normalizeIngredientCapitalization(result.name, userLanguage)
       }));
       
-      // Cache fresh results
+      // Cache fresh results with language tag
       for (const result of freshResults) {
-        setCachedIngredientAnalysis(result.name, productType, JSON.stringify(result));
-        console.log(`[PARALLEL-BATCH-${batchIdx}] Cached: ${result.name}`);
+        setCachedIngredientAnalysis(result.name, productType, JSON.stringify(result), userLanguage);
+        console.log(`[PARALLEL-BATCH-${batchIdx}] Cached: ${result.name} (${userLanguage})`);
       }
       
       const batchDuration = ((Date.now() - batchStartTime) / 1000).toFixed(2);

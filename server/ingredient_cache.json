@@ -30,8 +30,8 @@
     "createdAt": 1764141259470
   },
   "salt__food": {
-    "analysis": "{\"name\":\"Salt\",\"riskLevel\":\"moderate\",\"summary\":\"Salt is a common seasoning that is safe in small amounts but can contribute to high blood pressure and heart disease when consumed in excess.\",\"details\":\"Salt (sodium chloride) is essential in small quantities for fluid balance and nerve and muscle function. However, typical diets often contain more sodium than recommended, which can increase the risk of hypertension, cardiovascular disease, and kidney strain, especially in sensitive individuals. People with high blood pressure, heart or kidney issues, or those on sodium-restricted diets should monitor their total daily sodium intake from all foods, not just added table salt.\",\"category\":\"Mineral / sodium source\"}",
-    "lastUpdated": 1764181773618,
+    "analysis": "{\"name\":\"Salt\",\"riskLevel\":\"moderate\",\"summary\":\"Salt (sodium chloride) is essential in small amounts but can be harmful when consumed in excess, mainly due to its sodium content. High intake is linked to elevated blood pressure and increased cardiovascular risk.\",\"details\":\"Salt provides sodium, an essential mineral involved in fluid balance, nerve function, and muscle contraction. However, many people consume far more sodium than recommended (often via processed foods), which can contribute to high blood pressure, heart disease, and stroke, especially in salt-sensitive individuals. Those with hypertension, kidney disease, or heart conditions are usually advised to limit sodium intake and monitor total salt from all dietary sources.\",\"category\":\"Mineral / Sodium source\"}",
+    "lastUpdated": 1764377973952,
     "createdAt": 1764141259470
   },
   "onion flake__food": {
@@ -583,5 +583,40 @@
     "analysis": "{\"name\":\"Niacin (vitamin B3)\",\"riskLevel\":\"low\",\"summary\":\"Niacin is vitamin B3, commonly added to enriched flours and cereals to restore or boost nutrient content. At levels used in fortified foods, it is safe and beneficial for most people.\",\"details\":\"Niacin is an essential vitamin involved in energy metabolism and nervous system function, and fortification helps prevent deficiency in populations that rely on refined grains. Adverse effects such as skin flushing, itching, or liver strain occur mainly with high-dose supplements, not with the relatively low amounts typically present in enriched or fortified foods.\",\"category\":\"vitamin / nutrient fortification\"}",
     "lastUpdated": 1764181833495,
     "createdAt": 1764181833495
+  },
+  "myristamidopropyl betaine__skincare": {
+    "analysis": "{\"name\":\"Myristamidopropyl Betaine\",\"riskLevel\":\"low\",\"summary\":\"A mild amphoteric surfactant used for cleansing and foam boosting, generally well tolerated by skin and hair.\",\"details\":\"Myristamidopropyl betaine is a coconut- or myristic-acid–derived surfactant commonly used in shampoos, facial cleansers, and body washes to provide gentle cleansing and improve foam. It is considered milder than many sulfates (like SLS/SLES) and is usually suitable for sensitive skin, though a small number of people may experience irritation or contact allergy. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, silicone, mineral oil, or drying alcohol.\",\"category\":\"Surfactant / Cleansing agent\"}",
+    "lastUpdated": 1764312494687,
+    "createdAt": 1764312494687
+  },
+  "polyquaternium-7__skincare": {
+    "analysis": "{\"name\":\"Polyquaternium-7\",\"riskLevel\":\"low\",\"summary\":\"A conditioning polymer that improves slip, softness, and reduces static on hair and skin.\",\"details\":\"Polyquaternium‑7 is a cationic polymer frequently used in shampoos, conditioners, and body washes to leave a smooth, conditioned feel and to reduce frizz and tangling. It has a good safety profile and is generally non-irritating at typical use levels, though it can build up on hair and may be problematic for those who strictly avoid film-forming ingredients. It is not associated with hormone disruption, is not a sulfate, phthalate, paraben, formaldehyde releaser, mineral oil, silicone, or drying alcohol.\",\"category\":\"Conditioning polymer / Film former\"}",
+    "lastUpdated": 1764312494687,
+    "createdAt": 1764312494687
+  },
+  "sodium benzoate__skincare": {
+    "analysis": "{\"name\":\"Sodium Benzoate\",\"riskLevel\":\"low\",\"summary\":\"A widely used preservative that helps prevent microbial growth; usually safe but can rarely cause irritation or sensitivity.\",\"details\":\"Sodium benzoate protects water-based skincare and haircare products from mold and bacteria, improving shelf life and safety. At typical cosmetic concentrations it is considered low risk and is generally well tolerated, though some individuals with very sensitive skin may experience stinging or mild irritation, especially on compromised skin. It is not a paraben, does not release formaldehyde, and is not a sulfate, phthalate, silicone, mineral oil, or drying alcohol, but in formulas with ascorbic acid (vitamin C) under certain conditions it can theoretically form small amounts of benzene, which manufacturers manage by controlling formulation and storage conditions.\",\"category\":\"Preservative\"}",
+    "lastUpdated": 1764312494687,
+    "createdAt": 1764312494687
+  },
+  "sodium chloride (table salt)__skincare": {
+    "analysis": "{\"name\":\"Sodium Chloride (table Salt)\",\"riskLevel\":\"low\",\"summary\":\"Common salt used mainly to adjust product thickness and sometimes for mild cleansing; generally very safe.\",\"details\":\"Sodium chloride is used in shampoos and cleansers to modify viscosity and can have a slight cleansing or exfoliating effect at higher levels. It is considered low risk, though in high concentrations it may be drying or irritating, especially on compromised or very sensitive skin or on the scalp in people with conditions like eczema. It is not related to parabens, sulfates (SLS/SLES), phthalates, formaldehyde-releasing preservatives, silicones, mineral oils, or drying alcohols.\",\"category\":\"Viscosity modifier / Bulking agent\"}",
+    "lastUpdated": 1764312494687,
+    "createdAt": 1764312494687
+  },
+  "fragrance (daily-use fragrance)__skincare": {
+    "analysis": "{\"name\":\"Fragrance (daily-use Fragrance)\",\"riskLevel\":\"moderate\",\"summary\":\"A mixture of aromatic compounds added for scent; a common source of skin irritation and allergies despite being widely used.\",\"details\":\"“Fragrance” (or “parfum”) is an umbrella term that can include dozens of natural and synthetic aromatic chemicals, some of which are known allergens or sensitizers. While many people use fragranced skincare and haircare without issues, those with sensitive skin, rosacea, eczema, or a history of allergies may experience redness, itching, or dermatitis, and the exact components are often not fully disclosed. Fragrance is not a paraben, sulfate, or formaldehyde-releasing preservative by definition, but certain fragrance ingredients or solvents can sometimes be associated with additional concerns, which is why fragrance-free or low-fragrance products are often preferred for sensitive or reactive skin.\",\"category\":\"Fragrance / Potential allergen\"}",
+    "lastUpdated": 1764312494687,
+    "createdAt": 1764312494687
+  },
+  "dried (unspecified)__food": {
+    "analysis": "{\"name\":\"Dried (unspecified)\",\"riskLevel\":\"low\",\"summary\":\"“Dried” alone is not a specific ingredient but a processing state, so it does not indicate any particular health risk by itself.\",\"details\":\"The term “dried” usually describes an ingredient that has had most of its water removed (e.g., dried fruit, dried vegetables, dried herbs), but without the base food named, its health impact cannot be properly evaluated. Drying itself is generally a low‑risk preservation method, though some dried foods may also contain added sugars, salts, sulfites, or other additives, which would determine the actual risk level.\",\"category\":\"Processing descriptor\"}",
+    "lastUpdated": 1764377973651,
+    "createdAt": 1764377973651
+  },
+  "sal__food": {
+    "analysis": "{\"name\":\"Sal\",\"riskLevel\":\"moderate\",\"summary\":\"La sal de mesa es necesaria en pequeñas cantidades, pero un consumo elevado se asocia con hipertensión y mayor riesgo cardiovascular.\",\"details\":\"La sal aporta sodio, un mineral esencial para el equilibrio de líquidos y la función nerviosa y muscular. Sin embargo, cuando se consume en exceso, puede contribuir al aumento de la presión arterial, retención de líquidos y mayor riesgo de enfermedades cardiovasculares y renales. Las personas con hipertensión, problemas cardíacos o retención de líquidos deben limitar especialmente su ingesta de sal y revisar el contenido de sodio de los productos procesados.\",\"category\":\"Alto contenido de sodio\"}",
+    "lastUpdated": 1764378259869,
+    "createdAt": 1764378259869
   }
 }
