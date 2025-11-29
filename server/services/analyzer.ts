@@ -864,7 +864,8 @@ Return your analysis as JSON with this structure:
 export async function analyzeIngredientsParallel(
   productType: ProductType,
   ingredientsText: string,
-  userLanguage: string = 'en'
+  userLanguage: string = 'en',
+  preExtractedIngredients?: string[]
 ): Promise<AnalysisResult> {
   const startTime = Date.now();
   console.log(`[PARALLEL-ANALYZER] Starting micro-batched analysis for ${productType} in ${userLanguage}`);
@@ -877,14 +878,20 @@ export async function analyzeIngredientsParallel(
     return cachedResult;
   }
   
-  // USE UNIFIED, LANGUAGE-AGNOSTIC EXTRACTION
-  const extraction = extractIngredientsFromText(ingredientsText);
-  if (extraction.count === 0) {
-    throw new Error('No valid ingredients found to analyze');
+  // Use pre-extracted ingredients if provided (from extraction cache), otherwise extract now
+  let uniqueIngredients: string[];
+  if (preExtractedIngredients && preExtractedIngredients.length > 0) {
+    console.log(`[PARALLEL-ANALYZER] Using ${preExtractedIngredients.length} pre-extracted ingredients (from extraction cache)`);
+    uniqueIngredients = preExtractedIngredients;
+  } else {
+    console.log(`[PARALLEL-ANALYZER] Extracting ingredients on-demand (no pre-extraction provided)`);
+    const extraction = extractIngredientsFromText(ingredientsText);
+    if (extraction.count === 0) {
+      throw new Error('No valid ingredients found to analyze');
+    }
+    uniqueIngredients = extraction.ingredients;
   }
-  
-  const uniqueIngredients = extraction.ingredients;
-  console.log(`[PARALLEL-ANALYZER] Extracted ${uniqueIngredients.length} unique ingredients from OCR`);
+  console.log(`[PARALLEL-ANALYZER] Using ${uniqueIngredients.length} unique ingredients for analysis`);
   
   // Create micro-batches of 3 ingredients (smaller batches for GPT-5.1 stability)
   const BATCH_SIZE = 3;
