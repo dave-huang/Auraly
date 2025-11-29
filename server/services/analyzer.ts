@@ -831,8 +831,8 @@ export async function analyzeIngredientsParallel(
   const uniqueIngredients = extraction.ingredients;
   console.log(`[PARALLEL-ANALYZER] Extracted ${uniqueIngredients.length} unique ingredients from OCR`);
   
-  // Create micro-batches of 5 ingredients
-  const BATCH_SIZE = 5;
+  // Create micro-batches of 3 ingredients (smaller batches for GPT-5.1 stability)
+  const BATCH_SIZE = 3;
   const batches: string[][] = [];
   for (let i = 0; i < uniqueIngredients.length; i += BATCH_SIZE) {
     batches.push(uniqueIngredients.slice(i, i + BATCH_SIZE));
@@ -888,22 +888,27 @@ export async function analyzeIngredientsParallel(
 
 ${missingList}
 
-IMPORTANT: Respond ONLY in ${targetLanguage}. For each ingredient, provide:
-1. Name (MUST be in ${targetLanguage} - translate from English if needed)
-2. Risk level: "low", "moderate", or "high"
-3. 1-2 sentence summary (in ${targetLanguage})
-4. 2-3 sentence detailed explanation (in ${targetLanguage})
-5. Optional category (in ${targetLanguage})
+CRITICAL INSTRUCTIONS:
+- Ingredient names, summaries, details, and categories MUST be in ${targetLanguage}
+- Risk level MUST ALWAYS be in English: use ONLY "low", "moderate", or "high" (no translation)
+- Return ONLY valid JSON array, no other text
+
+For each ingredient provide:
+1. Name (in ${targetLanguage})
+2. Risk level: "low" OR "moderate" OR "high" (ENGLISH ONLY - never translate this field)
+3. Summary (in ${targetLanguage}, 1-2 sentences)
+4. Details (in ${targetLanguage}, 2-3 sentences)
+5. Category (optional, in ${targetLanguage})
 
 ${languageInstruction}
 
 Product context: ${context}
 
-Return as JSON array:
+Return as JSON array (VALID JSON ONLY):
 [
   {
     "name": "Ingredient Name in ${targetLanguage}",
-    "riskLevel": "low|moderate|high",
+    "riskLevel": "low",
     "summary": "Brief explanation in ${targetLanguage}",
     "details": "Detailed explanation in ${targetLanguage}",
     "category": "Optional category in ${targetLanguage}"
@@ -927,7 +932,7 @@ Return as JSON array:
         } as any);
         
         const content = response.choices?.[0]?.message?.content;
-        if (!content) {
+        if (!content || content.trim().length === 0) {
           lastError = new Error('Empty GPT response');
           if (retryAttempt < MAX_RETRIES - 1) {
             console.log(`[PARALLEL-BATCH-${batchIdx}] Retry ${retryAttempt + 1}/${MAX_RETRIES} due to empty response`);
@@ -942,16 +947,42 @@ Return as JSON array:
         try {
           const parsed = JSON.parse(content);
           freshResults = Array.isArray(parsed) ? parsed : (Array.isArray(Object.values(parsed)[0]) ? Object.values(parsed)[0] as Ingredient[] : []);
-        } catch {
-          console.error(`[PARALLEL-BATCH-${batchIdx}] Failed to parse GPT response:`, content.substring(0, 100));
+          
+          // Validate that we have results and all have required fields
+          if (!freshResults || freshResults.length === 0) {
+            console.error(`[PARALLEL-BATCH-${batchIdx}] GPT returned empty array`);
+            throw new Error('GPT returned empty array');
+          }
+        } catch (parseError) {
+          console.error(`[PARALLEL-BATCH-${batchIdx}] Failed to parse GPT response:`, content.substring(0, 200));
           throw new Error('Invalid JSON from GPT');
         }
         
-        // Normalize ingredient name capitalization for consistency
-        freshResults = freshResults.map(result => ({
-          ...result,
-          name: normalizeIngredientCapitalization(result.name, userLanguage)
-        }));
+        // Validate and normalize riskLevel to English enum (critical for Spanish fix)
+        freshResults = freshResults.map(result => {
+          let normalizedRiskLevel = result.riskLevel?.toLowerCase().trim() || 'moderate';
+          
+          // Map common Spanish values back to English
+          if (normalizedRiskLevel === 'bajo') normalizedRiskLevel = 'low';
+          if (normalizedRiskLevel === 'moderado') normalizedRiskLevel = 'moderate';
+          if (normalizedRiskLevel === 'alto') normalizedRiskLevel = 'high';
+          
+          // Map common Chinese values back to English
+          if (normalizedRiskLevel === '低') normalizedRiskLevel = 'low';
+          if (normalizedRiskLevel === '中') normalizedRiskLevel = 'moderate';
+          if (normalizedRiskLevel === '高') normalizedRiskLevel = 'high';
+          
+          // Ensure only English values
+          if (!['low', 'moderate', 'high'].includes(normalizedRiskLevel)) {
+            normalizedRiskLevel = 'moderate';
+          }
+          
+          return {
+            ...result,
+            riskLevel: normalizedRiskLevel as 'low' | 'moderate' | 'high',
+            name: normalizeIngredientCapitalization(result.name, userLanguage)
+          };
+        });
         
         // Cache fresh results with language tag
         for (const result of freshResults) {
