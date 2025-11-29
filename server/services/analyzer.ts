@@ -204,12 +204,17 @@ export function extractIngredientsFromText(ingredientsText: string): { ingredien
       textToAnalyze = expandedText.substring(match.index + match[0].length);
       console.log(`[EXTRACT] Found marker: "${match[0]}"`);
       
-      // Stop at next section markers
+      // Stop at next section markers (ONLY reliable section headers, not allergen statements)
+      // CRITICAL: Don't use "CONTAINS" as end marker - allergen statements like "CONTAINS: SESAME" 
+      // can appear mid-list and cause inconsistent ingredient extraction across languages
       const endMarkers = [
-        /CONTAINS?\s*[:：]/i, /ALLERGENS?\s*[:：]/i, /DIRECTIONS?\s*[:：]/i,
-        /INSTRUCTIONS?\s*[:：]/i, /NUTRITION\s+FACTS?\s*[:：]/i, /MANUFACTURED BY/i,
-        /PRODUCT OF/i, /含\s*[:：]/, /过敏原\s*[:：]/, /使用方法\s*[:：]/,
-        /CONTIENE\s*[:：]/i, /MODO DE USO\s*[:：]/i
+        /DIRECTIONS?\s*[:：]/i,
+        /INSTRUCTIONS?\s*[:：]/i, 
+        /NUTRITION\s+FACTS?\s*[:：]/i, 
+        /MANUFACTURED\s+BY/i,
+        /PRODUCT\s+OF/i, 
+        /使用方法\s*[:：]/,
+        /MODO\s+DE\s+USO\s*[:：]/i
       ];
       
       for (const endMarker of endMarkers) {
