@@ -234,7 +234,6 @@ export function extractIngredientsFromText(ingredientsText: string): { ingredien
   console.log(`[EXTRACT] After joining wrapped lines: ${joinedText.length} chars`);
   
   // Clean text before splitting: remove allergen fragments and bracket artifacts
-  // Replace bracket+fragment patterns that indicate malformed splits (e.g., "SALT]", "SOY SAUCE [SOYBEAN")
   let cleanedText = joinedText;
   
   // Remove allergen statements that bled into ingredient list (e.g., ". CONTAINS: SOYBEANS")
@@ -242,9 +241,11 @@ export function extractIngredientsFromText(ingredientsText: string): { ingredien
   cleanedText = cleanedText.replace(/\.\s*含\s*[:：]\s*[^,;，；\n]+/, '');
   cleanedText = cleanedText.replace(/\.\s*CONTIENE\s*:\s*[^,;，；\n]+/gi, '');
   
-  // Split on brackets to separate malformed ingredients (e.g., "SOY SAUCE [SOYBEAN, WHEAT" → take "SOY SAUCE")
-  // This handles cases where brackets aren't properly closed
-  cleanedText = cleanedText.replace(/\[/g, ', ').replace(/\]/g, ', ');
+  // CRITICAL FIX: Remove bracket specifiers that shouldn't create separate ingredients
+  // Keep only the base ingredient name before brackets (e.g., "SOY SAUCE [SOYBEAN, WHEAT]" → "SOY SAUCE")
+  // Also handle unclosed brackets: "SOY SAUCE [SOYBEAN, WHEAT" → "SOY SAUCE"
+  cleanedText = cleanedText.replace(/\s*\[.*?(?:\]|$)/g, '');  // Remove [...] or [...EOF
+  cleanedText = cleanedText.replace(/\s*\].*?$/gm, '');         // Remove any trailing ] 
   
   // Parse individual ingredients - CONSISTENT logic for all languages
   const rawIngredients = cleanedText
