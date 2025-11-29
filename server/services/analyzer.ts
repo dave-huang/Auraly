@@ -94,39 +94,66 @@ function normalizeIngredientCapitalization(name: string, language: string = 'en'
 }
 
 // Helper function to join wrapped lines (language-agnostic)
-// When a line ends with a word and next line starts with lowercase or is a continuation, join them
+// Intelligently joins incomplete words/modifiers with next line
 function joinWrappedLines(text: string): string {
-  return text
-    .split('\n')
-    .reduce((acc: string[], line: string, idx: number, arr: string[]) => {
-      const trimmedLine = line.trim();
+  const lines = text.split('\n').map(l => l.trim()).filter(l => l);
+  const result: string[] = [];
+  
+  for (let i = 0; i < lines.length; i++) {
+    const currentLine = lines[i];
+    
+    // Skip if already added (was merged with previous)
+    if (!currentLine) continue;
+    
+    // Check if this line should be merged with the next line
+    if (i < lines.length - 1) {
+      const nextLine = lines[i + 1];
       
-      // Skip empty lines
-      if (!trimmedLine) return acc;
-      
-      // Check if this line should be joined with previous line
-      // (previous line ends with word, this line is lowercase start or continuation)
-      if (acc.length > 0) {
-        const lastLine = acc[acc.length - 1];
-        const lastChar = lastLine[lastLine.length - 1];
-        
-        // If last line doesn't end with punctuation and current line doesn't start uppercase
-        // and current line isn't a structural marker, it's likely a wrapped continuation
-        const isWrappedContinuation = 
-          /[a-zA-Z]$/.test(lastLine) && // Last line ends with letter
-          /^[a-z]/.test(trimmedLine) && // This line starts with lowercase
-          !/^(CONTAINS|LESS|OF:|OR|AND|WITH|TO|IN|AS|IS)/.test(trimmedLine); // Not a structural marker
-        
-        if (isWrappedContinuation) {
-          acc[acc.length - 1] = lastLine + ' ' + trimmedLine;
-          return acc;
-        }
+      // Case 1: Current line is a short modifier/adjective that should precede the next line
+      // Examples: "DRIED" + "GARLIC FLAKE", "ROASTED" + "ONION POWDER", "FRESH" + "ORANGE"
+      const shortModifiers = /^(DRIED|ROASTED|FRESH|GROUND|DRIED|POWDERED|WHOLE|SLICED|CRUSHED|MINCED|COOKED|RAW|ORGANIC|NATURAL|PURE|LIQUID|EXTRACT|CONCENTRATE|SYRUP|JUICE|PASTE|PUREE|FLOUR|POWDER|FLAKES|CHIPS|BITS|GRANULES)$/i;
+      if (shortModifiers.test(currentLine) && nextLine && !/^(CONTAINS|ALLERGENS|DIRECTIONS)/.test(nextLine)) {
+        result.push(currentLine + ' ' + nextLine);
+        i++; // Skip next line since we merged it
+        continue;
       }
       
-      acc.push(trimmedLine);
-      return acc;
-    }, [])
-    .join('\n');
+      // Case 2: Current line is very short (1-2 words) and doesn't look like a complete ingredient
+      // Join with next line if next line looks like it could be continuation
+      const wordCount = currentLine.split(/\s+/).length;
+      const endsWithLetterOrNumber = /[a-zA-Z0-9]$/.test(currentLine);
+      const nextStartsWithCapital = /^[A-Z]/.test(nextLine);
+      
+      if (wordCount <= 2 && endsWithLetterOrNumber && nextStartsWithCapital && 
+          !/^(CONTAINS|ALLERGENS|DIRECTIONS|NUTRITION|MADE IN|PRODUCT OF)/.test(nextLine) &&
+          !isStructuralMarker(currentLine)) {
+        result.push(currentLine + ' ' + nextLine);
+        i++; // Skip next line since we merged it
+        continue;
+      }
+      
+      // Case 3: Previous logic for lowercase continuations
+      if (result.length > 0) {
+        const lastLine = result[result.length - 1];
+        const isWrappedContinuation = 
+          /[a-zA-Z]$/.test(lastLine) && // Last line ends with letter
+          /^[a-z]/.test(currentLine) && // Current line starts with lowercase
+          !/^(CONTAINS|LESS|OF:|OR|AND|WITH|TO|IN|AS|IS)/.test(currentLine); // Not a structural marker
+        
+        if (isWrappedContinuation) {
+          result[result.length - 1] = lastLine + ' ' + currentLine;
+          continue;
+        }
+      }
+    }
+    
+    // No merging needed, add line as-is
+    if (currentLine) {
+      result.push(currentLine);
+    }
+  }
+  
+  return result.join('\n');
 }
 
 // Helper function to filter out structural markers (language-agnostic)
