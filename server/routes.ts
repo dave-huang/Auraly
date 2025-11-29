@@ -26,6 +26,28 @@ interface AnalysisRequest {
 
 const analysisRequests = new Map<string, AnalysisRequest>();
 
+// Global OCR cache - keyed by image content hash (language-independent)
+interface OCRCacheEntry {
+  text: string;
+  timestamp: number;
+}
+const ocrCache = new Map<string, OCRCacheEntry>();
+
+// Helper to compute hash of image data
+function hashImageData(imageData: string): string {
+  return crypto.createHash('sha256').update(imageData).digest('hex');
+}
+
+// Clean up old OCR cache entries (older than 1 hour)
+setInterval(() => {
+  const oneHourAgo = Date.now() - (60 * 60 * 1000);
+  for (const [hash, entry] of Array.from(ocrCache.entries())) {
+    if (entry.timestamp < oneHourAgo) {
+      ocrCache.delete(hash);
+    }
+  }
+}, 5 * 60 * 1000);
+
 // Clean up old requests (older than 1 hour)
 setInterval(() => {
   const oneHourAgo = Date.now() - (60 * 60 * 1000);
