@@ -109,10 +109,13 @@ function joinWrappedLines(text: string): string {
     if (i < lines.length - 1) {
       const nextLine = lines[i + 1];
       
+      // Strip trailing punctuation for better detection logic
+      const currentLineClean = currentLine.replace(/[,;:\[\]()]*$/, '').trim();
+      
       // Case 1: Current line is a short modifier/adjective that should precede the next line
       // Examples: "DRIED" + "GARLIC FLAKE", "ROASTED" + "ONION POWDER", "FRESH" + "ORANGE"
-      const shortModifiers = /^(DRIED|ROASTED|FRESH|GROUND|DRIED|POWDERED|WHOLE|SLICED|CRUSHED|MINCED|COOKED|RAW|ORGANIC|NATURAL|PURE|LIQUID|EXTRACT|CONCENTRATE|SYRUP|JUICE|PASTE|PUREE|FLOUR|POWDER|FLAKES|CHIPS|BITS|GRANULES)$/i;
-      if (shortModifiers.test(currentLine) && nextLine && !/^(CONTAINS|ALLERGENS|DIRECTIONS)/.test(nextLine)) {
+      const shortModifiers = /^(DRIED|ROASTED|FRESH|GROUND|POWDERED|WHOLE|SLICED|CRUSHED|MINCED|COOKED|RAW|ORGANIC|NATURAL|PURE|LIQUID|EXTRACT|CONCENTRATE|SYRUP|JUICE|PASTE|PUREE|FLOUR|POWDER|FLAKES|CHIPS|BITS|GRANULES)$/i;
+      if (shortModifiers.test(currentLineClean) && nextLine && !/^(CONTAINS|ALLERGENS|DIRECTIONS)/.test(nextLine)) {
         result.push(currentLine + ' ' + nextLine);
         i++; // Skip next line since we merged it
         continue;
@@ -120,13 +123,13 @@ function joinWrappedLines(text: string): string {
       
       // Case 2: Current line is very short (1-2 words) and doesn't look like a complete ingredient
       // Join with next line if next line looks like it could be continuation
-      const wordCount = currentLine.split(/\s+/).length;
-      const endsWithLetterOrNumber = /[a-zA-Z0-9]$/.test(currentLine);
+      const wordCount = currentLineClean.split(/\s+/).length;
+      const endsWithLetterOrNumber = /[a-zA-Z0-9]$/.test(currentLineClean);
       const nextStartsWithCapital = /^[A-Z]/.test(nextLine);
       
       if (wordCount <= 2 && endsWithLetterOrNumber && nextStartsWithCapital && 
           !/^(CONTAINS|ALLERGENS|DIRECTIONS|NUTRITION|MADE IN|PRODUCT OF)/.test(nextLine) &&
-          !isStructuralMarker(currentLine)) {
+          !isStructuralMarker(currentLineClean)) {
         result.push(currentLine + ' ' + nextLine);
         i++; // Skip next line since we merged it
         continue;

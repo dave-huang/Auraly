@@ -790,8 +790,8 @@
     "createdAt": 1764378950734
   },
   "salt__food__en": {
-    "analysis": "{\"name\":\"Salt\",\"riskLevel\":\"moderate\",\"summary\":\"Salt (sodium chloride) is a common seasoning and preservative, but high intake is linked to elevated blood pressure and cardiovascular risk.\",\"details\":\"In typical amounts, salt is generally safe for most healthy individuals and is essential for fluid balance and nerve function. However, frequent consumption of high-sodium foods can contribute to hypertension, kidney strain, and increased risk of heart disease, especially in salt-sensitive or at-risk people. Individuals with hypertension, kidney disease, or heart failure are often advised to limit salt intake.\",\"category\":\"Mineral / Sodium source\"}",
-    "lastUpdated": 1764392912365,
+    "analysis": "{\"name\":\"Salt\",\"riskLevel\":\"moderate\",\"summary\":\"Salt is commonly used for flavoring and preservation but can contribute to health issues when consumed in excess.\",\"details\":\"Salt (sodium chloride) is essential in small amounts for fluid balance and nerve and muscle function. However, high sodium intake is associated with increased blood pressure and a higher risk of cardiovascular disease, kidney strain, and fluid retention. People with hypertension, heart disease, or kidney problems should be especially cautious about total daily sodium from all food sources.\",\"category\":\"Mineral / Sodium source\"}",
+    "lastUpdated": 1764393783059,
     "createdAt": 1764379123272
   },
   "corn starch__food__en": {
@@ -935,8 +935,8 @@
     "createdAt": 1764379125713
   },
   "cocoa powder (processed with alkali)__food__en": {
-    "analysis": "{\"name\":\"Cocoa Powder (processed With Alkali)\",\"riskLevel\":\"low\",\"summary\":\"Cocoa powder processed with alkali, also known as Dutch-processed cocoa, is generally safe for most people when consumed in normal food amounts.\",\"details\":\"Alkalization reduces cocoa's natural acidity and can make the flavor smoother and color darker, but it may slightly decrease some natural antioxidants. It naturally contains small amounts of caffeine and theobromine, which can be an issue for very sensitive individuals but are usually well tolerated. It is not an additive-heavy ingredient and does not typically contain common allergens unless cross-contaminated during processing.\",\"category\":\"Cocoa / flavoring ingredient\"}",
-    "lastUpdated": 1764392914459,
+    "analysis": "{\"name\":\"Cocoa Powder (processed With Alkali)\",\"riskLevel\":\"low\",\"summary\":\"Cocoa powder processed with alkali (also called Dutch-processed cocoa) is a treated form of cocoa used to improve color and reduce acidity. It is generally safe for most people when consumed in normal food amounts.\",\"details\":\"The alkalization process reduces cocoa's natural acidity and bitterness, resulting in a smoother taste and darker color, but it can also lower some antioxidant content compared to natural cocoa. People sensitive to caffeine or theobromine should still moderate intake, as cocoa naturally contains these stimulants. It does not typically contain major allergens on its own, though cross-contamination is possible depending on the manufacturing environment.\",\"category\":\"Cocoa / flavoring ingredient\"}",
+    "lastUpdated": 1764393785575,
     "createdAt": 1764379125713
   },
   "enzymes__food__en": {
@@ -995,8 +995,8 @@
     "createdAt": 1764379131417
   },
   "dextrose anhydrous (glucose)__food__en": {
-    "analysis": "{\"name\":\"Dextrose Anhydrous (glucose)\",\"riskLevel\":\"moderate\",\"summary\":\"Dextrose anhydrous is a form of glucose, a simple sugar used as a sweetener and energy source in foods. It is generally recognized as safe but can contribute to excess sugar intake.\",\"details\":\"As a rapidly absorbed simple carbohydrate, dextrose can quickly raise blood sugar levels, which is a concern for people with diabetes, insulin resistance, or metabolic syndrome. High or frequent intake of added sugars like dextrose may contribute to weight gain, dental cavities, and increased risk of chronic diseases when consumed in excess. In normal amounts as part of a balanced diet, it is considered safe for most healthy individuals.\",\"category\":\"Sugar / Sweetener\"}",
-    "lastUpdated": 1764392912358,
+    "analysis": "{\"name\":\"Dextrose Anhydrous (glucose)\",\"riskLevel\":\"moderate\",\"summary\":\"Dextrose anhydrous is a refined form of glucose used as a sweetener and energy source in foods. It is generally recognized as safe but can contribute to excessive sugar intake.\",\"details\":\"This ingredient is a simple carbohydrate that is rapidly absorbed and can cause quick spikes in blood sugar, which may be problematic for people with diabetes, insulin resistance, or metabolic syndrome. High intake of added sugars like dextrose is associated with increased risk of weight gain, dental cavities, and cardiometabolic issues when consumed in excess. For most healthy individuals, it is low risk when used in moderation as part of an overall balanced diet.\",\"category\":\"Sweetener (simple sugar)\"}",
+    "lastUpdated": 1764393783613,
     "createdAt": 1764379131417
   },
   "banana__food__en": {
@@ -1130,8 +1130,8 @@
     "createdAt": 1764386964072
   },
   "yeast extract__food__en": {
-    "analysis": "{\"name\":\"Yeast Extract\",\"riskLevel\":\"moderate\",\"summary\":\"Yeast extract is a flavor enhancer derived from yeast, often used to provide a savory or umami taste. It naturally contains glutamates, similar in effect to monosodium glutamate (MSG), which some sensitive individuals may wish to limit.\",\"details\":\"Yeast extract is produced by breaking down yeast cells to release their contents, concentrating amino acids and nucleotides that intensify flavor. While generally recognized as safe, it can be an issue for people who are sensitive to glutamates or trying to avoid MSG-like ingredients. It typically does not contain gluten unless derived from barley or other gluten-containing substrates, but gluten-sensitive individuals may still prefer to verify the source.\",\"category\":\"Flavor enhancer\"}",
-    "lastUpdated": 1764392922745,
+    "analysis": "{\"name\":\"Yeast Extract\",\"riskLevel\":\"moderate\",\"summary\":\"Yeast extract is a flavor enhancer derived from yeast that naturally contains glutamates similar to MSG. It is generally recognized as safe but may cause sensitivity in some people.\",\"details\":\"Yeast extract is commonly used to provide savory, umami flavor in processed foods, soups, and snacks, and it naturally contains free glutamic acid that can act like monosodium glutamate (MSG) in the body. While most people tolerate it well, individuals who are sensitive to glutamates or trying to avoid flavor enhancers may wish to limit it. It is not a major allergen by itself, but people with yeast sensitivities should be cautious.\",\"category\":\"Flavor enhancer\"}",
+    "lastUpdated": 1764393788496,
     "createdAt": 1764386964072
   },
   "无水葡萄糖__food__zh": {
@@ -1175,8 +1175,8 @@
     "createdAt": 1764388674766
   },
   "dried (unspecified ingredient)__food__en": {
-    "analysis": "{\"name\":\"Dried (unspecified Ingredient)\",\"riskLevel\":\"low\",\"summary\":\"The term “dried” by itself is incomplete and only indicates that an ingredient has had water removed. Drying is a common and generally safe preservation method for many foods.\",\"details\":\"Because only the word “dried” is provided, it is impossible to determine the actual ingredient (e.g., dried fruit, dried vegetable, dried meat, dried herb), so no specific allergen or additive risks can be identified. In general, drying reduces water content to extend shelf life and usually does not introduce health concerns on its own; any health impact would depend on what has been dried and whether additional substances (such as added sugar, salt, sulfites, or other preservatives) were used.\",\"category\":\"Processing descriptor / preparation method\"}",
-    "lastUpdated": 1764388674908,
+    "analysis": "{\"name\":\"Dried (unspecified Ingredient)\",\"riskLevel\":\"low\",\"summary\":\"The term \\\"dried\\\" alone is not a complete ingredient and only indicates that something has had its moisture removed. By itself it does not indicate any specific health risk without knowing what food is dried or whether additives are used.\",\"details\":\"Drying is a common preservation method for many foods, such as fruits, vegetables, herbs, or meats, and can be done with or without added preservatives, salt, or sugar. Because the actual ingredient is not specified, potential concerns like added sodium, sulfites, sugars, or other additives cannot be evaluated. More information about what is being dried and any additional processing would be needed to assess health impact accurately.\",\"category\":\"Processing description (not a specific ingredient)\"}",
+    "lastUpdated": 1764393783631,
     "createdAt": 1764388674908
   },
   "无水葡萄糖（右旋糖）__food__zh": {
@@ -1455,8 +1455,8 @@
     "createdAt": 1764392875868
   },
   "alkali (used to process cocoa)__food__en": {
-    "analysis": "{\"name\":\"Alkali (used To Process Cocoa)\",\"riskLevel\":\"low\",\"summary\":\"Alkali refers to alkaline substances (often potassium carbonate) used to treat cocoa to modify its flavor and color.\",\"details\":\"In cocoa processing, alkali is used in small, food-grade amounts to neutralize acidity and create a milder taste; the remaining alkali in the final product is minimal and considered safe by food safety authorities. It can slightly reduce some beneficial polyphenols in cocoa but does not introduce typical problematic additives like artificial colors, preservatives, or sweeteners. People on strict low-potassium diets should be aware that potassium-based alkali can contribute a small amount of potassium, though usually not significant in typical servings.\",\"category\":\"Processing aid / pH regulator\"}",
-    "lastUpdated": 1764392914459,
+    "analysis": "{\"name\":\"Alkali (used To Process Cocoa)\",\"riskLevel\":\"low\",\"summary\":\"Alkali refers to alkaline substances (such as potassium carbonate) used to treat cocoa in Dutch-processing. In the final product, only small residual amounts remain and it is considered safe for the general population.\",\"details\":\"Common alkalizing agents for cocoa are food-grade mineral salts that adjust pH to modify flavor and color. These substances are regulated and used at levels recognized as safe in foods. For most consumers they do not pose a health concern, though individuals on strict mineral-restricted diets (such as some kidney patients) should review overall mineral intake with a healthcare provider.\",\"category\":\"Processing aid / pH regulator\"}",
+    "lastUpdated": 1764393785575,
     "createdAt": 1764392914459
   },
   "hydrolysate__food__en": {
@@ -1468,5 +1468,15 @@
     "analysis": "{\"name\":\"Dried (unspecified Dried Ingredient)\",\"riskLevel\":\"low\",\"summary\":\"“Dried” alone is not a complete ingredient name and simply indicates that some food component has been dehydrated. Drying itself is generally a safe preservation method.\",\"details\":\"Because the label only says “dried” without specifying what is dried (e.g., dried fruit, dried vegetables, dried herbs), its nutritional profile and possible allergen content cannot be accurately assessed. Drying usually reduces water content to extend shelf life and may concentrate natural sugars and nutrients, but the health impact depends entirely on the underlying ingredient and any additives that might also be present but not listed here.\",\"category\":\"Processing descriptor / unspecified dried food\"}",
     "lastUpdated": 1764392918441,
     "createdAt": 1764392918441
+  },
+  "soy sauce__food__en": {
+    "analysis": "{\"name\":\"Soy Sauce\",\"riskLevel\":\"moderate\",\"summary\":\"Soy sauce is a fermented seasoning made from soybeans, wheat (in most types), salt, and water, and is high in sodium. It is a common allergen source due to soy and often gluten.\",\"details\":\"Regular soy sauce contains significant amounts of sodium, which can contribute to high blood pressure if consumed in large quantities. It also contains soy, a major allergen, and typically wheat, which makes it unsuitable for people with soy allergy or celiac disease/gluten intolerance unless it is specifically labeled gluten-free. Fermented soy products like soy sauce are generally safe for most people when used in small amounts as a condiment.\",\"category\":\"Seasoning / Allergen (soy, often gluten) / High-sodium ingredient\"}",
+    "lastUpdated": 1764393783731,
+    "createdAt": 1764393783731
+  },
+  "disodium inosinate__food__en": {
+    "analysis": "{\"name\":\"Disodium Inosinate\",\"riskLevel\":\"moderate\",\"summary\":\"Disodium inosinate is a flavor enhancer often used with monosodium glutamate (MSG) to intensify savory (umami) taste. It is generally recognized as safe but may be an issue for people sensitive to MSG or watching sodium intake.\",\"details\":\"This additive is a nucleotide salt derived from inosinic acid and is commonly found in processed snacks, instant noodles, soups, and savory seasonings. While safety authorities consider it safe at typical food levels, it can contribute to overall sodium intake and may potentiate reactions in individuals who report sensitivity to MSG or other flavor enhancers. It is sometimes produced from meat or fish sources, which may be relevant for vegetarians, vegans, or those with specific dietary restrictions.\",\"category\":\"Flavor enhancer\"}",
+    "lastUpdated": 1764393784021,
+    "createdAt": 1764393784021
   }
 }
