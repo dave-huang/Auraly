@@ -93,6 +93,134 @@ function normalizeIngredientCapitalization(name: string, language: string = 'en'
     .replace(/^./, (char: string) => char.toUpperCase()); // Ensure first letter is always capitalized
 }
 
+// Helper function to join wrapped lines (language-agnostic)
+// When a line ends with a word and next line starts with lowercase or is a continuation, join them
+function joinWrappedLines(text: string): string {
+  return text
+    .split('\n')
+    .reduce((acc: string[], line: string, idx: number, arr: string[]) => {
+      const trimmedLine = line.trim();
+      
+      // Skip empty lines
+      if (!trimmedLine) return acc;
+      
+      // Check if this line should be joined with previous line
+      // (previous line ends with word, this line is lowercase start or continuation)
+      if (acc.length > 0) {
+        const lastLine = acc[acc.length - 1];
+        const lastChar = lastLine[lastLine.length - 1];
+        
+        // If last line doesn't end with punctuation and current line doesn't start uppercase
+        // and current line isn't a structural marker, it's likely a wrapped continuation
+        const isWrappedContinuation = 
+          /[a-zA-Z]$/.test(lastLine) && // Last line ends with letter
+          /^[a-z]/.test(trimmedLine) && // This line starts with lowercase
+          !/^(CONTAINS|LESS|OF:|OR|AND|WITH|TO|IN|AS|IS)/.test(trimmedLine); // Not a structural marker
+        
+        if (isWrappedContinuation) {
+          acc[acc.length - 1] = lastLine + ' ' + trimmedLine;
+          return acc;
+        }
+      }
+      
+      acc.push(trimmedLine);
+      return acc;
+    }, [])
+    .join('\n');
+}
+
+// Helper function to filter out structural markers (language-agnostic)
+function isStructuralMarker(line: string): boolean {
+  const upperLine = line.toUpperCase();
+  
+  // Filter out percent/quantity markers and section headers
+  const structuralPatterns = [
+    /^CONTAINS\s+[\d.]+%\s+(OR|LESS)/i,  // "CONTAINS 2% OR", "CONTAINS 1% LESS"
+    /^LESS\s+OF:/i,                       // "LESS OF:"
+    /^OF:\s+/i,                           // "OF:" alone
+    /^OR\s+(LESS|MORE)/i,                 // "OR LESS", "OR MORE"
+    /^CONTAINS\s+(EGG|MILK|SOY|WHEAT|PEANUT|TREE|NUT|FISH|SHELLFISH|SESAME)/i, // Allergen declarations
+    /^CONTAINS:\s+(EGG|MILK|SOY|WHEAT)/i, // CONTAINS: declarations
+    /^\d+%\s*(OR|AND|LESS)?\s*(MORE|LESS)?$/i, // Pure percentage
+    /^(INGREDIENTS?|ALLERGENS?|DIRECTIONS?|INSTRUCTIONS?|MADE IN|MANUFACTURED)\.?$/i // Section headers
+  ];
+  
+  return structuralPatterns.some(pattern => pattern.test(line));
+}
+
+// UNIFIED, LANGUAGE-AGNOSTIC ingredient extraction function
+// This ensures consistent ingredient extraction regardless of user language
+export function extractIngredientsFromText(ingredientsText: string): string[] {
+  console.log(`[EXTRACT] Starting language-agnostic ingredient extraction`);
+  
+  // Expand parenthetical ingredients
+  const expandedText = expandParentheticalIngredients(ingredientsText);
+  console.log(`[EXTRACT] After parenthetical expansion: ${expandedText.length} chars`);
+  
+  // Extract ingredients section
+  let textToAnalyze = expandedText;
+  const ingredientsMarkers = [
+    /INGREDIENTS?\s*[:：]/i,
+    /成分\s*[:：]/,
+    /原料\s*[:：]/,
+    /配料\s*[:：]/,
+    /INGREDIENTES?\s*[:：]/i,
+    /INGRÉDIENTS?\s*[:：]/i
+  ];
+  
+  for (const marker of ingredientsMarkers) {
+    const match = expandedText.match(marker);
+    if (match && match.index !== undefined) {
+      textToAnalyze = expandedText.substring(match.index + match[0].length);
+      console.log(`[EXTRACT] Found marker: "${match[0]}"`);
+      
+      // Stop at next section markers
+      const endMarkers = [
+        /CONTAINS?\s*[:：]/i, /ALLERGENS?\s*[:：]/i, /DIRECTIONS?\s*[:：]/i,
+        /INSTRUCTIONS?\s*[:：]/i, /NUTRITION\s+FACTS?\s*[:：]/i, /MANUFACTURED BY/i,
+        /PRODUCT OF/i, /含\s*[:：]/, /过敏原\s*[:：]/, /使用方法\s*[:：]/,
+        /CONTIENE\s*[:：]/i, /MODO DE USO\s*[:：]/i
+      ];
+      
+      for (const endMarker of endMarkers) {
+        const endMatch = textToAnalyze.match(endMarker);
+        if (endMatch && endMatch.index !== undefined && endMatch.index > 20) {
+          textToAnalyze = textToAnalyze.substring(0, endMatch.index);
+          console.log(`[EXTRACT] Found end marker: "${endMatch[0]}"`);
+          break;
+        }
+      }
+      break;
+    }
+  }
+  
+  // Join wrapped lines
+  const joinedText = joinWrappedLines(textToAnalyze);
+  console.log(`[EXTRACT] After joining wrapped lines: ${joinedText.length} chars`);
+  
+  // Parse individual ingredients - CONSISTENT logic for all languages
+  const rawIngredients = joinedText
+    .split(/[,，、;；\n]/)  // Split on common separators (English and Chinese)
+    .map(ing => ing.trim())
+    .filter(ing => 
+      ing.length > 2 && 
+      !ing.match(/^[\d.]+%?$/) &&  // Filter out pure numbers/percentages
+      !isStructuralMarker(ing)     // Filter out structural markers
+    )
+    .slice(0, 150); // Cap at 150 to avoid huge batches
+  
+  if (rawIngredients.length === 0) {
+    console.log(`[EXTRACT] No ingredients found, returning empty array`);
+    return [];
+  }
+  
+  // Deduplicate
+  const uniqueIngredients = Array.from(new Set(rawIngredients));
+  console.log(`[EXTRACT] Extracted ${uniqueIngredients.length} unique ingredients (${rawIngredients.length} total before dedup)`);
+  
+  return uniqueIngredients;
+}
+
 // Calculate Levenshtein similarity between two strings (0-1, where 1 is identical)
 function calculateSimilarity(str1: string, str2: string): number {
   const s1 = normalizeTextForCaching(str1);
