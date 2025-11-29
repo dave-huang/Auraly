@@ -618,5 +618,395 @@
     "analysis": "{\"name\":\"Sal\",\"riskLevel\":\"moderate\",\"summary\":\"La sal de mesa es necesaria en pequeñas cantidades, pero un consumo elevado se asocia con hipertensión y mayor riesgo cardiovascular.\",\"details\":\"La sal aporta sodio, un mineral esencial para el equilibrio de líquidos y la función nerviosa y muscular. Sin embargo, cuando se consume en exceso, puede contribuir al aumento de la presión arterial, retención de líquidos y mayor riesgo de enfermedades cardiovasculares y renales. Las personas con hipertensión, problemas cardíacos o retención de líquidos deben limitar especialmente su ingesta de sal y revisar el contenido de sodio de los productos procesados.\",\"category\":\"Alto contenido de sodio\"}",
     "lastUpdated": 1764378259869,
     "createdAt": 1764378259869
+  },
+  "葡萄糖__food__zh": {
+    "analysis": "{\"name\":\"葡萄糖\",\"riskLevel\":\"moderate\",\"summary\":\"葡萄糖是常见的单糖，用作甜味剂和能量来源，一般人适量摄入较安全，但过量会增加肥胖和代谢问题风险。\",\"details\":\"葡萄糖会迅速被吸收，引起血糖快速上升，对糖尿病或胰岛素抵抗人群需要特别控制摄入。长期高糖饮食与肥胖、2型糖尿病、脂肪肝和心血管疾病风险增加有关。加工食品中若葡萄糖含量较高，建议整体控制每日添加糖摄入量。\",\"category\":\"糖类/甜味剂\"}",
+    "lastUpdated": 1764378906060,
+    "createdAt": 1764378906060
+  },
+  "蔗糖脂肪酸酯__food__zh": {
+    "analysis": "{\"name\":\"蔗糖脂肪酸酯\",\"riskLevel\":\"low\",\"summary\":\"蔗糖脂肪酸酯是一种常见乳化剂和稳定剂，被多数权威机构认为在规定用量内安全。\",\"details\":\"它由蔗糖和食用脂肪酸制成，广泛应用于糖果、烘焙食品、奶制品饮料等，用于改善乳化性、口感和稳定性。现有研究显示，在食品工业中常规使用剂量下毒性较低，但大量依赖含多种添加剂的超加工食品，整体饮食质量可能下降，因此仍建议关注整体饮食结构。\",\"category\":\"乳化剂/食品添加剂\"}",
+    "lastUpdated": 1764378906060,
+    "createdAt": 1764378906060
+  },
+  "无水葡萄糖（右旋葡萄糖）__food__zh": {
+    "analysis": "{\"name\":\"无水葡萄糖（右旋葡萄糖）\",\"riskLevel\":\"moderate\",\"summary\":\"无水葡萄糖也称右旋葡萄糖，是高纯度的葡萄糖形式，升糖速度快，适量对一般人安全，但过量会增加代谢负担。\",\"details\":\"无水葡萄糖常用于运动补给品、糖果、饮料和部分医疗用途（如低血糖纠正），其血糖生成指数很高，能迅速提升血糖与能量。对于糖尿病人、胰岛素抵抗或有代谢综合征风险的人群，应限制这类速效糖的摄入频率和总量。若产品中同时含有多种糖源（如葡萄糖、无水葡萄糖、蜂蜜等），更需留意总体糖负荷。\",\"category\":\"糖类/甜味剂\"}",
+    "lastUpdated": 1764378906060,
+    "createdAt": 1764378906060
+  },
+  "香蕉__food__zh": {
+    "analysis": "{\"name\":\"香蕉\",\"riskLevel\":\"low\",\"summary\":\"香蕉是天然水果原料，富含钾、膳食纤维和多种维生素，对大多数人来说风险较低且有营养价值。\",\"details\":\"香蕉中的天然糖分伴随纤维一起摄入，相比精制糖对血糖影响更温和，但对于需要严格控糖的人仍要注意分量。个别人可能对香蕉或与其相关的乳胶交叉过敏，应留意是否有口腔瘙痒、皮疹等过敏表现。总体来看，作为成分加入可以提升产品的营养密度和风味。\",\"category\":\"水果/天然原料\"}",
+    "lastUpdated": 1764378906060,
+    "createdAt": 1764378906060
+  },
+  "加工蜂蜜__food__zh": {
+    "analysis": "{\"name\":\"加工蜂蜜\",\"riskLevel\":\"moderate\",\"summary\":\"加工蜂蜜多为加热、过滤或与糖浆调配后的蜂蜜，属于高糖成分，营养价值可能低于原蜜，过量摄入有增重和代谢风险。\",\"details\":\"加热和深度加工可能破坏蜂蜜中部分酶类和活性成分，且有些产品可能掺入葡萄糖浆或蔗糖浆，使其更接近普通糖浆的营养特性。蜂蜜主要成分仍是果糖和葡萄糖，总体属于“自由糖”，应计入每日添加糖总量。1岁以下婴儿不宜食用任何形式的蜂蜜（包括加工蜂蜜），以避免肉毒杆菌中毒风险。\",\"category\":\"糖类/甜味剂\"}",
+    "lastUpdated": 1764378906060,
+    "createdAt": 1764378906060
+  },
+  "酶制剂__food__zh": {
+    "analysis": "{\"name\":\"酶制剂\",\"riskLevel\":\"low\",\"summary\":\"酶制剂常用于食品加工中分解淀粉或蛋白质，一般安全，正常人群耐受性良好。\",\"details\":\"酶制剂是一大类蛋白质，常从微生物、植物或动物中提取，用于改善口感、保鲜或帮助分解食物成分。对大多数人来说安全性较高，但对极少数对特定来源（如真菌、某些微生物蛋白）过敏的人，理论上可能引发过敏反应。标签未标明具体酶种类和来源时，敏感人群需适度留意。\",\"category\":\"加工助剂 / 功能性成分\"}",
+    "lastUpdated": 1764378908557,
+    "createdAt": 1764378908557
+  },
+  "食盐__food__zh": {
+    "analysis": "{\"name\":\"食盐\",\"riskLevel\":\"moderate\",\"summary\":\"食盐本身是必需营养素，但摄入过多会增加高血压和心血管疾病风险。\",\"details\":\"在加工食品中，食盐常被大量使用以增强风味和延长保质期，这会显著提高总体钠摄入量。长期高钠饮食与高血压、中风和心血管疾病风险增加密切相关，尤其是对盐敏感人群。若此产品整体含盐量较高，应注意控制食用份量，并与低盐食物搭配。\",\"category\":\"调味料 / 高钠成分\"}",
+    "lastUpdated": 1764378908557,
+    "createdAt": 1764378908557
+  },
+  "洋葱碎__food__zh": {
+    "analysis": "{\"name\":\"洋葱碎\",\"riskLevel\":\"low\",\"summary\":\"洋葱碎是脱水洋葱制成的天然调味原料，一般安全且具备一定的植物营养成分。\",\"details\":\"洋葱碎主要提供辛香风味，同时含有少量抗氧化物质和含硫化合物，对多数人来说安全性较高。对洋葱或葱蒜类过敏、或患有严重胃肠道疾病的人，可能对大量摄入有不适，需要适度控制。整体而言，这属于天然植物性调味成分，风险较低。\",\"category\":\"天然香辛料 / 蔬菜调味料\"}",
+    "lastUpdated": 1764378908557,
+    "createdAt": 1764378908557
+  },
+  "天然香料__food__zh": {
+    "analysis": "{\"name\":\"天然香料\",\"riskLevel\":\"moderate\",\"summary\":\"天然香料来源于天然动植物提取物，用于增强风味，一般安全，但成分常较复杂且不透明。\",\"details\":\"虽然标注为“天然”，但天然香料往往经过提取、浓缩和配比，真实组成对消费者并不完全透明。大多数人对其耐受良好，但对香料或某些植物提取物过敏的人，可能存在潜在过敏或不适风险。由于未标明具体来源（如是否含乳、坚果或其他致敏物），对高度过敏体质人群建议谨慎查看品牌的过敏原说明。\",\"category\":\"风味增强剂 / 香料\"}",
+    "lastUpdated": 1764378908557,
+    "createdAt": 1764378908557
+  },
+  "洋葱提取物__food__zh": {
+    "analysis": "{\"name\":\"洋葱提取物\",\"riskLevel\":\"low\",\"summary\":\"洋葱提取物是从洋葱中浓缩得到的风味成分，用于提供更强的洋葱味，一般安全。\",\"details\":\"洋葱提取物通常通过浸提和浓缩工艺制得，保留洋葱的特有香味和部分活性成分，添加量相对较小。对普通消费者而言，安全性较高，但对洋葱或葱属植物过敏者依然可能引发过敏反应。由于为提取物，其风味更集中，在配方中多作为天然风味强化剂使用。\",\"category\":\"天然香辛料 / 风味提取物\"}",
+    "lastUpdated": 1764378908557,
+    "createdAt": 1764378908557
+  },
+  "sal__food__es": {
+    "analysis": "{\"name\":\"Sal\",\"riskLevel\":\"moderate\",\"summary\":\"La sal es necesaria en pequeñas cantidades, pero un consumo elevado se asocia con mayor riesgo de hipertensión y problemas cardiovasculares. El nivel de riesgo depende de la cantidad total de sal en el producto y en la dieta diaria.\",\"details\":\"La sal (cloruro de sodio) contribuye al sabor y a la conservación del alimento, pero un exceso de sodio está relacionado con presión arterial alta, retención de líquidos y aumento del riesgo de enfermedades cardiovasculares. Personas con hipertensión, enfermedad renal o problemas cardíacos deben ser especialmente cuidadosas con los productos con mucha sal. Sin información de la cantidad exacta en la etiqueta, se clasifica como riesgo moderado por el potencial de contribuir a un consumo elevado de sodio.\",\"category\":\"ingrediente básico / contenido de sodio\"}",
+    "lastUpdated": 1764378949878,
+    "createdAt": 1764378947211
+  },
+  "almidón de maíz__food__es": {
+    "analysis": "{\"name\":\"Almidón de Maíz\",\"riskLevel\":\"low\",\"summary\":\"El almidón de maíz se usa como espesante y estabilizante y suele ser bien tolerado por la mayoría de las personas.\",\"details\":\"El almidón de maíz es un carbohidrato refinado que aporta textura y cuerpo a salsas, sopas y productos procesados. No suele contener gluten de forma natural, por lo que a menudo es apto para personas con enfermedad celíaca, salvo contaminación cruzada. Su principal desventaja nutricional es que aporta calorías de rápida absorción sin fibra ni micronutrientes relevantes.\",\"category\":\"espesante / carbohidrato refinado\"}",
+    "lastUpdated": 1764378947212,
+    "createdAt": 1764378947212
+  },
+  "especias__food__es": {
+    "analysis": "{\"name\":\"Especias\",\"riskLevel\":\"low\",\"summary\":\"Las especias son mezclas de partes de plantas aromáticas que aportan sabor y, en general, presentan bajo riesgo y posibles beneficios antioxidantes.\",\"details\":\"Bajo el término “especias” se agrupan ingredientes como pimienta, pimentón, comino, orégano, entre otros, que se usan para sazonar y mejorar el perfil sensorial del alimento. En cantidades habituales son seguras y pueden aportar compuestos bioactivos con efectos antioxidantes y antiinflamatorios. Las personas con alergias específicas a alguna especia deben tener precaución, ya que la denominación genérica no siempre indica cuáles se incluyen.\",\"category\":\"condimentos / saborizantes naturales\"}",
+    "lastUpdated": 1764378947212,
+    "createdAt": 1764378947212
+  },
+  "ajo__food__es": {
+    "analysis": "{\"name\":\"Ajo\",\"riskLevel\":\"low\",\"summary\":\"El ajo es un aromático natural que aporta sabor intenso y se asocia a posibles beneficios cardiovasculares y antioxidantes.\",\"details\":\"El ajo contiene compuestos sulfurados como la alicina, relacionados con efectos cardioprotectores, reducción ligera de la presión arterial y propiedades antimicrobianas. En la mayoría de las personas su consumo es seguro, aunque en cantidades elevadas puede ocasionar molestias digestivas o mal aliento y, en casos puntuales, interacción con anticoagulantes. En productos alimentarios procesados suele emplearse en cantidades moderadas que implican bajo riesgo.\",\"category\":\"condimento / vegetal aromático\"}",
+    "lastUpdated": 1764378947212,
+    "createdAt": 1764378947212
+  },
+  "leche entera en polvo__food__es": {
+    "analysis": "{\"name\":\"Leche Entera En Polvo\",\"riskLevel\":\"moderate\",\"summary\":\"La leche entera en polvo es una fuente de proteínas, grasas y calcio, pero es un alérgeno importante y contiene lactosa.\",\"details\":\"La leche entera en polvo se obtiene deshidratando leche de vaca, concentrando proteínas lácteas, grasas saturadas, calcio y otros micronutrientes. Representa un riesgo alto para personas con alergia a la proteína de la leche de vaca o intolerancia a la lactosa, que pueden presentar reacciones alérgicas o síntomas digestivos. Para la población general puede formar parte de una dieta equilibrada, pero conviene moderar su consumo en quienes requieren limitar grasas saturadas o calorías.\",\"category\":\"lácteo / alérgeno\"}",
+    "lastUpdated": 1764378947212,
+    "createdAt": 1764378947212
+  },
+  "pasta de tomate__food__es": {
+    "analysis": "{\"name\":\"Pasta de Tomate\",\"riskLevel\":\"low\",\"summary\":\"La pasta de tomate es un concentrado de tomate que normalmente se considera un ingrediente seguro y saludable.\",\"details\":\"Se obtiene al cocinar y concentrar tomates, por lo que aporta licopeno, vitaminas y minerales propios del tomate. El principal punto a vigilar es el posible contenido de sal añadida en algunos productos procesados, pero como ingrediente aislado no suele representar riesgo relevante para la mayoría de las personas.\",\"category\":\"ingrediente básico / vegetal\"}",
+    "lastUpdated": 1764378947868,
+    "createdAt": 1764378947868
+  },
+  "leche fermentada__food__es": {
+    "analysis": "{\"name\":\"Leche Fermentada\",\"riskLevel\":\"moderate\",\"summary\":\"La leche fermentada es un producto lácteo que puede aportar probióticos beneficiosos, pero es un alérgeno para personas con intolerancia a la lactosa o alergia a la proteína de la leche.\",\"details\":\"Al ser un lácteo, contiene lactosa y proteínas de la leche (como caseína y suero), que pueden provocar reacciones en personas con alergia o intolerancia. Suele ser bien tolerada por la mayoría de la población y puede ayudar a la salud intestinal gracias a las bacterias lácticas, pero debe evitarse o limitarse en caso de alergia a la leche de vaca o intolerancia marcada a la lactosa.\",\"category\":\"lácteo / alérgeno potencial\"}",
+    "lastUpdated": 1764378947868,
+    "createdAt": 1764378947868
+  },
+  "ácido cítrico__food__es": {
+    "analysis": "{\"name\":\"Ácido Cítrico\",\"riskLevel\":\"low\",\"summary\":\"El ácido cítrico es un acidulante y conservante muy común en alimentos, generalmente considerado seguro.\",\"details\":\"Se usa para ajustar la acidez, realzar el sabor y mejorar la conservación de numerosos productos. En la mayoría de las personas no provoca problemas, aunque en individuos muy sensibles puede causar ligera irritación bucal o estomacal si se consume en grandes cantidades, pero su riesgo toxicológico en las dosis habituales es muy bajo.\",\"category\":\"aditivo alimentario (acidulante / conservante)\"}",
+    "lastUpdated": 1764378947868,
+    "createdAt": 1764378947868
+  },
+  "mono y diglicéridos de ácidos grasos__food__es": {
+    "analysis": "{\"name\":\"Mono y Diglicéridos de Ácidos Grasos\",\"riskLevel\":\"moderate\",\"summary\":\"Los mono y diglicéridos de ácidos grasos son emulsionantes grasos usados para mejorar la textura de los alimentos procesados.\",\"details\":\"A menudo se obtienen de aceites vegetales y pueden contener pequeñas cantidades de grasas trans dependiendo del proceso de fabricación, aunque normalmente en niveles bajos. Su consumo ocasional en productos procesados es aceptado como seguro, pero en dietas con muchos ultraprocesados pueden contribuir a un mayor aporte de grasas de baja calidad y, en algunos casos, tener origen en aceites parcialmente hidrogenados.\",\"category\":\"aditivo alimentario (emulsionante / grasa)\"}",
+    "lastUpdated": 1764378947868,
+    "createdAt": 1764378947868
+  },
+  "cacao en polvo (procesado con álcali)__food__es": {
+    "analysis": "{\"name\":\"Cacao En Polvo (procesado Con Álcali)\",\"riskLevel\":\"low\",\"summary\":\"El cacao en polvo procesado con álcali (cacao alcalinizado o tipo “dutched”) es generalmente seguro, aunque contiene menos antioxidantes que el cacao natural.\",\"details\":\"El proceso con álcali reduce la acidez y oscurece el color, mejorando el sabor pero disminuyendo parte del contenido de polifenoles beneficiosos. Puede contener naturalmente algo de cafeína y teobromina, por lo que personas muy sensibles a los estimulantes o con ciertas afecciones cardíacas deberían moderar su consumo, pero a niveles habituales en alimentos su riesgo es bajo.\",\"category\":\"ingrediente básico / cacao\"}",
+    "lastUpdated": 1764378947868,
+    "createdAt": 1764378947868
+  },
+  "glucosa__food__es": {
+    "analysis": "{\"name\":\"Glucosa\",\"riskLevel\":\"moderate\",\"summary\":\"La glucosa es un azúcar simple que aporta energía rápida, pero en exceso puede contribuir a picos de azúcar en sangre y aumento de peso. Su consumo ocasional en pequeñas cantidades suele ser seguro en personas sanas.\",\"details\":\"La glucosa se absorbe rápidamente y eleva de forma aguda la glucemia, lo que puede ser problemático en personas con resistencia a la insulina o diabetes. Un consumo elevado y frecuente de azúcares simples se asocia con mayor riesgo de caries dental, síndrome metabólico y ganancia de peso. Dentro de una dieta equilibrada y con actividad física suficiente, un uso moderado no suele representar un riesgo alto.\",\"category\":\"Azúcar simple / edulcorante calórico\"}",
+    "lastUpdated": 1764378948640,
+    "createdAt": 1764378948640
+  },
+  "ésteres de ácidos grasos de sacarosa__food__es": {
+    "analysis": "{\"name\":\"Ésteres de Ácidos Grasos de Sacarosa\",\"riskLevel\":\"low\",\"summary\":\"Los ésteres de ácidos grasos de sacarosa son emulsionantes usados para mejorar textura y estabilidad de alimentos procesados. Están generalmente considerados seguros a las dosis habituales de consumo.\",\"details\":\"Estos aditivos se obtienen combinando sacarosa con ácidos grasos y se emplean en productos como repostería, cremas, coberturas y bebidas para estabilizar mezclas de agua y grasa. La evidencia disponible no muestra toxicidad relevante en humanos a niveles tecnológicos normales, aunque, como con otros aditivos, es preferible no abusar de alimentos ultraprocesados que los contienen en grandes cantidades. Personas con digestión muy sensible podrían notar ligeras molestias gastrointestinales si consumen grandes cantidades.\",\"category\":\"Aditivo alimentario / emulsionante\"}",
+    "lastUpdated": 1764378948640,
+    "createdAt": 1764378948640
+  },
+  "dextrosa (glucosa anhidra)__food__es": {
+    "analysis": "{\"name\":\"Dextrosa (glucosa Anhidra)\",\"riskLevel\":\"moderate\",\"summary\":\"La dextrosa anhidra es glucosa pura sin agua cristalina, usada como edulcorante y fuente rápida de energía. Su riesgo principal se relaciona con el exceso de azúcares añadidos en la dieta.\",\"details\":\"Al ser químicamente glucosa, se absorbe de forma muy rápida y genera picos de glucemia e insulina, lo que puede favorecer el desarrollo o empeoramiento de resistencia a la insulina y diabetes si se consume en exceso de forma crónica. También contribuye al aporte calórico total, ganancia de peso y riesgo de caries dental. En contextos específicos, como uso médico o deportivo controlado, puede ser útil y segura, pero en productos ultraprocesados su ingesta debería moderarse.\",\"category\":\"Azúcar simple / edulcorante calórico\"}",
+    "lastUpdated": 1764378948640,
+    "createdAt": 1764378948640
+  },
+  "banana__food__es": {
+    "analysis": "{\"name\":\"Banana\",\"riskLevel\":\"low\",\"summary\":\"La banana es una fruta natural rica en carbohidratos, potasio y fibra. Es generalmente saludable salvo en personas con alergia específica o con restricciones estrictas de carbohidratos.\",\"details\":\"Aporta azúcares naturales junto con vitaminas (como vitamina B6 y vitamina C), minerales y compuestos bioactivos beneficiosos. Su contenido de fibra ayuda a la salud digestiva y a un mejor control de la glucosa en comparación con azúcares refinados, aunque sigue siendo una fuente moderada de carbohidratos. Personas con diabetes deben considerar la porción, pero en general es un ingrediente de bajo riesgo y nutritivo.\",\"category\":\"Fruta\"}",
+    "lastUpdated": 1764378948640,
+    "createdAt": 1764378948640
+  },
+  "miel procesada__food__es": {
+    "analysis": "{\"name\":\"Miel Procesada\",\"riskLevel\":\"moderate\",\"summary\":\"La miel procesada es un edulcorante natural sometido a filtrado y calentamiento, lo que puede reducir parte de sus compuestos beneficiosos. Sigue siendo una fuente concentrada de azúcares simples y debe consumirse con moderación.\",\"details\":\"Aunque la miel contiene pequeñas cantidades de antioxidantes y compuestos bioactivos, el procesamiento (especialmente el calentamiento elevado) puede disminuir su calidad nutricional. Desde el punto de vista metabólico, aporta fructosa y glucosa en proporciones altas, con efectos similares al azúcar común en cuanto a calorías, control de peso y salud dental. No es adecuada para lactantes menores de 1 año por riesgo de botulismo infantil, y las personas con diabetes deben controlar su ingesta.\",\"category\":\"Edulcorante calórico / azúcar añadido\"}",
+    "lastUpdated": 1764378948640,
+    "createdAt": 1764378948640
+  },
+  "enzimas__food__es": {
+    "analysis": "{\"name\":\"Enzimas\",\"riskLevel\":\"low\",\"summary\":\"Las enzimas se utilizan para modificar o mejorar ciertas propiedades de los alimentos y, en general, se consideran seguras para la mayoría de las personas. El riesgo puede aumentar solo en individuos con alergias muy específicas a enzimas industriales.\",\"details\":\"Las enzimas en productos alimenticios suelen ser de origen microbiano, vegetal o animal y se usan, por ejemplo, para mejorar textura, sabor o digestibilidad. Normalmente se inactivan con el calor durante el procesado, por lo que su actividad en el producto final es mínima. Excepcionalmente, trabajadores expuestos a enzimas en polvo o personas con sensibilización específica pueden presentar reacciones alérgicas, pero esto es muy poco frecuente en consumidores generales.\",\"category\":\"coadyuvante tecnológico / aditivo enzimático\"}",
+    "lastUpdated": 1764378949878,
+    "createdAt": 1764378949878
+  },
+  "hojuelas de cebolla__food__es": {
+    "analysis": "{\"name\":\"Hojuelas de Cebolla\",\"riskLevel\":\"low\",\"summary\":\"Las hojuelas de cebolla son simplemente cebolla deshidratada y se consideran un ingrediente de bajo riesgo para la mayoría de las personas. El riesgo principal sería para quienes tienen alergia o intolerancia específica a la cebolla u otras aliáceas.\",\"details\":\"La cebolla deshidratada conserva la mayoría de sus compuestos aromáticos y parte de sus fitonutrientes, sin añadir aditivos problemáticos por sí misma. Puede causar molestias digestivas (gases, hinchazón) en personas sensibles o con síndrome de intestino irritable, y reacciones alérgicas en casos poco frecuentes. En ausencia de estas condiciones, es un ingrediente seguro y común en productos alimenticios.\",\"category\":\"vegetal deshidratado / condimento\"}",
+    "lastUpdated": 1764378949878,
+    "createdAt": 1764378949878
+  },
+  "sabor natural__food__es": {
+    "analysis": "{\"name\":\"Sabor Natural\",\"riskLevel\":\"moderate\",\"summary\":\"El término “sabor natural” es muy genérico y no especifica su origen, por lo que hay cierta incertidumbre sobre su composición real. Suele considerarse seguro, pero puede ser problemático para personas con alergias o intolerancias si el origen no está claramente indicado.\",\"details\":\"Los sabores naturales se obtienen de materias primas de origen vegetal o animal, pero pueden estar procesados y concentrados, e incluir solventes o vehículos permitidos por la normativa. La falta de detalle en la etiqueta impide saber si proviene, por ejemplo, de lácteos, soya, gluten u otros alérgenos potenciales. Aunque regulatoriamente se consideran seguros, para personas con alergias alimentarias estrictas o dietas muy específicas (p. ej. veganos) la falta de transparencia aumenta el nivel de precaución.\",\"category\":\"aromatizante / saborizante\"}",
+    "lastUpdated": 1764378949878,
+    "createdAt": 1764378949878
+  },
+  "extracto de cebolla__food__es": {
+    "analysis": "{\"name\":\"Extracto de Cebolla\",\"riskLevel\":\"low\",\"summary\":\"El extracto de cebolla es un concentrado de compuestos de cebolla usado para aportar sabor y, en general, es de bajo riesgo. Puede causar problemas solo en personas con alergia o sensibilidad a la cebolla.\",\"details\":\"Este extracto se obtiene al concentrar componentes solubles de la cebolla, lo que intensifica el sabor sin requerir grandes cantidades de producto. No suele implicar aditivos peligrosos por sí mismo y es común en caldos, salsas y productos procesados. Como otros derivados de cebolla, puede provocar molestias digestivas o reacciones alérgicas en personas susceptibles, pero para la población general se considera seguro.\",\"category\":\"extracto vegetal / condimento\"}",
+    "lastUpdated": 1764378949878,
+    "createdAt": 1764378949878
+  },
+  "leche descremada en polvo__food__es": {
+    "analysis": "{\"name\":\"Leche Descremada En Polvo\",\"riskLevel\":\"moderate\",\"summary\":\"Ingrediente lácteo con bajo contenido de grasa pero con lactosa y proteínas de leche, que puede ser problemático para personas con alergia a la leche o intolerancia a la lactosa.\",\"details\":\"La leche descremada en polvo aporta proteínas, calcio y otros nutrientes, pero sigue siendo un alérgeno importante para personas con alergia a la proteína de la leche de vaca. También contiene lactosa, que puede causar malestar digestivo (gases, diarrea, hinchazón) en personas con intolerancia. Su consumo es aceptado como seguro para la mayoría de la población, pero quienes tienen alergia a la leche o intolerancia a la lactosa deben evitarla o controlarla cuidadosamente.\",\"category\":\"lácteo / alérgeno\"}",
+    "lastUpdated": 1764378950733,
+    "createdAt": 1764378950733
+  },
+  "color caramelo__food__es": {
+    "analysis": "{\"name\":\"Color Caramelo\",\"riskLevel\":\"moderate\",\"summary\":\"Colorante alimentario usado para dar tono marrón a bebidas y alimentos; algunos tipos pueden contener subproductos no deseables si se consumen en grandes cantidades.\",\"details\":\"El color caramelo se produce al calentar azúcares y se utiliza de forma amplia en refrescos, salsas y productos procesados. Ciertos tipos de color caramelo (especialmente los producidos con amonio-sulfitos) pueden contener trazas de compuestos como 4-MEI, asociados en estudios animales con riesgo potencial de cáncer, aunque los niveles habituales en alimentos suelen estar regulados. Su riesgo aumenta si la dieta incluye grandes cantidades de productos muy coloreados, por lo que es recomendable un consumo moderado.\",\"category\":\"colorante alimentario\"}",
+    "lastUpdated": 1764378950734,
+    "createdAt": 1764378950734
+  },
+  "glutamato monosódico__food__es": {
+    "analysis": "{\"name\":\"Glutamato Monosódico\",\"riskLevel\":\"moderate\",\"summary\":\"Potenciador de sabor muy usado que aporta sabor umami; generalmente considerado seguro, pero puede causar molestias en personas sensibles y contribuye al consumo total de sodio.\",\"details\":\"El glutamato monosódico (MSG) intensifica el sabor de muchos alimentos procesados y, según la mayoría de las autoridades sanitarias, es seguro a las dosis habituales. Sin embargo, algunas personas reportan síntomas como dolor de cabeza, enrojecimiento o malestar general tras consumir grandes cantidades, aunque la evidencia científica es mixta. Además, aporta sodio a la dieta, lo que puede ser relevante para personas con hipertensión o que necesiten controlar su ingesta de sal.\",\"category\":\"potenciador de sabor / aditivo\"}",
+    "lastUpdated": 1764378950734,
+    "createdAt": 1764378950734
+  },
+  "soja desgrasada__food__es": {
+    "analysis": "{\"name\":\"Soja Desgrasada\",\"riskLevel\":\"moderate\",\"summary\":\"Fuente de proteína vegetal a partir de soja con bajo contenido de grasa, pero es un alérgeno común y suele aparecer en productos muy procesados.\",\"details\":\"La soja desgrasada se obtiene al extraer la mayor parte de la grasa de la soja, quedando un ingrediente rico en proteínas utilizado en productos cárnicos procesados, snacks y preparados. Nutricionalmente puede ser beneficiosa por su contenido proteico y de compuestos vegetales, pero la soja es uno de los alérgenos alimentarios más frecuentes. Además, cuando se usa en alimentos ultraprocesados puede ir acompañada de otros aditivos y un perfil nutricional menos saludable.\",\"category\":\"proteína vegetal / alérgeno\"}",
+    "lastUpdated": 1764378950734,
+    "createdAt": 1764378950734
+  },
+  "extracto de levadura__food__es": {
+    "analysis": "{\"name\":\"Extracto de Levadura\",\"riskLevel\":\"moderate\",\"summary\":\"Ingrediente usado como potenciador de sabor que aporta umami de forma natural, pero es rico en compuestos tipo glutamato y puede ser problemático para personas sensibles al MSG.\",\"details\":\"El extracto de levadura se elabora a partir de levaduras descompuestas y concentra aminoácidos, incluidas formas de glutamato que realzan el sabor salado y umami de los alimentos. Aunque no es lo mismo que el glutamato monosódico añadido, puede tener efectos similares en personas muy sensibles a este tipo de compuestos. También suele aparecer en alimentos procesados ricos en sal y otros aditivos, por lo que conviene revisar el conjunto de la dieta si se consume con frecuencia.\",\"category\":\"potenciador de sabor / ingrediente fermentado\"}",
+    "lastUpdated": 1764378950734,
+    "createdAt": 1764378950734
+  },
+  "salt__food__en": {
+    "analysis": "{\"name\":\"Salt\",\"riskLevel\":\"moderate\",\"summary\":\"Salt (sodium chloride) is a common seasoning and preservative that is safe in small amounts but can contribute to high blood pressure and cardiovascular risk when consumed in excess. The ingredient itself is simple, but overall intake from many foods can quickly become too high.\",\"details\":\"Salt enhances flavor and helps preserve foods, but high sodium intake is strongly associated with hypertension, increased heart disease risk, and fluid retention in susceptible individuals. People with high blood pressure, kidney disease, or heart failure need to be particularly cautious about total daily sodium from all sources, including processed foods. The risk level here reflects the potential for high sodium consumption rather than inherent toxicity of the ingredient.\",\"category\":\"salt / seasoning\"}",
+    "lastUpdated": 1764379125732,
+    "createdAt": 1764379123272
+  },
+  "corn starch__food__en": {
+    "analysis": "{\"name\":\"Corn Starch\",\"riskLevel\":\"low\",\"summary\":\"Corn starch is a refined carbohydrate used as a thickener and texturizer in foods.\",\"details\":\"Corn starch is primarily composed of carbohydrates and is generally recognized as safe for most people when used in typical culinary quantities. It offers little nutritional value beyond calories and can contribute to rapid increases in blood glucose if consumed in large amounts, which may be relevant for people with diabetes or insulin resistance. Unless an individual has a corn allergy or sensitivity, it is typically considered a low-risk ingredient.\",\"category\":\"Thickener / refined carbohydrate\"}",
+    "lastUpdated": 1764379123273,
+    "createdAt": 1764379123273
+  },
+  "spices__food__en": {
+    "analysis": "{\"name\":\"Spices\",\"riskLevel\":\"low\",\"summary\":\"Spices are flavoring ingredients derived from plants and are typically safe, with some potential for individual sensitivities.\",\"details\":\"The term \\\"spices\\\" is generic and may include a mixture such as pepper, paprika, cumin, or others, which are commonly used for flavor and may provide beneficial phytonutrients. Most people tolerate spices well, but some individuals may experience digestive discomfort, heartburn, or allergic reactions to specific spices (for example, mustard or celery in some blends). Because the exact composition is unspecified, people with known spice allergies should exercise caution.\",\"category\":\"Flavoring / seasoning\"}",
+    "lastUpdated": 1764379123273,
+    "createdAt": 1764379123273
+  },
+  "garlic__food__en": {
+    "analysis": "{\"name\":\"Garlic\",\"riskLevel\":\"low\",\"summary\":\"Garlic is a natural flavoring agent with potential cardiovascular and immune benefits for most people.\",\"details\":\"Garlic contains sulfur compounds and antioxidants that have been studied for possible benefits including modest blood pressure and cholesterol support, as well as antimicrobial effects. It is generally safe, though some people may experience digestive upset, gas, or heartburn, especially in larger amounts. Rarely, individuals can have a true garlic allergy or need to limit garlic if they are on certain medications that affect blood clotting or if advised by a clinician.\",\"category\":\"Herb / natural flavoring\"}",
+    "lastUpdated": 1764379123273,
+    "createdAt": 1764379123273
+  },
+  "whole milk powder__food__en": {
+    "analysis": "{\"name\":\"Whole Milk Powder\",\"riskLevel\":\"moderate\",\"summary\":\"Whole milk powder is dehydrated cow’s milk and is a significant source of dairy proteins, lactose, and milk fat, posing issues for those with dairy allergy or lactose intolerance.\",\"details\":\"Whole milk powder contains casein and whey proteins, milk fat, and lactose, preserving most of the nutritional and allergenic properties of liquid milk. It is a common hidden source of dairy in processed foods and must be avoided completely by individuals with cow’s milk allergy and by those with certain dairy-related conditions. People with lactose intolerance may experience symptoms such as bloating, gas, or diarrhea depending on the amount consumed and their individual tolerance, while others can generally consume it without concern.\",\"category\":\"Dairy / allergen\"}",
+    "lastUpdated": 1764379123273,
+    "createdAt": 1764379123273
+  },
+  "palm oil__food__en": {
+    "analysis": "{\"name\":\"Palm Oil\",\"riskLevel\":\"moderate\",\"summary\":\"Palm oil is a common vegetable oil high in saturated fat, which can affect heart health when consumed in excess.\",\"details\":\"Palm oil is widely used in processed foods because it is cheap, stable, and solid at room temperature. It is relatively high in saturated fat, and frequent intake of large amounts of saturated fat is associated with increased LDL (“bad”) cholesterol and cardiovascular risk, especially when it replaces unsaturated fats. Refined palm oil in typical food amounts is generally recognized as safe, but from a health standpoint it is better not to rely on it as a primary fat source and to balance it with healthier oils (e.g., olive, canola).\",\"category\":\"Fat / Oil\"}",
+    "lastUpdated": 1764379123558,
+    "createdAt": 1764379123558
+  },
+  "canola oil__food__en": {
+    "analysis": "{\"name\":\"Canola Oil\",\"riskLevel\":\"low\",\"summary\":\"Canola oil is a vegetable oil relatively low in saturated fat and higher in unsaturated fats, generally considered heart-friendly.\",\"details\":\"Canola oil contains monounsaturated fats and some omega-3 fatty acids, which are usually seen as beneficial for heart health when they replace saturated fats. Refined canola oil used in processed foods is highly processed and may be exposed to high heat, which can slightly reduce some of its beneficial components, but it is still considered a comparatively healthy cooking oil. For most people, moderate intake as part of a balanced diet is considered low risk.\",\"category\":\"Fat / Oil\"}",
+    "lastUpdated": 1764379123558,
+    "createdAt": 1764379123558
+  },
+  "soy lecithin__food__en": {
+    "analysis": "{\"name\":\"Soy Lecithin\",\"riskLevel\":\"low\",\"summary\":\"Soy lecithin is an emulsifier derived from soy, commonly used in small amounts in processed foods and generally recognized as safe.\",\"details\":\"Soy lecithin helps keep fats and water mixed in foods like chocolate, baked goods, and dressings, and is usually present in very small quantities. It is generally well tolerated, though people with soy allergies should be aware that it is soy-derived, even though it is often highly refined and may contain only trace amounts of soy protein. For the general population, it is considered a low-risk food additive.\",\"category\":\"Emulsifier / Soy-derived additive\"}",
+    "lastUpdated": 1764379123558,
+    "createdAt": 1764379123558
+  },
+  "wheat flour__food__en": {
+    "analysis": "{\"name\":\"Wheat Flour\",\"riskLevel\":\"moderate\",\"summary\":\"Wheat flour is a staple ingredient that contains gluten and can be problematic for people with celiac disease or gluten sensitivity.\",\"details\":\"Wheat flour provides carbohydrates and, depending on refinement, varying amounts of fiber and nutrients; refined white flour is lower in fiber and micronutrients than whole wheat flour. The main concern is its gluten content, which can trigger serious immune reactions in individuals with celiac disease and cause symptoms in those with non-celiac gluten sensitivity or wheat allergy. For people without these conditions, wheat flour is generally safe, but frequent use of highly refined flour can contribute to blood sugar spikes and lower overall diet quality.\",\"category\":\"Grain / Gluten-containing ingredient\"}",
+    "lastUpdated": 1764379123559,
+    "createdAt": 1764379123559
+  },
+  "sugar__food__en": {
+    "analysis": "{\"name\":\"Sugar\",\"riskLevel\":\"moderate\",\"summary\":\"Sugar is a simple carbohydrate that provides quick energy but can contribute to weight gain, tooth decay, and metabolic issues when overconsumed.\",\"details\":\"Added sugars are common in processed foods and sweetened beverages and have been linked to increased risk of obesity, type 2 diabetes, fatty liver disease, and cardiovascular disease when intake is high. Sugar also promotes dental cavities and can drive cravings due to rapid blood glucose spikes and drops. Occasional consumption in small amounts is generally safe, but regular high intake of added sugar is considered a significant health concern.\",\"category\":\"Added sweetener / Simple carbohydrate\"}",
+    "lastUpdated": 1764379123559,
+    "createdAt": 1764379123559
+  },
+  "natural and artificial flavors__food__en": {
+    "analysis": "{\"name\":\"Natural And Artificial Flavors\",\"riskLevel\":\"moderate\",\"summary\":\"A mixture of flavoring substances from natural and synthetic sources used to enhance taste. Safety depends on the specific compounds, which are not usually disclosed on labels.\",\"details\":\"Natural and artificial flavors can include essential oils, extracts, and lab-made compounds that mimic natural tastes. While most are approved as safe at typical food-use levels, they can sometimes trigger sensitivities in susceptible individuals, and the lack of transparency makes it difficult for consumers with allergies or chemical sensitivities to fully assess risk.\",\"category\":\"Flavoring agents\"}",
+    "lastUpdated": 1764379123959,
+    "createdAt": 1764379123959
+  },
+  "honey__food__en": {
+    "analysis": "{\"name\":\"Honey\",\"riskLevel\":\"low\",\"summary\":\"A natural sweetener produced by bees, composed mainly of fructose and glucose. It is generally safe for most people but should not be given to infants under one year old.\",\"details\":\"Honey provides simple sugars and small amounts of antioxidants and trace minerals, but it is still a concentrated source of sugar and calories that can affect blood glucose and dental health. It can contain spores of Clostridium botulinum, which is why it is contraindicated for infants, though it is safe for older children and adults when consumed in moderation.\",\"category\":\"Natural sweetener\"}",
+    "lastUpdated": 1764379123959,
+    "createdAt": 1764379123959
+  },
+  "dextrin__food__en": {
+    "analysis": "{\"name\":\"Dextrin\",\"riskLevel\":\"low\",\"summary\":\"A group of short-chain carbohydrates derived from starch, used as a thickener, stabilizer, or fiber source. It is generally recognized as safe for most consumers.\",\"details\":\"Dextrin is usually produced from corn, wheat, or other starches and is easily digestible, contributing mainly carbohydrates and sometimes a small amount of functional fiber. People with celiac disease or gluten sensitivity should be aware that wheat-derived dextrin can contain gluten unless specifically labeled gluten-free.\",\"category\":\"Carbohydrate additive / thickener\"}",
+    "lastUpdated": 1764379123959,
+    "createdAt": 1764379123959
+  },
+  "pasteurized milk__food__en": {
+    "analysis": "{\"name\":\"Pasteurized Milk\",\"riskLevel\":\"moderate\",\"summary\":\"Heat-treated cow’s milk used as a base dairy ingredient, which reduces microbial risk. It is nutritious but is a common allergen and contains lactose.\",\"details\":\"Pasteurization kills most pathogenic bacteria while preserving proteins, fats, vitamins, and minerals such as calcium and vitamin B12. However, milk proteins (casein and whey) can cause allergic reactions, and the lactose content can trigger digestive symptoms in people with lactose intolerance, making it a concern for those with dairy-related conditions.\",\"category\":\"Dairy allergen\"}",
+    "lastUpdated": 1764379123959,
+    "createdAt": 1764379123959
+  },
+  "cheese cultures__food__en": {
+    "analysis": "{\"name\":\"Cheese Cultures\",\"riskLevel\":\"low\",\"summary\":\"Beneficial bacterial cultures used in cheese making to develop flavor and texture. They are generally safe and common in fermented dairy products.\",\"details\":\"Cheese cultures typically include strains of lactic acid bacteria that ferment lactose into lactic acid, helping preserve the product and contribute tangy flavors. These microbes are considered safe for most people and can have mild probiotic-like effects, though individuals with severe dairy allergies should still avoid products containing them because they are part of a dairy-based matrix.\",\"category\":\"Fermentation cultures / dairy\"}",
+    "lastUpdated": 1764379123959,
+    "createdAt": 1764379123959
+  },
+  "alkali (alkalizing agent e.g. sodium carbonate / potassium carbonate)__food__en": {
+    "analysis": "{\"name\":\"Alkali (alkalizing Agent, E.g., Sodium Carbonate / Potassium Carbonate)\",\"riskLevel\":\"low\",\"summary\":\"Alkali refers to alkaline substances used to adjust acidity or process foods, such as cocoa or noodles. At typical food levels, these agents are generally considered safe for most people.\",\"details\":\"In food, alkalis (like sodium carbonate, potassium carbonate, or similar bases) are used to raise pH, modify texture, or enhance color, for example in Dutch-processed cocoa or ramen noodles. The main concern is that some alkalis can contribute to overall sodium or mineral intake, which could matter for individuals on restricted-sodium or kidney-healthy diets. For the general population consuming normal amounts of processed foods, the toxicological risk of approved food-grade alkalis is low.\",\"category\":\"processing aid / pH regulator\"}",
+    "lastUpdated": 1764379125290,
+    "createdAt": 1764379125290
+  },
+  "tomato extract__food__en": {
+    "analysis": "{\"name\":\"Tomato Extract\",\"riskLevel\":\"low\",\"summary\":\"Tomato extract is a concentrated form of tomatoes used for flavor, color, and nutrients like lycopene. It is generally considered safe and can even provide beneficial antioxidants.\",\"details\":\"Tomato extract is produced by concentrating tomato solids, often preserving natural compounds such as lycopene, vitamins, and organic acids. It is commonly used in sauces, soups, and snacks for a strong tomato flavor and red color, without relying on artificial colorants. Unless someone has a specific allergy or sensitivity to tomatoes or nightshades, it poses very low health risk and can contribute useful phytonutrients.\",\"category\":\"natural flavor / vegetable concentrate\"}",
+    "lastUpdated": 1764379125293,
+    "createdAt": 1764379125293
+  },
+  "soy protein__food__en": {
+    "analysis": "{\"name\":\"Soy Protein\",\"riskLevel\":\"moderate\",\"summary\":\"Soy protein is a concentrated protein derived from soybeans, widely used in meat alternatives and processed foods. It is nutritious but is a major allergen and can be problematic for people with soy allergy or intolerance.\",\"details\":\"Soy protein (concentrate or isolate) provides a high-quality plant protein and is generally safe for most consumers when eaten in typical amounts. However, soy is one of the top food allergens, and even small amounts can trigger reactions ranging from mild symptoms to severe anaphylaxis in sensitive individuals. People with thyroid issues or on certain medications may also wish to moderate high intakes of processed soy, though food-regulatory agencies regard normal dietary levels as safe.\",\"category\":\"protein source / major allergen\"}",
+    "lastUpdated": 1764379125293,
+    "createdAt": 1764379125293
+  },
+  "protein hydrolysate (hydrolysate)__food__en": {
+    "analysis": "{\"name\":\"Protein Hydrolysate (hydrolysate)\",\"riskLevel\":\"moderate\",\"summary\":\"Hydrolysate usually refers to protein hydrolysate, where proteins are broken into smaller peptides and amino acids. This improves digestibility and flavor but can sometimes include or generate flavor enhancers similar to MSG.\",\"details\":\"Protein hydrolysates are produced by enzymatic or chemical breakdown of proteins from sources such as soy, wheat, milk, or other plants/animals, and are used to enhance flavor and improve texture. Because hydrolysis releases free glutamate, some hydrolysates (e.g., hydrolyzed vegetable protein) can act similarly to monosodium glutamate (MSG), which some individuals report sensitivity to, though evidence of broad harm is limited. Allergen risk depends on the original protein source (e.g., soy, wheat, milk), which is not specified here, so people with known allergies should check labeling carefully.\",\"category\":\"flavor enhancer / protein derivative\"}",
+    "lastUpdated": 1764379125293,
+    "createdAt": 1764379125293
+  },
+  "apple puree__food__en": {
+    "analysis": "{\"name\":\"Apple Puree\",\"riskLevel\":\"low\",\"summary\":\"Apple puree is a mashed or blended form of apples used as a fruit base, sweetener, or texture ingredient. It is generally safe and can provide fiber and natural sugars.\",\"details\":\"Apple puree is typically made from cooked or raw apples that are blended into a smooth consistency, sometimes with peel and sometimes without. It contributes natural sweetness, some fiber, and phytonutrients such as polyphenols, depending on how it is processed. The primary concerns are for individuals with apple or birch-pollen–related oral allergy syndrome, or for those who need to limit simple sugars, but for most consumers it is a low-risk, minimally processed fruit ingredient.\",\"category\":\"fruit ingredient / natural sweetener\"}",
+    "lastUpdated": 1764379125293,
+    "createdAt": 1764379125293
+  },
+  "soy sauce (from soybean)__food__en": {
+    "analysis": "{\"name\":\"Soy Sauce (from Soybean)\",\"riskLevel\":\"moderate\",\"summary\":\"Soy sauce is a fermented seasoning made from soybeans, often high in sodium and containing soy allergens. It can be safe for most people in small amounts but problematic for those with soy allergy or who need to limit salt.\",\"details\":\"Soy sauce typically contains significant sodium, which can contribute to high blood pressure and cardiovascular strain if consumed in excess. It is a common source of soy, a major allergen that can trigger reactions ranging from mild digestive issues to severe anaphylaxis in sensitive individuals. Some soy sauces may contain added preservatives or flavor enhancers, but this depends on the specific formulation; the basic ingredient itself is primarily a fermented soy product. People with kidney disease, hypertension, or soy allergy should be particularly cautious about intake.\",\"category\":\"Seasoning / Allergen (soy) / High sodium\"}",
+    "lastUpdated": 1764379125392,
+    "createdAt": 1764379125392
+  },
+  "wheat__food__en": {
+    "analysis": "{\"name\":\"Wheat\",\"riskLevel\":\"moderate\",\"summary\":\"Wheat is a common grain and a major source of gluten, a key allergen and trigger for celiac disease. It is generally safe for most people but must be strictly avoided by those with celiac disease or wheat/gluten allergy or intolerance.\",\"details\":\"As a gluten-containing grain, wheat can cause serious intestinal damage and systemic symptoms in people with celiac disease, requiring complete avoidance. It can also provoke allergic reactions or non-celiac gluten sensitivity, leading to symptoms like bloating, rashes, or respiratory issues. For the general population, wheat is not inherently harmful, but it is a mandated allergen on labels and relevant for anyone following gluten-free diets.\",\"category\":\"Cereal grain / Allergen (gluten, wheat)\"}",
+    "lastUpdated": 1764379125393,
+    "createdAt": 1764379125393
+  },
+  "garlic extract__food__en": {
+    "analysis": "{\"name\":\"Garlic Extract\",\"riskLevel\":\"low\",\"summary\":\"Garlic extract is a concentrated form of garlic used for flavor and potential health benefits. It is generally safe, though it may cause digestive discomfort in sensitive individuals.\",\"details\":\"Garlic extract provides the characteristic garlic flavor without the bulk of whole garlic and may retain some bioactive compounds with antioxidant and antimicrobial properties. From a food safety perspective, it is not associated with common problematic additives, artificial colors, or sweeteners. However, some people experience heartburn, gas, or other gastrointestinal discomfort with garlic, and a small number may have garlic sensitivity or allergy.\",\"category\":\"Natural flavoring / Spice extract\"}",
+    "lastUpdated": 1764379125393,
+    "createdAt": 1764379125393
+  },
+  "tomato powder__food__en": {
+    "analysis": "{\"name\":\"Tomato Powder\",\"riskLevel\":\"low\",\"summary\":\"Tomato powder is a dehydrated and ground form of tomatoes used for flavor and color. It is usually safe and considered a natural ingredient, though it may be an issue for people with tomato allergy or reflux.\",\"details\":\"Tomato powder concentrates the natural acids, flavors, and pigments of tomatoes without introducing synthetic additives by itself. It can contribute natural color and umami taste and may retain some vitamins and antioxidants such as lycopene, depending on processing. Individuals with tomato allergy or severe acid reflux may need to limit or avoid it, but for most consumers it does not pose notable additive, allergen (beyond tomato itself), or artificial ingredient concerns.\",\"category\":\"Dehydrated vegetable / Natural flavor and color\"}",
+    "lastUpdated": 1764379125393,
+    "createdAt": 1764379125393
+  },
+  "dried onion__food__en": {
+    "analysis": "{\"name\":\"Dried Onion\",\"riskLevel\":\"low\",\"summary\":\"Dried onion is a dehydrated form of onion used as a natural flavoring. It is generally safe, with concerns mainly for those with onion sensitivity or digestive issues.\",\"details\":\"As a simple dehydrated vegetable ingredient, dried onion does not typically involve artificial colors, preservatives, or sweeteners by default. It provides natural savory flavor and some phytonutrients, though many heat-sensitive compounds are reduced during processing. A subset of people with irritable bowel syndrome (IBS) or FODMAP sensitivity may experience gas, bloating, or discomfort from onions, but there are no major additive or trans fat concerns associated with this ingredient itself.\",\"category\":\"Dehydrated vegetable / Natural flavoring\"}",
+    "lastUpdated": 1764379125393,
+    "createdAt": 1764379125393
+  },
+  "tomato paste__food__en": {
+    "analysis": "{\"name\":\"Tomato Paste\",\"riskLevel\":\"low\",\"summary\":\"Tomato paste is a concentrated form of tomatoes and is generally safe for most people. It mainly contains natural sugars, fiber, vitamins, and antioxidants like lycopene.\",\"details\":\"Tomato paste is made by cooking down tomatoes to remove much of the water, concentrating the flavor and nutrients. It is naturally rich in vitamin C, potassium, and lycopene, an antioxidant linked with heart and eye health. Potential concerns are mainly for individuals with tomato allergies or acid reflux, as its acidity can sometimes worsen heartburn.\",\"category\":\"Whole food ingredient\"}",
+    "lastUpdated": 1764379125713,
+    "createdAt": 1764379125713
+  },
+  "fermented milk__food__en": {
+    "analysis": "{\"name\":\"Fermented Milk\",\"riskLevel\":\"moderate\",\"summary\":\"Fermented milk is a dairy product that has been cultured with beneficial bacteria and is usually safe but can be problematic for those with dairy allergies or lactose intolerance. It may support gut health due to probiotic content.\",\"details\":\"Fermented milk (such as yogurt-like bases or cultured milk drinks) is produced by adding specific bacteria to milk, which partially break down lactose and form lactic acid. This process can improve digestibility for some people and contribute beneficial bacteria that may support gut microbiota. However, it still contains milk proteins (like casein and whey) and residual lactose, making it unsuitable for people with milk allergy and potentially troublesome for those with lactose intolerance or dairy sensitivity.\",\"category\":\"Dairy / allergen\"}",
+    "lastUpdated": 1764379125713,
+    "createdAt": 1764379125713
+  },
+  "citric acid__food__en": {
+    "analysis": "{\"name\":\"Citric Acid\",\"riskLevel\":\"low\",\"summary\":\"Citric acid is a common food acidulant and preservative used to add tartness and improve shelf life. It is generally recognized as safe for most people at typical food levels.\",\"details\":\"Citric acid is usually produced by fermenting sugar with specific molds and is widely used in beverages, candies, sauces, and processed foods to enhance flavor and control pH. For most people it poses little risk, though in high concentrations it can irritate the mouth or stomach, and a small number of individuals report sensitivity or irritation from frequent exposure. It does not contribute to artificial sweetener, trans fat, or MSG-related concerns, but it does signal that the product is somewhat processed.\",\"category\":\"Acidulant / preservative\"}",
+    "lastUpdated": 1764379125713,
+    "createdAt": 1764379125713
+  },
+  "mono- and diglycerides__food__en": {
+    "analysis": "{\"name\":\"Mono- And Diglycerides\",\"riskLevel\":\"moderate\",\"summary\":\"Mono- and diglycerides are emulsifiers used to improve texture and shelf life in processed foods. They are generally allowed in food but can be a hidden source of industrial trans fats depending on how they are made.\",\"details\":\"Mono- and diglycerides are partial breakdown products of fats that help oil and water mix, commonly used in baked goods, ice creams, and many processed foods. While considered safe by regulators, they are often derived from vegetable oils that may be partially hydrogenated, which can introduce small amounts of industrial trans fats not always reflected on nutrition labels. For people aiming to minimize processed additives or trans fat intake, frequent consumption of products containing these emulsifiers may be a concern, though occasional intake is unlikely to pose major health risks.\",\"category\":\"Emulsifier / processed fat derivative\"}",
+    "lastUpdated": 1764379125713,
+    "createdAt": 1764379125713
+  },
+  "cocoa powder (processed with alkali)__food__en": {
+    "analysis": "{\"name\":\"Cocoa Powder (processed With Alkali)\",\"riskLevel\":\"low\",\"summary\":\"Cocoa powder processed with alkali (Dutch-processed cocoa) is generally safe and is used for flavor and color. The alkalization process reduces acidity and some antioxidant content but does not usually create major health risks.\",\"details\":\"When cocoa powder is processed with alkali (Dutch processing), its acidity is neutralized, resulting in a milder taste and darker color that is popular in many chocolate-flavored foods. This treatment can lower levels of some beneficial flavonoid antioxidants compared with natural cocoa, but the ingredient itself does not typically introduce harmful additives. Concerns mainly relate to overall sugar and fat content of the final product, as well as possible trace contaminants like heavy metals in cocoa in general, rather than the cocoa powder itself at normal consumption levels.\",\"category\":\"Flavoring / cocoa ingredient\"}",
+    "lastUpdated": 1764379125713,
+    "createdAt": 1764379125713
+  },
+  "enzymes__food__en": {
+    "analysis": "{\"name\":\"Enzymes\",\"riskLevel\":\"low\",\"summary\":\"Enzymes are proteins used to modify food properties, aid processing, or improve texture and flavor. They are generally considered safe but can pose issues for people with specific allergies to the enzyme source.\",\"details\":\"Food enzymes (such as amylases, proteases, lipases, etc.) are commonly derived from microbial, plant, or animal sources and are used in baking, dairy, and other processed foods. While the enzymes themselves are typically nontoxic and are often inactivated by heat, sensitive individuals could react if they are allergic to the original source (e.g., certain molds or animal products). Because labels usually list them generically as “enzymes,” it can be difficult for consumers with rare enzyme or source allergies to identify the exact type used.\",\"category\":\"processing aid\"}",
+    "lastUpdated": 1764379125732,
+    "createdAt": 1764379125732
+  },
+  "onion flake__food__en": {
+    "analysis": "{\"name\":\"Onion Flake\",\"riskLevel\":\"low\",\"summary\":\"Onion flake is simply dehydrated onion used for flavoring and is generally safe for most people. It can cause digestive discomfort for those sensitive to onions or with certain gastrointestinal conditions.\",\"details\":\"Dehydrated onion retains the sulfur compounds and FODMAPs (fermentable carbohydrates) present in fresh onion, which can trigger gas, bloating, or pain in individuals with IBS or onion intolerance. Apart from these sensitivities, onion flake is a natural ingredient with antioxidant compounds and is not associated with typical additive-related concerns such as artificial colors, flavors, or preservatives.\",\"category\":\"herb / spice / vegetable\"}",
+    "lastUpdated": 1764379125732,
+    "createdAt": 1764379125732
+  },
+  "natural flavor__food__en": {
+    "analysis": "{\"name\":\"Natural Flavor\",\"riskLevel\":\"moderate\",\"summary\":\"Natural flavor is a broad term for flavoring substances derived from natural sources but often highly processed. It is generally recognized as safe, yet its vague labeling can conceal potential allergens or animal-derived components.\",\"details\":\"Under regulations, “natural flavor” can come from plant or animal sources and may include concentrates, extracts, and distillates, often processed with solvents or carriers. Manufacturers are not required to specify the exact source on the ingredient list, which can be problematic for people with allergies (e.g., to certain fruits, spices, or animal products) or strict dietary preferences (e.g., vegan, religious restrictions). While safety assessments for typical consumption are reassuring, the lack of transparency and potential for hidden allergens or additives justifies a moderate risk classification for sensitive individuals.\",\"category\":\"flavoring\"}",
+    "lastUpdated": 1764379125732,
+    "createdAt": 1764379125732
+  },
+  "onion extract__food__en": {
+    "analysis": "{\"name\":\"Onion Extract\",\"riskLevel\":\"low\",\"summary\":\"Onion extract is a concentrated flavoring derived from onions and is generally safe for most people. It may cause issues for those with onion allergies or sensitivity to onion’s sulfur compounds.\",\"details\":\"This ingredient is typically produced by extracting flavor compounds from onions using water or other approved solvents, then concentrating them. It delivers strong onion flavor without bulk but can still contain allergenic and FODMAP components similar to whole onion, potentially provoking symptoms in sensitive individuals or those with IBS. For the general population, it does not pose concerns associated with artificial additives, colorants, or preservatives.\",\"category\":\"flavoring / vegetable extract\"}",
+    "lastUpdated": 1764379125732,
+    "createdAt": 1764379125732
+  },
+  "dried (processing descriptor not a specific ingredient)__food__en": {
+    "analysis": "{\"name\":\"Dried (processing Descriptor, Not a Specific Ingredient)\",\"riskLevel\":\"low\",\"summary\":\"“Dried” describes the physical state of an ingredient and is not a standalone ingredient. It generally does not pose a health risk by itself.\",\"details\":\"In ingredient lists, the word “dried” usually precedes a food (e.g., dried garlic, dried onion) to indicate that moisture has been removed for preservation and concentration of flavor. Without the accompanying food name, this term is incomplete, but the drying process itself is a standard, low‑risk food preservation method unless additional additives are used, which are not specified here.\",\"category\":\"Processing descriptor\"}",
+    "lastUpdated": 1764379126590,
+    "createdAt": 1764379126590
+  },
+  "maltose__food__en": {
+    "analysis": "{\"name\":\"Maltose\",\"riskLevel\":\"moderate\",\"summary\":\"Maltose is a simple sugar used as a sweetener and carbohydrate source. For most people it is safe in normal food amounts but contributes to total sugar intake.\",\"details\":\"Maltose is a disaccharide composed of two glucose molecules and is used in processed foods for mild sweetness and texture. While it does not contain fructose, it can raise blood glucose levels and should be limited by individuals with diabetes, insulin resistance, or those monitoring overall sugar consumption. Excess intake of maltose and other added sugars may contribute to weight gain, dental cavities, and metabolic issues over time.\",\"category\":\"Sugar / sweetener\"}",
+    "lastUpdated": 1764379126590,
+    "createdAt": 1764379126590
+  },
+  "whey powder__food__en": {
+    "analysis": "{\"name\":\"Whey Powder\",\"riskLevel\":\"moderate\",\"summary\":\"Whey powder is a dairy-derived protein and lactose source commonly used in processed foods. It is safe for most people but is a concern for those with milk allergy or lactose intolerance.\",\"details\":\"Whey powder is made from the liquid portion of milk left after cheese production and contains proteins (such as whey protein concentrate) along with varying amounts of lactose. It is a complete protein and generally considered safe, but it is a major allergen for individuals with cow’s milk allergy and can cause symptoms like hives, digestive upset, or anaphylaxis. People with lactose intolerance may also experience gas, bloating, or diarrhea, especially if large amounts are consumed or if other lactose sources are present.\",\"category\":\"Dairy / allergen\"}",
+    "lastUpdated": 1764379126590,
+    "createdAt": 1764379126590
+  },
+  "garlic flake__food__en": {
+    "analysis": "{\"name\":\"Garlic Flake\",\"riskLevel\":\"low\",\"summary\":\"Garlic flake is simply dehydrated garlic used as a flavoring. It is generally safe and can have beneficial properties, though it may cause digestive discomfort in some sensitive individuals.\",\"details\":\"Garlic flakes are made from sliced, dried garlic and provide the characteristic garlic aroma and flavor without additives. Garlic has been associated with potential cardiovascular and antimicrobial benefits, though these depend on dose and preparation. A minority of people may experience gastrointestinal irritation, heartburn, or odor issues, and those with a true garlic allergy (rare) should avoid it.\",\"category\":\"Herb / spice\"}",
+    "lastUpdated": 1764379126590,
+    "createdAt": 1764379126590
+  },
+  "paprika color__food__en": {
+    "analysis": "{\"name\":\"Paprika Color\",\"riskLevel\":\"low\",\"summary\":\"Paprika color is a natural coloring derived from paprika peppers, used to give foods a red to orange hue. It is generally considered safe, especially compared to artificial colorants.\",\"details\":\"Paprika color is typically extracted from Capsicum annuum (paprika) and standardized for carotenoid pigments like capsanthin and capsorubin. As a natural colorant, it is usually preferable to synthetic dyes (such as Red 40), although highly refined extracts may contain minimal actual spice. Rarely, individuals sensitive to peppers or with certain allergies might react, but adverse effects are uncommon at typical food-use levels.\",\"category\":\"Natural color / spice extract\"}",
+    "lastUpdated": 1764379126590,
+    "createdAt": 1764379126590
+  },
+  "glucose__food__en": {
+    "analysis": "{\"name\":\"Glucose\",\"riskLevel\":\"moderate\",\"summary\":\"Glucose is a simple sugar used as a sweetener and energy source. In large amounts it can contribute to excess calorie intake and blood sugar spikes.\",\"details\":\"Glucose is a monosaccharide that is rapidly absorbed and can cause sharp increases in blood sugar, which is particularly relevant for people with insulin resistance or diabetes. Frequent intake of products high in added glucose may promote weight gain, dental caries, and increased cardiometabolic risk when part of an overall high-sugar diet. In normal quantities within a balanced diet, it is generally recognized as safe.\",\"category\":\"Added sugar / sweetener\"}",
+    "lastUpdated": 1764379131416,
+    "createdAt": 1764379131416
+  },
+  "sucrose fatty acid esters__food__en": {
+    "analysis": "{\"name\":\"Sucrose Fatty Acid Esters\",\"riskLevel\":\"low\",\"summary\":\"Sucrose fatty acid esters are emulsifiers made from sucrose and fatty acids. They are widely used to improve texture and mixing of ingredients in processed foods.\",\"details\":\"These compounds help oil and water mix, stabilizing products like baked goods, desserts, and certain beverages. Safety evaluations by regulatory authorities have generally found them to be of low toxicity at typical dietary intakes, though very high experimental doses may cause mild gastrointestinal effects. For most consumers, occasional consumption in processed foods is considered low risk.\",\"category\":\"Emulsifier / food additive\"}",
+    "lastUpdated": 1764379131417,
+    "createdAt": 1764379131417
+  },
+  "dextrose anhydrous (glucose)__food__en": {
+    "analysis": "{\"name\":\"Dextrose Anhydrous (glucose)\",\"riskLevel\":\"moderate\",\"summary\":\"Dextrose anhydrous is a form of glucose used as a fast-acting sweetener and energy source. Like other simple sugars, excess consumption can negatively affect metabolic health.\",\"details\":\"Dextrose is the D-isomer of glucose and is quickly absorbed, leading to rapid increases in blood glucose and insulin. Regular intake of large amounts of dextrose from processed foods and drinks may contribute to weight gain, insulin resistance, type 2 diabetes risk, and dental cavities. It is generally safe in moderate amounts but should be limited by individuals managing blood sugar or following a low-sugar diet.\",\"category\":\"Added sugar / sweetener\"}",
+    "lastUpdated": 1764379131417,
+    "createdAt": 1764379131417
+  },
+  "banana__food__en": {
+    "analysis": "{\"name\":\"Banana\",\"riskLevel\":\"low\",\"summary\":\"Banana is a whole fruit ingredient that provides natural sugars, fiber, and micronutrients. It is generally considered a healthy, minimally processed food component.\",\"details\":\"Bananas supply potassium, vitamin B6, and some dietary fiber, along with natural fructose and glucose. For most people, bananas are a beneficial part of a balanced diet, though those on very strict carbohydrate-controlled plans or with specific medical conditions (e.g., certain kidney issues requiring potassium restriction) may need to monitor intake. When used instead of refined sugars, banana can improve the nutritional quality of a product.\",\"category\":\"Whole fruit / natural ingredient\"}",
+    "lastUpdated": 1764379131417,
+    "createdAt": 1764379131417
+  },
+  "processed honey__food__en": {
+    "analysis": "{\"name\":\"Processed Honey\",\"riskLevel\":\"moderate\",\"summary\":\"Processed honey is a refined form of honey that is primarily a natural sugar source with some minor bioactive compounds. Processing can reduce some beneficial components while maintaining a high sugar content.\",\"details\":\"Honey is mostly fructose and glucose, and even when processed, it retains a similar caloric and glycemic impact to other sugars, though sometimes slightly lower glycemic than pure glucose. Heat treatment and filtration can reduce enzymes and antioxidants compared to raw honey, making it functionally closer to a regular sweetener. Overconsumption, especially in processed foods, may contribute to weight gain, elevated blood sugars, and dental caries, so it should be used in moderation even though it is often perceived as more natural.\",\"category\":\"Natural sweetener / added sugar\"}",
+    "lastUpdated": 1764379131417,
+    "createdAt": 1764379131417
   }
 }
