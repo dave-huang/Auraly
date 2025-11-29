@@ -540,7 +540,7 @@ ${languageInstruction}
 Product Type Context: ${context}
 
 Ingredient List (parenthetical groups have been pre-expanded):
-${textToAnalyze}
+${ingredientsText}
 
 CRITICAL EXTRACTION RULES:
 1. Extract EVERY SINGLE ingredient from the list above
@@ -684,7 +684,7 @@ Return your analysis as JSON with this structure:
       // The AI needs to expand grouped ingredients (e.g., "Enriched Flour (Wheat, Niacin)" → 2 ingredients)
       // Estimation counts commas, which doesn't account for expansion, causing false failures
       // TODO: Re-enable with smarter estimation that accounts for parenthetical groups
-      console.log(`[ANALYZER] Completeness check DISABLED. Detected: ${detectedCount}, Estimated: ${estimatedIngredientCount}, Found marker: ${foundIngredientsMarker}`);
+      console.log(`[ANALYZER] Completeness check DISABLED. Detected: ${detectedCount}, Estimated: ${estimatedIngredientCount}`);
       
       // Cache the result before returning (pass original OCR text for fuzzy matching)
       cacheAnalysis(cacheKey, validatedResult.data, ingredientsText);
