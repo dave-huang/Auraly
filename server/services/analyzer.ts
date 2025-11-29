@@ -893,13 +893,26 @@ export async function analyzeIngredientsParallel(
   }
   console.log(`[PARALLEL-ANALYZER] Using ${uniqueIngredients.length} unique ingredients for analysis`);
   
-  // Create micro-batches of 3 ingredients (smaller batches for GPT-5.1 stability)
-  const BATCH_SIZE = 3;
+  // Reduce batch size for Chinese (more prone to empty GPT responses)
+  // Use smaller batches to improve success rate and avoid losing ingredients
+  const BATCH_SIZE = userLanguage === 'zh' ? 2 : 3;
   const batches: string[][] = [];
   for (let i = 0; i < uniqueIngredients.length; i += BATCH_SIZE) {
     batches.push(uniqueIngredients.slice(i, i + BATCH_SIZE));
   }
-  console.log(`[PARALLEL-ANALYZER] Created ${batches.length} batches of max ${BATCH_SIZE} ingredients each`);
+  console.log(`[PARALLEL-ANALYZER] Created ${batches.length} batches of max ${BATCH_SIZE} ingredients each (batch size reduced for ${userLanguage})`);
+  
+  // Create fallback ingredient analysis function for failed batches
+  // This ensures NO ingredients are lost, even if analysis fails
+  function createFallbackIngredient(name: string): Ingredient {
+    return {
+      name,
+      riskLevel: 'moderate',
+      summary: 'Analysis temporarily unavailable',
+      details: 'The ingredient analysis service is experiencing high load. This ingredient requires manual review.',
+      category: productType
+    };
+  }
   
   // Process all batches in parallel
   const context = PRODUCT_TYPE_CONTEXTS[productType];
@@ -1067,8 +1080,11 @@ Return as JSON array (VALID JSON ONLY):
     }
     
     console.error(`[PARALLEL-BATCH-${batchIdx}] Failed after ${MAX_RETRIES} retries:`, lastError);
-    // Return at least cached results on error
-    return cachedResults.map(r => r.data);
+    // CRITICAL: Return cached + fallback for missing to ensure NO ingredients are lost
+    const fallbackResults = missingIngredients.map(ing => createFallbackIngredient(ing));
+    const allResults = [...cachedResults.map(r => r.data), ...fallbackResults];
+    console.log(`[PARALLEL-BATCH-${batchIdx}] Returning ${cachedResults.length} cached + ${fallbackResults.length} fallback (total: ${allResults.length})`);
+    return allResults;
   });
   
   // Wait for all batches to complete in parallel
