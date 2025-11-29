@@ -904,12 +904,29 @@ export async function analyzeIngredientsParallel(
   
   // Create fallback ingredient analysis function for failed batches
   // This ensures NO ingredients are lost, even if analysis fails
+  // Provide language-appropriate fallback messages
+  const fallbackMessages = {
+    'en': {
+      summary: 'Analysis temporarily unavailable',
+      details: 'The ingredient analysis service is experiencing high load. This ingredient requires manual review.'
+    },
+    'es': {
+      summary: 'Análisis temporalmente no disponible',
+      details: 'El servicio de análisis de ingredientes está experimentando una carga alta. Este ingrediente requiere revisión manual.'
+    },
+    'zh': {
+      summary: '分析暂时不可用',
+      details: '成分分析服务目前负载较高。此成分需要人工审查。'
+    }
+  };
+  
   function createFallbackIngredient(name: string): Ingredient {
+    const msgs = fallbackMessages[userLanguage as keyof typeof fallbackMessages] || fallbackMessages['en'];
     return {
       name,
       riskLevel: 'moderate',
-      summary: 'Analysis temporarily unavailable',
-      details: 'The ingredient analysis service is experiencing high load. This ingredient requires manual review.',
+      summary: msgs.summary,
+      details: msgs.details,
       category: productType
     };
   }
