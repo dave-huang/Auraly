@@ -244,8 +244,9 @@ export function extractIngredientsFromText(ingredientsText: string): { ingredien
   // CRITICAL FIX: Remove bracket specifiers that shouldn't create separate ingredients
   // Keep only the base ingredient name before brackets (e.g., "SOY SAUCE [SOYBEAN, WHEAT]" → "SOY SAUCE")
   // Also handle unclosed brackets: "SOY SAUCE [SOYBEAN, WHEAT" → "SOY SAUCE"
-  cleanedText = cleanedText.replace(/\s*\[.*?(?:\]|$)/g, '');  // Remove [...] or [...EOF
-  cleanedText = cleanedText.replace(/\s*\].*?$/gm, '');         // Remove any trailing ] 
+  // Only remove [...] patterns on single lines, don't remove entire sections
+  cleanedText = cleanedText.replace(/\s*\[.*?\]/g, '');  // Remove complete [...] on same line
+  cleanedText = cleanedText.replace(/\s*\[.*?$/gm, '');  // Remove unclosed [...text to line end 
   
   // Parse individual ingredients - CONSISTENT logic for all languages
   const rawIngredients = cleanedText
