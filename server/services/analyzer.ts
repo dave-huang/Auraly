@@ -475,7 +475,10 @@ function expandParentheticalIngredients(text: string): string {
     console.log(`[EXPANDER] Output text length: ${result.length} chars`);
     console.log(`[EXPANDER] First 300 chars: ${result.substring(0, 300).replace(/\n/g, ' ')}...`);
     
-    return result;
+    // CRITICAL: Strip all newlines from expanded text to prevent wrapped ingredient splitting
+    // Example: "DRIED\nGARLIC" would be split into separate lines and extracted as two ingredients
+    // Converting to "DRIED GARLIC" keeps them together as one ingredient
+    return result.replace(/\n/g, ' ');
   } catch (error) {
     console.error('[EXPANDER] Error during expansion:', error);
     console.error('[EXPANDER] Returning original text due to error');
