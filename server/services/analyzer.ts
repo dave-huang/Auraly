@@ -894,8 +894,8 @@ export async function analyzeIngredientsParallel(
   console.log(`[PARALLEL-ANALYZER] Using ${uniqueIngredients.length} unique ingredients for analysis`);
   
   // Reduce batch size for Chinese (more prone to empty GPT responses)
-  // Use smaller batches to improve success rate and avoid losing ingredients
-  const BATCH_SIZE = userLanguage === 'zh' ? 2 : 3;
+  // Use smallest batch size (1 ingredient) for Chinese to ensure success
+  const BATCH_SIZE = userLanguage === 'zh' ? 1 : 3;
   const batches: string[][] = [];
   for (let i = 0; i < uniqueIngredients.length; i += BATCH_SIZE) {
     batches.push(uniqueIngredients.slice(i, i + BATCH_SIZE));
@@ -980,23 +980,25 @@ export async function analyzeIngredientsParallel(
 
 ${missingList}
 
-CRITICAL INSTRUCTIONS:
-- Ingredient names, summaries, details, and categories MUST be in ${targetLanguage}
-- Risk level MUST ALWAYS be in English: use ONLY "low", "moderate", or "high" (no translation)
-- Return ONLY valid JSON array, no other text
+CRITICAL INSTRUCTIONS FOR ${targetLanguage.toUpperCase()}:
+- ALL text (name, summary, details, category) MUST be in ${targetLanguage}
+- Risk level MUST ALWAYS be exactly one of: "low" or "moderate" or "high" (ENGLISH ONLY, case sensitive, no translation)
+- Return ONLY valid JSON array starting with [ and ending with ], no markdown, no code blocks, no extra text
 
-For each ingredient provide:
-1. Name (in ${targetLanguage})
-2. Risk level: "low" OR "moderate" OR "high" (ENGLISH ONLY - never translate this field)
-3. Summary (in ${targetLanguage}, 1-2 sentences)
-4. Details (in ${targetLanguage}, 2-3 sentences)
-5. Category (optional, in ${targetLanguage})
+For each ingredient provide these exact JSON fields:
+{
+  "name": "Ingredient Name in ${targetLanguage}",
+  "riskLevel": "low",
+  "summary": "1-2 sentences in ${targetLanguage}",
+  "details": "2-3 sentences in ${targetLanguage}",
+  "category": "Optional category in ${targetLanguage}"
+}
 
 ${languageInstruction}
 
 Product context: ${context}
 
-Return as JSON array (VALID JSON ONLY):
+IMPORTANT: Return ONLY this JSON array, nothing else:
 [
   {
     "name": "Ingredient Name in ${targetLanguage}",
@@ -1013,13 +1015,17 @@ Return as JSON array (VALID JSON ONLY):
     
     for (let retryAttempt = 0; retryAttempt < MAX_RETRIES; retryAttempt++) {
       try {
+        // Allocate more tokens for Chinese (needs more space for detailed analysis)
+        const tokensPerIngredient = userLanguage === 'zh' ? 350 : 200;
+        const maxTokens = Math.min(3000, missingIngredients.length * tokensPerIngredient);
+        
         const response = await openai.chat.completions.create({
           model: "gpt-5.1",
           messages: [
             { role: "system", content: systemMessage },
             { role: "user", content: batchPrompt }
           ],
-          max_completion_tokens: Math.min(2000, missingIngredients.length * 200),
+          max_completion_tokens: maxTokens,
           reasoning_effort: "none"
         } as any);
         
