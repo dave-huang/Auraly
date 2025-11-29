@@ -4,7 +4,7 @@ import multer from "multer";
 import z from "zod";
 import crypto from "crypto";
 import { extractTextFromImage } from "./services/ocr";
-import { analyzeIngredients, analyzeIngredientsParallel } from "./services/analyzer";
+import { analyzeIngredients, analyzeIngredientsParallel, extractIngredientsFromText } from "./services/analyzer";
 import { batchAnalyzeIngredientsWithCache, getCacheStats } from "./services/cache";
 import { 
   ocrRequestSchema, 
@@ -32,6 +32,14 @@ interface OCRCacheEntry {
   timestamp: number;
 }
 const ocrCache = new Map<string, OCRCacheEntry>();
+
+// Global extracted ingredients cache - keyed by OCR text hash (language-independent)
+// This ensures ingredients are extracted ONCE and reused for all languages
+interface ExtractedIngredientsEntry {
+  ingredients: string[];
+  timestamp: number;
+}
+const extractedIngredientsCache = new Map<string, ExtractedIngredientsEntry>();
 
 // Helper to compute hash of image data
 function hashImageData(imageData: string): string {
@@ -299,10 +307,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         }
         
-        // Step 2: Run Parallel Micro-Batched Analysis
+        // Step 2a: Extract ingredients ONCE (language-independent) and cache them
+        const extractionStartTime = Date.now();
+        let extractedIngredients: string[] = [];
+        const ocrTextHash = crypto.createHash('sha256').update(ocrText!).digest('hex');
+        const cachedExtraction = extractedIngredientsCache.get(ocrTextHash);
+        
+        if (cachedExtraction) {
+          console.log(`[EXTRACTION] Cache HIT - reusing ${cachedExtraction.ingredients.length} pre-extracted ingredients`);
+          extractedIngredients = cachedExtraction.ingredients;
+        } else {
+          console.log(`[EXTRACTION] Cache MISS - extracting ingredients from OCR text`);
+          const extractionResult = extractIngredientsFromText(ocrText!);
+          extractedIngredients = extractionResult.ingredients;
+          
+          // Cache extracted ingredients for future language requests
+          extractedIngredientsCache.set(ocrTextHash, {
+            ingredients: extractedIngredients,
+            timestamp: Date.now()
+          });
+          console.log(`[EXTRACTION] Cached ${extractedIngredients.length} extracted ingredients for reuse`);
+        }
+        
+        const extractionDuration = ((Date.now() - extractionStartTime) / 1000).toFixed(2);
+        console.log(`[TIMING] [EXTRACTION-${requestId}] Extraction completed in ${extractionDuration}s`);
+        
+        // Step 2b: Run Parallel Micro-Batched Analysis (using pre-extracted ingredients)
         const analysisStartTime = Date.now();
         try {
-          const analysisResult = await analyzeIngredientsParallel(productType as ProductType, ocrText!, userLanguage);
+          const analysisResult = await analyzeIngredientsParallel(productType as ProductType, ocrText!, userLanguage, extractedIngredients);
           analysisStage = 'success';
           const analysisDuration = ((Date.now() - analysisStartTime) / 1000).toFixed(2);
           const totalDuration = ((Date.now() - startTime) / 1000).toFixed(2);
