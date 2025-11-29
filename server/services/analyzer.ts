@@ -520,97 +520,14 @@ export async function analyzeIngredients(
   }
   console.log(`[CACHE] Miss: will perform fresh analysis`);
   
-  // Pre-process the text to expand parenthetical ingredients
-  // This is more reliable than asking the AI to do it
-  const expandedText = expandParentheticalIngredients(ingredientsText);
-  console.log(`[ANALYZER] After expanding parentheticals: ${expandedText.length} characters`);
-  
-  // Try to isolate the ingredients section from the full OCR text
-  // Look for common markers like "INGREDIENTS:", "成分:", etc.
-  // Use the expanded text for analysis
-  let textToAnalyze = expandedText;
-  let foundIngredientsMarker = false;
-  const ingredientsMarkers = [
-    /INGREDIENTS?\s*[:：]/i,
-    /成分\s*[:：]/,
-    /原料\s*[:：]/,
-    /配料\s*[:：]/,
-    /INGREDIENTES?\s*[:：]/i,
-    /INGRÉDIENTS?\s*[:：]/i
-  ];
-  
-  for (const marker of ingredientsMarkers) {
-    const match = expandedText.match(marker);
-    if (match && match.index !== undefined) {
-      foundIngredientsMarker = true;
-      // Extract text after the marker
-      textToAnalyze = expandedText.substring(match.index + match[0].length);
-      console.log(`[ANALYZER] Found ingredients marker "${match[0]}", text after marker: ${textToAnalyze.length} chars`);
-      
-      // Stop at next section markers (CONTAINS, DIRECTIONS, etc.)
-      const endMarkers = [
-        /CONTAINS?\s*[:：]/i,
-        /ALLERGENS?\s*[:：]/i,
-        /DIRECTIONS?\s*[:：]/i,
-        /INSTRUCTIONS?\s*[:：]/i,
-        /NUTRITION\s+FACTS?\s*[:：]/i,
-        /MANUFACTURED BY/i,
-        /PRODUCT OF/i,
-        /含\s*[:：]/,
-        /过敏原\s*[:：]/,
-        /使用方法\s*[:：]/,
-        /CONTIENE\s*[:：]/i,
-        /MODO DE USO\s*[:：]/i
-      ];
-      
-      let foundEndMarker = false;
-      for (const endMarker of endMarkers) {
-        const endMatch = textToAnalyze.match(endMarker);
-        if (endMatch && endMatch.index !== undefined && endMatch.index > 20) { // Must be at least 20 chars in
-          textToAnalyze = textToAnalyze.substring(0, endMatch.index);
-          console.log(`[ANALYZER] Found end marker "${endMatch[0]}" at position ${endMatch.index}, trimmed to ${textToAnalyze.length} characters`);
-          foundEndMarker = true;
-          break;
-        }
-      }
-      
-      if (!foundEndMarker) {
-        console.log(`[ANALYZER] No end marker found, using full text after ingredients marker`);
-      }
-      
-      break;
-    }
+  // USE UNIFIED, LANGUAGE-AGNOSTIC EXTRACTION
+  const extractedIngredients = extractIngredientsFromText(ingredientsText);
+  if (extractedIngredients.length === 0) {
+    throw new Error('No valid ingredients found to analyze. Please ensure the ingredient list is clearly visible.');
   }
   
-  // Estimate expected ingredient count based on common separators and patterns
-  // Only analyze the ingredients section (or full text if no marker found)
-  const commaCount = (textToAnalyze.match(/[,，]/g) || []).length + 1;
-  const chineseSeparatorCount = (textToAnalyze.match(/[、]/g) || []).length + 1;
-  const semicolonCount = (textToAnalyze.match(/[;；]/g) || []).length + 1;
-  const newlineCount = (textToAnalyze.match(/\n/g) || []).length + 1;
-  
-  // Only count actual bullet markers (not hyphens which appear in ingredient names like "beta-carotene")
-  // Look for bullets at line starts only
-  const bulletCount = (textToAnalyze.match(/^[•·∙\*]\s/gm) || []).length;
-  
-  // Use comma count as primary estimate (most common separator)
-  // If Chinese separators are more common, use those instead
-  // Cap at a reasonable maximum to prevent estimation errors
-  const validCounts = [
-    commaCount > 1 ? commaCount : 0,
-    chineseSeparatorCount > 1 ? chineseSeparatorCount : 0,
-    semicolonCount > 1 ? semicolonCount : 0,
-    newlineCount > 3 ? newlineCount : 0,
-    bulletCount > 1 ? bulletCount : 0
-  ].filter(c => c > 0);
-  
-  // Use the maximum of valid counts, but cap at 100 to prevent unreasonable estimates
-  const estimatedIngredientCount = validCounts.length > 0 
-    ? Math.min(Math.max(...validCounts), 100)
-    : 1;
-  
-  console.log(`[ANALYZER] Separator analysis - Commas: ${commaCount}, Chinese: ${chineseSeparatorCount}, Semicolons: ${semicolonCount}, Newlines: ${newlineCount}, Bullets: ${bulletCount}`);
-  console.log(`[ANALYZER] Estimated ingredient count: ${estimatedIngredientCount}`);
+  const estimatedIngredientCount = extractedIngredients.length;
+  console.log(`[ANALYZER] Extracted ${estimatedIngredientCount} unique ingredients for prompt`);
   
   const context = PRODUCT_TYPE_CONTEXTS[productType];
   const languageInstruction = LANGUAGE_INSTRUCTIONS[userLanguage as keyof typeof LANGUAGE_INSTRUCTIONS] || LANGUAGE_INSTRUCTIONS['en'];
