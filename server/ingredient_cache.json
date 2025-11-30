@@ -2060,8 +2060,8 @@
     "createdAt": 1764467541955
   },
   "water__food__en": {
-    "analysis": "{\"name\":\"Water\",\"riskLevel\":\"low\",\"summary\":\"Water is a basic, essential component of most foods and beverages. It is necessary for hydration and normal body function.\",\"details\":\"In food products, water acts as a solvent, affects texture, and helps dissolve other ingredients. The main safety consideration is source and purity, but in regulated food production it is typically treated and monitored. For the average consumer, water as an ingredient in food poses minimal direct health risk.\",\"category\":\"Base ingredient / Solvent\"}",
-    "lastUpdated": 1764467541955,
+    "analysis": "{\"name\":\"Water\",\"riskLevel\":\"low\",\"summary\":\"Water is a basic, essential component commonly used in food products as a solvent and to provide moisture. It is generally safe for all consumers when potable and properly treated.\",\"details\":\"In food products, water serves as a carrier for other ingredients, affects texture, and can influence shelf life. The main safety considerations relate to its source and purification, as contaminated water can harbor microorganisms, but in regulated food production it is typically safe.\",\"category\":\"Base ingredient\"}",
+    "lastUpdated": 1764539236233,
     "createdAt": 1764467541955
   },
   "xanthan gum__food__en": {
@@ -4288,5 +4288,185 @@
     "analysis": "{\"name\":\"Glycyrrhiza Glabra (licorice) Root Extract\",\"riskLevel\":\"low\",\"summary\":\"Glycyrrhiza Glabra (Licorice) Root Extract is a botanical extract used for its soothing and brightening properties. It is generally low risk but, as a plant extract, can rarely cause sensitivity in some individuals.\",\"details\":\"Licorice root extract contains compounds such as glabridin and liquiritin that can help reduce the appearance of dark spots and calm redness due to its anti-inflammatory and antioxidant effects. It is valued in skincare for supporting an even skin tone and for its gentle nature compared to many other brightening agents. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, fragrance chemical, mineral oil, silicone, drying alcohol, or heavy metal, though people with known sensitivities to licorice or botanicals should patch test first.\",\"category\":\"Botanical extract / Soothing and brightening agent\"}",
     "lastUpdated": 1764538888153,
     "createdAt": 1764538888153
+  },
+  "xylitol__food__en": {
+    "analysis": "{\"name\":\"Xylitol\",\"riskLevel\":\"low\",\"summary\":\"Xylitol is a sugar alcohol used as a low-calorie sweetener in many food products. It is generally considered safe for human consumption and may benefit dental health.\",\"details\":\"Xylitol provides sweetness with fewer calories than sugar and has a minimal effect on blood glucose, making it popular in sugar-free gum, candies, and diabetic-friendly foods. In some people, especially at higher intakes, it can cause digestive discomfort such as gas, bloating, or diarrhea due to its laxative effect. It is extremely toxic to dogs, so products containing xylitol should be kept away from pets.\",\"category\":\"Sweetener / Sugar alcohol\"}",
+    "lastUpdated": 1764539231346,
+    "createdAt": 1764539231346
+  },
+  "ceramide np__food__en": {
+    "analysis": "{\"name\":\"Ceramide Np\",\"riskLevel\":\"low\",\"summary\":\"Ceramide NP is a lipid ingredient primarily used in cosmetics and skincare, not commonly used in food products. When present in a food-related context, it is usually associated with topical or cosmetic applications rather than ingestion.\",\"details\":\"Ceramide NP helps restore and support the skin barrier and is widely recognized as safe for topical use. There is limited data on its use as an ingested food ingredient, but typical consumer exposure is through skin-contact products rather than diet. If it appears on a label of a food-related product, it is most likely part of a cosmetic or personal-care item rather than an edible component.\",\"category\":\"Cosmetic lipid / Skin conditioning agent\"}",
+    "lastUpdated": 1764539231346,
+    "createdAt": 1764539231346
+  },
+  "cyclohexasiloxane__food__en": {
+    "analysis": "{\"name\":\"Cyclohexasiloxane\",\"riskLevel\":\"high\",\"summary\":\"Cyclohexasiloxane is a synthetic silicone compound used mainly in cosmetics and personal care products, not approved or intended as a food ingredient. Its presence in a food product would be considered inappropriate and potentially unsafe.\",\"details\":\"This ingredient is designed for topical use (such as in skin and hair products) to provide a smooth, silky texture and evaporates from the skin after application. It is not recognized as a food additive and has not been evaluated as safe for ingestion in the way food ingredients are. Finding cyclohexasiloxane in a food product label suggests mislabeling or contamination and should be treated as a serious concern.\",\"category\":\"Non-food cosmetic silicone\"}",
+    "lastUpdated": 1764539232103,
+    "createdAt": 1764539232103
+  },
+  "stearic acid__food__en": {
+    "analysis": "{\"name\":\"Stearic Acid\",\"riskLevel\":\"low\",\"summary\":\"Stearic acid is a common saturated fatty acid found naturally in animal fats and some vegetable oils and is used in foods as an emulsifier, stabilizer, or anti-caking agent. It is generally recognized as safe (GRAS) when used in normal food quantities.\",\"details\":\"In food products, stearic acid can help improve texture, prevent ingredients from clumping, and aid in the processing of chocolates, candies, and supplements. Although it is a saturated fat, stearic acid is considered metabolically neutral compared with some other saturated fats, and typical dietary levels are not associated with major health risks. People on very low-fat diets or with specific medical advice to limit saturated fats may still want to monitor overall intake.\",\"category\":\"Fatty acid / food additive\"}",
+    "lastUpdated": 1764539232103,
+    "createdAt": 1764539232103
+  },
+  "shea butter (butyrospermum parkii)__food__en": {
+    "analysis": "{\"name\":\"Shea Butter (butyrospermum Parkii)\",\"riskLevel\":\"low\",\"summary\":\"Shea butter is a natural fat extracted from the nuts of the shea tree and is sometimes used in food as an edible fat. It is generally recognized as safe for consumption when used in appropriate amounts.\",\"details\":\"Shea butter is rich in fatty acids and is more commonly used in cosmetics, but food-grade shea butter can be used similarly to other vegetable fats. People with tree nut allergies may rarely react, but such reactions to shea are considered uncommon. It does not contribute artificial additives, colors, or preservatives.\",\"category\":\"Natural fat / oil\"}",
+    "lastUpdated": 1764539232709,
+    "createdAt": 1764539232709
+  },
+  "anise fruit extract (illicium verum)__food__en": {
+    "analysis": "{\"name\":\"Anise Fruit Extract (illicium Verum)\",\"riskLevel\":\"low\",\"summary\":\"Anise fruit extract is a natural flavoring derived from the fruit of Illicium verum, commonly used to provide a licorice-like taste in foods. It is generally safe when used in normal food flavoring amounts.\",\"details\":\"This extract contains aromatic compounds (such as anethole) that give a sweet, spicy flavor to baked goods, candies, and beverages. Some sensitive individuals may experience mild digestive or allergic reactions, but this is uncommon at typical dietary levels. It does not function as an artificial color, preservative, or sweetener.\",\"category\":\"Natural flavoring\"}",
+    "lastUpdated": 1764539232709,
+    "createdAt": 1764539232709
+  },
+  "disodium edta__food__en": {
+    "analysis": "{\"name\":\"Disodium Edta\",\"riskLevel\":\"moderate\",\"summary\":\"Disodium EDTA is a synthetic chelating agent used in foods to bind metal ions and improve stability and shelf life. It is approved for use in limited amounts but is a purely artificial additive.\",\"details\":\"In foods, disodium EDTA helps prevent discoloration, rancidity, and loss of flavor by binding trace metals such as iron and copper. Regulatory agencies set strict maximum levels because high doses in animals have been linked to mineral depletion and other effects, though typical dietary exposure in humans is much lower. For people aiming to minimize artificial additives and preservatives, this ingredient is one to limit where possible.\",\"category\":\"Preservative / chelating agent\"}",
+    "lastUpdated": 1764539232709,
+    "createdAt": 1764539232709
+  },
+  "glyceryl stearate__food__en": {
+    "analysis": "{\"name\":\"Glyceryl Stearate\",\"riskLevel\":\"low\",\"summary\":\"Glyceryl stearate is an ester of glycerin and stearic acid that can be used as an emulsifier in foods and is generally recognized as safe. It is more commonly used in cosmetics than in foods.\",\"details\":\"In food applications, glyceryl stearate helps blend water and oils and can improve texture, especially in processed or baked goods. It is not associated with major toxicity or allergenicity at typical dietary exposure levels. For most consumers, it does not pose significant health concerns when consumed in normal amounts.\",\"category\":\"Food emulsifier / processing aid\"}",
+    "lastUpdated": 1764539233450,
+    "createdAt": 1764539233450
+  },
+  "hamamelis virginiana (witch hazel) extract__food__en": {
+    "analysis": "{\"name\":\"Hamamelis Virginiana (witch Hazel) Extract\",\"riskLevel\":\"moderate\",\"summary\":\"Witch hazel extract is derived from the Hamamelis virginiana plant and is primarily used topically in cosmetics, not as a common food ingredient. Its safety profile for ingestion is less established, and preparations may contain alcohol or tannins that could irritate the gastrointestinal tract in some people.\",\"details\":\"When consumed, witch hazel preparations can contain tannins that may cause stomach upset or interact with certain medications if taken in significant amounts. There is limited data on chronic oral exposure in typical food-use scenarios, so its risk as a food ingredient is less clearly defined compared with standard food additives. People with sensitivities to botanical extracts or with liver or kidney conditions should be cautious about ingesting products containing witch hazel extract.\",\"category\":\"Botanical extract / atypical food ingredient\"}",
+    "lastUpdated": 1764539233450,
+    "createdAt": 1764539233450
+  },
+  "dimethiconol__food__en": {
+    "analysis": "{\"name\":\"Dimethiconol\",\"riskLevel\":\"moderate\",\"summary\":\"Dimethiconol is a silicone polymer widely used in cosmetics and personal care products, not as a conventional food ingredient. Its safety has been studied mainly for topical use, and it is not an approved or typical food additive in many jurisdictions.\",\"details\":\"As a high–molecular weight silicone, dimethiconol is considered inert on the skin, but there is very limited safety data for oral consumption in foods. Use of non-food-grade silicones in food could pose unknown or unnecessary risk, especially with long-term ingestion. Because it falls outside normal, well-characterized food additive categories, its presence in a food product should be treated cautiously and verified for regulatory compliance.\",\"category\":\"Non-food silicone polymer / cosmetic ingredient\"}",
+    "lastUpdated": 1764539233450,
+    "createdAt": 1764539233450
+  },
+  "camellia sinensis leaf extract__food__en": {
+    "analysis": "{\"name\":\"Camellia Sinensis Leaf Extract\",\"riskLevel\":\"low\",\"summary\":\"Camellia sinensis leaf extract is derived from the tea plant and is commonly used for its antioxidant properties. It is generally considered safe in food products at typical consumption levels.\",\"details\":\"This extract contains polyphenols such as catechins, which may provide health benefits including antioxidant and potential cardiovascular support. In foods, it is usually present in small amounts and is not associated with major allergens or common food additive concerns. Sensitive individuals who are reactive to caffeine or tea compounds should be aware that some extracts can contain small amounts of caffeine.\",\"category\":\"Plant extract / natural antioxidant\"}",
+    "lastUpdated": 1764539233802,
+    "createdAt": 1764539233802
+  },
+  "rosmarinus officinalis (rosemary) leaf extract__food__en": {
+    "analysis": "{\"name\":\"Rosmarinus Officinalis (rosemary) Leaf Extract\",\"riskLevel\":\"low\",\"summary\":\"Rosemary leaf extract is a natural extract used mainly as a flavoring and antioxidant in foods. It is generally recognized as safe for most people when used in typical food quantities.\",\"details\":\"This extract contains compounds such as rosmarinic acid and carnosic acid that help protect fats and oils from oxidation, extending shelf life. It may contribute a mild herbal flavor and can be used as a more natural alternative to synthetic preservatives. Rarely, people with herb allergies or sensitivities may react to rosemary, but such cases are uncommon at typical food-use levels.\",\"category\":\"Herbal extract / natural antioxidant\"}",
+    "lastUpdated": 1764539233803,
+    "createdAt": 1764539233803
+  },
+  "centella asiatica extract__food__en": {
+    "analysis": "{\"name\":\"Centella Asiatica Extract\",\"riskLevel\":\"low\",\"summary\":\"Centella asiatica extract comes from a medicinal herb (also known as gotu kola) and is sometimes added to foods or supplements for its potential health benefits. It is generally considered safe at typical food or supplement doses.\",\"details\":\"The extract contains triterpenoids that have been studied for potential effects on circulation, skin health, and cognition, though evidence in food-level doses is limited. It is not a common allergen and does not belong to major food allergen groups like gluten, dairy, soy, or nuts. Very high supplemental doses may cause digestive upset in some individuals, but such levels are unlikely in ordinary food products.\",\"category\":\"Herbal extract / botanical ingredient\"}",
+    "lastUpdated": 1764539233803,
+    "createdAt": 1764539233803
+  },
+  "chamomilla recutita (matricaria) flower extract__food__en": {
+    "analysis": "{\"name\":\"Chamomilla Recutita (matricaria) Flower Extract\",\"riskLevel\":\"low\",\"summary\":\"Chamomile flower extract is a plant-derived ingredient commonly used for its soothing and antioxidant properties. In food or beverages, it is generally considered safe for most people.\",\"details\":\"Chamomile is often consumed as herbal tea and used as a natural flavor or botanical extract, and it does not involve artificial additives, colors, or sweeteners. The main concern is for individuals with allergies to plants in the Asteraceae/Compositae family (such as ragweed), who may experience allergic reactions. It does not contribute to trans fats, high sodium, or common food additive risks.\",\"category\":\"Herbal extract / botanical ingredient\"}",
+    "lastUpdated": 1764539233911,
+    "createdAt": 1764539233911
+  },
+  "scutellaria baicalensis root extract__food__en": {
+    "analysis": "{\"name\":\"Scutellaria Baicalensis Root Extract\",\"riskLevel\":\"low\",\"summary\":\"Scutellaria baicalensis (Chinese skullcap) root extract is a herbal ingredient rich in flavonoids and used for its antioxidant and traditional medicinal properties. In small amounts in foods or supplements, it is generally considered low risk for most healthy adults.\",\"details\":\"This root extract is a natural botanical and is not associated with artificial colors, sweeteners, flavor enhancers, or common food additives. Some reports suggest that very high supplemental doses may stress the liver in susceptible individuals, so people with liver disease or those taking multiple medications should use caution and consult a professional. It does not contribute to trans fats, high sodium, or common allergen exposure such as gluten, dairy, soy, or nuts.\",\"category\":\"Herbal extract / botanical ingredient\"}",
+    "lastUpdated": 1764539233911,
+    "createdAt": 1764539233911
+  },
+  "polygonum cuspidatum root extract__food__en": {
+    "analysis": "{\"name\":\"Polygonum Cuspidatum Root Extract\",\"riskLevel\":\"low\",\"summary\":\"Polygonum cuspidatum root extract (also known as Japanese knotweed extract) is a natural source of resveratrol and other polyphenols. It is widely used in dietary supplements and occasionally in functional foods for its antioxidant properties.\",\"details\":\"As a botanical extract, it generally poses low risk when used in typical food or supplement doses and is not related to artificial sweeteners, colors, preservatives, or flavor enhancers. Mild digestive upset may occur at high supplemental intakes, and people on multiple medications should be cautious because resveratrol can theoretically interact with some drug-metabolizing enzymes. It is not a common allergen and does not add significant sodium, trans fats, or hydrogenated oils to foods.\",\"category\":\"Herbal extract / botanical ingredient\"}",
+    "lastUpdated": 1764539233911,
+    "createdAt": 1764539233911
+  },
+  "betaine__food__en": {
+    "analysis": "{\"name\":\"Betaine\",\"riskLevel\":\"low\",\"summary\":\"Betaine is a naturally occurring compound found in foods like beets, whole grains, and spinach, and is sometimes added to foods or supplements. It is generally recognized as safe at typical dietary levels.\",\"details\":\"In food products, betaine may be present naturally or added for its role in supporting methylation and cellular hydration. Most people tolerate it well, though very high supplemental doses can occasionally cause digestive upset in sensitive individuals. It is not associated with common food allergies, artificial colors, or major additive concerns.\",\"category\":\"Nutrient/functional ingredient\"}",
+    "lastUpdated": 1764539234413,
+    "createdAt": 1764539234413
+  },
+  "allantoin__food__en": {
+    "analysis": "{\"name\":\"Allantoin\",\"riskLevel\":\"low\",\"summary\":\"Allantoin is a compound often used in cosmetics for skin-soothing purposes and may rarely appear in specialty food or oral-care products. At low levels, it is considered safe and not a major dietary risk factor.\",\"details\":\"When present in products that can be ingested, allantoin is typically used in very small quantities and has a low toxicity profile. It is not known to contribute to common food-related issues such as high sodium, artificial sweeteners, trans fats, or major allergen exposure. Adverse reactions are uncommon and usually limited to rare individual sensitivities.\",\"category\":\"Functional ingredient\"}",
+    "lastUpdated": 1764539234413,
+    "createdAt": 1764539234413
+  },
+  "trehalose__food__en": {
+    "analysis": "{\"name\":\"Trehalose\",\"riskLevel\":\"low\",\"summary\":\"Trehalose is a naturally occurring sugar used as a sweetener and stabilizer in foods. It has a similar caloric value to other sugars and is generally recognized as safe for most people.\",\"details\":\"In food products, trehalose can improve texture and shelf life and provide mild sweetness without being an artificial sweetener. It does contribute carbohydrates and calories, so excessive intake may impact blood sugar in people with diabetes or those managing carbohydrate intake. It is not a common allergen and is distinct from high fructose corn syrup and artificial flavor enhancers.\",\"category\":\"Carbohydrate sweetener / stabilizer\"}",
+    "lastUpdated": 1764539234413,
+    "createdAt": 1764539234413
+  },
+  "butylene glycol__food__en": {
+    "analysis": "{\"name\":\"Butylene Glycol\",\"riskLevel\":\"moderate\",\"summary\":\"Butylene glycol is a synthetic solvent and humectant more commonly used in cosmetics than in foods. In food, it may function similarly to other glycols as a carrier or texturizer when used.\",\"details\":\"Data on butylene glycol as a food ingredient are limited compared with better-studied glycols like propylene glycol, so its long-term safety profile in foods is less well characterized. It can cause irritation or intolerance in sensitive individuals at higher exposures, particularly when used on skin, and by analogy with related glycols may cause digestive upset if consumed in large amounts. Its presence in a food-type product may also suggest the item could be intended for cosmetic or topical use rather than regular consumption.\",\"category\":\"Solvent and humectant\"}",
+    "lastUpdated": 1764539234655,
+    "createdAt": 1764539234655
+  },
+  "macadamia ternifolia seed oil__food__en": {
+    "analysis": "{\"name\":\"Macadamia Ternifolia Seed Oil\",\"riskLevel\":\"moderate\",\"summary\":\"Macadamia ternifolia seed oil is a plant-derived oil rich in fats, including monounsaturated fatty acids. For most people it is safe, but it is a tree nut–derived ingredient and therefore a potential allergen.\",\"details\":\"People with macadamia nut or broader tree nut allergies should avoid products containing this oil, as even refined oils can sometimes trigger reactions. Nutritionally, macadamia oil is high in calories and fat, so large intakes can contribute to excess energy consumption, but in typical food amounts it is generally well tolerated in non-allergic individuals. In many products it is also used topically (cosmetics), so its presence in a ‘food’ product should be interpreted with care.\",\"category\":\"Tree nut oil (allergen)\"}",
+    "lastUpdated": 1764539234655,
+    "createdAt": 1764539234655
+  },
+  "cyclopentasiloxane__food__en": {
+    "analysis": "{\"name\":\"Cyclopentasiloxane\",\"riskLevel\":\"high\",\"summary\":\"Cyclopentasiloxane is a volatile silicone compound used in cosmetics and personal care products, not approved as a conventional food ingredient. Its presence indicates the product is likely intended for external use rather than eating.\",\"details\":\"Regulatory and safety assessments for cyclopentasiloxane focus on topical exposure, not ingestion, and it is not recognized as a safe food additive. Consuming products containing this silicone could pose unknown or unnecessary risks, and accidental ingestion should be minimized, especially in children. From a food safety perspective, this ingredient is inappropriate in products meant for regular consumption.\",\"category\":\"Silicone (cosmetic-grade, non-food additive)\"}",
+    "lastUpdated": 1764539234655,
+    "createdAt": 1764539234655
+  },
+  "polysorbate 20__food__en": {
+    "analysis": "{\"name\":\"Polysorbate 20\",\"riskLevel\":\"moderate\",\"summary\":\"Polysorbate 20 is an emulsifier and surfactant used to mix oil and water in food and cosmetic products. It is generally recognized as safe in small amounts but may cause sensitivity or digestive upset in some individuals.\",\"details\":\"As a synthetic additive derived from sorbitol and fatty acids, Polysorbate 20 helps stabilize mixtures, improve texture, and extend shelf life in certain processed foods. Regulatory agencies usually consider it safe within approved limits, but very high or chronic intakes of emulsifiers have been questioned in research for potential effects on gut health, and some people may experience mild allergic or irritant reactions. Its presence typically indicates a processed product rather than a minimally processed food.\",\"category\":\"Emulsifier / food additive\"}",
+    "lastUpdated": 1764539235452,
+    "createdAt": 1764539235452
+  },
+  "polyglutamic acid__food__en": {
+    "analysis": "{\"name\":\"Polyglutamic Acid\",\"riskLevel\":\"low\",\"summary\":\"Polyglutamic acid is a polymer of the amino acid glutamic acid, often produced by fermentation and mainly used in supplements or cosmetic products rather than common foods. When used in food-related applications, it is generally considered low risk at typical intake levels.\",\"details\":\"In food contexts, polyglutamic acid may appear as a fermentation-derived ingredient that can influence texture or moisture retention, and it is related to naturally occurring compounds found in fermented soy foods like natto. Current evidence does not show significant toxicity at amounts used in foods or supplements, though data in large populations is still limited. People with known sensitivities to glutamate-containing products should monitor tolerance, but for most consumers it is unlikely to pose health concerns at normal dietary exposure.\",\"category\":\"Amino acid-derived ingredient / texturizer\"}",
+    "lastUpdated": 1764539235453,
+    "createdAt": 1764539235453
+  },
+  "glycyrrhiza glabra (licorice) root extract__food__en": {
+    "analysis": "{\"name\":\"Glycyrrhiza Glabra (licorice) Root Extract\",\"riskLevel\":\"moderate\",\"summary\":\"Glycyrrhiza glabra (licorice) root extract is a herbal ingredient that can add sweetness and flavor and may have medicinal effects. In higher doses or with frequent use, it can affect blood pressure, potassium levels, and certain medications.\",\"details\":\"Licorice root naturally contains glycyrrhizin, which can lead to sodium retention, potassium loss, elevated blood pressure, and fluid retention if consumed in significant amounts over time. This makes it a concern for people with hypertension, heart or kidney disease, during pregnancy, or for those taking certain medications such as diuretics or blood pressure drugs. Small amounts used occasionally in flavored foods are usually well tolerated, but regular or high intake warrants caution and medical advice if underlying health conditions exist.\",\"category\":\"Herbal extract / flavoring\"}",
+    "lastUpdated": 1764539235453,
+    "createdAt": 1764539235453
+  },
+  "cetearyl alcohol__food__en": {
+    "analysis": "{\"name\":\"Cetearyl Alcohol\",\"riskLevel\":\"low\",\"summary\":\"Cetearyl alcohol is a fatty alcohol used primarily as an emulsifier and stabilizer, and it is uncommon in conventional food products. It is generally considered low risk when ingested in small amounts, but its use is far more typical in cosmetics than foods.\",\"details\":\"Unlike simple alcohols such as ethanol, cetearyl alcohol is a mixture of cetyl and stearyl fatty alcohols that are waxy and have low toxicity. Regulatory authorities typically regard fatty alcohols as safe at low levels, but data on frequent oral exposure in foods are more limited because they are far more common in topical products. People with very sensitive digestive systems may experience mild discomfort at high doses, but this is unlikely at typical incidental intake levels.\",\"category\":\"Emulsifier / stabilizer (uncommon in foods, common in cosmetics)\"}",
+    "lastUpdated": 1764539235612,
+    "createdAt": 1764539235612
+  },
+  "beeswax__food__en": {
+    "analysis": "{\"name\":\"Beeswax\",\"riskLevel\":\"low\",\"summary\":\"Beeswax is a natural wax produced by honeybees and is used in foods mainly as a glazing agent, coating, or release agent. It is generally recognized as safe for human consumption in the small quantities normally used in food products.\",\"details\":\"In foods, beeswax helps provide a protective coating (for example on fruits, candies, or supplements) and is minimally absorbed or metabolized. Allergic reactions are rare but can occur in people with strong bee or bee-product allergies, so those individuals should exercise caution. It does not contribute significant calories, sodium, or sugars and is not associated with common food additive concerns such as artificial colors, preservatives, or flavor enhancers.\",\"category\":\"Natural glazing agent / coating\"}",
+    "lastUpdated": 1764539235612,
+    "createdAt": 1764539235612
+  },
+  "cetyl ethylhexanoate__food__en": {
+    "analysis": "{\"name\":\"Cetyl Ethylhexanoate\",\"riskLevel\":\"low\",\"summary\":\"Cetyl ethylhexanoate is an ester used mainly in cosmetics as an emollient and texture enhancer, and it is not a typical food ingredient. Any incidental oral exposure from products is expected to be low risk, but it is not intended to be a regular dietary component.\",\"details\":\"Toxicological data suggest low acute toxicity and it functions as an inert, oily compound, but its safety evaluations are focused on skin contact rather than long-term ingestion. Because it is not used to modify flavor, color, or preservation, it does not carry the usual food additive concerns (such as MSG, artificial colors, or artificial sweeteners). Regular or intentional consumption is not recommended due to the lack of extensive food-use data.\",\"category\":\"Emollient / texture agent (primarily cosmetic, not standard food additive)\"}",
+    "lastUpdated": 1764539235612,
+    "createdAt": 1764539235612
+  },
+  "glycerin__food__en": {
+    "analysis": "{\"name\":\"Glycerin\",\"riskLevel\":\"low\",\"summary\":\"Glycerin (glycerol) is a sugar alcohol used as a humectant, sweetener, and texture enhancer in foods. It is generally recognized as safe for most people when consumed in normal food amounts.\",\"details\":\"Glycerin helps retain moisture, adds slight sweetness, and improves smoothness in various food products. High intakes may cause digestive discomfort such as gas or diarrhea in sensitive individuals, but it is not associated with major long-term health risks at typical dietary levels.\",\"category\":\"Humectant / sweetener\"}",
+    "lastUpdated": 1764539236233,
+    "createdAt": 1764539236233
+  },
+  "olive fruit oil__food__en": {
+    "analysis": "{\"name\":\"Olive Fruit Oil\",\"riskLevel\":\"low\",\"summary\":\"Olive fruit oil (from Olea europaea) is a natural edible oil rich in monounsaturated fats and bioactive compounds. It is widely considered a heart-healthy fat when used in place of saturated or trans fats.\",\"details\":\"In foods, olive oil contributes flavor, healthy fats, and antioxidants such as polyphenols and vitamin E. Most people tolerate it well, though individuals with olive or latex-related allergies should be cautious; overall it is a safer alternative to hydrogenated oils and trans fats.\",\"category\":\"Edible oil / fat\"}",
+    "lastUpdated": 1764539236233,
+    "createdAt": 1764539236233
+  },
+  "sodium polyacrylate__food__en": {
+    "analysis": "{\"name\":\"Sodium Polyacrylate\",\"riskLevel\":\"moderate\",\"summary\":\"Sodium polyacrylate is a superabsorbent polymer widely used in diapers and cosmetics, not typically approved as a direct food ingredient. Its presence in food would be unconventional and potentially raise safety and regulatory concerns.\",\"details\":\"If ingested in small incidental amounts (for example from packaging), it is generally considered to have low acute toxicity, but it is not evaluated or intended as a regular dietary component. There may be risks of gastrointestinal irritation or impurities from production if consumed in significant quantities. In the context of food, this ingredient should be questioned and verified against local food safety regulations.\",\"category\":\"Non-food polymer / processing aid or packaging-related substance\"}",
+    "lastUpdated": 1764539243782,
+    "createdAt": 1764539243782
+  },
+  "2-hexanediol__food__en": {
+    "analysis": "{\"name\":\"2-hexanediol\",\"riskLevel\":\"moderate\",\"summary\":\"2-Hexanediol is primarily used in cosmetics and industrial applications as a solvent and preservative component, not as a standard food additive. Its intentional use directly in food is unusual and may not be covered by typical food safety approvals.\",\"details\":\"Toxicological data suggest relatively low acute toxicity at small doses, but there is limited safety data for chronic oral intake in humans. Because it is not a common food additive and may not be approved as such in many jurisdictions, its presence in a food product should be carefully reviewed with regulatory guidelines. Until confirmed otherwise, it should be treated with caution in the context of regular dietary exposure.\",\"category\":\"Solvent / preservative-type compound (non-standard food additive)\"}",
+    "lastUpdated": 1764539243782,
+    "createdAt": 1764539243782
+  },
+  "caprylyl glycol__food__en": {
+    "analysis": "{\"name\":\"Caprylyl Glycol\",\"riskLevel\":\"moderate\",\"summary\":\"Caprylyl glycol is commonly used in cosmetics as a humectant and preservative booster, and it is not a widely recognized direct food additive. Its deliberate inclusion in foods is atypical and may fall outside standard food additive approvals.\",\"details\":\"Available data indicate low acute toxicity and relatively good safety in topical cosmetic use, but oral safety data for long-term, repeated ingestion are limited. In food, any use should be evaluated against local food regulations and acceptable daily intake data, if available. Until its regulatory status and safety for ingestion are clearly established, it should be considered a cautious or questionable ingredient in food products.\",\"category\":\"Humectant / preservative booster (primarily cosmetic-use ingredient)\"}",
+    "lastUpdated": 1764539243782,
+    "createdAt": 1764539243782
+  },
+  "polyglyceryl-3 methylglucose distearate__food__en": {
+    "analysis": "{\"name\":\"Polyglyceryl-3 Methylglucose Distearate\",\"riskLevel\":\"low\",\"summary\":\"Polyglyceryl-3 methylglucose distearate is an emulsifier typically used in cosmetics and sometimes in specialty food applications. It is generally considered to have low toxicity when ingested in small quantities.\",\"details\":\"This ingredient is formed from polyglycerin, methylglucose, and stearic acid and helps mix oil- and water-based components. There is limited data on its use in foods, but structurally related polyglyceryl emulsifiers are widely regarded as safe in normal dietary amounts. People with very sensitive digestion may prefer to limit highly processed emulsifiers, but no major health risks are documented at typical food-use levels.\",\"category\":\"Emulsifier / texture agent\"}",
+    "lastUpdated": 1764539243936,
+    "createdAt": 1764539243936
+  },
+  "isopropyl myristate__food__en": {
+    "analysis": "{\"name\":\"Isopropyl Myristate\",\"riskLevel\":\"moderate\",\"summary\":\"Isopropyl myristate is an oil-like ester commonly used in cosmetics and topical products, and it is not typically intended for use in foods. Ingestion in non-trivial amounts may cause gastrointestinal irritation or discomfort.\",\"details\":\"While small incidental amounts are unlikely to be highly toxic, this substance is primarily evaluated for dermal rather than dietary exposure. Its presence in a food product is unusual and suggests the product may be cosmetic or non-food, or that labeling is atypical. Because of limited safety data for regular oral consumption, it is prudent to consider it a higher concern than standard food-grade fats and to avoid frequent intake.\",\"category\":\"Non-food cosmetic-grade emollient / ester\"}",
+    "lastUpdated": 1764539243937,
+    "createdAt": 1764539243937
+  },
+  "peg-100 stearate__food__en": {
+    "analysis": "{\"name\":\"Peg-100 Stearate\",\"riskLevel\":\"moderate\",\"summary\":\"PEG-100 stearate is a polyethylene glycol–based emulsifier widely used in cosmetics and sometimes as a processing aid, but it is not a common food-grade ingredient. Concerns center on potential impurities (like ethylene oxide or 1,4-dioxane) and limited data on chronic oral intake.\",\"details\":\"PEG-containing compounds are generally of low acute toxicity, but they are synthetic and can carry trace manufacturing by-products if not highly purified. PEG-100 stearate is intended mainly for external use, and its routine consumption in foods is not well studied. For regular dietary use, it is safer to favor emulsifiers with established food-grade approvals and long-term ingestion data.\",\"category\":\"Synthetic emulsifier / surfactant\"}",
+    "lastUpdated": 1764539243937,
+    "createdAt": 1764539243937
   }
 }

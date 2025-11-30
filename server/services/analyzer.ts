@@ -1274,10 +1274,123 @@ IMPORTANT: Return ONLY this JSON array, nothing else:
     }
     
     console.error(`[PARALLEL-BATCH-${batchIdx}] Failed after ${MAX_RETRIES} retries:`, lastError);
-    // CRITICAL: Return cached + fallback for missing to ensure NO ingredients are lost
-    const fallbackResults = missingIngredients.map(ing => createFallbackIngredient(ing));
-    const allResults = [...cachedResults.map(r => r.data), ...fallbackResults];
-    console.log(`[PARALLEL-BATCH-${batchIdx}] Returning ${cachedResults.length} cached + ${fallbackResults.length} fallback (total: ${allResults.length})`);
+    
+    // FALLBACK: Try each missing ingredient individually (one-at-a-time analysis)
+    // This handles transient API failures where one ingredient in the batch causes the whole batch to fail
+    console.log(`[PARALLEL-BATCH-${batchIdx}] Attempting individual ingredient analysis for ${missingIngredients.length} missing items`);
+    const individualResults: Ingredient[] = [];
+    
+    for (const singleIngredient of missingIngredients) {
+      const singlePrompt = `Analyze this single ingredient from a ${productType} product: ${singleIngredient}
+
+CRITICAL INSTRUCTIONS FOR ${targetLanguage.toUpperCase()}:
+- ALL text (name, summary, details, category) MUST be in ${targetLanguage}
+- Risk level MUST ALWAYS be exactly one of: "low" or "moderate" or "high" (ENGLISH ONLY, case sensitive, no translation)
+- Return ONLY valid JSON array starting with [ and ending with ], no markdown, no code blocks, no extra text
+
+For the ingredient provide these exact JSON fields:
+{
+  "name": "Ingredient Name in ${targetLanguage}",
+  "riskLevel": "low",
+  "summary": "1-2 sentences in ${targetLanguage}",
+  "details": "2-3 sentences in ${targetLanguage}",
+  "category": "Optional category in ${targetLanguage}"
+}
+
+${languageInstruction}
+
+Product context: ${context}
+
+IMPORTANT: Return ONLY this JSON array:
+[
+  {
+    "name": "Ingredient Name in ${targetLanguage}",
+    "riskLevel": "low",
+    "summary": "Brief explanation in ${targetLanguage}",
+    "details": "Detailed explanation in ${targetLanguage}",
+    "category": "Optional category in ${targetLanguage}"
+  }
+]`;
+
+      let singleSuccess = false;
+      for (let individualRetry = 0; individualRetry < MAX_RETRIES; individualRetry++) {
+        try {
+          const response = await openai.chat.completions.create({
+            model: "gpt-5.1",
+            messages: [
+              { role: "system", content: systemMessage },
+              { role: "user", content: singlePrompt }
+            ],
+            max_completion_tokens: 500,
+            reasoning_effort: "none"
+          } as any);
+          
+          const content = response.choices?.[0]?.message?.content;
+          if (!content || content.trim().length === 0) {
+            if (individualRetry < MAX_RETRIES - 1) {
+              console.log(`[PARALLEL-BATCH-${batchIdx}] Individual retry ${individualRetry + 1}/${MAX_RETRIES} for ${singleIngredient}`);
+              await new Promise(resolve => setTimeout(resolve, 1000 * (individualRetry + 1)));
+              continue;
+            }
+            throw new Error('Empty GPT response on individual analysis');
+          }
+          
+          // Parse individual response
+          let singleResult: Ingredient | null = null;
+          try {
+            const parsed = JSON.parse(content);
+            const results = Array.isArray(parsed) ? parsed : (Array.isArray(Object.values(parsed)[0]) ? Object.values(parsed)[0] as Ingredient[] : []);
+            if (results.length > 0) {
+              singleResult = results[0];
+            }
+          } catch (parseError) {
+            console.error(`[PARALLEL-BATCH-${batchIdx}] Failed to parse individual response for ${singleIngredient}`);
+            throw new Error('Invalid JSON from individual GPT call');
+          }
+          
+          if (singleResult) {
+            // Validate and normalize
+            let normalizedRiskLevel = singleResult.riskLevel?.toLowerCase().trim() || 'moderate';
+            if (normalizedRiskLevel === 'bajo') normalizedRiskLevel = 'low';
+            if (normalizedRiskLevel === 'moderado') normalizedRiskLevel = 'moderate';
+            if (normalizedRiskLevel === 'alto') normalizedRiskLevel = 'high';
+            if (normalizedRiskLevel === '低') normalizedRiskLevel = 'low';
+            if (normalizedRiskLevel === '中') normalizedRiskLevel = 'moderate';
+            if (normalizedRiskLevel === '高') normalizedRiskLevel = 'high';
+            if (!['low', 'moderate', 'high'].includes(normalizedRiskLevel)) {
+              normalizedRiskLevel = 'moderate';
+            }
+            
+            const normalized = {
+              ...singleResult,
+              riskLevel: normalizedRiskLevel as 'low' | 'moderate' | 'high',
+              name: normalizeIngredientCapitalization(singleResult.name, userLanguage)
+            };
+            
+            // Cache it
+            setCachedIngredientAnalysis(normalized.name, productType, JSON.stringify(normalized), userLanguage);
+            individualResults.push(normalized);
+            console.log(`[PARALLEL-BATCH-${batchIdx}] Individual analysis succeeded: ${singleIngredient} → ${normalized.name}`);
+            singleSuccess = true;
+            break;
+          }
+        } catch (error) {
+          if (individualRetry < MAX_RETRIES - 1) {
+            console.log(`[PARALLEL-BATCH-${batchIdx}] Individual retry ${individualRetry + 1}/${MAX_RETRIES} for ${singleIngredient}:`, (error as any).message);
+            await new Promise(resolve => setTimeout(resolve, 1000 * (individualRetry + 1)));
+          }
+        }
+      }
+      
+      if (!singleSuccess) {
+        console.warn(`[PARALLEL-BATCH-${batchIdx}] Individual analysis failed for ${singleIngredient}, using fallback`);
+        individualResults.push(createFallbackIngredient(singleIngredient));
+      }
+    }
+    
+    const allResults = [...cachedResults.map(r => r.data), ...individualResults];
+    const batchDuration = ((Date.now() - batchStartTime) / 1000).toFixed(2);
+    console.log(`[PARALLEL-BATCH-${batchIdx}] Completed in ${batchDuration}s (after individual retry): ${cachedResults.length} cached + ${individualResults.length} individual (total: ${allResults.length})`);
     return allResults;
   });
   
