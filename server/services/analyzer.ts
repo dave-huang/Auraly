@@ -963,8 +963,19 @@ export async function analyzeIngredientsParallel(
   }
   console.log(`[PARALLEL-ANALYZER] Using ${uniqueIngredients.length} unique ingredients for analysis`);
   
+  // CRITICAL: Translate extracted ingredients to English if they're in a non-English language
+  // This ensures GPT always analyzes consistent English names, regardless of source language
+  // Prevents empty GPT responses when analyzing Chinese/Spanish ingredients in mismatched user languages
+  const hasChinese = uniqueIngredients.some(ing => /[\u4E00-\u9FFF]/.test(ing));
+  if (hasChinese) {
+    console.log(`[PARALLEL-ANALYZER] Detected Chinese ingredients, translating to English before analysis`);
+    uniqueIngredients = await translateIngredientsToEnglish(uniqueIngredients, 'zh');
+  }
+  
   // Reduce batch size for non-English languages (more prone to empty GPT responses)
   // Use batch size 1 for Chinese and Spanish to ensure success, batch size 3 for English
+  // Note: After translation, all ingredients are in English, so batch size can be larger
+  // But we keep batch size 1 for analysis languages (zh/es) since analysis still goes to GPT in that language
   const BATCH_SIZE = userLanguage === 'zh' || userLanguage === 'es' ? 1 : 3;
   const batches: string[][] = [];
   for (let i = 0; i < uniqueIngredients.length; i += BATCH_SIZE) {
