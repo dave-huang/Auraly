@@ -2570,43 +2570,43 @@
     "createdAt": 1764468555429
   },
   "硬脂酸__skincare__zh": {
-    "analysis": "{\"name\":\"硬脂酸\",\"riskLevel\":\"low\",\"summary\":\"硬脂酸是一种常见的脂肪酸，常用于护肤品中作为增稠剂、乳化剂和柔润剂。总体来说对皮肤较为温和，安全性较高。\",\"details\":\"硬脂酸多来源于植物油或动物脂肪，在乳霜、洁面和乳液中帮助油水混合并稳定配方，同时提升产品的质地和涂抹感。一般肤质都能良好耐受，但极少数敏感或易长痘人群可能出现轻微粉刺或堵塞毛孔的担忧，通常与整体配方及使用频率有关。它不属于防腐剂、硫酸盐、邻苯二甲酸酯、硅油或刺激性酒精，也与重金属无关。\",\"category\":\"脂肪酸 / 乳化增稠剂\"}",
-    "lastUpdated": 1764489153057,
+    "analysis": "{\"name\":\"硬脂酸\",\"riskLevel\":\"low\",\"summary\":\"硬脂酸是一种常见的脂肪酸，来源多为植物油或动物脂肪，广泛用于护肤品中作为乳化剂和增稠剂。总体来说对大多数皮肤人群较为温和安全。\",\"details\":\"在护肤和洗护产品中，硬脂酸有助于稳定乳霜质地、提升涂抹感，并可作为表面活性剂的一部分。它不属于防腐剂、硫酸盐、邻苯二甲酸酯、甲醛释放体等高风险成分，也不是矿物油、硅油或刺激性酒精。极少数敏感或痘痘肌人群可能出现轻微致粉刺或刺激，应根据个人耐受度观察使用感受。\",\"category\":\"脂肪酸 / 乳化增稠剂\"}",
+    "lastUpdated": 1764490094973,
     "createdAt": 1764468597808
   },
   "氯化钠__skincare__zh": {
-    "analysis": "{\"name\":\"氯化钠\",\"riskLevel\":\"low\",\"summary\":\"氯化钠就是常见的食盐，在护肤和洗护产品中常用作增稠剂、调节渗透压和帮助清洁。一般情况下对皮肤安全性较高。\",\"details\":\"在化妆品中，氯化钠通常用于配方增稠、稳定泡沫和帮助清洗残留物，对多数肤质而言刺激性较低。若浓度较高或皮肤本身较干、屏障受损时，可能会有轻微干燥或刺痒感，但通常可通过后续保湿缓解。它不属于防腐剂、激素干扰物、重金属或致敏香精成分，整体风险较低。\",\"category\":\"功能助剂 / 增稠剂\"}",
-    "lastUpdated": 1764489153118,
+    "analysis": "{\"name\":\"氯化钠\",\"riskLevel\":\"low\",\"summary\":\"氯化钠就是常见的食盐，在护肤和洗护产品中多用作增稠剂、调节渗透压和配方稳定剂。通常对皮肤安全性较高。\",\"details\":\"在正常配方浓度下，氯化钠刺激性较低，但在清洁类产品中含量较高时，可能会对极度敏感或屏障受损皮肤造成轻微干燥或刺痒感。它不属于防腐剂、激素干扰物、硫酸盐表活、邻苯二甲酸酯、甲醛释放体、香精、矿物油或硅类等高争议成分。总体来说，它是一种用途广泛且安全性较好的基础辅助成分。\",\"category\":\"基础功能性成分 / 增稠与调节渗透压成分\"}",
+    "lastUpdated": 1764490094474,
     "createdAt": 1764468598570
   },
   "苯甲酸钠__skincare__zh": {
-    "analysis": "{\"name\":\"苯甲酸钠\",\"riskLevel\":\"low\",\"summary\":\"苯甲酸钠是一种常用的防腐剂，可抑制细菌和霉菌生长，在护肤和洗护产品中使用较为安全。对部分敏感肌或对苯甲酸类过敏的人可能会引起轻微刺激或过敏反应。\",\"details\":\"在化妆品中，苯甲酸钠通常以较低浓度使用，用于延长产品保质期，属于较成熟、评价较多的防腐成分。一般人群经皮肤接触时安全性较高，但在高浓度或与其他可能刺激的成分同时存在时，极敏感肌肤可能出现刺痛、红斑或干痒。它不属于防腐剂中的甲醛释放体，也不是防腐剂中的激素干扰物，但如已有防腐剂过敏史，建议先做局部测试。\",\"category\":\"防腐剂\"}",
-    "lastUpdated": 1764489154245,
+    "analysis": "{\"name\":\"苯甲酸钠\",\"riskLevel\":\"low\",\"summary\":\"苯甲酸钠是一种常用的防腐剂，可抑制细菌和真菌生长，在护肤和洗护产品中使用广泛。对大多数人来说安全性较高。\",\"details\":\"在法规允许浓度内使用时，苯甲酸钠被认为相对安全，刺激性较低，但在高浓度或敏感肌人群中可能引起轻微刺激或刺痒感。它不属于对内分泌有明确干扰作用的防腐体系，也不属于释放甲醛的防腐剂，但与酸性环境同时存在时可能少量转化为苯甲酸，对极度敏感人群需适度留意。\",\"category\":\"防腐剂\"}",
+    "lastUpdated": 1764490094838,
     "createdAt": 1764468598626
   },
   "合成蜡__skincare__zh": {
-    "analysis": "{\"name\":\"合成蜡\",\"riskLevel\":\"low\",\"summary\":\"合成蜡是一类人工合成的蜡质成分，常用于护肤品中增加厚度和成膜性。通常被认为安全性较高，不属于防腐剂、硫酸盐或邻苯二甲酸酯等高争议成分。\",\"details\":\"合成蜡常用于面霜、唇膏、防晒等产品中，帮助提高产品的稳定性和在皮肤表面的附着力，并能形成保护膜以减少水分流失。大多数人使用时耐受性良好，但极少数敏感或痘痘肌肤可能因封闭性较强而感觉闷或长闭口，需要个体观察。它不属于激素干扰物、释放甲醛的防腐剂、矿物油石蜡、强刺激酒精或重金属类成分。\",\"category\":\"成膜剂 / 增稠剂\"}",
-    "lastUpdated": 1764489153355,
+    "analysis": "{\"name\":\"合成蜡\",\"riskLevel\":\"low\",\"summary\":\"合成蜡是一类由石油或合成聚合物制得的蜡状成分，常用于护肤品中提供成膜与增稠效果。一般刺激性较低，多数肤质可耐受。\",\"details\":\"在护肤品中，合成蜡可帮助形成保护膜，减少水分流失，并改善产品的质地与涂抹感。由于来源多为惰性聚合物或精制石油副产物，通常不易被皮肤吸收，致敏率较低，但极少数敏感或痘痘肌可能因封闭性较强而出现闷痘或不适。合成蜡并不属于防腐剂、硫酸盐、邻苯二甲酸酯或甲醛释放体等高关注风险成分。\",\"category\":\"成膜剂 / 增稠剂 / 质地调理剂\"}",
+    "lastUpdated": 1764490095685,
     "createdAt": 1764468598996
   },
   "聚季铵盐-6__skincare__zh": {
-    "analysis": "{\"name\":\"聚季铵盐-6\",\"riskLevel\":\"low\",\"summary\":\"聚季铵盐-6是一种阳离子高分子聚合物，常用于护肤和洗发产品中，起到调理、顺滑和成膜作用。通常被认为安全性较高，不属于防腐剂、硫酸盐或邻苯二甲酸酯等高关注成分。\",\"details\":\"它能在皮肤或头发表面形成一层带正电荷的薄膜，减少毛躁、增强顺滑感，并提高产品的使用手感。对于一般肤质和头皮人群刺激性较低，但极少数敏感或受损皮肤可能出现轻微刺激或粘腻不适感。该成分不含防腐剂释放甲醛、香精、矿物油或重金属等高风险物质，整体使用风险较低。\",\"category\":\"调理剂 / 成膜剂 / 抗静电剂\"}",
-    "lastUpdated": 1764489153892,
+    "analysis": "{\"name\":\"聚季铵盐-6\",\"riskLevel\":\"low\",\"summary\":\"聚季铵盐-6是一种阳离子聚合物，常用于护肤和洗发产品中作为成膜和顺滑剂，帮助头发和皮肤更柔软易梳理。总体安全性较好，刺激性较低。\",\"details\":\"它能在皮肤和发丝表面形成一层薄膜，减少静电、提升顺滑度和保湿感，不属于防腐剂、硫酸盐、邻苯二甲酸酯或释放甲醛成分。对大多数肤质来说耐受性良好，但极度敏感或受损皮肤在高浓度使用时仍有轻微刺激或黏腻感的可能。一般不被认为是致痘元凶，也不被归类为激素干扰物。\",\"category\":\"成膜剂 / 护发顺滑剂\"}",
+    "lastUpdated": 1764490095487,
     "createdAt": 1764468599099
   },
   "透明质酸钠__skincare__zh": {
-    "analysis": "{\"name\":\"透明质酸钠\",\"riskLevel\":\"low\",\"summary\":\"透明质酸钠是一种常用的保湿成分，能吸附并锁住所涂抹部位周围的水分，帮助皮肤保持水润饱满。通常刺激性较低，适合大多数肤质使用。\",\"details\":\"作为皮肤和关节中天然存在的多糖衍生物，透明质酸钠能在角质层形成保水膜，提升皮肤柔软度和光滑度，并减缓水分流失。一般认为安全性较高，过敏或刺激反应较少见，但极度敏感或受损皮肤仍应先做局部测试。该成分不属于防腐剂、硫酸盐类、邻苯二甲酸酯、甲醛释放体或矿物油等高争议类别。\",\"category\":\"保湿剂 / 皮肤调理剂\"}",
-    "lastUpdated": 1764468599179,
+    "analysis": "{\"name\":\"透明质酸钠\",\"riskLevel\":\"low\",\"summary\":\"透明质酸钠是一种常见的保湿剂和皮肤润滑成分，具有良好的锁水能力，一般被认为安全温和。常用于保湿精华、面霜和眼霜中。\",\"details\":\"透明质酸钠是透明质酸的钠盐形式，能够结合自身数倍以上的水分，帮助增强皮肤屏障和改善干燥、细纹。其刺激性较低，大多数肤质（包括敏感肌）通常都能很好耐受，少数人可能在浓度较高或配方不当时出现轻微刺痒或泛红。它不属于防腐剂、硫酸盐、邻苯二甲酸酯、释放甲醛防腐剂、矿物油、硅油或刺激性酒精等高关注成分。\",\"category\":\"保湿剂 / 皮肤调理剂\"}",
+    "lastUpdated": 1764490095130,
     "createdAt": 1764468599179
   },
   "月桂酸__skincare__zh": {
-    "analysis": "{\"name\":\"月桂酸\",\"riskLevel\":\"low\",\"summary\":\"月桂酸是一种中链脂肪酸，常见于椰子油和棕榈仁油中，具有一定的抗菌和清洁能力。用于护肤品中通常较为安全。\",\"details\":\"在护肤和护发产品中，月桂酸常用作表面活性剂、清洁成分或脂肪酸来源，帮助溶解皮脂与污垢。少数敏感或极干性皮肤人群可能在高浓度或清洁型配方中感觉到轻微干燥或刺激。总体来说，它不属于防腐剂、塑化剂、硫酸盐、甲醛释放体或重金属等高风险类别，常规使用安全性较高。\",\"category\":\"脂肪酸 / 表面活性剂\"}",
-    "lastUpdated": 1764489153509,
+    "analysis": "{\"name\":\"月桂酸\",\"riskLevel\":\"low\",\"summary\":\"月桂酸是一种中链脂肪酸，常见于椰子油和棕榈仁油中，用于护肤品中作为表面活性剂、乳化剂或质地调理成分。一般被认为较为安全，刺激性较低。\",\"details\":\"在护肤品中，月桂酸可帮助清洁皮肤、稳定配方并改善产品延展性，对中性至油性皮肤通常耐受良好。少数敏感肌或屏障受损人群可能会出现轻微刺激或干燥感，部分易长痘人群报告其可能有致痘潜力，但证据并不完全一致。它不属于防腐剂、邻苯二甲酸酯、甲醛释放体、硫酸盐、矿物油或重金属等高争议成分。\",\"category\":\"脂肪酸／表面活性剂\"}",
+    "lastUpdated": 1764490094604,
     "createdAt": 1764468599220
   },
   "山梨酸钾__skincare__zh": {
-    "analysis": "{\"name\":\"山梨酸钾\",\"riskLevel\":\"low\",\"summary\":\"山梨酸钾是一种常用的防腐剂，用于抑制护肤品和护发产品中霉菌、酵母等微生物生长。一般在推荐浓度内使用被认为安全性较高。\",\"details\":\"山梨酸钾属于食品级和化妆品级广泛应用的防腐成分，不属于甲醛释放体、防腐剂类激素干扰物，也不是邻苯二甲酸酯类成分。少数敏感肌或受损皮肤可能对其产生轻微刺激或刺痒感，通常通过降低用量或与其他温和防腐剂复配来减少刺激风险。整体来看，其致敏率较低，对大多数人群日常使用较为安全。\",\"category\":\"防腐剂\"}",
-    "lastUpdated": 1764468599329,
+    "analysis": "{\"name\":\"山梨酸钾\",\"riskLevel\":\"low\",\"summary\":\"山梨酸钾是一种常用的防腐剂，用于抑制霉菌和酵母菌生长，延长护肤品保质期。一般浓度下对皮肤相对安全，不属于防腐剂中风险较高的一类。\",\"details\":\"在化妆品和护肤品中，山梨酸钾主要用于防止产品变质，并不属于对激素有潜在干扰的对羟基苯甲酸酯类，也不是释放甲醛型防腐剂。大部分人使用耐受良好，但敏感肌或屏障受损肌肤在高浓度或长期接触时，可能出现轻微刺激或刺痒感。总体来说，其安全性已被广泛评估，在法规限定用量内使用被认为风险较低。\",\"category\":\"防腐剂\"}",
+    "lastUpdated": 1764490095455,
     "createdAt": 1764468599329
   },
   "丁羟甲苯__skincare__zh": {
@@ -2615,8 +2615,8 @@
     "createdAt": 1764468599364
   },
   "柠檬酸__skincare__zh": {
-    "analysis": "{\"name\":\"柠檬酸\",\"riskLevel\":\"low\",\"summary\":\"柠檬酸是一种常见的有机酸，主要用于调节护肤品的酸碱度（pH值）。在化妆品中通常安全性较高，刺激性较低。\",\"details\":\"柠檬酸可以帮助配方保持稳定、维持弱酸性环境，从而更接近皮肤自身的pH值，有助于提升产品的整体使用感。少数敏感肌在使用高浓度或酸类复配产品时，可能出现轻微刺痛或红痒反应，但在日常用量下一般耐受良好。它不属于防腐剂、激素干扰物、硫酸盐或邻苯二甲酸酯等高关注成分。\",\"category\":\"pH调节剂 / 去角质酸\"}",
-    "lastUpdated": 1764468599463,
+    "analysis": "{\"name\":\"柠檬酸\",\"riskLevel\":\"low\",\"summary\":\"柠檬酸是一种常见的果酸，主要用来调节产品的酸碱度并温和去角质。大多数肤质使用是安全的，但敏感肌在高浓度或配方不当时可能会有刺痛感或发红。\",\"details\":\"在护肤和护发产品中，柠檬酸常被用来调节pH值，帮助配方更接近皮肤天然酸度，同时能轻微溶解老废角质，令皮肤看起来更光滑细腻。一般化妆品中添加量较低，刺激性较小，但对于敏感肌、受损屏障或刚做完医美的人来说，过多果酸叠加可能会导致干涩、刺痛或短暂泛红。它不属于防腐剂、硫酸盐、邻苯二甲酸酯等高关注成分，也不涉及重金属问题，整体安全性较高。\",\"category\":\"pH调节剂 / 果酸成分\"}",
+    "lastUpdated": 1764490095579,
     "createdAt": 1764468599463
   },
   "肉豆蔻基甜菜碱__skincare__zh": {
@@ -2625,13 +2625,13 @@
     "createdAt": 1764468599515
   },
   "棕榈酸__skincare__zh": {
-    "analysis": "{\"name\":\"棕榈酸\",\"riskLevel\":\"low\",\"summary\":\"棕榈酸是一种常见的饱和脂肪酸，多来源于棕榈油或其他植物油，广泛用于护肤品中作为柔润剂和增稠剂。一般认为对皮肤安全性较高。\",\"details\":\"在护肤和护发产品中，棕榈酸可帮助形成保护膜，减少水分流失，使肌肤和头发更柔软细腻。对大多数肤质来说刺激性较低，但极易长痘或油性肌肤在高浓度使用时，可能有轻微堵塞毛孔的潜在风险。它不属于防腐剂、硫酸盐、邻苯二甲酸酯、甲醛释放体或重金属等高争议成分。\",\"category\":\"脂肪酸类柔润剂 / 增稠剂\"}",
-    "lastUpdated": 1764489153479,
+    "analysis": "{\"name\":\"棕榈酸\",\"riskLevel\":\"low\",\"summary\":\"棕榈酸是一种常见的脂肪酸，广泛用于护肤品中作为柔润剂和增稠剂。一般来说对皮肤较为温和，刺激性较低。\",\"details\":\"棕榈酸多来源于棕榈油或其他植物油，可帮助产品形成乳霜质地并减少水分流失，提升肤感。对大多数肤质安全，但非常油性或易长痘人群在高浓度使用时，可能会觉得略显厚重或有轻微致粉刺的潜在风险。它不属于防腐剂、硫酸盐、邻苯二甲酸酯、甲醛释放体、香精或重金属成分。\",\"category\":\"脂肪酸 / 柔润剂\"}",
+    "lastUpdated": 1764490094481,
     "createdAt": 1764468599535
   },
   "生育酚（维生素e）__skincare__zh": {
-    "analysis": "{\"name\":\"生育酚（维生素E）\",\"riskLevel\":\"low\",\"summary\":\"生育酚是一种脂溶性抗氧化剂，常用于护肤品中帮助对抗自由基并保护皮肤屏障。一般耐受性良好，刺激性较低。\",\"details\":\"在护肤品中，生育酚可以帮助减缓油脂氧化、提升配方稳定性，并辅助改善干燥和粗糙感。极少数敏感或易长痘人群在高浓度或油性配方中使用时，可能出现闷痘或轻微刺激。总体来说，它不属于防腐剂、硫酸盐、邻苯二甲酸酯、甲醛释放体或重金属等高风险成分。\",\"category\":\"抗氧化剂/保湿修护成分\"}",
-    "lastUpdated": 1764468599710,
+    "analysis": "{\"name\":\"生育酚（维生素E）\",\"riskLevel\":\"low\",\"summary\":\"生育酚是一种脂溶性抗氧化剂，常用于护肤品中帮助对抗自由基，保护皮肤屏障。一般耐受性良好，刺激性较低。\",\"details\":\"在配方中，生育酚可帮助减缓油脂氧化，提升产品稳定性，同时对皮肤具有一定的抗氧化和舒缓作用。极少数人可能对生育酚或其载体成分产生轻微刺激或过敏，通常与剂量过高或个体敏感体质有关。它不属于防腐剂、硫酸盐、对羟基苯甲酸酯、邻苯二甲酸酯或释放甲醛类成分，一般认为在护肤和护发产品中是相对安全的。\",\"category\":\"抗氧化剂 / 皮肤养护成分\"}",
+    "lastUpdated": 1764490095502,
     "createdAt": 1764468599710
   },
   "edta二钠__skincare__zh": {
@@ -2645,8 +2645,8 @@
     "createdAt": 1764468599734
   },
   "聚季铵盐-7__skincare__zh": {
-    "analysis": "{\"name\":\"聚季铵盐-7\",\"riskLevel\":\"low\",\"summary\":\"聚季铵盐-7是一种常用的阳离子聚合物调理剂，主要用于护肤和洗发产品中以增加柔滑度和保湿感。总体安全性较高，刺激性较低。\",\"details\":\"聚季铵盐-7通常用于洗发水、沐浴露、护发素和部分洁面产品中，能减少打结、提高头发和皮肤表面的润滑度。现有研究显示其系统性毒性较低，也不属于防腐剂、硫酸盐表活、邻苯二甲酸酯或甲醛释放体。极少数敏感肌人群或已有皮肤屏障受损者，长时间高浓度接触可能出现轻微刺激或致痘风险，一般在正常使用浓度下被认为是安全的。\",\"category\":\"调理剂 / 成膜剂\"}",
-    "lastUpdated": 1764489154622,
+    "analysis": "{\"name\":\"聚季铵盐-7\",\"riskLevel\":\"low\",\"summary\":\"聚季铵盐-7是一种常用的阳离子聚合物，广泛用于护肤和洗发产品中，起到保湿、顺滑和抗静电作用。总体来说皮肤和头皮耐受性较好，刺激性较低。\",\"details\":\"聚季铵盐-7能在皮肤和头发表面形成柔滑薄膜，减少毛躁和打结感，同时提升产品的肤感和发感。现有研究并未显示其具有激素干扰、致癌或类似于防腐剂（如释放甲醛防腐剂）、邻苯二甲酸酯等严重安全问题。极少数敏感人群可能在高浓度或与其他刺激成分叠加时出现轻微刺激或毛孔负担，但在一般化妆品用量下被认为是安全度较高的调理成分。\",\"category\":\"调理剂 / 成膜剂\"}",
+    "lastUpdated": 1764490096361,
     "createdAt": 1764468599753
   },
   "(日用)香精__skincare__zh": {
@@ -2660,8 +2660,8 @@
     "createdAt": 1764468599873
   },
   "氢氧化钾__skincare__zh": {
-    "analysis": "{\"name\":\"氢氧化钾\",\"riskLevel\":\"moderate\",\"summary\":\"氢氧化钾是强碱性成分，常用于调节护肤品的酸碱度或皂化反应。高浓度会强烈刺激皮肤和眼睛，但在配方中通常以极低浓度使用并被中和。\",\"details\":\"在护肤和洗护产品中，氢氧化钾主要用于中和酸性成分、控制pH值或制皂，最终成品中游离状态的含量一般非常低。若配方控制不好或产品未完全中和，可能导致皮肤刺痛、干燥或刺激敏感肌，接触破损皮肤和眼睛时风险更高。整体安全性依赖于配方浓度与pH控制，对健康人短期、正常使用通常相对安全，但敏感肌和受损皮肤人群需留意刺激感。\",\"category\":\"pH调节剂 / 强碱\"}",
-    "lastUpdated": 1764489154102,
+    "analysis": "{\"name\":\"氢氧化钾\",\"riskLevel\":\"moderate\",\"summary\":\"氢氧化钾是一种强碱，常用于调节护肤品的酸碱度或制皂。低浓度、配方合理时对皮肤通常较安全，但高浓度可能刺激皮肤和眼睛。\",\"details\":\"在护肤和洗护产品中，氢氧化钾多作为pH调节剂或皂基原料存在，最终成品中游离氢氧化钾浓度一般较低。若配方控制不当或产品未完全中和，可能导致皮肤刺痛、干燥或屏障受损，敏感肌尤需注意。使用含有该成分的产品时，如出现明显刺痛、红斑，应立即冲洗并停止使用。\",\"category\":\"pH调节剂 / 碱性成分\"}",
+    "lastUpdated": 1764490094945,
     "createdAt": 1764468599891
   },
   "山梨（糖）醇__skincare__zh": {
@@ -2670,8 +2670,8 @@
     "createdAt": 1764468599953
   },
   "月桂基甜菜碱__skincare__zh": {
-    "analysis": "{\"name\":\"月桂基甜菜碱\",\"riskLevel\":\"low\",\"summary\":\"月桂基甜菜碱是一种两性表面活性剂，常用于洗面奶、洗发水和沐浴露中起到温和清洁和起泡作用。总体来说刺激性较低，适合大多数肤质使用。\",\"details\":\"与月桂醇硫酸钠等强清洁表活相比，月桂基甜菜碱更为温和，通常不会明显破坏皮脂屏障，但高浓度或停留时间过长仍可能造成干燥或轻微刺激，尤其是敏感肌和受损屏障人群。对于婴幼儿及极度敏感肌，建议搭配其他温和成分并注意使用频率。该成分不属于防腐剂、香精、硅油或邻苯二甲酸酯，也不是常见的内分泌干扰物或重金属来源，在日常护肤和洗护产品中被认为是较安全的清洁成分。\",\"category\":\"表面活性剂 / 清洁起泡剂\"}",
-    "lastUpdated": 1764489154875,
+    "analysis": "{\"name\":\"月桂基甜菜碱\",\"riskLevel\":\"low\",\"summary\":\"月桂基甜菜碱是一种两性表面活性剂，常用于洁面、洗发和沐浴产品中起到清洁与起泡作用。它通常温和，刺激性较低，适合大多数肤质和发质使用。\",\"details\":\"作为两性表活，月桂基甜菜碱能在水中帮助油脂与污垢乳化并被冲洗掉，同时提高产品的泡沫丰富度与使用肤感。一般毒性较低，也不是内分泌干扰物，不属于防腐剂、硫酸盐（如SLS/SLES）或邻苯二甲酸酯等高关注成分。少数敏感肌或屏障受损人群可能会出现轻微刺痛或干涩感，建议与保湿成分搭配使用并留意个人耐受度。\",\"category\":\"表面活性剂 / 清洁成分\"}",
+    "lastUpdated": 1764490095987,
     "createdAt": 1764468600060
   },
   "焦亚硫酸钠__skincare__zh": {
@@ -2680,18 +2680,18 @@
     "createdAt": 1764468600071
   },
   "肉豆蔻酸__skincare__zh": {
-    "analysis": "{\"name\":\"肉豆蔻酸\",\"riskLevel\":\"low\",\"summary\":\"肉豆蔻酸是一种常见的脂肪酸，多用于清洁类和乳霜类护肤品中作为表面活性剂或增稠、助乳化成分。整体安全性较高，但油性和痘痘肌可能存在致痘和加重粉刺的风险。\",\"details\":\"在护肤和洗护产品中，肉豆蔻酸常用于帮助起泡、清洁以及改善产品的质地和延展性，多数皮肤类型通常可以耐受。现有研究未显示其具有激素干扰、致癌或类似防腐剂中释放甲醛的安全隐患。需要注意的是，它属于较易致痘的脂肪酸之一，油性、易长痘或毛孔堵塞人群若在高浓度清洁或乳霜产品中长期使用，可能出现粉刺或闷痘，应留意皮肤反应。\",\"category\":\"脂肪酸 / 表面活性剂 / 助乳化剂\"}",
-    "lastUpdated": 1764489153908,
+    "analysis": "{\"name\":\"肉豆蔻酸\",\"riskLevel\":\"low\",\"summary\":\"肉豆蔻酸是一种常见的饱和脂肪酸，多用于清洁和护肤品中作表面活性剂、乳化剂或增稠剂。一般对皮肤相对温和，正常使用条件下安全性较高。\",\"details\":\"在洁面产品中，肉豆蔻酸常与碱性成分反应生成皂基，帮助溶解皮脂并产生泡沫，清洁力较强，因此油性或易长痘肤质若清洁过度可能会感觉干燥或刺激。对大多数人来说致敏率较低，但极少数敏感或严重痤疮肌肤可能出现爆痘或刺激，应根据个人肤质和配方整体温和度综合判断。该成分不属于防腐剂、硫酸盐、邻苯二甲酸酯、甲醛释放体或重金属类成分。\",\"category\":\"脂肪酸 / 表面活性剂\"}",
+    "lastUpdated": 1764490095328,
     "createdAt": 1764468600251
   },
   "乙酰化透明质酸钠__skincare__zh": {
-    "analysis": "{\"name\":\"乙酰化透明质酸钠\",\"riskLevel\":\"low\",\"summary\":\"乙酰化透明质酸钠是透明质酸的衍生物，具有更好的亲油性和附着性，用于长效保湿和增加皮肤柔软度。总体安全性较高，刺激性低，适用于大多数肤质。\",\"details\":\"通过在透明质酸分子上引入乙酰基，使其既能结合水分又能在皮肤表面形成更稳定的保湿膜，从而提升保湿持久度与肤感顺滑度。现有研究并未显示其与防腐剂释放甲醛、激素干扰物（如对羟基苯甲酸酯）、邻苯二甲酸酯、强刺激表活剂（如SLS/SLES）、矿物油或重金属相关的明显安全隐患。极少数敏感肌人群可能出现轻微刺激或不适，通常与配方整体及个体差异有关。\",\"category\":\"保湿剂 / 皮肤调理剂\"}",
-    "lastUpdated": 1764468600273,
+    "analysis": "{\"name\":\"乙酰化透明质酸钠\",\"riskLevel\":\"low\",\"summary\":\"乙酰化透明质酸钠是一种改性透明质酸盐，具有优异的保湿、锁水和柔润肌肤功效。它通常温和安全，适合大多数肤质使用。\",\"details\":\"通过在透明质酸分子上引入乙酰基，使其更易在皮肤表面形成保湿薄膜，增强保湿持久度并减少水分流失。该成分不属于防腐剂、硫酸盐、邻苯二甲酸酯、甲醛释放体或矿物油类，也不含酒精和重金属等常见高风险物质。一般刺激性较低，敏感肌也多能耐受，但极少数人可能因个体差异出现轻微不适。\",\"category\":\"保湿剂 / 皮肤调理剂\"}",
+    "lastUpdated": 1764490095019,
     "createdAt": 1764468600273
   },
   "甘油硬脂酸酯 se__skincare__zh": {
-    "analysis": "{\"name\":\"甘油硬脂酸酯 SE\",\"riskLevel\":\"low\",\"summary\":\"甘油硬脂酸酯 SE 是一种常用的乳化剂和柔润剂，帮助油水混合并让肤感更柔滑。整体安全性较高，刺激性较低。\",\"details\":\"它通常来源于植物油脂中的甘油与硬脂酸，SE 型表示自乳化型，能稳定乳霜和乳液的结构，防止分层。该成分不属于防腐剂、硫酸盐、邻苯二甲酸酯、矿物油、硅油或高风险致敏香精成分，一般肤质包括敏感肌都能良好耐受，极少数人可能出现轻微刺激或堵塞毛孔的情况，但风险较低。\",\"category\":\"乳化剂与柔润剂\"}",
-    "lastUpdated": 1764468600354,
+    "analysis": "{\"name\":\"甘油硬脂酸酯 SE\",\"riskLevel\":\"low\",\"summary\":\"甘油硬脂酸酯 SE 是一种常用的乳化剂和皮肤调理剂，能帮助油水混合并让乳霜更顺滑。一般被认为刺激性较低，适合大多数肤质使用。\",\"details\":\"它通常来源于植物油中的脂肪酸与甘油，经化学反应制得，属于非离子或阴离子表面活性剂，主要功能是稳定配方、改善延展性和肤感。对正常皮肤安全性较高，但极少数敏感皮肤可能出现轻微刺激或粉刺风险，一般通过合理配方浓度可以降低不适。在本产品所关心的成分中，它不属于防腐剂、硫酸盐、邻苯二甲酸酯、甲醛释放体、矿物油、硅油或高风险酒精类。\",\"category\":\"乳化剂 / 皮肤调理剂\"}",
+    "lastUpdated": 1764490095664,
     "createdAt": 1764468600354
   },
   "4-二羧酸酯__skincare__zh": {
@@ -2710,18 +2710,18 @@
     "createdAt": 1764468600707
   },
   "鲸蜡基甜菜碱__skincare__zh": {
-    "analysis": "{\"name\":\"鲸蜡基甜菜碱\",\"riskLevel\":\"low\",\"summary\":\"鲸蜡基甜菜碱是一种常用的两性表面活性剂和调理剂，常用于洗发水、沐浴露和洁面产品中，具有温和清洁和柔顺头发、皮肤的作用。总体刺激性较低，一般肤质耐受性较好。\",\"details\":\"鲸蜡基甜菜碱通常与其他表面活性剂复配使用，可在降低整体刺激性的同时改善泡沫细腻度和洗后肤感与发感。现有研究未显示其有致癌、内分泌干扰或重金属等高风险问题，但极少数敏感肌人群仍可能出现轻微刺痒或刺激感。属于较安全、广泛使用的清洁和调理成分，婴幼儿和敏感肌产品中也较常见。\",\"category\":\"表面活性剂 / 调理剂\"}",
-    "lastUpdated": 1764468607091,
+    "analysis": "{\"name\":\"鲸蜡基甜菜碱\",\"riskLevel\":\"low\",\"summary\":\"鲸蜡基甜菜碱是一种两性表面活性剂，常用于洁面产品、洗发水和沐浴露中，具有温和清洁和起泡作用。一般刺激性较低，适合大多数肤质使用。\",\"details\":\"作为甜菜碱类表面活性剂，鲸蜡基甜菜碱能够帮助溶解皮肤或头发表面的油脂与污垢，同时维持较好的温和度和肤感。少数敏感人群可能在高浓度或与其他刺激性表活共同使用时出现轻微刺激或干燥感，但总体致敏和刺激风险较低。它不属于对激素、重金属、甲醛释放体、邻苯二甲酸酯等高关注成分。\",\"category\":\"表面活性剂 / 清洁与起泡剂\"}",
+    "lastUpdated": 1764490094750,
     "createdAt": 1764468607091
   },
   "benzoato de sodio__skincare__es": {
-    "analysis": "{\"name\":\"Benzoato de Sodio\",\"riskLevel\":\"low\",\"summary\":\"El benzoato de sodio es un conservante utilizado para prevenir el crecimiento de bacterias y hongos en productos cosméticos y de cuidado personal. Generalmente se considera seguro a las concentraciones habituales de formulación.\",\"details\":\"En cosmética se usa con frecuencia junto con otros conservantes para mejorar la estabilidad del producto, especialmente en fórmulas acuosas. Puede causar irritación leve o reacciones alérgicas en personas con piel muy sensible o con dermatitis, aunque estos casos son poco frecuentes. No es un paraben, ni un liberador de formaldehído, ni un ftalato, y no se asocia de forma relevante con alteraciones hormonales a las dosis cosméticas habituales.\",\"category\":\"Conservante\"}",
-    "lastUpdated": 1764489827247,
+    "analysis": "{\"name\":\"Benzoato de Sodio\",\"riskLevel\":\"low\",\"summary\":\"El benzoato de sodio es un conservante comúnmente utilizado en cosméticos y productos para el cuidado de la piel para prevenir el crecimiento de hongos y bacterias. En general se considera seguro a las concentraciones permitidas en cosmética.\",\"details\":\"En productos para el cuidado de la piel, el benzoato de sodio suele emplearse en bajas concentraciones y tiene bajo potencial de irritación en la mayoría de las personas, aunque en pieles muy sensibles puede causar enrojecimiento o picor leve. Puede formar pequeñas cantidades de benceno si se combina con ciertas fuentes de vitamina C (ácido ascórbico) bajo condiciones específicas como calor y luz intensa, pero esto es poco frecuente en cosmética bien formulada. No es un paraben ni un liberador de formaldehído, y no se asocia habitualmente con alteraciones hormonales.\",\"category\":\"Conservante\"}",
+    "lastUpdated": 1764489988522,
     "createdAt": 1764469154773
   },
   "cloruro de sodio__skincare__es": {
-    "analysis": "{\"name\":\"Cloruro de Sodio\",\"riskLevel\":\"low\",\"summary\":\"El cloruro de sodio es la sal común utilizada en cosmética principalmente como espesante y regulador de la textura. En productos para la piel suele considerarse un ingrediente de bajo riesgo.\",\"details\":\"En concentraciones habituales en cosmética, el cloruro de sodio es seguro y bien tolerado por la mayoría de las personas, y ayuda a ajustar la viscosidad de limpiadores y champús. Sin embargo, en piel muy sensible, dañada o con afecciones como dermatitis, concentraciones altas pueden provocar sensación de escozor o resequedad. No está asociado a efectos hormonales, cancerígenos ni a los grupos de ingredientes más controvertidos como parabenos, ftalatos o liberadores de formaldehído.\",\"category\":\"Agente de textura y regulación de viscosidad\"}",
-    "lastUpdated": 1764489827570,
+    "analysis": "{\"name\":\"Cloruro de Sodio\",\"riskLevel\":\"low\",\"summary\":\"El cloruro de sodio es sal común utilizada en cosmética como espesante y ajustador de viscosidad. Generalmente es seguro en productos para el cuidado de la piel y el cabello.\",\"details\":\"En concentraciones habituales, ayuda a dar consistencia a champús, geles de baño y limpiadores faciales sin considerarse un ingrediente irritante para la mayoría de las personas. Sin embargo, en piel muy sensible, irritada o con lesiones (por ejemplo, eccema activo o heridas abiertas), puede causar escozor o ligera irritación. No está relacionado con disruptores hormonales, formaldehído, ftalatos ni otros ingredientes de alta preocupación.\",\"category\":\"Regulador de viscosidad / Estabilizante\"}",
+    "lastUpdated": 1764489987927,
     "createdAt": 1764469154934
   },
   "sorbitol__skincare__es": {
@@ -2730,28 +2730,28 @@
     "createdAt": 1764469155125
   },
   "sorbato de potasio__skincare__es": {
-    "analysis": "{\"name\":\"Sorbato de Potasio\",\"riskLevel\":\"low\",\"summary\":\"El sorbato de potasio es un conservante utilizado para prevenir el crecimiento de moho, levaduras y algunas bacterias en productos cosméticos y de cuidado personal. Generalmente se considera un ingrediente seguro y bien tolerado en las concentraciones habituales de uso.\",\"details\":\"En la piel, el sorbato de potasio suele presentar bajo potencial de irritación, aunque en personas muy sensibles o con la barrera cutánea comprometida podría causar enrojecimiento o leve picor. No es un paraben, no libera formaldehído y no se asocia con alteraciones hormonales significativas. Su perfil toxicológico es favorable y es aceptado por muchos sellos de cosmética más suave o natural, siempre que se use en concentraciones bajas.\",\"category\":\"Conservante\"}",
-    "lastUpdated": 1764489827315,
+    "analysis": "{\"name\":\"Sorbato de Potasio\",\"riskLevel\":\"low\",\"summary\":\"El sorbato de potasio es un conservante utilizado para prevenir el crecimiento de hongos y levaduras en productos cosméticos. Generalmente se considera seguro y bien tolerado en las concentraciones usadas en cuidado de la piel y el cabello.\",\"details\":\"En la mayoría de las personas tiene baja irritabilidad y no está asociado con alteraciones hormonales ni con liberación de formaldehído. En pieles muy sensibles o dañadas puede causar irritación leve, enrojecimiento o picor, sobre todo a concentraciones altas o en productos que no se enjuagan. No es un sulfato, ni un ftalato, ni un parabeno, y se considera una alternativa conservante relativamente suave.\",\"category\":\"Conservante\"}",
+    "lastUpdated": 1764489988304,
     "createdAt": 1764469155141
   },
   "hialuronato de sodio__skincare__es": {
-    "analysis": "{\"name\":\"Hialuronato de Sodio\",\"riskLevel\":\"low\",\"summary\":\"El hialuronato de sodio es la forma salina del ácido hialurónico, utilizado por su gran capacidad para retener agua y aportar hidratación a la piel. Es considerado un ingrediente seguro y bien tolerado en la mayoría de los tipos de piel.\",\"details\":\"Este ingrediente actúa como humectante, atrayendo y reteniendo agua en la capa córnea, lo que ayuda a mejorar la elasticidad y la apariencia jugosa de la piel. Suele ser no comedogénico y apto incluso para pieles sensibles, con muy bajo riesgo de irritación o alergia. No está relacionado con parabenos, sulfatos, ftalatos, liberadores de formaldehído, fragancias, aceites minerales, siliconas, alcoholes secantes ni metales pesados.\",\"category\":\"Humectante e hidratante\"}",
-    "lastUpdated": 1764489827369,
+    "analysis": "{\"name\":\"Hialuronato de Sodio\",\"riskLevel\":\"low\",\"summary\":\"El hialuronato de sodio es la sal sódica del ácido hialurónico y se usa como potente agente hidratante en productos para el cuidado de la piel. Ayuda a retener agua en la epidermis, mejorando la suavidad y la apariencia de la piel.\",\"details\":\"Es considerado un ingrediente seguro y bien tolerado, con bajo potencial irritante y sin relación con parabenos, sulfatos, ftalatos, liberadores de formaldehído, fragancias, aceites minerales, siliconas, alcoholes secantes ni metales pesados. Puede utilizarse en pieles secas, sensibles y maduras, ya que contribuye a mantener la hidratación y a reforzar la barrera cutánea. En casos raros, algunas personas muy sensibles pueden presentar ligera irritación, pero no es frecuente.\",\"category\":\"Humectante / hidratante\"}",
+    "lastUpdated": 1764489988613,
     "createdAt": 1764469155415
   },
   "ácido esteárico__skincare__es": {
-    "analysis": "{\"name\":\"Ácido Esteárico\",\"riskLevel\":\"low\",\"summary\":\"El ácido esteárico es un ácido graso de cadena larga, usado como emulsionante y espesante en productos para el cuidado de la piel y el cabello. Generalmente se considera un ingrediente seguro y bien tolerado.\",\"details\":\"Este compuesto, de origen vegetal o animal, ayuda a estabilizar emulsiones y a dar textura cremosa a cremas y limpiadores, además de aportar una sensación emoliente sobre la piel. Suele ser no comedogénico en la mayoría de las personas y no está relacionado con disruptores hormonales, sulfatos agresivos, ftalatos ni liberadores de formaldehído. En pieles muy sensibles puede causar irritación leve de forma poco frecuente, sobre todo en formulaciones con altas concentraciones o combinadas con otros irritantes.\",\"category\":\"Ácido graso, emulsionante y emoliente\"}",
-    "lastUpdated": 1764489828168,
+    "analysis": "{\"name\":\"Ácido Esteárico\",\"riskLevel\":\"low\",\"summary\":\"El ácido esteárico es un ácido graso derivado de aceites vegetales o grasas animales que actúa como emulsionante y espesante en productos para la piel y el cabello. Generalmente se considera seguro y bien tolerado por la mayoría de los tipos de piel.\",\"details\":\"Se utiliza para estabilizar emulsiones (como cremas y lociones), mejorar la textura y ayudar a que otros ingredientes se distribuyan de forma uniforme sobre la piel o el cabello. Es poco probable que cause irritación, aunque en pieles muy sensibles u otras condiciones cutáneas preexistentes puede generar una ligera reacción irritativa o comedogénica dependiendo de la formulación global. No está relacionado con parabenos, sulfatos, ftalatos, liberadores de formaldehído ni otros conservantes problemáticos, y no se considera un disruptor endocrino.\",\"category\":\"Ácido graso / emulsionante\"}",
+    "lastUpdated": 1764489988698,
     "createdAt": 1764469155502
   },
   "estearato de glicerilo se__skincare__es": {
-    "analysis": "{\"name\":\"Estearato de Glicerilo Se\",\"riskLevel\":\"low\",\"summary\":\"El estearato de glicerilo SE es un emulsionante y agente estabilizante derivado de ácidos grasos y glicerina, ampliamente usado en productos para el cuidado de la piel. Generalmente se considera seguro y bien tolerado incluso por pieles sensibles.\",\"details\":\"Este ingrediente ayuda a mezclar fase acuosa y oleosa, mejorando la textura de cremas y lociones y facilitando su aplicación sobre la piel. No pertenece a los parabenos, sulfatos, ftalatos ni liberadores de formaldehído, y no suele ser comedogénico en las concentraciones habituales de cosmética. En raros casos, pieles muy reactivas pueden presentar irritación leve, pero no es un sensibilizante frecuente.\",\"category\":\"Emulsionante y estabilizante\"}",
-    "lastUpdated": 1764489827580,
+    "analysis": "{\"name\":\"Estearato de Glicerilo Se\",\"riskLevel\":\"low\",\"summary\":\"El estearato de glicerilo SE es un emulsionante derivado de ácidos grasos y glicerina que ayuda a mezclar agua y aceites en productos cosméticos. Generalmente se considera un ingrediente seguro y bien tolerado por la mayoría de los tipos de piel.\",\"details\":\"Actúa como emulsionante y estabilizante, aportando textura cremosa y ayudando a que la fórmula sea más uniforme y fácil de extender. Tiene bajo potencial irritante y no está asociado a disruptores hormonales, sulfatos agresivos, ftalatos ni liberadores de formaldehído. En pieles muy sensibles o con barrera cutánea muy dañada puede causar una leve irritación, pero estos casos son poco frecuentes.\",\"category\":\"Emulsionante y estabilizante\"}",
+    "lastUpdated": 1764489988852,
     "createdAt": 1764469155533
   },
   "dipropilenglicol__skincare__es": {
-    "analysis": "{\"name\":\"Dipropilenglicol\",\"riskLevel\":\"low\",\"summary\":\"El dipropilenglicol es un solvente e hidratante sintético utilizado para disolver otros ingredientes y mejorar la textura del producto. Generalmente se considera de baja toxicidad y bien tolerado por la piel.\",\"details\":\"Actúa como humectante, ayudando a retener agua en la fórmula y favoreciendo la distribución uniforme de activos en productos para el cuidado de la piel y el cabello. En la mayoría de las personas no causa irritación, aunque en pieles muy sensibles o con barrera cutánea alterada puede producir enrojecimiento o molestias leves. No está relacionado con parabenos, ftalatos, liberadores de formaldehído ni sulfatos, por lo que su preocupación principal se limita a posibles irritaciones individuales.\",\"category\":\"Solvente y humectante sintético\"}",
-    "lastUpdated": 1764489827213,
+    "analysis": "{\"name\":\"Dipropilenglicol\",\"riskLevel\":\"low\",\"summary\":\"El dipropilenglicol es un solvente e ingrediente humectante que ayuda a disolver otros componentes y a mantener la humedad en la piel. Generalmente se considera de baja irritación y seguro en concentraciones habituales en cosméticos.\",\"details\":\"Este ingrediente facilita la textura del producto y mejora la penetración de otros activos sin aportar sensación grasa. En la mayoría de las personas no causa problemas, aunque en pieles muy sensibles o con dermatitis atópica puede provocar irritación leve o enrojecimiento si se usa en altas concentraciones. No está asociado a alteraciones hormonales ni a los grupos de ingredientes más preocupantes como parabenos, ftalatos o liberadores de formaldehído.\",\"category\":\"Solvente y humectante\"}",
+    "lastUpdated": 1764489988457,
     "createdAt": 1764469155620
   },
   "disódico edta__skincare__es": {
@@ -2760,28 +2760,28 @@
     "createdAt": 1764469155633
   },
   "ácido palmítico__skincare__es": {
-    "analysis": "{\"name\":\"Ácido Palmítico\",\"riskLevel\":\"low\",\"summary\":\"El ácido palmítico es un ácido graso saturado de origen vegetal o animal que se usa como emulsionante y agente de textura en productos cosméticos. Generalmente se considera seguro para la mayoría de los tipos de piel.\",\"details\":\"En el cuidado de la piel, el ácido palmítico ayuda a estabilizar las fórmulas, aportar consistencia cremosa y mejorar la sensación sobre la piel actuando como emoliente. No está relacionado con parabenos, sulfatos, ftalatos, liberadores de formaldehído ni metales pesados. En pieles muy grasas o con acné severo podría tener cierto potencial comedogénico, por lo que se recomienda observar la respuesta individual si se usa de forma frecuente.\",\"category\":\"Ácido graso / emoliente\"}",
-    "lastUpdated": 1764489827297,
+    "analysis": "{\"name\":\"Ácido Palmítico\",\"riskLevel\":\"low\",\"summary\":\"El ácido palmítico es un ácido graso saturado de origen vegetal o animal que se usa como emoliente y agente espesante en productos para el cuidado de la piel. Generalmente se considera seguro y bien tolerado por la mayoría de las personas.\",\"details\":\"Este ingrediente ayuda a suavizar y acondicionar la piel, además de aportar textura y estabilidad a las fórmulas cosméticas. No está relacionado con parabenos, sulfatos, ftalatos ni liberadores de formaldehído, y raramente causa irritación, salvo en pieles extremadamente sensibles o con acné muy inflamatorio donde algunos ácidos grasos saturados pueden ser ligeramente comedogénicos. Su uso en concentraciones habituales en cosmética se considera de bajo riesgo.\",\"category\":\"Ácido graso emoliente\"}",
+    "lastUpdated": 1764489988424,
     "createdAt": 1764469155641
   },
   "ácido láurico__skincare__es": {
-    "analysis": "{\"name\":\"Ácido Láurico\",\"riskLevel\":\"low\",\"summary\":\"El ácido láurico es un ácido graso saturado de cadena media que se usa en cosmética como agente limpiador, emulsionante y emoliente. Suele considerarse un ingrediente seguro y bien tolerado por la mayoría de las personas.\",\"details\":\"En productos de cuidado de la piel y el cabello, el ácido láurico ayuda a disolver grasas y suciedad y contribuye a la formación de espuma en jabones y limpiadores, además de aportar cierta suavidad a la piel. No está asociado con parabenos, sulfatos agresivos, ftalatos, liberadores de formaldehído ni metales pesados. En pieles muy sensibles o grasas/acnéicas, concentraciones altas podrían resultar algo irritantes o comedogénicas, por lo que conviene vigilar la respuesta individual.\",\"category\":\"Ácido graso / agente limpiador y emoliente\"}",
-    "lastUpdated": 1764489827171,
+    "analysis": "{\"name\":\"Ácido Láurico\",\"riskLevel\":\"low\",\"summary\":\"El ácido láurico es un ácido graso saturado de origen vegetal (como el coco o la palma) que se usa como emulsionante, agente limpiador y emoliente en productos para la piel y el cabello. Generalmente se considera seguro y bien tolerado.\",\"details\":\"En cosmética, el ácido láurico ayuda a formar espuma en limpiadores y jabones, y puede aportar una ligera acción antimicrobiana frente a ciertas bacterias y hongos. En pieles muy grasas o con acné, en altas concentraciones y en fórmulas oclusivas, podría contribuir a la obstrucción de poros en algunas personas sensibles, aunque esto no es frecuente. No pertenece a familias de alto riesgo como parabenos, ftalatos, liberadores de formaldehído, sulfatos agresivos ni metales pesados.\",\"category\":\"Ácido graso / emulsionante\"}",
+    "lastUpdated": 1764489990112,
     "createdAt": 1764469155650
   },
   "hialuronato de sodio acetilado__skincare__es": {
-    "analysis": "{\"name\":\"Hialuronato de Sodio Acetilado\",\"riskLevel\":\"low\",\"summary\":\"El hialuronato de sodio acetilado es una forma modificada de ácido hialurónico que mejora la hidratación y la retención de agua en la piel. Se considera un ingrediente seguro y bien tolerado en la mayoría de los tipos de piel.\",\"details\":\"Esta molécula tiene mejor afinidad por la piel y mayor resistencia a la degradación que el ácido hialurónico convencional, proporcionando hidratación prolongada y ayudando a mejorar la elasticidad cutánea. No está relacionado con parabenos, sulfatos, ftalatos, liberadores de formaldehído, fragancias sintéticas, aceites minerales, siliconas, alcoholes secantes ni metales pesados, y las reacciones adversas suelen limitarse a irritación leve en pieles extremadamente sensibles.\",\"category\":\"Humectante / agente hidratante\"}",
-    "lastUpdated": 1764489827784,
+    "analysis": "{\"name\":\"Hialuronato de Sodio Acetilado\",\"riskLevel\":\"low\",\"summary\":\"Es una forma modificada del ácido hialurónico diseñada para mejorar la hidratación y la permanencia sobre la piel. Generalmente se considera un ingrediente seguro y bien tolerado.\",\"details\":\"El hialuronato de sodio acetilado tiene propiedades humectantes y formadoras de película que ayudan a retener el agua en la superficie cutánea, mejorando la suavidad y elasticidad de la piel. Su peso molecular y modificación química suelen reducir el riesgo de irritación, aunque en pieles extremadamente sensibles siempre es posible una reacción aislada. No se asocia con disruptores hormonales, liberadores de formaldehído, ftalatos, parabenos ni otros componentes controvertidos habituales en cosmética.\",\"category\":\"Humectante e hidratante dérmico\"}",
+    "lastUpdated": 1764489988286,
     "createdAt": 1764469155731
   },
   "ácido mirístico__skincare__es": {
-    "analysis": "{\"name\":\"Ácido Mirístico\",\"riskLevel\":\"low\",\"summary\":\"El ácido mirístico es un ácido graso saturado de origen vegetal o animal usado como emoliente y agente de limpieza en productos para la piel y el cabello. Suele ser bien tolerado por la mayoría de los tipos de piel.\",\"details\":\"Este ingrediente ayuda a suavizar la piel y mejora la textura de las emulsiones, además de participar en la formación de espuma en limpiadores. No está asociado a parabenos, sulfatos fuertes, ftalatos, liberadores de formaldehído, fragancias sintéticas ni metales pesados. En pieles muy grasas o con acné, un uso excesivo podría contribuir ligeramente a la obstrucción de poros, por lo que conviene vigilar la respuesta individual.\",\"category\":\"Ácido graso / emoliente\"}",
-    "lastUpdated": 1764489832952,
+    "analysis": "{\"name\":\"Ácido Mirístico\",\"riskLevel\":\"low\",\"summary\":\"El ácido mirístico es un ácido graso saturado de origen vegetal o animal que se usa como emulsionante y agente limpiador en productos para la piel. Generalmente se considera seguro, aunque puede ser comedogénico en pieles grasas o acneicas.\",\"details\":\"En cosmética, el ácido mirístico ayuda a disolver aceites y suciedad, mejora la espuma de limpiadores y aporta textura cremosa a cremas y jabones. Aunque su perfil de seguridad es bueno y no se asocia con efectos tóxicos sistémicos, en personas con tendencia al acné puede contribuir a la obstrucción de poros si se usa en altas concentraciones o en productos que no se enjuagan. No está relacionado con parabenos, sulfatos agresivos, ftalatos ni liberadores de formaldehído.\",\"category\":\"Ácido graso / agente limpiador y emulsionante\"}",
+    "lastUpdated": 1764489988759,
     "createdAt": 1764469155767
   },
   "ácido cítrico__skincare__es": {
-    "analysis": "{\"name\":\"Ácido Cítrico\",\"riskLevel\":\"low\",\"summary\":\"El ácido cítrico es un ácido orgánico suave utilizado para ajustar el pH de productos para el cuidado de la piel y como agente quelante. Generalmente es seguro, aunque puede causar irritación leve en pieles muy sensibles o dañadas.\",\"details\":\"En cosmética, el ácido cítrico ayuda a equilibrar el pH de la fórmula y puede contribuir ligeramente a la exfoliación química superficial por su carácter ácido. A concentraciones habituales en productos de enjuague y cremas suele ser bien tolerado, pero en pieles reactivas, con rosácea o con barrera cutánea alterada puede provocar escozor, enrojecimiento o sequedad si está en niveles elevados. No está relacionado con parabenos, sulfatos, ftalatos, liberadores de formaldehído, fragancias sintéticas, aceites minerales ni metales pesados, por lo que su perfil toxicológico general se considera bajo.\",\"category\":\"Regulador de pH / Ácido orgánico\"}",
-    "lastUpdated": 1764489827992,
+    "analysis": "{\"name\":\"Ácido Cítrico\",\"riskLevel\":\"low\",\"summary\":\"El ácido cítrico es un regulador de pH y quelante derivado comúnmente de cítricos. Generalmente es seguro en cosmética, aunque puede causar irritación leve en pieles muy sensibles o dañadas.\",\"details\":\"En productos para el cuidado de la piel, el ácido cítrico se usa principalmente para ajustar la acidez de la fórmula y, en menor grado, como exfoliante suave tipo AHA. A concentraciones habituales en cosméticos enjuagables y leave-on está considerado de bajo riesgo, pero en pieles reactivas, con rosácea o barrera alterada puede provocar escozor, enrojecimiento o sensibilidad aumentada, sobre todo si se combina con otros ácidos. No está asociado con disruptores hormonales, ftalatos, liberadores de formaldehído, sulfatos ni metales pesados.\",\"category\":\"Regulador de pH / AHA suave\"}",
+    "lastUpdated": 1764489988554,
     "createdAt": 1764469155832
   },
   "estearato de etilenglicol (乙二醇二硬脂酸酯)__skincare__es": {
@@ -2795,8 +2795,8 @@
     "createdAt": 1764469155920
   },
   "hidróxido de potasio__skincare__es": {
-    "analysis": "{\"name\":\"Hidróxido de Potasio\",\"riskLevel\":\"moderate\",\"summary\":\"El hidróxido de potasio es una base fuerte usada para ajustar el pH y en la saponificación de grasas en productos para la piel. Puede resultar irritante para la piel, ojos y mucosas si la concentración es alta o el producto no está bien formulado.\",\"details\":\"En cosmética se emplea en concentraciones bajas y controladas para regular el pH o para fabricar jabones, donde suele quedar neutralizado en el producto final. Sin embargo, en formas más concentradas o en productos mal equilibrados puede causar sequedad, enrojecimiento e irritación, especialmente en piel sensible o dañada. No está relacionado con parabenos, sulfatos, ftalatos, formaldehído ni fragancias, pero debe usarse respetando las concentraciones máximas recomendadas.\",\"category\":\"Regulador de pH / agente alcalinizante\"}",
-    "lastUpdated": 1764489827887,
+    "analysis": "{\"name\":\"Hidróxido de Potasio\",\"riskLevel\":\"moderate\",\"summary\":\"El hidróxido de potasio es una base fuerte utilizada para ajustar el pH en productos cosméticos y para saponificar aceites en jabones. En concentraciones altas puede ser muy irritante para la piel, los ojos y las mucosas.\",\"details\":\"En productos para el cuidado de la piel generalmente se usa en cantidades muy bajas y neutralizadas, lo que reduce mucho su potencial de corrosividad, pero si el pH final no está bien controlado puede causar irritación, enrojecimiento y sensación de quemazón. Las personas con piel sensible, dermatitis o barrera cutánea dañada pueden reaccionar con mayor facilidad, especialmente en productos que se dejan sobre la piel (leave-on). No se asocia con efectos hormonales ni con toxicidad sistémica relevante a las concentraciones cosméticas habituales, pero sí requiere un control estricto de formulación y pH.\",\"category\":\"Regulador de pH / agente alcalinizante\"}",
+    "lastUpdated": 1764489989208,
     "createdAt": 1764469155927
   },
   "fragancia (uso diario)__skincare__es": {
@@ -2810,18 +2810,18 @@
     "createdAt": 1764469156036
   },
   "tocoferol (vitamina e)__skincare__es": {
-    "analysis": "{\"name\":\"Tocoferol (vitamina E)\",\"riskLevel\":\"low\",\"summary\":\"El tocoferol, o vitamina E, es un antioxidante que ayuda a proteger la piel del daño causado por los radicales libres. Se usa con frecuencia en productos para el cuidado de la piel por sus propiedades protectoras y acondicionadoras.\",\"details\":\"En cosmética, la vitamina E contribuye a reforzar la barrera cutánea y puede ayudar a mejorar la suavidad y apariencia general de la piel. Suele ser bien tolerada, aunque en pieles muy sensibles o con dermatitis seborreica puede causar irritación leve o brotes ocasionales. No es un disruptor hormonal ni pertenece a las familias de parabenos, sulfatos, ftalatos, liberadores de formaldehído, fragancias sintéticas ni aceites minerales.\",\"category\":\"Antioxidante y acondicionador de la piel\"}",
-    "lastUpdated": 1764489827271,
+    "analysis": "{\"name\":\"Tocoferol (vitamina E)\",\"riskLevel\":\"low\",\"summary\":\"El tocoferol es una forma de vitamina E con propiedades antioxidantes que protege la piel del daño causado por los radicales libres. Generalmente es bien tolerado y se considera un ingrediente seguro en cosmética.\",\"details\":\"Además de su acción antioxidante, el tocoferol ayuda a apoyar la función de barrera de la piel y puede contribuir a mejorar la apariencia de sequedad y pequeñas irritaciones. En algunas personas muy sensibles puede causar irritación leve o reacciones alérgicas de contacto, pero estos casos son poco frecuentes. No está asociado a disruptores hormonales, sulfatos, ftalatos ni liberadores de formaldehído.\",\"category\":\"Antioxidante / vitamina\"}",
+    "lastUpdated": 1764489988366,
     "createdAt": 1764469156036
   },
   "policuaternio-7__skincare__es": {
-    "analysis": "{\"name\":\"Policuaternio-7\",\"riskLevel\":\"low\",\"summary\":\"El policuaternio-7 es un polímero catiónico usado como acondicionador y agente filmógeno en productos para el cuidado de la piel y el cabello. Ayuda a aportar suavidad, reducir el frizz y mejorar la sensación al tacto.\",\"details\":\"Este ingrediente es soluble en agua y forma una película ligera sobre la piel o el cabello que mejora la hidratación aparente y la peinabilidad sin aportar una sensación demasiado grasosa. Generalmente se considera de baja irritación y baja toxicidad, aunque en pieles muy sensibles podría causar ligeras molestias si se usa en concentraciones altas o en combinación con otros irritantes. No está relacionado con parabenos, ftalatos, sulfatos, liberadores de formaldehído ni metales pesados, por lo que su principal preocupación suele limitarse a la posible irritación leve en personas sensibles.\",\"category\":\"Polímero acondicionador catiónico\"}",
-    "lastUpdated": 1764489828270,
+    "analysis": "{\"name\":\"Policuaternio-7\",\"riskLevel\":\"low\",\"summary\":\"El policuaternio-7 es un polímero catiónico usado como acondicionador y agente formador de película en productos para el cuidado de la piel y el cabello. Generalmente se considera de baja irritación y bien tolerado por la mayoría de las personas.\",\"details\":\"Este ingrediente ayuda a suavizar la superficie de la piel y del cabello, mejorar la peinabilidad y reducir la electricidad estática, formando una película ligera. No pertenece a parabenos, sulfatos, ftalatos ni liberadores de formaldehído, y no se asocia comúnmente con efectos hormonales. En pieles muy sensibles o con tendencia a irritación, puede causar enrojecimiento o molestias leves, por lo que se recomienda probarlo primero en una pequeña zona si existe historial de alergias a polímeros catiónicos.\",\"category\":\"Acondicionador y formador de película\"}",
+    "lastUpdated": 1764489989011,
     "createdAt": 1764469156051
   },
   "cera sintética__skincare__es": {
-    "analysis": "{\"name\":\"Cera Sintética\",\"riskLevel\":\"low\",\"summary\":\"La cera sintética es un emoliente y agente formador de película utilizado para aportar textura, consistencia y protección en productos para el cuidado de la piel. Generalmente se considera un ingrediente de bajo riesgo para la mayoría de los tipos de piel.\",\"details\":\"La cera sintética suele derivarse de hidrocarburos procesados que ayudan a espesar las fórmulas, mejorar la estabilidad y crear una barrera protectora suave sobre la piel, reduciendo la pérdida de agua. No está relacionada con parabenos, sulfatos, ftalatos ni liberadores de formaldehído y rara vez causa irritación, salvo en personas muy sensibles a derivados de petróleo. Puede ser algo oclusiva en pieles con tendencia acneica si se combina con otros ingredientes comedogénicos, pero en general se considera segura y bien tolerada.\",\"category\":\"Emoliente y agente formador de película\"}",
-    "lastUpdated": 1764489827544,
+    "analysis": "{\"name\":\"Cera Sintética\",\"riskLevel\":\"low\",\"summary\":\"La cera sintética es un ingrediente emoliente y texturizante usado para espesar y estabilizar productos de cuidado de la piel. Generalmente se considera de baja irritación y segura para la mayoría de los tipos de piel.\",\"details\":\"Esta cera se obtiene a partir de mezclas de hidrocarburos sintéticos, diseñadas para imitar las propiedades de ceras naturales como la de abeja. Crea una película protectora sobre la piel que ayuda a retener la humedad y mejora la sensación y la consistencia del producto. En pieles muy sensibles u ocneicas, su efecto oclusivo podría contribuir ligeramente a la obstrucción de poros si se combina con otros ingredientes muy pesados, pero en general su perfil de seguridad es bueno.\",\"category\":\"Emoliente y agente formador de película\"}",
+    "lastUpdated": 1764489988933,
     "createdAt": 1764469156183
   },
   "poliquaternium-6__skincare__es": {
@@ -2840,8 +2840,8 @@
     "createdAt": 1764469156467
   },
   "metabisulfito de sodio__skincare__es": {
-    "analysis": "{\"name\":\"Metabisulfito de Sodio\",\"riskLevel\":\"moderate\",\"summary\":\"El metabisulfito de sodio es un conservante y antioxidante que ayuda a prevenir la oxidación y el deterioro del producto. Puede causar irritación o reacciones alérgicas en personas sensibles a los sulfitos, especialmente en pieles reactivas o con dermatitis.\",\"details\":\"En cosmética se utiliza en bajas concentraciones para proteger la fórmula frente a la oxidación y el crecimiento microbiano, mejorando la estabilidad del producto. Sin embargo, los sulfitos son conocidos alérgenos en personas predispuestas y pueden provocar enrojecimiento, picor o dermatitis de contacto, sobre todo en piel dañada o muy sensible. Su perfil de seguridad general es aceptable, pero se recomienda precaución en personas con antecedentes de alergia a sulfitos o asma.\",\"category\":\"Conservante / antioxidante\"}",
-    "lastUpdated": 1764489827770,
+    "analysis": "{\"name\":\"Metabisulfito de Sodio\",\"riskLevel\":\"moderate\",\"summary\":\"El metabisulfito de sodio es un conservante y antioxidante que ayuda a evitar la degradación del producto, pero puede causar reacciones en personas sensibles a los sulfitos. En cuidado de la piel suele usarse en bajas concentraciones, lo que limita parcialmente sus riesgos.\",\"details\":\"Este ingrediente pertenece a la familia de los sulfitos y puede desencadenar irritación cutánea, enrojecimiento o urticaria en personas con piel sensible o con alergia conocida a los sulfitos, además de poder provocar síntomas respiratorios en individuos muy sensibles si se inhala. Aunque no es un disruptor hormonal ni un liberador de formaldehído, su potencial alergénico hace que se recomiende precaución en pieles reactivas, asmáticas o con antecedentes de hipersensibilidad. En la mayoría de usuarios, usado a concentraciones cosméticas habituales, se tolera bien, pero no está exento de riesgo para grupos susceptibles.\",\"category\":\"Conservante / antioxidante\"}",
+    "lastUpdated": 1764489989389,
     "createdAt": 1764469156547
   },
   "cocoil betaína de mirística (derivado de nuez moscada)__skincare__es": {
@@ -2880,13 +2880,13 @@
     "createdAt": 1764470362247
   },
   "policuaternio-6__skincare__es": {
-    "analysis": "{\"name\":\"Policuaternio-6\",\"riskLevel\":\"low\",\"summary\":\"El policuaternio-6 es un polímero catiónico utilizado como agente acondicionador y formador de película en productos para el cuidado de la piel y del cabello. Ayuda a mejorar la suavidad, la sensación sedosa y la fijación ligera sin aportar grasa.\",\"details\":\"Este ingrediente se adhiere a la superficie de la piel y del cabello, reduciendo la electricidad estática y mejorando la manejabilidad, por lo que es común en champús, acondicionadores y productos de peinado. No es un paraben, sulfato, ftalato ni liberador de formaldehído, y su potencial irritante suele ser bajo, aunque en pieles muy sensibles puede causar ligera irritación o sensación de acumulación con usos muy frecuentes. En general se considera seguro en las concentraciones habituales de cosméticos y no se asocia con efectos hormonales conocidos.\",\"category\":\"Polímero catiónico acondicionador\"}",
-    "lastUpdated": 1764489827832,
+    "analysis": "{\"name\":\"Policuaternio-6\",\"riskLevel\":\"low\",\"summary\":\"El policuaternio-6 es un polímero catiónico usado como acondicionador y agente fijador en productos para la piel y el cabello. Generalmente se considera de bajo riesgo para la mayoría de las personas.\",\"details\":\"Actúa formando una película sobre la superficie de la piel o el cabello, mejorando la suavidad, reduciendo el encrespamiento y aportando sensación de deslizamiento. No pertenece a las familias de parabenos, sulfatos, ftalatos, liberadores de formaldehído ni fragancias, y su potencial irritante es bajo, aunque en pieles muy sensibles o comprometidas podría causar ligera irritación o sensación de acumulación con uso excesivo.\",\"category\":\"Acondicionador y agente filmógeno\"}",
+    "lastUpdated": 1764489988711,
     "createdAt": 1764470362262
   },
   "disodio edta__skincare__es": {
-    "analysis": "{\"name\":\"Disodio Edta\",\"riskLevel\":\"low\",\"summary\":\"El disodio EDTA es un agente quelante que ayuda a estabilizar las fórmulas cosméticas y mejorar la eficacia de otros conservantes. En general se considera de bajo riesgo a las concentraciones usadas en cuidado de la piel.\",\"details\":\"Funciona atrapando iones metálicos en el agua o en la fórmula, evitando que desestabilicen el producto o reduzcan la eficacia de los conservantes. Su absorción a través de la piel es muy baja y la irritación es poco frecuente, aunque en pieles muy sensibles podría contribuir ligeramente a la sequedad o irritación cuando se combina con otros ingredientes agresivos. No está asociado de forma relevante con efectos hormonales, cáncer u otros efectos sistémicos en el uso típico de productos cosméticos.\",\"category\":\"Agente quelante / Estabilizante\"}",
-    "lastUpdated": 1764489827434,
+    "analysis": "{\"name\":\"Disodio Edta\",\"riskLevel\":\"low\",\"summary\":\"El disodio EDTA es un agente quelante que ayuda a estabilizar la fórmula y mejorar el rendimiento de otros ingredientes en productos para la piel y el cabello. Generalmente se considera seguro a las concentraciones usadas en cosmética.\",\"details\":\"Este ingrediente se une a los iones metálicos presentes en el agua y en la fórmula, evitando que desestabilicen el producto o reduzcan la eficacia de conservantes y tensioactivos. Su absorción cutánea es muy baja y la evidencia disponible no lo asocia con efectos hormonales ni con irritación significativa en uso normal. Aun así, puede contribuir de forma indirecta a la carga ambiental, ya que es poco biodegradable, pero esto no suele representar un riesgo directo para la salud del usuario.\",\"category\":\"Agente quelante / Estabilizante de fórmula\"}",
+    "lastUpdated": 1764489988334,
     "createdAt": 1764470362292
   },
   "cocamidopropil betaína (月桂基甜菜碱)__skincare__es": {
@@ -2905,13 +2905,13 @@
     "createdAt": 1764471660161
   },
   "proteína de seda hidrolizada__skincare__es": {
-    "analysis": "{\"name\":\"Proteína de Seda Hidrolizada\",\"riskLevel\":\"low\",\"summary\":\"La proteína de seda hidrolizada es un ingrediente acondicionador derivado de la seda que ayuda a mejorar la suavidad y la hidratación de la piel y el cabello. Generalmente se considera seguro y bien tolerado.\",\"details\":\"Al estar hidrolizada, la proteína de seda se fragmenta en péptidos más pequeños que pueden adherirse a la superficie de la piel y el cabello, aportando sensación de suavidad y ligera humectación. No está asociada con disruptores hormonales, sulfatos, ftalatos ni liberadores de formaldehído. En personas muy sensibles o con alergia específica a proteínas de origen animal puede causar irritación leve, pero estos casos son poco frecuentes.\",\"category\":\"Acondicionador y humectante\"}",
-    "lastUpdated": 1764471660253,
+    "analysis": "{\"name\":\"Proteína de Seda Hidrolizada\",\"riskLevel\":\"low\",\"summary\":\"La proteína de seda hidrolizada es un ingrediente acondicionador derivado de la seda que ayuda a mejorar la hidratación y la suavidad de la piel y el cabello. Generalmente se considera seguro y bien tolerado.\",\"details\":\"Al estar hidrolizada, la proteína de seda se descompone en péptidos más pequeños que pueden adherirse a la superficie de la piel y el cabello, formando una película ligera que aumenta la retención de agua y la sensación de suavidad. No está asociada con parabenos, sulfatos, ftalatos, liberadores de formaldehído, fragancia, aceites minerales, siliconas, alcoholes secantes ni metales pesados. Las reacciones adversas son poco frecuentes, pero las personas con alergia conocida a las proteínas de origen animal deberían usarla con precaución.\",\"category\":\"Proteínas y agentes acondicionadores\"}",
+    "lastUpdated": 1764489988131,
     "createdAt": 1764471660253
   },
   "etilenglicol distearato__skincare__es": {
-    "analysis": "{\"name\":\"Etilenglicol Distearato\",\"riskLevel\":\"low\",\"summary\":\"El etilenglicol distearato es un agente opacificante y emulsionante que se usa para dar aspecto nacarado y mejorar la textura de productos para la piel y el cabello. Generalmente se considera de baja toxicidad y bien tolerado por la mayoría de las personas.\",\"details\":\"Este ingrediente es un éster derivado de ácidos grasos que ayuda a estabilizar las formulaciones y aporta sensación suave y cremosa. No está asociado a parabenos, sulfatos agresivos, ftalatos, liberadores de formaldehído ni metales pesados, y rara vez causa irritación en piel sana. En pieles muy sensibles u oclusivas podría contribuir levemente a la obstrucción de poros si se combina con otros ingredientes pesados, pero el riesgo es bajo en concentraciones cosméticas habituales.\",\"category\":\"Emulsionante y agente opacificante\"}",
-    "lastUpdated": 1764471660393,
+    "analysis": "{\"name\":\"Etilenglicol Distearato\",\"riskLevel\":\"low\",\"summary\":\"El etilenglicol distearato es un emulsionante y agente nacarante utilizado para dar textura y aspecto perlado a productos de cuidado de la piel y el cabello. Se considera generalmente seguro en las concentraciones habituales de cosméticos.\",\"details\":\"Este ingrediente ayuda a estabilizar las emulsiones y aporta una apariencia cremosa y brillante a geles y lociones, mejorando la sensación al tacto. No está relacionado con disruptores hormonales, sulfatos agresivos ni ftalatos, y la irritación cutánea es poco frecuente salvo en personas con piel muy sensible. En productos enjuagables se considera de muy bajo riesgo, y en productos de permanencia en piel también se considera seguro dentro de las concentraciones típicas de formulación.\",\"category\":\"Emulsionante y agente nacarante\"}",
+    "lastUpdated": 1764489988781,
     "createdAt": 1764471660393
   },
   "lauril betaína__skincare__es": {
@@ -2920,13 +2920,13 @@
     "createdAt": 1764471661030
   },
   "hidroxitolueno butilado (bht)__skincare__es": {
-    "analysis": "{\"name\":\"Hidroxitolueno Butilado (bht)\",\"riskLevel\":\"moderate\",\"summary\":\"El hidroxitolueno butilado (BHT) es un antioxidante sintético que se usa para evitar la oxidación de aceites y grasas en productos cosméticos. Su seguridad es discutida porque existen datos que sugieren posibles efectos irritantes y preocupaciones sobre toxicidad a largo plazo en dosis altas.\",\"details\":\"En el cuidado de la piel suele emplearse en concentraciones bajas y, en la mayoría de las personas, no causa problemas significativos, aunque puede provocar irritación o sensibilidad en pieles reactivas o zonas delicadas como el contorno de ojos. Estudios en animales han relacionado dosis elevadas de BHT con efectos sobre el hígado y posible actividad disruptora endocrina, lo que genera cierta controversia sobre su uso continuado. Por ello, muchas fórmulas modernas tienden a reducirlo o sustituirlo por antioxidantes más seguros de origen natural.\",\"category\":\"Antioxidante sintético / conservante\"}",
-    "lastUpdated": 1764471661199,
+    "analysis": "{\"name\":\"Hidroxitolueno Butilado (bht)\",\"riskLevel\":\"moderate\",\"summary\":\"El hidroxitolueno butilado (BHT) es un antioxidante sintético usado para evitar la oxidación de aceites y grasas en productos cosméticos. Puede causar irritación leve en pieles sensibles y existe preocupación por su posible efecto como disruptor endocrino a altas exposiciones.\",\"details\":\"En cuidado de la piel, el BHT ayuda a que las fórmulas se mantengan estables y no se enrancien, prolongando la vida útil del producto. Sin embargo, algunos estudios en animales han sugerido potencial de toxicidad y efectos hormonales con dosis altas, lo que lleva a considerarlo un ingrediente controvertido, aunque las concentraciones cosméticas suelen ser bajas. Las personas con piel muy reactiva o que prefieran fórmulas más suaves pueden optar por evitarlo o usarlo con moderación.\",\"category\":\"Antioxidante sintético / conservante\"}",
+    "lastUpdated": 1764489989368,
     "createdAt": 1764471661199
   },
   "bis-diethoxydiglycol ciclohexano-14-dicarboxilato__skincare__es": {
-    "analysis": "{\"name\":\"Bis-diethoxydiglycol Ciclohexano-1,4-dicarboxilato\",\"riskLevel\":\"low\",\"summary\":\"Es un éster sintético utilizado principalmente como solvente, plastificante o agente mejorador de la textura en productos cosméticos para el cuidado de la piel. En general se considera de bajo riesgo según la información disponible, aunque los datos públicos son limitados.\",\"details\":\"Este ingrediente pertenece a una familia de compuestos de tipo éster que ayudan a disolver otros ingredientes y aportar una sensación suave y no pegajosa en la fórmula. No está clasificado como paraben, sulfato, ftalato, liberador de formaldehído, ni se asocia típicamente con aceites minerales, siliconas problemáticas o metales pesados. La información toxicológica específica es escasa, por lo que, aunque no hay indicios claros de alta peligrosidad, se recomienda precaución adicional en pieles muy sensibles o en personas con tendencia a irritaciones.\",\"category\":\"Solvente y acondicionador de textura\"}",
-    "lastUpdated": 1764471661496,
+    "analysis": "{\"name\":\"Bis-diethoxydiglycol Ciclohexano-1,4-dicarboxilato\",\"riskLevel\":\"low\",\"summary\":\"Éste es un emoliente y agente sensorial sintético utilizado para mejorar la textura y la sensación sobre la piel. Generalmente se considera de bajo riesgo en productos cosméticos según los datos disponibles.\",\"details\":\"El bis-diethoxydiglycol ciclohexano-1,4-dicarboxilato se usa para aportar una sensación sedosa, mejorar la extensibilidad de las fórmulas y modular el brillo, especialmente en protectores solares y maquillaje. No es un paraben, sulfato, ftalato ni liberador de formaldehído, y no se asocia de forma significativa con irritación o sensibilización en la población general. Como con cualquier ingrediente sintético, las personas con piel extremadamente sensible deben realizar una prueba de parche previa.\",\"category\":\"Emoliente y mejorador de textura\"}",
+    "lastUpdated": 1764489989257,
     "createdAt": 1764471661245
   },
   "betaína de miristilo__skincare__es": {
@@ -2935,8 +2935,8 @@
     "createdAt": 1764471661635
   },
   "fragancia (perfume)__skincare__es": {
-    "analysis": "{\"name\":\"Fragancia (perfume)\",\"riskLevel\":\"moderate\",\"summary\":\"La fragancia es una mezcla compleja de compuestos aromáticos que puede incluir alérgenos y, en algunos casos, ftalatos. Suele asociarse con irritación de la piel y reacciones alérgicas, especialmente en pieles sensibles o reactivas.\",\"details\":\"El término “fragancia” o “parfum” agrupa muchos ingredientes no especificados, algunos de los cuales pueden ser sensibilizantes cutáneos y desencadenar dermatitis de contacto, enrojecimiento o picor. En personas con piel sensible, rosácea, eccema o con tendencia a alergias, se recomienda limitar o evitar productos perfumados en el rostro. Aunque no siempre contiene sustancias problemáticas como ftalatos, la falta de transparencia dificulta evaluar su seguridad completa.\",\"category\":\"Fragancias y perfumes\"}",
-    "lastUpdated": 1764472990447,
+    "analysis": "{\"name\":\"Fragancia (perfume)\",\"riskLevel\":\"moderate\",\"summary\":\"La fragancia o perfume es una mezcla compleja de compuestos aromáticos que puede incluir alérgenos y, en algunos casos, ftalatos u otros sensibilizantes. En el uso diario sobre la piel puede aumentar el riesgo de irritación o dermatitis en personas sensibles.\",\"details\":\"Bajo el término genérico “fragancia (parfum)” pueden agruparse decenas de sustancias, algunas de las cuales son alérgenos reconocidos o posibles disruptores endocrinos cuando contienen ciertos ftalatos, aunque esto no siempre se declara claramente. En pieles sensibles, con dermatitis, rosácea, acné inflamatorio o en zonas irritadas, su uso diario puede favorecer enrojecimiento, picor o brotes de alergia de contacto. Se considera más prudente limitar su uso en productos faciales de uso diario, en embarazadas o en personas con antecedentes de alergias, optando por fórmulas sin fragancia o con alérgenos declarados.\",\"category\":\"Fragancias y alérgenos potenciales\"}",
+    "lastUpdated": 1764489989456,
     "createdAt": 1764472990447
   },
   "cetearyl betaína__skincare__es": {
@@ -3060,13 +3060,13 @@
     "createdAt": 1764489152845
   },
   "山梨醇__skincare__zh": {
-    "analysis": "{\"name\":\"山梨醇\",\"riskLevel\":\"low\",\"summary\":\"山梨醇是一种多元醇保湿剂，常用于护肤和护发产品中帮助皮肤和头发保持水分。一般耐受性良好，致敏率较低。\",\"details\":\"作为保湿剂和保水剂，山梨醇能在角质层表面吸水并减缓水分流失，使皮肤感觉柔软光滑。它不属于防腐剂、硫酸盐、邻苯二甲酸酯、矿物油或硅油，也不是释放甲醛成分，对激素及重金属风险无显著关联。少数敏感肌在高浓度或配方不当时可能出现轻微刺激或黏腻感，但总体安全性较高。\",\"category\":\"保湿剂 / 保水剂\"}",
-    "lastUpdated": 1764489153188,
+    "analysis": "{\"name\":\"山梨醇\",\"riskLevel\":\"low\",\"summary\":\"山梨醇是一种糖醇类保湿剂，常用于护肤品中帮助皮肤锁水。一般刺激性较低，敏感肌通常也能耐受。\",\"details\":\"在护肤和洗护产品中，山梨醇主要作为保湿剂和润肤剂使用，可帮助维持配方的湿润度并减少皮肤干燥。大多数研究认为其安全性较高，毒性低，不属于防腐剂、硫酸盐类或激素干扰物等高风险成分。少数极度敏感人群可能在高浓度或破损皮肤上出现轻微刺激或粘腻感，但总体风险较低。\",\"category\":\"保湿剂 / 润肤剂\"}",
+    "lastUpdated": 1764490094742,
     "createdAt": 1764489153188
   },
   "二丙二醇__skincare__zh": {
-    "analysis": "{\"name\":\"二丙二醇\",\"riskLevel\":\"low\",\"summary\":\"二丙二醇是一种常用的溶剂和保湿剂，能帮助其他成分溶解并提升肤感。总体安全性较高，刺激性较低。\",\"details\":\"在护肤和护发产品中，二丙二醇常用于调节配方粘度、作为载体帮助活性物更好渗透，同时具有一定保湿能力。现有研究显示其致敏率很低，少数敏感或受损皮肤人群可能出现轻微刺激或刺痒感。它不属于防腐剂、硫酸盐、邻苯二甲酸酯、甲醛释放体或矿物油等高争议成分。\",\"category\":\"溶剂与保湿剂\"}",
-    "lastUpdated": 1764489153622,
+    "analysis": "{\"name\":\"二丙二醇\",\"riskLevel\":\"low\",\"summary\":\"二丙二醇是一种常用的溶剂与保湿剂，能够帮助溶解其他成分并提升产品延展性和肤感。一般刺激性较低，常用于护肤和彩妆产品中。\",\"details\":\"在化妆品中，二丙二醇可帮助活性成分均匀分散，并具有一定保湿、稳定配方的作用。现有研究认为其毒性较低，不属于防腐剂释放甲醛、邻苯二甲酸酯、硫酸盐或激素干扰物等高关注成分。极少数敏感肌人群可能出现轻微刺激或不适，通常通过低浓度配伍可降低风险。\",\"category\":\"溶剂与保湿剂\"}",
+    "lastUpdated": 1764490094425,
     "createdAt": 1764489153622
   },
   "鲸蜡硬脂基甜菜碱__skincare__zh": {
@@ -3095,8 +3095,8 @@
     "createdAt": 1764489828007
   },
   "cocamidopropil betaína__skincare__es": {
-    "analysis": "{\"name\":\"Cocamidopropil Betaína\",\"riskLevel\":\"low\",\"summary\":\"La cocamidopropil betaína es un tensioactivo anfótero derivado del coco que se usa como agente limpiador y espumante suave en productos para la piel y el cabello. Generalmente se considera de baja irritación y adecuada para uso frecuente.\",\"details\":\"Este ingrediente ayuda a eliminar la suciedad y el sebo mientras aporta una espuma cremosa y reduce la agresividad de otros tensioactivos más fuertes en la fórmula. Aunque se considera seguro para la mayoría de las personas, en pieles muy sensibles o con dermatitis atópica puede ocasionar irritación o picor en algunos casos aislados, normalmente asociados a impurezas o subproductos de fabricación. No está relacionado con parabenos, sulfatos SLS/SLES, ftalatos, liberadores de formaldehído ni metales pesados.\",\"category\":\"Tensioactivo y agente limpiador suave\"}",
-    "lastUpdated": 1764489828031,
+    "analysis": "{\"name\":\"Cocamidopropil Betaína\",\"riskLevel\":\"moderate\",\"summary\":\"La cocamidopropil betaína es un tensioactivo anfótero derivado del coco, utilizado como agente espumante y limpiador suave en productos de piel y cabello. Generalmente se considera de baja irritación, pero se ha asociado con casos de dermatitis de contacto en personas sensibles.\",\"details\":\"Aunque suele ser más suave que los sulfatos fuertes como SLS o SLES, la cocamidopropil betaína puede contener impurezas (como amidoaminas y nitrosaminas) que en algunas personas desencadenan irritación o alergias cutáneas, especialmente en piel muy sensible o dañada. No está relacionada con disruptores hormonales, ftalatos, formaldehído ni metales pesados, por lo que su principal preocupación es el potencial irritante/alergénico más que una toxicidad sistémica. En la mayoría de usuarios es segura para el uso diario, pero quienes tengan antecedentes de dermatitis o cuero cabelludo muy reactivo podrían preferir evitarla o hacer una prueba de tolerancia.\",\"category\":\"Tensioactivo y agente limpiador\"}",
+    "lastUpdated": 1764489989802,
     "createdAt": 1764489828031
   },
   "betaina de mirístico (derivado de nuez moscada)__skincare__es": {
@@ -3123,5 +3123,120 @@
     "analysis": "{\"name\":\"Proteína de Seda de Gusano\",\"riskLevel\":\"low\",\"summary\":\"La proteína de seda de gusano se utiliza en cosmética por sus propiedades hidratantes, suavizantes y formadoras de película sobre la piel y el cabello. Suele ser bien tolerada y no está asociada a disruptores hormonales ni a los químicos agresivos más comunes.\",\"details\":\"Esta proteína se obtiene de la seda producida por los gusanos de seda y actúa ayudando a retener la humedad y a mejorar la textura de la piel y el cabello. Generalmente tiene bajo potencial irritante, aunque en personas muy sensibles o con alergia a proteínas animales podría causar ligera irritación o reacción alérgica. No pertenece a las familias de parabenos, sulfatos, ftalatos, liberadores de formaldehído, siliconas ni aceites minerales, por lo que se considera un ingrediente de bajo riesgo en formulaciones de cuidado personal.\",\"category\":\"Proteína acondicionadora e hidratante\"}",
     "lastUpdated": 1764489833710,
     "createdAt": 1764489833710
+  },
+  "miristamidopropil betaína__skincare__es": {
+    "analysis": "{\"name\":\"Miristamidopropil Betaína\",\"riskLevel\":\"low\",\"summary\":\"Es un tensioactivo anfótero suave derivado de ácidos grasos que se usa como agente limpiador y espumante en productos para el cuidado de la piel y el cabello. Suele considerarse bien tolerado por la mayoría de los tipos de piel.\",\"details\":\"La miristamidopropil betaína ayuda a eliminar suciedad y grasa mientras reduce la irritación que pueden causar otros tensioactivos más agresivos, por lo que se usa con frecuencia en fórmulas suaves o para piel sensible. En concentraciones habituales de cosméticos presenta bajo potencial irritante, aunque en pieles muy reactivas puede causar enrojecimiento o picor si se combina con otros surfactantes fuertes. No es un paraben, ftalato, sulfato ni liberador de formaldehído, y no se asocia con efectos hormonales conocidos.\",\"category\":\"Tensioactivo / agente limpiador suave\"}",
+    "lastUpdated": 1764489988493,
+    "createdAt": 1764489988493
+  },
+  "isopropanol__skincare__es": {
+    "analysis": "{\"name\":\"Isopropanol\",\"riskLevel\":\"moderate\",\"summary\":\"El isopropanol es un alcohol de cadena corta que se usa como disolvente y agente desinfectante en productos de cuidado personal. Puede resultar resecante e irritante para la piel, especialmente en concentraciones altas o en piel sensible.\",\"details\":\"Este alcohol volátil se evapora rápidamente y ayuda a que las fórmulas se sequen más rápido, pero también puede alterar la barrera cutánea y aumentar la pérdida de agua transepidérmica cuando se usa con frecuencia. En pieles secas, sensibles o con afecciones como dermatitis o rosácea, puede provocar enrojecimiento, escozor e irritación. Su uso puntual en bajas concentraciones suele considerarse aceptable, pero no se recomienda en productos de uso continuo para pieles comprometidas.\",\"category\":\"Alcohol desecante / disolvente\"}",
+    "lastUpdated": 1764489988545,
+    "createdAt": 1764489988545
+  },
+  "偏重亚硫酸钠__skincare__zh": {
+    "analysis": "{\"name\":\"偏重亚硫酸钠\",\"riskLevel\":\"moderate\",\"summary\":\"偏重亚硫酸钠是一种防腐剂和抗氧化剂，可防止产品氧化变色或变质。对一般人来说安全性尚可，但对敏感肌肤或哮喘、对亚硫酸盐过敏人群可能引起刺激或过敏反应。\",\"details\":\"在护肤和护发产品中，偏重亚硫酸钠主要用于稳定配方、防止成分氧化并延长保质期。少数人，尤其是对亚硫酸盐敏感者，可能出现皮肤发红、瘙痒或刺激，吸入高浓度粉尘还可能诱发呼吸不适或哮喘症状。一般使用浓度较低时风险较可控，但敏感肌、过敏体质和哮喘人群建议谨慎使用或先小面积测试。\",\"category\":\"防腐剂 / 抗氧化剂\"}",
+    "lastUpdated": 1764490094760,
+    "createdAt": 1764490094760
+  },
+  "异丙醇__skincare__zh": {
+    "analysis": "{\"name\":\"异丙醇\",\"riskLevel\":\"moderate\",\"summary\":\"异丙醇是一种常见的溶剂和消毒用酒精，广泛用于护肤品中帮助成分溶解和快速干燥。它具有较强的挥发性和脱脂作用。\",\"details\":\"在护肤和护发产品中，高浓度或频繁使用异丙醇可能破坏皮脂膜，导致皮肤或头皮干燥、紧绷、刺激，尤其对敏感肌或屏障受损人群更不友好。少量作为偶发性成分通常风险较低，但若出现在配方前列或与其他干燥型酒精共同使用，则更易引起干燥和刺激，建议干性或敏感性肤质谨慎使用。一般不会与激素干扰、重金属等长期全身性毒性直接相关。\",\"category\":\"酒精类溶剂\"}",
+    "lastUpdated": 1764490095050,
+    "createdAt": 1764490095050
+  },
+  "乙二胺四乙酸二钠__skincare__zh": {
+    "analysis": "{\"name\":\"乙二胺四乙酸二钠\",\"riskLevel\":\"low\",\"summary\":\"乙二胺四乙酸二钠是一种常用的螯合剂，帮助稳定配方并提高防腐体系效果。一般浓度下对皮肤相对温和，刺激性较低。\",\"details\":\"它通过络合金属离子来防止产品变色、变质，从而延长护肤品和洗护产品的保质期。少数敏感肌或受损皮肤人群在高浓度或多种刺激成分叠加时，可能出现轻微刺激或干燥感。该成分本身不属于防腐剂、硫酸盐类或激素干扰物，但在环境中不易降解，属于环境友好度较一般的成分。\",\"category\":\"螯合剂 / 配方稳定剂\"}",
+    "lastUpdated": 1764490095252,
+    "createdAt": 1764490095252
+  },
+  "双二乙氧基二甘醇环己烷-14-二羧酸酯__skincare__zh": {
+    "analysis": "{\"name\":\"双二乙氧基二甘醇环己烷-1,4-二羧酸酯\",\"riskLevel\":\"low\",\"summary\":\"这是一种合成酯类成分，常用于护肤品中作为柔润剂和成膜剂，帮助提升产品的延展性和肤感。一般认为刺激性较低，致敏风险不高。\",\"details\":\"双二乙氧基二甘醇环己烷-1,4-二羧酸酯具有良好的润滑和增塑特性，可改善配方的使用触感，使皮肤感觉柔滑不黏腻。现有公开资料中未显示其与防腐剂释放甲醛、邻苯二甲酸酯、对羟基苯甲酸酯类（防腐剂）、硫酸盐表活或重金属等高风险类别直接相关。对大多数肤质来说安全性较好，但极度敏感或对酯类溶剂有特殊不耐受的人群仍应在小面积先行测试。\",\"category\":\"合成酯类柔润剂/成膜剂\"}",
+    "lastUpdated": 1764490095574,
+    "createdAt": 1764490095265
+  },
+  "香精__skincare__zh": {
+    "analysis": "{\"name\":\"香精\",\"riskLevel\":\"moderate\",\"summary\":\"香精是由多种芳香化学物或精油混合而成，用于提供或掩盖气味。日常使用可能引发部分人群的皮肤刺激或过敏反应。\",\"details\":\"香精成分通常为配方保密，可能包含致敏物质或邻苯二甲酸酯等潜在内分泌干扰物，因此对敏感肌、孕妇和儿童并不理想。长期、频繁使用含香精产品，尤其在面部或受损皮肤上，可能增加接触性皮炎、红斑、刺痛和干痒的风险。若你有敏感肌、湿疹或易过敏体质，建议选择“无香精”或“低敏无香料”配方。\",\"category\":\"香料/潜在致敏物\"}",
+    "lastUpdated": 1764490095354,
+    "createdAt": 1764490095354
+  },
+  "二丁基羟基甲苯（bht）__skincare__zh": {
+    "analysis": "{\"name\":\"二丁基羟基甲苯（BHT）\",\"riskLevel\":\"moderate\",\"summary\":\"二丁基羟基甲苯是一种合成抗氧化剂，用于防止配方中的油脂成分氧化变质。正常浓度下对大多数人较为安全，但在高浓度或长期大量接触时可能存在一定刺激性和潜在健康争议。\",\"details\":\"在护肤与护发产品中，BHT主要用于延长产品保质期，一般添加量较低，多数情况下皮肤耐受性尚可，但对极度敏感肌或受损皮肤可能引起轻微刺激或过敏反应。部分动物实验提示其与内分泌干扰、器官毒性等潜在风险相关，但目前在化妆品允许的低用量范围内尚被多数监管机构视为可接受。若偏好更温和或“洁净配方”，可选择无BHT或以天然抗氧化剂（如维生素E）替代的产品。\",\"category\":\"防腐剂 / 抗氧化剂\"}",
+    "lastUpdated": 1764490095472,
+    "createdAt": 1764490095472
+  },
+  "水解蚕丝蛋白__skincare__zh": {
+    "analysis": "{\"name\":\"水解蚕丝蛋白\",\"riskLevel\":\"low\",\"summary\":\"水解蚕丝蛋白是一种从蚕丝中提取并水解得到的小分子蛋白，常用于护肤和护发产品中以提升保湿和柔滑度。一般耐受性较好，过敏风险较低。\",\"details\":\"水解蚕丝蛋白具有良好的成膜性和亲水性，可帮助皮肤和头发锁水，改善干燥、粗糙感，使触感更加柔软细腻。它不属于防腐剂、硫酸盐、邻苯二甲酸酯或甲醛释放体，也与矿物油、硅油和重金属无直接关联。极少数对蛋白或蚕丝成分高度敏感的人可能出现刺激或过敏反应，通常通过敏感测试即可规避风险。\",\"category\":\"保湿剂/护肤护发活性成分\"}",
+    "lastUpdated": 1764490095591,
+    "createdAt": 1764490095591
+  },
+  "硬脂酸乙二醇酯__skincare__zh": {
+    "analysis": "{\"name\":\"硬脂酸乙二醇酯\",\"riskLevel\":\"low\",\"summary\":\"硬脂酸乙二醇酯是一种常见的乳化增稠剂和珠光剂，常用于洗面奶、洗发水、沐浴露等清洁类产品中。整体刺激性较低，一般被认为是安全性较好的成分。\",\"details\":\"它主要用于改善产品的质地和外观，使产品呈现乳白或珠光效果，同时增加肤感的柔滑度。现有研究未显示其具有内分泌干扰、致癌或致畸等明显高风险特性，也不属于防腐剂、硫酸盐表活、邻苯二甲酸酯或甲醛释放体等高关注成分。少数极度敏感或屏障受损人群可能出现轻微刺激或不适，但在日常配方中属于较为温和、安全的功能性辅料。\",\"category\":\"乳化剂 / 珠光剂 / 质地调理剂\"}",
+    "lastUpdated": 1764490096423,
+    "createdAt": 1764490096423
+  },
+  "fragrance (perfume)__skincare__en": {
+    "analysis": "{\"name\":\"Fragrance (perfume)\",\"riskLevel\":\"moderate\",\"summary\":\"Fragrance is a mixture of aromatic compounds used to give products a pleasant scent but is a common source of skin irritation and allergic reactions. It can also include potential hormone-disrupting chemicals like some phthalates, though these are not always present or disclosed.\",\"details\":\"Because 'fragrance' is a generic term, the exact chemicals are usually not listed, which makes it hard to know whether sensitizers, allergens, or phthalates are included. In skincare and haircare, fragrance is a leading cause of contact dermatitis, especially for people with sensitive or compromised skin. Fragrance-free or explicitly 'no added fragrance' products are often preferred for those prone to eczema, rosacea, or allergies.\",\"category\":\"Fragrance and potential allergens\"}",
+    "lastUpdated": 1764490129850,
+    "createdAt": 1764490129850
+  },
+  "cocamidopropyl betaine__skincare__en": {
+    "analysis": "{\"name\":\"Cocamidopropyl Betaine\",\"riskLevel\":\"low\",\"summary\":\"Cocamidopropyl betaine is a mild surfactant derived from coconut oil commonly used to create foam and improve cleansing. It is generally considered gentle, but some people can develop irritation or allergic contact dermatitis, often due to impurities from its manufacturing process.\",\"details\":\"This ingredient helps water mix with oil and dirt so they can be rinsed away, and it is widely used in shampoos, face washes, and body cleansers as a less-harsh alternative to strong sulfates like SLS. Sensitivity issues are usually linked to residual by-products (such as amidoamine), and most users tolerate it well, especially in rinse-off products. Those with very reactive or eczema-prone skin may still wish to patch test products containing it.\",\"category\":\"Surfactant / cleansing agent\"}",
+    "lastUpdated": 1764490129850,
+    "createdAt": 1764490129850
+  },
+  "bis-diethoxydiglycol cyclohexane-14-dicarboxylate__skincare__en": {
+    "analysis": "{\"name\":\"Bis-diethoxydiglycol Cyclohexane-1,4-dicarboxylate\",\"riskLevel\":\"low\",\"summary\":\"Bis-diethoxydiglycol cyclohexane-1,4-dicarboxylate is a synthetic emollient and texture-enhancing ingredient used to improve skin feel and product spreadability. It is not associated with common problem groups like parabens, sulfates, phthalates, or formaldehyde releasers.\",\"details\":\"Available safety data and its chemical class suggest a low irritation and sensitization potential for most users when used in typical cosmetic concentrations. It functions mainly to provide a smooth, velvety finish and can help dissolve or stabilize other oil-soluble ingredients. As with most synthetic emollients, individuals with very sensitive or reactive skin should patch test, but it is generally considered a low-risk component in skincare and haircare.\",\"category\":\"Emollient / Texture enhancer\"}",
+    "lastUpdated": 1764490130930,
+    "createdAt": 1764490130930
+  },
+  "sodium acetylated hyaluronate__skincare__en": {
+    "analysis": "{\"name\":\"Sodium Acetylated Hyaluronate\",\"riskLevel\":\"low\",\"summary\":\"Sodium acetylated hyaluronate is a modified form of hyaluronic acid designed to improve moisture retention and skin barrier support. It is widely regarded as a gentle, beneficial hydrating ingredient.\",\"details\":\"This ingredient combines the water-binding properties of hyaluronic acid with acetylation to increase affinity for skin and persistence on the surface, enhancing long-lasting hydration. It is not related to parabens, sulfates, phthalates, formaldehyde-releasing preservatives, or drying alcohols, and has a very low rate of irritation or allergy. It is suitable for most skin types, including sensitive and dry skin, and is also common in haircare for scalp and hair moisture.\",\"category\":\"Humectant / Hydrating agent\"}",
+    "lastUpdated": 1764490130931,
+    "createdAt": 1764490130931
+  },
+  "silk protein__skincare__en": {
+    "analysis": "{\"name\":\"Silk Protein\",\"riskLevel\":\"low\",\"summary\":\"Silk protein (often present as hydrolyzed silk) is a naturally derived protein used to enhance moisture, smoothness, and film formation on skin and hair. It is generally well tolerated and considered low risk for most users.\",\"details\":\"In cosmetics, silk protein helps improve softness, shine, and a conditioned feel by forming a light protective film and binding water. It is not associated with key concern groups such as parabens, sulfates, phthalates, formaldehyde-releasing preservatives, mineral oil, silicones, or heavy metals. Rarely, individuals with strong sensitivity to proteins may experience mild irritation, so patch testing is advisable for very reactive skin.\",\"category\":\"Protein / Conditioning agent\"}",
+    "lastUpdated": 1764490130931,
+    "createdAt": 1764490130931
+  },
+  "butylated hydroxytoluene (bht)__skincare__en": {
+    "analysis": "{\"name\":\"Butylated Hydroxytoluene (bht)\",\"riskLevel\":\"moderate\",\"summary\":\"BHT is a synthetic antioxidant used to prevent oils in products from oxidizing and going rancid. It is generally permitted in cosmetics but is somewhat controversial due to potential irritation and systemic effects at higher exposures.\",\"details\":\"In skincare, BHT helps stabilize formulas and extend shelf life, but it can cause irritation or sensitization in some individuals, especially with leave-on products used around the eyes or on compromised skin. Some laboratory and animal studies raise concerns about endocrine disruption and organ toxicity at high doses, though typical cosmetic concentrations are much lower and considered acceptable by major regulators. People seeking very low-toxicity or “clean” formulations often choose to avoid BHT as a precaution.\",\"category\":\"Synthetic antioxidant / preservative\"}",
+    "lastUpdated": 1764490131261,
+    "createdAt": 1764490131261
+  },
+  "sodium hyaluronate__skincare__en": {
+    "analysis": "{\"name\":\"Sodium Hyaluronate\",\"riskLevel\":\"low\",\"summary\":\"Sodium hyaluronate is the salt form of hyaluronic acid and is widely used as a hydrating and plumping ingredient. It is generally considered safe and beneficial for most skin types, including sensitive skin.\",\"details\":\"This ingredient attracts and holds water in the skin, helping improve hydration, elasticity, and the appearance of fine lines. It is well-tolerated, with a very low risk of irritation or allergy in cosmetic use. Different molecular weights can affect how deeply it penetrates, but this mainly influences performance, not safety, for typical skincare concentrations.\",\"category\":\"Humectant / moisturizing agent\"}",
+    "lastUpdated": 1764490131262,
+    "createdAt": 1764490131262
+  },
+  "potassium sorbate__skincare__en": {
+    "analysis": "{\"name\":\"Potassium Sorbate\",\"riskLevel\":\"low\",\"summary\":\"Potassium sorbate is a preservative used to inhibit the growth of mold, yeast, and some bacteria in cosmetic products. It is generally regarded as a safer and milder alternative to many traditional preservatives.\",\"details\":\"In skincare, potassium sorbate helps maintain product integrity and reduce the risk of contamination, especially in water-based formulas. It has a relatively low irritation and sensitization potential, though very sensitive or compromised skin can occasionally react, particularly at higher concentrations or in products left on the skin. It is not a formaldehyde releaser and is not associated with the major endocrine or carcinogenic concerns linked to some older preservative systems.\",\"category\":\"Preservative\"}",
+    "lastUpdated": 1764490131262,
+    "createdAt": 1764490131262
+  },
+  "citric acid__skincare__en": {
+    "analysis": "{\"name\":\"Citric Acid\",\"riskLevel\":\"low\",\"summary\":\"Citric acid is a fruit-derived alpha-hydroxy acid used mainly to adjust pH and provide mild exfoliation in skincare and haircare products. It is generally well tolerated but can irritate very sensitive or compromised skin at higher concentrations.\",\"details\":\"In cosmetic formulations, citric acid primarily functions as a pH adjuster and chelating agent, helping stabilize products and mildly promoting cell turnover. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, fragrance, mineral oil, silicone, drying alcohol, or heavy metal. Potential concerns are mostly limited to stinging or irritation in those with barrier damage, very sensitive skin, or when combined with other exfoliating acids.\",\"category\":\"pH adjuster / mild exfoliating acid\"}",
+    "lastUpdated": 1764490131443,
+    "createdAt": 1764490131443
+  },
+  "tocopherol (vitamin e)__skincare__en": {
+    "analysis": "{\"name\":\"Tocopherol (vitamin E)\",\"riskLevel\":\"low\",\"summary\":\"This ingredient name in Chinese refers to tocopherol, also known as vitamin E, which is an antioxidant commonly used in skincare and haircare products. It is generally safe and well tolerated with a low risk of irritation.\",\"details\":\"As an antioxidant, vitamin E helps protect skin lipids from oxidation, supports the skin barrier, and stabilizes oils within the formula. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, fragrance component (unless specifically part of a fragrance blend), mineral oil, silicone, drying alcohol, or heavy metal. Adverse reactions are rare and usually limited to mild irritation or potential pore-clogging in a small subset of very sensitive or acne-prone users.\",\"category\":\"antioxidant\"}",
+    "lastUpdated": 1764490131443,
+    "createdAt": 1764490131443
+  },
+  "isopropanol__skincare__en": {
+    "analysis": "{\"name\":\"Isopropanol\",\"riskLevel\":\"moderate\",\"summary\":\"Isopropanol (isopropyl alcohol) is a fast-evaporating solvent and drying alcohol used in skincare and haircare for cleaning and quick-dry effects. It can be irritating and drying, especially for sensitive or compromised skin.\",\"details\":\"As a low–molecular weight alcohol, isopropanol can disrupt the skin barrier, leading to dryness, tightness, and potential irritation or stinging, particularly at higher concentrations or with frequent use. While generally safe in small, controlled amounts, it may worsen dryness, eczema, or rosacea and is not ideal for daily leave-on products, especially on the face. It is not a paraben, phthalate, sulfate, or formaldehyde releaser, but it sits in the category of potentially drying, irritating alcohols.\",\"category\":\"Drying alcohol / solvent\"}",
+    "lastUpdated": 1764490131747,
+    "createdAt": 1764490131747
+  },
+  "sodium metabisulfite__skincare__en": {
+    "analysis": "{\"name\":\"Sodium Metabisulfite\",\"riskLevel\":\"moderate\",\"summary\":\"Sodium metabisulfite is an antioxidant and preservative that helps prevent product oxidation and discoloration. It can trigger sensitivity or allergic reactions in some individuals, particularly those sensitive to sulfites.\",\"details\":\"In skincare and haircare, sodium metabisulfite helps stabilize formulas by scavenging oxygen, which can prolong shelf life. However, sulfite compounds are known potential allergens and may cause redness, itching, or dermatitis in susceptible users, and can be problematic for those with sulfite sensitivity or asthma when inhaled from sprays. It is not the same as sulfate surfactants (like SLS/SLES), but it is still a sensitizing preservative that some people may prefer to avoid.\",\"category\":\"Antioxidant / preservative (sulfite)\"}",
+    "lastUpdated": 1764490131747,
+    "createdAt": 1764490131747
+  },
+  "disodium edta__skincare__en": {
+    "analysis": "{\"name\":\"Disodium Edta\",\"riskLevel\":\"low\",\"summary\":\"Disodium EDTA is a chelating agent used to bind metal ions and improve product stability and performance. It is generally considered low risk at typical cosmetic concentrations, with irritation being uncommon.\",\"details\":\"By binding calcium, magnesium, and trace metals, disodium EDTA helps prevent product degradation, rancidity, and changes in color or texture, and it can enhance the effectiveness of preservatives. It has a long history of cosmetic use and is usually well tolerated on skin, although very sensitive individuals may rarely experience mild irritation. Environmental persistence is a concern at larger industrial scales, but in personal care products it is considered a relatively safe and non-sensitizing helper ingredient.\",\"category\":\"Chelating agent / stabilizer\"}",
+    "lastUpdated": 1764490131748,
+    "createdAt": 1764490131748
   }
 }
