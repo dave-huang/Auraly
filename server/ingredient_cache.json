@@ -1280,8 +1280,8 @@
     "createdAt": 1764389668234
   },
   "柠檬酸__food__zh": {
-    "analysis": "{\"name\":\"柠檬酸\",\"riskLevel\":\"low\",\"summary\":\"柠檬酸是一种常见的食品酸度调节剂和防腐剂，天然存在于柑橘类水果中。一般食用量下对大多数人来说是安全的。\",\"details\":\"在食品中，柠檬酸常用于调节酸度、增强风味并帮助抑制部分微生物生长，从而延长保质期。少数人如果口腔或胃部较敏感，大量摄入可能导致牙釉质侵蚀、口腔刺激或胃部不适。对肾功能不全者，如需长期大量摄入含柠檬酸产品，应遵医嘱控制总摄入量。\",\"category\":\"酸度调节剂 / 防腐剂\"}",
-    "lastUpdated": 1764488948315,
+    "analysis": "{\"name\":\"柠檬酸\",\"riskLevel\":\"low\",\"summary\":\"柠檬酸是一种常见的食品酸度调节剂和防腐剂，天然存在于柑橘类水果中。一般用量下对多数人来说是安全的。\",\"details\":\"在食品中，柠檬酸主要用于调节酸度、增强风味并辅助抑制部分微生物生长，从而延长保质期。少数对酸性或敏感人群（如胃酸过多、胃炎患者）大量摄入时，可能会引起胃部不适或牙釉质轻微腐蚀风险。正常加工食品中的使用量受到法规限制，符合标准时健康风险较低。\",\"category\":\"食品添加剂（酸度调节剂、防腐剂）\"}",
+    "lastUpdated": 1764538836599,
     "createdAt": 1764389668234
   },
   "单、双甘油脂肪酸酯__food__zh": {
@@ -2130,8 +2130,8 @@
     "createdAt": 1764467711521
   },
   "水__food__zh": {
-    "analysis": "{\"name\":\"水\",\"riskLevel\":\"low\",\"summary\":\"水是最常见且通常被认为安全的食品成分，用于溶解其他成分或作为饮料主要成分。只要水源洁净并符合饮用水标准，其健康风险极低。\",\"details\":\"在食品中，水通常用作溶剂、稀释剂或加工介质，不属于有害的添加剂，也不会带来热量以外的负面营养影响。若水质经合格处理和检测（如自来水或经过净化的生产用水），对大多数人而言是安全的。只有在水源被微生物、重金属或其他污染物严重污染的情况下，才可能带来健康风险。\",\"category\":\"基础成分\"}",
-    "lastUpdated": 1764468555001,
+    "analysis": "{\"name\":\"水\",\"riskLevel\":\"low\",\"summary\":\"水是最基础、最常见的食品成分，一般被认为是安全的。只要来源合规、经过适当处理和检测，正常饮用或食用风险很低。\",\"details\":\"在食品工业中，水主要作为溶剂、稀释剂或加工介质使用，对产品的口感和稳定性有重要影响。关键在于水质是否符合饮用水或生产用水标准，如是否经过过滤、消毒以及重金属和微生物检测。对大多数人来说，合格水源不会带来健康负担，仅在严重水污染或储存不当时才可能引发安全问题。\",\"category\":\"基础成分\"}",
+    "lastUpdated": 1764538836427,
     "createdAt": 1764467711553
   },
   "山梨酸及山梨酸钾（保鲜用）__food__zh": {
@@ -2140,8 +2140,8 @@
     "createdAt": 1764467711618
   },
   "聚山梨醇酯60（吐温60）__food__zh": {
-    "analysis": "{\"name\":\"聚山梨醇酯60（吐温60）\",\"riskLevel\":\"low\",\"summary\":\"聚山梨醇酯60是一种常用的食品乳化剂和稳定剂，用于让油水更好地混合，多见于奶油蛋糕、植脂末、冰淇淋等加工食品中。一般人适量摄入被认为是安全的。\",\"details\":\"聚山梨醇酯60属于合成食品添加剂，在法规允许范围内使用通常不会对健康造成明显危害，但过多摄入可能引起部分人轻微胃肠不适。对添加剂较敏感人群（如儿童、过敏体质或有肠胃问题者）建议减少高添加食品的总体摄入。长期健康层面更应关注整体饮食是否以天然、少加工食物为主，而非单一这种添加剂。\",\"category\":\"食品乳化剂/稳定剂\"}",
-    "lastUpdated": 1764468555073,
+    "analysis": "{\"name\":\"聚山梨醇酯60（吐温60）\",\"riskLevel\":\"low\",\"summary\":\"聚山梨醇酯60是一种常用的食品乳化剂和稳定剂，广泛用于烘焙食品、奶油、人造黄油及冰淇淋中。多数人适量摄入被认为是安全的。\",\"details\":\"聚山梨醇酯60能帮助油水混合，改善食品的口感和结构，在法规允许的用量范围内一般不会对健康造成明显影响。部分敏感人群大剂量摄入可能出现肠胃不适或轻微过敏反应，但在正常饮食条件下较少见。长期健康影响的证据有限，通常建议避免过量依赖高度加工食品以间接减少其摄入。\",\"category\":\"食品添加剂 / 乳化剂\"}",
+    "lastUpdated": 1764538836738,
     "createdAt": 1764467711676
   },
   "菊粉（菊苣纤维）__food__zh": {
@@ -2570,8 +2570,8 @@
     "createdAt": 1764468555429
   },
   "硬脂酸__skincare__zh": {
-    "analysis": "{\"name\":\"硬脂酸\",\"riskLevel\":\"low\",\"summary\":\"硬脂酸是一种常见的脂肪酸，来源多为植物油或动物脂肪，广泛用于护肤品中作为乳化剂和增稠剂。总体来说对大多数皮肤人群较为温和安全。\",\"details\":\"在护肤和洗护产品中，硬脂酸有助于稳定乳霜质地、提升涂抹感，并可作为表面活性剂的一部分。它不属于防腐剂、硫酸盐、邻苯二甲酸酯、甲醛释放体等高风险成分，也不是矿物油、硅油或刺激性酒精。极少数敏感或痘痘肌人群可能出现轻微致粉刺或刺激，应根据个人耐受度观察使用感受。\",\"category\":\"脂肪酸 / 乳化增稠剂\"}",
-    "lastUpdated": 1764490094973,
+    "analysis": "{\"name\":\"硬脂酸\",\"riskLevel\":\"low\",\"summary\":\"硬脂酸是一种常见的脂肪酸，广泛用于护肤品中作为乳化剂和增稠剂。对大多数肤质来说刺激性较低，安全性较好。\",\"details\":\"硬脂酸通常来源于植物油或动物脂肪，在配方中帮助水油混合并改善产品的质地和稳定性。一般不会致敏或致痘，但极少数敏感或严重痤疮肌肤在高浓度使用下可能出现毛孔堵塞或轻微刺激。整体来看，它不属于防腐剂、硫酸盐、塑化剂、甲醛释放体等高风险成分。\",\"category\":\"脂肪酸/乳化增稠剂\"}",
+    "lastUpdated": 1764538759876,
     "createdAt": 1764468597808
   },
   "氯化钠__skincare__zh": {
@@ -2585,8 +2585,8 @@
     "createdAt": 1764468598626
   },
   "合成蜡__skincare__zh": {
-    "analysis": "{\"name\":\"合成蜡\",\"riskLevel\":\"low\",\"summary\":\"合成蜡是一类由石油或合成聚合物制得的蜡状成分，常用于护肤品中提供成膜与增稠效果。一般刺激性较低，多数肤质可耐受。\",\"details\":\"在护肤品中，合成蜡可帮助形成保护膜，减少水分流失，并改善产品的质地与涂抹感。由于来源多为惰性聚合物或精制石油副产物，通常不易被皮肤吸收，致敏率较低，但极少数敏感或痘痘肌可能因封闭性较强而出现闷痘或不适。合成蜡并不属于防腐剂、硫酸盐、邻苯二甲酸酯或甲醛释放体等高关注风险成分。\",\"category\":\"成膜剂 / 增稠剂 / 质地调理剂\"}",
-    "lastUpdated": 1764490095685,
+    "analysis": "{\"name\":\"合成蜡\",\"riskLevel\":\"low\",\"summary\":\"合成蜡是一类由石油或合成聚合物制成的蜡状物质，常用于护肤品中作为成膜剂和增稠剂。通常被认为安全性较高，致敏性较低。\",\"details\":\"在护肤与护发产品中，合成蜡可帮助形成保护膜，提升产品的厚度和延展性，减少水分流失。现有数据表明其系统性毒性和内分泌干扰风险很低，较少与防腐剂释放甲醛、邻苯二甲酸酯或重金属等高风险成分直接相关，但极敏感或易爆痘肤质个别人可能出现闷痘或轻微刺激。总体来说适合大多数肤质长期使用，如与其他封闭性成分叠加使用时，油性和痘肌可关注毛孔堵塞感受并适当调整使用频率。\",\"category\":\"成膜剂 / 增稠剂 / 柔润剂\"}",
+    "lastUpdated": 1764538760010,
     "createdAt": 1764468598996
   },
   "聚季铵盐-6__skincare__zh": {
@@ -2595,18 +2595,18 @@
     "createdAt": 1764468599099
   },
   "透明质酸钠__skincare__zh": {
-    "analysis": "{\"name\":\"透明质酸钠\",\"riskLevel\":\"low\",\"summary\":\"透明质酸钠是一种常见的保湿剂和皮肤润滑成分，具有良好的锁水能力，一般被认为安全温和。常用于保湿精华、面霜和眼霜中。\",\"details\":\"透明质酸钠是透明质酸的钠盐形式，能够结合自身数倍以上的水分，帮助增强皮肤屏障和改善干燥、细纹。其刺激性较低，大多数肤质（包括敏感肌）通常都能很好耐受，少数人可能在浓度较高或配方不当时出现轻微刺痒或泛红。它不属于防腐剂、硫酸盐、邻苯二甲酸酯、释放甲醛防腐剂、矿物油、硅油或刺激性酒精等高关注成分。\",\"category\":\"保湿剂 / 皮肤调理剂\"}",
-    "lastUpdated": 1764490095130,
+    "analysis": "{\"name\":\"透明质酸钠\",\"riskLevel\":\"low\",\"summary\":\"透明质酸钠是一种常用的保湿剂，能够吸水并在皮肤表面形成保水膜，提升皮肤水润度和柔软度。一般耐受性好，刺激性较低。\",\"details\":\"透明质酸钠是透明质酸的钠盐，具有很强的锁水能力，可帮助改善干燥、细纹并增强皮肤屏障，对大多数肤质（包括敏感肌）都较为友好。极少数人可能会对配方中其他成分或高浓度使用产生轻微刺痒或泛红，但通常与过敏体质或配伍有关。它不属于防腐剂、硫酸盐、邻苯二甲酸酯、甲醛释放体、矿物油、硅油或重金属等高风险成分。\",\"category\":\"保湿剂 / 皮肤调理剂\"}",
+    "lastUpdated": 1764538760382,
     "createdAt": 1764468599179
   },
   "月桂酸__skincare__zh": {
-    "analysis": "{\"name\":\"月桂酸\",\"riskLevel\":\"low\",\"summary\":\"月桂酸是一种中链脂肪酸，常见于椰子油和棕榈仁油中，用于护肤品中作为表面活性剂、乳化剂或质地调理成分。一般被认为较为安全，刺激性较低。\",\"details\":\"在护肤品中，月桂酸可帮助清洁皮肤、稳定配方并改善产品延展性，对中性至油性皮肤通常耐受良好。少数敏感肌或屏障受损人群可能会出现轻微刺激或干燥感，部分易长痘人群报告其可能有致痘潜力，但证据并不完全一致。它不属于防腐剂、邻苯二甲酸酯、甲醛释放体、硫酸盐、矿物油或重金属等高争议成分。\",\"category\":\"脂肪酸／表面活性剂\"}",
-    "lastUpdated": 1764490094604,
+    "analysis": "{\"name\":\"月桂酸\",\"riskLevel\":\"low\",\"summary\":\"月桂酸是一种中链脂肪酸，常见于椰子油和棕榈仁油中，用于护肤品中作为表面活性剂、乳化剂或皮肤调理成分。总体安全性较高，对大多数肤质耐受性良好。\",\"details\":\"月桂酸具有一定的清洁和乳化能力，可帮助溶解油脂并稳定配方，同时对皮肤有一定柔润和保护作用。极少数敏感或痤疮易发肤质在高浓度或清洁类产品中使用时，可能出现轻微刺激或粉刺加重，需要个体观察皮肤反应。它不属于防腐剂、邻苯二甲酸酯、硫酸盐、甲醛释放体、矿物油、硅油或重金属等高关注成分类型。\",\"category\":\"脂肪酸 / 皮肤调理剂\"}",
+    "lastUpdated": 1764538759184,
     "createdAt": 1764468599220
   },
   "山梨酸钾__skincare__zh": {
-    "analysis": "{\"name\":\"山梨酸钾\",\"riskLevel\":\"low\",\"summary\":\"山梨酸钾是一种常用的防腐剂，用于抑制霉菌和酵母菌生长，延长护肤品保质期。一般浓度下对皮肤相对安全，不属于防腐剂中风险较高的一类。\",\"details\":\"在化妆品和护肤品中，山梨酸钾主要用于防止产品变质，并不属于对激素有潜在干扰的对羟基苯甲酸酯类，也不是释放甲醛型防腐剂。大部分人使用耐受良好，但敏感肌或屏障受损肌肤在高浓度或长期接触时，可能出现轻微刺激或刺痒感。总体来说，其安全性已被广泛评估，在法规限定用量内使用被认为风险较低。\",\"category\":\"防腐剂\"}",
-    "lastUpdated": 1764490095455,
+    "analysis": "{\"name\":\"山梨酸钾\",\"riskLevel\":\"low\",\"summary\":\"山梨酸钾是一种常用的防腐剂，用于抑制化妆品和护发产品中霉菌、酵母和部分细菌的生长。一般在推荐浓度内使用被认为较为安全。\",\"details\":\"山梨酸钾不属于对内分泌有明显干扰作用的防腐剂，也不是释放甲醛类防腐剂，不含邻苯二甲酸酯、硫酸盐、矿物油或硅油。少数敏感肌人群可能会在高浓度或破损皮肤上出现轻微刺激或刺痒感，但整体刺激性较低。与防晒剂、活性成分同用时通常兼容性良好，被广泛应用于护肤和护发配方中。\",\"category\":\"防腐剂\"}",
+    "lastUpdated": 1764538759931,
     "createdAt": 1764468599329
   },
   "丁羟甲苯__skincare__zh": {
@@ -2615,23 +2615,23 @@
     "createdAt": 1764468599364
   },
   "柠檬酸__skincare__zh": {
-    "analysis": "{\"name\":\"柠檬酸\",\"riskLevel\":\"low\",\"summary\":\"柠檬酸是一种常见的有机酸，用于护肤品中调节酸碱度和轻微去角质。一般对大多数肤质较为温和。\",\"details\":\"在护肤和洗护产品中，柠檬酸主要用于调节配方的pH值，并可帮助促进老废角质代谢，改善皮肤光泽。对于敏感肌、屏障受损皮肤或有伤口时可能引起刺痛、发红等刺激反应，应注意浓度和使用频率。柠檬酸与防腐剂、防晒剂等常规成分配伍安全性较高，不属于防腐剂、硫酸盐、邻苯二甲酸酯或甲醛释放体等高争议成分。\",\"category\":\"pH调节剂 / 温和去角质成分\"}",
-    "lastUpdated": 1764538286919,
+    "analysis": "{\"name\":\"柠檬酸\",\"riskLevel\":\"low\",\"summary\":\"柠檬酸是一种常见的果酸，用于调节护肤品的酸碱值并具有轻微去角质作用。一般浓度下对大多数肤质较为安全。\",\"details\":\"在护肤和洗护产品中，柠檬酸主要用作pH调节剂和螯合剂，帮助配方稳定并改善产品质感。对于敏感肌、屏障受损或有伤口的皮肤，较高浓度可能引起轻微刺痛、发红或干燥，因此需要注意整体配方浓度与使用频率。它不属于防腐剂类、硫酸盐类、邻苯二甲酸酯、甲醛释放体等高关注成分。\",\"category\":\"pH调节剂 / 果酸\"}",
+    "lastUpdated": 1764538759506,
     "createdAt": 1764468599463
   },
   "肉豆蔻基甜菜碱__skincare__zh": {
-    "analysis": "{\"name\":\"肉豆蔻基甜菜碱\",\"riskLevel\":\"low\",\"summary\":\"肉豆蔻基甜菜碱是一种两性表面活性剂，常用于洗面奶、洗发水和沐浴露中作为清洁与起泡成分。整体安全性较高，对皮肤和头皮通常较为温和。\",\"details\":\"这种成分通过降低表面张力来帮助溶解皮脂和污垢，同时产生细腻泡沫，多用于配方中与其他表活复配以降低刺激性。对大多数人来说刺激性较低，但敏感肌或屏障受损人群在高浓度或频繁使用时，仍有可能出现干燥或轻微刺激。它不属于防腐剂、硫酸盐类（如SLS/SLES）、邻苯二甲酸酯、甲醛释放体，也不是矿物油、硅油或重金属来源。\",\"category\":\"表面活性剂 / 清洁成分\"}",
-    "lastUpdated": 1764489153342,
+    "analysis": "{\"name\":\"肉豆蔻基甜菜碱\",\"riskLevel\":\"low\",\"summary\":\"肉豆蔻基甜菜碱是一种两性表面活性剂，常用于洁面、洗发和沐浴产品中，具有温和清洁与起泡作用。一般刺激性较低，多数肤质可耐受。\",\"details\":\"此成分通过降低表面张力帮助溶解皮脂和污垢，同时提供适中的泡沫与较好的肤感，被视为较为温和的一类表面活性剂。极少数敏感或受损皮肤人群可能出现轻微刺激或干涩感，但与硫酸盐表活（如SLS/SLES）相比刺激性明显更低。它不属于防腐剂、激素干扰物、邻苯二甲酸酯或释放甲醛的成分，通常在护肤和洗护配方中是相对安全的选择。\",\"category\":\"表面活性剂 / 清洁成分\"}",
+    "lastUpdated": 1764538760043,
     "createdAt": 1764468599515
   },
   "棕榈酸__skincare__zh": {
-    "analysis": "{\"name\":\"棕榈酸\",\"riskLevel\":\"low\",\"summary\":\"棕榈酸是一种常见的脂肪酸，广泛用于护肤品中作为柔润剂和增稠剂。一般来说对皮肤较为温和，刺激性较低。\",\"details\":\"棕榈酸多来源于棕榈油或其他植物油，可帮助产品形成乳霜质地并减少水分流失，提升肤感。对大多数肤质安全，但非常油性或易长痘人群在高浓度使用时，可能会觉得略显厚重或有轻微致粉刺的潜在风险。它不属于防腐剂、硫酸盐、邻苯二甲酸酯、甲醛释放体、香精或重金属成分。\",\"category\":\"脂肪酸 / 柔润剂\"}",
-    "lastUpdated": 1764490094481,
+    "analysis": "{\"name\":\"棕榈酸\",\"riskLevel\":\"low\",\"summary\":\"棕榈酸是一种常见的饱和脂肪酸，广泛存在于植物油和动物脂肪中，在护肤品中多用作润肤剂和增稠剂。一般来说对大多数肤质较为温和安全。\",\"details\":\"在护肤和护发产品中，棕榈酸可以帮助软化角质层，增强皮肤屏障，使产品质地更为顺滑和稳定。极少数敏感或痘痘肌人群在高油脂配方中，可能会觉得略有致痘或闷痘风险，但总体刺激性较低。它不属于防腐剂、硫酸盐、邻苯二甲酸酯、甲醛释放体或重金属等高风险成分，也不是常见的强致敏香精成分。\",\"category\":\"脂肪酸类润肤剂／质地调节剂\"}",
+    "lastUpdated": 1764538759639,
     "createdAt": 1764468599535
   },
   "生育酚（维生素e）__skincare__zh": {
-    "analysis": "{\"name\":\"生育酚（维生素E）\",\"riskLevel\":\"low\",\"summary\":\"生育酚是一种脂溶性抗氧化剂，常用于护肤品中帮助抗氧化和稳定配方。一般耐受性良好，不属于防腐剂、硫酸盐、邻苯二甲酸酯或矿物油等高争议成分。\",\"details\":\"在护肤和护发产品中，生育酚可帮助中和自由基，支持皮肤屏障，减少配方中油脂的氧化变质。少数敏感或易长痘人群在高浓度使用时，可能会出现轻微刺激或闭口，需要根据自身肤质观察。总体而言，它被广泛认为是安全性较高的成分，不涉及激素干扰、释放甲醛、重金属等主要安全隐患。\",\"category\":\"抗氧化剂 / 护肤活性成分\"}",
-    "lastUpdated": 1764529989891,
+    "analysis": "{\"name\":\"生育酚（维生素E）\",\"riskLevel\":\"low\",\"summary\":\"生育酚是一种抗氧化剂形式的维生素E，常用于护肤品中帮助抵御自由基损伤。对大多数肤质来说相对温和安全。\",\"details\":\"生育酚可帮助减缓皮肤氧化老化，增强配方的稳定性，并在一定程度上支持皮肤屏障修护。极少数敏感或易长痘人群在高浓度或油性质地中可能出现轻微致痘或刺激，但总体耐受性良好。它不属于防腐剂、硫酸盐、邻苯二甲酸酯、释放甲醛防腐剂、矿物油、硅或重金属等高争议成分。\",\"category\":\"抗氧化剂 / 保湿与修护成分\"}",
+    "lastUpdated": 1764538759863,
     "createdAt": 1764468599710
   },
   "edta二钠__skincare__zh": {
@@ -2660,8 +2660,8 @@
     "createdAt": 1764468599873
   },
   "氢氧化钾__skincare__zh": {
-    "analysis": "{\"name\":\"氢氧化钾\",\"riskLevel\":\"moderate\",\"summary\":\"氢氧化钾是一种强碱，常用于调节护肤品的酸碱度或制皂。低浓度、配方合理时对皮肤通常较安全，但高浓度可能刺激皮肤和眼睛。\",\"details\":\"在护肤和洗护产品中，氢氧化钾多作为pH调节剂或皂基原料存在，最终成品中游离氢氧化钾浓度一般较低。若配方控制不当或产品未完全中和，可能导致皮肤刺痛、干燥或屏障受损，敏感肌尤需注意。使用含有该成分的产品时，如出现明显刺痛、红斑，应立即冲洗并停止使用。\",\"category\":\"pH调节剂 / 碱性成分\"}",
-    "lastUpdated": 1764490094945,
+    "analysis": "{\"name\":\"氢氧化钾\",\"riskLevel\":\"moderate\",\"summary\":\"氢氧化钾是一种强碱，常用于调节护肤品的酸碱度或在制皂过程中作为皂化剂。低浓度、配方平衡良好时一般较安全，但高浓度可能刺激皮肤和眼睛。\",\"details\":\"在护肤和洗护产品中，氢氧化钾主要帮助调节配方pH值，确保产品不过于酸或过于碱，从而提升稳定性和使用感。由于其本身碱性很强，若配方控制不当或在高浓度下使用，可能引起皮肤灼热、刺痛或干燥，敏感肌更需注意。正规产品通常将其中和至安全范围，消费者正常使用时接触到的多为残余极低浓度，整体风险属于可控范围。\",\"category\":\"pH调节剂 / 皂化剂\"}",
+    "lastUpdated": 1764538759877,
     "createdAt": 1764468599891
   },
   "山梨（糖）醇__skincare__zh": {
@@ -2670,8 +2670,8 @@
     "createdAt": 1764468599953
   },
   "月桂基甜菜碱__skincare__zh": {
-    "analysis": "{\"name\":\"月桂基甜菜碱\",\"riskLevel\":\"low\",\"summary\":\"月桂基甜菜碱是一种两性表面活性剂，常用于洁面、洗发和沐浴产品中起到清洁与起泡作用。它通常温和，刺激性较低，适合大多数肤质和发质使用。\",\"details\":\"作为两性表活，月桂基甜菜碱能在水中帮助油脂与污垢乳化并被冲洗掉，同时提高产品的泡沫丰富度与使用肤感。一般毒性较低，也不是内分泌干扰物，不属于防腐剂、硫酸盐（如SLS/SLES）或邻苯二甲酸酯等高关注成分。少数敏感肌或屏障受损人群可能会出现轻微刺痛或干涩感，建议与保湿成分搭配使用并留意个人耐受度。\",\"category\":\"表面活性剂 / 清洁成分\"}",
-    "lastUpdated": 1764490095987,
+    "analysis": "{\"name\":\"月桂基甜菜碱\",\"riskLevel\":\"low\",\"summary\":\"月桂基甜菜碱是一种常用的两性表面活性剂，主要用于清洁类护肤和洗发产品中，具有温和起泡和清洁功能。总体安全性较好，刺激性相对较低。\",\"details\":\"月桂基甜菜碱可帮助产生丰富泡沫并增强清洁力，同时比许多阴离子表活（如十二烷基硫酸钠 SLS）更为温和，较少破坏皮肤屏障。少数敏感肌或已有皮肤炎症的人群可能出现轻微刺激或干涩感，但通常不与激素干扰、邻苯二甲酸酯、甲醛释放体、重金属等高风险问题相关。用于护肤和洗发配方时，多与其它温和表活复配，以平衡清洁力和温和度。\",\"category\":\"表面活性剂 / 清洁剂\"}",
+    "lastUpdated": 1764538759722,
     "createdAt": 1764468600060
   },
   "焦亚硫酸钠__skincare__zh": {
@@ -2680,13 +2680,13 @@
     "createdAt": 1764468600071
   },
   "肉豆蔻酸__skincare__zh": {
-    "analysis": "{\"name\":\"肉豆蔻酸\",\"riskLevel\":\"low\",\"summary\":\"肉豆蔻酸是一种常见的饱和脂肪酸，多用于清洁和护肤品中作表面活性剂、乳化剂或增稠剂。一般对皮肤相对温和，正常使用条件下安全性较高。\",\"details\":\"在洁面产品中，肉豆蔻酸常与碱性成分反应生成皂基，帮助溶解皮脂并产生泡沫，清洁力较强，因此油性或易长痘肤质若清洁过度可能会感觉干燥或刺激。对大多数人来说致敏率较低，但极少数敏感或严重痤疮肌肤可能出现爆痘或刺激，应根据个人肤质和配方整体温和度综合判断。该成分不属于防腐剂、硫酸盐、邻苯二甲酸酯、甲醛释放体或重金属类成分。\",\"category\":\"脂肪酸 / 表面活性剂\"}",
-    "lastUpdated": 1764490095328,
+    "analysis": "{\"name\":\"肉豆蔻酸\",\"riskLevel\":\"low\",\"summary\":\"肉豆蔻酸是一种常见的脂肪酸，常用于清洁产品中的表面活性剂以及护肤品中的润肤成分。总体安全性较高，对大多数肤质较为温和。\",\"details\":\"在清洁产品中，肉豆蔻酸多与其他脂肪酸配合，用于产生泡沫和清洁皮肤；在霜乳类产品中则可起到增稠、稳定和润肤的作用。对于极度敏感或屏障受损肌肤，高浓度清洁类配方可能会带来轻微干燥或刺激感，但它不属于防腐剂、激素干扰物、硫酸盐或邻苯二甲酸酯等高关注成分。日常使用含有肉豆蔻酸的正规产品，一般不会带来明显健康风险。\",\"category\":\"脂肪酸 / 表面活性剂与润肤剂\"}",
+    "lastUpdated": 1764538760513,
     "createdAt": 1764468600251
   },
   "乙酰化透明质酸钠__skincare__zh": {
-    "analysis": "{\"name\":\"乙酰化透明质酸钠\",\"riskLevel\":\"low\",\"summary\":\"乙酰化透明质酸钠是一种改性透明质酸盐，具有优异的保湿、锁水和柔润肌肤功效。它通常温和安全，适合大多数肤质使用。\",\"details\":\"通过在透明质酸分子上引入乙酰基，使其更易在皮肤表面形成保湿薄膜，增强保湿持久度并减少水分流失。该成分不属于防腐剂、硫酸盐、邻苯二甲酸酯、甲醛释放体或矿物油类，也不含酒精和重金属等常见高风险物质。一般刺激性较低，敏感肌也多能耐受，但极少数人可能因个体差异出现轻微不适。\",\"category\":\"保湿剂 / 皮肤调理剂\"}",
-    "lastUpdated": 1764490095019,
+    "analysis": "{\"name\":\"乙酰化透明质酸钠\",\"riskLevel\":\"low\",\"summary\":\"乙酰化透明质酸钠是一种改良型透明质酸衍生物，具有优异的保湿和锁水能力。通常刺激性较低，适合大多数肤质使用。\",\"details\":\"通过乙酰化改性后，该成分比普通透明质酸更具亲油性，更容易在皮肤表面形成柔软保湿膜，减少水分流失。现有研究显示其致敏和刺激风险较低，未见与激素干扰、重金属或甲醛释放类防腐剂等高风险问题相关。敏感肌一般也能耐受，但极度脆弱皮肤在首次使用含有较高浓度时仍建议先进行局部测试。\",\"category\":\"保湿剂 / 皮肤调理剂\"}",
+    "lastUpdated": 1764538759546,
     "createdAt": 1764468600273
   },
   "甘油硬脂酸酯 se__skincare__zh": {
@@ -2695,13 +2695,13 @@
     "createdAt": 1764468600354
   },
   "4-二羧酸酯__skincare__zh": {
-    "analysis": "{\"name\":\"4-二羧酸酯\",\"riskLevel\":\"low\",\"summary\":\"4-二羧酸酯是一类由二羧酸与醇形成的酯类，多用于化妆品中作为柔润剂、成膜剂或质地调理成分。一般刺激性较低，正常浓度下对多数肤质较为温和。\",\"details\":\"此类成分通常属于大分子或中等分子量酯类，帮助改善产品的延展性与肤感，使皮肤表面更平滑柔软。现有资料中，它们不属于防腐剂、Parabens、硫酸盐、邻苯二甲酸酯或释放甲醛的成分，也通常不被视为强致敏源。对极少数敏感或受损皮肤，仍可能出现轻微刺激或不耐受，首次使用建议先做局部测试。\",\"category\":\"润肤剂 / 质地调理剂\"}",
-    "lastUpdated": 1764468600377,
+    "analysis": "{\"name\":\"4-二羧酸酯\",\"riskLevel\":\"low\",\"summary\":\"4-二羧酸酯是一类有机酸与醇形成的酯类化合物，常用于护肤品中作为柔润剂或成膜剂。一般皮肤耐受性较好，不属于常见的防腐剂、激素干扰物或强刺激成分。\",\"details\":\"这类酯类通常具有良好的铺展性和保湿辅助作用，可以改善产品的延展性和肤感，使皮肤表面更加光滑柔软。现有资料显示，其刺激性和致敏性较低，正常使用条件下对皮肤屏障影响较小。由于名称较笼统，具体安全性仍取决于该酯类的精确结构和纯度，但整体风险被认为较低。\",\"category\":\"柔润剂 / 成膜剂\"}",
+    "lastUpdated": 1764538760115,
     "createdAt": 1764468600377
   },
   "乙二醇二硬脂酸酯__skincare__zh": {
-    "analysis": "{\"name\":\"乙二醇二硬脂酸酯\",\"riskLevel\":\"low\",\"summary\":\"乙二醇二硬脂酸酯是一种常用的乳化剂和珠光剂，常见于洗发水、沐浴露和洁面产品中，一般被认为安全性较高。对大多数肤质而言刺激性较低。\",\"details\":\"它主要用于改善产品的外观和质地，使配方呈现乳白或珠光效果，同时增加稠度和肤感滑度。该成分不属于防腐剂、硫酸盐、邻苯二甲酸酯、甲醛释放体、矿物油或硅油类别，对致痘性和致敏性总体风险较低。极少数敏感或屏障受损皮肤在高浓度或与其他刺激成分共同使用时，可能出现轻微刺激或堵塞毛孔的情况，一般通过减少使用频率或更换产品即可改善。\",\"category\":\"乳化剂 / 珠光剂 / 质地调节剂\"}",
-    "lastUpdated": 1764489154506,
+    "analysis": "{\"name\":\"乙二醇二硬脂酸酯\",\"riskLevel\":\"low\",\"summary\":\"乙二醇二硬脂酸酯是一种常用于护肤和洗发产品中的蜡状增稠与珠光剂，能让产品呈现乳白或珠光质感。整体刺激性较低，一般被认为较为安全。\",\"details\":\"它主要起到增稠、调理和改善肤感的作用，不属于防腐剂、硫酸盐、邻苯二甲酸酯或释放甲醛成分，也不是矿物油、硅油或刺激性醇类。对大多数肤质来说耐受性良好，但极度敏感或易长闷痘的人在高浓度或多种脂类叠加时，偶尔可能出现轻微闷痘或不适。该成分不被普遍认为具有激素干扰或严重长期毒性风险。\",\"category\":\"乳化增稠剂 / 珠光剂\"}",
+    "lastUpdated": 1764538759619,
     "createdAt": 1764468600622
   },
   "双-二乙氧基二甘醇环己烷1__skincare__zh": {
@@ -3060,13 +3060,13 @@
     "createdAt": 1764489152845
   },
   "山梨醇__skincare__zh": {
-    "analysis": "{\"name\":\"山梨醇\",\"riskLevel\":\"low\",\"summary\":\"山梨醇是一种糖醇类保湿剂，常用于护肤品中帮助皮肤锁水。一般刺激性较低，敏感肌通常也能耐受。\",\"details\":\"在护肤和洗护产品中，山梨醇主要作为保湿剂和润肤剂使用，可帮助维持配方的湿润度并减少皮肤干燥。大多数研究认为其安全性较高，毒性低，不属于防腐剂、硫酸盐类或激素干扰物等高风险成分。少数极度敏感人群可能在高浓度或破损皮肤上出现轻微刺激或粘腻感，但总体风险较低。\",\"category\":\"保湿剂 / 润肤剂\"}",
-    "lastUpdated": 1764490094742,
+    "analysis": "{\"name\":\"山梨醇\",\"riskLevel\":\"low\",\"summary\":\"山梨醇是一种常用的保湿剂和保水剂，能帮助皮肤保持水分与柔软度。一般认为对皮肤刺激性较低，安全性较好。\",\"details\":\"在护肤和洗护产品中，山梨醇通过吸湿作用帮助角质层锁住水分，提升肤感，使产品更润滑、不紧绷。对大多数肤质（包括敏感肌）通常耐受良好，但极少数人可能在高浓度或配方不当时出现轻微黏腻或不适。它不属于防腐剂、硫酸盐、邻苯二甲酸酯、矿物油、硅油或高风险致敏香精等成分，整体风险较低。\",\"category\":\"保湿剂 / 保水剂\"}",
+    "lastUpdated": 1764538759199,
     "createdAt": 1764489153188
   },
   "二丙二醇__skincare__zh": {
-    "analysis": "{\"name\":\"二丙二醇\",\"riskLevel\":\"low\",\"summary\":\"二丙二醇是一种常用的溶剂与保湿剂，能够帮助溶解其他成分并提升产品延展性和肤感。一般刺激性较低，常用于护肤和彩妆产品中。\",\"details\":\"在化妆品中，二丙二醇可帮助活性成分均匀分散，并具有一定保湿、稳定配方的作用。现有研究认为其毒性较低，不属于防腐剂释放甲醛、邻苯二甲酸酯、硫酸盐或激素干扰物等高关注成分。极少数敏感肌人群可能出现轻微刺激或不适，通常通过低浓度配伍可降低风险。\",\"category\":\"溶剂与保湿剂\"}",
-    "lastUpdated": 1764490094425,
+    "analysis": "{\"name\":\"二丙二醇\",\"riskLevel\":\"low\",\"summary\":\"二丙二醇是一种常用的保湿溶剂和稳定剂，能帮助产品中的其他成分溶解并提升肤感。整体安全性较高，刺激性较低。\",\"details\":\"在护肤和护发产品中，二丙二醇主要用作保湿剂、溶剂和黏度调节剂，一般被认为是相对温和且低致敏性的成分。通常不会像酒精（乙醇）那样明显致干，对敏感肌肤人群大多也能很好耐受。极少数人可能出现轻微刺激或不适，若有刺痛、发红等情况应停用并观察。\",\"category\":\"溶剂与保湿剂\"}",
+    "lastUpdated": 1764538759877,
     "createdAt": 1764489153622
   },
   "鲸蜡硬脂基甜菜碱__skincare__zh": {
@@ -3140,13 +3140,13 @@
     "createdAt": 1764490094760
   },
   "异丙醇__skincare__zh": {
-    "analysis": "{\"name\":\"异丙醇\",\"riskLevel\":\"moderate\",\"summary\":\"异丙醇是一种常见的溶剂和消毒用酒精，广泛用于护肤品中帮助成分溶解和快速干燥。它具有较强的挥发性和脱脂作用。\",\"details\":\"在护肤和护发产品中，高浓度或频繁使用异丙醇可能破坏皮脂膜，导致皮肤或头皮干燥、紧绷、刺激，尤其对敏感肌或屏障受损人群更不友好。少量作为偶发性成分通常风险较低，但若出现在配方前列或与其他干燥型酒精共同使用，则更易引起干燥和刺激，建议干性或敏感性肤质谨慎使用。一般不会与激素干扰、重金属等长期全身性毒性直接相关。\",\"category\":\"酒精类溶剂\"}",
-    "lastUpdated": 1764490095050,
+    "analysis": "{\"name\":\"异丙醇\",\"riskLevel\":\"moderate\",\"summary\":\"异丙醇是一种常见溶剂和消毒用醇类，具有较强的挥发性和脱脂能力。护肤品中高浓度或频繁使用可能导致皮肤干燥、刺痛或屏障受损。\",\"details\":\"在护肤和美发产品中，异丙醇常用于帮助溶解成分、加速干燥或具有一定的防腐作用。由于它属于较“干燥型”酒精，会溶解皮脂并削弱角质层屏障，对干性、敏感性或受损皮肤可能造成紧绷、脱屑或刺激。低浓度、偶尔使用一般风险较低，但敏感肌和屏障受损人群宜谨慎使用或避免高排位、长时间停留型产品中含有此成分。\",\"category\":\"溶剂 / 干燥型酒精\"}",
+    "lastUpdated": 1764538759592,
     "createdAt": 1764490095050
   },
   "乙二胺四乙酸二钠__skincare__zh": {
-    "analysis": "{\"name\":\"乙二胺四乙酸二钠\",\"riskLevel\":\"low\",\"summary\":\"乙二胺四乙酸二钠是一种常用螯合剂，帮助稳定配方、防止金属离子导致产品变色或变质。一般认为在化妆品中使用浓度下安全性较高。\",\"details\":\"它通过与钙、镁、铁等金属离子结合，提升防腐体系效果并维持产品外观与功效。少数敏感或受损皮肤在高浓度或多种刺激成分叠加时，可能出现轻微刺激或干燥感。环境方面，EDTA 类物质在水体中较难完全降解，有一定生态负担，但在个人日常使用剂量下对人体健康风险较低。\",\"category\":\"螯合剂 / 配方稳定剂\"}",
-    "lastUpdated": 1764538287189,
+    "analysis": "{\"name\":\"乙二胺四乙酸二钠\",\"riskLevel\":\"low\",\"summary\":\"乙二胺四乙酸二钠是一种常见螯合剂，主要用于稳定配方、防止金属离子导致变色或变质。一般在护肤和洗护产品中的使用浓度较低，被多数权威机构认为安全性较高。\",\"details\":\"它通过与钙、镁、铁等金属离子结合，减少配方中金属杂质引起的氧化反应，从而帮助产品保持透明度和颜色稳定。少数敏感肌人群可能会在高浓度或多重刺激叠加时出现轻微刺激或干燥感，但在合规浓度下通常耐受性良好。该成分本身不属于防腐剂、香精、硫酸盐或邻苯二甲酸酯等常见高争议成分。\",\"category\":\"螯合剂/配方稳定剂\"}",
+    "lastUpdated": 1764538762888,
     "createdAt": 1764490095252
   },
   "双二乙氧基二甘醇环己烷-14-二羧酸酯__skincare__zh": {
@@ -3160,8 +3160,8 @@
     "createdAt": 1764490095354
   },
   "二丁基羟基甲苯（bht）__skincare__zh": {
-    "analysis": "{\"name\":\"二丁基羟基甲苯（BHT）\",\"riskLevel\":\"moderate\",\"summary\":\"BHT 是一种合成抗氧化剂，常用于护肤品中防止配方油脂氧化变质。其刺激性通常较低，但在高浓度或长期大量接触时存在一定潜在健康争议。\",\"details\":\"在化妆品中按法规允许用量使用时，BHT 一般被认为相对安全，但对极少数敏感肌肤可能引起轻微刺激或红痒。部分动物实验提示高剂量 BHT 可能与内分泌干扰和器官毒性相关，不过这些剂量远高于日常护肤品暴露量。保守起见，孕期或极度敏感肤质可优先选择不含 BHT 的产品，并避免同时从多渠道过量接触含 BHT 的产品。\",\"category\":\"防腐剂与抗氧化剂\"}",
-    "lastUpdated": 1764529989920,
+    "analysis": "{\"name\":\"二丁基羟基甲苯（BHT）\",\"riskLevel\":\"moderate\",\"summary\":\"BHT 是一种合成抗氧化剂，常用于护肤和护发产品中防止油脂和配方氧化变质。一般浓度下对大多数人较为安全，但存在一定潜在刺激和争议性毒理风险。\",\"details\":\"研究显示，BHT 在化妆品中通常用量较低，正常使用时系统性毒性风险较小，但部分人可能出现皮肤刺激或过敏反应。动物实验提示其可能与内分泌干扰、肝脏负担或致癌性相关，但这些多与高剂量、长期暴露有关，尚不足以直接等同于日常化妆品使用风险。由于属于有争议的合成抗氧化防腐成分，孕期、敏感肌或极度成分谨慎者可选择尽量减少接触。\",\"category\":\"合成抗氧化剂 / 防腐辅助成分\"}",
+    "lastUpdated": 1764538760408,
     "createdAt": 1764490095472
   },
   "水解蚕丝蛋白__skincare__zh": {
@@ -3220,13 +3220,13 @@
     "createdAt": 1764490131443
   },
   "tocopherol (vitamin e)__skincare__en": {
-    "analysis": "{\"name\":\"Tocopherol (vitamin E)\",\"riskLevel\":\"low\",\"summary\":\"This ingredient name in Chinese refers to tocopherol, also known as vitamin E, which is an antioxidant commonly used in skincare and haircare products. It is generally safe and well tolerated with a low risk of irritation.\",\"details\":\"As an antioxidant, vitamin E helps protect skin lipids from oxidation, supports the skin barrier, and stabilizes oils within the formula. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, fragrance component (unless specifically part of a fragrance blend), mineral oil, silicone, drying alcohol, or heavy metal. Adverse reactions are rare and usually limited to mild irritation or potential pore-clogging in a small subset of very sensitive or acne-prone users.\",\"category\":\"antioxidant\"}",
-    "lastUpdated": 1764490131443,
+    "analysis": "{\"name\":\"Tocopherol (vitamin E)\",\"riskLevel\":\"low\",\"summary\":\"Tocopherol, also known as Vitamin E, is an antioxidant commonly used in skincare to protect the skin and the formula from oxidative damage. It is generally considered safe and beneficial for most skin types.\",\"details\":\"In skincare products, tocopherol helps neutralize free radicals, supports skin barrier function, and can improve the stability of oils in the formula. It has a low risk of irritation, though very sensitive or allergy-prone individuals may occasionally experience contact dermatitis. Tocopherol is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, or drying alcohol, and is widely regarded as a safe, supportive ingredient in cosmetic formulations.\",\"category\":\"Antioxidant / Skin conditioning\"}",
+    "lastUpdated": 1764538708430,
     "createdAt": 1764490131443
   },
   "isopropanol__skincare__en": {
-    "analysis": "{\"name\":\"Isopropanol\",\"riskLevel\":\"moderate\",\"summary\":\"Isopropanol is a drying alcohol used as a solvent and for quick evaporation in skincare products. It can be irritating and drying, especially for sensitive or compromised skin.\",\"details\":\"As a short-chain alcohol, isopropanol can disrupt the skin barrier, leading to increased dryness, tightness, and potential irritation with frequent or high-concentration use. It may be tolerated in small amounts or rinse-off products, but leave-on use on dry, sensitive, or acne-prone skin can exacerbate redness and barrier damage. Individuals with eczema, rosacea, or very dry skin may wish to avoid or limit products containing isopropanol.\",\"category\":\"Drying alcohol / solvent\"}",
-    "lastUpdated": 1764538328647,
+    "analysis": "{\"name\":\"Isopropanol\",\"riskLevel\":\"moderate\",\"summary\":\"Isopropanol (isopropyl alcohol) is a volatile drying alcohol used mainly as a solvent and for quick-drying formulas in skincare and haircare. It can be irritating and drying, especially for sensitive or compromised skin and with frequent use.\",\"details\":\"As a low–molecular weight alcohol, isopropanol can strip skin lipids and disrupt the skin barrier, leading to dryness, stinging, or redness, particularly in leave-on products or when used often. It is generally safe from a systemic toxicity standpoint at cosmetic levels, but may worsen irritation, eczema, or rosacea and can sting around the eyes or broken skin. Its main concerns are barrier disruption and irritation rather than hormonal or carcinogenic effects.\",\"category\":\"Drying alcohol / solvent\"}",
+    "lastUpdated": 1764538706792,
     "createdAt": 1764490131747
   },
   "sodium metabisulfite__skincare__en": {
@@ -3250,13 +3250,13 @@
     "createdAt": 1764529937668
   },
   "water__skincare__en": {
-    "analysis": "{\"name\":\"Water\",\"riskLevel\":\"low\",\"summary\":\"Eau is the French word for water and is functionally identical to Aqua in cosmetic ingredient lists.\",\"details\":\"It serves as the primary solvent, helping to dilute and evenly disperse active and functional ingredients in the formula. It is not associated with hormone disruption, sensitizing fragrance chemicals, or other major cosmetic safety concerns.\",\"category\":\"Solvent / Base\"}",
-    "lastUpdated": 1764530083746,
+    "analysis": "{\"name\":\"Water\",\"riskLevel\":\"low\",\"summary\":\"Water is a common base ingredient used as a solvent and to provide hydration in skincare products. It is generally considered very safe for most skin types.\",\"details\":\"In skincare, water helps dissolve and distribute other ingredients and contributes to the product’s texture and spreadability. It does not belong to concern categories such as parabens, sulfates, phthalates, formaldehyde releasers, fragrance, mineral oil, silicones, drying alcohols, or heavy metals. The main consideration is overall product preservation, not water itself.\",\"category\":\"Solvent / Base ingredient\"}",
+    "lastUpdated": 1764538878909,
     "createdAt": 1764529937910
   },
   "cetearyl alcohol__skincare__en": {
-    "analysis": "{\"name\":\"Cetearyl Alcohol\",\"riskLevel\":\"low\",\"summary\":\"Cetearyl Alcohol is a fatty alcohol used as an emollient, thickener, and emulsifier in skincare and haircare products.\",\"details\":\"Unlike simple drying alcohols (such as ethanol or isopropyl alcohol), this fatty alcohol is generally non-drying and helps soften and smooth skin and hair while stabilizing emulsions. It is well tolerated by most skin types, with irritation being uncommon and usually limited to individuals with specific sensitivities.\",\"category\":\"Fatty alcohol / Emollient / Emulsifier\"}",
-    "lastUpdated": 1764529937910,
+    "analysis": "{\"name\":\"Cetearyl Alcohol\",\"riskLevel\":\"low\",\"summary\":\"Cetearyl alcohol is a fatty alcohol used as an emollient, thickener, and emulsifier in skincare and haircare products. It is generally considered safe and non-irritating for most skin types.\",\"details\":\"Unlike drying simple alcohols (like denatured alcohol or isopropyl alcohol), cetearyl alcohol is a waxy, fatty alcohol that helps soften the skin and improve product texture. It can actually help reduce moisture loss by reinforcing the skin barrier. Rarely, people with very sensitive or reactive skin may experience mild irritation, but it is not associated with hormone disruption, sulfates, phthalates, formaldehyde release, or heavy metals.\",\"category\":\"Fatty alcohol / Emollient / Emulsifier\"}",
+    "lastUpdated": 1764538882383,
     "createdAt": 1764529937910
   },
   "dimethicone__skincare__en": {
@@ -3938,5 +3938,355 @@
     "analysis": "{\"name\":\"Butylated Hydroxytoluene\",\"riskLevel\":\"moderate\",\"summary\":\"Butylated hydroxytoluene (BHT) is a synthetic antioxidant used to stabilize oils and fragrances, with some concern about potential irritation and systemic effects at higher exposures. In cosmetics it is typically used at low levels, but its safety is considered more controversial than many other common skincare ingredients.\",\"details\":\"BHT helps prevent rancidity in oils and degradation of fragrances, extending product shelf life, and it is not a paraben, sulfate, phthalate, silicone, or formaldehyde-releasing preservative. However, it can be a mild irritant for some individuals and has raised questions in toxicology research regarding endocrine and organ effects at doses higher than typical cosmetic exposure. People seeking very conservative or “clean” formulations may prefer to avoid it, especially on compromised or very sensitive skin.\",\"category\":\"Synthetic antioxidant / preservative\"}",
     "lastUpdated": 1764538331212,
     "createdAt": 1764538331212
+  },
+  "丝蛋白__skincare__zh": {
+    "analysis": "{\"name\":\"丝蛋白\",\"riskLevel\":\"low\",\"summary\":\"丝蛋白是一种源自蚕丝的蛋白成分，常用于护肤和护发产品中以提供保湿和柔滑效果。总体来说安全性较高，刺激性较低。\",\"details\":\"丝蛋白具有良好的成膜和保湿能力，可在皮肤表面形成轻薄保护层，帮助提升肌肤柔软度和光滑感，在护发产品中还能改善发丝光泽和顺滑度。对大多数肤质来说耐受性良好，但对蚕丝或相关蛋白严重过敏人群需留意可能的过敏反应。该成分不属于防腐剂、硫酸盐、邻苯二甲酸酯、甲醛释放体、矿物油、硅油或挥发性酒精等高争议成分。\",\"category\":\"保湿与修护成分\"}",
+    "lastUpdated": 1764538759374,
+    "createdAt": 1764538759374
+  },
+  "偏亚硫酸钠__skincare__zh": {
+    "analysis": "{\"name\":\"偏亚硫酸钠\",\"riskLevel\":\"moderate\",\"summary\":\"偏亚硫酸钠是一种抗氧化和防腐剂，常用于护肤品中防止配方变色或氧化变质。对多数人来说在低浓度下较为安全，但对敏感人群可能引发刺激或过敏反应。\",\"details\":\"偏亚硫酸钠属于亚硫酸盐类成分，具有抗氧化和抑菌作用，可延长产品保质期并稳定配方。然而亚硫酸盐是已知的致敏物，对皮肤敏感、哮喘或对亚硫酸盐过敏的人群，可能导致皮肤发红刺痒、接触性皮炎或诱发呼吸道不适。通常在合规使用量下系统性毒性较低，但敏感肤质和易过敏人群应谨慎使用并注意观察皮肤反应。\",\"category\":\"防腐剂 / 抗氧化剂\"}",
+    "lastUpdated": 1764538759670,
+    "createdAt": 1764538759670
+  },
+  "se 甘油硬脂酸酯__skincare__zh": {
+    "analysis": "{\"name\":\"SE 甘油硬脂酸酯\",\"riskLevel\":\"low\",\"summary\":\"SE 甘油硬脂酸酯是一种常用的乳化剂和柔润剂，用于帮助油水成分形成稳定乳液。一般被认为安全性较高，刺激性较低。\",\"details\":\"该成分通常由甘油和硬脂酸制成，SE 表示其自乳化型，能在护肤品中稳定配方并改善涂抹肤感。大多数肤质，包括敏感肌通常都能良好耐受，但极少数人可能出现轻微刺激或粉刺风险。它不属于防腐剂、硫酸盐、邻苯二甲酸酯或释放甲醛等高关注问题成分。\",\"category\":\"乳化剂/柔润剂\"}",
+    "lastUpdated": 1764538759731,
+    "createdAt": 1764538759731
+  },
+  "双（二乙氧基二甘醇）环己烷-1__skincare__zh": {
+    "analysis": "{\"name\":\"双（二乙氧基二甘醇）环己烷-1\",\"riskLevel\":\"low\",\"summary\":\"这是一种合成溶剂和助溶剂成分，常用于护肤品中帮助溶解及稳定其他油溶性或水溶性成分。当前公开资料中未显示明显刺激性或致敏性。\",\"details\":\"双（二乙氧基二甘醇）环己烷-1通常作为溶剂、载体或质地调节剂使用，可改善配方的延展性和肤感。它不属于防腐剂、防腐释放甲醛物质、对羟基苯甲酸酯类（parabens）、硫酸盐、邻苯二甲酸酯、矿物油或硅类等重点风险成分。现有毒理数据较有限，但在常规化妆品使用浓度下被认为安全性较高，敏感肌使用时如出现刺痛或红斑仍应停止使用并观察皮肤反应。\",\"category\":\"溶剂 / 助溶剂\"}",
+    "lastUpdated": 1764538760958,
+    "createdAt": 1764538760958
+  },
+  "甘油__food__zh": {
+    "analysis": "{\"name\":\"甘油\",\"riskLevel\":\"low\",\"summary\":\"甘油是一种常见的食品添加剂和保湿剂，广泛用于糖果、烘焙食品和饮料中。一般人群在正常摄入量下被认为是安全的。\",\"details\":\"甘油在食品中主要用作保湿剂、增甜剂和稳定剂，也可来自植物油或动物脂肪的加工过程。多数人对甘油耐受性良好，但大量摄入可能导致轻微腹泻或消化不适。对于糖尿病患者或需严格控制碳水化合物的人群，应注意总摄入量，因为甘油在体内可转化为能量。\",\"category\":\"食品添加剂 / 保湿剂\"}",
+    "lastUpdated": 1764538835923,
+    "createdAt": 1764538835923
+  },
+  "黄芩根提取物__food__zh": {
+    "analysis": "{\"name\":\"黄芩根提取物\",\"riskLevel\":\"low\",\"summary\":\"黄芩根提取物是一种来源于中药黄芩根的植物提取物，含有黄芩苷等多种黄酮类成分。少量用于食品或保健品中，一般被认为较为安全。\",\"details\":\"黄芩根在传统中医中主要用于清热解毒、抗炎等，现代研究也表明其提取物具有一定的抗氧化和抗炎活性。在食品中多见于保健型饮品或功能性食品，常规摄入量下对多数人风险较低。极少数人可能出现过敏或胃肠不适，孕妇和有慢性疾病人群应在专业人士指导下长期食用。\",\"category\":\"植物提取物 / 功能性配料\"}",
+    "lastUpdated": 1764538835999,
+    "createdAt": 1764538835999
+  },
+  "欧洲橄榄果油__food__zh": {
+    "analysis": "{\"name\":\"欧洲橄榄果油\",\"riskLevel\":\"low\",\"summary\":\"欧洲橄榄果油是一种常见的食用植物油，主要提供健康脂肪和能量。一般人群适量食用是安全的。\",\"details\":\"橄榄油富含单不饱和脂肪酸和维生素E，有助于心血管健康，被广泛用于烹饪和凉拌食品。对橄榄或其花粉极度过敏人群可能需留意，但这种情况较少见。整体来看，该成分与人工添加剂、反式脂肪、人工色素等高风险成分无关，属于较天然、风险较低的食用油。\",\"category\":\"植物油/食用油脂\"}",
+    "lastUpdated": 1764538836223,
+    "createdAt": 1764538836223
+  },
+  "尿囊素__food__zh": {
+    "analysis": "{\"name\":\"尿囊素\",\"riskLevel\":\"low\",\"summary\":\"尿囊素是一种常用于护肤品和某些食品中的成分，具有舒缓和促进组织修复的作用。作为食品添加成分时，一般用量较低，被认为安全性较高。\",\"details\":\"尿囊素在食品中主要用于改善口感或保护黏膜，例如含片或功能性产品中，通常不会带来明显健康风险。现有研究未见其对一般人群有明确毒性或致癌性，但长期大量摄入的安全性数据仍较有限。对个别人群可能出现轻微胃肠不适或过敏反应，如出现不适应停止食用并咨询医生。\",\"category\":\"功能性添加剂\"}",
+    "lastUpdated": 1764538836436,
+    "createdAt": 1764538836436
+  },
+  "辛甘醇__food__zh": {
+    "analysis": "{\"name\":\"辛甘醇\",\"riskLevel\":\"low\",\"summary\":\"辛甘醇是一种多元醇类保湿剂和助防腐剂，主要用于化妆品和个护产品，在食品中使用较少。一般摄入量下毒性较低，被认为较为安全。\",\"details\":\"辛甘醇具有一定的抑菌和保湿作用，常用于配方中帮助减少传统防腐剂用量。现有研究表明其口服毒性较低，未见明确的致癌或致突变证据，但作为食品成分时应控制在法规允许范围内。极少数敏感人群可能在高剂量或局部接触时出现轻微刺激或不适，应注意个体反应。\",\"category\":\"保湿剂 / 助防腐剂\"}",
+    "lastUpdated": 1764538836451,
+    "createdAt": 1764538836451
+  },
+  "聚山梨醇酯20（吐温20）__food__zh": {
+    "analysis": "{\"name\":\"聚山梨醇酯20（吐温20）\",\"riskLevel\":\"low\",\"summary\":\"聚山梨醇酯20是一种常见的食品乳化剂和稳定剂，用于帮助油水混合并改善口感与外观。一般人适量摄入被认为较为安全。\",\"details\":\"聚山梨醇酯20多用于饮料、糖果、烘焙食品和酱料中，通常用量较低。部分敏感人群可能出现轻微胃肠不适或皮肤过敏，但在法规允许范围内使用对大多数人健康风险较低。长期健康影响目前缺乏明确证据，通常建议避免过量摄入大量含多种添加剂的超加工食品。\",\"category\":\"食品添加剂 / 乳化剂\"}",
+    "lastUpdated": 1764538836499,
+    "createdAt": 1764538836499
+  },
+  "迷迭香叶提取物__food__zh": {
+    "analysis": "{\"name\":\"迷迭香叶提取物\",\"riskLevel\":\"low\",\"summary\":\"迷迭香叶提取物是一种来源于迷迭香植物叶片的天然提取物，常用于食品中作为抗氧化剂和防腐辅助成分。一般认为对大多数人来说是安全的。\",\"details\":\"迷迭香叶提取物可帮助减缓油脂氧化酸败，延长食品保质期，常见于烘焙食品、肉制品和油脂类产品中。少数对唇形科植物（如薄荷、罗勒）过敏人群可能出现过敏反应，孕晚期及有特殊疾病人群应遵医嘱适量食用。正常食用量下安全性较高，且不属于人工色素或人工甜味剂。\",\"category\":\"天然抗氧化剂/防腐辅助成分\"}",
+    "lastUpdated": 1764538836537,
+    "createdAt": 1764538836537
+  },
+  "牛油果树（乳木果）脂__food__zh": {
+    "analysis": "{\"name\":\"牛油果树（乳木果）脂\",\"riskLevel\":\"low\",\"summary\":\"乳木果脂是一种从乳木果仁中提取的天然植物脂肪，主要成分为甘油三酯。一般用于食品中作为脂肪来源或增稠、改善口感，安全性较高。\",\"details\":\"乳木果脂在食品中可用于巧克力、糖果或烘焙制品中，帮助提供顺滑口感和稳定结构，其脂肪酸组成与可可脂接近。对大多数人来说耐受性良好，但对坚果或种子类严重过敏人群需要留意潜在交叉过敏风险。其不属于反式脂肪或氢化油，也不是人工添加剂、色素或甜味剂，一般认为是较为天然、安全的脂肪来源。\",\"category\":\"天然植物脂肪/油脂\"}",
+    "lastUpdated": 1764538836657,
+    "createdAt": 1764538836657
+  },
+  "硬脂酸__food__zh": {
+    "analysis": "{\"name\":\"硬脂酸\",\"riskLevel\":\"low\",\"summary\":\"硬脂酸是一种常见的脂肪酸，广泛存在于植物油和动物脂肪中，常用作食品加工中的乳化剂或助剂。一般摄入量下对大多数人来说较为安全。\",\"details\":\"在食品中，硬脂酸常作为加工助剂、包衣材料或乳化稳定成分使用，本身不属于反式脂肪，也不是人工甜味剂或防腐剂。对于健康人群，正常饮食中的硬脂酸对心血管风险影响较小，但仍应避免整体饮食中饱和脂肪过量。极少数对某些脂肪酸敏感或有特定代谢疾病的人群，需遵医嘱控制摄入。\",\"category\":\"脂肪酸 / 食品加工助剂\"}",
+    "lastUpdated": 1764538836716,
+    "createdAt": 1764538836716
+  },
+  "积雪草提取物__food__zh": {
+    "analysis": "{\"name\":\"积雪草提取物\",\"riskLevel\":\"low\",\"summary\":\"积雪草提取物是一种来自植物积雪草的天然成分，在食品中有时作为保健或功能性配料使用。一般认为对大多数人较为安全。\",\"details\":\"积雪草提取物常用于保健品或功能性食品中，被用于支持皮肤与循环系统健康，但在日常食品中的添加量通常较低。少数人可能对该植物成分过敏或在大剂量摄入时出现胃肠不适，因此有基础疾病、孕妇或正在服药者应在医师指导下长期或大量食用。总体来说，在合规剂量下作为食品成分的安全性较好。\",\"category\":\"植物提取物 / 功能性配料\"}",
+    "lastUpdated": 1764538836725,
+    "createdAt": 1764538836725
+  },
+  "聚丙烯酸钠__food__zh": {
+    "analysis": "{\"name\":\"聚丙烯酸钠\",\"riskLevel\":\"high\",\"summary\":\"聚丙烯酸钠是一种高分子吸水材料，常用于纸尿裤、化妆品和工业用途，一般不被视为可食用成分。将其用于食品存在潜在安全隐患，目前并非常规或被广泛批准的食品添加剂。\",\"details\":\"聚丙烯酸钠具有极强的吸水和增稠能力，在非食用领域（如卫生用品、清洁剂等）应用广泛，但其在人体消化道中的安全性和长期摄入影响缺乏充分研究。若误食少量通常问题不大，但作为食品配料或添加剂系统性摄入并不符合多数国家的食品安全规范。若在食品标签中发现该成分，建议谨慎看待产品合规性，并咨询权威监管或专业人士意见。\",\"category\":\"其他工业用化工成分（不适合作为食品添加剂）\"}",
+    "lastUpdated": 1764538836753,
+    "createdAt": 1764538836753
+  },
+  "海藻糖__food__zh": {
+    "analysis": "{\"name\":\"海藻糖\",\"riskLevel\":\"low\",\"summary\":\"海藻糖是一种二糖类甜味剂，在自然界中存在于蘑菇、酵母等生物中，甜度约为蔗糖的45%。在一般摄入量下对大多数健康人来说相对安全。\",\"details\":\"海藻糖常用于食品中作为保湿剂、稳定剂和适度甜味来源，对血糖影响通常略低于蔗糖，但仍会提供能量和一定血糖负担。部分研究提示大剂量摄入可能影响肠道菌群或在肠道感染者中增加某些病菌生长风险，但日常食品中的用量一般较低。糖尿病或需严格控制碳水化合物摄入的人群仍应注意总摄入量。\",\"category\":\"甜味剂 / 功能性糖类\"}",
+    "lastUpdated": 1764538836769,
+    "createdAt": 1764538836769
+  },
+  "金缕梅（北美金缕梅）提取物__food__zh": {
+    "analysis": "{\"name\":\"金缕梅（北美金缕梅）提取物\",\"riskLevel\":\"moderate\",\"summary\":\"金缕梅提取物常用于护肤品中，具有收敛和抗氧化作用，但在食品中并不常见。作为食品成分，其安全数据相对有限，个别人可能出现胃肠不适或过敏反应。\",\"details\":\"金缕梅含有单宁等收敛成分，大量或高浓度摄入可能刺激胃肠道，导致恶心、呕吐或便秘等不适。部分对植物提取物敏感的人群可能出现皮疹、瘙痒或呼吸不适等过敏反应。由于其主要应用领域为外用护肤，口服长期或大量摄入的毒理和安全性数据有限，因此在食品中使用时应控制用量并留意个体耐受性。\",\"category\":\"植物提取物/其他添加成分\"}",
+    "lastUpdated": 1764538836813,
+    "createdAt": 1764538836813
+  },
+  "2-己二醇__food__zh": {
+    "analysis": "{\"name\":\"2-己二醇\",\"riskLevel\":\"low\",\"summary\":\"2-己二醇是一种二元醇类化合物，在食品和日化领域常用作保湿剂或溶剂。一般摄入量较低时被认为安全。\",\"details\":\"在食品中，2-己二醇主要用于改善产品质地和稳定性，同时具有一定抑菌保鲜的作用。现有毒理和安全性数据相对有限，但常规用量下尚未发现对人体有明显危害。对极少数敏感人群，可能出现轻微消化不适或个体不耐受，通常停止接触即可缓解。\",\"category\":\"食品添加剂 / 溶剂与保湿剂\"}",
+    "lastUpdated": 1764538836867,
+    "createdAt": 1764538836867
+  },
+  "硬脂酸甘油酯__food__zh": {
+    "analysis": "{\"name\":\"硬脂酸甘油酯\",\"riskLevel\":\"low\",\"summary\":\"硬脂酸甘油酯是一种常见的食品乳化剂和稳定剂，可帮助油水混合，改善食品口感与结构。一般认为在常规摄入量下对大多数人是安全的。\",\"details\":\"硬脂酸甘油酯通常由植物油中的脂肪酸与甘油制成，在烘焙食品、人造黄油、奶油制品及糖果中较常见。多数权威机构认为其在规定的使用范围内无明显毒性和致癌性，不属于反式脂肪。对极少数对特定脂肪酸或乳化剂敏感的人，可能出现轻微胃肠不适，但总体风险较低。\",\"category\":\"乳化剂/稳定剂\"}",
+    "lastUpdated": 1764538836889,
+    "createdAt": 1764538836889
+  },
+  "环己六硅氧烷__food__zh": {
+    "analysis": "{\"name\":\"环己六硅氧烷\",\"riskLevel\":\"high\",\"summary\":\"环己六硅氧烷是一种常用于化妆品和个人护理品中的硅油溶剂，并不是合法或常见的食品添加剂。若出现在食品成分表中，属于非常异常且可能不适宜食用的成分。\",\"details\":\"目前环己六硅氧烷主要应用在护肤品、彩妆、护发产品中，用于增加丝滑感和延展性，并未被广泛认可为安全的食用成分。部分研究对这类环状硅氧烷的持久性和潜在生物累积性提出了环境和健康方面的担忧，口服长期安全数据非常有限。若在食品中发现该成分，建议联系生产厂家核实配方并避免食用该产品。\",\"category\":\"非食品级成分/疑似误用添加剂\"}",
+    "lastUpdated": 1764538836984,
+    "createdAt": 1764538836984
+  },
+  "鲸蜡硬脂醇（脂肪醇）__food__zh": {
+    "analysis": "{\"name\":\"鲸蜡硬脂醇（脂肪醇）\",\"riskLevel\":\"low\",\"summary\":\"鲸蜡硬脂醇是一种来自天然油脂或合成的脂肪醇，主要用于改善质地和乳化，一般用于化妆品和外用产品，在食品中较少使用。对大多数人来说安全性较高。\",\"details\":\"在食品领域中，鲸蜡硬脂醇如果被使用，多为赋型剂或稳定剂，用量通常较低，对健康影响有限。其结构属于高碳链脂肪醇，不是会引起醉酒的“酒精”，但极少数敏感人群可能出现皮肤或黏膜刺激或轻微不适。总体来说，在合规剂量下食用安全性较好，如有严重过敏史或对脂肪醇敏感者可适当留意配料表。\",\"category\":\"赋型剂/稳定剂\"}",
+    "lastUpdated": 1764538836996,
+    "createdAt": 1764538836996
+  },
+  "木糖醇__food__zh": {
+    "analysis": "{\"name\":\"木糖醇\",\"riskLevel\":\"low\",\"summary\":\"木糖醇是一种常用的代糖甜味剂，热量低且不会明显升高血糖。一般人适量摄入被认为是安全的。\",\"details\":\"木糖醇属于糖醇类甜味剂，常用于无糖口香糖、无糖糖果和减糖食品，对牙齿相对友好，有助于降低龋齿风险。少数人大量食用可能出现腹胀、放气或轻微腹泻等胃肠不适，肠易激综合征或消化功能较弱人群需控制摄入量。对宠物（尤其是狗）则极为危险，需避免被其误食。\",\"category\":\"代糖甜味剂\"}",
+    "lastUpdated": 1764538837054,
+    "createdAt": 1764538837054
+  },
+  "甜菜碱__food__zh": {
+    "analysis": "{\"name\":\"甜菜碱\",\"riskLevel\":\"low\",\"summary\":\"甜菜碱是一种天然存在于甜菜等植物中的化合物，常用于食品中作为营养强化成分或保湿因子。一般人群在常规摄入量下被认为是安全的。\",\"details\":\"甜菜碱在人体内参与甲基供给，与同型半胱氨酸代谢有关，适量补充可能对肝脏和心血管健康有一定益处。多数人对甜菜碱耐受良好，但极高剂量可能引起轻微胃肠不适，如恶心或腹泻。对甲基供体较为敏感或有肾功能障碍的人群，在大剂量补剂形式摄入前应咨询专业人士。\",\"category\":\"营养强化剂 / 功能性成分\"}",
+    "lastUpdated": 1764538837062,
+    "createdAt": 1764538837062
+  },
+  "茶树（山茶）叶提取物__food__zh": {
+    "analysis": "{\"name\":\"茶树（山茶）叶提取物\",\"riskLevel\":\"low\",\"summary\":\"茶树叶提取物主要来源于茶树（Camellia sinensis），常用于食品和饮料中，具有抗氧化和清香增味的作用。一般人群食用安全性较高。\",\"details\":\"茶树叶提取物富含多酚类、儿茶素和咖啡因等成分，可提供一定的抗氧化和清神提神作用。少数对咖啡因敏感或有胃部不适、失眠问题的人群，大量摄入含茶提取物的产品可能出现心悸、睡眠质量下降等不适。整体而言，在常规食品用量范围内属于较安全的天然成分。\",\"category\":\"植物提取物 / 天然香味与功能成分\"}",
+    "lastUpdated": 1764538837145,
+    "createdAt": 1764538837145
+  },
+  "丁二醇__food__zh": {
+    "analysis": "{\"name\":\"丁二醇\",\"riskLevel\":\"low\",\"summary\":\"丁二醇是一种常见的多元醇类溶剂和保湿剂，食品中有时用作溶剂或载体。一般毒性较低，在规定用量内被认为是安全的食品添加成分。\",\"details\":\"在食品中，丁二醇主要用于溶解香精或作为载体，吸收后大部分会在体内代谢并排出，对健康人群通常不会造成明显危害。少数对多元醇或相关成分敏感的人可能出现轻微胃肠不适或皮肤接触刺激，但在食用情境下较少见。总体来说，只要不进行长期大量摄入，其安全性是可接受的。\",\"category\":\"食品添加剂（溶剂/载体）\"}",
+    "lastUpdated": 1764538837154,
+    "createdAt": 1764538837154
+  },
+  "聚谷氨酸__food__zh": {
+    "analysis": "{\"name\":\"聚谷氨酸\",\"riskLevel\":\"low\",\"summary\":\"聚谷氨酸是一种由谷氨酸组成的多肽，常用于食品保湿、改良质地或作为功能性成分，通常被认为安全性较高。一般人群正常摄入下不太会引起健康问题。\",\"details\":\"聚谷氨酸常来源于发酵工艺，可提高食品的保水性和口感，有时也被用于提升产品中氨基酸或蛋白相关功能。现有研究显示口服聚谷氨酸毒性较低，未见明显长期安全性风险，但其作为新型添加成分时，仍需关注各国法规批准情况。对谷氨酸特别敏感者在大量摄入时可能需适度留意，但日常食品中用量通常很低。\",\"category\":\"功能性配料/质构改良剂\"}",
+    "lastUpdated": 1764538837203,
+    "createdAt": 1764538837203
+  },
+  "母菊（洋甘菊）花提取物__food__zh": {
+    "analysis": "{\"name\":\"母菊（洋甘菊）花提取物\",\"riskLevel\":\"low\",\"summary\":\"母菊（洋甘菊）花提取物是一种来源于菊科植物的天然植物提取物，在食品中多用作香气成分或植物功能性成分。一般人群食用安全性较高。\",\"details\":\"母菊花提取物主要含有挥发油、黄酮类等成分，可用于食品中增加花香、改善风味，有时也被添加于保健类或饮品类产品中以赋予舒缓形象。对菊科植物（如菊花、豚草等）过敏人群可能出现过敏反应，应留意自身情况。该成分不是人工合成添加剂，不涉及反式脂肪、高果糖玉米糖浆、人工色素或防腐剂等常见高风险问题。\",\"category\":\"植物提取物 / 香味成分\"}",
+    "lastUpdated": 1764538837266,
+    "createdAt": 1764538837266
+  },
+  "环戊硅氧烷__food__zh": {
+    "analysis": "{\"name\":\"环戊硅氧烷\",\"riskLevel\":\"high\",\"summary\":\"环戊硅氧烷是一种常用于化妆品和个人护理品中的挥发性硅油，一般不用于食品配方。作为食品成分是不合规或极不常见的，可能提示标签错误或产品用途存在问题。\",\"details\":\"环戊硅氧烷主要用于护肤品、彩妆和护发产品中，用来带来丝滑触感和易涂抹性，在食品法规中通常不被允许作为食品添加剂或成分使用。若在食品成分表中看到该物质，建议谨慎对待产品来源和合规性，并避免食用，同时向监管部门或生产企业求证。总体而言，它不属于公认安全的食用成分，潜在长期安全性在口服方面缺乏充分数据。\",\"category\":\"非食用化学成分 / 个人护理用硅油\"}",
+    "lastUpdated": 1764538837281,
+    "createdAt": 1764538837281
+  },
+  "peg-100 硬脂酸酯__food__zh": {
+    "analysis": "{\"name\":\"PEG-100 硬脂酸酯\",\"riskLevel\":\"low\",\"summary\":\"PEG-100 硬脂酸酯是一种由聚乙二醇和硬脂酸制成的非离子型乳化剂，主要用于帮助油脂与水混合。少量用于食品中一般被认为对多数健康成年人较为安全。\",\"details\":\"PEG-100 硬脂酸酯在化妆品和保健品中更为常见，在食品中若使用，多作为乳化、稳定或增溶成分，摄入量通常很低。现有毒理学数据表明其毒性较低，但其属于聚乙二醇类化合物，极少数肠胃较为敏感的人可能出现轻微消化不适。总体而言，在法规允许范围内使用对普通人群的健康风险较小，但婴幼儿、孕妇或有肾功能问题者如长期大量接触此类成分，建议遵医嘱适度留意。\",\"category\":\"乳化剂/食品添加剂\"}",
+    "lastUpdated": 1764538837337,
+    "createdAt": 1764538837337
+  },
+  "八角果提取物（大茴香果提取物）__food__zh": {
+    "analysis": "{\"name\":\"八角果提取物（大茴香果提取物）\",\"riskLevel\":\"low\",\"summary\":\"八角果提取物是一种来源于八角（大茴香）的天然香辛料成分，常用于食品调味和增香。对大多数人来说适量食用是安全的。\",\"details\":\"八角果提取物主要提供类似甘草和茴香的甜香味，常用于烘焙食品、饮料、糖果及调味品中，不属于人工香精或合成添加剂。一般人群摄入后不良反应少见，但对伞形科或香辛料过敏者可能出现过敏症状，极少数人可能有胃肠不适。总体而言作为调味用量时安全性较高，孕妇和儿童建议避免过量长期集中摄入。\",\"category\":\"天然香辛料/天然香料\"}",
+    "lastUpdated": 1764538837406,
+    "createdAt": 1764538837406
+  },
+  "聚二甲基硅醇（dimethiconol）__food__zh": {
+    "analysis": "{\"name\":\"聚二甲基硅醇（Dimethiconol）\",\"riskLevel\":\"moderate\",\"summary\":\"聚二甲基硅醇是一种常用于化妆品和个人护理品中的硅油衍生物，用于提供顺滑触感和成膜性。它通常不被视为食品成分，在合格食品中极少或不应作为添加剂使用。\",\"details\":\"从食品安全角度看，聚二甲基硅醇并非常见或被普遍认可为可食用的食品添加剂，若出现在食品成分表中，可能意味着标签错误或产品用途存在疑问。少量意外摄入一般毒性较低，但长期或大量口服安全性数据有限，因此不建议作为食品摄入来源。消费者如在食品中见到该成分，应核实产品是否为可食用产品或咨询监管与生产方。\",\"category\":\"疑似非食用添加成分/应咨询监管部门\"}",
+    "lastUpdated": 1764538837417,
+    "createdAt": 1764538837417
+  },
+  "澳洲坚果籽油（昆士兰坚果籽油）__food__zh": {
+    "analysis": "{\"name\":\"澳洲坚果籽油（昆士兰坚果籽油）\",\"riskLevel\":\"low\",\"summary\":\"澳洲坚果籽油是一种从澳洲坚果种子中提取的植物油，常用于食品和化妆品中，整体安全性较高。主要成分为单不饱和脂肪酸，有助于提供能量和脂溶性营养素的吸收。\",\"details\":\"作为坚果来源的植物油，澳洲坚果籽油不含人工色素、防腐剂或人工甜味剂等常见添加剂风险，但对坚果过敏人群可能会引发过敏反应，应严格避免食用。其脂肪以油酸和棕榈油酸等单不饱和脂肪为主，相对稳定，不属于反式脂肪或氢化油类别。一般食用量下对大多数健康人群风险较低，但仍需注意总脂肪和热量摄入，以免过量。\",\"category\":\"植物油 / 坚果类过敏原\"}",
+    "lastUpdated": 1764538837462,
+    "createdAt": 1764538837462
+  },
+  "鲸蜡硬脂酸乙基己酯__food__zh": {
+    "analysis": "{\"name\":\"鲸蜡硬脂酸乙基己酯\",\"riskLevel\":\"low\",\"summary\":\"鲸蜡硬脂酸乙基己酯是一种常用于化妆品和护肤品中的合成酯类油脂，作为润肤剂和质地改良剂使用。它在食品中极少作为成分，一般不被视为常规食用添加剂。\",\"details\":\"从毒理学资料来看，这种物质在外用化妆品中通常被认为安全性较高，但作为食品成分使用的资料非常有限，因此食品中出现可能代表产品并非为直接食用设计，或为误标。若少量误食，通常不太可能引起严重急性中毒，但不建议长期或大量摄入。消费者若在可食用产品配料表中看到此成分，应谨慎核对产品用途，并遵守包装上使用说明。\",\"category\":\"其他添加成分 / 非典型食品添加剂\"}",
+    "lastUpdated": 1764538837474,
+    "createdAt": 1764538837474
+  },
+  "乙二胺四乙酸二钠盐（edta二钠）__food__zh": {
+    "analysis": "{\"name\":\"乙二胺四乙酸二钠盐（EDTA二钠）\",\"riskLevel\":\"moderate\",\"summary\":\"乙二胺四乙酸二钠盐是一种常见的螯合剂和抗氧化协同剂，用于食品中稳定颜色和防止金属离子引起的氧化变质。一般摄入量较低时对多数健康成年人相对安全，但不建议长期大量摄入。\",\"details\":\"该成分通过与铁、铜等金属离子结合，减少油脂氧化和色泽变化，因此常见于罐头、饮料、沙拉酱和调味品等加工食品。动物和人体研究显示，在法规限定用量下毒性较低，但过量可能影响矿物质平衡，个别人群（如有肾功能不全者）应格外注意摄入总量。总体而言，偶尔摄入问题不大，但作为多种加工食品中常见添加剂，建议减少高度加工食品的总体摄入频率。\",\"category\":\"食品添加剂 / 螯合剂、防腐抗氧化辅剂\"}",
+    "lastUpdated": 1764538837488,
+    "createdAt": 1764538837488
+  },
+  "甘草（光果甘草）根提取物__food__zh": {
+    "analysis": "{\"name\":\"甘草（光果甘草）根提取物\",\"riskLevel\":\"moderate\",\"summary\":\"甘草根提取物是一种常见的天然香味剂和甜味成分，用于食品中增加甜味和风味。一般适量食用对大多数人较为安全，但过量可能影响血压和电解质平衡。\",\"details\":\"甘草中含有甘草酸，可带来较强甜味和特殊香气，因此常用于糖果、饮料和草本饮品中。长期大量摄入甘草酸可能导致钠潴留、钾流失，从而引起水肿、高血压、心律失常等问题，高血压、心脏病患者及孕妇需格外注意。作为配方中少量使用的调味成分，一般风险较低，但若产品中甘草含量较高或多种含甘草制品叠加食用，应控制总摄入量。\",\"category\":\"天然香料与甜味成分\"}",
+    "lastUpdated": 1764538837500,
+    "createdAt": 1764538837500
+  },
+  "虎杖根提取物__food__zh": {
+    "analysis": "{\"name\":\"虎杖根提取物\",\"riskLevel\":\"low\",\"summary\":\"虎杖根提取物常用于保健食品中，含有白藜芦醇等多酚类成分，一般用量下对大多数人较为安全。少数人摄入过量可能出现轻微消化不适。\",\"details\":\"虎杖根提取物主要来源于植物虎杖，具有抗氧化、抗炎等潜在生理活性，在食品中多作为功能性成分或植物提取物使用。正常摄入量下毒性较低，但高剂量可能对肝肾有一定负担，孕妇、哺乳期女性及有肝肾疾病人群应谨慎。其本身不是常见过敏原，一般不会引起典型食物过敏反应。\",\"category\":\"植物提取物 / 功能性成分\"}",
+    "lastUpdated": 1764538837655,
+    "createdAt": 1764538837655
+  },
+  "肉豆蔻酸异丙酯__food__zh": {
+    "analysis": "{\"name\":\"肉豆蔻酸异丙酯\",\"riskLevel\":\"moderate\",\"summary\":\"肉豆蔻酸异丙酯主要用于化妆品和外用制剂中，通常不作为食品成分食用。若误作食品成分长期或大量摄入，其安全性数据有限，存在一定不确定风险。\",\"details\":\"在化妆品中，肉豆蔻酸异丙酯常用作润肤剂和溶剂，被认为按规定外用是较安全的，但其经口长期摄入的毒理和代谢研究相对不足。若出现在食品配料表中，可能为标签错误或不符合常规食品用添加剂规范，建议向生产商或监管部门核实。对皮肤敏感人群，外用时偶尔可出现刺激或致痘倾向，因此作为食品成分时更应谨慎对待。\",\"category\":\"疑似非食品用途成分\"}",
+    "lastUpdated": 1764538837730,
+    "createdAt": 1764538837730
+  },
+  "神经酰胺np__food__zh": {
+    "analysis": "{\"name\":\"神经酰胺NP\",\"riskLevel\":\"low\",\"summary\":\"神经酰胺NP是一种常用于护肤品中的脂质成分，在食品中极少作为配料使用。一般认为口服毒性较低，但在食品中的功能和安全评估资料有限。\",\"details\":\"神经酰胺NP主要存在于皮肤屏障脂质中，常用于化妆品以帮助保湿和修复皮肤屏障，但在食品领域并非常见或必需成分。目前公开的食品级应用和长期食用安全性研究相对不足，因此若用于食品，多数国家可能尚无明确的添加剂法规身份或使用规范。从营养角度看，它并非必需营养素，对大多数人短期摄入风险较低，但在缺乏系统安全评估与监管批准的情况下，不建议大量或长期摄入含有此类化妆品级神经酰胺的食品。\",\"category\":\"其他添加成分/非典型食品配料\"}",
+    "lastUpdated": 1764538837799,
+    "createdAt": 1764538837799
+  },
+  "聚甘油-3 甲基葡糖二硬脂酸酯__food__zh": {
+    "analysis": "{\"name\":\"聚甘油-3 甲基葡糖二硬脂酸酯\",\"riskLevel\":\"low\",\"summary\":\"聚甘油-3 甲基葡糖二硬脂酸酯是一种来源于植物油和糖类的乳化剂，常用于食品中帮助油脂与水均匀混合。一般认为在法规允许用量内食用是安全的。\",\"details\":\"它属于非离子型乳化剂，多用于烘焙食品、人造黄油、糖果以及某些代餐、奶油型制品中，以改善口感和稳定性。现有毒理学数据表明其毒性较低，通常不会对健康人群造成明显风险，但对乳化剂或添加剂敏感的人群如出现胃肠不适应减少摄入或避免。各国食品安全机构对这类乳化剂有严格的使用限量与品质规范，合规产品中的含量一般处于安全范围。\",\"category\":\"乳化剂/稳定剂\"}",
+    "lastUpdated": 1764538837810,
+    "createdAt": 1764538837810
+  },
+  "蜂蜡__food__zh": {
+    "analysis": "{\"name\":\"蜂蜡\",\"riskLevel\":\"low\",\"summary\":\"蜂蜡是一种从蜂巢中提取的天然蜡质，常用作食品表面上光剂或包衣剂。对大多数人来说安全性较高，人体基本不吸收。\",\"details\":\"蜂蜡在食品中多用于糖果、水果或胶囊的表面涂层，帮助防潮、防粘并增加光泽，一般被认为是安全的食品添加剂。少数对蜂产品（如蜂蜜、蜂胶）严重过敏的人，可能对蜂蜡也存在过敏风险，应留意不适反应。因蜂蜡几乎不被消化吸收，不会提供显著热量或营养，也较少与慢性疾病风险直接相关。\",\"category\":\"食品添加剂 / 润滑与上光剂\"}",
+    "lastUpdated": 1764538837979,
+    "createdAt": 1764538837979
+  },
+  "olea europaea (olive) fruit oil__skincare__en": {
+    "analysis": "{\"name\":\"Olea Europaea (olive) Fruit Oil\",\"riskLevel\":\"low\",\"summary\":\"Olea Europaea (Olive) Fruit Oil is a plant-derived oil used as an emollient and skin conditioning agent. It is generally well tolerated and considered safe for most skin types.\",\"details\":\"Olive fruit oil helps soften and moisturize the skin by reinforcing the skin barrier and reducing water loss. It does not fall under high-concern groups like parabens, sulfates, phthalates, formaldehyde-releasing preservatives, synthetic fragrance, mineral oil, silicones, drying alcohols, or heavy metals. A small number of people with very acne-prone or sensitive skin may experience pore clogging or mild irritation, but this is uncommon.\",\"category\":\"Emollient / Plant oil\"}",
+    "lastUpdated": 1764538878909,
+    "createdAt": 1764538878909
+  },
+  "shea butter (butyrospermum parkii butter)__skincare__en": {
+    "analysis": "{\"name\":\"Shea Butter (butyrospermum Parkii Butter)\",\"riskLevel\":\"low\",\"summary\":\"Shea butter is a rich natural emollient that helps moisturize and protect the skin barrier. It is generally well tolerated and considered safe for most skin types.\",\"details\":\"Derived from the nuts of the shea tree, shea butter is high in fatty acids and antioxidants that support skin softness and barrier repair. It is not associated with parabens, sulfates, phthalates, formaldehyde donors, mineral oil, silicones, drying alcohols, or heavy metals. Rarely, people with very sensitive or acne-prone skin may experience clogged pores or mild irritation, but this is uncommon.\",\"category\":\"Emollient / Moisturizing agent\"}",
+    "lastUpdated": 1764538879360,
+    "createdAt": 1764538879360
+  },
+  "star anise fruit extract (illicium verum fruit extract)__skincare__en": {
+    "analysis": "{\"name\":\"Star Anise Fruit Extract (illicium Verum Fruit Extract)\",\"riskLevel\":\"low\",\"summary\":\"Star anise fruit extract is a plant-derived ingredient often used for its antioxidant, soothing, or fragrance-like properties. It is generally considered safe at typical cosmetic use levels.\",\"details\":\"Illicium verum fruit extract provides aromatic compounds and may offer mild antioxidant or antimicrobial benefits in skincare. It is a botanical ingredient and is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, mineral oil, silicone, drying alcohol, or heavy metal. As with many plant extracts, there is a small risk of irritation or sensitization in very sensitive individuals, especially when used in high concentrations.\",\"category\":\"Botanical extract / Antioxidant / Aroma component\"}",
+    "lastUpdated": 1764538879360,
+    "createdAt": 1764538879360
+  },
+  "xylitol__skincare__en": {
+    "analysis": "{\"name\":\"Xylitol\",\"riskLevel\":\"low\",\"summary\":\"Xylitol is a sugar alcohol used in skincare as a humectant to help attract and retain moisture in the skin. It is generally considered very safe and well tolerated in topical products.\",\"details\":\"In skincare, xylitol helps improve skin hydration and supports the skin barrier by drawing water into the outer skin layers. It is not associated with common cosmetic concerns such as parabens, sulfates, phthalates, or formaldehyde-releasing preservatives, and it is not a drying alcohol. Allergic reactions are rare, making it suitable for most skin types, including sensitive skin.\",\"category\":\"Humectant / Moisturizing agent\"}",
+    "lastUpdated": 1764538879826,
+    "createdAt": 1764538879826
+  },
+  "ceramide np__skincare__en": {
+    "analysis": "{\"name\":\"Ceramide Np\",\"riskLevel\":\"low\",\"summary\":\"Ceramide NP is a skin-identical lipid that helps restore and strengthen the skin barrier. It is considered safe and beneficial for dry, sensitive, or compromised skin.\",\"details\":\"Ceramide NP mimics natural ceramides found in the skin, helping to reduce transepidermal water loss and improve moisture retention. It is not related to parabens, sulfates, phthalates, formaldehyde releasers, mineral oil, silicones, or drying alcohols, and it has a very low irritation and allergenic potential. Its barrier-repair properties make it a common ingredient in gentle, barrier-supportive formulations.\",\"category\":\"Skin-identical lipid / Barrier-repair ingredient\"}",
+    "lastUpdated": 1764538879827,
+    "createdAt": 1764538879827
+  },
+  "chamomilla recutita (matricaria) flower extract__skincare__en": {
+    "analysis": "{\"name\":\"Chamomilla Recutita (matricaria) Flower Extract\",\"riskLevel\":\"low\",\"summary\":\"Plant extract from chamomile flowers used for its soothing and anti-inflammatory properties in skincare and haircare. Generally well tolerated and not associated with major safety concerns for most users.\",\"details\":\"Chamomilla Recutita Flower Extract contains flavonoids and bisabolol that can help calm redness and irritation, making it popular in products for sensitive or reactive skin. The main caution is for people with known allergies to plants in the Asteraceae/Compositae family (like ragweed, marigold, or daisies), who may experience irritation or allergic reactions. It is not a paraben, sulfate, phthalate, formaldehyde releaser, fragrance, mineral oil, silicone, drying alcohol, or heavy metal.\",\"category\":\"Botanical plant extract / soothing agent\"}",
+    "lastUpdated": 1764538880844,
+    "createdAt": 1764538880844
+  },
+  "scutellaria baicalensis root extract__skincare__en": {
+    "analysis": "{\"name\":\"Scutellaria Baicalensis Root Extract\",\"riskLevel\":\"low\",\"summary\":\"Botanical extract from the root of Scutellaria baicalensis (Baikal skullcap) used for antioxidant and skin-brightening benefits. It is typically considered safe in cosmetic concentrations with a low irritation potential for most users.\",\"details\":\"Scutellaria Baicalensis Root Extract contains flavonoids such as baicalin that provide antioxidant, anti-inflammatory, and potential brightening effects, which can support skin barrier health and help reduce signs of environmental damage. While allergic or irritation reactions are possible with any plant extract, they appear uncommon and are usually mild when they occur. It is not related to parabens, sulfates, phthalates, formaldehyde-releasing preservatives, synthetic fragrance, mineral oil, silicones, drying alcohols, or heavy metals.\",\"category\":\"Botanical plant extract / antioxidant\"}",
+    "lastUpdated": 1764538880845,
+    "createdAt": 1764538880845
+  },
+  "polygonum cuspidatum root extract__skincare__en": {
+    "analysis": "{\"name\":\"Polygonum Cuspidatum Root Extract\",\"riskLevel\":\"low\",\"summary\":\"Plant root extract, often derived from Japanese knotweed, rich in resveratrol and used for antioxidant and soothing effects in skincare. It is generally regarded as low risk in cosmetic use levels.\",\"details\":\"Polygonum Cuspidatum Root Extract provides resveratrol and other polyphenols that can help protect skin from oxidative stress and may support anti-aging and calming benefits. Adverse reactions are rare but can include mild irritation or sensitivity in some individuals, particularly those reactive to multiple botanical ingredients. It does not function as a paraben, sulfate, phthalate, formaldehyde-releasing preservative, fragrance component, mineral oil, silicone, drying alcohol, or heavy metal.\",\"category\":\"Botanical plant extract / antioxidant\"}",
+    "lastUpdated": 1764538880845,
+    "createdAt": 1764538880845
+  },
+  "camellia sinensis leaf extract__skincare__en": {
+    "analysis": "{\"name\":\"Camellia Sinensis Leaf Extract\",\"riskLevel\":\"low\",\"summary\":\"Camellia sinensis leaf extract, also known as green tea extract, is generally considered very safe and is widely used for its antioxidant and soothing properties in skincare. It is not a paraben, sulfate, phthalate, formaldehyde-releaser, fragrance, mineral oil, silicone, drying alcohol, or heavy metal.\",\"details\":\"This plant extract is rich in polyphenols (like EGCG) that help protect skin from environmental stress and may help calm redness and irritation. Adverse reactions are rare, though people with very sensitive or allergy-prone skin can occasionally experience mild irritation or contact allergy to botanical extracts. In most formulations it supports skin barrier health and is suitable for both skincare and haircare products.\",\"category\":\"Botanical antioxidant and soothing agent\"}",
+    "lastUpdated": 1764538881960,
+    "createdAt": 1764538881960
+  },
+  "rosmarinus officinalis (rosemary) leaf extract__skincare__en": {
+    "analysis": "{\"name\":\"Rosmarinus Officinalis (rosemary) Leaf Extract\",\"riskLevel\":\"low\",\"summary\":\"Rosemary leaf extract is a botanical ingredient used for its antioxidant, antimicrobial, and potential circulation-supporting effects. It is not related to parabens, sulfates, phthalates, formaldehyde-releasing preservatives, synthetic fragrance, mineral oil, silicones, drying alcohols, or heavy metals.\",\"details\":\"In skincare and haircare, rosemary leaf extract can help protect formulas from oxidation and may offer mild soothing and purifying benefits to the skin and scalp. Some individuals, especially those with fragrance or herb sensitivities, may experience mild irritation or allergic reactions, but this is uncommon at typical cosmetic concentrations. Overall it is considered safe and beneficial in well-formulated products.\",\"category\":\"Botanical antioxidant and preservative booster\"}",
+    "lastUpdated": 1764538881960,
+    "createdAt": 1764538881960
+  },
+  "centella asiatica extract__skincare__en": {
+    "analysis": "{\"name\":\"Centella Asiatica Extract\",\"riskLevel\":\"low\",\"summary\":\"Centella asiatica extract (also called cica or gotu kola) is widely regarded as a gentle, beneficial ingredient known for soothing and barrier-supporting effects. It does not belong to problematic groups like parabens, sulfates, phthalates, formaldehyde-releasing preservatives, synthetic fragrance, mineral oil, silicones, drying alcohols, or heavy metals.\",\"details\":\"This botanical extract contains compounds such as asiaticoside and madecassoside, which are associated with calming irritation and supporting skin repair and hydration. It is generally well tolerated, including by sensitive skin types, though very rare cases of plant extract allergy or irritation can occur. Its profile makes it popular in products targeting sensitive, compromised, or redness-prone skin, as well as scalp-soothing haircare.\",\"category\":\"Botanical soothing and barrier-support ingredient\"}",
+    "lastUpdated": 1764538881960,
+    "createdAt": 1764538881960
+  },
+  "betaine__skincare__en": {
+    "analysis": "{\"name\":\"Betaine\",\"riskLevel\":\"low\",\"summary\":\"Betaine is a hydrating and soothing ingredient commonly used in skincare and haircare products. It is generally well-tolerated and not associated with major safety concerns.\",\"details\":\"Betaine is a naturally derived osmolyte that helps skin and hair maintain moisture balance and improve softness, making it useful in cleansers, moisturizers, and conditioners. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, fragrance, mineral oil, silicone, drying alcohol, or heavy metal, and it has a low potential for irritation or sensitization in most users. Its safety profile is considered favorable for regular use, including in sensitive-skin formulations.\",\"category\":\"Humectant and moisturizing agent\"}",
+    "lastUpdated": 1764538882002,
+    "createdAt": 1764538882002
+  },
+  "allantoin__skincare__en": {
+    "analysis": "{\"name\":\"Allantoin\",\"riskLevel\":\"low\",\"summary\":\"Allantoin is a soothing and skin-conditioning ingredient known for supporting skin barrier repair and reducing irritation. It is considered safe and gentle for most skin types, including sensitive skin.\",\"details\":\"Allantoin is used to promote skin comfort by helping to calm redness and support the natural healing process, making it common in moisturizers, after-sun products, and products for irritated or dry skin. It is not linked to endocrine disruption, does not belong to parabens, sulfates, phthalates, formaldehyde-releasing preservatives, fragrances, mineral oils, silicones, drying alcohols, or heavy metals. Adverse reactions are rare, and it is widely regarded as a low-risk ingredient in cosmetic formulations.\",\"category\":\"Soothing and skin-conditioning agent\"}",
+    "lastUpdated": 1764538882002,
+    "createdAt": 1764538882002
+  },
+  "trehalose__skincare__en": {
+    "analysis": "{\"name\":\"Trehalose\",\"riskLevel\":\"low\",\"summary\":\"Trehalose is a sugar-based humectant that helps retain moisture and protect skin from dehydration. It is generally considered safe and non-irritating in cosmetic use.\",\"details\":\"Trehalose can help stabilize formulations and protect skin cells against environmental stress by binding water and improving hydration, which is beneficial in moisturizers, serums, and haircare products. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, fragrance, mineral oil, silicone, drying alcohol, or heavy metal, and it has a low risk of sensitization or irritation. Its use is broadly accepted in skincare, including for sensitive and dry skin types.\",\"category\":\"Humectant and moisturizing agent\"}",
+    "lastUpdated": 1764538882002,
+    "createdAt": 1764538882002
+  },
+  "polyglyceryl-3 methylglucose distearate__skincare__en": {
+    "analysis": "{\"name\":\"Polyglyceryl-3 Methylglucose Distearate\",\"riskLevel\":\"low\",\"summary\":\"Polyglyceryl-3 Methylglucose Distearate is an emulsifier derived from plant oils and sugars, used to blend oil and water in skincare. It is generally considered gentle and well tolerated by most skin types.\",\"details\":\"This ingredient helps stabilize creams and lotions and can contribute to a smooth, non-greasy texture. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, fragrance, mineral oil, silicone, drying alcohol, or heavy metal. Adverse reactions are rare and usually limited to individuals with very sensitive or allergy-prone skin.\",\"category\":\"Emulsifier / surfactant\"}",
+    "lastUpdated": 1764538882061,
+    "createdAt": 1764538882061
+  },
+  "isopropyl myristate__skincare__en": {
+    "analysis": "{\"name\":\"Isopropyl Myristate\",\"riskLevel\":\"moderate\",\"summary\":\"Isopropyl Myristate is an emollient that makes products feel silky and helps spreadability. It is generally safe but can be comedogenic, meaning it may clog pores and worsen acne in some people.\",\"details\":\"In skincare, it softens the skin and enhances the penetration of other ingredients, improving sensory feel. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, fragrance, mineral oil, silicone, drying alcohol, or heavy metal, but it can be problematic for oily or acne-prone skin due to its tendency to contribute to breakouts. People with sensitive, acne-prone, or easily congested skin may prefer lower concentrations or to patch test first.\",\"category\":\"Emollient / texture enhancer\"}",
+    "lastUpdated": 1764538882061,
+    "createdAt": 1764538882061
+  },
+  "peg-100 stearate__skincare__en": {
+    "analysis": "{\"name\":\"Peg-100 Stearate\",\"riskLevel\":\"low\",\"summary\":\"PEG-100 Stearate is an emulsifier that helps oil and water mix in creams and lotions. It is widely used and generally considered safe for topical use in cosmetics.\",\"details\":\"This ingredient stabilizes formulations and contributes to a smooth, creamy texture without significant risk of irritation for most users. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, fragrance, mineral oil, silicone, drying alcohol, or heavy metal, though PEG-type ingredients can sometimes be of concern if contaminated during manufacturing; reputable brands control for this. People with very sensitive or compromised skin may still wish to patch test new products containing PEGs.\",\"category\":\"Emulsifier / surfactant\"}",
+    "lastUpdated": 1764538882061,
+    "createdAt": 1764538882061
+  },
+  "sodium polyacrylate__skincare__en": {
+    "analysis": "{\"name\":\"Sodium Polyacrylate\",\"riskLevel\":\"low\",\"summary\":\"Sodium Polyacrylate is a synthetic polymer used as a thickener, absorbent, and film-forming agent in skincare and haircare products. It is generally considered low risk for most users.\",\"details\":\"This ingredient helps stabilize formulas and improve texture by absorbing water and increasing viscosity. It is not a paraben, sulfate, phthalate, formaldehyde releaser, fragrance, mineral oil, silicone, drying alcohol, or heavy metal. Rarely, it may cause mild irritation in very sensitive or compromised skin, mainly if present in high concentrations or in poorly formulated products.\",\"category\":\"Polymer / Rheology modifier\"}",
+    "lastUpdated": 1764538882219,
+    "createdAt": 1764538882219
+  },
+  "2-hexanediol__skincare__en": {
+    "analysis": "{\"name\":\"2-hexanediol\",\"riskLevel\":\"low\",\"summary\":\"2-Hexanediol is a synthetic diol used mainly as a solvent and humectant, and sometimes as a mild preservative booster in cosmetic formulas. It is generally considered low risk with a good safety profile at typical use levels.\",\"details\":\"It helps dissolve other ingredients and can provide light moisturizing properties while supporting the preservation system. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, fragrance, mineral oil, silicone, drying alcohol, or heavy metal. Some people with very sensitive skin may experience mild irritation, but this is uncommon at standard cosmetic concentrations.\",\"category\":\"Solvent / Humectant / Preservative booster\"}",
+    "lastUpdated": 1764538882219,
+    "createdAt": 1764538882219
+  },
+  "caprylyl glycol__skincare__en": {
+    "analysis": "{\"name\":\"Caprylyl Glycol\",\"riskLevel\":\"low\",\"summary\":\"Caprylyl Glycol is a humectant and skin-conditioning agent that also functions as a preservative booster. It is widely used in skincare and haircare and is generally considered low risk.\",\"details\":\"This ingredient helps attract and retain moisture in the skin while enhancing the effectiveness of preservatives, allowing for lower levels of stronger antimicrobial agents. It does not belong to the main concerning groups such as parabens, sulfates, phthalates, formaldehyde releasers, fragrance allergens, mineral oil, silicones, drying alcohols, or heavy metals. Mild irritation can occur in very sensitive individuals, but adverse reactions are relatively rare.\",\"category\":\"Humectant / Skin conditioning agent / Preservative booster\"}",
+    "lastUpdated": 1764538882219,
+    "createdAt": 1764538882219
+  },
+  "beeswax__skincare__en": {
+    "analysis": "{\"name\":\"Beeswax\",\"riskLevel\":\"low\",\"summary\":\"Beeswax is a natural wax produced by honeybees, commonly used as an occlusive and thickening agent in skincare. It is generally safe and well-tolerated, helping to protect and moisturize the skin.\",\"details\":\"Beeswax forms a protective barrier on the skin that helps reduce transepidermal water loss without being highly comedogenic for most people. It is not linked to parabens, sulfates, phthalates, formaldehyde-releasing preservatives, or heavy metals. Individuals with known bee or pollen allergies may rarely experience sensitivity or allergic reactions and should patch test first.\",\"category\":\"Natural wax / Occlusive / Thickener\"}",
+    "lastUpdated": 1764538882383,
+    "createdAt": 1764538882383
+  },
+  "cetyl ethylhexanoate__skincare__en": {
+    "analysis": "{\"name\":\"Cetyl Ethylhexanoate\",\"riskLevel\":\"low\",\"summary\":\"Cetyl ethylhexanoate is an ester used as a lightweight emollient and texture enhancer in skincare and haircare products. It is generally considered safe with a low irritation potential for most users.\",\"details\":\"This ingredient provides a smooth, non-greasy feel and helps spreadability, often serving as an alternative to heavier oils or silicones. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, or drying alcohol, and it is not associated with heavy metals. Very sensitive or acne-prone skin may occasionally experience mild comedogenicity or irritation, but this is uncommon.\",\"category\":\"Emollient ester / Texture enhancer\"}",
+    "lastUpdated": 1764538882383,
+    "createdAt": 1764538882383
+  },
+  "butylene glycol__skincare__en": {
+    "analysis": "{\"name\":\"Butylene Glycol\",\"riskLevel\":\"low\",\"summary\":\"Butylene glycol is a commonly used humectant and solvent that helps keep skincare products stable and skin hydrated. It is generally considered low risk and well tolerated by most skin types.\",\"details\":\"In skincare, butylene glycol attracts and holds water in the skin and improves the texture and spreadability of formulations. It has a low irritation and sensitization potential, though very sensitive or reactive skin may occasionally experience mild redness or stinging. It is not a paraben, sulfate, phthalate, formaldehyde releaser, or heavy metal and is not associated with hormone disruption.\",\"category\":\"Humectant / Solvent\"}",
+    "lastUpdated": 1764538883559,
+    "createdAt": 1764538883559
+  },
+  "macadamia ternifolia seed oil__skincare__en": {
+    "analysis": "{\"name\":\"Macadamia Ternifolia Seed Oil\",\"riskLevel\":\"low\",\"summary\":\"Macadamia ternifolia seed oil is a plant-derived emollient oil rich in fatty acids that helps moisturize and soften skin and hair. It is generally considered safe with a low risk of irritation.\",\"details\":\"This oil contains monounsaturated fatty acids such as oleic and palmitoleic acid, which support skin barrier function and provide a smooth, conditioned feel. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, or mineral oil, and it does not act like silicones or drying alcohols. People with nut allergies should patch test first, as there is a theoretical risk of sensitivity due to its nut origin.\",\"category\":\"Plant oil / Emollient\"}",
+    "lastUpdated": 1764538883559,
+    "createdAt": 1764538883559
+  },
+  "cyclopentasiloxane__skincare__en": {
+    "analysis": "{\"name\":\"Cyclopentasiloxane\",\"riskLevel\":\"low\",\"summary\":\"Cyclopentasiloxane is a volatile silicone that gives skincare and haircare products a silky slip and lightweight feel. It is generally low risk for most users, with rare irritation or allergy reports.\",\"details\":\"This ingredient evaporates after application, helping spread other ingredients evenly and leaving a smooth, non-greasy finish. While some people prefer to avoid silicones due to buildup concerns in hair or personal preference, cyclopentasiloxane itself is not known to be a paraben, sulfate, phthalate, formaldehyde releaser, or heavy metal. It can occasionally cause issues for very sensitive or acne-prone skin, so patch testing is advisable if you are reactive to silicones.\",\"category\":\"Silicone / Texture enhancer\"}",
+    "lastUpdated": 1764538883559,
+    "createdAt": 1764538883559
+  },
+  "hamamelis virginiana (witch hazel) extract__skincare__en": {
+    "analysis": "{\"name\":\"Hamamelis Virginiana (witch Hazel) Extract\",\"riskLevel\":\"moderate\",\"summary\":\"Witch hazel extract is a botanical astringent used to tone the skin and reduce oiliness. It is generally safe but can be irritating or drying, especially on sensitive or compromised skin.\",\"details\":\"This plant extract contains tannins and other polyphenols that can provide antioxidant and mild anti-inflammatory benefits, but these same astringent components may disrupt the skin barrier if used in high concentrations or too frequently. Some preparations include added alcohol, which can further increase dryness and irritation risk, though alcohol-free versions are gentler. It is not associated with parabens, sulfates, phthalates, formaldehyde releasers, or heavy metals, but may trigger sensitivity in people with reactive or dry skin.\",\"category\":\"Botanical extract / Astringent\"}",
+    "lastUpdated": 1764538888119,
+    "createdAt": 1764538888119
+  },
+  "dimethiconol__skincare__en": {
+    "analysis": "{\"name\":\"Dimethiconol\",\"riskLevel\":\"low\",\"summary\":\"Dimethiconol is a silicone polymer used to create a smooth, silky feel and to form a protective film on skin or hair. It is considered low risk for most users and is not a common allergen.\",\"details\":\"This ingredient helps improve spreadability, reduce friction, and provide conditioning benefits, especially in haircare and skincare products. It is generally non-irritating and non-sensitizing, and it is not a paraben, sulfate, phthalate, formaldehyde releaser, or heavy metal. The main concern is that, as with other silicones, it can temporarily occlude the skin or hair surface, which may feel heavy to some users or potentially contribute to buildup if not cleansed properly.\",\"category\":\"Silicone / Emollient\"}",
+    "lastUpdated": 1764538888119,
+    "createdAt": 1764538888119
+  },
+  "polysorbate 20__skincare__en": {
+    "analysis": "{\"name\":\"Polysorbate 20\",\"riskLevel\":\"low\",\"summary\":\"Polysorbate 20 is a non-ionic surfactant and emulsifier used to help mix oil and water and improve product texture. It is generally considered low risk in skincare at typical use levels.\",\"details\":\"Polysorbate 20 is derived from sorbitol and fatty acids and is widely used to solubilize essential oils and fragrances in water-based formulas. The main concern is potential trace impurities from its manufacturing process, but these are strictly controlled in cosmetics and not usually an issue for most users. It can occasionally cause mild irritation in very sensitive skin but is not a paraben, sulfate, phthalate, formaldehyde releaser, silicone, mineral oil, or drying alcohol.\",\"category\":\"Emulsifier / Solubilizer / Surfactant\"}",
+    "lastUpdated": 1764538888153,
+    "createdAt": 1764538888153
+  },
+  "polyglutamic acid__skincare__en": {
+    "analysis": "{\"name\":\"Polyglutamic Acid\",\"riskLevel\":\"low\",\"summary\":\"Polyglutamic Acid is a humectant and film-forming polymer that helps attract and retain moisture in the skin. It is considered low risk and is often used for hydrating and plumping benefits.\",\"details\":\"This ingredient is typically produced by fermentation and can increase skin hydration by forming a lightweight, flexible film on the surface of the skin. It is generally non-irritating and compatible with most skin types, including sensitive skin. It is not associated with parabens, sulfates, phthalates, formaldehyde-releasing preservatives, fragrance, mineral oil, silicones, drying alcohols, or heavy metals.\",\"category\":\"Humectant / Hydrating polymer\"}",
+    "lastUpdated": 1764538888153,
+    "createdAt": 1764538888153
+  },
+  "glycyrrhiza glabra (licorice) root extract__skincare__en": {
+    "analysis": "{\"name\":\"Glycyrrhiza Glabra (licorice) Root Extract\",\"riskLevel\":\"low\",\"summary\":\"Glycyrrhiza Glabra (Licorice) Root Extract is a botanical extract used for its soothing and brightening properties. It is generally low risk but, as a plant extract, can rarely cause sensitivity in some individuals.\",\"details\":\"Licorice root extract contains compounds such as glabridin and liquiritin that can help reduce the appearance of dark spots and calm redness due to its anti-inflammatory and antioxidant effects. It is valued in skincare for supporting an even skin tone and for its gentle nature compared to many other brightening agents. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, fragrance chemical, mineral oil, silicone, drying alcohol, or heavy metal, though people with known sensitivities to licorice or botanicals should patch test first.\",\"category\":\"Botanical extract / Soothing and brightening agent\"}",
+    "lastUpdated": 1764538888153,
+    "createdAt": 1764538888153
   }
 }
