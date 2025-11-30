@@ -893,9 +893,9 @@ export async function analyzeIngredientsParallel(
   }
   console.log(`[PARALLEL-ANALYZER] Using ${uniqueIngredients.length} unique ingredients for analysis`);
   
-  // Reduce batch size for Chinese (more prone to empty GPT responses)
-  // Use smallest batch size (1 ingredient) for Chinese to ensure success
-  const BATCH_SIZE = userLanguage === 'zh' ? 1 : 3;
+  // Reduce batch size for non-English languages (more prone to empty GPT responses)
+  // Use batch size 1 for Chinese and Spanish to ensure success, batch size 3 for English
+  const BATCH_SIZE = userLanguage === 'zh' || userLanguage === 'es' ? 1 : 3;
   const batches: string[][] = [];
   for (let i = 0; i < uniqueIngredients.length; i += BATCH_SIZE) {
     batches.push(uniqueIngredients.slice(i, i + BATCH_SIZE));
@@ -1015,8 +1015,8 @@ IMPORTANT: Return ONLY this JSON array, nothing else:
     
     for (let retryAttempt = 0; retryAttempt < MAX_RETRIES; retryAttempt++) {
       try {
-        // Allocate more tokens for Chinese (needs more space for detailed analysis)
-        const tokensPerIngredient = userLanguage === 'zh' ? 350 : 200;
+        // Allocate more tokens for non-English languages (need more space for detailed analysis)
+        const tokensPerIngredient = (userLanguage === 'zh' || userLanguage === 'es') ? 350 : 200;
         const maxTokens = Math.min(3000, missingIngredients.length * tokensPerIngredient);
         
         const response = await openai.chat.completions.create({
