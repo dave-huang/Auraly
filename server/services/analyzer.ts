@@ -908,12 +908,33 @@ Return ONLY a JSON array with translated names in the same order, nothing else:
       return ingredients;
     }
 
-    const translated = JSON.parse(content);
-    if (Array.isArray(translated) && translated.length === ingredients.length) {
-      console.log(`[TRANSLATOR] Successfully translated ${translated.length} ingredients`);
-      return translated;
-    } else {
-      console.log(`[TRANSLATOR] Invalid translation response, using originals`);
+    // Extract JSON array from response (may be wrapped in markdown code blocks)
+    let jsonString = content.trim();
+    
+    // Remove markdown code block wrapper if present
+    if (jsonString.startsWith('```json')) {
+      jsonString = jsonString.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+    } else if (jsonString.startsWith('```')) {
+      jsonString = jsonString.replace(/^```\s*/, '').replace(/\s*```$/, '');
+    }
+    
+    // Extract JSON array if it's embedded in text
+    const arrayMatch = jsonString.match(/\[[\s\S]*\]/);
+    if (arrayMatch) {
+      jsonString = arrayMatch[0];
+    }
+    
+    try {
+      const translated = JSON.parse(jsonString);
+      if (Array.isArray(translated) && translated.length === ingredients.length) {
+        console.log(`[TRANSLATOR] Successfully translated ${translated.length} ingredients`);
+        return translated;
+      } else {
+        console.log(`[TRANSLATOR] Invalid translation response format, got ${Array.isArray(translated) ? translated.length : 'non-array'} items, expecting ${ingredients.length}`);
+        return ingredients;
+      }
+    } catch (parseError) {
+      console.log(`[TRANSLATOR] Failed to parse JSON: ${parseError}`);
       return ingredients;
     }
   } catch (error) {
