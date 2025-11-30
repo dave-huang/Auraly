@@ -854,8 +854,78 @@ Return your analysis as JSON with this structure:
 }
 
 /**
+ * Translate non-English ingredients to English
+ * This ensures GPT always analyzes consistent English names regardless of source language
+ */
+async function translateIngredientsToEnglish(ingredients: string[], sourceLanguage: string): Promise<string[]> {
+  // Skip translation if already English
+  if (sourceLanguage === 'en') {
+    return ingredients;
+  }
+  
+  // Check if any ingredient looks non-English (Chinese characters, etc.)
+  const needsTranslation = ingredients.some(ing => 
+    /[\u4E00-\u9FFF]/.test(ing) || // Chinese characters
+    /[\uAC00-\uD7AF]/.test(ing)    // Korean characters
+  );
+  
+  if (!needsTranslation) {
+    return ingredients;
+  }
+  
+  console.log(`[TRANSLATOR] Translating ${ingredients.length} ingredients from ${sourceLanguage} to English`);
+  
+  try {
+    const ingredientsList = ingredients.map((ing, idx) => `${idx + 1}. ${ing}`).join('\n');
+    const prompt = `Translate these ${sourceLanguage === 'zh' ? 'Chinese' : 'Spanish'} ingredient names to English. 
+Preserve the exact ingredient meaning - use standard food/chemical ingredient names in English.
+
+Ingredients:
+${ingredientsList}
+
+Return ONLY a JSON array with translated names in the same order, nothing else:
+["English name 1", "English name 2", ...]`;
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-5.1",
+      messages: [
+        {
+          role: "system",
+          content: "You are a translator specializing in food and cosmetic ingredient names. Translate ingredient names accurately to English."
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      max_completion_tokens: Math.min(1500, ingredients.length * 50),
+      reasoning_effort: "none"
+    } as any);
+
+    const content = response.choices?.[0]?.message?.content;
+    if (!content) {
+      console.log(`[TRANSLATOR] Empty translation response, using originals`);
+      return ingredients;
+    }
+
+    const translated = JSON.parse(content);
+    if (Array.isArray(translated) && translated.length === ingredients.length) {
+      console.log(`[TRANSLATOR] Successfully translated ${translated.length} ingredients`);
+      return translated;
+    } else {
+      console.log(`[TRANSLATOR] Invalid translation response, using originals`);
+      return ingredients;
+    }
+  } catch (error) {
+    console.error(`[TRANSLATOR] Translation failed:`, error);
+    return ingredients; // Fallback to originals
+  }
+}
+
+/**
  * Parallel micro-batched ingredient analysis with intelligent caching
  * - Parses ingredients from OCR text
+ * - Translates to English if needed
  * - Splits into batches of 5 ingredients
  * - Checks cache before calling GPT
  * - Processes all batches in parallel
