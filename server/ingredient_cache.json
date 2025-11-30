@@ -2575,13 +2575,13 @@
     "createdAt": 1764468597808
   },
   "氯化钠__skincare__zh": {
-    "analysis": "{\"name\":\"氯化钠\",\"riskLevel\":\"low\",\"summary\":\"氯化钠就是常见的食盐，在护肤和洗护产品中多用作增稠剂、调节渗透压和配方稳定剂。通常对皮肤安全性较高。\",\"details\":\"在正常配方浓度下，氯化钠刺激性较低，但在清洁类产品中含量较高时，可能会对极度敏感或屏障受损皮肤造成轻微干燥或刺痒感。它不属于防腐剂、激素干扰物、硫酸盐表活、邻苯二甲酸酯、甲醛释放体、香精、矿物油或硅类等高争议成分。总体来说，它是一种用途广泛且安全性较好的基础辅助成分。\",\"category\":\"基础功能性成分 / 增稠与调节渗透压成分\"}",
-    "lastUpdated": 1764490094474,
+    "analysis": "{\"name\":\"氯化钠\",\"riskLevel\":\"low\",\"summary\":\"氯化钠就是常见的食盐，广泛用于护肤和洗护产品中作为增稠剂和调节渗透压成分。一般对皮肤是安全的。\",\"details\":\"在护肤和洗发产品中，氯化钠主要用于调节产品的黏度和配方稳定性，对大多数肤质刺激性较低。但在高浓度或皮肤屏障受损、极度敏感时，可能会引起轻微干燥或刺痒感。它不属于防腐剂、硫酸盐表活、邻苯二甲酸酯、甲醛释放体、矿物油、硅油或重金属等高关注风险成分。\",\"category\":\"溶剂与配方辅助成分\"}",
+    "lastUpdated": 1764538285998,
     "createdAt": 1764468598570
   },
   "苯甲酸钠__skincare__zh": {
-    "analysis": "{\"name\":\"苯甲酸钠\",\"riskLevel\":\"low\",\"summary\":\"苯甲酸钠是一种常用的防腐剂，可抑制细菌和霉菌生长，在护肤和护发产品中广泛使用。对大多数人来说安全性较高，但敏感肌人群可能会出现轻微刺激。\",\"details\":\"在化妆品中，苯甲酸钠通常以较低浓度添加，用于延长产品保质期，减少微生物污染风险。少数敏感或受损皮肤在高浓度或多种防腐剂叠加使用时，可能会出现刺痛、泛红或干燥感。总体来说，其毒理数据较为充足，未被视为内分泌干扰物，也不属于甲醛释释放防腐剂或邻苯二甲酸酯类成分。\",\"category\":\"防腐剂\"}",
-    "lastUpdated": 1764529990032,
+    "analysis": "{\"name\":\"苯甲酸钠\",\"riskLevel\":\"low\",\"summary\":\"苯甲酸钠是一种常用的防腐剂，广泛应用于护肤品和个人护理产品中。一般在法规允许的浓度内使用被认为较为安全。\",\"details\":\"它通过抑制细菌和霉菌生长来延长产品保质期，对大多数肤质通常耐受性良好。少数敏感肌人群可能出现轻微刺激或过敏反应，尤其是受损屏障或与其他防腐剂同时使用时。与某些强酸环境或其它成分类似配伍时需注意潜在刺激性，但正常合规用量下总体风险较低。\",\"category\":\"防腐剂\"}",
+    "lastUpdated": 1764538285918,
     "createdAt": 1764468598626
   },
   "合成蜡__skincare__zh": {
@@ -2615,8 +2615,8 @@
     "createdAt": 1764468599364
   },
   "柠檬酸__skincare__zh": {
-    "analysis": "{\"name\":\"柠檬酸\",\"riskLevel\":\"low\",\"summary\":\"柠檬酸是一种常见的有机酸，用作化妆品中的pH调节剂和温和去角质成分。通常对大多数肤质是安全的。\",\"details\":\"在护肤品中，柠檬酸可以帮助调节配方酸碱度，并轻微促进老废角质脱落，从而提升肌肤光滑度。但对敏感肌或屏障受损肌肤来说，过高浓度可能引起刺痛、泛红或干燥，建议从低浓度、低频率开始使用。它不属于防腐剂、硫酸盐、邻苯二甲酸酯、硅油或矿物油等高风险成分，一般刺激性较低。\",\"category\":\"pH调节剂 / 果酸类去角质成分\"}",
-    "lastUpdated": 1764529989567,
+    "analysis": "{\"name\":\"柠檬酸\",\"riskLevel\":\"low\",\"summary\":\"柠檬酸是一种常见的有机酸，用于护肤品中调节酸碱度和轻微去角质。一般对大多数肤质较为温和。\",\"details\":\"在护肤和洗护产品中，柠檬酸主要用于调节配方的pH值，并可帮助促进老废角质代谢，改善皮肤光泽。对于敏感肌、屏障受损皮肤或有伤口时可能引起刺痛、发红等刺激反应，应注意浓度和使用频率。柠檬酸与防腐剂、防晒剂等常规成分配伍安全性较高，不属于防腐剂、硫酸盐、邻苯二甲酸酯或甲醛释放体等高争议成分。\",\"category\":\"pH调节剂 / 温和去角质成分\"}",
+    "lastUpdated": 1764538286919,
     "createdAt": 1764468599463
   },
   "肉豆蔻基甜菜碱__skincare__zh": {
@@ -2645,8 +2645,8 @@
     "createdAt": 1764468599734
   },
   "聚季铵盐-7__skincare__zh": {
-    "analysis": "{\"name\":\"聚季铵盐-7\",\"riskLevel\":\"low\",\"summary\":\"聚季铵盐-7是一种常用的阳离子聚合物，广泛用于护肤和洗发产品中，起到保湿、顺滑和抗静电作用。总体来说皮肤和头皮耐受性较好，刺激性较低。\",\"details\":\"聚季铵盐-7能在皮肤和头发表面形成柔滑薄膜，减少毛躁和打结感，同时提升产品的肤感和发感。现有研究并未显示其具有激素干扰、致癌或类似于防腐剂（如释放甲醛防腐剂）、邻苯二甲酸酯等严重安全问题。极少数敏感人群可能在高浓度或与其他刺激成分叠加时出现轻微刺激或毛孔负担，但在一般化妆品用量下被认为是安全度较高的调理成分。\",\"category\":\"调理剂 / 成膜剂\"}",
-    "lastUpdated": 1764490096361,
+    "analysis": "{\"name\":\"聚季铵盐-7\",\"riskLevel\":\"low\",\"summary\":\"聚季铵盐-7是一种常用的阳离子聚合物调理剂，可在皮肤和头发表面形成柔滑保护膜，提升顺滑度和保湿感。一般认为刺激性较低，适合大多数肤质和发质使用。\",\"details\":\"聚季铵盐-7不属于防腐剂、硫酸盐、邻苯二甲酸酯或释放甲醛类成分，也不是矿物油、硅油或酒精，主要作用是改善使用肤感与梳理性，同时减少静电。极少数敏感肌或受损屏障人群可能出现轻微刺激或粘腻不适感，但整体安全性较高。日常护肤、护发产品中按常规用量使用通常被认为是安全且耐受性良好的。\",\"category\":\"调理剂 / 成膜剂\"}",
+    "lastUpdated": 1764538286323,
     "createdAt": 1764468599753
   },
   "(日用)香精__skincare__zh": {
@@ -3145,8 +3145,8 @@
     "createdAt": 1764490095050
   },
   "乙二胺四乙酸二钠__skincare__zh": {
-    "analysis": "{\"name\":\"乙二胺四乙酸二钠\",\"riskLevel\":\"low\",\"summary\":\"乙二胺四乙酸二钠是一种螯合剂，常用于护肤和洗发产品中帮助稳定配方并增强防腐效果。一般浓度下对皮肤刺激性较低，被视为较安全成分。\",\"details\":\"它通过螯合金属离子，防止金属离子引发产品变色、变质或降低防腐剂效果，从而延长产品保质期。少数敏感肌人群可能对其产生轻微刺激或过敏反应，但临床上较为少见。该成分不会直接导致激素干扰，也不是防腐剂释放甲醛的来源，在日常使用剂量下总体安全性较好。\",\"category\":\"螯合剂/稳定剂\"}",
-    "lastUpdated": 1764529989921,
+    "analysis": "{\"name\":\"乙二胺四乙酸二钠\",\"riskLevel\":\"low\",\"summary\":\"乙二胺四乙酸二钠是一种常用螯合剂，帮助稳定配方、防止金属离子导致产品变色或变质。一般认为在化妆品中使用浓度下安全性较高。\",\"details\":\"它通过与钙、镁、铁等金属离子结合，提升防腐体系效果并维持产品外观与功效。少数敏感或受损皮肤在高浓度或多种刺激成分叠加时，可能出现轻微刺激或干燥感。环境方面，EDTA 类物质在水体中较难完全降解，有一定生态负担，但在个人日常使用剂量下对人体健康风险较低。\",\"category\":\"螯合剂 / 配方稳定剂\"}",
+    "lastUpdated": 1764538287189,
     "createdAt": 1764490095252
   },
   "双二乙氧基二甘醇环己烷-14-二羧酸酯__skincare__zh": {
@@ -3225,8 +3225,8 @@
     "createdAt": 1764490131443
   },
   "isopropanol__skincare__en": {
-    "analysis": "{\"name\":\"Isopropanol\",\"riskLevel\":\"moderate\",\"summary\":\"Isopropanol (isopropyl alcohol) is a fast-evaporating solvent and drying alcohol used in skincare and haircare for cleaning and quick-dry effects. It can be irritating and drying, especially for sensitive or compromised skin.\",\"details\":\"As a low–molecular weight alcohol, isopropanol can disrupt the skin barrier, leading to dryness, tightness, and potential irritation or stinging, particularly at higher concentrations or with frequent use. While generally safe in small, controlled amounts, it may worsen dryness, eczema, or rosacea and is not ideal for daily leave-on products, especially on the face. It is not a paraben, phthalate, sulfate, or formaldehyde releaser, but it sits in the category of potentially drying, irritating alcohols.\",\"category\":\"Drying alcohol / solvent\"}",
-    "lastUpdated": 1764490131747,
+    "analysis": "{\"name\":\"Isopropanol\",\"riskLevel\":\"moderate\",\"summary\":\"Isopropanol is a drying alcohol used as a solvent and for quick evaporation in skincare products. It can be irritating and drying, especially for sensitive or compromised skin.\",\"details\":\"As a short-chain alcohol, isopropanol can disrupt the skin barrier, leading to increased dryness, tightness, and potential irritation with frequent or high-concentration use. It may be tolerated in small amounts or rinse-off products, but leave-on use on dry, sensitive, or acne-prone skin can exacerbate redness and barrier damage. Individuals with eczema, rosacea, or very dry skin may wish to avoid or limit products containing isopropanol.\",\"category\":\"Drying alcohol / solvent\"}",
+    "lastUpdated": 1764538328647,
     "createdAt": 1764490131747
   },
   "sodium metabisulfite__skincare__en": {
@@ -3415,8 +3415,8 @@
     "createdAt": 1764529954936
   },
   "水__skincare__zh": {
-    "analysis": "{\"name\":\"水\",\"riskLevel\":\"low\",\"summary\":\"水（Eau）是大多数护肤品中的基础溶剂和载体成分，一般安全性很高。它用于溶解其他活性成分并帮助产品在皮肤上均匀涂抹。\",\"details\":\"护肤品中通常使用纯化水、去离子水或蒸馏水，以减少杂质和微生物污染的风险。水本身不会对皮肤造成刺激或致敏，但配方的整体安全性还取决于与之搭配的其他成分以及产品的防腐体系。它不属于防腐剂、表面活性剂或已知的激素干扰物等高风险类别。\",\"category\":\"溶剂 / 基础载体\"}",
-    "lastUpdated": 1764529989734,
+    "analysis": "{\"name\":\"水\",\"riskLevel\":\"low\",\"summary\":\"水是护肤品中最常见的溶剂和基质，一般被认为非常安全。它用于溶解其他成分并帮助产品均匀涂抹在皮肤上。\",\"details\":\"护肤配方中通常使用纯化水或去离子水，以减少杂质和微生物污染的风险。水本身不会刺激皮肤，也不属于防腐剂、表面活性剂、激素干扰物或重金属来源。总体来说，水在护肤和护发产品中是低风险且必需的基础成分。\",\"category\":\"溶剂/基质\"}",
+    "lastUpdated": 1764538285224,
     "createdAt": 1764529989112
   },
   "泛醇乙醚__skincare__zh": {
@@ -3430,8 +3430,8 @@
     "createdAt": 1764529989503
   },
   "氢氧化钠__skincare__zh": {
-    "analysis": "{\"name\":\"氢氧化钠\",\"riskLevel\":\"moderate\",\"summary\":\"氢氧化钠是一种强碱，护肤品中通常以极低浓度用来调节配方酸碱值。适度使用一般较安全，但浓度过高或配方不当可能刺激皮肤和眼睛。\",\"details\":\"在正规护肤和洗护产品中，氢氧化钠主要用于中和酸性成分，使最终成品的pH更接近皮肤所能耐受的范围。只要最终成品的pH控制良好且使用方法得当，大多数人使用不会产生明显问题。敏感肌或皮肤屏障受损人群，如感到刺痛、干涩或发红，应减少使用频率或停止使用相关产品。\",\"category\":\"pH调节剂 / 碱性成分\"}",
-    "lastUpdated": 1764529989682,
+    "analysis": "{\"name\":\"氢氧化钠\",\"riskLevel\":\"moderate\",\"summary\":\"氢氧化钠是一种强碱，常用作护肤品中的pH调节剂，在极低浓度下一般较为安全。若浓度过高或配方不当，可能引起皮肤和眼睛刺激。\",\"details\":\"在合格化妆品中，氢氧化钠通常仅用于微量调节酸碱度，并在最终成品中被其他成分中和，正常使用时对皮肤风险较低。但其本身具有强腐蚀性，若原料浓度高或配方失衡，可能导致干燥、刺痛甚至灼伤，尤其对敏感肌和受损皮肤刺激更明显。总体安全性取决于最终产品配方设计与品质控制。\",\"category\":\"pH调节剂 / 碱性成分\"}",
+    "lastUpdated": 1764538286594,
     "createdAt": 1764529989682
   },
   "甘油硬脂酸酯__skincare__zh": {
@@ -3545,8 +3545,8 @@
     "createdAt": 1764529991112
   },
   "甘油__skincare__zh": {
-    "analysis": "{\"name\":\"甘油\",\"riskLevel\":\"low\",\"summary\":\"甘油是一种常见的保湿剂，能够吸引并锁住皮肤表面的水分，提升皮肤柔软度和光滑度。一般刺激性很低，适合大多数肤质使用。\",\"details\":\"在护肤和护发产品中，甘油主要作为保湿剂和溶剂使用，有助于维持皮肤屏障功能并减少干燥和紧绷感。其分子较小，可与水结合形成保湿环境，长期合理使用通常是安全的。极少数人可能在高浓度或与其他成分叠加时感到轻微粘腻或刺激，但总体过敏风险较低，与防腐剂、激素干扰物、硫酸盐、邻苯二甲酸酯、甲醛释放体等高风险成分无直接关联。\",\"category\":\"保湿剂/溶剂\"}",
-    "lastUpdated": 1764529991132,
+    "analysis": "{\"name\":\"甘油\",\"riskLevel\":\"low\",\"summary\":\"甘油是一种常见的保湿剂，能够吸水保湿，增强皮肤屏障。通常耐受性良好，致敏风险较低。\",\"details\":\"甘油通过吸收并锁住水分，帮助皮肤保持柔软和光滑，经常作为基础保湿成分广泛用于护肤和护发产品中。对大多数肤质（包括敏感肌和干性肌）都比较温和安全，极少数人可能在高浓度或配方不平衡时感到轻微黏腻或不适。它不属于防腐剂、硫酸盐、邻苯二甲酸酯、甲醛释放体、矿物油、硅或潜在重金属来源。\",\"category\":\"保湿剂 / 溶剂\"}",
+    "lastUpdated": 1764538286429,
     "createdAt": 1764529991132
   },
   "聚山梨醇酯-60__skincare__zh": {
@@ -3788,5 +3788,155 @@
     "analysis": "{\"name\":\"Chia Seeds\",\"riskLevel\":\"low\",\"summary\":\"Chia seeds are generally safe plant-based ingredients valued for their omega fatty acids and hydrating gel-forming properties in skincare and haircare. They are not linked to parabens, sulfates, phthalates, or other major synthetic cosmetic hazards.\",\"details\":\"Topically, chia seed extracts or gels can help moisturize and condition skin and hair, supporting barrier function and smoothness. Potential risks are mainly limited to rare plant allergies or sensitivities, with minimal evidence of irritation for most users. They do not inherently contain formaldehyde-releasing preservatives, synthetic fragrance, silicones, mineral oils, heavy metals, or drying alcohols.\",\"category\":\"Plant-derived moisturizing / conditioning agent\"}",
     "lastUpdated": 1764536174338,
     "createdAt": 1764536174338
+  },
+  "quinoa__food__en": {
+    "analysis": "{\"name\":\"Quinoa\",\"riskLevel\":\"low\",\"summary\":\"Quinoa is a naturally gluten-free whole grain seed that is generally safe and nutritious for most people. It is not a common allergen and contains no artificial additives.\",\"details\":\"Quinoa provides protein, fiber, and minerals and does not contain gluten, making it suitable for many people with gluten intolerance or celiac disease. Rarely, individuals may experience digestive discomfort or sensitivity, but serious reactions are uncommon. It contains no artificial colors, flavors, preservatives, or common food additives of concern.\",\"category\":\"Whole grain / seed\"}",
+    "lastUpdated": 1764537956870,
+    "createdAt": 1764537956870
+  },
+  "amaranth flakes__food__en": {
+    "analysis": "{\"name\":\"Amaranth Flakes\",\"riskLevel\":\"low\",\"summary\":\"Amaranth flakes are made from the amaranth grain and are generally considered safe and nutritious. They are naturally gluten-free and not a common allergen.\",\"details\":\"Amaranth provides protein, fiber, and micronutrients, and amaranth flakes typically do not contain artificial colors, flavors, or preservatives when listed simply as the grain. Although cross-contamination with gluten-containing grains is possible in some facilities, amaranth itself is gluten-free. Adverse reactions are rare, and it does not contribute to high sodium, trans fats, or artificial additive intake when consumed in plain flake form.\",\"category\":\"Whole grain / cereal flakes\"}",
+    "lastUpdated": 1764537956870,
+    "createdAt": 1764537956870
+  },
+  "whole grain oat flakes__food__en": {
+    "analysis": "{\"name\":\"Whole Grain Oat Flakes\",\"riskLevel\":\"low\",\"summary\":\"Whole grain oat flakes are generally considered a healthy source of complex carbohydrates and fiber but do contain gluten-like proteins that can affect sensitive individuals. They usually do not contain artificial additives or preservatives when minimally processed.\",\"details\":\"For most people, whole grain oats support heart health and stable blood sugar and are a nutritious ingredient. However, they naturally contain avenin, a protein similar to gluten, and can be cross-contaminated with wheat, so they may pose an issue for those with celiac disease or gluten sensitivity. They are typically free of artificial colors, flavors, sweeteners, and common chemical additives unless otherwise stated on the label.\",\"category\":\"Whole grain cereal\"}",
+    "lastUpdated": 1764537960382,
+    "createdAt": 1764537960382
+  },
+  "flax seeds__food__en": {
+    "analysis": "{\"name\":\"Flax Seeds\",\"riskLevel\":\"low\",\"summary\":\"Flax seeds are nutrient-dense seeds rich in fiber and omega-3 fatty acids with a generally low safety concern. They usually do not involve artificial additives, colors, or preservatives when sold whole or simply milled.\",\"details\":\"For most consumers, flax seeds support digestive health and heart health, and they have no major allergy profile compared to common allergens like nuts, dairy, or soy, though rare seed allergies can occur. High intakes of raw whole flax seeds without adequate fluid may cause digestive discomfort in some people. They do not contain artificial sweeteners, flavor enhancers, or high sodium unless combined with other processed ingredients.\",\"category\":\"Seeds\"}",
+    "lastUpdated": 1764537960382,
+    "createdAt": 1764537960382
+  },
+  "chia seeds__food__en": {
+    "analysis": "{\"name\":\"Chia Seeds\",\"riskLevel\":\"low\",\"summary\":\"Chia seeds are generally safe, nutrient-rich seeds providing fiber, plant protein, and omega-3 fats with minimal additive-related concerns. They are typically sold without artificial sweeteners, colors, or preservatives.\",\"details\":\"Most individuals tolerate chia seeds well, and they do not contain gluten, dairy, soy, or common artificial food additives unless part of a processed blend. Because they absorb large amounts of water and swell, consuming them dry without enough liquid can cause digestive discomfort or, rarely, swallowing difficulties. They are low in sodium and free of trans fats and flavor enhancers in their natural form.\",\"category\":\"Seeds\"}",
+    "lastUpdated": 1764537960382,
+    "createdAt": 1764537960382
+  },
+  "奇亚籽__food__zh": {
+    "analysis": "{\"name\":\"奇亚籽\",\"riskLevel\":\"low\",\"summary\":\"奇亚籽是一种富含膳食纤维、Omega-3脂肪酸和植物蛋白的种子，通常被认为是较健康的天然食材。对于大多数人来说，适量食用是安全的。\",\"details\":\"奇亚籽不属于常见的八大食物过敏原，但个别人可能对其种子蛋白产生过敏反应，如出现皮疹或消化不适应停止食用并就医。由于其吸水膨胀性强，食用时应配足量水分，并避免一次性大量干吃，以免造成噎食或胃肠不适。总体而言，它不含人工添加剂、色素、防腐剂等，被视为低风险的天然食材。\",\"category\":\"天然种子与坚果类\"}",
+    "lastUpdated": 1764538011225,
+    "createdAt": 1764538011225
+  },
+  "亚麻籽__food__zh": {
+    "analysis": "{\"name\":\"亚麻籽\",\"riskLevel\":\"low\",\"summary\":\"亚麻籽是一种富含膳食纤维和α-亚麻酸（植物性Omega-3）的种子原料，一般被认为对大多数人是健康且安全的。常用于面包、谷物食品和零食中以增加营养和口感。\",\"details\":\"亚麻籽不属于常见的强致敏原，但部分人可能对其种子或籽油有过敏反应，如出现瘙痒、肿胀或呼吸不适应停止食用并就医。其所含可溶性和不溶性膳食纤维较高，适量有助于肠道健康，但一次性大量摄入可能引起腹胀或腹泻。整体而言亚麻籽为天然食材，不涉及人工色素、甜味剂、防腐剂或反式脂肪等常见高风险食品添加成分。\",\"category\":\"种子与坚果类食材\"}",
+    "lastUpdated": 1764538011225,
+    "createdAt": 1764538011225
+  },
+  "苋麦片__food__zh": {
+    "analysis": "{\"name\":\"苋麦片\",\"riskLevel\":\"low\",\"summary\":\"苋麦片是由苋麦谷物制成的片状食品，属于天然全谷物原料。一般认为安全健康，可提供膳食纤维和多种微量营养素。\",\"details\":\"苋麦片通常不含人工色素、防腐剂或甜味剂，本身脂肪含量较低，并含有一定量的蛋白质、膳食纤维、铁和镁等营养成分。对多数人来说，苋麦片的过敏风险较低，但对谷物类或种子类敏感人群仍需留意个人反应。若在加工过程中与含麸质谷物共用生产线，可能存在微量麸质交叉污染的风险，对乳糜泻或对麸质高度敏感者应查看包装说明。\",\"category\":\"全谷物谷物类原料\"}",
+    "lastUpdated": 1764538011570,
+    "createdAt": 1764538011570
+  },
+  "藜麦__food__zh": {
+    "analysis": "{\"name\":\"藜麦\",\"riskLevel\":\"low\",\"summary\":\"藜麦是一种富含蛋白质和膳食纤维的全谷物，天然不含麸质。一般人群食用安全，适合作为主食替代品。\",\"details\":\"藜麦含有优质植物蛋白、矿物质和多种维生素，有助于增加饱腹感并平稳血糖。它天然不含麸质，适合对小麦或麸质敏感的人群，但对藜麦或相关植物有特殊过敏史者仍需留意。作为天然食材，通常不含人工添加剂、反式脂肪或人工色素与甜味剂。\",\"category\":\"全谷物与种子类\"}",
+    "lastUpdated": 1764538011580,
+    "createdAt": 1764538011580
+  },
+  "全谷物燕麦片__food__zh": {
+    "analysis": "{\"name\":\"全谷物燕麦片\",\"riskLevel\":\"low\",\"summary\":\"全谷物燕麦片是一种天然谷物原料，富含膳食纤维和多种营养成分。整体风险较低，适合大多数人日常食用。\",\"details\":\"全谷物燕麦片通常不含人工色素、香精、防腐剂等添加剂，也不含反式脂肪或氢化油，其主要成分是碳水化合物、蛋白质和可溶性膳食纤维，有助于增加饱腹感并支持心血管健康。需要注意的是，燕麦本身不含小麦麸质，但在加工过程中可能与含麸质谷物交叉污染，对麸质敏感或患有乳糜泻的人群应选择标明“无麸质”的产品。总体而言，这一成分的钠含量较低，不涉及人工甜味剂、味精或高果糖玉米糖浆等高风险添加物。\",\"category\":\"谷物与全谷物\"}",
+    "lastUpdated": 1764538012445,
+    "createdAt": 1764538012445
+  },
+  "sodium lauroamphoacetate__skincare__en": {
+    "analysis": "{\"name\":\"Sodium Lauroamphoacetate\",\"riskLevel\":\"low\",\"summary\":\"Sodium Lauroamphoacetate is a mild amphoteric surfactant used for gentle cleansing in skincare and haircare products. It is generally considered low risk and well tolerated, including by sensitive skin types.\",\"details\":\"This ingredient helps water mix with oils and dirt so they can be rinsed away, and it is often used in baby cleansers and sulfate-free formulas due to its mildness. It is not a sulfate, paraben, phthalate, formaldehyde releaser, or silicone, and it is not associated with heavy metals. Irritation or allergy is uncommon, but any surfactant can cause issues in very sensitive individuals at high concentrations or with prolonged contact.\",\"category\":\"Surfactant / Cleansing agent\"}",
+    "lastUpdated": 1764538223281,
+    "createdAt": 1764538223281
+  },
+  "coco-glucoside__skincare__en": {
+    "analysis": "{\"name\":\"Coco-glucoside\",\"riskLevel\":\"low\",\"summary\":\"Coco-Glucoside is a very mild, plant-derived nonionic surfactant used for gentle cleansing and foaming. It is considered low risk and is commonly used in natural or sensitive-skin formulations.\",\"details\":\"Made from coconut-derived fatty alcohols and glucose (sugar), coco-glucoside helps cleanse the skin and hair while being less stripping than many traditional sulfates. It is not a sulfate, paraben, phthalate, formaldehyde releaser, mineral oil, silicone, or drying alcohol, and it has a low potential for irritation or allergy. It is often combined with other mild surfactants to improve foam and reduce overall irritation potential.\",\"category\":\"Surfactant / Cleansing agent\"}",
+    "lastUpdated": 1764538223282,
+    "createdAt": 1764538223282
+  },
+  "glyceryl oleate__skincare__en": {
+    "analysis": "{\"name\":\"Glyceryl Oleate\",\"riskLevel\":\"low\",\"summary\":\"Glyceryl Oleate is an ester of glycerin and oleic acid used as an emulsifier and skin-conditioning agent in skincare and haircare products. It is generally considered safe and well-tolerated for most skin types.\",\"details\":\"This ingredient is often derived from vegetable oils and helps keep oil and water mixed while providing a soft, conditioned feel to skin and hair. It is not a paraben, sulfate, phthalate, formaldehyde-releaser, silicone, mineral oil, drying alcohol, or heavy metal. Irritation is uncommon, though very sensitive or compromised skin may occasionally react to any surfactant-type ingredient.\",\"category\":\"Emulsifier and skin-conditioning agent\"}",
+    "lastUpdated": 1764538223742,
+    "createdAt": 1764538223742
+  },
+  "avena sativa (oat) kernel flour__skincare__en": {
+    "analysis": "{\"name\":\"Avena Sativa (oat) Kernel Flour\",\"riskLevel\":\"low\",\"summary\":\"Avena Sativa (Oat) Kernel Flour is a colloidal oatmeal ingredient used for its soothing, anti-itch, and skin-protective properties. It is widely regarded as safe and beneficial, especially for dry, irritated, or sensitive skin.\",\"details\":\"This ingredient contains beta-glucans, lipids, and antioxidants that help calm redness and support the skin barrier. It is not associated with parabens, sulfates, phthalates, formaldehyde releasers, silicones, mineral oil, drying alcohols, or heavy metals. People with true oat or gluten-related allergies should patch test, as rare allergic reactions are possible.\",\"category\":\"Soothing plant extract / colloidal oatmeal\"}",
+    "lastUpdated": 1764538223742,
+    "createdAt": 1764538223742
+  },
+  "hydroxypropyl starch phosphate__skincare__en": {
+    "analysis": "{\"name\":\"Hydroxypropyl Starch Phosphate\",\"riskLevel\":\"low\",\"summary\":\"Hydroxypropyl Starch Phosphate is a modified starch used mainly as a thickener, stabilizer, and texture enhancer in skincare and haircare products. It is generally considered non-irritating and safe for most skin types.\",\"details\":\"This ingredient is derived from plant starch that has been chemically modified to improve stability, spreadability, and sensory feel in formulas such as creams, lotions, and gels. It is not associated with major concerns like hormone disruption, sulfates, phthalates, or formaldehyde-releasing activity. Adverse reactions are rare and typically limited to individuals with very sensitive or reactive skin, where mild irritation is possible but uncommon.\",\"category\":\"Texture enhancer / thickener\"}",
+    "lastUpdated": 1764538225992,
+    "createdAt": 1764538225992
+  },
+  "acrylates/c10-30 alkyl acrylate crosspolymer__skincare__en": {
+    "analysis": "{\"name\":\"Acrylates/c10-30 Alkyl Acrylate Crosspolymer\",\"riskLevel\":\"low\",\"summary\":\"Acrylates/C10-30 Alkyl Acrylate Crosspolymer is a synthetic polymer used as a thickener, stabilizer, and emulsifier in many cosmetic products. It is generally considered safe with a low risk of irritation for most users.\",\"details\":\"This crosslinked polymer helps create gel-like textures, stabilize emulsions, and control product viscosity, improving spreadability and feel on the skin. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, or silicone, and it does not act as fragrance or mineral oil. While it is widely tolerated, those with extremely sensitive or compromised skin may occasionally experience mild irritation, but serious reactions are uncommon.\",\"category\":\"Polymer thickener / emulsifier\"}",
+    "lastUpdated": 1764538225992,
+    "createdAt": 1764538225992
+  },
+  "aloe barbadensis leaf extract__skincare__en": {
+    "analysis": "{\"name\":\"Aloe Barbadensis Leaf Extract\",\"riskLevel\":\"low\",\"summary\":\"Aloe barbadensis leaf extract is a plant-derived ingredient used for its soothing, hydrating, and anti-inflammatory properties in skincare and haircare. It is generally well tolerated and considered safe for most skin types.\",\"details\":\"This extract contains polysaccharides, vitamins, and antioxidants that help calm irritation, support skin barrier function, and provide light moisturization. Adverse reactions are uncommon but may occur in individuals with specific plant allergies or very sensitive skin. It is not associated with parabens, sulfates, phthalates, formaldehyde releasers, mineral oil, silicones, drying alcohols, or heavy metals.\",\"category\":\"Botanical extract / soothing agent\"}",
+    "lastUpdated": 1764538230346,
+    "createdAt": 1764538230346
+  },
+  "avena sativa (oat) kernel extract__skincare__en": {
+    "analysis": "{\"name\":\"Avena Sativa (oat) Kernel Extract\",\"riskLevel\":\"low\",\"summary\":\"Avena sativa (oat) kernel extract is a colloidal oat-derived ingredient known for its soothing, anti-itch, and barrier-supporting properties. It is widely used in products for sensitive, dry, or irritated skin and is generally considered very safe.\",\"details\":\"This extract contains beta-glucans, lipids, and antioxidants that help reduce redness, calm irritation, and support the skin’s protective barrier. While it is well tolerated, people with a known oat or grain allergy should use it with caution and patch test first. It is not a source of parabens, sulfates, phthalates, formaldehyde-releasing preservatives, added fragrance, mineral oil, silicones, drying alcohols, or heavy metals.\",\"category\":\"Botanical extract / soothing and barrier-supporting agent\"}",
+    "lastUpdated": 1764538230346,
+    "createdAt": 1764538230346
+  },
+  "泛醇__skincare__zh": {
+    "analysis": "{\"name\":\"泛醇\",\"riskLevel\":\"low\",\"summary\":\"泛醇是一种维生素B5前体，常用于护肤和护发产品中，具有良好的保湿和舒缓功效。整体安全性较高，刺激性较低。\",\"details\":\"泛醇能够增强皮肤屏障功能，帮助皮肤和头发锁住水分，减轻干燥和紧绷感，并对轻微受损肌肤有一定修护作用。极少数敏感人群可能出现轻微红痒或刺痛，一般停用后即可缓解。它不属于防腐剂、硫酸盐、邻苯二甲酸酯、甲醛释放体、矿物油、硅油或重金属等高争议成分。\",\"category\":\"保湿剂/舒缓成分\"}",
+    "lastUpdated": 1764538285965,
+    "createdAt": 1764538285965
+  },
+  "库拉索芦荟叶提取物__skincare__zh": {
+    "analysis": "{\"name\":\"库拉索芦荟叶提取物\",\"riskLevel\":\"low\",\"summary\":\"库拉索芦荟叶提取物具有舒缓、保湿和镇静肌肤的作用，常用于敏感肌和晒后修护产品中。总体安全性较高，致敏风险较低。\",\"details\":\"该成分富含多糖和少量维生素，能帮助加强皮肤屏障、减轻干燥紧绷感，并在一定程度上缓解轻微红肿不适。个别人可能对芦荟成分过敏，表现为刺痒或泛红，一旦出现应立即停止使用。它不属于防腐剂、硫酸盐、邻苯二甲酸酯或甲醛释放体，也不含矿物油或硅类，可视为较温和的植物护肤成分。\",\"category\":\"植物提取物 / 舒缓保湿成分\"}",
+    "lastUpdated": 1764538286217,
+    "createdAt": 1764538286217
+  },
+  "丙烯酸酯/c10-30 烷基丙烯酸酯交联聚合物__skincare__zh": {
+    "analysis": "{\"name\":\"丙烯酸酯/C10-30 烷基丙烯酸酯交联聚合物\",\"riskLevel\":\"low\",\"summary\":\"这是一种常用的合成增稠剂和成膜剂，一般被认为对皮肤刺激性较低。常用于乳霜、啫喱中帮助形成稳定的凝胶或乳化体系。\",\"details\":\"丙烯酸酯/C10-30 烷基丙烯酸酯交联聚合物主要用于调节产品黏度和质地，帮助配方稳定、不分层。其分子量较大，通常不易被皮肤吸收，致敏和刺激风险整体较低。少数极度敏感或受损皮肤在高浓度或配方不当时，可能出现轻微干涩或刺痒感，但在化妆品中属较为安全的成分。\",\"category\":\"成膜剂/增稠剂\"}",
+    "lastUpdated": 1764538286296,
+    "createdAt": 1764538286296
+  },
+  "月桂氨丙基乙酸钠__skincare__zh": {
+    "analysis": "{\"name\":\"月桂氨丙基乙酸钠\",\"riskLevel\":\"low\",\"summary\":\"月桂氨丙基乙酸钠是一种温和的两性表面活性剂，常用于洁面、洗发和婴儿清洁产品中，起到清洁与起泡作用。总体刺激性较低，适合敏感肤质和头皮使用。\",\"details\":\"该成分来源多为椰子油衍生物，具备良好的清洁力和较低的去脂力，相比传统硫酸盐类表活（如SLS、SLES）更加温和，不属于硫酸盐，也不是防腐剂、邻苯二甲酸酯或甲醛释放体。对大多数人来说安全性高，仅极少数敏感人群可能出现轻微刺激或过敏，可通过先局部试用来降低风险。它不被认为是激素干扰物，也不含重金属等高风险成分。\",\"category\":\"表面活性剂／清洁成分\"}",
+    "lastUpdated": 1764538286522,
+    "createdAt": 1764538286522
+  },
+  "燕麦仁粉（avena sativa kernel flour）__skincare__zh": {
+    "analysis": "{\"name\":\"燕麦仁粉（Avena Sativa Kernel Flour）\",\"riskLevel\":\"low\",\"summary\":\"燕麦仁粉是由燕麦谷物研磨而成的天然成分，常用于舒缓和保湿型护肤产品。通常耐受性良好，刺激性较低。\",\"details\":\"燕麦仁粉富含多糖、蛋白质以及具有舒缓镇静功效的燕麦多酚，可帮助减轻干燥、轻度敏感和瘙痒感，常见于敏感肌和婴儿护肤配方中。该成分不属于防腐剂、表面活性剂、邻苯二甲酸酯、甲醛释放体、矿物油或硅油，也不含硫酸盐类，对皮肤屏障较为温和。极少数对燕麦或谷物过敏的人可能出现接触性过敏，使用前可先做局部测试。\",\"category\":\"植物提取物 / 舒缓保湿成分\"}",
+    "lastUpdated": 1764538286684,
+    "createdAt": 1764538286684
+  },
+  "燕麦仁提取物__skincare__zh": {
+    "analysis": "{\"name\":\"燕麦仁提取物\",\"riskLevel\":\"low\",\"summary\":\"燕麦仁提取物具有舒缓、保湿和抗氧化作用，常用于敏感肌和修护类护肤品。总体安全性较高，不含防腐剂、硫酸盐或邻苯二甲酸酯等高风险成分本身。\",\"details\":\"燕麦仁提取物富含β-葡聚糖、多酚及多糖类成分，可帮助减缓皮肤干燥、发红和轻度炎症，改善皮肤屏障功能。极少数人可能对燕麦或谷物蛋白过敏，出现瘙痒或红斑，敏感或已知对燕麦过敏者需先做局部测试。该成分本身不涉及防腐剂释放甲醛、矿物油、硅油或刺激性酒精等问题，适合大多数肤质长期使用。\",\"category\":\"植物提取物/舒缓保湿成分\"}",
+    "lastUpdated": 1764538286843,
+    "createdAt": 1764538286843
+  },
+  "羟丙基淀粉磷酸酯__skincare__zh": {
+    "analysis": "{\"name\":\"羟丙基淀粉磷酸酯\",\"riskLevel\":\"low\",\"summary\":\"羟丙基淀粉磷酸酯是一种来源于淀粉的改性多糖，常用作增稠剂、稳定剂与质地调理成分。总体刺激性较低，适合大多数肤质使用。\",\"details\":\"在护肤和护发产品中，它有助于改善产品的涂抹性和肤感，使配方更加柔滑、稳定，并减少油腻或黏腻感。该成分不属于防腐剂、表面活性剂型硫酸盐、防腐释放甲醛物质、邻苯二甲酸酯、矿物油、硅油或重金属等高争议成分，一般也不与激素干扰相关。极少数敏感或易过敏个体可能对改性淀粉类产生轻微刺激或不适，但总体安全性良好。\",\"category\":\"增稠剂/质地调理剂\"}",
+    "lastUpdated": 1764538287252,
+    "createdAt": 1764538287252
+  },
+  "椰油基葡糖苷__skincare__zh": {
+    "analysis": "{\"name\":\"椰油基葡糖苷\",\"riskLevel\":\"low\",\"summary\":\"椰油基葡糖苷是一种来源于椰子油和葡萄糖的非离子表面活性剂，常用于洁面、洗发和沐浴产品中，清洁力温和。一般对皮肤和头皮比较友好，适合敏感肌和婴儿用品。\",\"details\":\"它不含硫酸盐类（如SLS、SLES），对皮脂屏障的破坏较小，通常不会像强去脂清洁剂那样造成明显干燥紧绷。极少数人可能会因任何表面活性剂产生轻微刺激或过敏，但总体安全性较高，不属于防腐剂、激素干扰物、邻苯二甲酸酯或释放甲醛成分。配方中若与其他温和表活复配，可在保证清洁力的同时进一步降低刺激性。\",\"category\":\"表面活性剂 / 清洁剂\"}",
+    "lastUpdated": 1764538287318,
+    "createdAt": 1764538287318
+  },
+  "椰油酰胺丙基甜菜碱__skincare__zh": {
+    "analysis": "{\"name\":\"椰油酰胺丙基甜菜碱\",\"riskLevel\":\"moderate\",\"summary\":\"椰油酰胺丙基甜菜碱是一种常用的表面活性剂和起泡剂，多用于洁面、洗发水和沐浴露中。它总体较温和，但对敏感肌和易过敏人群可能有一定刺激或致敏风险。\",\"details\":\"该成分由椰子油衍生而来，具有清洁、起泡和增稠作用，常与其他表面活性剂配伍以降低整体刺激性。少数人群可能对其杂质（如微量亚硝胺、未反应单体等）或成分本身产生接触性皮炎、红斑或瘙痒，尤其是在高浓度或停留时间较长的配方中。一般在合规用量和良好生产控制下是相对安全的，但敏感肌、湿疹或已有屏障受损者建议先做局部测试。\",\"category\":\"表面活性剂/清洁起泡剂\"}",
+    "lastUpdated": 1764538287531,
+    "createdAt": 1764538287531
+  },
+  "甘油油酸酯__skincare__zh": {
+    "analysis": "{\"name\":\"甘油油酸酯\",\"riskLevel\":\"low\",\"summary\":\"甘油油酸酯是一种由甘油和油酸形成的脂类表面活性剂与润肤剂，常用于护肤和洗护产品中以提升柔滑度和乳化稳定性。总体而言，其刺激性较低，被普遍认为较为温和安全。\",\"details\":\"在配方中，甘油油酸酯主要起到乳化剂、助表面活性剂及皮肤调理剂的作用，可增强清洁产品的起泡和肤感，并帮助减少清洁后的干燥紧绷感。现有研究显示，其致敏和刺激风险较低，属于相对安全的成分，一般人群正常使用问题不大。对极度敏感或屏障受损人群，如出现刺痛或红斑，应考虑减少或停止使用并观察皮肤反应。\",\"category\":\"润肤剂 / 表面活性剂 / 乳化剂\"}",
+    "lastUpdated": 1764538288516,
+    "createdAt": 1764538288516
+  },
+  "hydrolyzed silk protein__skincare__en": {
+    "analysis": "{\"name\":\"Hydrolyzed Silk Protein\",\"riskLevel\":\"low\",\"summary\":\"Hydrolyzed silk protein is generally considered low risk and is used to improve skin and hair softness, smoothness, and hydration. It rarely causes irritation except in individuals with specific protein sensitivities.\",\"details\":\"This ingredient consists of silk proteins broken down into smaller fragments that can help form a light, conditioning film on skin and hair, aiding moisture retention and a smoother feel. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, or heavy metal, and it is not related to mineral oil, petrolatum, or drying alcohols. Occasional reactions may occur in people with sensitivities to protein ingredients, but such cases are uncommon.\",\"category\":\"Protein-based conditioning agent\"}",
+    "lastUpdated": 1764538331212,
+    "createdAt": 1764538331212
+  },
+  "butylated hydroxytoluene__skincare__en": {
+    "analysis": "{\"name\":\"Butylated Hydroxytoluene\",\"riskLevel\":\"moderate\",\"summary\":\"Butylated hydroxytoluene (BHT) is a synthetic antioxidant used to stabilize oils and fragrances, with some concern about potential irritation and systemic effects at higher exposures. In cosmetics it is typically used at low levels, but its safety is considered more controversial than many other common skincare ingredients.\",\"details\":\"BHT helps prevent rancidity in oils and degradation of fragrances, extending product shelf life, and it is not a paraben, sulfate, phthalate, silicone, or formaldehyde-releasing preservative. However, it can be a mild irritant for some individuals and has raised questions in toxicology research regarding endocrine and organ effects at doses higher than typical cosmetic exposure. People seeking very conservative or “clean” formulations may prefer to avoid it, especially on compromised or very sensitive skin.\",\"category\":\"Synthetic antioxidant / preservative\"}",
+    "lastUpdated": 1764538331212,
+    "createdAt": 1764538331212
   }
 }
