@@ -1052,6 +1052,14 @@ export async function analyzeIngredientsParallel(
   if (hasChinese) {
     console.log(`[PARALLEL-ANALYZER] Detected Chinese ingredients, translating to English before analysis`);
     uniqueIngredients = await translateIngredientsToEnglish(uniqueIngredients, 'zh');
+    
+    // Deduplicate after translation - translation can create duplicates
+    // (e.g., two different extracted items may translate to the same English name)
+    const beforeDedup = uniqueIngredients.length;
+    uniqueIngredients = Array.from(new Set(uniqueIngredients));
+    if (uniqueIngredients.length < beforeDedup) {
+      console.log(`[PARALLEL-ANALYZER] Deduplication after translation: ${beforeDedup} → ${uniqueIngredients.length} unique ingredients`);
+    }
   }
   
   // Reduce batch size for non-English languages (more prone to empty GPT responses)
