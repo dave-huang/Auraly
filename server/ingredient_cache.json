@@ -2740,8 +2740,8 @@
     "createdAt": 1764469155415
   },
   "ácido esteárico__skincare__es": {
-    "analysis": "{\"name\":\"Ácido Esteárico\",\"riskLevel\":\"low\",\"summary\":\"El ácido esteárico es un ácido graso derivado de aceites vegetales o grasas animales que actúa como emulsionante y espesante en productos para la piel y el cabello. Generalmente se considera seguro y bien tolerado por la mayoría de los tipos de piel.\",\"details\":\"Se utiliza para estabilizar emulsiones (como cremas y lociones), mejorar la textura y ayudar a que otros ingredientes se distribuyan de forma uniforme sobre la piel o el cabello. Es poco probable que cause irritación, aunque en pieles muy sensibles u otras condiciones cutáneas preexistentes puede generar una ligera reacción irritativa o comedogénica dependiendo de la formulación global. No está relacionado con parabenos, sulfatos, ftalatos, liberadores de formaldehído ni otros conservantes problemáticos, y no se considera un disruptor endocrino.\",\"category\":\"Ácido graso / emulsionante\"}",
-    "lastUpdated": 1764489988698,
+    "analysis": "{\"name\":\"Ácido Esteárico\",\"riskLevel\":\"low\",\"summary\":\"El ácido esteárico es un ácido graso de origen vegetal o animal usado como emulsionante y espesante en productos para la piel y el cabello. Generalmente se considera seguro y bien tolerado por la mayoría de los tipos de piel.\",\"details\":\"Este ingrediente ayuda a estabilizar emulsiones (cremas y lociones) y a dar textura, mejorando la sensación del producto sobre la piel. No está relacionado con parabenos, sulfatos, ftalatos, liberadores de formaldehído, fragancias sintéticas, aceites minerales ni metales pesados. En pieles muy grasas o con acné severo puede ser ligeramente comedogénico en altas concentraciones, aunque el riesgo suele ser bajo en formulaciones bien equilibradas.\",\"category\":\"Ácido graso, emulsionante y agente de consistencia\"}",
+    "lastUpdated": 1764539463151,
     "createdAt": 1764469155502
   },
   "estearato de glicerilo se__skincare__es": {
@@ -2780,8 +2780,8 @@
     "createdAt": 1764469155767
   },
   "ácido cítrico__skincare__es": {
-    "analysis": "{\"name\":\"Ácido Cítrico\",\"riskLevel\":\"low\",\"summary\":\"El ácido cítrico es un ácido orgánico usado para ajustar el pH de productos para el cuidado de la piel y como agente quelante. Generalmente es seguro, aunque puede causar irritación en pieles muy sensibles o dañadas.\",\"details\":\"En cosmética se utiliza para equilibrar el pH de la fórmula y mejorar la estabilidad del producto, además de potenciar en algunos casos la acción exfoliante muy suave. En concentraciones habituales en productos de enjuague y cremas está considerado de bajo riesgo. Sin embargo, en personas con piel muy sensible, con dermatitis o tras procedimientos estéticos, puede provocar escozor, enrojecimiento o irritación leve, por lo que se recomienda hacer prueba en una pequeña zona si hay antecedentes de sensibilidad.\",\"category\":\"Regulador de pH / ácido orgánico\"}",
-    "lastUpdated": 1764530049146,
+    "analysis": "{\"name\":\"Ácido Cítrico\",\"riskLevel\":\"low\",\"summary\":\"El ácido cítrico es un regulador de pH y agente quelante derivado de los cítricos que se usa con frecuencia en productos para el cuidado de la piel y el cabello. Generalmente se considera seguro en las concentraciones cosméticas habituales.\",\"details\":\"Ayuda a ajustar la acidez de la fórmula y puede contribuir a una ligera exfoliación química al eliminar células muertas de la superficie de la piel. En pieles sensibles, con barrera alterada o con uso excesivo, puede causar irritación, escozor o enrojecimiento, especialmente en productos que no se enjuagan. No está asociado con efectos hormonales, ni es sulfato, ftalato, liberador de formaldehído ni contiene metales pesados.\",\"category\":\"Regulador de pH y exfoliante ácido suave\"}",
+    "lastUpdated": 1764539462832,
     "createdAt": 1764469155832
   },
   "estearato de etilenglicol (乙二醇二硬脂酸酯)__skincare__es": {
@@ -3250,13 +3250,13 @@
     "createdAt": 1764529937668
   },
   "water__skincare__en": {
-    "analysis": "{\"name\":\"Water\",\"riskLevel\":\"low\",\"summary\":\"Water is a common base ingredient used as a solvent and to provide hydration in skincare products. It is generally considered very safe for most skin types.\",\"details\":\"In skincare, water helps dissolve and distribute other ingredients and contributes to the product’s texture and spreadability. It does not belong to concern categories such as parabens, sulfates, phthalates, formaldehyde releasers, fragrance, mineral oil, silicones, drying alcohols, or heavy metals. The main consideration is overall product preservation, not water itself.\",\"category\":\"Solvent / Base ingredient\"}",
-    "lastUpdated": 1764538878909,
+    "analysis": "{\"name\":\"Water\",\"riskLevel\":\"low\",\"summary\":\"Water is a common base ingredient in skincare and haircare products and is generally considered very safe. It helps dissolve other ingredients and hydrate the skin surface.\",\"details\":\"In cosmetic formulations, purified water acts as a solvent, allowing active and supportive ingredients to be distributed evenly and absorbed more easily. It does not belong to the major concern categories like parabens, sulfates, phthalates, formaldehyde releasers, or drying alcohols. Any risk is typically related only to contamination if manufacturing practices are poor, not to the water itself.\",\"category\":\"Solvent / Base ingredient\"}",
+    "lastUpdated": 1764539512837,
     "createdAt": 1764529937910
   },
   "cetearyl alcohol__skincare__en": {
-    "analysis": "{\"name\":\"Cetearyl Alcohol\",\"riskLevel\":\"low\",\"summary\":\"Cetearyl alcohol is a fatty alcohol used as an emollient, thickener, and emulsifier in skincare and haircare products. It is generally considered safe and non-irritating for most skin types.\",\"details\":\"Unlike drying simple alcohols (like denatured alcohol or isopropyl alcohol), cetearyl alcohol is a waxy, fatty alcohol that helps soften the skin and improve product texture. It can actually help reduce moisture loss by reinforcing the skin barrier. Rarely, people with very sensitive or reactive skin may experience mild irritation, but it is not associated with hormone disruption, sulfates, phthalates, formaldehyde release, or heavy metals.\",\"category\":\"Fatty alcohol / Emollient / Emulsifier\"}",
-    "lastUpdated": 1764538882383,
+    "analysis": "{\"name\":\"Cetearyl Alcohol\",\"riskLevel\":\"low\",\"summary\":\"Cetearyl Alcohol is a fatty alcohol used as an emollient, thickener, and stabilizer in skincare and haircare products. It is generally considered safe and non-irritating for most skin types.\",\"details\":\"Unlike drying simple alcohols (such as ethanol or isopropyl alcohol), Cetearyl Alcohol is a waxy, fatty alcohol derived from plant or synthetic sources that helps soften and smooth the skin and hair. It can improve texture and spreadability of formulations and support the stability of emulsions. A small number of individuals with very sensitive or compromised skin may experience mild irritation or contact allergy, but this is uncommon.\",\"category\":\"Fatty alcohol / Emollient\"}",
+    "lastUpdated": 1764539511827,
     "createdAt": 1764529937910
   },
   "dimethicone__skincare__en": {
@@ -3575,18 +3575,18 @@
     "createdAt": 1764529991817
   },
   "agua__skincare__es": {
-    "analysis": "{\"name\":\"Agua\",\"riskLevel\":\"low\",\"summary\":\"La agua (eau) es el disolvente principal en la mayoría de los productos de cuidado de la piel y sirve como base para disolver otros ingredientes. Generalmente es segura y bien tolerada por todo tipo de piel.\",\"details\":\"En cosmética, el agua suele estar purificada o desionizada para eliminar impurezas y minerales que podrían afectar la estabilidad del producto. No suele causar irritación ni sensibilización por sí misma, aunque la calidad del agua usada puede influir en la eficacia y conservación de la fórmula. Su función principal es hidratar de forma indirecta ayudando a distribuir otros activos sobre la piel.\",\"category\":\"Disolvente / Base acuosa\"}",
-    "lastUpdated": 1764530049379,
+    "analysis": "{\"name\":\"Agua\",\"riskLevel\":\"low\",\"summary\":\"El agua es el disolvente principal en la mayoría de los productos para el cuidado de la piel y se considera un ingrediente muy seguro.\",\"details\":\"Se utiliza como base para disolver otros ingredientes, facilitar su aplicación y mejorar la textura del producto. No se asocia con irritación ni con efectos hormonales, tóxicos o acumulativos, por lo que su riesgo en cosmética es muy bajo.\",\"category\":\"Disolvente / base acuosa\"}",
+    "lastUpdated": 1764539462785,
     "createdAt": 1764530048382
   },
   "glicerina__skincare__es": {
-    "analysis": "{\"name\":\"Glicerina\",\"riskLevel\":\"low\",\"summary\":\"La glicerina es un humectante que ayuda a retener la humedad en la piel, manteniéndola suave e hidratada. Generalmente se considera un ingrediente seguro y bien tolerado.\",\"details\":\"La glicerina atrae el agua hacia las capas superiores de la piel, lo que mejora la hidratación y refuerza la barrera cutánea. Suele ser adecuada incluso para pieles sensibles, aunque en concentraciones muy altas puede sentirse pegajosa o, en pieles muy irritadas, causar ligera incomodidad. No está asociada a disruptores hormonales, sulfatos, parabenos ni otros compuestos preocupantes comunes en cosmética.\",\"category\":\"Humectante e hidratante\"}",
-    "lastUpdated": 1764530048424,
+    "analysis": "{\"name\":\"Glicerina\",\"riskLevel\":\"low\",\"summary\":\"La glicerina es un humectante que ayuda a atraer y retener la humedad en la piel, mejorando su hidratación y suavidad. Generalmente se considera un ingrediente muy seguro y bien tolerado.\",\"details\":\"La glicerina se utiliza ampliamente en productos para el cuidado de la piel por su capacidad para reforzar la barrera cutánea y reducir la sequedad y la descamación. En concentraciones muy altas y en formulaciones mal equilibradas podría causar una sensación pegajosa o, en pieles muy sensibles, una ligera irritación, pero esto es poco frecuente. No está asociada con disruptores hormonales, sulfatos, ftalatos ni otros contaminantes preocupantes mencionados.\",\"category\":\"Humectante e hidratante\"}",
+    "lastUpdated": 1764539463226,
     "createdAt": 1764530048424
   },
   "estearato de glicerilo__skincare__es": {
-    "analysis": "{\"name\":\"Estearato de Glicerilo\",\"riskLevel\":\"low\",\"summary\":\"El estearato de glicerilo es un emulsionante y agente acondicionador de la piel derivado de ácidos grasos y glicerina. Generalmente se considera un ingrediente seguro y bien tolerado en productos para el cuidado de la piel y el cabello.\",\"details\":\"Este ingrediente ayuda a mezclar agua y aceites en las fórmulas cosméticas y aporta una textura más cremosa y estable a cremas y lociones. Suele ser no comedogénico y adecuado para la mayoría de tipos de piel, incluidas pieles sensibles. Las reacciones adversas son poco frecuentes y, cuando ocurren, suelen limitarse a irritación leve en personas con hipersensibilidad individual.\",\"category\":\"Emulsionante y agente acondicionador de la piel\"}",
-    "lastUpdated": 1764530048538,
+    "analysis": "{\"name\":\"Estearato de Glicerilo\",\"riskLevel\":\"low\",\"summary\":\"El estearato de glicerilo es un emulsionante y emoliente derivado de ácidos grasos que ayuda a mezclar agua y aceite en productos para el cuidado de la piel. Generalmente se considera un ingrediente seguro y bien tolerado.\",\"details\":\"Este ingrediente se utiliza para mejorar la textura de cremas y lociones, aportando una sensación suave y deslizante sobre la piel. No está asociado a parabenos, sulfatos, ftalatos, liberadores de formaldehído ni metales pesados, y rara vez causa irritación, salvo en personas con piel extremadamente sensible o con alergias específicas a los ácidos grasos. Es adecuado para la mayoría de tipos de piel, incluyendo piel seca y normal.\",\"category\":\"Emulsionante y emoliente\"}",
+    "lastUpdated": 1764539462942,
     "createdAt": 1764530048538
   },
   "agua de hoja de árbol de té (melaleuca alternifolia)__skincare__es": {
@@ -3660,8 +3660,8 @@
     "createdAt": 1764530049231
   },
   "alcohol ceteárico__skincare__es": {
-    "analysis": "{\"name\":\"Alcohol Ceteárico\",\"riskLevel\":\"low\",\"summary\":\"El alcohol ceteárico es un alcohol graso emoliente y espesante que ayuda a suavizar la piel y dar textura cremosa a los productos. Generalmente se considera seguro y bien tolerado, incluso para piel sensible.\",\"details\":\"Este ingrediente actúa como emulsionante, ayudando a mezclar agua y aceites, y aporta una sensación acondicionadora y aterciopelada en piel y cabello. A diferencia de los alcoholes secantes (como el alcohol etílico o isopropílico), el alcohol ceteárico no reseca, sino que contribuye a mantener la hidratación. Las reacciones irritativas o alérgicas son poco frecuentes y suelen limitarse a personas con piel muy reactiva o con alergia específica a este compuesto.\",\"category\":\"Alcohol graso emoliente y emulsionante\"}",
-    "lastUpdated": 1764530049269,
+    "analysis": "{\"name\":\"Alcohol Ceteárico\",\"riskLevel\":\"low\",\"summary\":\"El alcohol ceteárico es un alcohol graso de origen vegetal o sintético que actúa como emulsionante y agente acondicionador de la piel y el cabello. Generalmente se considera un ingrediente seguro y bien tolerado.\",\"details\":\"A diferencia de los alcoholes secantes (como etanol o alcohol isopropílico), el alcohol ceteárico es un alcohol graso que ayuda a suavizar y aportar textura cremosa a las fórmulas, reduciendo la sensación de sequedad. Es poco probable que cause irritación en la mayoría de las personas, aunque en pieles extremadamente sensibles o con dermatitis atópica podría generar una ligera molestia en casos aislados. No está asociado con alteradores hormonales, liberadores de formaldehído, sulfatos ni ftalatos.\",\"category\":\"Alcohol graso / emulsionante y acondicionador\"}",
+    "lastUpdated": 1764539464127,
     "createdAt": 1764530049269
   },
   "tridecano__skincare__es": {
@@ -3690,8 +3690,8 @@
     "createdAt": 1764530049771
   },
   "polisorbato 60__skincare__es": {
-    "analysis": "{\"name\":\"Polisorbato 60\",\"riskLevel\":\"low\",\"summary\":\"El polisorbato 60 es un tensioactivo y emulsionante sintético utilizado para mezclar agua y aceites en productos para el cuidado de la piel y el cabello. Generalmente se considera de baja irritación y bien tolerado por la mayoría de las personas.\",\"details\":\"Suele ser seguro en las concentraciones cosméticas habituales, aunque en pieles muy sensibles o dañadas puede causar irritación leve o enrojecimiento. Puede derivar de aceites vegetales como el aceite de palma o coco y, en ocasiones, contener trazas de óxido de etileno o 1,4-dioxano, subproductos de la etoxilación, por lo que las buenas prácticas de purificación del fabricante son importantes. No está asociado a parabenos, ftalatos, formaldehído ni sulfatos agresivos, y no se considera comedogénico en la mayoría de formulaciones.\",\"category\":\"Emulsionante y tensioactivo no iónico\"}",
-    "lastUpdated": 1764530049811,
+    "analysis": "{\"name\":\"Polisorbato 60\",\"riskLevel\":\"low\",\"summary\":\"El polisorbato 60 es un tensioactivo y emulsionante sintético que ayuda a mezclar ingredientes a base de agua y aceite en productos para el cuidado de la piel. Generalmente se considera de baja toxicidad y bien tolerado en cosmética.\",\"details\":\"Puede derivarse de aceites vegetales como el aceite de palma o coco y se utiliza para estabilizar cremas y lociones, mejorando su textura y aplicación. En pieles muy sensibles o reactivas puede causar irritación leve u ocasionales reacciones alérgicas, pero estos casos son poco frecuentes. No está catalogado como disruptor endocrino, ni es un sulfato, paraben, ftalato ni liberador de formaldehído.\",\"category\":\"Tensioactivo y emulsionante\"}",
+    "lastUpdated": 1764539463328,
     "createdAt": 1764530049811
   },
   "metilcloroisotiazolinona__skincare__es": {
@@ -4140,8 +4140,8 @@
     "createdAt": 1764538837979
   },
   "olea europaea (olive) fruit oil__skincare__en": {
-    "analysis": "{\"name\":\"Olea Europaea (olive) Fruit Oil\",\"riskLevel\":\"low\",\"summary\":\"Olea Europaea (Olive) Fruit Oil is a plant-derived oil used as an emollient and skin conditioning agent. It is generally well tolerated and considered safe for most skin types.\",\"details\":\"Olive fruit oil helps soften and moisturize the skin by reinforcing the skin barrier and reducing water loss. It does not fall under high-concern groups like parabens, sulfates, phthalates, formaldehyde-releasing preservatives, synthetic fragrance, mineral oil, silicones, drying alcohols, or heavy metals. A small number of people with very acne-prone or sensitive skin may experience pore clogging or mild irritation, but this is uncommon.\",\"category\":\"Emollient / Plant oil\"}",
-    "lastUpdated": 1764538878909,
+    "analysis": "{\"name\":\"Olea Europaea (olive) Fruit Oil\",\"riskLevel\":\"low\",\"summary\":\"Olive fruit oil is a plant-derived emollient that helps moisturize and soften the skin. It is generally well tolerated but may cause breakouts in some acne-prone individuals or rare allergic reactions.\",\"details\":\"In skincare and haircare, olive oil provides occlusive and emollient benefits, supporting the skin barrier and reducing transepidermal water loss. It does not fall into high-concern groups such as parabens, sulfates, phthalates, formaldehyde releasers, or silicones. Potential issues are mainly mild, including possible pore clogging for some skin types and irritation in those with sensitivity to olive-derived ingredients.\",\"category\":\"Plant oil / Emollient\"}",
+    "lastUpdated": 1764539512837,
     "createdAt": 1764538878909
   },
   "shea butter (butyrospermum parkii butter)__skincare__en": {
@@ -4165,13 +4165,13 @@
     "createdAt": 1764538879827
   },
   "chamomilla recutita (matricaria) flower extract__skincare__en": {
-    "analysis": "{\"name\":\"Chamomilla Recutita (matricaria) Flower Extract\",\"riskLevel\":\"low\",\"summary\":\"Plant extract from chamomile flowers used for its soothing and anti-inflammatory properties in skincare and haircare. Generally well tolerated and not associated with major safety concerns for most users.\",\"details\":\"Chamomilla Recutita Flower Extract contains flavonoids and bisabolol that can help calm redness and irritation, making it popular in products for sensitive or reactive skin. The main caution is for people with known allergies to plants in the Asteraceae/Compositae family (like ragweed, marigold, or daisies), who may experience irritation or allergic reactions. It is not a paraben, sulfate, phthalate, formaldehyde releaser, fragrance, mineral oil, silicone, drying alcohol, or heavy metal.\",\"category\":\"Botanical plant extract / soothing agent\"}",
-    "lastUpdated": 1764538880844,
+    "analysis": "{\"name\":\"Chamomilla Recutita (matricaria) Flower Extract\",\"riskLevel\":\"low\",\"summary\":\"Chamomilla Recutita (Matricaria) Flower Extract is a plant-derived ingredient used for its soothing, anti-inflammatory, and antioxidant properties in skincare and haircare products. It is generally well tolerated and considered safe for most skin types.\",\"details\":\"This chamomile flower extract can help calm redness and irritation, making it popular in products for sensitive or reactive skin. It does not belong to parabens, sulfates, phthalates, formaldehyde-releasing preservatives, synthetic fragrance, mineral oils, silicones, drying alcohols, or heavy metals. Rarely, individuals with ragweed or chamomile allergies may experience sensitivity or allergic reactions, so patch testing is advisable for those with known plant allergies.\",\"category\":\"Botanical extract / Soothing agent\"}",
+    "lastUpdated": 1764539528983,
     "createdAt": 1764538880844
   },
   "scutellaria baicalensis root extract__skincare__en": {
-    "analysis": "{\"name\":\"Scutellaria Baicalensis Root Extract\",\"riskLevel\":\"low\",\"summary\":\"Botanical extract from the root of Scutellaria baicalensis (Baikal skullcap) used for antioxidant and skin-brightening benefits. It is typically considered safe in cosmetic concentrations with a low irritation potential for most users.\",\"details\":\"Scutellaria Baicalensis Root Extract contains flavonoids such as baicalin that provide antioxidant, anti-inflammatory, and potential brightening effects, which can support skin barrier health and help reduce signs of environmental damage. While allergic or irritation reactions are possible with any plant extract, they appear uncommon and are usually mild when they occur. It is not related to parabens, sulfates, phthalates, formaldehyde-releasing preservatives, synthetic fragrance, mineral oil, silicones, drying alcohols, or heavy metals.\",\"category\":\"Botanical plant extract / antioxidant\"}",
-    "lastUpdated": 1764538880845,
+    "analysis": "{\"name\":\"Scutellaria Baicalensis Root Extract\",\"riskLevel\":\"low\",\"summary\":\"Scutellaria baicalensis root extract is a botanical extract used for its antioxidant, soothing, and anti-inflammatory properties in skincare. It is generally considered safe and well tolerated for most skin types.\",\"details\":\"This plant-derived ingredient (also known as Baikal skullcap root extract) contains flavonoids such as baicalin that can help protect the skin from environmental stressors and calm redness or irritation. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, synthetic fragrance, mineral oil, petrolatum, silicone, drying alcohol, or heavy metal. Adverse reactions are uncommon but, as with any botanical, people with very sensitive or allergy-prone skin should patch test first.\",\"category\":\"Botanical extract / antioxidant\"}",
+    "lastUpdated": 1764539531531,
     "createdAt": 1764538880845
   },
   "polygonum cuspidatum root extract__skincare__en": {
@@ -4180,18 +4180,18 @@
     "createdAt": 1764538880845
   },
   "camellia sinensis leaf extract__skincare__en": {
-    "analysis": "{\"name\":\"Camellia Sinensis Leaf Extract\",\"riskLevel\":\"low\",\"summary\":\"Camellia sinensis leaf extract, also known as green tea extract, is generally considered very safe and is widely used for its antioxidant and soothing properties in skincare. It is not a paraben, sulfate, phthalate, formaldehyde-releaser, fragrance, mineral oil, silicone, drying alcohol, or heavy metal.\",\"details\":\"This plant extract is rich in polyphenols (like EGCG) that help protect skin from environmental stress and may help calm redness and irritation. Adverse reactions are rare, though people with very sensitive or allergy-prone skin can occasionally experience mild irritation or contact allergy to botanical extracts. In most formulations it supports skin barrier health and is suitable for both skincare and haircare products.\",\"category\":\"Botanical antioxidant and soothing agent\"}",
-    "lastUpdated": 1764538881960,
+    "analysis": "{\"name\":\"Camellia Sinensis Leaf Extract\",\"riskLevel\":\"low\",\"summary\":\"Camellia sinensis leaf extract is a plant-derived ingredient rich in polyphenols and antioxidants that can help soothe and protect the skin. It is generally well tolerated and considered safe for most skin types.\",\"details\":\"This extract, commonly known as green tea extract, may offer anti-inflammatory and anti-oxidative benefits, helping to reduce redness and protect against environmental stressors. It is not related to parabens, sulfates, phthalates, formaldehyde-releasing preservatives, fragrance, mineral oil, silicones, drying alcohols, or heavy metals in typical cosmetic use. Mild irritation or allergy is possible but uncommon, usually in individuals with specific plant sensitivities.\",\"category\":\"Botanical extract / antioxidant\"}",
+    "lastUpdated": 1764539515220,
     "createdAt": 1764538881960
   },
   "rosmarinus officinalis (rosemary) leaf extract__skincare__en": {
-    "analysis": "{\"name\":\"Rosmarinus Officinalis (rosemary) Leaf Extract\",\"riskLevel\":\"low\",\"summary\":\"Rosemary leaf extract is a botanical ingredient used for its antioxidant, antimicrobial, and potential circulation-supporting effects. It is not related to parabens, sulfates, phthalates, formaldehyde-releasing preservatives, synthetic fragrance, mineral oil, silicones, drying alcohols, or heavy metals.\",\"details\":\"In skincare and haircare, rosemary leaf extract can help protect formulas from oxidation and may offer mild soothing and purifying benefits to the skin and scalp. Some individuals, especially those with fragrance or herb sensitivities, may experience mild irritation or allergic reactions, but this is uncommon at typical cosmetic concentrations. Overall it is considered safe and beneficial in well-formulated products.\",\"category\":\"Botanical antioxidant and preservative booster\"}",
-    "lastUpdated": 1764538881960,
+    "analysis": "{\"name\":\"Rosmarinus Officinalis (rosemary) Leaf Extract\",\"riskLevel\":\"low\",\"summary\":\"Rosemary leaf extract is a botanical ingredient often used for its antioxidant and mild antimicrobial properties. It is generally safe but can occasionally irritate very sensitive or allergy-prone skin.\",\"details\":\"This extract may help protect the formula and the skin from oxidative damage and can provide mild astringent and purifying effects. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, synthetic fragrance, mineral oil, silicone, drying alcohol, or heavy metal. Some individuals sensitive to rosemary or fragrant plant extracts may experience irritation or allergic reactions, but this is relatively uncommon at typical usage levels.\",\"category\":\"Botanical extract / antioxidant\"}",
+    "lastUpdated": 1764539515220,
     "createdAt": 1764538881960
   },
   "centella asiatica extract__skincare__en": {
-    "analysis": "{\"name\":\"Centella Asiatica Extract\",\"riskLevel\":\"low\",\"summary\":\"Centella asiatica extract (also called cica or gotu kola) is widely regarded as a gentle, beneficial ingredient known for soothing and barrier-supporting effects. It does not belong to problematic groups like parabens, sulfates, phthalates, formaldehyde-releasing preservatives, synthetic fragrance, mineral oil, silicones, drying alcohols, or heavy metals.\",\"details\":\"This botanical extract contains compounds such as asiaticoside and madecassoside, which are associated with calming irritation and supporting skin repair and hydration. It is generally well tolerated, including by sensitive skin types, though very rare cases of plant extract allergy or irritation can occur. Its profile makes it popular in products targeting sensitive, compromised, or redness-prone skin, as well as scalp-soothing haircare.\",\"category\":\"Botanical soothing and barrier-support ingredient\"}",
-    "lastUpdated": 1764538881960,
+    "analysis": "{\"name\":\"Centella Asiatica Extract\",\"riskLevel\":\"low\",\"summary\":\"Centella asiatica extract is a plant-derived ingredient known for its soothing and barrier-supporting properties. It is widely used in skincare for sensitive or compromised skin and is generally considered very safe.\",\"details\":\"Also known as gotu kola or cica, this extract contains compounds like asiaticoside and madecassoside that may help calm irritation, support skin repair, and improve hydration. It is not associated with parabens, sulfates, phthalates, formaldehyde-releasing preservatives, fragrance, mineral oil, silicones, drying alcohols, or heavy metals in normal cosmetic formulations. Adverse reactions are rare, though any botanical ingredient can cause sensitivity in a small number of individuals.\",\"category\":\"Botanical extract / soothing agent\"}",
+    "lastUpdated": 1764539515220,
     "createdAt": 1764538881960
   },
   "betaine__skincare__en": {
@@ -4265,8 +4265,8 @@
     "createdAt": 1764538883559
   },
   "hamamelis virginiana (witch hazel) extract__skincare__en": {
-    "analysis": "{\"name\":\"Hamamelis Virginiana (witch Hazel) Extract\",\"riskLevel\":\"moderate\",\"summary\":\"Witch hazel extract is a botanical astringent used to tone the skin and reduce oiliness. It is generally safe but can be irritating or drying, especially on sensitive or compromised skin.\",\"details\":\"This plant extract contains tannins and other polyphenols that can provide antioxidant and mild anti-inflammatory benefits, but these same astringent components may disrupt the skin barrier if used in high concentrations or too frequently. Some preparations include added alcohol, which can further increase dryness and irritation risk, though alcohol-free versions are gentler. It is not associated with parabens, sulfates, phthalates, formaldehyde releasers, or heavy metals, but may trigger sensitivity in people with reactive or dry skin.\",\"category\":\"Botanical extract / Astringent\"}",
-    "lastUpdated": 1764538888119,
+    "analysis": "{\"name\":\"Hamamelis Virginiana (witch Hazel) Extract\",\"riskLevel\":\"moderate\",\"summary\":\"Witch hazel extract is a plant-derived astringent used to reduce oiliness, tighten pores, and soothe skin. It is generally safe but can be irritating or drying, especially if high in alcohol or used on sensitive or compromised skin.\",\"details\":\"Hamamelis Virginiana (Witch Hazel) Extract contains tannins and other polyphenols that provide anti-inflammatory and mildly antioxidant effects, making it common in toners and acne-prone skin formulas. However, many commercial witch hazel extracts are distilled with ethanol, which can increase dryness, irritation, and disruption of the skin barrier, particularly for dry, sensitive, rosacea-prone, or eczema-prone skin. While it is not a paraben, sulfate, phthalate, formaldehyde-releaser, mineral oil, silicone, or heavy metal, its astringency and possible alcohol content place it in a moderate risk category for irritation with frequent or high-concentration use.\",\"category\":\"Botanical extract / astringent\"}",
+    "lastUpdated": 1764539522794,
     "createdAt": 1764538888119
   },
   "dimethiconol__skincare__en": {
@@ -4285,8 +4285,8 @@
     "createdAt": 1764538888153
   },
   "glycyrrhiza glabra (licorice) root extract__skincare__en": {
-    "analysis": "{\"name\":\"Glycyrrhiza Glabra (licorice) Root Extract\",\"riskLevel\":\"low\",\"summary\":\"Glycyrrhiza Glabra (Licorice) Root Extract is a botanical extract used for its soothing and brightening properties. It is generally low risk but, as a plant extract, can rarely cause sensitivity in some individuals.\",\"details\":\"Licorice root extract contains compounds such as glabridin and liquiritin that can help reduce the appearance of dark spots and calm redness due to its anti-inflammatory and antioxidant effects. It is valued in skincare for supporting an even skin tone and for its gentle nature compared to many other brightening agents. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, fragrance chemical, mineral oil, silicone, drying alcohol, or heavy metal, though people with known sensitivities to licorice or botanicals should patch test first.\",\"category\":\"Botanical extract / Soothing and brightening agent\"}",
-    "lastUpdated": 1764538888153,
+    "analysis": "{\"name\":\"Glycyrrhiza Glabra (licorice) Root Extract\",\"riskLevel\":\"low\",\"summary\":\"Licorice root extract is a plant-derived ingredient used for skin brightening, soothing, and antioxidant benefits. It is generally well tolerated but can rarely cause irritation or allergic reactions in sensitive individuals.\",\"details\":\"In skincare, licorice root extract helps reduce the appearance of dark spots and uneven tone by inhibiting melanin production, and it also provides anti-inflammatory properties that can calm redness and irritation. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, fragrance, mineral oil, petrolatum, silicone, drying alcohol, or heavy metal. Adverse effects are uncommon, but people with very sensitive or allergy-prone skin should patch test first, as botanical extracts can occasionally trigger contact dermatitis.\",\"category\":\"Botanical extract / skin brightening and soothing agent\"}",
+    "lastUpdated": 1764539522528,
     "createdAt": 1764538888153
   },
   "xylitol__food__en": {
@@ -4468,5 +4468,225 @@
     "analysis": "{\"name\":\"Peg-100 Stearate\",\"riskLevel\":\"moderate\",\"summary\":\"PEG-100 stearate is a polyethylene glycol–based emulsifier widely used in cosmetics and sometimes as a processing aid, but it is not a common food-grade ingredient. Concerns center on potential impurities (like ethylene oxide or 1,4-dioxane) and limited data on chronic oral intake.\",\"details\":\"PEG-containing compounds are generally of low acute toxicity, but they are synthetic and can carry trace manufacturing by-products if not highly purified. PEG-100 stearate is intended mainly for external use, and its routine consumption in foods is not well studied. For regular dietary use, it is safer to favor emulsifiers with established food-grade approvals and long-term ingestion data.\",\"category\":\"Synthetic emulsifier / surfactant\"}",
     "lastUpdated": 1764539243937,
     "createdAt": 1764539243937
+  },
+  "extracto de raíz de scutellaria baicalensis__skincare__es": {
+    "analysis": "{\"name\":\"Extracto de Raíz de Scutellaria Baicalensis\",\"riskLevel\":\"low\",\"summary\":\"Extracto botánico con propiedades antioxidantes y calmantes para la piel. Generalmente se considera un ingrediente seguro y bien tolerado en cosmética.\",\"details\":\"La raíz de Scutellaria baicalensis es rica en flavonoides como la baicalina, que pueden ayudar a proteger la piel del daño oxidativo y a reducir el enrojecimiento. No está asociado a parabenos, sulfatos, ftalatos, liberadores de formaldehído, fragancias sintéticas, aceites minerales, siliconas, alcoholes secantes ni metales pesados. Las reacciones adversas son poco frecuentes y suelen limitarse a posibles alergias individuales a extractos vegetales.\",\"category\":\"Extracto vegetal / antioxidante\"}",
+    "lastUpdated": 1764539462288,
+    "createdAt": 1764539462288
+  },
+  "cera de abejas__skincare__es": {
+    "analysis": "{\"name\":\"Cera de Abejas\",\"riskLevel\":\"low\",\"summary\":\"La cera de abejas es un emoliente natural que ayuda a formar una barrera protectora sobre la piel, reduciendo la pérdida de humedad. Generalmente es bien tolerada y considerada segura en cosméticos.\",\"details\":\"La cera de abejas se utiliza en productos para el cuidado de la piel y el cabello por sus propiedades oclusivas y suavizantes, mejorando la textura y la hidratación. No está relacionada con parabenos, sulfatos, ftalatos, liberadores de formaldehído ni fragancias sintéticas. El principal riesgo es para personas con alergia específica a productos derivados de las abejas, que podrían experimentar irritación o reacción alérgica.\",\"category\":\"Emoliente y agente filmógeno natural\"}",
+    "lastUpdated": 1764539462301,
+    "createdAt": 1764539462301
+  },
+  "manteca de butyrospermum parkii (karité)__skincare__es": {
+    "analysis": "{\"name\":\"Manteca de Butyrospermum Parkii (karité)\",\"riskLevel\":\"low\",\"summary\":\"La manteca de karité es un emoliente natural muy nutritivo que ayuda a hidratar y suavizar la piel. Generalmente es bien tolerada y se considera segura en cosmética.\",\"details\":\"Aporta lípidos y ácidos grasos que refuerzan la barrera cutánea, reduciendo la sequedad y la descamación. Puede contener trazas de proteínas de la nuez de karité, por lo que en personas extremadamente sensibles a frutos secos podría existir un leve riesgo de irritación o alergia. No está relacionada con parabenos, sulfatos, ftalatos, formaldehído, fragancias sintéticas ni metales pesados.\",\"category\":\"Emoliente y agente hidratante de origen vegetal\"}",
+    "lastUpdated": 1764539462515,
+    "createdAt": 1764539462515
+  },
+  "extracto de hoja de romero (rosmarinus officinalis)__skincare__es": {
+    "analysis": "{\"name\":\"Extracto de Hoja de Romero (rosmarinus Officinalis)\",\"riskLevel\":\"low\",\"summary\":\"Extracto vegetal con propiedades antioxidantes y ligeramente antimicrobianas, común en productos para el cuidado de la piel y el cabello.\",\"details\":\"Suele considerarse un ingrediente seguro y beneficioso, ya que ayuda a proteger la piel frente al daño oxidativo y puede contribuir a la estabilidad del producto. Sin embargo, al ser un extracto botánico aromático, puede causar irritación o sensibilización en pieles muy sensibles, especialmente en concentraciones altas o en productos que no se enjuagan. No está relacionado con parabenos, sulfatos, ftalatos, liberadores de formaldehído, siliconas, aceites minerales ni metales pesados.\",\"category\":\"Extracto botánico antioxidante\"}",
+    "lastUpdated": 1764539462578,
+    "createdAt": 1764539462578
+  },
+  "extracto de raíz de polygonum cuspidatum__skincare__es": {
+    "analysis": "{\"name\":\"Extracto de Raíz de Polygonum Cuspidatum\",\"riskLevel\":\"low\",\"summary\":\"Extracto vegetal rico en resveratrol con propiedades antioxidantes y calmantes para la piel. Generalmente se considera seguro en productos cosméticos.\",\"details\":\"Se utiliza en el cuidado de la piel por su contenido en polifenoles, que ayudan a proteger frente al daño oxidativo y a apoyar la función de barrera cutánea. Suele tener buena tolerancia, aunque en pieles muy sensibles puede causar irritación leve o enrojecimiento de forma poco frecuente. No está asociado a disruptores hormonales, sulfatos, ftalatos, liberadores de formaldehído ni fragancias sintéticas.\",\"category\":\"Extracto botánico antioxidante\"}",
+    "lastUpdated": 1764539462672,
+    "createdAt": 1764539462672
+  },
+  "xilitol__skincare__es": {
+    "analysis": "{\"name\":\"Xilitol\",\"riskLevel\":\"low\",\"summary\":\"El xilitol es un alcohol de azúcar utilizado como humectante y agente hidratante en productos para el cuidado de la piel. Ayuda a mantener la humedad cutánea y es considerado seguro para la mayoría de las personas.\",\"details\":\"En cosmética, el xilitol mejora la hidratación de la piel al ayudar a retener agua en la capa córnea y puede contribuir a reforzar la barrera cutánea. Generalmente tiene bajo potencial irritante y alérgico, aunque en pieles extremadamente sensibles podría causar ligera irritación en casos aislados. No está relacionado con parabenos, sulfatos, ftalatos, liberadores de formaldehído, fragancias, aceites minerales, siliconas, alcoholes secantes ni metales pesados.\",\"category\":\"Humectante e hidratante\"}",
+    "lastUpdated": 1764539462745,
+    "createdAt": 1764539462745
+  },
+  "glicol caprílico__skincare__es": {
+    "analysis": "{\"name\":\"Glicol Caprílico\",\"riskLevel\":\"low\",\"summary\":\"El glicol caprílico es un humectante y emoliente que ayuda a mantener la piel hidratada y suave. También posee ligeras propiedades antimicrobianas que ayudan a conservar la fórmula.\",\"details\":\"Este ingrediente derivado de ácidos grasos se utiliza con frecuencia en productos para el cuidado de la piel y el cabello por su buena tolerancia y baja probabilidad de irritación en la mayoría de las personas. Ayuda a mejorar la textura del producto y a reducir la pérdida de agua transepidérmica. En pieles muy sensibles o comprometidas puede producir una leve irritación, pero los reportes son poco frecuentes.\",\"category\":\"Humectante y emoliente\"}",
+    "lastUpdated": 1764539462757,
+    "createdAt": 1764539462757
+  },
+  "extracto de raíz de regaliz (glycyrrhiza glabra)__skincare__es": {
+    "analysis": "{\"name\":\"Extracto de Raíz de Regaliz (glycyrrhiza Glabra)\",\"riskLevel\":\"low\",\"summary\":\"Ingrediente vegetal con propiedades calmantes e iluminadoras de la piel, útil para reducir manchas y enrojecimiento. Generalmente se considera seguro en cosmética tópica.\",\"details\":\"El extracto de raíz de regaliz es rico en compuestos como la glabridina, que ayuda a modular la producción de melanina y puede mejorar la apariencia de hiperpigmentaciones. También tiene propiedades antioxidantes y antiinflamatorias, por lo que es adecuado para pieles sensibles o con tendencia a irritarse. Las reacciones adversas suelen ser raras y se limitan principalmente a posibles alergias o sensibilidades individuales.\",\"category\":\"Extracto botánico / activo calmante e iluminador\"}",
+    "lastUpdated": 1764539462777,
+    "createdAt": 1764539462777
+  },
+  "ciclopentasiloxano__skincare__es": {
+    "analysis": "{\"name\":\"Ciclopentasiloxano\",\"riskLevel\":\"low\",\"summary\":\"El ciclopentasiloxano es una silicona volátil que se usa para aportar una textura sedosa y facilitar la aplicación de productos para la piel y el cabello. Generalmente se considera de bajo riesgo para la mayoría de las personas.\",\"details\":\"Este ingrediente forma una película ligera que suaviza la superficie de la piel y el cabello sin dejar sensación pegajosa, y suele evaporarse parcialmente tras la aplicación. En pieles muy sensibles o con tendencia al acné puede contribuir a la oclusión si se combina con otros ingredientes pesados, aunque por sí solo es poco irritante. Existen algunas preocupaciones ambientales sobre la acumulación de ciertas siliconas en el medio acuático, pero a nivel de salud humana tópica se considera seguro en concentraciones habituales.\",\"category\":\"Silicona volátil / agente emoliente\"}",
+    "lastUpdated": 1764539462821,
+    "createdAt": 1764539462821
+  },
+  "cetil etilhexanoato__skincare__es": {
+    "analysis": "{\"name\":\"Cetil Etilhexanoato\",\"riskLevel\":\"low\",\"summary\":\"El cetil etilhexanoato es un emoliente sintético que ayuda a suavizar la piel y mejorar la textura de las fórmulas cosméticas. Suele considerarse un ingrediente de baja irritación para la mayoría de los tipos de piel.\",\"details\":\"Este compuesto derivado de ácidos grasos se utiliza para aportar una sensación sedosa y no grasa, facilitando la aplicación de cremas, lociones y maquillajes. En general tiene buen perfil de seguridad, aunque en pieles muy sensibles o con tendencia acneica podría contribuir ligeramente a la oclusión si se usa en altas concentraciones o en fórmulas muy ricas. No pertenece a grupos de mayor preocupación como parabenos, sulfatos, ftalatos ni liberadores de formaldehído.\",\"category\":\"Emoliente / acondicionador de la piel\"}",
+    "lastUpdated": 1764539462912,
+    "createdAt": 1764539462912
+  },
+  "aceite de semilla de macadamia ternifolia__skincare__es": {
+    "analysis": "{\"name\":\"Aceite de Semilla de Macadamia Ternifolia\",\"riskLevel\":\"low\",\"summary\":\"Aceite vegetal emoliente rico en ácidos grasos que ayuda a hidratar y suavizar la piel y el cabello. Generalmente es bien tolerado y considerado seguro en cosmética.\",\"details\":\"El aceite de semilla de macadamia aporta lípidos similares a los de la piel, ayudando a reforzar la barrera cutánea y a reducir la deshidratación. Es poco comedogénico y adecuado para la mayoría de tipos de piel, aunque las personas con alergia a los frutos secos pueden presentar sensibilidad o reacción alérgica. No se asocia con parabenos, sulfatos, ftalatos, liberadores de formaldehído, fragancias sintéticas, aceites minerales, siliconas, alcoholes desecantes ni metales pesados.\",\"category\":\"Aceite vegetal / emoliente\"}",
+    "lastUpdated": 1764539462932,
+    "createdAt": 1764539462932
+  },
+  "ciclohexasiloxano__skincare__es": {
+    "analysis": "{\"name\":\"Ciclohexasiloxano\",\"riskLevel\":\"moderate\",\"summary\":\"El ciclohexasiloxano es un tipo de silicona volátil que se utiliza para aportar una textura sedosa y de fácil extensión en productos para la piel y el cabello. Suele considerarse de bajo riesgo de irritación cutánea, pero genera preocupaciones ambientales y de bioacumulación.\",\"details\":\"En cosmética, el ciclohexasiloxano ayuda a que las fórmulas se deslicen mejor, dejando sensación suave y ligera sin residuos grasos, y rara vez causa irritación en pieles no sensibles. Sin embargo, pertenece a una familia de siliconas cíclicas asociadas con posibles efectos de alteración endocrina y acumulación en el medio ambiente, por lo que algunas regulaciones están limitando su concentración. En pieles con tendencia acneica puede contribuir a oclusión ligera si se combina con otros ingredientes pesados, aunque por sí solo no se considera altamente comedogénico.\",\"category\":\"Silicona volátil\"}",
+    "lastUpdated": 1764539462957,
+    "createdAt": 1764539462957
+  },
+  "extracto de flor de manzanilla (chamomilla recutita/matricaria)__skincare__es": {
+    "analysis": "{\"name\":\"Extracto de Flor de Manzanilla (chamomilla Recutita/matricaria)\",\"riskLevel\":\"low\",\"summary\":\"Extracto botánico calmante con propiedades antiinflamatorias y antioxidantes, muy usado en productos para piel sensible.\",\"details\":\"La manzanilla puede ayudar a reducir enrojecimiento e irritación y aportar efecto suavizante a la piel. En personas muy sensibles a plantas de la familia Asteraceae puede causar reacciones alérgicas de contacto, aunque esto es poco frecuente en cosmética. No es un paraben, sulfato, ftalato, liberador de formaldehído, fragancia sintética, aceite mineral, silicona, alcohol secante ni metal pesado.\",\"category\":\"Extracto vegetal calmante\"}",
+    "lastUpdated": 1764539462987,
+    "createdAt": 1764539462987
+  },
+  "ceramida np__skincare__es": {
+    "analysis": "{\"name\":\"Ceramida Np\",\"riskLevel\":\"low\",\"summary\":\"La ceramida NP es un lípido similar a los presentes de forma natural en la barrera cutánea y se utiliza para reforzarla y mejorar la hidratación de la piel. Es un ingrediente bien tolerado y con bajo potencial de irritación.\",\"details\":\"Las ceramidas ayudan a reparar y mantener la función barrera de la piel, reduciendo la pérdida de agua transepidérmica y mejorando la suavidad y elasticidad cutánea. La ceramida NP se considera segura para la mayoría de los tipos de piel, incluidas pieles sensibles y con tendencia a la sequedad o irritación, y no está asociada con disruptores hormonales, sulfatos, ftalatos ni liberadores de formaldehído.\",\"category\":\"Lípido reparador de la barrera cutánea\"}",
+    "lastUpdated": 1764539463031,
+    "createdAt": 1764539463031
+  },
+  "extracto de hoja de camellia sinensis (té verde)__skincare__es": {
+    "analysis": "{\"name\":\"Extracto de Hoja de Camellia Sinensis (té Verde)\",\"riskLevel\":\"low\",\"summary\":\"Extracto vegetal rico en antioxidantes que ayuda a proteger la piel del daño ambiental y a calmar la inflamación leve.\",\"details\":\"El extracto de hoja de Camellia sinensis, conocido como té verde, contiene polifenoles y catequinas con propiedades antioxidantes y antiinflamatorias, útiles para cuidar pieles normales, mixtas y grasas. Suele ser bien tolerado, aunque en pieles extremadamente sensibles puede causar irritación leve o enrojecimiento si se usa en concentraciones altas. No está asociado con parabenos, sulfatos, ftalatos, liberadores de formaldehído, fragancias sintéticas, aceites minerales, siliconas, alcoholes secantes ni metales pesados.\",\"category\":\"Extracto botánico / antioxidante\"}",
+    "lastUpdated": 1764539463042,
+    "createdAt": 1764539463042
+  },
+  "ácido poliglutámico__skincare__es": {
+    "analysis": "{\"name\":\"Ácido Poliglutámico\",\"riskLevel\":\"low\",\"summary\":\"El ácido poliglutámico es un polímero derivado de aminoácidos con fuertes propiedades humectantes que ayuda a retener agua en la piel. Se considera generalmente seguro y bien tolerado por la mayoría de los tipos de piel.\",\"details\":\"Este ingrediente actúa como hidratante y formador de película ligera, ayudando a mejorar la suavidad, elasticidad y aspecto relleno de la piel al reducir la pérdida de agua transepidérmica. Tiene bajo potencial irritante y no está asociado a parabenos, sulfatos, ftalatos, liberadores de formaldehído, fragancias, aceites minerales, siliconas, alcoholes secantes ni metales pesados. En pieles extremadamente sensibles puede causar una leve irritación si se usa en concentraciones muy altas o combinado con otros activos potentes, pero esto no es frecuente.\",\"category\":\"Humectante e ingrediente hidratante\"}",
+    "lastUpdated": 1764539463173,
+    "createdAt": 1764539463173
+  },
+  "extracto de centella asiática__skincare__es": {
+    "analysis": "{\"name\":\"Extracto de Centella Asiática\",\"riskLevel\":\"low\",\"summary\":\"Extracto vegetal conocido por sus propiedades calmantes, reparadoras y antioxidantes para la piel. Es bien tolerado por la mayoría de los tipos de piel, incluida la piel sensible.\",\"details\":\"La Centella Asiática ayuda a reforzar la barrera cutánea, favorecer la regeneración de la piel y reducir el enrojecimiento, por lo que es muy usada en productos calmantes y para piel sensibilizada. Presenta bajo riesgo de irritación o sensibilización, aunque en pieles extremadamente reactivas puede causar molestias leves. No pertenece a los grupos de mayor preocupación como parabenos, sulfatos fuertes, ftalatos, liberadores de formaldehído, fragancias sintéticas intensas, aceites minerales pesados, siliconas problemáticas, alcoholes desecantes o metales pesados.\",\"category\":\"Extracto botánico calmante y antioxidante\"}",
+    "lastUpdated": 1764539463208,
+    "createdAt": 1764539463208
+  },
+  "betaína__skincare__es": {
+    "analysis": "{\"name\":\"Betaína\",\"riskLevel\":\"low\",\"summary\":\"La betaína es un humectante y osmoprotector derivado comúnmente de la remolacha azucarera, utilizado para hidratar y suavizar la piel y el cabello. Es considerada un ingrediente suave y bien tolerado por la mayoría de los tipos de piel, incluida la piel sensible.\",\"details\":\"La betaína ayuda a mantener el equilibrio hídrico de la piel al atraer y retener moléculas de agua, mejorando la elasticidad y reduciendo la sensación de sequedad o tirantez. También puede aportar un efecto calmante y disminuir la irritación en fórmulas con tensioactivos, por lo que es frecuente en limpiadores suaves, cremas hidratantes y productos capilares. No se asocia con riesgos importantes a largo plazo y no pertenece a grupos de preocupación común como parabenos, sulfatos agresivos, ftalatos o liberadores de formaldehído.\",\"category\":\"Humectante y agente acondicionador\"}",
+    "lastUpdated": 1764539463242,
+    "createdAt": 1764539463242
+  },
+  "dimeticonol__skincare__es": {
+    "analysis": "{\"name\":\"Dimeticonol\",\"riskLevel\":\"low\",\"summary\":\"El dimeticonol es una silicona de alto peso molecular que forma una película suave sobre la piel y el cabello, mejorando la textura y la sensación al tacto. Generalmente se considera seguro y no comedogénico para la mayoría de las personas.\",\"details\":\"Al ser una silicona no volátil y de gran tamaño molecular, tiende a quedarse en la superficie sin penetrar profundamente en la piel, actuando como agente acondicionador y emoliente. Puede ayudar a reducir la pérdida de agua transepidérmica y aportar sensación de suavidad, aunque en algunas personas con piel o cuero cabelludo muy sensibles puede contribuir a sensación de acumulación o irritación leve si no se retira adecuadamente. No se asocia con efectos hormonales ni toxicidad sistémica, pero su principal preocupación está más relacionada con el impacto ambiental de las siliconas que con la salud humana.\",\"category\":\"Silicona / agente acondicionador\"}",
+    "lastUpdated": 1764539463251,
+    "createdAt": 1764539463251
+  },
+  "alantoína__skincare__es": {
+    "analysis": "{\"name\":\"Alantoína\",\"riskLevel\":\"low\",\"summary\":\"La alantoína es un ingrediente calmante y reparador que ayuda a suavizar la piel y favorecer la regeneración de tejidos. Se considera seguro y bien tolerado en la mayoría de los tipos de piel, incluyendo piel sensible.\",\"details\":\"La alantoína actúa como agente calmante y queratolítico suave, ayudando a eliminar células muertas y a mejorar la textura de la piel sin ser irritante. Es habitual en productos para piel sensible, después del sol o tras procedimientos dermatológicos, por su capacidad para aliviar enrojecimiento y apoyar la cicatrización superficial. No está asociada a disruptores hormonales, ftalatos, liberadores de formaldehído, sulfatos ni otros ingredientes controvertidos mencionados.\",\"category\":\"Agente calmante y reparador cutáneo\"}",
+    "lastUpdated": 1764539463265,
+    "createdAt": 1764539463265
+  },
+  "peg-100 estearato__skincare__es": {
+    "analysis": "{\"name\":\"Peg-100 Estearato\",\"riskLevel\":\"low\",\"summary\":\"El PEG-100 estearato es un tensioactivo y emulsionante sintético utilizado para mezclar agua y aceites en productos para el cuidado de la piel. Generalmente se considera de bajo riesgo en cosméticos.\",\"details\":\"Este ingrediente ayuda a estabilizar las emulsiones y mejorar la textura de cremas y lociones, facilitando su aplicación y absorción. Aunque en teoría los compuestos PEG pueden estar contaminados con impurezas como 1,4-dioxano si no se purifican adecuadamente, las concentraciones presentes en cosméticos regulados suelen ser muy bajas y se consideran seguras para el uso tópico. Puede ser ligeramente irritante en pieles muy sensibles o dañadas, pero no está asociado a efectos hormonales ni a los grupos de ingredientes más preocupantes señalados (parabenos, ftalatos, liberadores de formaldehído, etc.).\",\"category\":\"Emulsionante y tensioactivo no iónico\"}",
+    "lastUpdated": 1764539463317,
+    "createdAt": 1764539463317
+  },
+  "poliacrilato de sodio__skincare__es": {
+    "analysis": "{\"name\":\"Poliacrilato de Sodio\",\"riskLevel\":\"low\",\"summary\":\"El poliacrilato de sodio es un polímero sintético utilizado como agente espesante y absorbente en productos para el cuidado de la piel y el cabello. Generalmente se considera de baja toxicidad y con escasa absorción cutánea.\",\"details\":\"Actúa formando un gel que ayuda a estabilizar la fórmula y mejorar la textura del producto, sin aportar beneficios directos a la piel. El principal riesgo potencial proviene de impurezas residuales del proceso de fabricación (como monómeros acrílicos), aunque en cosmética se usan concentraciones seguras reguladas. Puede causar irritación leve en pieles muy sensibles o dañadas, especialmente en fórmulas que permanecen sobre la piel, pero en la mayoría de personas es bien tolerado.\",\"category\":\"Polímero sintético / agente espesante\"}",
+    "lastUpdated": 1764539463341,
+    "createdAt": 1764539463341
+  },
+  "2-hexanodiol__skincare__es": {
+    "analysis": "{\"name\":\"2-hexanodiol\",\"riskLevel\":\"low\",\"summary\":\"El 2-Hexanodiol es un glicol utilizado como solvente y humectante en productos para el cuidado de la piel y el cabello. Generalmente se considera de baja toxicidad y buena tolerancia cutánea en concentraciones habituales de cosméticos.\",\"details\":\"Actúa ayudando a disolver otros ingredientes y a mantener la hidratación de la formulación, además de aportar cierta acción conservante al dificultar el crecimiento microbiano. No pertenece a los parabenos, sulfatos, ftalatos, liberadores de formaldehído, fragancias ni aceites minerales, y no se asocia típicamente a metales pesados. En pieles muy sensibles puede causar irritación leve o enrojecimiento si se usa en concentraciones altas o en combinación con otros activos irritantes.\",\"category\":\"Solvente y humectante\"}",
+    "lastUpdated": 1764539463404,
+    "createdAt": 1764539463404
+  },
+  "trehalosa__skincare__es": {
+    "analysis": "{\"name\":\"Trehalosa\",\"riskLevel\":\"low\",\"summary\":\"La trehalosa es un azúcar de origen natural que actúa como humectante y protector de la hidratación en la piel y el cabello. Es considerada un ingrediente seguro y bien tolerado en cosmética.\",\"details\":\"En productos para el cuidado de la piel, la trehalosa ayuda a retener agua, mejorar la sensación de suavidad y proteger frente a la deshidratación, lo que puede apoyar la función barrera. No está asociada con disruptores hormonales, sulfatos, ftalatos, liberadores de formaldehído, fragancias problemáticas, aceites minerales, siliconas, alcoholes secantes ni metales pesados. Las reacciones adversas son muy poco frecuentes y generalmente se limitan a casos aislados de sensibilidad individual.\",\"category\":\"Humectante e hidratante\"}",
+    "lastUpdated": 1764539463457,
+    "createdAt": 1764539463457
+  },
+  "poligliceryl-3 metilglucosa distearato__skincare__es": {
+    "analysis": "{\"name\":\"Poligliceryl-3 Metilglucosa Distearato\",\"riskLevel\":\"low\",\"summary\":\"Es un emulsionante y agente acondicionador derivado de aceites vegetales y azúcares, considerado de bajo riesgo para la piel. Se usa para mezclar fases acuosas y oleosas y aportar textura cremosa a los productos cosméticos.\",\"details\":\"Este ingrediente es un tensioactivo no iónico suave, habitualmente bien tolerado incluso por pieles sensibles, y no está relacionado con parabenos, sulfatos fuertes, ftalatos ni liberadores de formaldehído. No suele ser comedogénico y tiene bajo potencial irritante, aunque en personas extremadamente reactivas podría causar irritación leve de forma poco frecuente. Se considera seguro en las concentraciones habituales de uso en productos de cuidado facial y capilar.\",\"category\":\"Emulsionante y agente acondicionador\"}",
+    "lastUpdated": 1764539463467,
+    "createdAt": 1764539463467
+  },
+  "extracto de hamamelis virginiana (hamamelis)__skincare__es": {
+    "analysis": "{\"name\":\"Extracto de Hamamelis Virginiana (hamamelis)\",\"riskLevel\":\"low\",\"summary\":\"El extracto de hamamelis se utiliza como astringente y calmante en productos para el cuidado de la piel. Suele ser bien tolerado, aunque puede resecar o irritar pieles muy sensibles si está muy concentrado o con alto contenido de alcohol añadido.\",\"details\":\"Este extracto vegetal contiene taninos con propiedades astringentes que ayudan a reducir el exceso de grasa, la apariencia de poros y a calmar irritaciones leves. En general se considera seguro, pero en piel seca, sensible o con rosácea puede causar enrojecimiento o sensación de tirantez, sobre todo si la fórmula incluye alcohol desnaturalizado. No está asociado a disruptores hormonales ni a sustancias como parabenos, sulfatos o ftalatos, por lo que su perfil de riesgo es bajo en cosmética facial y capilar.\",\"category\":\"Extracto vegetal / astringente calmante\"}",
+    "lastUpdated": 1764539463479,
+    "createdAt": 1764539463479
+  },
+  "butilenglicol__skincare__es": {
+    "analysis": "{\"name\":\"Butilenglicol\",\"riskLevel\":\"low\",\"summary\":\"El butilenglicol es un solvente y humectante que ayuda a mantener la hidratación de la piel y a mejorar la textura del producto. Generalmente se considera seguro en cosmética a las concentraciones habituales.\",\"details\":\"Funciona atrayendo agua hacia la capa superficial de la piel y facilitando la penetración de otros ingredientes activos. Puede causar irritación leve o enrojecimiento en personas con piel muy sensible o con barrera cutánea alterada, pero no está asociado a riesgos graves conocidos. No pertenece a los parabenos, sulfatos, ftalatos ni a liberadores de formaldehído.\",\"category\":\"Humectante y solvente\"}",
+    "lastUpdated": 1764539463686,
+    "createdAt": 1764539463686
+  },
+  "aceite de fruto de oliva (olea europaea)__skincare__es": {
+    "analysis": "{\"name\":\"Aceite de Fruto de Oliva (olea Europaea)\",\"riskLevel\":\"low\",\"summary\":\"Aceite vegetal emoliente que ayuda a hidratar y suavizar la piel. Es en general bien tolerado, aunque puede ser comedogénico en algunas pieles grasas o con acné.\",\"details\":\"El aceite de fruto de oliva es rico en ácidos grasos y antioxidantes, que contribuyen a reforzar la barrera cutánea y proteger frente al daño oxidativo. No forma parte de los grupos de mayor preocupación cosmética (parabenos, sulfatos, ftalatos, liberadores de formaldehído, fragancias sintéticas, aceites minerales o siliconas). En personas con piel muy grasa, acneica o con tendencia a poros obstruidos, puede incrementar la sensación de pesadez o favorecer brotes si se usa en alta concentración.\",\"category\":\"Aceite vegetal emoliente y antioxidante\"}",
+    "lastUpdated": 1764539463728,
+    "createdAt": 1764539463728
+  },
+  "polisorbato 20__skincare__es": {
+    "analysis": "{\"name\":\"Polisorbato 20\",\"riskLevel\":\"low\",\"summary\":\"El polisorbato 20 es un tensioactivo y emulsionante derivado del sorbitol y del óxido de etileno que se utiliza para mezclar agua y aceites en productos de cuidado de la piel. Generalmente se considera de baja irritación y bien tolerado por la mayoría de los tipos de piel.\",\"details\":\"Su principal función es estabilizar las fórmulas y mejorar la textura, ayudando a dispersar uniformemente fragancias y aceites esenciales. El posible riesgo proviene de impurezas derivadas del proceso de etoxilación (como trazas de 1,4-dioxano), aunque en cosmética regulada suelen encontrarse en niveles muy bajos y controlados. Puede causar irritación leve en pieles muy sensibles o dañadas, pero no se asocia con efectos hormonales ni con los principales grupos de ingredientes preocupantes como parabenos, ftalatos o liberadores de formaldehído.\",\"category\":\"Tensioactivo / emulsionante\"}",
+    "lastUpdated": 1764539463821,
+    "createdAt": 1764539463821
+  },
+  "disodium edta__skincare__es": {
+    "analysis": "{\"name\":\"Disodium Edta\",\"riskLevel\":\"low\",\"summary\":\"Disodium EDTA es un agente quelante que se utiliza para estabilizar las fórmulas y mejorar la eficacia de conservantes en productos para el cuidado de la piel y el cabello. Generalmente se considera seguro a las concentraciones cosméticas habituales.\",\"details\":\"Este ingrediente se une a los iones metálicos presentes en el agua o en la fórmula, evitando que desestabilicen el producto o reduzcan la acción de otros ingredientes. Puede aumentar ligeramente la penetración de algunos compuestos en la piel, pero a los niveles cosméticos su riesgo se considera bajo para la mayoría de las personas. En piel muy sensible puede causar irritación leve en casos aislados, pero no se asocia con disrupción hormonal ni con los grupos de ingredientes más controvertidos como parabenos, ftalatos o liberadores de formaldehído.\",\"category\":\"Agente quelante / estabilizante\"}",
+    "lastUpdated": 1764539463864,
+    "createdAt": 1764539463864
+  },
+  "extracto de fruto de anís estrellado (illicium verum)__skincare__es": {
+    "analysis": "{\"name\":\"Extracto de Fruto de Anís Estrellado (illicium Verum)\",\"riskLevel\":\"low\",\"summary\":\"El extracto de fruto de anís estrellado se utiliza principalmente como ingrediente aromático y antioxidante en productos para el cuidado de la piel. Generalmente se considera seguro en las bajas concentraciones cosméticas habituales.\",\"details\":\"Este extracto vegetal aporta fragancia y puede ofrecer ligeras propiedades antioxidantes, pero también puede causar irritación o reacciones alérgicas en personas con piel muy sensible o con alergia a especias. No está relacionado con parabenos, sulfatos, ftalatos ni liberadores de formaldehído, aunque se clasifica funcionalmente dentro de los ingredientes perfumantes naturales. Se recomienda precaución en pieles reactivas o con antecedentes de dermatitis por perfumes.\",\"category\":\"Extracto vegetal / fragancia natural\"}",
+    "lastUpdated": 1764539463947,
+    "createdAt": 1764539463947
+  },
+  "miristato de isopropilo__skincare__es": {
+    "analysis": "{\"name\":\"Miristato de Isopropilo\",\"riskLevel\":\"moderate\",\"summary\":\"El miristato de isopropilo es un éster graso utilizado como emoliente y agente de textura en productos para el cuidado de la piel y el cabello. Puede resultar comedogénico y favorecer la aparición de granos en pieles grasas o con tendencia al acné.\",\"details\":\"Este ingrediente ayuda a que las fórmulas se sientan más suaves, deslizantes y menos pegajosas, mejorando la extensión de cremas y maquillajes. Sin embargo, tiene un potencial relativamente alto de obstruir poros, por lo que puede empeorar brotes en pieles acneicas o seborreicas, especialmente en concentraciones elevadas o en productos que no se enjuagan. En pieles normales o secas suele tolerarse bien, aunque algunas personas sensibles pueden presentar irritación o brotes de miliums.\",\"category\":\"Emoliente / agente de textura\"}",
+    "lastUpdated": 1764539464287,
+    "createdAt": 1764539464287
+  },
+  "butyrospermum parkii (shea) butter__skincare__en": {
+    "analysis": "{\"name\":\"Butyrospermum Parkii (shea) Butter\",\"riskLevel\":\"low\",\"summary\":\"Shea butter is a natural plant fat used as an emollient and moisturizer in skincare and haircare. It is generally well tolerated and considered low risk for most skin types.\",\"details\":\"Shea butter is rich in fatty acids and vitamins, helping to soften skin, support the skin barrier, and reduce dryness and flaking. It is not a paraben, sulfate, phthalate, formaldehyde-releaser, silicone, mineral oil, or drying alcohol, and it does not inherently contain heavy metals. Rarely, individuals with very sensitive or acne‑prone skin may experience clogged pores or mild irritation, but overall its safety profile is favorable.\",\"category\":\"Emollient / Moisturizer\"}",
+    "lastUpdated": 1764539512459,
+    "createdAt": 1764539512459
+  },
+  "illicium verum (anise) fruit extract__skincare__en": {
+    "analysis": "{\"name\":\"Illicium Verum (anise) Fruit Extract\",\"riskLevel\":\"moderate\",\"summary\":\"Illicium verum (anise) fruit extract is a plant-derived ingredient often used for fragrance and potential antioxidant or soothing properties. It can pose a higher risk of irritation or sensitization compared with many non-fragrant plant extracts.\",\"details\":\"Because this extract is typically used for its distinctive aroma, it functions partly as a fragrance component, and fragrant plant extracts can trigger irritation or allergic reactions, especially in sensitive or compromised skin. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, mineral oil, silicone, or drying alcohol, and it is not a known source of heavy metals. However, due to its fragrance-related potential, it is best used cautiously by those with reactive or eczema‑prone skin.\",\"category\":\"Botanical extract / Fragrance component\"}",
+    "lastUpdated": 1764539512461,
+    "createdAt": 1764539512461
+  },
+  "cyclohexasiloxane__skincare__en": {
+    "analysis": "{\"name\":\"Cyclohexasiloxane\",\"riskLevel\":\"moderate\",\"summary\":\"Cyclohexasiloxane is a volatile silicone used to give products a silky, spreadable texture and quick-drying feel. It is generally low-irritation for skin but raises environmental and potential bioaccumulation concerns.\",\"details\":\"In skincare and haircare, cyclohexasiloxane functions primarily as an emollient and texture enhancer, helping products glide smoothly and evaporate without leaving a heavy residue. For most users, it has a low risk of irritation or sensitization and is considered non-comedogenic, though some people who avoid silicones for personal or acne-related reasons may wish to limit it. However, cyclic silicones (like cyclohexasiloxane and D4/D5 relatives) are under scrutiny for persistence and bioaccumulation in the environment, which contributes to a more cautious overall safety assessment.\",\"category\":\"Silicone / Emollient\"}",
+    "lastUpdated": 1764539522098,
+    "createdAt": 1764539522098
+  },
+  "filtered water__food__en": {
+    "analysis": "{\"name\":\"Filtered Water\",\"riskLevel\":\"low\",\"summary\":\"Filtered water is generally safe and is the main base in many beverages and foods.\",\"details\":\"It serves primarily as a diluent or carrier for other ingredients and contributes no allergens, calories, or additives by itself. Health concerns are minimal when the water is properly treated and meets safety standards.\",\"category\":\"Base ingredient\"}",
+    "lastUpdated": 1764539593202,
+    "createdAt": 1764539593202
+  },
+  "almonds__food__en": {
+    "analysis": "{\"name\":\"Almonds\",\"riskLevel\":\"moderate\",\"summary\":\"Almonds are a nutritious nut but are a common tree nut allergen that can cause serious reactions in sensitive individuals.\",\"details\":\"They provide healthy fats, protein, fiber, vitamins, and minerals, which can be beneficial as part of a balanced diet. However, for people with tree nut allergies, even small amounts can trigger severe allergic reactions, including anaphylaxis.\",\"category\":\"Tree nut allergen\"}",
+    "lastUpdated": 1764539593202,
+    "createdAt": 1764539593202
+  },
+  "tricalcium phosphate__food__en": {
+    "analysis": "{\"name\":\"Tricalcium Phosphate\",\"riskLevel\":\"low\",\"summary\":\"Tricalcium phosphate is a calcium salt used as a mineral supplement and anti-caking or stabilizing agent in foods.\",\"details\":\"It is generally recognized as safe in the amounts used in food products and can contribute to dietary calcium intake. Excessive intake from multiple fortified sources may be undesirable for people with certain kidney or mineral-balance issues, but typical food levels are not considered a significant risk.\",\"category\":\"Mineral additive\"}",
+    "lastUpdated": 1764539593202,
+    "createdAt": 1764539593202
+  },
+  "dl-alpha tocopherol acetate (vitamin e) (contains almonds)__food__en": {
+    "analysis": "{\"name\":\"Dl-alpha Tocopherol Acetate (vitamin E) (contains Almonds)\",\"riskLevel\":\"low\",\"summary\":\"DL-alpha tocopherol acetate is a synthetic form of vitamin E used as a nutrient supplement and antioxidant in foods. However, this product also contains almonds, which are a common tree nut allergen.\",\"details\":\"Vitamin E (DL-alpha tocopherol acetate) is generally recognized as safe at typical food fortification levels and helps protect fats in foods from oxidation. Most people tolerate it well, though extremely high supplemental doses may pose health concerns, which are unlikely from normal food use. The presence of almonds is important for individuals with nut allergies, as even small amounts can trigger allergic reactions ranging from mild symptoms to severe anaphylaxis.\",\"category\":\"Vitamin / antioxidant and tree nut allergen\"}",
+    "lastUpdated": 1764539594981,
+    "createdAt": 1764539594981
+  },
+  "vitamin a palmitate__food__en": {
+    "analysis": "{\"name\":\"Vitamin a Palmitate\",\"riskLevel\":\"low\",\"summary\":\"Vitamin A palmitate is a synthetic, fat-soluble form of vitamin A used to fortify foods. It is generally safe at typical fortification levels but can be harmful in excessive doses.\",\"details\":\"This compound combines vitamin A with palmitic acid to create a stable form suitable for use in processed foods like dairy products, cereals, and margarines. While normal dietary intake is considered safe and beneficial for vision, immunity, and skin health, chronic excessive intake may lead to vitamin A toxicity, particularly in pregnant individuals or those taking multiple vitamin A–containing supplements. People with specific health conditions affecting fat metabolism should discuss high supplemental intakes with a healthcare professional.\",\"category\":\"Vitamin / nutrient fortifier\"}",
+    "lastUpdated": 1764539595980,
+    "createdAt": 1764539595980
+  },
+  "ergocalciferol (vitamin d2)__food__en": {
+    "analysis": "{\"name\":\"Ergocalciferol (vitamin D2)\",\"riskLevel\":\"low\",\"summary\":\"Ergocalciferol, or vitamin D2, is a form of vitamin D used to fortify foods and supplements to support bone and immune health. It is generally safe at standard fortification levels but can be toxic in very high doses over time.\",\"details\":\"Vitamin D2 is typically derived from plant or fungal sources and helps the body regulate calcium and phosphorus levels, supporting bone strength and muscle function. In fortified foods, the amounts used are well below toxicity thresholds for most people, though extremely high supplemental intakes can cause elevated blood calcium, kidney strain, and other health issues. Individuals with certain medical conditions or those taking high-dose vitamin D supplements should monitor total vitamin D intake with a healthcare provider.\",\"category\":\"Vitamin / nutrient fortifier\"}",
+    "lastUpdated": 1764539595980,
+    "createdAt": 1764539595980
+  },
+  "sea salt__food__en": {
+    "analysis": "{\"name\":\"Sea Salt\",\"riskLevel\":\"moderate\",\"summary\":\"Sea salt is a common source of sodium used for flavor and preservation in foods. The main health concern is excessive sodium intake, which can contribute to high blood pressure and cardiovascular issues.\",\"details\":\"Nutritionally, sea salt is very similar to regular table salt, with only trace amounts of additional minerals that usually do not provide significant health benefits. In typical processed foods, sea salt can contribute substantially to total daily sodium intake, especially when multiple salty products are consumed. Individuals with hypertension, kidney disease, or cardiovascular risk should monitor overall sodium intake regardless of the salt type used.\",\"category\":\"Salt / Sodium\"}",
+    "lastUpdated": 1764539596851,
+    "createdAt": 1764539596851
+  },
+  "gellan gum__food__en": {
+    "analysis": "{\"name\":\"Gellan Gum\",\"riskLevel\":\"low\",\"summary\":\"Gellan gum is a gelling and stabilizing agent produced by fermentation and widely used to improve texture in foods and beverages. It is generally recognized as safe (GRAS) for most consumers at typical use levels.\",\"details\":\"As a soluble fiber–like additive, gellan gum usually passes through the digestive tract without being absorbed and may occasionally cause mild gas or bloating in sensitive individuals at high intakes. Regulatory agencies such as the FDA and EFSA have evaluated it and found no significant toxicity or carcinogenic concerns at permitted levels. It is not known to be allergenic and is typically considered acceptable for vegetarian and vegan diets.\",\"category\":\"Thickener / Stabilizer\"}",
+    "lastUpdated": 1764539596851,
+    "createdAt": 1764539596851
+  },
+  "sunflower lecithin__food__en": {
+    "analysis": "{\"name\":\"Sunflower Lecithin\",\"riskLevel\":\"low\",\"summary\":\"Sunflower lecithin is an emulsifier derived from sunflower seeds that helps blend fats and water in food products. It is generally well tolerated and considered a safer alternative to some soy-based lecithins for those avoiding soy.\",\"details\":\"Lecithin naturally contains phospholipids such as phosphatidylcholine, which are common components of cell membranes and are widely consumed in the diet. Sunflower lecithin is not a common allergen, though individuals with sunflower seed allergy should exercise caution. At normal food-use levels, it is not associated with serious adverse health effects and is widely regarded as safe.\",\"category\":\"Emulsifier\"}",
+    "lastUpdated": 1764539596851,
+    "createdAt": 1764539596851
   }
 }
