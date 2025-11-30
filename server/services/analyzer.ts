@@ -178,6 +178,36 @@ function isStructuralMarker(line: string): boolean {
   return structuralPatterns.some(pattern => pattern.test(line));
 }
 
+// Helper function to filter out non-ingredient text (addresses, storage instructions, etc.)
+function isNonIngredientText(text: string): boolean {
+  const upperText = text.toUpperCase();
+  
+  // Storage instructions and location markers
+  const nonIngredientPatterns = [
+    // Storage instructions
+    /STORE\s+(IN|AT|BELOW)/i,
+    /COOL\s+(PLACE|DRY|DRY PLACE|LOCATION)/i,
+    /DRY\s+PLACE/i,
+    /KEEP\s+(COOL|DRY|IN)/i,
+    /DO\s+NOT\s+(FREEZE|REFRIGERATE)/i,
+    /AVOID\s+(HEAT|MOISTURE|SUNLIGHT|DIRECT)/i,
+    
+    // Addresses and locations (city names, state codes, zip codes)
+    /^(CA|NY|TX|FL|WA|OR|CO|AZ|NV|UT|ID|MT|WY|NM|IL|MI|OH|PA|NY|MA|CT|VT|NH|ME|RI|NJ|DE|MD|VA|WV|NC|SC|GA|AL|MS|LA|AR|MO|KS|NE|SD|ND|IA|WI|MN|IN|KY|TN)\s+\d{4,5}$/i, // State + zip
+    /^\d{5,5}\s*/i,  // Zip code at start
+    /^\d{5,5}$/,      // Pure zip code
+    /\b(CA|NY|TX|FL)\s+\d{5}\b/i,  // State + zip in middle
+    
+    // Known US city names that appear in labels (Monrovia, etc)
+    /^(MONROVIA|NEW YORK|LOS ANGELES|CHICAGO|HOUSTON|PHOENIX|PHILADELPHIA|SAN ANTONIO|SAN DIEGO|DALLAS|SAN JOSE|AUSTIN|JACKSONVILLE|FORT WORTH|COLUMBUS|INDIANAPOLIS|CHARLOTTE|SEATTLE|DENVER|WASHINGTON|BOSTON|EL PASO|MEMPHIS|NASHVILLE|BALTIMORE|LOUISVILLE|MILWAUKEE|ALBUQUERQUE|TUCSON|FRESNO|SACRAMENTO|LONG BEACH|KANSAS CITY|MESA|VIRGINIA BEACH|ATLANTA|NEW ORLEANS|CLEVELAND|PLANO|ORLANDO|ST LOUIS|CHULA VISTA|IRVINE|LAREDO|LUBBOCK|MADISON|GILBERT)$/i,
+    
+    // Numeric-only text (pure numbers are usually addresses)
+    /^\d+\s*$/,
+  ];
+  
+  return nonIngredientPatterns.some(pattern => pattern.test(text));
+}
+
 // UNIFIED, LANGUAGE-AGNOSTIC ingredient extraction function
 // Returns both the processed text for GPT and the extracted ingredients list
 export function extractIngredientsFromText(ingredientsText: string): { ingredients: string[]; processedText: string; count: number } {
@@ -266,7 +296,8 @@ export function extractIngredientsFromText(ingredientsText: string): { ingredien
       ing.length > 2 && 
       !ing.match(/^[\d.]+%?$/) &&  // Filter out pure numbers/percentages
       !ing.match(/^(AND|OR)\s+\w+/) &&  // Filter out fragments like "AND MILK", "OR LESS"
-      !isStructuralMarker(ing)     // Filter out structural markers
+      !isStructuralMarker(ing) &&  // Filter out structural markers
+      !isNonIngredientText(ing)    // Filter out addresses, storage instructions, etc.
     )
     .slice(0, 150); // Cap at 150 to avoid huge batches
   
