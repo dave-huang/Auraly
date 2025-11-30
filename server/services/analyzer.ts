@@ -935,12 +935,33 @@ Return ONLY a JSON array with translated names in the same order, nothing else:
     
     try {
       const translated = JSON.parse(jsonString);
-      if (Array.isArray(translated) && translated.length === ingredients.length) {
+      if (!Array.isArray(translated)) {
+        console.log(`[TRANSLATOR] Response is not an array, using originals`);
+        return ingredients;
+      }
+      
+      // Handle partial translations - some batches may fail or get merged
+      // Map translated items to original ingredients as best as possible
+      if (translated.length < ingredients.length) {
+        console.log(`[TRANSLATOR] Partial translation: got ${translated.length} items, expecting ${ingredients.length}. Merging with originals.`);
+        
+        // Use translated items where available, keep originals for missing ones
+        const result = ingredients.map((original, idx) => {
+          if (idx < translated.length) {
+            return translated[idx];
+          }
+          return original;
+        });
+        console.log(`[TRANSLATOR] Merged partial translation, returning ${result.length} items`);
+        return result;
+      }
+      
+      if (translated.length === ingredients.length) {
         console.log(`[TRANSLATOR] Successfully translated ${translated.length} ingredients`);
         return translated;
       } else {
-        console.log(`[TRANSLATOR] Invalid translation response format, got ${Array.isArray(translated) ? translated.length : 'non-array'} items, expecting ${ingredients.length}`);
-        return ingredients;
+        console.log(`[TRANSLATOR] Got ${translated.length} items (expected ${ingredients.length}), using first ${ingredients.length} translated items`);
+        return translated.slice(0, ingredients.length);
       }
     } catch (parseError) {
       console.log(`[TRANSLATOR] Failed to parse JSON: ${parseError}`);
