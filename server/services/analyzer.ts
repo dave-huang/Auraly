@@ -248,13 +248,14 @@ export function extractIngredientsFromText(ingredientsText: string): { ingredien
   cleanedText = cleanedText.replace(/\s*\[.*?\]/g, '');  // Remove complete [...] on same line
   cleanedText = cleanedText.replace(/\s*\[.*?$/gm, '');  // Remove unclosed [...text to line end 
   
-  // Handle Chinese "other trace ingredients" section marker - treat as ingredient separator
-  // Split on "其他微量成分:" and only keep the main ingredients (before this marker)
-  const traceMarkerIndex = cleanedText.search(/其他微量成分[:：]/);
-  if (traceMarkerIndex !== -1) {
-    console.log(`[EXTRACT] Found trace ingredients marker at position ${traceMarkerIndex}, truncating`);
-    cleanedText = cleanedText.substring(0, traceMarkerIndex);
-  }
+  // Handle Chinese "other trace ingredients" section marker - insert newline before it
+  // so it acts as a separator without removing those trace ingredients
+  // This prevents inline section markers from merging with the previous ingredient
+  cleanedText = cleanedText.replace(/([^\n])(其他微量成分[:：])/g, '$1\n$2');
+  console.log(`[EXTRACT] After handling trace ingredient markers`);
+  
+  // Also handle English "trace" markers
+  cleanedText = cleanedText.replace(/([^\n])(TRACE INGREDIENTS?[:：])/gi, '$1\n$2');
   
   // Parse individual ingredients - CONSISTENT logic for all languages
   const rawIngredients = cleanedText
