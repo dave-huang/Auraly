@@ -12,18 +12,20 @@ import NotFound from "@/pages/not-found";
 import "./i18n/config";
 import { useEffect } from "react";
 
-function Router() {
+function ProtectedPage({ component: Component }: { component: any }) {
   const { isAuthenticated, isLoading } = useAuth();
   const { toast } = useToast();
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated && window.location.pathname !== "/") {
+    if (!isLoading && !isAuthenticated) {
       toast({
         title: "Authentication Required",
-        description: "Please log in to continue",
+        description: "Please log in to access this page",
         variant: "destructive",
       });
-      window.location.href = "/api/login";
+      setTimeout(() => {
+        window.location.href = "/api/login";
+      }, 500);
     }
   }, [isAuthenticated, isLoading, toast]);
 
@@ -35,17 +37,23 @@ function Router() {
     );
   }
 
+  if (!isAuthenticated) {
+    return null;
+  }
+
+  return <Component />;
+}
+
+function Router() {
   return (
     <Switch>
-      {!isAuthenticated ? (
-        <Route path="/" component={Landing} />
-      ) : (
-        <>
-          <Route path="/" component={Landing} />
-          <Route path="/upload" component={UploadPage} />
-          <Route path="/results" component={ResultsPage} />
-        </>
-      )}
+      <Route path="/" component={Landing} />
+      <Route path="/upload">
+        <ProtectedPage component={UploadPage} />
+      </Route>
+      <Route path="/results">
+        <ProtectedPage component={ResultsPage} />
+      </Route>
       <Route component={NotFound} />
     </Switch>
   );
