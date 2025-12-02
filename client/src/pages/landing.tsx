@@ -4,9 +4,11 @@ import { Card } from "@/components/ui/card";
 import { Sparkles, Shield, Zap, Camera, Globe, Lock } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Landing() {
   const { t } = useTranslation();
+  const { isAuthenticated } = useAuth();
   
   return (
     <div className="min-h-screen bg-background">
@@ -44,16 +46,28 @@ export default function Landing() {
           </p>
 
           {/* CTA Button */}
-          <Link href="/upload" data-testid="link-upload">
-            <Button 
-              size="lg" 
+          {isAuthenticated ? (
+            <Link href="/upload" data-testid="link-upload">
+              <Button 
+                size="lg" 
+                className="rounded-full px-10 py-7 text-lg font-semibold shadow-lg hover:shadow-xl transition-all gap-2"
+                data-testid="button-start-scanning"
+              >
+                <Camera className="w-5 h-5" />
+                {t('landing.hero.cta')}
+              </Button>
+            </Link>
+          ) : (
+            <Button
+              size="lg"
               className="rounded-full px-10 py-7 text-lg font-semibold shadow-lg hover:shadow-xl transition-all gap-2"
-              data-testid="button-start-scanning"
+              onClick={() => window.location.href = "/api/login"}
+              data-testid="button-login"
             >
               <Camera className="w-5 h-5" />
-              {t('landing.hero.cta')}
+              Sign In to Get Started
             </Button>
-          </Link>
+          )}
 
           {/* Trust indicators - simplified */}
           <div className="mt-12 flex flex-wrap items-center justify-center gap-8 text-sm">

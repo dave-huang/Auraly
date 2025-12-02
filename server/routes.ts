@@ -149,8 +149,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Batch analyze ingredients with backend caching
-  app.post("/api/analyze-ingredients", async (req, res) => {
+  // Batch analyze ingredients with backend caching (protected)
+  app.post("/api/analyze-ingredients", isAuthenticated, async (req, res) => {
     const startTime = Date.now();
     try {
       const { ingredients, category, userLanguage } = batchAnalyzeRequestSchema.parse(req.body);
@@ -217,8 +217,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Check analysis status (for polling from mobile when tab is backgrounded)
-  app.get("/api/analysis-status/:requestId", (req, res) => {
+  // Check analysis status (for polling from mobile when tab is backgrounded) (protected)
+  app.get("/api/analysis-status/:requestId", isAuthenticated, (req, res) => {
     const { requestId } = req.params;
     const request = analysisRequests.get(requestId);
     
