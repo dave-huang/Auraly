@@ -245,8 +245,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
-  // Combined OCR + Analysis endpoint (returns request ID immediately for mobile resilience)
-  app.post("/api/scan-and-analyze", async (req, res) => {
+  // Combined OCR + Analysis endpoint (returns request ID immediately for mobile resilience) (protected)
+  app.post("/api/scan-and-analyze", isAuthenticated, async (req, res) => {
     const body = req.body;
     
     // Validate required fields
