@@ -5043,5 +5043,45 @@
     "analysis": "{\"name\":\"奶酪菌种（乳酸菌发酵菌种）\",\"riskLevel\":\"low\",\"summary\":\"奶酪菌种是用于发酵牛奶制成奶酪的有益微生物，一般被认为是安全的成分。常见于各种奶酪和发酵乳制品中。\",\"details\":\"奶酪菌种通常包括多种乳酸菌和有时使用的片状菌等，用于发酵和成熟奶酪，赋予奶酪特有的风味和质地。对大多数人而言是安全的，但乳制品过敏或乳糖不耐受人群需要整体注意奶酪这类乳制品的摄入。一般不涉及人工色素、防腐剂或甜味剂等高风险添加剂。\",\"category\":\"发酵菌种 / 乳制品成分\"}",
     "lastUpdated": 1764636981315,
     "createdAt": 1764636981315
+  },
+  "ground coffee beans__food__en": {
+    "analysis": "{\"name\":\"Ground Coffee Beans\",\"riskLevel\":\"low\",\"summary\":\"Ground coffee beans are roasted coffee seeds that are milled for brewing and are generally safe for most healthy adults when consumed in moderation. The main health considerations relate to their caffeine content and potential sensitivity in some individuals.\",\"details\":\"Ground coffee naturally contains caffeine, which can improve alertness and concentration but may cause jitteriness, sleep disturbances, or increased heart rate in sensitive individuals or at high intakes. It also contains beneficial antioxidants and has no artificial additives, colorings, or preservatives. People with certain conditions, such as acid reflux, heart rhythm issues, or pregnancy, may need to limit or avoid coffee based on medical advice.\",\"category\":\"Beverage ingredient\"}",
+    "lastUpdated": 1764657931945,
+    "createdAt": 1764657931945
+  },
+  "natural vanilla flavor__food__en": {
+    "analysis": "{\"name\":\"Natural Vanilla Flavor\",\"riskLevel\":\"low\",\"summary\":\"A flavoring derived mainly from vanilla beans or other natural sources to mimic vanilla taste. It is generally well tolerated by most people.\",\"details\":\"Natural vanilla flavor is typically produced from vanilla beans or other natural ingredients that contain vanillin and related compounds. It does not usually contain major allergens, but extremely sensitive individuals may want to confirm there are no added carriers like dairy or soy. Compared with artificial vanilla flavor, it is less processed and is considered a low‑risk flavoring agent in normal food amounts.\",\"category\":\"Natural flavoring\"}",
+    "lastUpdated": 1764657933097,
+    "createdAt": 1764657933097
+  },
+  "unbleached enriched flour__food__en": {
+    "analysis": "{\"name\":\"Unbleached Enriched Flour\",\"riskLevel\":\"moderate\",\"summary\":\"Refined wheat flour that has not been chemically bleached but has vitamins and minerals added back. It contains gluten and has a higher glycemic impact than whole grains.\",\"details\":\"Unbleached enriched flour is made from wheat with the bran and germ removed, then fortified with nutrients such as iron and B vitamins that are lost during refining. It is a source of gluten and is unsuitable for people with celiac disease or gluten sensitivity. Because it is a refined carbohydrate, frequent high intake can contribute to blood sugar spikes and may be less beneficial for long‑term metabolic and cardiovascular health compared with whole‑grain flours.\",\"category\":\"Refined grain containing gluten\"}",
+    "lastUpdated": 1764657933097,
+    "createdAt": 1764657933097
+  },
+  "palm kernel oil__food__en": {
+    "analysis": "{\"name\":\"Palm Kernel Oil\",\"riskLevel\":\"moderate\",\"summary\":\"Palm kernel oil is a plant-derived fat high in saturated fatty acids, which may negatively affect heart health if consumed in large amounts. It contains no major allergens but can contribute to increased calorie and saturated fat intake.\",\"details\":\"Because palm kernel oil is rich in saturated fat, frequent or high consumption may raise LDL (“bad”) cholesterol and increase cardiovascular risk, especially when overall diet quality is poor. It is often used in processed foods for texture and shelf life, which may indicate a more highly processed product. Environmental and sustainability concerns are also associated with palm-derived oils, though this is not a direct health effect.\",\"category\":\"Fats and oils\"}",
+    "lastUpdated": 1764657933740,
+    "createdAt": 1764657933740
+  },
+  "nonfat milk powder__food__en": {
+    "analysis": "{\"name\":\"Nonfat Milk Powder\",\"riskLevel\":\"moderate\",\"summary\":\"Nonfat milk powder is dehydrated skim milk and is a source of protein, lactose, and dairy minerals such as calcium. It is a common dairy ingredient and a potential allergen for people with milk allergy or lactose intolerance.\",\"details\":\"This ingredient provides milk proteins (including casein and whey) and lactose, so it can trigger reactions in individuals with dairy allergy and may cause digestive discomfort in those with lactose intolerance. From a general health perspective, it is considered relatively safe and nutritionally beneficial when tolerated, providing protein and micronutrients. Its main concern is allergenicity rather than issues like additives, artificial sweeteners, or trans fats.\",\"category\":\"Dairy ingredient\"}",
+    "lastUpdated": 1764657933740,
+    "createdAt": 1764657933740
+  },
+  "palm kernel oil and palm oil__food__en": {
+    "analysis": "{\"name\":\"Palm Kernel Oil And Palm Oil\",\"riskLevel\":\"moderate\",\"summary\":\"Palm kernel oil and palm oil are common edible fats high in saturated fat, which can impact heart health when consumed in excess. They also raise environmental and sustainability concerns.\",\"details\":\"These oils are frequently used in processed foods because they are inexpensive and stable at high temperatures, but they are relatively high in saturated fats, which may raise LDL (“bad”) cholesterol when eaten in large amounts. They do not inherently contain trans fats unless further hydrogenated, but diets rich in saturated fats are associated with increased cardiovascular risk. In addition, palm cultivation is linked to deforestation and habitat loss, which may concern environmentally conscious consumers.\",\"category\":\"Edible oils and fats\"}",
+    "lastUpdated": 1764657938360,
+    "createdAt": 1764657938360
+  },
+  "cocoa powder__food__en": {
+    "analysis": "{\"name\":\"Cocoa Powder\",\"riskLevel\":\"low\",\"summary\":\"Cocoa powder is a natural product made from roasted cocoa beans and is generally safe for most people. It provides flavor, some fiber, and beneficial plant compounds.\",\"details\":\"Cocoa powder contains flavonoids and other antioxidants that may offer modest cardiovascular benefits when consumed as part of a balanced diet. The main health considerations are its caffeine and theobromine content, which can be stimulating for sensitive individuals, and potential added sugars when used in sweetened products. Allergic reactions to cocoa are rare but possible in susceptible people.\",\"category\":\"Natural flavoring / cocoa product\"}",
+    "lastUpdated": 1764657938360,
+    "createdAt": 1764657938360
+  },
+  "cocoa powder processed with alkali__food__en": {
+    "analysis": "{\"name\":\"Cocoa Powder Processed With Alkali\",\"riskLevel\":\"low\",\"summary\":\"Cocoa powder processed with alkali, also called Dutch-processed cocoa, is treated to reduce acidity and create a milder flavor and darker color. It is generally safe but slightly lower in some natural antioxidants compared with natural cocoa.\",\"details\":\"The alkalization process uses food-grade alkali (such as potassium carbonate) to adjust pH, which improves solubility and changes flavor but does not introduce common allergens or major additives of concern. Some of the native flavonoids are reduced by this processing, so its antioxidant content is typically lower than that of natural cocoa powder. As with regular cocoa, its main considerations are caffeine content and any sugars or fats added elsewhere in the product.\",\"category\":\"Processed cocoa product / flavoring\"}",
+    "lastUpdated": 1764657938360,
+    "createdAt": 1764657938360
   }
 }
