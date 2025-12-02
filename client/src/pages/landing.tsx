@@ -65,7 +65,7 @@ export default function Landing() {
               data-testid="button-login"
             >
               <Camera className="w-5 h-5" />
-              Sign In to Get Started
+              {t('auth.signIn')}
             </Button>
           )}
 

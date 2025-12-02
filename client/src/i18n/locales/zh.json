@@ -3,6 +3,15 @@
     "title": "Auraly",
     "tagline": "了解产品成分的真相"
   },
+  "auth": {
+    "signIn": "登录以开始",
+    "signInShort": "登录",
+    "required": "需要身份验证",
+    "pleaseLogin": "请登录以继续",
+    "accessDenied": "请登录以访问此页面",
+    "loginSuccess": "欢迎回来！",
+    "logout": "退出登录"
+  },
   "landing": {
     "hero": {
       "title": "了解您每天吃的和用的产品成分",

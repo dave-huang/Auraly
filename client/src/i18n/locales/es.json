@@ -3,6 +3,15 @@
     "title": "Auraly",
     "tagline": "Comprende Lo Que Realmente Hay En Tus Productos"
   },
+  "auth": {
+    "signIn": "Inicia Sesión para Comenzar",
+    "signInShort": "Iniciar Sesión",
+    "required": "Autenticación Requerida",
+    "pleaseLogin": "Por favor inicia sesión para continuar",
+    "accessDenied": "Por favor inicia sesión para acceder a esta página",
+    "loginSuccess": "¡Bienvenido de vuelta!",
+    "logout": "Cerrar Sesión"
+  },
   "landing": {
     "hero": {
       "title": "Claridad para lo que comes y usas, todos los días.",

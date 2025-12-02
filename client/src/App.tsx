@@ -11,23 +11,25 @@ import ResultsPage from "@/pages/results";
 import NotFound from "@/pages/not-found";
 import "./i18n/config";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 function ProtectedPage({ component: Component }: { component: any }) {
   const { isAuthenticated, isLoading } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       toast({
-        title: "Authentication Required",
-        description: "Please log in to access this page",
+        title: t("auth.required"),
+        description: t("auth.accessDenied"),
         variant: "destructive",
       });
       setTimeout(() => {
         window.location.href = "/api/login";
       }, 500);
     }
-  }, [isAuthenticated, isLoading, toast]);
+  }, [isAuthenticated, isLoading, toast, t]);
 
   if (isLoading) {
     return (
