@@ -1,4 +1,31 @@
 import { z } from "zod";
+import { sql } from 'drizzle-orm';
+import { index, jsonb, pgTable, timestamp, varchar } from "drizzle-orm/pg-core";
+
+// Sessions table (REQUIRED for Replit Auth)
+export const sessions = pgTable(
+  "sessions",
+  {
+    sid: varchar("sid").primaryKey(),
+    sess: jsonb("sess").notNull(),
+    expire: timestamp("expire").notNull(),
+  },
+  (table) => [index("IDX_session_expire").on(table.expire)],
+);
+
+// Users table (REQUIRED for Replit Auth)
+export const users = pgTable("users", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  email: varchar("email").unique(),
+  firstName: varchar("first_name"),
+  lastName: varchar("last_name"),
+  profileImageUrl: varchar("profile_image_url"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export type User = typeof users.$inferSelect;
+export type UpsertUser = typeof users.$inferInsert;
 
 // Product types that can be analyzed
 export const productTypes = [
@@ -20,7 +47,7 @@ export const ingredientSchema = z.object({
   riskLevel: z.enum(riskLevels),
   summary: z.string(),
   details: z.string(),
-  category: z.string().nullish(), // Allow null, undefined, or string
+  category: z.string().nullish(),
 });
 
 export type Ingredient = z.infer<typeof ingredientSchema>;
@@ -38,7 +65,7 @@ export type AnalysisRequest = z.infer<typeof analysisRequestSchema>;
 // Analysis result schema
 export const analysisResultSchema = z.object({
   productType: z.enum(productTypes),
-  productName: z.string().nullish(), // Allow null, undefined, or string
+  productName: z.string().nullish(),
   ingredients: z.array(ingredientSchema).min(1, "Analysis must include at least one ingredient"),
   overallRisk: z.enum(riskLevels),
   analyzedAt: z.string(),
@@ -50,7 +77,7 @@ export type AnalysisResult = z.infer<typeof analysisResultSchema>;
 
 // OCR request schema
 export const ocrRequestSchema = z.object({
-  imageData: z.string(), // base64 encoded image
+  imageData: z.string(),
 });
 
 export type OCRRequest = z.infer<typeof ocrRequestSchema>;
@@ -63,7 +90,7 @@ export const ocrResultSchema = z.object({
 
 export type OCRResult = z.infer<typeof ocrResultSchema>;
 
-// Scan history item (for localStorage)
+// Scan history item
 export const scanHistoryItemSchema = z.object({
   id: z.string(),
   productType: z.enum(productTypes),

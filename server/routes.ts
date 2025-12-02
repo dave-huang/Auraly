@@ -3,6 +3,8 @@ import { createServer, type Server } from "http";
 import multer from "multer";
 import z from "zod";
 import crypto from "crypto";
+import { setupAuth, isAuthenticated } from "./replitAuth";
+import { storage } from "./storage";
 import { extractTextFromImage } from "./services/ocr";
 import { analyzeIngredients, analyzeIngredientsParallel, extractIngredientsFromText } from "./services/analyzer";
 import { batchAnalyzeIngredientsWithCache, getCacheStats } from "./services/cache";
@@ -77,8 +79,23 @@ const batchAnalyzeRequestSchema = z.object({
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // OCR endpoint - extract text from image
-  app.post("/api/ocr", async (req, res) => {
+  // Setup authentication
+  await setupAuth(app);
+
+  // Auth endpoint
+  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      res.json(user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      res.status(500).json({ message: "Failed to fetch user" });
+    }
+  });
+
+  // OCR endpoint - extract text from image (protected)
+  app.post("/api/ocr", isAuthenticated, async (req, res) => {
     const startTime = Date.now();
     try {
       const { imageData } = ocrRequestSchema.parse(req.body);
@@ -97,8 +114,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Analysis endpoint - analyze ingredients
-  app.post("/api/analyze", async (req, res) => {
+  // Analysis endpoint - analyze ingredients (protected)
+  app.post("/api/analyze", isAuthenticated, async (req, res) => {
     const startTime = Date.now();
     try {
       const { productType, ingredientsText, userLanguage } = analysisRequestSchema.parse(req.body);
