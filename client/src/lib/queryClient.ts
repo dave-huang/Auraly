@@ -11,7 +11,7 @@ export async function apiRequest(
   method: string,
   url: string,
   data?: unknown | undefined,
-  timeoutMs: number = 300000, // 5 minute default timeout for long-running analyses (Chinese mode can take 2-3 minutes)
+  timeoutMs: number = 600000, // 10 minute default timeout for mobile background support (Chinese mode can take 2-3 minutes, plus buffer for browser throttling when backgrounded)
 ): Promise<Response> {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);

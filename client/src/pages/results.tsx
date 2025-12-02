@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -57,6 +57,7 @@ export default function ResultsPage() {
   const [progress, setProgress] = useState(0);
   const [cachedOcrText, setCachedOcrText] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
+  const wakeLockRef = useRef<any>(null);
 
   // Auto-retry mutation with Service Worker polling for mobile background support
   const analyzeMutation = useMutation({
@@ -173,6 +174,38 @@ export default function ResultsPage() {
     }
   }, []);
 
+  // Request Screen Wake Lock to keep device awake during analysis (mobile background support)
+  useEffect(() => {
+    if (analyzeMutation.isPending) {
+      const requestWakeLock = async () => {
+        try {
+          if ('wakeLock' in navigator) {
+            wakeLockRef.current = await (navigator as any).wakeLock.request('screen');
+            console.log('[WAKE-LOCK] Screen wake lock acquired');
+          }
+        } catch (err) {
+          console.log('[WAKE-LOCK] Wake lock not available:', (err as any).message);
+        }
+      };
+      
+      requestWakeLock();
+    } else {
+      // Release wake lock when analysis completes
+      if (wakeLockRef.current) {
+        wakeLockRef.current.release().catch(() => {});
+        wakeLockRef.current = null;
+        console.log('[WAKE-LOCK] Screen wake lock released');
+      }
+    }
+
+    return () => {
+      if (wakeLockRef.current) {
+        wakeLockRef.current.release().catch(() => {});
+        wakeLockRef.current = null;
+      }
+    };
+  }, [analyzeMutation.isPending]);
+
   // Animate progress bar over 20 seconds
   useEffect(() => {
     if (analyzeMutation.isPending) {
@@ -226,11 +259,14 @@ export default function ResultsPage() {
               <h3 className="font-semibold text-xl mb-2">
                 {retryCount > 0 ? t('results.retrying.title', { attempt: retryCount + 1 }) : t('results.analyzing.title')}
               </h3>
-              <p className="text-sm text-muted-foreground mb-4">
+              <p className="text-sm text-muted-foreground mb-2">
                 {retryCount > 0 
                   ? t('results.retrying.description') 
                   : t('results.analyzing.description')
                 }
+              </p>
+              <p className="text-xs text-muted-foreground mb-4">
+                {t('results.analyzing.keepActive')}
               </p>
             </div>
             <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
