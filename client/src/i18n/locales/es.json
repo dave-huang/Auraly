@@ -151,7 +151,8 @@
     "scanAnother": "Escanear Otro Producto",
     "analyzing": {
       "title": "Analizando Ingredientes",
-      "description": "Extrayendo texto e identificando posibles riesgos para la salud..."
+      "description": "Extrayendo texto e identificando posibles riesgos para la salud...",
+      "keepActive": "Mantén esta aplicación activa durante el análisis para mejores resultados"
     },
     "retrying": {
       "title": "Reintentando (Intento {{attempt}})",
