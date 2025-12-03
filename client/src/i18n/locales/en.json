@@ -97,6 +97,22 @@
       "cosmetics": {
         "label": "Cosmetics / Fragrance",
         "description": "Makeup, perfumes"
+      },
+      "haircare": {
+        "label": "Haircare",
+        "description": "Shampoos, conditioners"
+      },
+      "fragrance": {
+        "label": "Fragrance",
+        "description": "Perfumes, colognes"
+      },
+      "lotion": {
+        "label": "Lotion",
+        "description": "Body lotions, creams"
+      },
+      "other": {
+        "label": "Other",
+        "description": "Other products"
       }
     },
     "analyzing": {
@@ -196,6 +212,29 @@
     "back": "Back",
     "close": "Close",
     "search": "Search",
-    "filter": "Filter"
+    "filter": "Filter",
+    "cancel": "Cancel"
+  },
+  "history": {
+    "title": "My Scans",
+    "empty": "No Scans Yet",
+    "emptyDesc": "Start scanning product labels to build your ingredient history.",
+    "endOfList": "You've reached the end",
+    "highRisk": "high risk",
+    "moderate": "moderate",
+    "lowRisk": "low risk",
+    "delete": "Delete",
+    "deleteAll": "Delete All",
+    "deleteConfirmTitle": "Delete this scan?",
+    "deleteConfirmDesc": "This action cannot be undone. This scan will be permanently removed from your history.",
+    "deleteAllConfirmTitle": "Delete all scans?",
+    "deleteAllConfirmDesc": "This action cannot be undone. All your scans will be permanently removed.",
+    "deleteSuccess": "Scan deleted",
+    "deleteSuccessDesc": "The scan has been removed from your history.",
+    "deleteAllSuccess": "All scans deleted",
+    "deleteAllSuccessDesc": "Your scan history has been cleared.",
+    "scanNotFound": "Scan Not Found",
+    "scanNotFoundDesc": "This scan may have been deleted or doesn't exist.",
+    "backToHistory": "Back to History"
   }
 }

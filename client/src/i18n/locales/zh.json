@@ -97,6 +97,22 @@
       "cosmetics": {
         "label": "化妆品 / 香水",
         "description": "化妆品、香水"
+      },
+      "haircare": {
+        "label": "护发",
+        "description": "洗发水、护发素"
+      },
+      "fragrance": {
+        "label": "香水",
+        "description": "香水、古龙水"
+      },
+      "lotion": {
+        "label": "乳液",
+        "description": "身体乳液、面霜"
+      },
+      "other": {
+        "label": "其他",
+        "description": "其他产品"
       }
     },
     "analyzing": {
@@ -196,6 +212,29 @@
     "back": "返回",
     "close": "关闭",
     "search": "搜索",
-    "filter": "筛选"
+    "filter": "筛选",
+    "cancel": "取消"
+  },
+  "history": {
+    "title": "我的扫描",
+    "empty": "暂无扫描记录",
+    "emptyDesc": "开始扫描产品标签来建立您的成分历史记录。",
+    "endOfList": "已加载全部",
+    "highRisk": "高风险",
+    "moderate": "中等风险",
+    "lowRisk": "低风险",
+    "delete": "删除",
+    "deleteAll": "删除全部",
+    "deleteConfirmTitle": "删除此扫描记录？",
+    "deleteConfirmDesc": "此操作无法撤销。此扫描记录将从您的历史中永久删除。",
+    "deleteAllConfirmTitle": "删除所有扫描记录？",
+    "deleteAllConfirmDesc": "此操作无法撤销。您的所有扫描记录将被永久删除。",
+    "deleteSuccess": "扫描已删除",
+    "deleteSuccessDesc": "扫描记录已从您的历史中移除。",
+    "deleteAllSuccess": "所有扫描已删除",
+    "deleteAllSuccessDesc": "您的扫描历史已清空。",
+    "scanNotFound": "扫描记录未找到",
+    "scanNotFoundDesc": "此扫描记录可能已被删除或不存在。",
+    "backToHistory": "返回历史记录"
   }
 }

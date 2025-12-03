@@ -97,6 +97,22 @@
       "cosmetics": {
         "label": "Cosméticos / Fragancias",
         "description": "Maquillaje, perfumes"
+      },
+      "haircare": {
+        "label": "Cuidado del Cabello",
+        "description": "Champús, acondicionadores"
+      },
+      "fragrance": {
+        "label": "Fragancia",
+        "description": "Perfumes, colonias"
+      },
+      "lotion": {
+        "label": "Loción",
+        "description": "Lociones corporales, cremas"
+      },
+      "other": {
+        "label": "Otro",
+        "description": "Otros productos"
       }
     },
     "analyzing": {
@@ -196,6 +212,29 @@
     "back": "Atrás",
     "close": "Cerrar",
     "search": "Buscar",
-    "filter": "Filtrar"
+    "filter": "Filtrar",
+    "cancel": "Cancelar"
+  },
+  "history": {
+    "title": "Mis Escaneos",
+    "empty": "Sin Escaneos Aún",
+    "emptyDesc": "Comienza a escanear etiquetas de productos para crear tu historial de ingredientes.",
+    "endOfList": "Has llegado al final",
+    "highRisk": "riesgo alto",
+    "moderate": "moderado",
+    "lowRisk": "riesgo bajo",
+    "delete": "Eliminar",
+    "deleteAll": "Eliminar Todo",
+    "deleteConfirmTitle": "¿Eliminar este escaneo?",
+    "deleteConfirmDesc": "Esta acción no se puede deshacer. Este escaneo será eliminado permanentemente de tu historial.",
+    "deleteAllConfirmTitle": "¿Eliminar todos los escaneos?",
+    "deleteAllConfirmDesc": "Esta acción no se puede deshacer. Todos tus escaneos serán eliminados permanentemente.",
+    "deleteSuccess": "Escaneo eliminado",
+    "deleteSuccessDesc": "El escaneo ha sido eliminado de tu historial.",
+    "deleteAllSuccess": "Todos los escaneos eliminados",
+    "deleteAllSuccessDesc": "Tu historial de escaneos ha sido borrado.",
+    "scanNotFound": "Escaneo No Encontrado",
+    "scanNotFoundDesc": "Este escaneo puede haber sido eliminado o no existe.",
+    "backToHistory": "Volver al Historial"
   }
 }

@@ -432,12 +432,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Validation schema for pagination query params
+  const paginationSchema = z.object({
+    limit: z.coerce.number().int().min(1).max(50).optional().default(20),
+    offset: z.coerce.number().int().min(0).optional().default(0),
+  });
+
+  // Validation schema for scan ID params
+  const scanIdSchema = z.object({
+    scanId: z.string().uuid(),
+  });
+
   // GET /api/history - Get user's scan history (paginated)
   app.get("/api/history", isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
-      const limit = Math.min(parseInt(req.query.limit as string) || 20, 50);
-      const offset = parseInt(req.query.offset as string) || 0;
+      const { limit, offset } = paginationSchema.parse(req.query);
       
       const [scans, totalCount] = await Promise.all([
         storage.getScanHistory(userId, limit, offset),
@@ -461,7 +471,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/history/:scanId", isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
-      const { scanId } = req.params;
+      const { scanId } = scanIdSchema.parse(req.params);
       
       const scan = await storage.getScanById(scanId, userId);
       
@@ -480,7 +490,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete("/api/history/:scanId", isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
-      const { scanId } = req.params;
+      const { scanId } = scanIdSchema.parse(req.params);
       
       const deleted = await storage.deleteScan(scanId, userId);
       

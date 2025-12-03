@@ -58,6 +58,7 @@ export default function ResultsPage() {
   const [cachedOcrText, setCachedOcrText] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
   const wakeLockRef = useRef<any>(null);
+  const hasSavedToHistoryRef = useRef<boolean>(false);
 
   // Auto-retry mutation with Service Worker polling for mobile background support
   const analyzeMutation = useMutation({
@@ -143,20 +144,23 @@ export default function ResultsPage() {
       // Clear pending analysis first
       sessionStorage.removeItem('pendingAnalysis');
       
-      // Save to scan history API (async, non-blocking)
-      try {
-        await apiRequest("POST", "/api/history", {
-          productName: data.productName || "Unnamed Product",
-          productCategory: data.productType || "other",
-          detectedIngredients: data.ingredients.map(i => i.name),
-          analysisResults: data.ingredients,
-          overallRisk: data.overallRisk,
-          language: i18n.language.startsWith('zh') ? 'zh' : i18n.language.startsWith('es') ? 'es' : 'en',
-        });
-        console.log('[HISTORY] Scan saved to history');
-      } catch (error) {
-        console.error('[HISTORY] Failed to save scan to history:', error);
-        // Non-critical error - don't interrupt user experience
+      // Save to scan history API (async, non-blocking, prevent duplicates)
+      if (!hasSavedToHistoryRef.current) {
+        hasSavedToHistoryRef.current = true;
+        try {
+          await apiRequest("POST", "/api/history", {
+            productName: data.productName || "Unnamed Product",
+            productCategory: data.productType || "other",
+            detectedIngredients: data.ingredients.map(i => i.name),
+            analysisResults: data.ingredients,
+            overallRisk: data.overallRisk,
+            language: i18n.language.startsWith('zh') ? 'zh' : i18n.language.startsWith('es') ? 'es' : 'en',
+          });
+          console.log('[HISTORY] Scan saved to history');
+        } catch (error) {
+          console.error('[HISTORY] Failed to save scan to history:', error);
+          hasSavedToHistoryRef.current = false; // Allow retry on next success
+        }
       }
     },
     onError: () => {
@@ -170,6 +174,8 @@ export default function ResultsPage() {
     const pending = sessionStorage.getItem('pendingAnalysis');
     if (pending && !analysisResult && !analyzeMutation.isPending) {
       const data = JSON.parse(pending);
+      // Reset save flag for new analysis
+      hasSavedToHistoryRef.current = false;
       analyzeMutation.mutate(data);
     } else if (!pending && !analysisResult) {
       // No analysis to show, redirect to upload

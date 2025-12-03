@@ -25,16 +25,6 @@ import { useTranslation } from "react-i18next";
 import { useToast } from "@/hooks/use-toast";
 import type { ScanHistory, Ingredient, RiskLevel } from "@shared/schema";
 
-const categoryLabels: Record<string, string> = {
-  food: "Food",
-  skincare: "Skincare",
-  haircare: "Haircare",
-  cosmetics: "Cosmetics",
-  "oral-care": "Oral Care",
-  fragrance: "Fragrance",
-  lotion: "Lotion",
-  other: "Other"
-};
 
 export default function ScanDetailPage() {
   const { t } = useTranslation();
@@ -152,7 +142,7 @@ export default function ScanDetailPage() {
                 {scan.productName}
               </h1>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <span>{categoryLabels[scan.productCategory] || scan.productCategory}</span>
+                <span>{t(`upload.productTypes.${scan.productCategory === 'oral-care' ? 'oralCare' : scan.productCategory}.label`, { defaultValue: scan.productCategory })}</span>
                 <span>•</span>
                 <span className="flex items-center gap-1">
                   <Clock className="w-3 h-3" />
@@ -176,7 +166,7 @@ export default function ScanDetailPage() {
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
+                <AlertDialogCancel data-testid="button-cancel-delete">{t('common.cancel')}</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={() => deleteMutation.mutate()}
                   className="bg-destructive text-destructive-foreground hover:bg-destructive/90"

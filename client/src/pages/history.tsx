@@ -26,32 +26,19 @@ const riskConfig = {
     color: "bg-emerald-500",
     bgColor: "bg-emerald-50 dark:bg-emerald-950/20",
     textColor: "text-emerald-700 dark:text-emerald-400",
-    label: "Low Risk"
   },
   moderate: {
     color: "bg-amber-500", 
     bgColor: "bg-amber-50 dark:bg-amber-950/20",
     textColor: "text-amber-700 dark:text-amber-400",
-    label: "Moderate Risk"
   },
   high: {
     color: "bg-red-500",
     bgColor: "bg-red-50 dark:bg-red-950/20",
     textColor: "text-red-700 dark:text-red-400",
-    label: "High Risk"
   }
 };
 
-const categoryLabels: Record<string, string> = {
-  food: "Food",
-  skincare: "Skincare",
-  haircare: "Haircare",
-  cosmetics: "Cosmetics",
-  "oral-care": "Oral Care",
-  fragrance: "Fragrance",
-  lotion: "Lotion",
-  other: "Other"
-};
 
 interface HistoryResponse {
   scans: ScanHistory[];
@@ -199,7 +186,7 @@ export default function HistoryPage() {
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
+                  <AlertDialogCancel data-testid="button-cancel-delete-all">{t('common.cancel')}</AlertDialogCancel>
                   <AlertDialogAction
                     onClick={() => deleteAllMutation.mutate()}
                     className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
@@ -268,7 +255,7 @@ export default function HistoryPage() {
                         </div>
                         
                         <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-                          <span>{categoryLabels[scan.productCategory] || scan.productCategory}</span>
+                          <span>{t(`upload.productTypes.${scan.productCategory === 'oral-care' ? 'oralCare' : scan.productCategory}.label`, { defaultValue: scan.productCategory })}</span>
                           <span>•</span>
                           <span className="flex items-center gap-1">
                             <Clock className="w-3 h-3" />
@@ -279,17 +266,17 @@ export default function HistoryPage() {
                         <div className="flex items-center gap-3 text-xs">
                           {riskSummary.high > 0 && (
                             <span className="text-red-600 dark:text-red-400">
-                              {riskSummary.high} {t('history.highRisk')}
+                              {riskSummary.high} {t('results.riskSummary.breakdown.highRisk')}
                             </span>
                           )}
                           {riskSummary.moderate > 0 && (
                             <span className="text-amber-600 dark:text-amber-400">
-                              {riskSummary.moderate} {t('history.moderate')}
+                              {riskSummary.moderate} {t('results.riskSummary.breakdown.moderate')}
                             </span>
                           )}
                           {riskSummary.low > 0 && (
                             <span className="text-emerald-600 dark:text-emerald-400">
-                              {riskSummary.low} {t('history.lowRisk')}
+                              {riskSummary.low} {t('results.riskSummary.breakdown.lowRisk')}
                             </span>
                           )}
                         </div>
