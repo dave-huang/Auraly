@@ -135,26 +135,29 @@ export default function ResultsPage() {
         }
       });
     },
-    onSuccess: (data: AnalysisResult) => {
+    onSuccess: async (data: AnalysisResult) => {
       setAnalysisResult(data);
       setRetryCount(0);
       setCachedOcrText(null); // Clear cache after successful analysis
       
-      // Save to scan history in localStorage
-      const history = JSON.parse(localStorage.getItem('scanHistory') || '[]');
-      const historyItem = {
-        id: Date.now().toString(),
-        productType: data.productType,
-        productName: data.productName,
-        overallRisk: data.overallRisk,
-        analyzedAt: data.analyzedAt,
-        ingredientCount: data.ingredients.length
-      };
-      history.unshift(historyItem);
-      localStorage.setItem('scanHistory', JSON.stringify(history.slice(0, 10))); // Keep last 10 scans
-      
-      // Clear pending analysis
+      // Clear pending analysis first
       sessionStorage.removeItem('pendingAnalysis');
+      
+      // Save to scan history API (async, non-blocking)
+      try {
+        await apiRequest("POST", "/api/history", {
+          productName: data.productName || "Unnamed Product",
+          productCategory: data.productType || "other",
+          detectedIngredients: data.ingredients.map(i => i.name),
+          analysisResults: data.ingredients,
+          overallRisk: data.overallRisk,
+          language: i18n.language.startsWith('zh') ? 'zh' : i18n.language.startsWith('es') ? 'es' : 'en',
+        });
+        console.log('[HISTORY] Scan saved to history');
+      } catch (error) {
+        console.error('[HISTORY] Failed to save scan to history:', error);
+        // Non-critical error - don't interrupt user experience
+      }
     },
     onError: () => {
       // Reset retry count on final error

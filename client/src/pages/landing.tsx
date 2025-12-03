@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Sparkles, Shield, Zap, Camera, Globe, Lock } from "lucide-react";
+import { Sparkles, Shield, Zap, Camera, Globe, Lock, History, LogOut } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { useAuth } from "@/hooks/useAuth";
@@ -12,8 +12,25 @@ export default function Landing() {
   
   return (
     <div className="min-h-screen bg-background">
-      {/* Language Switcher */}
-      <div className="fixed top-4 right-4 z-50">
+      {/* Header - Language Switcher and History */}
+      <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
+        {isAuthenticated && (
+          <>
+            <Link href="/history">
+              <Button variant="ghost" size="icon" data-testid="button-history">
+                <History className="w-5 h-5" />
+              </Button>
+            </Link>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => window.location.href = "/api/logout"}
+              data-testid="button-logout"
+            >
+              <LogOut className="w-5 h-5" />
+            </Button>
+          </>
+        )}
         <LanguageSwitcher />
       </div>
 
