@@ -567,9 +567,14 @@ CRITICAL: Do NOT classify allergens as "high" risk.
 Health risk assesses impact on GENERAL POPULATION at normal exposure.
 
 Risk Level Examples:
-- HIGH: BHA, BHT, Red 3, nitrosamines, titanium dioxide (EU banned), trans fats, parabens, triclosan, formaldehyde
-- MEDIUM: nitrates, polysorbate 80, artificial sweeteners, SLS, propylene glycol, synthetic fragrance
-- LOW: whole foods (milk, oats, peanuts, eggs), herbs, pectin, lecithin, natural oils, vitamins
+- HIGH: BHA, BHT, Red 3, nitrosamines, titanium dioxide (EU banned), trans fats, hydrogenated fats/oils (contain trans fats), high fructose corn syrup (metabolic harm), parabens, triclosan, formaldehyde
+- MEDIUM: corn syrup, refined sugars, nitrates, polysorbate 80, artificial sweeteners, SLS, propylene glycol, synthetic fragrance
+- LOW: whole foods (milk, oats, peanuts, eggs), herbs, pectin, lecithin, unhydrogenated natural oils, vitamins
+
+CRITICAL CLASSIFICATION RULES:
+- ANY hydrogenated fat/oil (hydrogenated tallow, partially hydrogenated soybean oil, etc.) = HIGH risk because they contain industrial trans fats
+- High fructose corn syrup (HFCS) = HIGH risk due to strong links to obesity, fatty liver disease, insulin resistance, and metabolic syndrome
+- Regular corn syrup or sugar = MODERATE risk (less metabolic harm than HFCS but still concerning)
 
 B) ALLERGEN FLAG (SECONDARY - Separate from health risk):
 Mark isAllergen=true ONLY for top allergens:
@@ -686,9 +691,14 @@ For each ingredient, determine using AURALY RISK FRAMEWORK:
 CRITICAL RISK ASSESSMENT RULES:
 - Allergens (milk, eggs, peanuts, wheat, soy, etc.) are "low" health risk but isAllergen=true
 - Health risk is based on impact to GENERAL POPULATION at normal exposure
-- High risk = carcinogens, endocrine disruptors, banned/restricted substances
-- Medium risk = synthetic additives with some evidence of concern
-- Low risk = whole foods, natural ingredients, vitamins, minerals
+- HIGH risk = carcinogens, endocrine disruptors, banned/restricted substances, trans fats, hydrogenated fats/oils, high fructose corn syrup (HFCS)
+- MODERATE risk = corn syrup, refined sugars, artificial sweeteners, SLS, synthetic fragrance, polysorbate 60/80
+- LOW risk = whole foods, natural ingredients, vitamins, minerals, unhydrogenated oils (including allergens like milk, eggs, wheat)
+
+MANDATORY HIGH RISK CLASSIFICATIONS:
+- Hydrogenated tallow, hydrogenated soybean oil, partially hydrogenated oils = HIGH (contain industrial trans fats)
+- High fructose corn syrup (HFCS) = HIGH (strong metabolic harm: obesity, fatty liver, insulin resistance)
+- BHA, BHT, parabens, formaldehyde, titanium dioxide = HIGH
 
 INGREDIENT NAME TRANSLATION REQUIREMENTS:
 - ALWAYS translate ingredient names to the user's language accurately
@@ -1202,9 +1212,14 @@ CRITICAL INSTRUCTIONS FOR ${targetLanguage.toUpperCase()}:
 CRITICAL RISK ASSESSMENT RULES (AURALY FRAMEWORK):
 - Allergens (milk, eggs, peanuts, wheat, soy, etc.) are "low" health risk but isAllergen=true
 - Health risk is based on impact to GENERAL POPULATION at normal exposure
-- High risk = carcinogens, endocrine disruptors, banned/restricted substances (BHA, BHT, parabens, formaldehyde)
-- Moderate risk = synthetic additives with some evidence of concern (artificial sweeteners, SLS, synthetic fragrance)
-- Low risk = whole foods, natural ingredients, vitamins, minerals (including allergens like milk, eggs, wheat)
+- HIGH risk = carcinogens, endocrine disruptors, banned/restricted substances, trans fats, hydrogenated fats/oils, high fructose corn syrup (HFCS)
+- MODERATE risk = corn syrup, refined sugars, artificial sweeteners, SLS, synthetic fragrance, polysorbate 60/80
+- LOW risk = whole foods, natural ingredients, vitamins, minerals, unhydrogenated oils (including allergens like milk, eggs, wheat)
+
+MANDATORY HIGH RISK CLASSIFICATIONS:
+- Hydrogenated tallow, hydrogenated soybean oil, partially hydrogenated oils = HIGH (contain industrial trans fats)
+- High fructose corn syrup (HFCS) = HIGH (strong metabolic harm: obesity, fatty liver, insulin resistance)
+- BHA, BHT, parabens, formaldehyde, titanium dioxide = HIGH
 
 ${languageInstruction}
 
