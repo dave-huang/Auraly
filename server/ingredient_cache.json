@@ -5083,5 +5083,160 @@
     "analysis": "{\"name\":\"Cocoa Powder Processed With Alkali\",\"riskLevel\":\"low\",\"summary\":\"Cocoa powder processed with alkali, also called Dutch-processed cocoa, is treated to reduce acidity and create a milder flavor and darker color. It is generally safe but slightly lower in some natural antioxidants compared with natural cocoa.\",\"details\":\"The alkalization process uses food-grade alkali (such as potassium carbonate) to adjust pH, which improves solubility and changes flavor but does not introduce common allergens or major additives of concern. Some of the native flavonoids are reduced by this processing, so its antioxidant content is typically lower than that of natural cocoa powder. As with regular cocoa, its main considerations are caffeine content and any sugars or fats added elsewhere in the product.\",\"category\":\"Processed cocoa product / flavoring\"}",
     "lastUpdated": 1764657938360,
     "createdAt": 1764657938360
+  },
+  "coconut__skincare__en": {
+    "analysis": "{\"name\":\"Coconut\",\"riskLevel\":\"low\",\"summary\":\"Coconut is generally a safe natural ingredient used for moisturizing and conditioning skin and hair.\",\"details\":\"In skincare and haircare, coconut and its derivatives are commonly used as emollients, surfactants, or conditioning agents and are typically well tolerated. The main concern is potential allergic reactions in individuals sensitive to coconut, but it is not associated with parabens, sulfates, phthalates, formaldehyde releasers, or heavy metals. Overall, it is considered a low-risk ingredient when used topically.\",\"category\":\"Natural oil / emollient\"}",
+    "lastUpdated": 1764750644702,
+    "createdAt": 1764750644702
+  },
+  "pecan__skincare__en": {
+    "analysis": "{\"name\":\"Pecan\",\"riskLevel\":\"low\",\"summary\":\"Pecan, when used in skincare, is typically a natural oil or extract that can offer emollient and antioxidant benefits.\",\"details\":\"Pecan-derived ingredients may help moisturize the skin and provide fatty acids and antioxidants, and they are not inherently linked to parabens, sulfates, phthalates, formaldehyde releasers, or silicones. The primary risk is the possibility of allergic reactions in individuals with nut allergies, but this is a sensitization concern rather than a systemic toxicity issue. When clearly labeled and used by non-allergic individuals, it is generally a low-risk ingredient.\",\"category\":\"Plant-derived oil / nut extract\"}",
+    "lastUpdated": 1764750644702,
+    "createdAt": 1764750644702
+  },
+  "soy lecithin__skincare__en": {
+    "analysis": "{\"name\":\"Soy Lecithin\",\"riskLevel\":\"low\",\"summary\":\"Soy lecithin is an emulsifier derived from soy that helps blend oil and water in skincare products. It is generally well tolerated and considered low risk for most users.\",\"details\":\"In skincare, soy lecithin can enhance texture, improve spreadability, and support skin barrier function due to its phospholipid content. The main concern is potential soy allergy in sensitive individuals, but reactions are relatively uncommon in topical use. It is not related to parabens, sulfates, phthalates, formaldehyde releasers, mineral oil, silicones, or heavy metals.\",\"category\":\"Emulsifier / Skin-conditioning agent\"}",
+    "lastUpdated": 1764750645651,
+    "createdAt": 1764750645651
+  },
+  "natural vanilla flavor__skincare__en": {
+    "analysis": "{\"name\":\"Natural Vanilla Flavor\",\"riskLevel\":\"moderate\",\"summary\":\"Natural vanilla flavor is a flavor/aroma component that can also function as fragrance in skincare. Fragrance-related ingredients can trigger irritation or allergic reactions in sensitive skin.\",\"details\":\"Although labeled as a flavor, in topical products it effectively acts as a fragrance component and may be part of a broader undisclosed fragrance mix. Fragrance compounds, even when natural, are a common cause of contact dermatitis, especially around sensitive areas or in people with eczema or allergies. It is not a paraben, sulfate, phthalate, formaldehyde releaser, mineral oil, silicone, or heavy metal, but it still poses a moderate risk due to allergenic potential.\",\"category\":\"Fragrance / Flavor\"}",
+    "lastUpdated": 1764750645651,
+    "createdAt": 1764750645651
+  },
+  "unbleached enriched flour__skincare__en": {
+    "analysis": "{\"name\":\"Unbleached Enriched Flour\",\"riskLevel\":\"low\",\"summary\":\"Unbleached enriched flour is wheat flour with added nutrients that is unusual but generally low risk when used in topical skincare. The main concern is potential reactions in individuals with wheat or gluten allergies or sensitivities.\",\"details\":\"In a skincare context, it may act as a bulking, texturizing, or absorbent agent, though it is more common in food than in cosmetics. Topical exposure is unlikely to cause systemic gluten issues, but people with wheat allergies or very sensitive, compromised skin may experience irritation. It is not associated with parabens, sulfates, phthalates, formaldehyde-releasing preservatives, mineral oil, silicones, drying alcohols, or heavy metals.\",\"category\":\"Bulking / Absorbent agent (wheat-derived)\"}",
+    "lastUpdated": 1764750645651,
+    "createdAt": 1764750645651
+  },
+  "peanut__skincare__en": {
+    "analysis": "{\"name\":\"Peanut\",\"riskLevel\":\"high\",\"summary\":\"Peanut-derived ingredients in skincare can pose a high risk for people with peanut allergies and may trigger severe allergic reactions. For non-allergic users, they are generally considered safe emollients.\",\"details\":\"Peanut ingredients are not related to parabens, sulfates, phthalates, formaldehyde releasers, silicones, mineral oil, or heavy metals. The primary concern is their strong allergenic potential, which can lead to contact dermatitis or, in sensitized individuals, more serious reactions. Because peanut allergy is common and potentially severe, many brands avoid peanut-derived oils in leave-on skincare and haircare products.\",\"category\":\"Nut-derived oil / potential allergen\"}",
+    "lastUpdated": 1764750645847,
+    "createdAt": 1764750645847
+  },
+  "almond__skincare__en": {
+    "analysis": "{\"name\":\"Almond\",\"riskLevel\":\"moderate\",\"summary\":\"Almond-derived ingredients (such as sweet almond oil) are commonly used as moisturizing emollients in skincare and haircare. They are generally safe but can cause reactions in people with nut allergies or sensitive skin.\",\"details\":\"Almond ingredients do not belong to problematic groups like parabens, sulfates, phthalates, formaldehyde-releasing preservatives, silicones, mineral oils, or heavy metals. Most users tolerate them well, and they can support skin barrier and softness, but there is a risk of contact allergy or irritation, especially for those with tree nut allergies. Patch testing is advisable for highly sensitive or allergy-prone individuals.\",\"category\":\"Nut-derived oil / emollient\"}",
+    "lastUpdated": 1764750645847,
+    "createdAt": 1764750645847
+  },
+  "cashew__skincare__en": {
+    "analysis": "{\"name\":\"Cashew\",\"riskLevel\":\"high\",\"summary\":\"Cashew-derived ingredients can be allergenic and may pose a high risk to individuals with tree nut allergies. Though less commonly used than some other nut oils, they can still cause contact dermatitis or allergic reactions.\",\"details\":\"Cashew ingredients are not associated with parabens, sulfates, phthalates, formaldehyde releasers, silicones, mineral oils, drying alcohols, or heavy metals. The main safety concern is their potential to trigger strong allergic responses in sensitized people, similar to other tree nuts. Due to the severity of possible reactions, cashew derivatives in skincare and haircare should be avoided by anyone with known nut allergies or a history of nut-related skin reactions.\",\"category\":\"Nut-derived ingredient / potential allergen\"}",
+    "lastUpdated": 1764750645847,
+    "createdAt": 1764750645847
+  },
+  "palm kernel oil and palm oil__skincare__en": {
+    "analysis": "{\"name\":\"Palm Kernel Oil And Palm Oil\",\"riskLevel\":\"low\",\"summary\":\"Palm kernel oil and palm oil are plant-derived emollients that help soften and condition the skin and hair. They are generally considered safe, with low risk of irritation for most people.\",\"details\":\"In skincare and haircare, palm-based oils are used for their moisturizing, occlusive, and texture-enhancing properties, helping to maintain the skin barrier and improve product spreadability. They do not belong to common concerning groups like parabens, sulfates, phthalates, formaldehyde releasers, or silicones. However, some individuals with acne-prone skin may find certain palm-derived fats comedogenic, and there are also environmental and sustainability concerns associated with palm cultivation, though these are not direct health risks.\",\"category\":\"Emollient / Plant-derived oil\"}",
+    "lastUpdated": 1764750646487,
+    "createdAt": 1764750646487
+  },
+  "cocoa powder__skincare__en": {
+    "analysis": "{\"name\":\"Cocoa Powder\",\"riskLevel\":\"low\",\"summary\":\"Cocoa powder is derived from cocoa beans and may be used for color, sensory appeal, and antioxidant properties in cosmetic products. It is generally low risk but can be a mild allergen for people sensitive to cocoa.\",\"details\":\"In topical use, cocoa powder can provide natural color and may contribute antioxidant compounds that help protect the skin surface from environmental stressors. It is not associated with major cosmetic safety concerns such as parabens, sulfates, phthalates, formaldehyde-releasing preservatives, mineral oil, or silicones. A small number of individuals with cocoa allergy or very sensitive skin may experience irritation or allergic reactions, so patch testing is advisable if there is a known cocoa sensitivity.\",\"category\":\"Plant extract / Colorant\"}",
+    "lastUpdated": 1764750646487,
+    "createdAt": 1764750646487
+  },
+  "cocoa powder processed with alkali__skincare__en": {
+    "analysis": "{\"name\":\"Cocoa Powder Processed With Alkali\",\"riskLevel\":\"low\",\"summary\":\"Cocoa powder processed with alkali (also called Dutch-processed cocoa) is cocoa treated to reduce acidity and alter color and flavor. In cosmetics, it behaves similarly to regular cocoa powder and is generally considered low risk.\",\"details\":\"Alkalized cocoa may offer smoother color and texture in formulations and can still provide some antioxidant components, although processing may reduce certain polyphenols compared with natural cocoa. It is not part of high-concern groups like parabens, sulfates, phthalates, formaldehyde releasers, mineral oils, or silicones. As with standard cocoa powder, individuals with cocoa allergy or very reactive skin may experience irritation or contact allergy, so caution is warranted in those specific cases.\",\"category\":\"Plant extract / Colorant\"}",
+    "lastUpdated": 1764750646487,
+    "createdAt": 1764750646487
+  },
+  "whole milk powder__skincare__en": {
+    "analysis": "{\"name\":\"Whole Milk Powder\",\"riskLevel\":\"moderate\",\"summary\":\"Whole milk powder is a dairy-derived ingredient that can act as an emollient and conditioning agent in skincare. It is generally safe but can pose risks for people with dairy allergies or very acne-prone skin.\",\"details\":\"In topical products, whole milk powder can help soften and moisturize the skin due to its fats, proteins, and lactose content. However, it may clog pores in some individuals and is not suitable for those with milk protein allergy, as it can trigger contact reactions. It is not associated with parabens, sulfates, phthalates, formaldehyde releasers, or heavy metals, but may be unstable in poorly preserved formulas due to its organic nature.\",\"category\":\"Dairy-derived emollient and skin-conditioning agent\"}",
+    "lastUpdated": 1764750646614,
+    "createdAt": 1764750646614
+  },
+  "whey powder__skincare__en": {
+    "analysis": "{\"name\":\"Whey Powder\",\"riskLevel\":\"moderate\",\"summary\":\"Whey powder is a protein-rich dairy by-product sometimes used for skin conditioning. It is generally safe topically but may cause issues for those with dairy allergies or very sensitive skin.\",\"details\":\"Whey contains proteins and peptides that can have mild conditioning or film-forming effects on the skin’s surface. People with milk or whey protein allergy may experience irritation or allergic contact dermatitis if exposed on compromised or very sensitive skin. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, silicone, or mineral oil, but as a biological ingredient it relies on adequate preservation of the overall formula to avoid microbial growth.\",\"category\":\"Dairy-derived protein and skin-conditioning agent\"}",
+    "lastUpdated": 1764750646614,
+    "createdAt": 1764750646614
+  },
+  "palm oil__skincare__en": {
+    "analysis": "{\"name\":\"Palm Oil\",\"riskLevel\":\"low\",\"summary\":\"Palm oil is a plant-derived oil used as an emollient and occlusive agent in skincare. It is generally well tolerated and not one of the main hormone disruptors or harsh surfactants of concern.\",\"details\":\"Topically, palm oil helps moisturize by forming a protective layer that reduces water loss and can improve skin softness. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, mineral oil, or drying alcohol, though it can be comedogenic for some acne-prone individuals depending on concentration and formula. Most safety concerns around palm oil relate to environmental and sustainability issues rather than direct human toxicity in cosmetics.\",\"category\":\"Plant-derived emollient oil\"}",
+    "lastUpdated": 1764750646614,
+    "createdAt": 1764750646614
+  },
+  "sugar__skincare__en": {
+    "analysis": "{\"name\":\"Sugar\",\"riskLevel\":\"low\",\"summary\":\"Sugar is generally low risk in skincare and is often used as a natural humectant or physical exfoliant. It is not associated with common cosmetic hormone disruptors, sulfates, or formaldehyde-releasing preservatives.\",\"details\":\"In topical products, sugar can help attract and hold moisture on the skin and may act as a gentle scrub agent when used in higher concentrations. It is not a paraben, phthalate, silicone, mineral oil, or drying alcohol, and it has a low potential for systemic toxicity when used on the skin. A small number of people with very sensitive or compromised skin may find mechanical sugar scrubs irritating if they are too abrasive.\",\"category\":\"Humectant / Exfoliant\"}",
+    "lastUpdated": 1764750646858,
+    "createdAt": 1764750646858
+  },
+  "palm kernel oil__skincare__en": {
+    "analysis": "{\"name\":\"Palm Kernel Oil\",\"riskLevel\":\"low\",\"summary\":\"Palm kernel oil is an emollient fat used to soften and condition skin, and it is generally considered low risk for most users. It is not a paraben, sulfate, phthalate, formaldehyde releaser, or heavy metal source.\",\"details\":\"In skincare, palm kernel oil provides occlusive and emollient properties, helping to reduce transepidermal water loss and improve skin softness. It can be comedogenic for some individuals, potentially contributing to clogged pores or acne, especially on facial skin. Allergic reactions are uncommon but possible in very sensitive individuals.\",\"category\":\"Emollient / Plant-derived oil\"}",
+    "lastUpdated": 1764750646858,
+    "createdAt": 1764750646858
+  },
+  "nonfat milk powder__skincare__en": {
+    "analysis": "{\"name\":\"Nonfat Milk Powder\",\"riskLevel\":\"moderate\",\"summary\":\"Nonfat milk powder is a dairy-derived ingredient that can provide mild exfoliation and moisturizing benefits in skincare, but it carries a moderate risk of irritation or allergy for those sensitive to milk proteins. It is not related to parabens, sulfates, phthalates, silicones, or mineral oils.\",\"details\":\"In topical products, milk powder may contribute lactic acid (a gentle alpha hydroxy acid) and proteins, which can help with mild exfoliation and skin conditioning. However, individuals with milk allergies or strong sensitivities may react to residual milk proteins, especially on compromised or broken skin. It also has a higher potential for microbial growth if not properly preserved and formulated, so it relies on adequate preservation systems in the product.\",\"category\":\"Dairy-derived conditioning agent\"}",
+    "lastUpdated": 1764750646858,
+    "createdAt": 1764750646858
+  },
+  "malted barley flour__skincare__en": {
+    "analysis": "{\"name\":\"Malted Barley Flour\",\"riskLevel\":\"low\",\"summary\":\"Malted barley flour is a cereal grain-derived ingredient not typically used in skincare, and it generally has low safety concerns for topical use. The main concern is potential irritation or allergic reaction in individuals sensitive to grains or gluten.\",\"details\":\"In a skincare or haircare context, malted barley flour might act as a texturizing or absorbent component but is not among common irritant or endocrine-disrupting cosmetic chemicals. It does not belong to problematic groups like parabens, sulfates, phthalates, formaldehyde releasers, or heavy metals. People with known barley or gluten allergies or very sensitive skin may experience redness or irritation, so patch testing is advisable if they are concerned.\",\"category\":\"Plant-derived ingredient / grain-based\"}",
+    "lastUpdated": 1764750646930,
+    "createdAt": 1764750646930
+  },
+  "salt (sodium chloride)__skincare__en": {
+    "analysis": "{\"name\":\"Salt (sodium Chloride)\",\"riskLevel\":\"low\",\"summary\":\"Salt (sodium chloride) is commonly used in skincare and haircare as a thickener, exfoliant, or viscosity adjuster and is generally considered low risk. At higher concentrations it can be drying or irritating, especially on compromised or very sensitive skin.\",\"details\":\"Sodium chloride is a simple mineral salt and does not fall into categories like parabens, sulfates, phthalates, formaldehyde releasers, or silicones. In rinse-off products it is usually well tolerated, but in leave-on products or at high levels it may increase skin dryness or sting if the skin barrier is damaged. It poses no known hormonal disruption or systemic toxicity risk at the levels used in cosmetics.\",\"category\":\"Mineral / functional additive\"}",
+    "lastUpdated": 1764750646930,
+    "createdAt": 1764750646930
+  },
+  "soybean oil__skincare__en": {
+    "analysis": "{\"name\":\"Soybean Oil\",\"riskLevel\":\"low\",\"summary\":\"Soybean oil is a plant-derived emollient that helps moisturize and soften skin and hair, and it is generally considered low risk for most users. Some individuals with soy allergies or very acne-prone skin may experience sensitivity or breakouts.\",\"details\":\"In cosmetic formulations, soybean oil acts as an occlusive and emollient, supporting the skin barrier and improving texture without belonging to concerning groups such as parabens, sulfates, phthalates, formaldehyde releasers, mineral oil, or silicones. It has a good safety profile, though unrefined or oxidized oils can occasionally contribute to irritation or comedogenicity in some users. Those with known soy allergies or highly reactive skin should patch test first.\",\"category\":\"Plant oil / emollient\"}",
+    "lastUpdated": 1764750646930,
+    "createdAt": 1764750646930
+  },
+  "ground coffee beans (contains milk)__skincare__en": {
+    "analysis": "{\"name\":\"Ground Coffee Beans (contains Milk)\",\"riskLevel\":\"low\",\"summary\":\"Ground coffee beans are generally safe in skincare and may offer mild exfoliation and antioxidant benefits, while milk components can provide moisturizing properties. They are not associated with parabens, sulfates, phthalates, formaldehyde releasers, silicones, mineral oils, drying alcohols, or heavy metals.\",\"details\":\"In topical products, coffee grounds act mainly as a physical exfoliant and source of antioxidants, though they can be abrasive on very sensitive or compromised skin. The milk content may help with hydration and skin conditioning but poses a risk for individuals with milk allergy or sensitivity, especially on broken skin. Overall chemical safety is favorable, but users with known coffee or dairy allergies should patch test before regular use.\",\"category\":\"Natural exfoliant and emollient\"}",
+    "lastUpdated": 1764750647151,
+    "createdAt": 1764750647151
+  },
+  "soy__skincare__en": {
+    "analysis": "{\"name\":\"Soy\",\"riskLevel\":\"moderate\",\"summary\":\"Soy-derived ingredients in skincare can be beneficial for moisturizing and potential antioxidant effects but may trigger reactions in people with soy allergy or hormonal concerns. They are not inherently linked to parabens, sulfates, phthalates, formaldehyde releasers, silicones, mineral oils, drying alcohols, or heavy metals.\",\"details\":\"Topical soy is generally well tolerated, yet individuals with confirmed soy allergy or very reactive skin may experience irritation or allergic contact dermatitis. Some soy components are weak phytoestrogens, which may be a theoretical concern for users avoiding hormonally active substances, although evidence for significant hormonal effects from topical use is limited. Sensitive users and those with soy allergy should patch test and review with a healthcare provider if they have hormone-related medical conditions.\",\"category\":\"Plant-derived emollient / active\"}",
+    "lastUpdated": 1764750647151,
+    "createdAt": 1764750647151
+  },
+  "wheat (may contain egg)__skincare__en": {
+    "analysis": "{\"name\":\"Wheat (may Contain Egg)\",\"riskLevel\":\"moderate\",\"summary\":\"Wheat-derived ingredients can act as moisturizers or film formers in skincare but may cause reactions in individuals with wheat or gluten sensitivity, and the possible egg content adds an additional allergen risk. They are not typically associated with parabens, sulfates, phthalates, formaldehyde releasers, silicones, mineral oils, drying alcohols, or heavy metals by themselves.\",\"details\":\"Topical wheat proteins and extracts are usually safe for most users but have been linked to allergic contact dermatitis and, rarely, sensitization in people with wheat allergy or atopic skin. The advisory that it may contain egg indicates a further risk for those with egg allergy, especially on damaged skin or around the eyes. Due to the dual allergen potential, patch testing is advisable for individuals with food allergies or highly reactive skin.\",\"category\":\"Plant-derived protein / potential allergen\"}",
+    "lastUpdated": 1764750647151,
+    "createdAt": 1764750647151
+  },
+  "coconut__food__en": {
+    "analysis": "{\"name\":\"Coconut\",\"riskLevel\":\"moderate\",\"summary\":\"Coconut is a natural tree nut–related ingredient that is generally safe but can cause allergic reactions in some individuals. It also contains saturated fat, which may be a concern for people monitoring heart health.\",\"details\":\"Coconut is a whole-food ingredient that provides fiber and healthy fats but is classified as a tree nut allergen in many jurisdictions, posing a risk to those with nut allergies. While its fats are mostly medium-chain triglycerides, it is still high in saturated fat, so excessive intake may not be advisable for individuals with cardiovascular concerns. It does not contain artificial additives, colors, or preservatives by itself.\",\"category\":\"Tree nut allergen\"}",
+    "lastUpdated": 1764750652839,
+    "createdAt": 1764750652839
+  },
+  "pecan__food__en": {
+    "analysis": "{\"name\":\"Pecan\",\"riskLevel\":\"high\",\"summary\":\"Pecan is a tree nut and a common allergen that can trigger severe allergic reactions in sensitive individuals. It is otherwise a natural ingredient without artificial additives.\",\"details\":\"As a tree nut, pecan can cause strong allergic responses, including anaphylaxis, making it high risk for people with nut allergies even in very small amounts or via cross-contact. For those without nut allergies, pecans provide healthy fats, protein, and micronutrients and do not inherently include artificial colors, flavors, or preservatives. Products containing pecans must be clearly labeled due to their allergenic potential.\",\"category\":\"Tree nut allergen\"}",
+    "lastUpdated": 1764750652839,
+    "createdAt": 1764750652839
+  },
+  "peanut__food__en": {
+    "analysis": "{\"name\":\"Peanut\",\"riskLevel\":\"high\",\"summary\":\"Peanuts are a common legume used in many foods and are highly nutritious, providing protein and healthy fats. However, they are also one of the most frequent and serious food allergens.\",\"details\":\"For most people, peanuts can be part of a healthy diet, offering unsaturated fats, fiber, and various vitamins and minerals. In sensitive individuals, even trace amounts can trigger severe allergic reactions, including anaphylaxis, which can be life-threatening. Cross-contamination in food processing is a significant concern for people with peanut allergies.\",\"category\":\"Major food allergen (nuts/legumes)\"}",
+    "lastUpdated": 1764750654118,
+    "createdAt": 1764750654118
+  },
+  "almond__food__en": {
+    "analysis": "{\"name\":\"Almond\",\"riskLevel\":\"high\",\"summary\":\"Almonds are tree nuts rich in healthy fats, fiber, and micronutrients. They are also a well-known allergen that can cause serious reactions in susceptible individuals.\",\"details\":\"Nutritionally, almonds can support heart health and blood sugar control when eaten in moderation as part of a balanced diet. For people with tree nut allergies, consumption or cross-contact may cause symptoms ranging from mild itching or hives to severe anaphylaxis. Food products containing almonds must be clearly labeled due to regulatory requirements around major allergens.\",\"category\":\"Major food allergen (tree nut)\"}",
+    "lastUpdated": 1764750654118,
+    "createdAt": 1764750654118
+  },
+  "cashew__food__en": {
+    "analysis": "{\"name\":\"Cashew\",\"riskLevel\":\"high\",\"summary\":\"Cashews are tree nuts commonly used in snacks and processed foods, providing healthy fats and protein. They are a significant allergen and can provoke strong immune reactions in sensitive people.\",\"details\":\"From a nutrition standpoint, cashews offer unsaturated fats, some protein, and minerals such as magnesium and copper, and are generally safe for those without nut allergies. In individuals allergic to tree nuts, cashews can trigger rapid-onset symptoms, including swelling, breathing difficulties, or anaphylaxis, even in small amounts. Because of the high risk for allergic reactions, foods containing cashews need clear allergen labeling and careful handling to avoid cross-contact.\",\"category\":\"Major food allergen (tree nut)\"}",
+    "lastUpdated": 1764750654118,
+    "createdAt": 1764750654118
+  },
+  "ground coffee beans (contains milk)__food__en": {
+    "analysis": "{\"name\":\"Ground Coffee Beans (contains Milk)\",\"riskLevel\":\"moderate\",\"summary\":\"Ground coffee beans are generally safe for most people but naturally contain caffeine, and this product also contains milk, a common allergen. The main concerns are caffeine sensitivity and milk allergy or lactose intolerance.\",\"details\":\"For healthy adults, moderate coffee intake is usually safe, but excessive caffeine can cause jitteriness, insomnia, increased heart rate, or digestive discomfort. The added milk introduces dairy, which can trigger allergic reactions in people with milk allergy and can cause bloating, gas, or diarrhea in those with lactose intolerance. There are no notable artificial additives listed here, but individuals sensitive to caffeine or dairy should use caution.\",\"category\":\"Caffeinated beverage with dairy allergen\"}",
+    "lastUpdated": 1764750654948,
+    "createdAt": 1764750654948
+  },
+  "soy__food__en": {
+    "analysis": "{\"name\":\"Soy\",\"riskLevel\":\"high\",\"summary\":\"Soy is a major food allergen and can cause reactions ranging from mild to severe in sensitive individuals. For people without soy allergy, it is generally safe when consumed in normal food amounts.\",\"details\":\"Soy proteins are one of the top recognized allergens and can lead to symptoms such as hives, digestive upset, or, in rare cases, anaphylaxis. Highly processed soy ingredients may also appear in many foods, making avoidance more difficult for allergic individuals. There is no specific indication of additives here, but the allergen risk alone warrants a high risk level for those who are sensitive.\",\"category\":\"Allergen (soy)\"}",
+    "lastUpdated": 1764750654948,
+    "createdAt": 1764750654948
+  },
+  "wheat (may contain egg)__food__en": {
+    "analysis": "{\"name\":\"Wheat (may Contain Egg)\",\"riskLevel\":\"high\",\"summary\":\"Wheat contains gluten and is a major allergen, and this ingredient may also contain egg, another common allergen. People with celiac disease, gluten sensitivity, wheat allergy, or egg allergy should avoid it.\",\"details\":\"Wheat is problematic for individuals with celiac disease or non-celiac gluten sensitivity, potentially causing digestive issues, inflammation, and other systemic symptoms due to gluten. Wheat allergy can trigger reactions including hives, respiratory symptoms, or anaphylaxis, and the possible presence of egg further increases allergic risk for egg-sensitive individuals. No artificial additives are specified, but the combined allergen potential makes this a high-risk ingredient for susceptible people.\",\"category\":\"Allergen (gluten/wheat and possible egg)\"}",
+    "lastUpdated": 1764750654949,
+    "createdAt": 1764750654949
   }
 }
