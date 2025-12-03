@@ -3795,8 +3795,8 @@
     "createdAt": 1764537956870
   },
   "amaranth flakes__food__en": {
-    "analysis": "{\"name\":\"Amaranth Flakes\",\"riskLevel\":\"low\",\"summary\":\"Amaranth flakes are made from the amaranth grain and are generally considered safe and nutritious. They are naturally gluten-free and not a common allergen.\",\"details\":\"Amaranth provides protein, fiber, and micronutrients, and amaranth flakes typically do not contain artificial colors, flavors, or preservatives when listed simply as the grain. Although cross-contamination with gluten-containing grains is possible in some facilities, amaranth itself is gluten-free. Adverse reactions are rare, and it does not contribute to high sodium, trans fats, or artificial additive intake when consumed in plain flake form.\",\"category\":\"Whole grain / cereal flakes\"}",
-    "lastUpdated": 1764537956870,
+    "analysis": "{\"name\":\"Amaranth Flakes\",\"riskLevel\":\"low\",\"summary\":\"Amaranth flakes are a minimally processed whole grain-like food, generally considered safe and nutritious for most people.\",\"details\":\"They provide protein, fiber, and micronutrients and do not contain common artificial additives, colors, or preservatives by themselves. Amaranth is naturally gluten-free, but people with celiac disease or gluten sensitivity should still check for possible cross-contamination warnings on the final product. Allergic reactions to amaranth are rare but can occur in sensitive individuals.\",\"category\":\"Whole grain-like cereal ingredient\"}",
+    "lastUpdated": 1764724188099,
     "createdAt": 1764537956870
   },
   "whole grain oat flakes__food__en": {
@@ -3855,8 +3855,8 @@
     "createdAt": 1764538223742
   },
   "avena sativa (oat) kernel flour__skincare__en": {
-    "analysis": "{\"name\":\"Avena Sativa (oat) Kernel Flour\",\"riskLevel\":\"low\",\"summary\":\"Avena Sativa (Oat) Kernel Flour is a colloidal oatmeal ingredient used for its soothing, anti-itch, and skin-protective properties. It is widely regarded as safe and beneficial, especially for dry, irritated, or sensitive skin.\",\"details\":\"This ingredient contains beta-glucans, lipids, and antioxidants that help calm redness and support the skin barrier. It is not associated with parabens, sulfates, phthalates, formaldehyde releasers, silicones, mineral oil, drying alcohols, or heavy metals. People with true oat or gluten-related allergies should patch test, as rare allergic reactions are possible.\",\"category\":\"Soothing plant extract / colloidal oatmeal\"}",
-    "lastUpdated": 1764538223742,
+    "analysis": "{\"name\":\"Avena Sativa (oat) Kernel Flour\",\"riskLevel\":\"low\",\"summary\":\"Avena Sativa (Oat) Kernel Flour is a soothing, skin-conditioning ingredient commonly used for sensitive or irritated skin. It is generally well tolerated and considered low risk for most users.\",\"details\":\"Oat kernel flour contains beta-glucans, lipids, and antioxidants that help calm redness, support the skin barrier, and provide mild moisturizing benefits. It is frequently used in products for dry, itchy, or eczematous skin and has a long history of safe use in dermatology. While uncommon, some individuals with oat allergy or celiac disease may experience irritation or allergic reactions and should patch test first.\",\"category\":\"Soothing plant extract\"}",
+    "lastUpdated": 1764724256707,
     "createdAt": 1764538223742
   },
   "hydroxypropyl starch phosphate__skincare__en": {
@@ -3875,8 +3875,8 @@
     "createdAt": 1764538230346
   },
   "avena sativa (oat) kernel extract__skincare__en": {
-    "analysis": "{\"name\":\"Avena Sativa (oat) Kernel Extract\",\"riskLevel\":\"low\",\"summary\":\"Avena sativa (oat) kernel extract is a colloidal oat-derived ingredient known for its soothing, anti-itch, and barrier-supporting properties. It is widely used in products for sensitive, dry, or irritated skin and is generally considered very safe.\",\"details\":\"This extract contains beta-glucans, lipids, and antioxidants that help reduce redness, calm irritation, and support the skin’s protective barrier. While it is well tolerated, people with a known oat or grain allergy should use it with caution and patch test first. It is not a source of parabens, sulfates, phthalates, formaldehyde-releasing preservatives, added fragrance, mineral oil, silicones, drying alcohols, or heavy metals.\",\"category\":\"Botanical extract / soothing and barrier-supporting agent\"}",
-    "lastUpdated": 1764538230346,
+    "analysis": "{\"name\":\"Avena Sativa (oat) Kernel Extract\",\"riskLevel\":\"low\",\"summary\":\"Avena sativa (oat) kernel extract is a soothing, anti-inflammatory plant extract commonly used for sensitive or irritated skin. It is generally well tolerated and considered safe in skincare products.\",\"details\":\"This extract contains beta-glucans, antioxidants, and lipids that help calm redness, support the skin barrier, and provide mild moisturization. Adverse reactions are rare, but individuals with a true oat or gluten-related allergy should patch test first, as botanical extracts can occasionally trigger sensitivity. It does not belong to problematic groups such as parabens, sulfates, phthalates, formaldehyde releasers, drying alcohols, or silicones.\",\"category\":\"Botanical extract / Soothing agent\"}",
+    "lastUpdated": 1764724251755,
     "createdAt": 1764538230346
   },
   "泛醇__skincare__zh": {
