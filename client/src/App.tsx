@@ -8,6 +8,8 @@ import { useToast } from "@/hooks/use-toast";
 import Landing from "@/pages/landing";
 import UploadPage from "@/pages/upload";
 import ResultsPage from "@/pages/results";
+import HistoryPage from "@/pages/history";
+import ScanDetailPage from "@/pages/scan-detail";
 import NotFound from "@/pages/not-found";
 import "./i18n/config";
 import { useEffect } from "react";
@@ -55,6 +57,12 @@ function Router() {
       </Route>
       <Route path="/results">
         <ProtectedPage component={ResultsPage} />
+      </Route>
+      <Route path="/history">
+        <ProtectedPage component={HistoryPage} />
+      </Route>
+      <Route path="/history/:scanId">
+        <ProtectedPage component={ScanDetailPage} />
       </Route>
       <Route component={NotFound} />
     </Switch>

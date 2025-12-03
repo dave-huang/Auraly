@@ -1,0 +1,281 @@
+import { useState } from "react";
+import { useLocation, Link, useParams } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { ArrowLeft, Trash2, Search, Loader2, AlertTriangle, Clock } from "lucide-react";
+import { IngredientCard } from "@/components/ingredient-card";
+import { RiskSummary } from "@/components/risk-summary";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+import { useTranslation } from "react-i18next";
+import { useToast } from "@/hooks/use-toast";
+import type { ScanHistory, Ingredient, RiskLevel } from "@shared/schema";
+
+const categoryLabels: Record<string, string> = {
+  food: "Food",
+  skincare: "Skincare",
+  haircare: "Haircare",
+  cosmetics: "Cosmetics",
+  "oral-care": "Oral Care",
+  fragrance: "Fragrance",
+  lotion: "Lotion",
+  other: "Other"
+};
+
+export default function ScanDetailPage() {
+  const { t } = useTranslation();
+  const [, setLocation] = useLocation();
+  const params = useParams();
+  const scanId = params.scanId;
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedRisk, setSelectedRisk] = useState<RiskLevel | "all">("all");
+
+  const { data: scan, isLoading, error } = useQuery<ScanHistory>({
+    queryKey: ['/api/history', scanId],
+    queryFn: async () => {
+      const response = await fetch(`/api/history/${scanId}`);
+      if (!response.ok) throw new Error('Failed to fetch scan');
+      return response.json();
+    },
+    enabled: !!scanId,
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async () => {
+      const response = await apiRequest("DELETE", `/api/history/${scanId}`);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/history'] });
+      toast({
+        title: t('history.deleteSuccess'),
+        description: t('history.deleteSuccessDesc'),
+      });
+      setLocation('/history');
+    },
+    onError: () => {
+      toast({
+        title: t('errors.generic'),
+        variant: "destructive",
+      });
+    }
+  });
+
+  const formatDate = (dateString: string | Date) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString(undefined, {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="flex flex-col items-center">
+          <Loader2 className="w-8 h-8 animate-spin text-primary mb-4" />
+          <p className="text-muted-foreground">{t('common.loading')}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !scan) {
+    return (
+      <div className="min-h-screen bg-background p-4">
+        <div className="max-w-2xl mx-auto">
+          <div className="flex items-center gap-4 mb-6">
+            <Link href="/history">
+              <Button variant="ghost" size="icon" data-testid="button-back">
+                <ArrowLeft className="w-5 h-5" />
+              </Button>
+            </Link>
+            <h1 className="text-2xl font-bold">{t('history.scanNotFound')}</h1>
+          </div>
+          <Card className="p-8 text-center">
+            <AlertTriangle className="w-12 h-12 text-destructive mx-auto mb-4" />
+            <p className="text-muted-foreground">{t('history.scanNotFoundDesc')}</p>
+            <Link href="/history">
+              <Button className="mt-4">{t('history.backToHistory')}</Button>
+            </Link>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
+  const ingredients = (scan.analysisResults as Ingredient[]) || [];
+  
+  const filteredIngredients = ingredients.filter(ingredient => {
+    const matchesSearch = ingredient.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesRisk = selectedRisk === "all" || ingredient.riskLevel === selectedRisk;
+    return matchesSearch && matchesRisk;
+  });
+
+  const riskCounts = {
+    low: ingredients.filter(i => i.riskLevel === 'low').length,
+    moderate: ingredients.filter(i => i.riskLevel === 'moderate').length,
+    high: ingredients.filter(i => i.riskLevel === 'high').length,
+  };
+
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="max-w-2xl mx-auto p-4">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-4">
+            <Link href="/history">
+              <Button variant="ghost" size="icon" data-testid="button-back">
+                <ArrowLeft className="w-5 h-5" />
+              </Button>
+            </Link>
+            <div>
+              <h1 className="text-xl font-bold" data-testid="text-product-name">
+                {scan.productName}
+              </h1>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <span>{categoryLabels[scan.productCategory] || scan.productCategory}</span>
+                <span>•</span>
+                <span className="flex items-center gap-1">
+                  <Clock className="w-3 h-3" />
+                  {formatDate(scan.createdAt)}
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive" size="icon" data-testid="button-delete-scan">
+                <Trash2 className="w-4 h-4" />
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>{t('history.deleteConfirmTitle')}</AlertDialogTitle>
+                <AlertDialogDescription>
+                  {t('history.deleteConfirmDesc')}
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => deleteMutation.mutate()}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  data-testid="button-confirm-delete"
+                >
+                  {deleteMutation.isPending ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    t('history.delete')
+                  )}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
+
+        {scan.originalImageUrl && (
+          <Card className="mb-6 overflow-hidden">
+            <img 
+              src={scan.originalImageUrl} 
+              alt={scan.productName}
+              className="w-full max-h-64 object-contain bg-muted"
+              data-testid="img-product"
+            />
+          </Card>
+        )}
+
+        <RiskSummary 
+          overallRisk={scan.overallRisk as RiskLevel}
+          riskCounts={riskCounts}
+          totalIngredients={ingredients.length}
+        />
+
+        <div className="mb-4 relative mt-6">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+          <Input
+            placeholder={t('results.search')}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10"
+            data-testid="input-search"
+          />
+        </div>
+
+        <Tabs defaultValue="all" className="mb-6">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger 
+              value="all" 
+              onClick={() => setSelectedRisk("all")}
+              data-testid="tab-filter-all"
+            >
+              {t('results.filters.all')} ({ingredients.length})
+            </TabsTrigger>
+            <TabsTrigger 
+              value="low" 
+              onClick={() => setSelectedRisk("low")}
+              data-testid="tab-filter-low"
+            >
+              {t('results.filters.low')} ({riskCounts.low})
+            </TabsTrigger>
+            <TabsTrigger 
+              value="moderate" 
+              onClick={() => setSelectedRisk("moderate")}
+              data-testid="tab-filter-moderate"
+            >
+              {t('results.filters.moderate')} ({riskCounts.moderate})
+            </TabsTrigger>
+            <TabsTrigger 
+              value="high" 
+              onClick={() => setSelectedRisk("high")}
+              data-testid="tab-filter-high"
+            >
+              {t('results.filters.high')} ({riskCounts.high})
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+
+        <div className="space-y-4 pb-8">
+          {filteredIngredients.length === 0 ? (
+            <Card className="p-8 text-center">
+              <p className="text-muted-foreground">{t('results.noResults')}</p>
+            </Card>
+          ) : (
+            filteredIngredients.map((ingredient, index) => (
+              <IngredientCard key={`${ingredient.name}-${index}`} ingredient={ingredient} />
+            ))
+          )}
+        </div>
+
+        <div className="fixed bottom-0 left-0 right-0 p-4 bg-background/95 backdrop-blur border-t">
+          <div className="max-w-2xl mx-auto">
+            <Link href="/upload">
+              <Button className="w-full" size="lg" data-testid="button-scan-another">
+                {t('results.scanAnother')}
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
