@@ -59,6 +59,7 @@ export default function ResultsPage() {
   const [retryCount, setRetryCount] = useState(0);
   const [isEditingName, setIsEditingName] = useState(false);
   const [editedName, setEditedName] = useState("");
+  const [savedScanId, setSavedScanId] = useState<number | null>(null);
   const wakeLockRef = useRef<any>(null);
   const hasSavedToHistoryRef = useRef<boolean>(false);
   const currentRequestIdRef = useRef<string | null>(null);
@@ -161,7 +162,7 @@ export default function ResultsPage() {
       if (!hasSavedToHistoryRef.current) {
         hasSavedToHistoryRef.current = true;
         try {
-          await apiRequest("POST", "/api/history", {
+          const response = await apiRequest("POST", "/api/history", {
             productName: data.productName || "Unnamed Product",
             productCategory: data.productType || "other",
             detectedIngredients: data.ingredients.map(i => i.name),
@@ -169,7 +170,11 @@ export default function ResultsPage() {
             overallRisk: data.overallRisk,
             language: i18n.language.startsWith('zh') ? 'zh' : i18n.language.startsWith('es') ? 'es' : 'en',
           });
-          console.log('[HISTORY] Scan saved to history');
+          const result = await response.json();
+          if (result.scanId) {
+            setSavedScanId(result.scanId);
+            console.log('[HISTORY] Scan saved to history with ID:', result.scanId);
+          }
         } catch (error) {
           console.error('[HISTORY] Failed to save scan to history:', error);
           hasSavedToHistoryRef.current = false; // Allow retry on next success
@@ -184,6 +189,33 @@ export default function ResultsPage() {
       rejectRef.current = null;
     }
   });
+
+  // Mutation to update product name in history
+  const renameMutation = useMutation({
+    mutationFn: async (productName: string) => {
+      if (!savedScanId) return null;
+      const response = await apiRequest("PATCH", `/api/history/${savedScanId}`, { productName });
+      return response.json();
+    },
+    onSuccess: () => {
+      console.log('[HISTORY] Product name updated in history');
+    },
+    onError: (error) => {
+      console.error('[HISTORY] Failed to update product name:', error);
+    }
+  });
+
+  // Helper function to save the edited name
+  const saveProductName = (newName: string) => {
+    const finalName = newName.trim() || t('results.productName.unnamed');
+    setAnalysisResult(prev => prev ? { ...prev, productName: finalName } : null);
+    setIsEditingName(false);
+    
+    // If we have a saved scan ID, update the history
+    if (savedScanId) {
+      renameMutation.mutate(finalName);
+    }
+  };
 
   useEffect(() => {
     // Check if there's a pending analysis
@@ -443,8 +475,7 @@ export default function ResultsPage() {
                 autoFocus
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
-                    setAnalysisResult(prev => prev ? { ...prev, productName: editedName || t('results.productName.unnamed') } : null);
-                    setIsEditingName(false);
+                    saveProductName(editedName);
                   } else if (e.key === 'Escape') {
                     setIsEditingName(false);
                   }
@@ -453,18 +484,21 @@ export default function ResultsPage() {
               <Button
                 size="icon"
                 variant="ghost"
-                onClick={() => {
-                  setAnalysisResult(prev => prev ? { ...prev, productName: editedName || t('results.productName.unnamed') } : null);
-                  setIsEditingName(false);
-                }}
+                onClick={() => saveProductName(editedName)}
+                disabled={renameMutation.isPending}
                 data-testid="button-save-name"
               >
-                <Check className="h-4 w-4" />
+                {renameMutation.isPending ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Check className="h-4 w-4" />
+                )}
               </Button>
               <Button
                 size="icon"
                 variant="ghost"
                 onClick={() => setIsEditingName(false)}
+                disabled={renameMutation.isPending}
                 data-testid="button-cancel-name"
               >
                 <X className="h-4 w-4" />
