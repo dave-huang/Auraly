@@ -13,7 +13,10 @@ import {
   analysisRequestSchema,
   type ProductType,
   type AnalysisResult,
-  productTypes
+  type InsertScanHistory,
+  type Ingredient,
+  productTypes,
+  productCategories
 } from "@shared/schema";
 
 // In-memory store for analysis requests (for background processing)
@@ -378,6 +381,134 @@ export async function registerRoutes(app: Express): Promise<Server> {
         analysisRequest.timestamp = Date.now();
       }
     })();
+  });
+
+  // ==================== SCAN HISTORY ENDPOINTS ====================
+
+  // Schema for creating scan history
+  const createScanHistorySchema = z.object({
+    productName: z.string().optional().default("Unnamed Product"),
+    productCategory: z.enum(productCategories as readonly [string, ...string[]]).optional().default("other"),
+    originalImageUrl: z.string().nullable().optional(),
+    detectedIngredients: z.array(z.string()),
+    analysisResults: z.array(z.object({
+      name: z.string(),
+      riskLevel: z.enum(["low", "moderate", "high"]),
+      summary: z.string(),
+      details: z.string(),
+      category: z.string().nullish(),
+    })),
+    overallRisk: z.enum(["low", "moderate", "high"]),
+    language: z.string().optional().default("en"),
+    isUpdatedFromCache: z.boolean().optional().default(false),
+  });
+
+  // POST /api/history - Save a new scan to history
+  app.post("/api/history", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const data = createScanHistorySchema.parse(req.body);
+      
+      const scanData: InsertScanHistory = {
+        userId,
+        productName: data.productName || "Unnamed Product",
+        productCategory: data.productCategory || "other",
+        originalImageUrl: data.originalImageUrl || null,
+        detectedIngredients: data.detectedIngredients,
+        analysisResults: data.analysisResults,
+        overallRisk: data.overallRisk,
+        language: data.language || "en",
+        isUpdatedFromCache: data.isUpdatedFromCache || false,
+        ingredientCount: data.detectedIngredients.length,
+      };
+      
+      const scan = await storage.createScanHistory(scanData);
+      console.log(`[HISTORY] Saved scan ${scan.id} for user ${userId}`);
+      
+      res.status(201).json({ success: true, scanId: scan.id });
+    } catch (error: any) {
+      console.error("[HISTORY] Error saving scan:", error);
+      res.status(400).json({ error: error.message || "Failed to save scan" });
+    }
+  });
+
+  // GET /api/history - Get user's scan history (paginated)
+  app.get("/api/history", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const limit = Math.min(parseInt(req.query.limit as string) || 20, 50);
+      const offset = parseInt(req.query.offset as string) || 0;
+      
+      const [scans, totalCount] = await Promise.all([
+        storage.getScanHistory(userId, limit, offset),
+        storage.getScanHistoryCount(userId),
+      ]);
+      
+      res.json({
+        scans,
+        total: totalCount,
+        limit,
+        offset,
+        hasMore: offset + scans.length < totalCount,
+      });
+    } catch (error: any) {
+      console.error("[HISTORY] Error fetching history:", error);
+      res.status(500).json({ error: error.message || "Failed to fetch history" });
+    }
+  });
+
+  // GET /api/history/:scanId - Get a single scan by ID
+  app.get("/api/history/:scanId", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { scanId } = req.params;
+      
+      const scan = await storage.getScanById(scanId, userId);
+      
+      if (!scan) {
+        return res.status(404).json({ error: "Scan not found" });
+      }
+      
+      res.json(scan);
+    } catch (error: any) {
+      console.error("[HISTORY] Error fetching scan:", error);
+      res.status(500).json({ error: error.message || "Failed to fetch scan" });
+    }
+  });
+
+  // DELETE /api/history/:scanId - Delete a single scan
+  app.delete("/api/history/:scanId", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { scanId } = req.params;
+      
+      const deleted = await storage.deleteScan(scanId, userId);
+      
+      if (!deleted) {
+        return res.status(404).json({ error: "Scan not found" });
+      }
+      
+      console.log(`[HISTORY] Deleted scan ${scanId} for user ${userId}`);
+      res.json({ success: true });
+    } catch (error: any) {
+      console.error("[HISTORY] Error deleting scan:", error);
+      res.status(500).json({ error: error.message || "Failed to delete scan" });
+    }
+  });
+
+  // DELETE /api/history - Delete all scans for user
+  app.delete("/api/history", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      
+      const deletedCount = await storage.deleteAllScans(userId);
+      
+      console.log(`[HISTORY] Deleted ${deletedCount} scans for user ${userId}`);
+      res.json({ success: true, deletedCount });
+    } catch (error: any) {
+      console.error("[HISTORY] Error deleting all scans:", error);
+      res.status(500).json({ error: error.message || "Failed to delete scans" });
+    }
   });
 
   const httpServer = createServer(app);
