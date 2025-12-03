@@ -790,8 +790,8 @@
     "createdAt": 1764378950734
   },
   "salt__food__en": {
-    "analysis": "{\"name\":\"Salt\",\"riskLevel\":\"moderate\",\"summary\":\"Salt is commonly used for seasoning and preserving food but can contribute to high sodium intake. Excessive sodium consumption is associated with high blood pressure and increased cardiovascular risk.\",\"details\":\"In moderate amounts, salt is essential for fluid balance, nerve function, and muscle contraction. However, frequent intake of high-sodium foods can increase the risk of hypertension, stroke, and heart disease, especially in sensitive individuals. People with hypertension, kidney disease, or heart conditions are often advised to limit their sodium intake and choose lower-sodium alternatives.\",\"category\":\"Mineral / Sodium source\"}",
-    "lastUpdated": 1764637284384,
+    "analysis": "{\"name\":\"Salt\",\"riskLevel\":\"moderate\",\"summary\":\"Salt is a common seasoning and preservative that is generally safe in small to moderate amounts but can be harmful in excess. High intake is associated with increased blood pressure and cardiovascular risks.\",\"details\":\"Salt (sodium chloride) is widely used to enhance flavor and extend shelf life of foods, but it is also a major source of dietary sodium. Consistently high sodium intake can contribute to hypertension, kidney strain, and increased risk of heart disease and stroke, especially in sensitive individuals. People with high blood pressure, kidney disease, or heart conditions are often advised to limit salt intake and choose lower-sodium products.\",\"category\":\"Mineral / seasoning\"}",
+    "lastUpdated": 1764803064456,
     "createdAt": 1764379123272
   },
   "corn starch__food__en": {
@@ -935,8 +935,8 @@
     "createdAt": 1764379125713
   },
   "cocoa powder (processed with alkali)__food__en": {
-    "analysis": "{\"name\":\"Cocoa Powder (processed With Alkali)\",\"riskLevel\":\"low\",\"summary\":\"Cocoa powder processed with alkali, also known as Dutch-processed cocoa, is generally safe for most people when consumed in typical food amounts. The alkalization process reduces acidity and can slightly lower some antioxidant content.\",\"details\":\"Alkalized cocoa is treated with an alkaline solution to mellow flavor and darken color, which may modestly reduce certain beneficial polyphenols compared with natural cocoa. It naturally contains small amounts of caffeine and theobromine, which could be an issue for those who are very sensitive to stimulants. People with cocoa allergy or advised to avoid chocolate products should also avoid cocoa powder, including this form.\",\"category\":\"Cocoa and chocolate ingredient\"}",
-    "lastUpdated": 1764637284559,
+    "analysis": "{\"name\":\"Cocoa Powder (processed With Alkali)\",\"riskLevel\":\"low\",\"summary\":\"Cocoa powder processed with alkali, also called Dutch-processed cocoa, is generally safe for most people when consumed in typical food amounts. The alkalization process reduces acidity and can lower some antioxidant content compared to natural cocoa.\",\"details\":\"Alkalized cocoa is used to improve flavor, color, and solubility, and does not typically introduce harmful additives by itself. It still contains natural compounds like caffeine and theobromine, so very sensitive individuals or those advised to limit stimulants should moderate intake. People with cocoa allergy or intolerance should avoid it, but for the general population it is considered a low-risk ingredient as part of a balanced diet.\",\"category\":\"Cocoa and chocolate ingredients\"}",
+    "lastUpdated": 1764803065122,
     "createdAt": 1764379125713
   },
   "enzymes__food__en": {
@@ -4670,8 +4670,8 @@
     "createdAt": 1764539595980
   },
   "ergocalciferol (vitamin d2)__food__en": {
-    "analysis": "{\"name\":\"Ergocalciferol (vitamin D2)\",\"riskLevel\":\"low\",\"summary\":\"Ergocalciferol, or vitamin D2, is a form of vitamin D used to fortify foods and supplements to support bone and immune health. It is generally safe at standard fortification levels but can be toxic in very high doses over time.\",\"details\":\"Vitamin D2 is typically derived from plant or fungal sources and helps the body regulate calcium and phosphorus levels, supporting bone strength and muscle function. In fortified foods, the amounts used are well below toxicity thresholds for most people, though extremely high supplemental intakes can cause elevated blood calcium, kidney strain, and other health issues. Individuals with certain medical conditions or those taking high-dose vitamin D supplements should monitor total vitamin D intake with a healthcare provider.\",\"category\":\"Vitamin / nutrient fortifier\"}",
-    "lastUpdated": 1764539595980,
+    "analysis": "{\"name\":\"Ergocalciferol (vitamin D2)\",\"riskLevel\":\"low\",\"summary\":\"Ergocalciferol is a form of vitamin D used to fortify foods and supplements to support bone health and calcium metabolism. At typical food and supplement doses, it is generally safe for most people.\",\"details\":\"Ergocalciferol (vitamin D2) helps regulate calcium and phosphate balance, contributing to healthy bones, teeth, and muscle function. In foods and standard-dose supplements, it poses low risk, though excessive intake of any vitamin D (especially from high-dose supplements) can lead to toxicity with symptoms such as hypercalcemia, nausea, and kidney issues. People with certain medical conditions affecting calcium metabolism or who take high-dose vitamin D should use it under medical supervision.\",\"category\":\"Vitamin / Nutrient\"}",
+    "lastUpdated": 1764802988809,
     "createdAt": 1764539595980
   },
   "sea salt__food__en": {
@@ -5093,5 +5093,205 @@
     "analysis": "{\"name\":\"Soybean And Wheat Ingredients (bioengineered)\",\"riskLevel\":\"moderate\",\"summary\":\"Soybean and wheat ingredients are common food components that provide protein and carbohydrates but are major allergens and may be genetically modified. Bioengineered (GMO) sources are generally considered safe by major regulatory bodies, though some consumers prefer to avoid them.\",\"details\":\"Soy and wheat are among the top food allergens and can trigger reactions in sensitive individuals, including mild symptoms or, rarely, severe allergic responses. The presence of bioengineered (genetically modified) ingredients does not inherently increase toxicity or general health risk according to current evidence, but can be a concern for people who prefer non-GMO or have specific dietary, ethical, or environmental preferences. People with soy or gluten/wheat allergies, celiac disease, or non-celiac gluten sensitivity should avoid products containing these ingredients and check labels carefully.\",\"category\":\"Allergens / Bioengineered (GMO) ingredients\"}",
     "lastUpdated": 1764795640104,
     "createdAt": 1764795640104
+  },
+  "dl-alpha tocopherol acetate (vitamin e) – contains almonds__food__en": {
+    "analysis": "{\"name\":\"Dl-alpha Tocopherol Acetate (vitamin E) – Contains Almonds\",\"riskLevel\":\"moderate\",\"summary\":\"DL-alpha tocopherol acetate is a synthetic, fat-soluble form of vitamin E used as a nutrient supplement and antioxidant. The presence of almonds indicates a tree nut allergen risk for sensitive individuals.\",\"details\":\"As a synthetic vitamin E, DL-alpha tocopherol acetate is generally safe at typical food and supplement doses, but excessive intake of fat-soluble vitamins over time may increase risk of toxicity or interfere with certain medications such as blood thinners. The statement \\\"contains almonds\\\" signals that this ingredient or product may include almond-derived material, which can trigger serious allergic reactions in people with tree nut allergies, including hives, swelling, or anaphylaxis. Individuals with nut allergies or on anticoagulant therapy should use caution and consult a healthcare professional if consuming products with added vitamin E from this source.\",\"category\":\"Vitamin supplement and allergen (tree nut: almond)\"}",
+    "lastUpdated": 1764803001743,
+    "createdAt": 1764803001743
+  },
+  "硬脂酸__personal_care__zh": {
+    "analysis": "{\"name\":\"硬脂酸\",\"riskLevel\":\"low\",\"summary\":\"硬脂酸是一种常见的脂肪酸，广泛用于护肤品和清洁产品中作为增稠剂和乳化剂。通常被认为安全、刺激性较低。\",\"details\":\"硬脂酸多来源于植物油或动物脂肪，在配方中有助于稳定乳液质地、提升泡沫和柔滑感。对大多数肤质而言耐受性良好，仅在极少数敏感人群中可能引起轻微刺激或粉刺性堵塞。其本身不属于防腐剂、激素干扰物或强致敏成分，整体安全性较高。\",\"category\":\"脂肪酸 / 质地调节剂\"}",
+    "lastUpdated": 1764803351631,
+    "createdAt": 1764803351631
+  },
+  "水__personal_care__zh": {
+    "analysis": "{\"name\":\"水\",\"riskLevel\":\"low\",\"summary\":\"水是个人护理品中最常见、最基础的溶剂成分，一般安全性很高。它用于溶解其他成分并帮助产品均匀涂抹。\",\"details\":\"在护肤、护发、彩妆等产品中，水通常作为主要基质，为皮肤或头发提供一定的补水和清凉感。产品中使用的多为纯化水或去离子水，以减少杂质和微生物污染。水本身不属于致敏或致癌成分，其安全性问题更多取决于配方中其他活性物和防腐体系。\",\"category\":\"溶剂/基质\"}",
+    "lastUpdated": 1764803351987,
+    "createdAt": 1764803351987
+  },
+  "丁二醇__personal_care__zh": {
+    "analysis": "{\"name\":\"丁二醇\",\"riskLevel\":\"low\",\"summary\":\"丁二醇是一种常用的保湿溶剂，能帮助皮肤保持水分并提升产品延展性。整体安全性较高，常见于护肤品、彩妆和洗护产品中。\",\"details\":\"丁二醇具有保湿、柔润和帮助其他成分溶解与渗透的作用，一般浓度使用下刺激性较低。对大多数肤质（包括油性和混合性皮肤）较为温和，但极少数敏感肌或严重受损皮肤可能出现轻微刺痛或刺激反应。现有研究未显示其有致癌、致畸或明显内分泌干扰问题，在正规配方和合理用量下被认为是安全的保湿溶剂。\",\"category\":\"保湿剂 / 溶剂\"}",
+    "lastUpdated": 1764803352166,
+    "createdAt": 1764803352166
+  },
+  "尿囊素__personal_care__zh": {
+    "analysis": "{\"name\":\"尿囊素\",\"riskLevel\":\"low\",\"summary\":\"尿囊素是一种常见的舒缓和修复成分，广泛用于护肤品中，通常耐受性很好。它有助于减轻皮肤刺激，促进角质软化和平滑。\",\"details\":\"尿囊素具有保湿、舒缓和促表皮修复的作用，常用于敏感肌和受损肌肤产品中，一般被认为安全性较高。极少数人可能出现轻微刺激或个体过敏反应，但整体风险较低，不属于防腐剂、激素扰乱物或硫酸盐等争议成分。适用于大多数肤质，包括干性、敏感性和痘痘肌等。\",\"category\":\"舒缓修复成分\"}",
+    "lastUpdated": 1764803352179,
+    "createdAt": 1764803352179
+  },
+  "黄芩根提取物__personal_care__zh": {
+    "analysis": "{\"name\":\"黄芩根提取物\",\"riskLevel\":\"low\",\"summary\":\"黄芩根提取物是一种常用于护肤品中的植物提取物，具有抗氧化和舒缓镇静功效。通常耐受性较好，刺激性较低。\",\"details\":\"黄芩根提取物富含黄酮类成分，如黄芩苷，能帮助对抗自由基，减轻环境压力对皮肤的伤害，并有助于缓解泛红与不适感。研究显示其具有一定的抗炎、抗菌和美白辅助作用，因此常用于敏感肌、痘肌及抗老配方中。极少数敏感人群可能出现轻微过敏或刺激，建议初次使用时先做局部测试。\",\"category\":\"植物提取物/舒缓抗氧化成分\"}",
+    "lastUpdated": 1764803352214,
+    "createdAt": 1764803352214
+  },
+  "神经酰胺np__personal_care__zh": {
+    "analysis": "{\"name\":\"神经酰胺NP\",\"riskLevel\":\"low\",\"summary\":\"神经酰胺NP是一种皮肤天然存在的脂质成分，有助于修复和强化皮肤屏障。常用于保湿、修护类护肤品，普遍被认为安全温和。\",\"details\":\"神经酰胺NP能够减少水分流失，改善干燥、紧绷和粗糙感，对敏感肌和受损屏障肌肤尤其有益。现有研究和使用经验显示，其刺激性极低，过敏报告也非常少，适合长期使用。一般不与常见的内分泌干扰物、致癌性防腐剂等高风险成分相关联。\",\"category\":\"保湿与皮肤屏障修护成分\"}",
+    "lastUpdated": 1764803352285,
+    "createdAt": 1764803352285
+  },
+  "辛甘醇__personal_care__zh": {
+    "analysis": "{\"name\":\"辛甘醇\",\"riskLevel\":\"low\",\"summary\":\"辛甘醇是一种常用的保湿剂和多功能助防腐剂，广泛用于护肤品和化妆品中。一般被认为安全性较高，刺激性较低。\",\"details\":\"辛甘醇具有保湿、柔润皮肤的作用，同时还能增强配方中防腐体系的效果，从而减少传统防腐剂用量。对大多数肤质来说耐受性良好，但极度敏感或受损皮肤可能在高浓度下出现轻微刺痛或刺激感。现有研究未显示其有致敏、致癌或内分泌干扰方面的明显风险，在法规允许浓度内使用通常被视为安全。\",\"category\":\"保湿剂 / 助防腐剂\"}",
+    "lastUpdated": 1764803352299,
+    "createdAt": 1764803352299
+  },
+  "迷迭香叶提取物__personal_care__zh": {
+    "analysis": "{\"name\":\"迷迭香叶提取物\",\"riskLevel\":\"low\",\"summary\":\"迷迭香叶提取物是一种源自植物的成分，常用于护肤和护发产品中，具有抗氧化和舒缓功效。总体来说对皮肤较为温和，刺激性较低。\",\"details\":\"迷迭香叶提取物主要用于抗氧化、防腐辅助以及改善头皮环境，不属于防腐剂、硫酸盐、邻苯二甲酸酯等高争议成分。极少数敏感肌或对香草类植物过敏的人，可能出现轻微刺激或过敏反应。在正常化妆品用量下，它被普遍认为是安全的植物活性成分，适合大多数肤质长期使用。\",\"category\":\"植物提取物 / 护肤活性成分\"}",
+    "lastUpdated": 1764803352340,
+    "createdAt": 1764803352340
+  },
+  "聚谷氨酸__personal_care__zh": {
+    "analysis": "{\"name\":\"聚谷氨酸\",\"riskLevel\":\"low\",\"summary\":\"聚谷氨酸是一种由谷氨酸聚合形成的保湿成分，常用于护肤品中提高皮肤含水量。通常刺激性较低，适用于大多数肤质。\",\"details\":\"聚谷氨酸具有较强的吸水和锁水能力，可帮助加强皮肤屏障、改善干燥和细纹，常与透明质酸等保湿剂搭配使用。现有研究显示其皮肤耐受度较好，致敏几率较低，对敏感肌一般也较为温和。对极少数个体可能出现轻微刺激或不适，初次使用时可先小面积测试。\",\"category\":\"保湿剂 / 皮肤调理剂\"}",
+    "lastUpdated": 1764803352351,
+    "createdAt": 1764803352351
+  },
+  "积雪草提取物__personal_care__zh": {
+    "analysis": "{\"name\":\"积雪草提取物\",\"riskLevel\":\"low\",\"summary\":\"积雪草提取物是一种常用于护肤品中的植物提取物，具有舒缓、修护和抗氧化等功效。一般耐受性良好，刺激性较低。\",\"details\":\"积雪草提取物常用于舒缓敏感、辅助修护受损屏障和改善肤质，对轻微红肿、干燥肌肤有一定帮助。临床上整体安全性较高，常见不良反应多为个别人出现的轻度过敏或刺痒，停用后即可缓解。与传统高风险成分如防腐释放甲醛剂、邻苯二甲酸酯类或强脱脂表活相比，其安全风险要低很多。\",\"category\":\"植物提取物/舒缓修护成分\"}",
+    "lastUpdated": 1764803352385,
+    "createdAt": 1764803352385
+  },
+  "甜菜碱__personal_care__zh": {
+    "analysis": "{\"name\":\"甜菜碱\",\"riskLevel\":\"low\",\"summary\":\"甜菜碱是一种常见的保湿和调理成分，广泛用于护肤、洗发水和沐浴产品中。总体安全性较高，刺激性较低。\",\"details\":\"甜菜碱具有良好的保湿和调理功效，可帮助减少清洁产品对皮肤和头发的干燥感，提升使用时的柔软度和舒适度。一般对大多数肤质都较为温和，仅极少数敏感人群可能出现轻微刺激或不适，停用后通常可缓解。它不属于防腐剂、硫酸盐、邻苯二甲酸酯、甲醛释放体等高风险成分，在个人护理品中被认为相对安全。\",\"category\":\"保湿剂 / 皮肤和头发调理剂\"}",
+    "lastUpdated": 1764803352490,
+    "createdAt": 1764803352490
+  },
+  "甘草（光果甘草）根提取物__personal_care__zh": {
+    "analysis": "{\"name\":\"甘草（光果甘草）根提取物\",\"riskLevel\":\"low\",\"summary\":\"甘草根提取物常用于护肤品中，具有舒缓、抗炎和提亮肤色的作用。一般耐受性较好，属于相对温和的植物成分。\",\"details\":\"甘草根提取物中含有甘草酸、黄酮类等活性物质，可减缓皮肤刺激和发红，并在美白淡斑配方中用于抑制黑色素生成。少数敏感或易过敏人群可能出现轻微刺激或接触性皮炎，使用前可先做局部皮试。总体来说在化妆品中使用浓度通常较安全，孕哺期正常外用一般也被认为风险较低。\",\"category\":\"植物提取物/舒缓美白成分\"}",
+    "lastUpdated": 1764803352519,
+    "createdAt": 1764803352519
+  },
+  "八角果提取物__personal_care__zh": {
+    "analysis": "{\"name\":\"八角果提取物\",\"riskLevel\":\"low\",\"summary\":\"八角果提取物来自八角茴香植物果实，常用于护肤品中作为香味成分和植物护肤成分。总体安全性较高，一般刺激性较低。\",\"details\":\"在个人护理品中，八角果提取物主要用于赋香并提供一定的抗氧化和舒缓辅助作用。少数敏感肌或对香料、伞形科/木兰科植物过敏者，可能出现轻微刺激或过敏反应。它不属于防腐剂、硫酸盐、邻苯二甲酸酯或甲醛释放体等高风险成分，在正规使用浓度下被认为是相对温和安全的植物提取物。\",\"category\":\"植物提取物 / 香味成分\"}",
+    "lastUpdated": 1764803352609,
+    "createdAt": 1764803352609
+  },
+  "甘油硬脂酸酯__personal_care__zh": {
+    "analysis": "{\"name\":\"甘油硬脂酸酯\",\"riskLevel\":\"low\",\"summary\":\"甘油硬脂酸酯是一种常用的皮肤调理剂和乳化剂，帮助油水混合并让产品质地更柔滑细腻。一般认为对皮肤温和且安全性较高。\",\"details\":\"它多由甘油与植物来源或合成的硬脂酸反应制得，能在乳霜、乳液中稳定乳化体系并提升肤感。对大多数肤质来说刺激性很低，仅在极少数敏感人群中可能出现轻微刺激或毛孔堵塞的担忧，但整体风险较小。该成分不属于防腐剂、硫酸盐、邻苯二甲酸酯、甲醛释放体或重金属等高关注风险类别。\",\"category\":\"乳化剂与皮肤调理剂\"}",
+    "lastUpdated": 1764803352609,
+    "createdAt": 1764803352609
+  },
+  "欧洲橄榄（橄榄）果油__personal_care__zh": {
+    "analysis": "{\"name\":\"欧洲橄榄（橄榄）果油\",\"riskLevel\":\"low\",\"summary\":\"一种从橄榄果实中提取的植物油，常用于护肤和护发产品中作为保湿和柔润成分。总体安全性较高，致敏率较低。\",\"details\":\"欧洲橄榄果油富含脂肪酸和维生素E，能帮助修护皮肤屏障、减少水分流失，使皮肤和头发更加柔软光滑。极少数人可能对橄榄油或其氧化产物产生刺激或过敏，尤其是敏感肌或有花粉/橄榄科植物过敏史者应先做局部测试。该成分不属于防腐剂、硫酸盐、邻苯二甲酸酯、矿物油、硅油或其他常见高风险问题成分。\",\"category\":\"植物油/保湿柔润剂\"}",
+    "lastUpdated": 1764803352609,
+    "createdAt": 1764803352609
+  },
+  "蜂蜡__personal_care__zh": {
+    "analysis": "{\"name\":\"蜂蜡\",\"riskLevel\":\"low\",\"summary\":\"蜂蜡是一种从蜜蜂蜂巢中获得的天然蜡质，常用于护肤品中作为增稠剂和成膜保湿成分。一般被认为安全温和，致敏率较低。\",\"details\":\"蜂蜡能在皮肤表面形成保护膜，减少水分流失，同时帮助产品具有更好的质地和稳定性。少数对蜂产品（如蜂蜜、蜂胶）重度过敏人群可能对蜂蜡也有敏感或刺激反应，但整体风险很低。蜂蜡不属于防腐剂、硫酸盐、邻苯二甲酸酯、甲醛释放体或合成香精等高关注成分。\",\"category\":\"天然蜡质 / 保湿成膜剂\"}",
+    "lastUpdated": 1764803352714,
+    "createdAt": 1764803352714
+  },
+  "木糖醇__personal_care__zh": {
+    "analysis": "{\"name\":\"木糖醇\",\"riskLevel\":\"low\",\"summary\":\"木糖醇是一种常用于牙膏、漱口水和润唇膏等个人护理品中的糖醇保湿剂与甜味剂。一般认为对皮肤和口腔较为温和，刺激性较低。\",\"details\":\"在个人护理产品中，木糖醇可帮助保湿，并在口腔护理中辅助抑制部分致龋菌，对预防蛀牙有一定益处。大多数人外用耐受良好，仅极少数敏感人群可能出现轻微刺激或过敏反应。总体来说，它不属于内分泌干扰物，也不与常见高风险防腐剂或致敏香精成分同类，安全性较高。\",\"category\":\"保湿剂与甜味剂\"}",
+    "lastUpdated": 1764803352784,
+    "createdAt": 1764803352784
+  },
+  "柠檬酸__personal_care__zh": {
+    "analysis": "{\"name\":\"柠檬酸\",\"riskLevel\":\"low\",\"summary\":\"柠檬酸是一种常见的有机酸，主要用于调节配方的酸碱度和螯合金属离子。通常在护肤和清洁产品中被认为安全、刺激性较低。\",\"details\":\"在个人护理品中，柠檬酸常用于调节产品pH值，以帮助维持皮肤屏障的稳定性，并能提高防腐体系的效果。少数敏感或受损皮肤在使用高浓度或低pH配方时，可能会感到轻微刺痛或刺激，但在常规用量下总体耐受性良好。它不属于防腐剂释放甲醛、邻苯二甲酸酯、对羟基苯甲酸酯等高关注成分。\",\"category\":\"pH调节剂 / 螯合剂\"}",
+    "lastUpdated": 1764803352800,
+    "createdAt": 1764803352800
+  },
+  "2-己二醇__personal_care__zh": {
+    "analysis": "{\"name\":\"2-己二醇\",\"riskLevel\":\"low\",\"summary\":\"2-己二醇是一种常用的保湿剂和溶剂，能帮助产品保持水分并稳定配方。一般认为对皮肤刺激性较低，安全性较好。\",\"details\":\"在个人护理品中，2-己二醇常用于护肤品、彩妆和洁面产品中，帮助溶解其他成分并提升肤感。少数敏感肌人群可能在高浓度或与其他刺激成分共同使用时出现轻微刺痒或泛红，但整体致敏率较低。它不属于防腐剂释放甲醛、邻苯二甲酸酯、硫酸盐、对羟基苯甲酸酯（防腐剂）等高争议成分，一般被视为相对安全的辅助成分。\",\"category\":\"保湿剂/溶剂\"}",
+    "lastUpdated": 1764803352813,
+    "createdAt": 1764803352813
+  },
+  "聚丙烯酸钠__personal_care__zh": {
+    "analysis": "{\"name\":\"聚丙烯酸钠\",\"riskLevel\":\"low\",\"summary\":\"聚丙烯酸钠是一种常用的高分子吸水剂与增稠剂，广泛存在于护肤品、彩妆和洗护产品中。一般被认为对皮肤刺激性较低。\",\"details\":\"在个人护理品中，聚丙烯酸钠用于增稠、稳定配方和提高产品的质感与保湿持水性。正常使用浓度下经皮吸收极少，对大多数人相对安全，仅极少数敏感皮肤可能出现轻微刺激或干涩感。其本身不属于激素干扰物、致癌重金属或防腐剂，但需注意粉尘形式吸入和工业级产品杂质控制，与正规化妆品级原料安全性不同。\",\"category\":\"增稠剂 / 成膜剂 / 吸水剂\"}",
+    "lastUpdated": 1764803352840,
+    "createdAt": 1764803352840
+  },
+  "聚山梨醇酯-60__personal_care__zh": {
+    "analysis": "{\"name\":\"聚山梨醇酯-60\",\"riskLevel\":\"low\",\"summary\":\"聚山梨醇酯-60是一种常用的非离子型表面活性剂和乳化剂，广泛应用于护肤品、洗护和彩妆中，用于稳定乳液和帮助油水混合。整体安全性较高，一般皮肤耐受性良好。\",\"details\":\"在正常化妆品使用浓度下，聚山梨醇酯-60被认为对大多数人相对安全，主要可能引起的为轻微刺激或过敏反应，多见于极度敏感或受损皮肤人群。它本身不属于防腐剂、激素干扰物或重金属来源，也不是硫酸盐、邻苯二甲酸酯、甲醛释放体、矿物油、硅油等高争议成分。极个别人可能因个体差异或配方中其他成分叠加而出现刺痒、发红，可通过减少用量或停用产品来观察是否相关。\",\"category\":\"乳化剂 / 表面活性剂\"}",
+    "lastUpdated": 1764803352862,
+    "createdAt": 1764803352862
+  },
+  "牛油果树（乳木果）脂__personal_care__zh": {
+    "analysis": "{\"name\":\"牛油果树（乳木果）脂\",\"riskLevel\":\"low\",\"summary\":\"牛油果树（乳木果）脂是一种从乳木果仁中提取的天然植物油脂，常用于护肤和护发产品中作为柔润、滋养成分。通常耐受性良好，对大多数肤质较为安全。\",\"details\":\"乳木果脂富含脂肪酸和维生素，有助于修护皮肤屏障、减缓干燥和粗糙，提升皮肤柔软度和光滑感。极少数人可能对坚果类或乳木果成分有过敏反应，如出现红肿瘙痒应停止使用并咨询医生。它不属于防腐剂、硫酸盐、邻苯二甲酸酯、合成香精或矿物油等高争议成分，在个人护理产品中总体被视为安全、温和的滋润剂。\",\"category\":\"天然植物油脂 / 保湿柔润剂\"}",
+    "lastUpdated": 1764803352962,
+    "createdAt": 1764803352962
+  },
+  "peg-100 硬脂酸酯__personal_care__zh": {
+    "analysis": "{\"name\":\"PEG-100 硬脂酸酯\",\"riskLevel\":\"low\",\"summary\":\"PEG-100 硬脂酸酯是一种常用的表面活性剂和乳化剂，帮助油水充分混合，稳定乳霜和乳液的质地。一般被认为安全性较高，刺激性较低。\",\"details\":\"在护肤品和洗护产品中，PEG-100 硬脂酸酯能改善产品涂抹感和延展性，使配方更柔滑细腻。其潜在风险主要在于 PEG 类原料在工业生产过程中可能夹带微量杂质（如1,4-二氧六环等），正规品牌通常会通过纯化和质量控制将风险降到很低。对极度敏感或受损皮肤人群，长期使用含多种表活的产品时仍需留意个体刺激或干燥感。\",\"category\":\"表面活性剂 / 乳化剂\"}",
+    "lastUpdated": 1764803352962,
+    "createdAt": 1764803352962
+  },
+  "虎杖根提取物__personal_care__zh": {
+    "analysis": "{\"name\":\"虎杖根提取物\",\"riskLevel\":\"low\",\"summary\":\"虎杖根提取物是一种来源于植物虎杖（Polygonum cuspidatum）的植物提取物，常用于护肤品中作为抗氧化和舒缓成分。整体安全性较好，致敏率相对较低。\",\"details\":\"虎杖根提取物富含白藜芦醇等多酚类物质，具有抗氧化、抗炎和帮助抵御环境压力的作用，常用于抗老化和修护类产品中。一般化妆品中使用浓度较低，正常肤质使用安全性较高，但极度敏感或对某些植物提取物过敏的人群仍有可能出现轻微刺激或过敏反应。该成分与防腐剂、合成香精、硫酸盐类等高风险物质无直接关联。\",\"category\":\"植物提取物 / 抗氧化舒缓成分\"}",
+    "lastUpdated": 1764803352984,
+    "createdAt": 1764803352984
+  },
+  "甘油__personal_care__zh": {
+    "analysis": "{\"name\":\"甘油\",\"riskLevel\":\"low\",\"summary\":\"甘油是一种常用的保湿剂和溶剂，能够帮助肌肤吸水并保持水分。大多数肤质对甘油的耐受性较好，刺激性较低。\",\"details\":\"甘油在护肤品、洗发水、牙膏等个人护理产品中非常常见，主要起到保湿、柔润和平滑皮肤的作用。它具有一定的吸湿性，一般不会堵塞毛孔，但在极度潮湿或极度干燥环境下可能对个别人造成轻微不适。总体来说，它被各大监管机构认为是安全性很高的成分，过敏或刺激情况较为少见。\",\"category\":\"保湿剂/溶剂\"}",
+    "lastUpdated": 1764803352999,
+    "createdAt": 1764803352999
+  },
+  "鲸蜡硬脂醇__personal_care__zh": {
+    "analysis": "{\"name\":\"鲸蜡硬脂醇\",\"riskLevel\":\"low\",\"summary\":\"鲸蜡硬脂醇是一种脂肪醇，常用作护肤和护发产品中的增稠剂和柔润剂，一般被认为安全温和。与容易令皮肤干燥的挥发性酒精不同，这类脂肪醇通常不会破坏皮肤屏障。\",\"details\":\"鲸蜡硬脂醇来源多为植物油或合成脂肪醇，主要作用是乳化、增稠并改善产品的顺滑度和延展性，使皮肤和头发感觉更柔软。对大多数肤质，包括干性和敏感肌，都具有较好耐受性，仅在极少数人群中可能引起轻微堵塞或刺激。它不属于传统意义上会致干的酒精，也不在防腐剂、内分泌干扰物、致癌物或重金属等高关注问题成分之列。\",\"category\":\"脂肪醇 / 柔润剂 / 乳化稳定剂\"}",
+    "lastUpdated": 1764803353087,
+    "createdAt": 1764803353087
+  },
+  "海藻糖__personal_care__zh": {
+    "analysis": "{\"name\":\"海藻糖\",\"riskLevel\":\"low\",\"summary\":\"海藻糖是一种保湿性很强的糖类成分，常用于护肤品中帮助锁水并提升皮肤柔软度。整体安全性较高，刺激性很低。\",\"details\":\"海藻糖可以在皮肤表面形成保湿保护膜，减少水分流失，同时在一定程度上帮助皮肤对抗环境干燥和轻微刺激。它不属于防腐剂、表面活性剂或已知的内分泌干扰物，也不是常见的过敏源，一般肤质包括敏感肌都较易耐受。极少数人可能对糖类或配方中其他成分存在个体不耐受，如出现红痒应停用并观察。\",\"category\":\"保湿剂 / 皮肤调理剂\"}",
+    "lastUpdated": 1764803353125,
+    "createdAt": 1764803353125
+  },
+  "环戊硅氧烷__personal_care__zh": {
+    "analysis": "{\"name\":\"环戊硅氧烷\",\"riskLevel\":\"moderate\",\"summary\":\"环戊硅氧烷是一种常用于护肤品、彩妆和护发产品中的挥发性硅油，能带来丝滑、易涂抹的肤感。一般外用短期安全性较好，但在环境和持久性方面存在一定争议。\",\"details\":\"环戊硅氧烷能在皮肤和头发表面形成柔滑的薄膜，改善延展性和使用手感，本身刺激性较低，正常化妆品用量下对大多数人较为安全。但部分研究提示其在动物实验中可能具有内分泌干扰潜力，且为持久性环境污染物，在欧盟被限制用于冲洗型产品的高含量配方。敏感肌或孕期人群如有顾虑，可减少高含量硅油产品的使用或选择标注无硅配方。\",\"category\":\"硅油 / 成膜剂\"}",
+    "lastUpdated": 1764803353157,
+    "createdAt": 1764803353157
+  },
+  "茶叶提取物（山茶叶提取物）__personal_care__zh": {
+    "analysis": "{\"name\":\"茶叶提取物（山茶叶提取物）\",\"riskLevel\":\"low\",\"summary\":\"茶叶提取物常用于护肤品中，具有抗氧化、舒缓和一定的抗炎作用，一般被认为较为安全。通常对大多数肤质温和友好。\",\"details\":\"茶叶提取物富含多酚类（如儿茶素）、咖啡因等成分，可帮助中和自由基，减缓皮肤光老化，对敏感或轻微受刺激皮肤有一定舒缓效果。其致敏率较低，但极个别人可能对植物提取物产生过敏或刺激反应，如出现红痒需停止使用。该成分并不属于防腐剂、硫酸盐、邻苯二甲酸酯、矿物油、硅油或释放甲醛类等高争议成分，整体安全性较高。\",\"category\":\"植物提取物/抗氧化剂\"}",
+    "lastUpdated": 1764803353270,
+    "createdAt": 1764803353270
+  },
+  "北美金缕梅（hamamelis virginiana）提取物__personal_care__zh": {
+    "analysis": "{\"name\":\"北美金缕梅（Hamamelis Virginiana）提取物\",\"riskLevel\":\"low\",\"summary\":\"北美金缕梅提取物常用于爽肤水、收敛水等个人护理产品，具有收敛、舒缓和抗氧化作用。一般来说对大多数肤质较为温和、安全。\",\"details\":\"北美金缕梅提取物含有单宁和黄酮类成分，可帮助收缩毛孔、减轻轻微炎症并提供一定抗氧化保护。少数敏感或极干性皮肤人群可能会因其收敛性而出现轻微紧绷、干燥或刺激感，建议初次使用时先在小范围测试。与强刺激性酒精搭配使用时，可能会增加干燥感，因此敏感肌人群应关注配方整体是否含高浓度乙醇。\",\"category\":\"植物提取物/舒缓收敛成分\"}",
+    "lastUpdated": 1764803353282,
+    "createdAt": 1764803353282
+  },
+  "澳洲坚果籽油（山榄籽油）__personal_care__zh": {
+    "analysis": "{\"name\":\"澳洲坚果籽油（山榄籽油）\",\"riskLevel\":\"low\",\"summary\":\"澳洲坚果籽油是一种常用的植物油，具有良好的滋润和柔润皮肤功效，一般被认为较为温和安全。对坚果过敏人群可能存在潜在过敏风险。\",\"details\":\"澳洲坚果籽油富含油酸和棕榈油酸，可帮助修护皮肤屏障、减缓水分流失，常用于面霜、身体乳、护发油等个人护理产品中。该成分不属于防腐剂、硫酸盐、邻苯二甲酸酯、甲醛释放体等高争议成分，一般刺激性较低。但极少数敏感或坚果过敏者可能出现红肿、瘙痒等接触性过敏反应，首次使用建议小面积测试。\",\"category\":\"植物油/润肤剂\"}",
+    "lastUpdated": 1764803353282,
+    "createdAt": 1764803353282
+  },
+  "鲸蜡基辛酸酯__personal_care__zh": {
+    "analysis": "{\"name\":\"鲸蜡基辛酸酯\",\"riskLevel\":\"low\",\"summary\":\"鲸蜡基辛酸酯是一种常用的合成酯类润肤剂和柔润剂，能让皮肤感觉柔滑不油腻。一般被认为安全性较高，刺激性较低。\",\"details\":\"它通常由鲸蜡醇和2-乙基己酸反应制得，具有良好的延展性和轻盈的肤感，常用于面霜、乳液、彩妆等个人护理产品中。对于大多数肤质，包括干性和轻度敏感肌，耐受性良好，但极少数敏感人群可能会出现轻微刺激或闭口粉刺，需要个别观察。该成分不属于防腐剂、硫酸盐、邻苯二甲酸酯或疑似内分泌干扰物等高关注成分。\",\"category\":\"润肤剂 / 柔润剂\"}",
+    "lastUpdated": 1764803353352,
+    "createdAt": 1764803353352
+  },
+  "聚山梨醇酯-20（吐温20）__personal_care__zh": {
+    "analysis": "{\"name\":\"聚山梨醇酯-20（吐温20）\",\"riskLevel\":\"low\",\"summary\":\"聚山梨醇酯-20是一种常用的非离子型表面活性剂和乳化剂，广泛用于护肤品、洗发水和彩妆中，帮助油水混合并稳定配方。总体来说在化妆品中使用被认为相对安全。\",\"details\":\"该成分通常由山梨醇、环氧乙烷和脂肪酸反应制得，具有良好的溶解和分散能力，可帮助精油或香精在水性体系中均匀分布。对大多数人来说刺激性较低，但敏感肌或受损皮肤在高浓度或频繁使用时，偶尔可能出现轻微刺激或致敏反应。与其他潜在问题成分（如防腐剂、香精）共同使用时，个别人群的皮肤不适感可能被放大，需要敏感肌人群留意皮肤反应。\",\"category\":\"表面活性剂 / 乳化剂 / 溶解剂\"}",
+    "lastUpdated": 1764803353366,
+    "createdAt": 1764803353366
+  },
+  "异丙基肉豆蔻酸酯__personal_care__zh": {
+    "analysis": "{\"name\":\"异丙基肉豆蔻酸酯\",\"riskLevel\":\"low\",\"summary\":\"异丙基肉豆蔻酸酯是一种常用的润肤和增滑剂，能让皮肤感觉柔软光滑。通常被认为安全性较高，但部分易长痘人群可能会出现毛孔堵塞或爆痘。\",\"details\":\"这种成分常见于面霜、身体乳、防晒、彩妆中，用来改善延展性和肤感，不属于防腐剂、硫酸盐、邻苯二甲酸酯等高争议成分。对大多数肤质来说刺激性较低，但在痘痘肌、油性肌上有一定致粉刺潜力，若发现闭口或粉刺增多可考虑避免含有该成分的产品。一般情况下正常使用并不会引发全身性毒性或激素干扰问题。\",\"category\":\"润肤剂 / 质感改良剂\"}",
+    "lastUpdated": 1764803353392,
+    "createdAt": 1764803353392
+  },
+  "聚甘油-3 甲基葡糖二硬脂酸酯__personal_care__zh": {
+    "analysis": "{\"name\":\"聚甘油-3 甲基葡糖二硬脂酸酯\",\"riskLevel\":\"low\",\"summary\":\"聚甘油-3 甲基葡糖二硬脂酸酯是一种常用的非离子型乳化剂和表面活性剂，来源多为植物油和糖类衍生物。它通常被认为温和、安全，适用于多种肤质，包括敏感肌。\",\"details\":\"该成分主要用于帮助油相和水相形成稳定乳液，使面霜、乳液等质地细腻均匀，并改善产品的延展性和肤感。它不属于防腐剂、硫酸盐、邻苯二甲酸酯、甲醛释放体、矿物油、硅油或强刺激酒精，也与内分泌干扰物（如对羟基苯甲酸酯、三氯生）无直接关联。一般刺激性较低，仅极少数极度敏感人群可能出现轻微刺激或不耐受。\",\"category\":\"乳化剂 / 表面活性剂\"}",
+    "lastUpdated": 1764803353555,
+    "createdAt": 1764803353555
+  },
+  "洋甘菊（母菊）花提取物__personal_care__zh": {
+    "analysis": "{\"name\":\"洋甘菊（母菊）花提取物\",\"riskLevel\":\"low\",\"summary\":\"洋甘菊（母菊）花提取物是一种常见的植物舒缓成分，具有镇静、抗氧化和减缓皮肤刺激的作用。一般来说安全性较高，常用于敏感肌和婴儿护理产品中。\",\"details\":\"该成分主要含有黄酮类和母菊蓝等活性物质，可以帮助缓解皮肤发红、干痒和轻微炎症，并在护肤品中起到舒缓与抗氧化的辅助作用。总体毒性和致敏性较低，但对菊科植物过敏人群可能出现接触性过敏或刺激，建议对高度敏感或有花粉/菊科过敏史者先做局部皮试。它通常不与防腐剂释放甲醛、邻苯二甲酸酯、硫酸盐或矿物油等高争议成分直接相关，适合作为温和型个人护理产品中的植物添加物。\",\"category\":\"植物提取物/舒缓成分\"}",
+    "lastUpdated": 1764803353589,
+    "createdAt": 1764803353589
+  },
+  "环己六硅氧烷__personal_care__zh": {
+    "analysis": "{\"name\":\"环己六硅氧烷\",\"riskLevel\":\"moderate\",\"summary\":\"环己六硅氧烷是一种常见于护肤品和彩妆中的挥发性硅油，赋予产品丝滑、易推开的肤感。一般皮肤刺激性较低，但其在环境中难降解且可能具有生物累积性，引发一定安全与环保争议。\",\"details\":\"在个人护理品中，环己六硅氧烷主要用作柔润剂和挥发性载体，帮助产品在皮肤和头发表面形成柔滑触感，同时快速挥发以减少黏腻残留。现有数据表明其对皮肤和眼睛的刺激性通常较低，但个别人群仍可能出现轻微刺激或毛孔堵塞感。部分研究和监管机构对某些低聚硅氧烷的潜在生殖毒性和环境持久性保持谨慎态度，因此一些地区对其在留敷类产品中的用量有管控趋势。\",\"category\":\"硅油/硅氧烷成分\"}",
+    "lastUpdated": 1764803353598,
+    "createdAt": 1764803353598
+  },
+  "聚二甲基硅醇（dimethiconol）__personal_care__zh": {
+    "analysis": "{\"name\":\"聚二甲基硅醇（Dimethiconol）\",\"riskLevel\":\"low\",\"summary\":\"聚二甲基硅醇是一种硅油衍生物，常用于护肤品和洗护发产品中，起到柔滑、成膜和顺滑头发的作用。一般认为皮肤刺激性较低，安全性较好。\",\"details\":\"它能在皮肤或头发表面形成透气性薄膜，提升柔滑度与光泽感，并减少水分流失，带来顺滑不黏腻的肤感或发感。该成分分子量较大，通常较难被皮肤深入吸收，因此全身毒性风险较低，但可能在敏感或易生痘人群中造成一定封闭感，偶尔与毛孔堵塞、头皮闷痘等问题相关。总体来说，在法规允许浓度内使用被认为相对安全，但长期大量使用可能会造成头发和皮肤表面堆积，需要通过适当清洁洗去。\",\"category\":\"硅油类柔润剂 / 成膜剂\"}",
+    "lastUpdated": 1764803353776,
+    "createdAt": 1764803353776
+  },
+  "乙二胺四乙酸二钠__personal_care__zh": {
+    "analysis": "{\"name\":\"乙二胺四乙酸二钠\",\"riskLevel\":\"low\",\"summary\":\"乙二胺四乙酸二钠是一种常用螯合剂，帮助稳定配方并提升清洁或防腐成分的效果。通常被认为安全性较高，对敏感肌肤一般也较为温和。\",\"details\":\"在个人护理品中，乙二胺四乙酸二钠通过络合金属离子，减少配方因金属杂质而变色、变质或降低功效。常用于洗发水、沐浴露、洁面、乳液和彩妆等，典型使用浓度较低。已有安全评估表明在化妆品常规用量下刺激性和致敏风险较低，但极少数敏感人群仍可能出现轻微刺激或接触性皮炎，应在严重受损或高度敏感皮肤上适度留意。\",\"category\":\"螯合剂 / 配方稳定剂\"}",
+    "lastUpdated": 1764803353847,
+    "createdAt": 1764803353847
   }
 }

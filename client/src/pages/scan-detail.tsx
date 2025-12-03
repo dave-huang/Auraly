@@ -115,11 +115,15 @@ export default function ScanDetailPage() {
 
   const ingredients = (scan.analysisResults as Ingredient[]) || [];
   
-  const filteredIngredients = ingredients.filter(ingredient => {
-    const matchesSearch = ingredient.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesRisk = selectedRisk === "all" || ingredient.riskLevel === selectedRisk;
-    return matchesSearch && matchesRisk;
-  });
+  const riskOrder: Record<RiskLevel, number> = { high: 0, moderate: 1, low: 2 };
+  
+  const filteredIngredients = ingredients
+    .filter(ingredient => {
+      const matchesSearch = ingredient.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesRisk = selectedRisk === "all" || ingredient.riskLevel === selectedRisk;
+      return matchesSearch && matchesRisk;
+    })
+    .sort((a, b) => riskOrder[a.riskLevel] - riskOrder[b.riskLevel]);
 
   const riskCounts = {
     low: ingredients.filter(i => i.riskLevel === 'low').length,
