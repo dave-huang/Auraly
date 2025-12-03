@@ -27,16 +27,10 @@ export const users = pgTable("users", {
 export type User = typeof users.$inferSelect;
 export type UpsertUser = typeof users.$inferInsert;
 
-// Extended product categories for history
+// Simplified product categories (2 main categories)
 export const productCategories = [
-  "food",
-  "skincare",
-  "haircare",
-  "cosmetics",
-  "oral-care",
-  "fragrance",
-  "lotion",
-  "other"
+  "food",           // Food & Supplements (food, beverages, vitamins, supplements, etc.)
+  "personal_care"   // Personal Care (skincare, haircare, cosmetics, fragrance, body care)
 ] as const;
 
 export type ProductCategory = typeof productCategories[number];
@@ -48,7 +42,7 @@ export const scanHistory = pgTable(
     id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
     userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
     productName: varchar("product_name").notNull().default("Unnamed Product"),
-    productCategory: varchar("product_category").notNull().default("other"),
+    productCategory: varchar("product_category").notNull().default("food"),
     originalImageUrl: text("original_image_url"),
     detectedIngredients: text("detected_ingredients").array().notNull().default(sql`ARRAY[]::text[]`),
     analysisResults: jsonb("analysis_results").notNull(),
@@ -67,12 +61,10 @@ export const scanHistory = pgTable(
 export type ScanHistory = typeof scanHistory.$inferSelect;
 export type InsertScanHistory = typeof scanHistory.$inferInsert;
 
-// Product types that can be analyzed
+// Product types that can be analyzed (simplified to 2 categories)
 export const productTypes = [
-  "food",
-  "skincare",
-  "oral-care",
-  "cosmetics"
+  "food",           // Food & Supplements
+  "personal_care"   // Personal Care
 ] as const;
 
 export type ProductType = typeof productTypes[number];

@@ -74,45 +74,43 @@
       "title": "Auraly"
     },
     "selectType": {
-      "title": "您要扫描什么？",
-      "subtitle": "选择产品类型以获得准确分析"
+      "title": "您今天要扫描什么？",
+      "subtitle": "选择类别以获得最准确的分析"
     },
     "uploadImage": {
       "title": "扫描标签",
       "subtitle": "将相机对准成分列表"
     },
+    "categories": {
+      "food": {
+        "label": "食品和保健品",
+        "description": "食品、饮料、维生素、矿物质、蛋白粉及所有入口产品"
+      },
+      "personalCare": {
+        "label": "个人护理",
+        "description": "护肤、护发、化妆品、香水、肥皂及身体护理产品"
+      }
+    },
     "productTypes": {
       "food": {
-        "label": "食品",
-        "description": "零食、餐食、饮料"
+        "label": "食品和保健品",
+        "description": "食品、饮料、维生素"
+      },
+      "personal_care": {
+        "label": "个人护理",
+        "description": "护肤、护发、化妆品"
       },
       "skincare": {
-        "label": "护肤 / 护发",
-        "description": "乳液、洗发水、精华液"
+        "label": "个人护理",
+        "description": "护肤、护发、化妆品"
       },
       "oralCare": {
-        "label": "口腔护理",
-        "description": "牙膏、漱口水"
+        "label": "个人护理",
+        "description": "护肤、护发、化妆品"
       },
       "cosmetics": {
-        "label": "化妆品 / 香水",
-        "description": "化妆品、香水"
-      },
-      "haircare": {
-        "label": "护发",
-        "description": "洗发水、护发素"
-      },
-      "fragrance": {
-        "label": "香水",
-        "description": "香水、古龙水"
-      },
-      "lotion": {
-        "label": "乳液",
-        "description": "身体乳液、面霜"
-      },
-      "other": {
-        "label": "其他",
-        "description": "其他产品"
+        "label": "个人护理",
+        "description": "护肤、护发、化妆品"
       }
     },
     "analyzing": {
@@ -216,15 +214,17 @@
     "cancel": "取消"
   },
   "history": {
-    "title": "我的扫描",
+    "title": "扫描历史",
     "empty": "暂无扫描记录",
     "emptyDesc": "开始扫描产品标签来建立您的成分历史记录。",
+    "noResultsForFilter": "未找到此类别的扫描记录。",
+    "startScanning": "开始扫描",
     "endOfList": "已加载全部",
     "highRisk": "高风险",
     "moderate": "中等风险",
     "lowRisk": "低风险",
     "delete": "删除",
-    "deleteAll": "删除全部",
+    "deleteAll": "清空全部",
     "deleteConfirmTitle": "删除此扫描记录？",
     "deleteConfirmDesc": "此操作无法撤销。此扫描记录将从您的历史中永久删除。",
     "deleteAllConfirmTitle": "删除所有扫描记录？",
@@ -235,6 +235,15 @@
     "deleteAllSuccessDesc": "您的扫描历史已清空。",
     "scanNotFound": "扫描记录未找到",
     "scanNotFoundDesc": "此扫描记录可能已被删除或不存在。",
-    "backToHistory": "返回历史记录"
+    "backToHistory": "返回历史记录",
+    "filters": {
+      "all": "全部",
+      "food": "食品",
+      "personal_care": "个护"
+    },
+    "categories": {
+      "food": "食品和保健品",
+      "personal_care": "个人护理"
+    }
   }
 }

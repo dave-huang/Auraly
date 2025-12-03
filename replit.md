@@ -4,7 +4,16 @@
 Auraly is a mobile-friendly web application designed to help users understand the ingredients in their food, skincare, and personal care products. It allows users to scan or upload product labels in any language, using AI to extract and analyze ingredients, highlighting potential health risks with clear, user-friendly explanations. The project's vision is to empower users with knowledge about product compositions, fostering informed choices for better health and wellness.
 
 ## Recent Changes (December 3, 2025)
-### Mobile Background Resilience Improvements
+### Simplified Two-Category System
+- **Two Categories Only**: Streamlined from multiple product types to just two main categories:
+  * **Food & Supplements** (`food`): Food, beverages, vitamins, minerals, protein powders, and anything consumable
+  * **Personal Care** (`personal_care`): Skincare, haircare, cosmetics, fragrance, soaps, oral care, and body care products
+- **Redesigned Category Selection**: Large, touch-friendly category cards with icons (utensils for food, spray bottle for personal care)
+- **Updated AI Analysis Context**: Category-specific safety criteria for more relevant ingredient analysis
+- **History Page Filtering**: Filter scans by category (All, Food & Supplements, Personal Care) with visual category badges
+- **Full Translation Updates**: All three languages (EN, ES, ZH) updated for new category structure
+
+### Previous: Mobile Background Resilience Improvements
 - **Visibility Change Handler**: Automatically resumes polling when user returns from background (minimizing browser or locking screen)
 - **Wake Lock Re-acquisition**: Screen Wake Lock is re-acquired when page becomes visible again
 - **Request ID Tracking**: Active analysis request IDs are stored to enable polling resumption

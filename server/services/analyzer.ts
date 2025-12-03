@@ -549,8 +549,8 @@ function expandParentheticalIngredients(text: string): string {
   }
 }
 
-const PRODUCT_TYPE_CONTEXTS = {
-  food: `Food products. Focus on:
+const PRODUCT_TYPE_CONTEXTS: Record<ProductType, string> = {
+  food: `Food & Supplements (including beverages, vitamins, minerals, gummies, meal replacements, protein powders, functional drinks). Focus on:
     - Food additives (E-numbers, preservatives, colorants)
     - Artificial sweeteners (aspartame, sucralose, saccharin)
     - Trans fats and hydrogenated oils
@@ -558,9 +558,12 @@ const PRODUCT_TYPE_CONTEXTS = {
     - Allergens (gluten, nuts, dairy, soy)
     - Artificial flavors and colors
     - High fructose corn syrup
-    - MSG and flavor enhancers`,
+    - MSG and flavor enhancers
+    - Supplement fillers and binders
+    - Heavy metals in supplements
+    - Vitamin toxicity risks (fat-soluble vitamins)`,
   
-  skincare: `Skincare and haircare products. Focus on:
+  personal_care: `Personal Care products (skincare, haircare, cosmetics, fragrance, soaps, body care, oral care). Focus on:
     - Parabens (hormone disruptors)
     - Sulfates (SLS, SLES)
     - Phthalates
@@ -569,24 +572,11 @@ const PRODUCT_TYPE_CONTEXTS = {
     - Mineral oil and petrolatum
     - Silicones
     - Alcohols (drying types)
-    - Heavy metals (lead, mercury)`,
-  
-  'oral-care': `Oral care products. Focus on:
+    - Heavy metals (lead, mercury, arsenic)
     - Triclosan (endocrine disruptor)
-    - SLS (sodium lauryl sulfate)
-    - Artificial sweeteners
-    - Microbeads (plastic particles)
-    - Fluoride (in excessive amounts)
-    - Parabens
     - DEA (diethanolamine)
-    - Propylene glycol`,
-  
-  cosmetics: `Cosmetics and fragrance products. Focus on:
-    - Parabens
-    - Phthalates (in fragrances)
-    - Formaldehyde
+    - Propylene glycol
     - Toluene
-    - Heavy metals (lead, arsenic)
     - Coal tar dyes
     - BHA and BHT
     - Synthetic fragrance compounds

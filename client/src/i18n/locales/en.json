@@ -74,45 +74,43 @@
       "title": "Auraly"
     },
     "selectType": {
-      "title": "What are you scanning?",
-      "subtitle": "Select the product type for accurate analysis"
+      "title": "What are you scanning today?",
+      "subtitle": "Choose a category for the most accurate analysis"
     },
     "uploadImage": {
       "title": "Scan Label",
       "subtitle": "Point your camera at the ingredient list"
     },
+    "categories": {
+      "food": {
+        "label": "Food & Supplements",
+        "description": "Food, beverages, vitamins, minerals, protein powders, and anything you consume"
+      },
+      "personalCare": {
+        "label": "Personal Care",
+        "description": "Skincare, haircare, cosmetics, fragrance, soaps, and body care products"
+      }
+    },
     "productTypes": {
       "food": {
-        "label": "Food",
-        "description": "Snacks, meals, beverages"
+        "label": "Food & Supplements",
+        "description": "Food, beverages, vitamins"
+      },
+      "personal_care": {
+        "label": "Personal Care",
+        "description": "Skincare, haircare, cosmetics"
       },
       "skincare": {
-        "label": "Skincare / Haircare",
-        "description": "Lotions, shampoos, serums"
+        "label": "Personal Care",
+        "description": "Skincare, haircare, cosmetics"
       },
       "oralCare": {
-        "label": "Oral Care",
-        "description": "Toothpaste, mouthwash"
+        "label": "Personal Care",
+        "description": "Skincare, haircare, cosmetics"
       },
       "cosmetics": {
-        "label": "Cosmetics / Fragrance",
-        "description": "Makeup, perfumes"
-      },
-      "haircare": {
-        "label": "Haircare",
-        "description": "Shampoos, conditioners"
-      },
-      "fragrance": {
-        "label": "Fragrance",
-        "description": "Perfumes, colognes"
-      },
-      "lotion": {
-        "label": "Lotion",
-        "description": "Body lotions, creams"
-      },
-      "other": {
-        "label": "Other",
-        "description": "Other products"
+        "label": "Personal Care",
+        "description": "Skincare, haircare, cosmetics"
       }
     },
     "analyzing": {
@@ -216,15 +214,17 @@
     "cancel": "Cancel"
   },
   "history": {
-    "title": "My Scans",
+    "title": "Scan History",
     "empty": "No Scans Yet",
     "emptyDesc": "Start scanning product labels to build your ingredient history.",
+    "noResultsForFilter": "No scans found for this category.",
+    "startScanning": "Start Scanning",
     "endOfList": "You've reached the end",
     "highRisk": "high risk",
     "moderate": "moderate",
     "lowRisk": "low risk",
     "delete": "Delete",
-    "deleteAll": "Delete All",
+    "deleteAll": "Clear All",
     "deleteConfirmTitle": "Delete this scan?",
     "deleteConfirmDesc": "This action cannot be undone. This scan will be permanently removed from your history.",
     "deleteAllConfirmTitle": "Delete all scans?",
@@ -235,6 +235,15 @@
     "deleteAllSuccessDesc": "Your scan history has been cleared.",
     "scanNotFound": "Scan Not Found",
     "scanNotFoundDesc": "This scan may have been deleted or doesn't exist.",
-    "backToHistory": "Back to History"
+    "backToHistory": "Back to History",
+    "filters": {
+      "all": "All",
+      "food": "Food",
+      "personal_care": "Personal Care"
+    },
+    "categories": {
+      "food": "Food & Supplements",
+      "personal_care": "Personal Care"
+    }
   }
 }

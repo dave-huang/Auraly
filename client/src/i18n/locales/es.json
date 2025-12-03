@@ -74,45 +74,43 @@
       "title": "Auraly"
     },
     "selectType": {
-      "title": "¿Qué estás escaneando?",
-      "subtitle": "Selecciona el tipo de producto para un análisis preciso"
+      "title": "¿Qué estás escaneando hoy?",
+      "subtitle": "Elige una categoría para el análisis más preciso"
     },
     "uploadImage": {
       "title": "Escanear Etiqueta",
       "subtitle": "Apunta tu cámara a la lista de ingredientes"
     },
+    "categories": {
+      "food": {
+        "label": "Alimentos y Suplementos",
+        "description": "Alimentos, bebidas, vitaminas, minerales, proteínas en polvo y todo lo que consumes"
+      },
+      "personalCare": {
+        "label": "Cuidado Personal",
+        "description": "Cuidado de la piel, cabello, cosméticos, fragancias, jabones y productos corporales"
+      }
+    },
     "productTypes": {
       "food": {
-        "label": "Alimentos",
-        "description": "Bocadillos, comidas, bebidas"
+        "label": "Alimentos y Suplementos",
+        "description": "Alimentos, bebidas, vitaminas"
+      },
+      "personal_care": {
+        "label": "Cuidado Personal",
+        "description": "Piel, cabello, cosméticos"
       },
       "skincare": {
-        "label": "Cuidado de la Piel / Cabello",
-        "description": "Lociones, champús, sueros"
+        "label": "Cuidado Personal",
+        "description": "Piel, cabello, cosméticos"
       },
       "oralCare": {
-        "label": "Cuidado Bucal",
-        "description": "Pasta de dientes, enjuague bucal"
+        "label": "Cuidado Personal",
+        "description": "Piel, cabello, cosméticos"
       },
       "cosmetics": {
-        "label": "Cosméticos / Fragancias",
-        "description": "Maquillaje, perfumes"
-      },
-      "haircare": {
-        "label": "Cuidado del Cabello",
-        "description": "Champús, acondicionadores"
-      },
-      "fragrance": {
-        "label": "Fragancia",
-        "description": "Perfumes, colonias"
-      },
-      "lotion": {
-        "label": "Loción",
-        "description": "Lociones corporales, cremas"
-      },
-      "other": {
-        "label": "Otro",
-        "description": "Otros productos"
+        "label": "Cuidado Personal",
+        "description": "Piel, cabello, cosméticos"
       }
     },
     "analyzing": {
@@ -216,15 +214,17 @@
     "cancel": "Cancelar"
   },
   "history": {
-    "title": "Mis Escaneos",
+    "title": "Historial de Escaneos",
     "empty": "Sin Escaneos Aún",
     "emptyDesc": "Comienza a escanear etiquetas de productos para crear tu historial de ingredientes.",
+    "noResultsForFilter": "No se encontraron escaneos para esta categoría.",
+    "startScanning": "Comenzar a Escanear",
     "endOfList": "Has llegado al final",
     "highRisk": "riesgo alto",
     "moderate": "moderado",
     "lowRisk": "riesgo bajo",
     "delete": "Eliminar",
-    "deleteAll": "Eliminar Todo",
+    "deleteAll": "Borrar Todo",
     "deleteConfirmTitle": "¿Eliminar este escaneo?",
     "deleteConfirmDesc": "Esta acción no se puede deshacer. Este escaneo será eliminado permanentemente de tu historial.",
     "deleteAllConfirmTitle": "¿Eliminar todos los escaneos?",
@@ -235,6 +235,15 @@
     "deleteAllSuccessDesc": "Tu historial de escaneos ha sido borrado.",
     "scanNotFound": "Escaneo No Encontrado",
     "scanNotFoundDesc": "Este escaneo puede haber sido eliminado o no existe.",
-    "backToHistory": "Volver al Historial"
+    "backToHistory": "Volver al Historial",
+    "filters": {
+      "all": "Todos",
+      "food": "Alimentos",
+      "personal_care": "Cuidado Personal"
+    },
+    "categories": {
+      "food": "Alimentos y Suplementos",
+      "personal_care": "Cuidado Personal"
+    }
   }
 }

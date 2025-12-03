@@ -3,6 +3,7 @@ import { useLocation, Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   AlertDialog,
   AlertDialogAction,
@@ -14,7 +15,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { ArrowLeft, Trash2, Clock, AlertTriangle, Loader2, Package } from "lucide-react";
+import { ArrowLeft, Trash2, Clock, AlertTriangle, Loader2, Package, UtensilsCrossed, SprayCan } from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useTranslation } from "react-i18next";
@@ -39,6 +40,20 @@ const riskConfig = {
   }
 };
 
+const categoryConfig = {
+  food: {
+    icon: UtensilsCrossed,
+    bgColor: "bg-orange-50 dark:bg-orange-950/20",
+    textColor: "text-orange-700 dark:text-orange-400",
+  },
+  personal_care: {
+    icon: SprayCan,
+    bgColor: "bg-purple-50 dark:bg-purple-950/20", 
+    textColor: "text-purple-700 dark:text-purple-400",
+  }
+};
+
+type CategoryFilter = "all" | "food" | "personal_care";
 
 interface HistoryResponse {
   scans: ScanHistory[];
@@ -55,6 +70,7 @@ export default function HistoryPage() {
   const queryClient = useQueryClient();
   const [offset, setOffset] = useState(0);
   const [allScans, setAllScans] = useState<ScanHistory[]>([]);
+  const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>("all");
   const limit = 20;
 
   const { data, isLoading, error, isFetching } = useQuery<HistoryResponse>({
@@ -136,6 +152,15 @@ export default function HistoryPage() {
     });
   };
 
+  const normalizeCategory = (category: string): "food" | "personal_care" => {
+    if (category === "food") return "food";
+    return "personal_care";
+  };
+
+  const filteredScans = categoryFilter === "all" 
+    ? allScans 
+    : allScans.filter(scan => normalizeCategory(scan.productCategory) === categoryFilter);
+
   if (error) {
     return (
       <div className="min-h-screen bg-background p-4">
@@ -160,7 +185,7 @@ export default function HistoryPage() {
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-2xl mx-auto p-4">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-4">
             <Link href="/">
               <Button variant="ghost" size="icon" data-testid="button-back">
@@ -173,7 +198,7 @@ export default function HistoryPage() {
           {allScans.length > 0 && (
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="destructive" size="sm" data-testid="button-delete-all">
+                <Button variant="outline" size="sm" data-testid="button-delete-all">
                   <Trash2 className="w-4 h-4 mr-2" />
                   {t('history.deleteAll')}
                 </Button>
@@ -204,6 +229,24 @@ export default function HistoryPage() {
           )}
         </div>
 
+        {allScans.length > 0 && (
+          <Tabs value={categoryFilter} onValueChange={(v) => setCategoryFilter(v as CategoryFilter)} className="mb-6">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="all" data-testid="filter-all">
+                {t('history.filters.all')}
+              </TabsTrigger>
+              <TabsTrigger value="food" data-testid="filter-food">
+                <UtensilsCrossed className="w-4 h-4 mr-1" />
+                {t('history.filters.food')}
+              </TabsTrigger>
+              <TabsTrigger value="personal_care" data-testid="filter-personal-care">
+                <SprayCan className="w-4 h-4 mr-1" />
+                {t('history.filters.personal_care')}
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+        )}
+
         {isLoading && offset === 0 ? (
           <div className="flex flex-col items-center justify-center py-16">
             <Loader2 className="w-8 h-8 animate-spin text-primary mb-4" />
@@ -216,15 +259,29 @@ export default function HistoryPage() {
             <p className="text-muted-foreground mb-6">{t('history.emptyDesc')}</p>
             <Link href="/upload">
               <Button data-testid="button-start-scanning">
-                {t('landing.hero.cta')}
+                {t('history.startScanning')}
               </Button>
             </Link>
           </Card>
+        ) : filteredScans.length === 0 ? (
+          <Card className="p-8 text-center">
+            <Package className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+            <h2 className="text-lg font-semibold mb-2">{t('history.noResultsForFilter')}</h2>
+            <p className="text-muted-foreground mb-4">
+              {t(`history.categories.${categoryFilter}`)}
+            </p>
+            <Button variant="outline" onClick={() => setCategoryFilter("all")} data-testid="button-show-all">
+              {t('history.filters.all')}
+            </Button>
+          </Card>
         ) : (
           <div className="space-y-4">
-            {allScans.map((scan) => {
+            {filteredScans.map((scan) => {
               const riskSummary = getRiskSummary(scan);
-              const config = riskConfig[scan.overallRisk as keyof typeof riskConfig] || riskConfig.low;
+              const riskConf = riskConfig[scan.overallRisk as keyof typeof riskConfig] || riskConfig.low;
+              const normalizedCat = normalizeCategory(scan.productCategory);
+              const catConf = categoryConfig[normalizedCat];
+              const CatIcon = catConf.icon;
               
               return (
                 <Link
@@ -249,14 +306,16 @@ export default function HistoryPage() {
                           <h3 className="font-semibold truncate" data-testid={`text-product-name-${scan.id}`}>
                             {scan.productName}
                           </h3>
-                          <Badge className={`${config.bgColor} ${config.textColor} border-0 text-xs flex-shrink-0`}>
+                          <Badge className={`${riskConf.bgColor} ${riskConf.textColor} border-0 text-xs flex-shrink-0`}>
                             {t(`results.riskLevels.${scan.overallRisk}`)}
                           </Badge>
                         </div>
                         
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-                          <span>{t(`upload.productTypes.${scan.productCategory === 'oral-care' ? 'oralCare' : scan.productCategory}.label`, { defaultValue: scan.productCategory })}</span>
-                          <span>•</span>
+                        <div className="flex items-center flex-wrap gap-2 text-sm text-muted-foreground mb-2">
+                          <Badge variant="outline" className={`${catConf.bgColor} ${catConf.textColor} border-0 text-xs`}>
+                            <CatIcon className="w-3 h-3 mr-1" />
+                            {t(`history.categories.${normalizedCat}`)}
+                          </Badge>
                           <span className="flex items-center gap-1">
                             <Clock className="w-3 h-3" />
                             {formatDate(scan.createdAt)}
@@ -293,7 +352,7 @@ export default function HistoryPage() {
               </div>
             )}
             
-            {data && !data.hasMore && allScans.length > 0 && (
+            {data && !data.hasMore && filteredScans.length > 0 && (
               <p className="text-center text-sm text-muted-foreground py-4">
                 {t('history.endOfList')}
               </p>
