@@ -268,14 +268,11 @@ export default function ResultsPage() {
               <h3 className="font-semibold text-xl mb-2">
                 {retryCount > 0 ? t('results.retrying.title', { attempt: retryCount + 1 }) : t('results.analyzing.title')}
               </h3>
-              <p className="text-sm text-muted-foreground mb-2">
+              <p className="text-sm text-muted-foreground mb-4">
                 {retryCount > 0 
                   ? t('results.retrying.description') 
                   : t('results.analyzing.description')
                 }
-              </p>
-              <p className="text-xs text-muted-foreground mb-4">
-                {t('results.analyzing.keepActive')}
               </p>
             </div>
             <div className="w-full bg-muted rounded-full h-2 overflow-hidden">

@@ -178,8 +178,7 @@
     "scanAnother": "扫描其他产品",
     "analyzing": {
       "title": "正在分析成分",
-      "description": "正在提取文本并识别潜在健康风险...",
-      "keepActive": "分析期间请保持应用活跃以获得最佳效果"
+      "description": "正在提取文本并识别潜在健康风险..."
     },
     "retrying": {
       "title": "重试中（第 {{attempt}} 次尝试）",

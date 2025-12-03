@@ -178,8 +178,7 @@
     "scanAnother": "Scan Another Product",
     "analyzing": {
       "title": "Analyzing Ingredients",
-      "description": "Extracting text and identifying potential health risks...",
-      "keepActive": "Keep this app active during analysis for best results"
+      "description": "Extracting text and identifying potential health risks..."
     },
     "retrying": {
       "title": "Retrying (Attempt {{attempt}})",
