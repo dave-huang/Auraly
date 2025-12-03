@@ -148,6 +148,8 @@
       "moderate": "Moderate Risk",
       "high": "High Risk"
     },
+    "allergen": "Allergen",
+    "allergenNote": "Common allergen - may affect sensitive individuals",
     "riskSummary": {
       "low": {
         "label": "Low Risk",

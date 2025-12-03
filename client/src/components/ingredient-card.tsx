@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, AlertTriangle } from "lucide-react";
 import type { Ingredient } from "@shared/schema";
 import { useTranslation } from "react-i18next";
 
@@ -44,12 +44,23 @@ export function IngredientCard({ ingredient }: IngredientCardProps) {
             <h3 className="font-semibold text-lg mb-2" data-testid={`text-ingredient-name-${ingredient.name}`}>
               {ingredient.name}
             </h3>
-            <Badge 
-              className={`${config.bgColor} ${config.textColor} border-0 text-xs font-semibold`}
-              data-testid={`badge-risk-${ingredient.riskLevel}`}
-            >
-              {t(`results.riskLevels.${ingredient.riskLevel}`)}
-            </Badge>
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge 
+                className={`${config.bgColor} ${config.textColor} border-0 text-xs font-semibold`}
+                data-testid={`badge-risk-${ingredient.riskLevel}`}
+              >
+                {t(`results.riskLevels.${ingredient.riskLevel}`)}
+              </Badge>
+              {ingredient.isAllergen && (
+                <Badge 
+                  className="bg-purple-100 dark:bg-purple-950/30 text-purple-700 dark:text-purple-400 border-0 text-xs font-semibold"
+                  data-testid={`badge-allergen-${ingredient.name}`}
+                >
+                  <AlertTriangle className="w-3 h-3 mr-1" />
+                  {t('results.allergen')}
+                </Badge>
+              )}
+            </div>
           </div>
           <div className={`w-3 h-3 rounded-full ${config.color} mt-1 flex-shrink-0`} />
         </div>

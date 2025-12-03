@@ -148,6 +148,8 @@
       "moderate": "中等风险",
       "high": "高风险"
     },
+    "allergen": "过敏原",
+    "allergenNote": "常见过敏原 - 可能影响敏感人群",
     "riskSummary": {
       "low": {
         "label": "低风险",
