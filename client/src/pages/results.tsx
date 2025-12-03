@@ -59,6 +59,9 @@ export default function ResultsPage() {
   const [retryCount, setRetryCount] = useState(0);
   const wakeLockRef = useRef<any>(null);
   const hasSavedToHistoryRef = useRef<boolean>(false);
+  const currentRequestIdRef = useRef<string | null>(null);
+  const resolveRef = useRef<((value: AnalysisResult) => void) | null>(null);
+  const rejectRef = useRef<((reason: any) => void) | null>(null);
 
   // Auto-retry mutation with Service Worker polling for mobile background support
   const analyzeMutation = useMutation({
@@ -87,10 +90,14 @@ export default function ResultsPage() {
       }
       
       const requestId = initialResult.requestId;
+      currentRequestIdRef.current = requestId;
       console.log(`[POLLING] Started analysis with request ID: ${requestId}`);
       
       // Use Service Worker for background polling (continues even when tab is backgrounded)
       return new Promise((resolve, reject) => {
+        // Store resolve/reject for visibility change resumption
+        resolveRef.current = resolve;
+        rejectRef.current = reject;
         // Register Service Worker
         if ('serviceWorker' in navigator) {
           navigator.serviceWorker.register('/service-worker.js', { scope: '/' }).then(registration => {
@@ -140,6 +147,9 @@ export default function ResultsPage() {
       setAnalysisResult(data);
       setRetryCount(0);
       setCachedOcrText(null); // Clear cache after successful analysis
+      currentRequestIdRef.current = null;
+      resolveRef.current = null;
+      rejectRef.current = null;
       
       // Clear pending analysis first
       sessionStorage.removeItem('pendingAnalysis');
@@ -166,6 +176,9 @@ export default function ResultsPage() {
     onError: () => {
       // Reset retry count on final error
       setRetryCount(0);
+      currentRequestIdRef.current = null;
+      resolveRef.current = null;
+      rejectRef.current = null;
     }
   });
 
@@ -213,6 +226,34 @@ export default function ResultsPage() {
         wakeLockRef.current = null;
       }
     };
+  }, [analyzeMutation.isPending]);
+
+  // Handle visibility change - re-acquire wake lock and resume polling when user returns from background
+  useEffect(() => {
+    const handleVisibilityChange = async () => {
+      if (document.visibilityState === 'visible') {
+        console.log('[VISIBILITY] Page became visible');
+        
+        // Re-acquire wake lock if analysis is still pending
+        if (analyzeMutation.isPending && 'wakeLock' in navigator) {
+          try {
+            wakeLockRef.current = await (navigator as any).wakeLock.request('screen');
+            console.log('[WAKE-LOCK] Re-acquired after visibility change');
+          } catch (err) {
+            console.log('[WAKE-LOCK] Failed to re-acquire:', (err as any).message);
+          }
+        }
+        
+        // Resume polling if there's an active request
+        if (currentRequestIdRef.current && resolveRef.current && rejectRef.current) {
+          console.log('[VISIBILITY] Resuming polling for request:', currentRequestIdRef.current);
+          directPoll(currentRequestIdRef.current, resolveRef.current, rejectRef.current);
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, [analyzeMutation.isPending]);
 
   // Animate progress bar over 20 seconds
@@ -268,14 +309,11 @@ export default function ResultsPage() {
               <h3 className="font-semibold text-xl mb-2">
                 {retryCount > 0 ? t('results.retrying.title', { attempt: retryCount + 1 }) : t('results.analyzing.title')}
               </h3>
-              <p className="text-sm text-muted-foreground mb-2">
+              <p className="text-sm text-muted-foreground mb-4">
                 {retryCount > 0 
                   ? t('results.retrying.description') 
                   : t('results.analyzing.description')
                 }
-              </p>
-              <p className="text-xs text-muted-foreground mb-4">
-                {t('results.analyzing.keepActive')}
               </p>
             </div>
             <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
