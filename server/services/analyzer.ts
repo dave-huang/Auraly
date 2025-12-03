@@ -549,78 +549,47 @@ function expandParentheticalIngredients(text: string): string {
   }
 }
 
-// Auraly Risk Framework - Health Risk Assessment Criteria
-// Health risk is based on impact to general population at normal exposure
-// Allergens are tracked separately and do NOT affect health risk score
-const AURALY_RISK_FRAMEWORK = `
-AURALY HEALTH RISK FRAMEWORK:
-
-A) HEALTH RISK (PRIMARY SCORE) - Focus ONLY on:
-1. Toxicity - Direct toxic effects on body systems
-2. Carcinogenicity - Cancer-causing potential (IARC classification)
-3. Endocrine disruption - Hormone interference
-4. Metabolic effects - Impact on metabolism, blood sugar, etc.
-5. Chronic ingestion/exposure risks - Long-term health impacts
-6. Additive/process risk - Ultra-processed additives, synthetic preservatives
-
-CRITICAL: Do NOT classify allergens as "high" risk.
-Health risk assesses impact on GENERAL POPULATION at normal exposure.
-
-Risk Level Examples:
-- HIGH: BHA, BHT, Red 3, nitrosamines, titanium dioxide (EU banned), trans fats, hydrogenated fats/oils (contain trans fats), high fructose corn syrup (metabolic harm), parabens, triclosan, formaldehyde
-- MEDIUM: corn syrup, refined sugars, nitrates, polysorbate 80, artificial sweeteners, SLS, propylene glycol, synthetic fragrance
-- LOW: whole foods (milk, oats, peanuts, eggs), herbs, pectin, lecithin, unhydrogenated natural oils, vitamins
-
-CRITICAL CLASSIFICATION RULES:
-- ANY hydrogenated fat/oil (hydrogenated tallow, partially hydrogenated soybean oil, etc.) = HIGH risk because they contain industrial trans fats
-- High fructose corn syrup (HFCS) = HIGH risk due to strong links to obesity, fatty liver disease, insulin resistance, and metabolic syndrome
-- Regular corn syrup or sugar = MODERATE risk (less metabolic harm than HFCS but still concerning)
-
-B) ALLERGEN FLAG (SECONDARY - Separate from health risk):
-Mark isAllergen=true ONLY for top allergens:
-milk, egg, peanut, tree nuts, soy, wheat, sesame, shellfish, fish, gluten
-
-Allergen status must NOT raise the health risk score.
-A peanut is "low" health risk but isAllergen=true.
-`;
-
 const PRODUCT_TYPE_CONTEXTS = {
-  food: `Food products. Apply Auraly Risk Framework focusing on:
-    - Carcinogenic additives (BHA, BHT, Red 3)
-    - Endocrine disruptors (BPA, phthalates)
+  food: `Food products. Focus on:
+    - Food additives (E-numbers, preservatives, colorants)
+    - Artificial sweeteners (aspartame, sucralose, saccharin)
     - Trans fats and hydrogenated oils
-    - Nitrates/nitrites (processed meats)
-    - Ultra-processed additives
-    - Artificial colors (especially azo dyes)
-    - High fructose corn syrup (metabolic impact)
-    Note: Common allergens (milk, eggs, nuts, wheat) are LOW health risk but mark isAllergen=true`,
+    - High sodium content
+    - Allergens (gluten, nuts, dairy, soy)
+    - Artificial flavors and colors
+    - High fructose corn syrup
+    - MSG and flavor enhancers`,
   
-  skincare: `Skincare and haircare products. Apply Auraly Risk Framework focusing on:
-    - Parabens (endocrine disruption)
-    - Phthalates (hormone interference)
+  skincare: `Skincare and haircare products. Focus on:
+    - Parabens (hormone disruptors)
+    - Sulfates (SLS, SLES)
+    - Phthalates
     - Formaldehyde-releasing preservatives
-    - Heavy metals (lead, mercury)
-    - Coal tar derivatives
-    - Triclosan
-    - BHA/BHT
-    Note: Fragrance allergens are LOW health risk but may mark isAllergen=true if applicable`,
+    - Fragrance (potential allergens)
+    - Mineral oil and petrolatum
+    - Silicones
+    - Alcohols (drying types)
+    - Heavy metals (lead, mercury)`,
   
-  'oral-care': `Oral care products. Apply Auraly Risk Framework focusing on:
-    - Triclosan (endocrine disruptor, now banned in many regions)
+  'oral-care': `Oral care products. Focus on:
+    - Triclosan (endocrine disruptor)
+    - SLS (sodium lauryl sulfate)
+    - Artificial sweeteners
+    - Microbeads (plastic particles)
+    - Fluoride (in excessive amounts)
     - Parabens
     - DEA (diethanolamine)
-    - SLS (skin irritation, moderate concern)
-    - Microbeads (environmental + ingestion risk)
-    - Artificial sweeteners (metabolic effects)`,
+    - Propylene glycol`,
   
-  cosmetics: `Cosmetics and fragrance products. Apply Auraly Risk Framework focusing on:
-    - Parabens (endocrine disruption)
-    - Phthalates (in synthetic fragrances)
-    - Formaldehyde and formaldehyde-releasers
-    - Toluene (neurotoxicity)
-    - Heavy metals (lead, arsenic, cadmium)
+  cosmetics: `Cosmetics and fragrance products. Focus on:
+    - Parabens
+    - Phthalates (in fragrances)
+    - Formaldehyde
+    - Toluene
+    - Heavy metals (lead, arsenic)
     - Coal tar dyes
-    - BHA and BHT (carcinogenic concern)
+    - BHA and BHT
+    - Synthetic fragrance compounds
     - Talc (asbestos contamination risk)`
 };
 
@@ -660,11 +629,9 @@ export async function analyzeIngredients(
   const languageInstruction = LANGUAGE_INSTRUCTIONS[userLanguage as keyof typeof LANGUAGE_INSTRUCTIONS] || LANGUAGE_INSTRUCTIONS['en'];
   console.log(`[ANALYZER] Language instruction: ${languageInstruction.substring(0, 100)}...`);
   
-  const prompt = `You are Auraly, an ingredient-safety analyst. Analyze the following ingredient list from a ${productType} product using the Auraly Risk Framework.
+  const prompt = `You are a health-focused ingredient analyst. Analyze the following ingredient list from a ${productType} product.
 
 ${languageInstruction}
-
-${AURALY_RISK_FRAMEWORK}
 
 Product Type Context: ${context}
 
@@ -678,27 +645,11 @@ CRITICAL EXTRACTION RULES:
 4. The list contains approximately ${estimatedIngredientCount} ingredients based on separators
 5. If an ingredient name has OCR errors, correct them to the proper chemical/ingredient name
 
-For each ingredient, determine using AURALY RISK FRAMEWORK:
+For each ingredient, determine:
 1. The ingredient name (clean, standardized format) - MUST be in the user's language
-2. Health Risk Level (based ONLY on toxicity, carcinogenicity, endocrine disruption, metabolic effects):
-   - "low": Safe for general population (includes whole foods, allergens like milk/eggs/nuts)
-   - "moderate": Some evidence of concern, moderate exposure limits recommended
-   - "high": Known health risks (carcinogens, endocrine disruptors, banned substances)
-3. isAllergen: true ONLY if ingredient is a top allergen (milk, egg, peanut, tree nuts, soy, wheat, sesame, shellfish, fish, gluten)
-4. A brief summary (1-2 sentences) explaining what it is - MUST be in the user's language
-5. Detailed explanation (2-3 sentences) with health impact context - MUST be in the user's language
-
-CRITICAL RISK ASSESSMENT RULES:
-- Allergens (milk, eggs, peanuts, wheat, soy, etc.) are "low" health risk but isAllergen=true
-- Health risk is based on impact to GENERAL POPULATION at normal exposure
-- HIGH risk = carcinogens, endocrine disruptors, banned/restricted substances, trans fats, hydrogenated fats/oils, high fructose corn syrup (HFCS)
-- MODERATE risk = corn syrup, refined sugars, artificial sweeteners, SLS, synthetic fragrance, polysorbate 60/80
-- LOW risk = whole foods, natural ingredients, vitamins, minerals, unhydrogenated oils (including allergens like milk, eggs, wheat)
-
-MANDATORY HIGH RISK CLASSIFICATIONS:
-- Hydrogenated tallow, hydrogenated soybean oil, partially hydrogenated oils = HIGH (contain industrial trans fats)
-- High fructose corn syrup (HFCS) = HIGH (strong metabolic harm: obesity, fatty liver, insulin resistance)
-- BHA, BHT, parabens, formaldehyde, titanium dioxide = HIGH
+2. Risk level: "low" (safe), "moderate" (limited evidence/moderate concern), or "high" (known health risks)
+3. A brief summary (1-2 sentences) explaining what it is and why it's flagged - MUST be in the user's language
+4. Detailed explanation (2-3 sentences) with more context about health impacts - MUST be in the user's language
 
 INGREDIENT NAME TRANSLATION REQUIREMENTS:
 - ALWAYS translate ingredient names to the user's language accurately
@@ -711,8 +662,9 @@ INGREDIENT NAME TRANSLATION REQUIREMENTS:
 OTHER IMPORTANT NOTES:
 - ALL text output (name, summary, details) must be in the user's selected language
 - Extract the product name if mentioned (product name can stay in original language)
-- Determine overall product risk (low/moderate/high) based on the worst health-risk ingredients (NOT allergens)
+- Determine overall product risk (low/moderate/high) based on the worst ingredients
 - Be friendly and clear in explanations, not alarmist
+- If an ingredient is generally safe, mark it as "low" risk
 
 Return your analysis as JSON with this structure:
 {
@@ -721,7 +673,6 @@ Return your analysis as JSON with this structure:
     {
       "name": "Ingredient Name",
       "riskLevel": "low|moderate|high",
-      "isAllergen": true|false,
       "summary": "Brief explanation",
       "details": "Detailed explanation",
       "category": "Optional category like 'preservative', 'sweetener', etc"
@@ -1147,8 +1098,7 @@ export async function analyzeIngredientsParallel(
       riskLevel: 'moderate',
       summary: msgs.summary,
       details: msgs.details,
-      category: productType,
-      isAllergen: false
+      category: productType
     };
   }
   
@@ -1197,29 +1147,23 @@ export async function analyzeIngredientsParallel(
     const languageMap = { 'en': 'English', 'es': 'Spanish', 'zh': 'Simplified Chinese' };
     const targetLanguage = languageMap[userLanguage as keyof typeof languageMap] || 'English';
     
-    const batchPrompt = `You are Auraly, an ingredient-safety analyst. Analyze these ${missingIngredients.length} ingredients from a ${productType} product using the Auraly Risk Framework:
+    const batchPrompt = `Analyze these ${missingIngredients.length} ingredients from a ${productType} product:
 
 ${missingList}
-
-${AURALY_RISK_FRAMEWORK}
 
 CRITICAL INSTRUCTIONS FOR ${targetLanguage.toUpperCase()}:
 - ALL text (name, summary, details, category) MUST be in ${targetLanguage}
 - Risk level MUST ALWAYS be exactly one of: "low" or "moderate" or "high" (ENGLISH ONLY, case sensitive, no translation)
-- isAllergen MUST be true or false (mark true ONLY for: milk, egg, peanut, tree nuts, soy, wheat, sesame, shellfish, fish, gluten)
 - Return ONLY valid JSON array starting with [ and ending with ], no markdown, no code blocks, no extra text
 
-CRITICAL RISK ASSESSMENT RULES (AURALY FRAMEWORK):
-- Allergens (milk, eggs, peanuts, wheat, soy, etc.) are "low" health risk but isAllergen=true
-- Health risk is based on impact to GENERAL POPULATION at normal exposure
-- HIGH risk = carcinogens, endocrine disruptors, banned/restricted substances, trans fats, hydrogenated fats/oils, high fructose corn syrup (HFCS)
-- MODERATE risk = corn syrup, refined sugars, artificial sweeteners, SLS, synthetic fragrance, polysorbate 60/80
-- LOW risk = whole foods, natural ingredients, vitamins, minerals, unhydrogenated oils (including allergens like milk, eggs, wheat)
-
-MANDATORY HIGH RISK CLASSIFICATIONS:
-- Hydrogenated tallow, hydrogenated soybean oil, partially hydrogenated oils = HIGH (contain industrial trans fats)
-- High fructose corn syrup (HFCS) = HIGH (strong metabolic harm: obesity, fatty liver, insulin resistance)
-- BHA, BHT, parabens, formaldehyde, titanium dioxide = HIGH
+For each ingredient provide these exact JSON fields:
+{
+  "name": "Ingredient Name in ${targetLanguage}",
+  "riskLevel": "low",
+  "summary": "1-2 sentences in ${targetLanguage}",
+  "details": "2-3 sentences in ${targetLanguage}",
+  "category": "Optional category in ${targetLanguage}"
+}
 
 ${languageInstruction}
 
@@ -1229,8 +1173,7 @@ IMPORTANT: Return ONLY this JSON array, nothing else:
 [
   {
     "name": "Ingredient Name in ${targetLanguage}",
-    "riskLevel": "low|moderate|high",
-    "isAllergen": true|false,
+    "riskLevel": "low",
     "summary": "Brief explanation in ${targetLanguage}",
     "details": "Detailed explanation in ${targetLanguage}",
     "category": "Optional category in ${targetLanguage}"
@@ -1285,7 +1228,6 @@ IMPORTANT: Return ONLY this JSON array, nothing else:
         }
         
         // Validate and normalize riskLevel to English enum (critical for Spanish fix)
-        // Also normalize isAllergen field
         freshResults = freshResults.map(result => {
           let normalizedRiskLevel = result.riskLevel?.toLowerCase().trim() || 'moderate';
           
@@ -1304,13 +1246,9 @@ IMPORTANT: Return ONLY this JSON array, nothing else:
             normalizedRiskLevel = 'moderate';
           }
           
-          // Normalize isAllergen (default to false if not provided)
-          const isAllergen = result.isAllergen === true;
-          
           return {
             ...result,
             riskLevel: normalizedRiskLevel as 'low' | 'moderate' | 'high',
-            isAllergen,
             name: normalizeIngredientCapitalization(result.name, userLanguage)
           };
         });

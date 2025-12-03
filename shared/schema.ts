@@ -81,14 +81,6 @@ export type ProductType = typeof productTypes[number];
 export const riskLevels = ["low", "moderate", "high"] as const;
 export type RiskLevel = typeof riskLevels[number];
 
-// Top allergens list (FDA/EU major allergens)
-export const topAllergens = [
-  "milk", "egg", "peanut", "tree nuts", "soy", "wheat", 
-  "sesame", "shellfish", "fish", "gluten"
-] as const;
-
-export type TopAllergen = typeof topAllergens[number];
-
 // Ingredient analysis schema
 export const ingredientSchema = z.object({
   name: z.string(),
@@ -96,7 +88,6 @@ export const ingredientSchema = z.object({
   summary: z.string(),
   details: z.string(),
   category: z.string().nullish(),
-  isAllergen: z.boolean().optional().default(false),
 });
 
 export type Ingredient = z.infer<typeof ingredientSchema>;
