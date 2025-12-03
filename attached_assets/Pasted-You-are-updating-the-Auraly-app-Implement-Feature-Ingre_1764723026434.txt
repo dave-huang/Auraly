@@ -1,0 +1,199 @@
+You are updating the Auraly app. Implement Feature: Ingredient History.
+Follow the functional requirements below.
+Assume: user accounts already exist and login is working.
+
+🌟 GOAL
+Enable logged-in users to automatically save their past ingredient scans to their personal account and view them later on a “My Scans” page.
+
+🔧 Functional Requirements
+1. Save each scan automatically
+Whenever a user completes an ingredient analysis (after OCR + GPT processing), save a “Scan Record” to the database.
+Each Scan Record must include:
+userId
+
+
+scanId (UUID)
+
+
+timestamp
+
+
+productName (string, from OCR or user input; fallback: “Unnamed Product”)
+
+
+productCategory (food, skincare, haircare, cosmetics, oral care, fragrance, lotion, other)
+
+
+originalImageUrl (URL to uploaded image)
+
+
+detectedIngredients (array of strings)
+
+
+analysisResults (array of ingredient objects with: name, riskLevel, summary, details)
+
+
+language (for OCR)
+
+
+isUpdatedFromCache (boolean: true if pulled from cached ingredient data)
+
+
+Every time a scan completes, create and store this record.
+If the user is not logged in, do NOT save.
+No pop-ups needed — keep this automatic and silent.
+
+2. Create a “My Scans” page
+Add a new route/page: /history
+Requirements:
+Available only to logged-in users.
+
+
+Shows a list of the user’s past scans.
+
+
+Display newest scans at the top.
+
+
+Each item shows:
+
+
+product name
+
+
+date/time
+
+
+product category
+
+
+a small thumbnail of the scanned image
+
+
+overall scan result summary (e.g., “2 high-risk ingredients, 5 moderate, 20 low”)
+
+
+Tapping/clicking a scan opens a Scan Detail Page.
+
+
+
+3. Scan Detail Page
+Route: /history/:scanId
+Show the entire analysis exactly as it appeared at scan time, including:
+full image
+
+
+detected ingredients
+
+
+ingredient-by-ingredient risk results
+
+
+GPT analysis summary
+
+
+No need to re-run GPT; this should come from the stored record.
+
+4. Enable deletion
+Users can delete:
+a single scan
+
+
+all scans
+
+
+Add:
+a “Delete” button on each Scan Detail Page
+
+
+a “Delete All History” button on the My Scans page
+
+
+Deleting must actually remove records from the database.
+
+5. Pagination or infinite scroll
+If a user has many scans:
+Load in batches of 20
+
+
+Fetch more when user scrolls to the bottom
+
+
+This prevents slow page loads.
+
+6. Backend changes
+Implement:
+a database table/collection called ScanHistory
+
+
+an API endpoint:
+
+
+POST /api/history (save scan)
+Input: full Scan Record
+Output: success
+GET /api/history (list scans)
+Query params:
+limit
+
+
+offset
+
+
+userId (server should infer from session/token)
+
+
+GET /api/history/:scanId
+Return the full stored record.
+DELETE /api/history/:scanId
+Delete a single scan.
+DELETE /api/history (delete all)
+Delete all user scans.
+Server must validate that users can only access their own scans.
+
+7. UI Requirements
+Add a “History” icon to the nav bar or user menu.
+
+
+Use simple cards for each past scan.
+
+
+This feature should work on mobile and desktop.
+
+
+
+8. Performance
+Do NOT re-run OCR or GPT on history pages.
+
+
+Use stored data only.
+
+
+Return results quickly (<300ms from DB).
+
+
+
+9. Analytics
+Track:
+number of scans saved per user
+
+
+number of returned visits to history
+
+🚀 Deliverables Replit should produce
+Backend model/schema for ScanHistory
+
+
+Endpoints for saving + retrieving + deleting history
+
+
+“My Scans” page
+
+
+Scan Detail page
+
+
+UI navigation link
+
+
+Integration so new scans are automatically saved

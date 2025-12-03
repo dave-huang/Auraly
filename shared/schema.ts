@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { sql } from 'drizzle-orm';
-import { index, jsonb, pgTable, timestamp, varchar } from "drizzle-orm/pg-core";
+import { boolean, index, integer, jsonb, pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
 
 // Sessions table (REQUIRED for Replit Auth)
 export const sessions = pgTable(
@@ -26,6 +26,46 @@ export const users = pgTable("users", {
 
 export type User = typeof users.$inferSelect;
 export type UpsertUser = typeof users.$inferInsert;
+
+// Extended product categories for history
+export const productCategories = [
+  "food",
+  "skincare",
+  "haircare",
+  "cosmetics",
+  "oral-care",
+  "fragrance",
+  "lotion",
+  "other"
+] as const;
+
+export type ProductCategory = typeof productCategories[number];
+
+// Scan History table
+export const scanHistory = pgTable(
+  "scan_history",
+  {
+    id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+    userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+    productName: varchar("product_name").notNull().default("Unnamed Product"),
+    productCategory: varchar("product_category").notNull().default("other"),
+    originalImageUrl: text("original_image_url"),
+    detectedIngredients: text("detected_ingredients").array().notNull().default(sql`ARRAY[]::text[]`),
+    analysisResults: jsonb("analysis_results").notNull(),
+    overallRisk: varchar("overall_risk").notNull().default("low"),
+    language: varchar("language").notNull().default("en"),
+    isUpdatedFromCache: boolean("is_updated_from_cache").notNull().default(false),
+    ingredientCount: integer("ingredient_count").notNull().default(0),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    index("IDX_scan_history_user_id").on(table.userId),
+    index("IDX_scan_history_created_at").on(table.createdAt),
+  ]
+);
+
+export type ScanHistory = typeof scanHistory.$inferSelect;
+export type InsertScanHistory = typeof scanHistory.$inferInsert;
 
 // Product types that can be analyzed
 export const productTypes = [
