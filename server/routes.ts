@@ -486,6 +486,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // PATCH /api/history/:scanId - Update a scan (rename)
+  const updateScanSchema = z.object({
+    productName: z.string().min(1).max(200),
+  });
+
+  app.patch("/api/history/:scanId", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { scanId } = scanIdSchema.parse(req.params);
+      const { productName } = updateScanSchema.parse(req.body);
+      
+      const scan = await storage.updateScanName(scanId, userId, productName);
+      
+      if (!scan) {
+        return res.status(404).json({ error: "Scan not found" });
+      }
+      
+      console.log(`[HISTORY] Renamed scan ${scanId} to "${productName}"`);
+      res.json(scan);
+    } catch (error: any) {
+      console.error("[HISTORY] Error updating scan:", error);
+      res.status(400).json({ error: error.message || "Failed to update scan" });
+    }
+  });
+
   // DELETE /api/history/:scanId - Delete a single scan
   app.delete("/api/history/:scanId", isAuthenticated, async (req: any, res) => {
     try {

@@ -12,6 +12,7 @@ export interface IStorage {
   getScanHistory(userId: string, limit?: number, offset?: number): Promise<ScanHistory[]>;
   getScanHistoryCount(userId: string): Promise<number>;
   getScanById(scanId: string, userId: string): Promise<ScanHistory | undefined>;
+  updateScanName(scanId: string, userId: string, productName: string): Promise<ScanHistory | undefined>;
   deleteScan(scanId: string, userId: string): Promise<boolean>;
   deleteAllScans(userId: string): Promise<number>;
 }
@@ -70,6 +71,15 @@ export class DatabaseStorage implements IStorage {
       .select()
       .from(scanHistory)
       .where(and(eq(scanHistory.id, scanId), eq(scanHistory.userId, userId)));
+    return scan;
+  }
+
+  async updateScanName(scanId: string, userId: string, productName: string): Promise<ScanHistory | undefined> {
+    const [scan] = await db
+      .update(scanHistory)
+      .set({ productName })
+      .where(and(eq(scanHistory.id, scanId), eq(scanHistory.userId, userId)))
+      .returning();
     return scan;
   }
 
