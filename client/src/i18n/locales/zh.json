@@ -172,6 +172,15 @@
     },
     "noResults": "没有找到匹配的成分。",
     "scanAnother": "扫描其他产品",
+    "productName": {
+      "placeholder": "点击为产品命名",
+      "unnamed": "未命名产品",
+      "rename": "重命名产品",
+      "save": "保存",
+      "cancel": "取消",
+      "updated": "产品名称已更新",
+      "updatedDesc": "产品已成功重命名。"
+    },
     "analyzing": {
       "title": "正在分析成分",
       "description": "正在提取文本并识别潜在健康风险...",

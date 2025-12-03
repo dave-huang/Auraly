@@ -172,6 +172,15 @@
     },
     "noResults": "No se encontraron ingredientes que coincidan con tu búsqueda.",
     "scanAnother": "Escanear Otro Producto",
+    "productName": {
+      "placeholder": "Toca para nombrar este producto",
+      "unnamed": "Producto Sin Nombre",
+      "rename": "Renombrar producto",
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "updated": "Nombre del producto actualizado",
+      "updatedDesc": "El producto ha sido renombrado exitosamente."
+    },
     "analyzing": {
       "title": "Analizando Ingredientes",
       "description": "Extrayendo texto e identificando posibles riesgos para la salud...",

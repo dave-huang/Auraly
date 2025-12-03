@@ -16,7 +16,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { ArrowLeft, Trash2, Search, Loader2, AlertTriangle, Clock } from "lucide-react";
+import { ArrowLeft, Trash2, Search, Loader2, AlertTriangle, Clock, Pencil, Check, X } from "lucide-react";
 import { IngredientCard } from "@/components/ingredient-card";
 import { RiskSummary } from "@/components/risk-summary";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -35,6 +35,8 @@ export default function ScanDetailPage() {
   const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedRisk, setSelectedRisk] = useState<RiskLevel | "all">("all");
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [editedName, setEditedName] = useState("");
 
   const { data: scan, isLoading, error } = useQuery<ScanHistory>({
     queryKey: ['/api/history', scanId],
@@ -58,6 +60,28 @@ export default function ScanDetailPage() {
         description: t('history.deleteSuccessDesc'),
       });
       setLocation('/history');
+    },
+    onError: () => {
+      toast({
+        title: t('errors.generic'),
+        variant: "destructive",
+      });
+    }
+  });
+
+  const renameMutation = useMutation({
+    mutationFn: async (productName: string) => {
+      const response = await apiRequest("PATCH", `/api/history/${scanId}`, { productName });
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/history', scanId] });
+      queryClient.invalidateQueries({ queryKey: ['/api/history'] });
+      toast({
+        title: t('results.productName.updated'),
+        description: t('results.productName.updatedDesc'),
+      });
+      setIsEditingName(false);
     },
     onError: () => {
       toast({
@@ -141,12 +165,68 @@ export default function ScanDetailPage() {
                 <ArrowLeft className="w-5 h-5" />
               </Button>
             </Link>
-            <div>
-              <h1 className="text-xl font-bold" data-testid="text-product-name">
-                {scan.productName}
-              </h1>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <span>{t(`upload.productTypes.${scan.productCategory === 'oral-care' ? 'oralCare' : scan.productCategory}.label`, { defaultValue: scan.productCategory })}</span>
+            <div className="flex-1 min-w-0">
+              {isEditingName ? (
+                <div className="flex items-center gap-2">
+                  <Input
+                    value={editedName}
+                    onChange={(e) => setEditedName(e.target.value)}
+                    placeholder={t('results.productName.placeholder')}
+                    className="text-xl font-bold h-auto py-1"
+                    data-testid="input-product-name"
+                    autoFocus
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && editedName.trim()) {
+                        renameMutation.mutate(editedName.trim());
+                      } else if (e.key === 'Escape') {
+                        setIsEditingName(false);
+                      }
+                    }}
+                  />
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => {
+                      if (editedName.trim()) {
+                        renameMutation.mutate(editedName.trim());
+                      }
+                    }}
+                    disabled={renameMutation.isPending || !editedName.trim()}
+                    data-testid="button-save-name"
+                  >
+                    {renameMutation.isPending ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Check className="h-4 w-4" />
+                    )}
+                  </Button>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => setIsEditingName(false)}
+                    disabled={renameMutation.isPending}
+                    data-testid="button-cancel-name"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => {
+                    setEditedName(scan.productName || '');
+                    setIsEditingName(true);
+                  }}
+                  className="group flex items-center gap-2 text-left hover-elevate rounded-md px-2 py-1 -ml-2"
+                  data-testid="button-edit-product-name"
+                >
+                  <h1 className="text-xl font-bold truncate" data-testid="text-product-name">
+                    {scan.productName || t('results.productName.placeholder')}
+                  </h1>
+                  <Pencil className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                </button>
+              )}
+              <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
+                <span>{t(`history.categories.${scan.productCategory === 'food' ? 'food' : 'personal_care'}`)}</span>
                 <span>•</span>
                 <span className="flex items-center gap-1">
                   <Clock className="w-3 h-3" />

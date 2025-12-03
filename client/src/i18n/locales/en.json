@@ -172,6 +172,15 @@
     },
     "noResults": "No ingredients found matching your search.",
     "scanAnother": "Scan Another Product",
+    "productName": {
+      "placeholder": "Tap to name this product",
+      "unnamed": "Unnamed Product",
+      "rename": "Rename product",
+      "save": "Save",
+      "cancel": "Cancel",
+      "updated": "Product name updated",
+      "updatedDesc": "The product has been renamed successfully."
+    },
     "analyzing": {
       "title": "Analyzing Ingredients",
       "description": "Extracting text and identifying potential health risks...",

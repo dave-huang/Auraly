@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Camera, Loader2, Search, AlertCircle } from "lucide-react";
+import { ArrowLeft, Camera, Loader2, Search, AlertCircle, Pencil, Check, X } from "lucide-react";
 import { IngredientCard } from "@/components/ingredient-card";
 import { RiskSummary } from "@/components/risk-summary";
 import type { AnalysisResult, Ingredient, RiskLevel } from "@shared/schema";
@@ -57,11 +57,14 @@ export default function ResultsPage() {
   const [progress, setProgress] = useState(0);
   const [cachedOcrText, setCachedOcrText] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [editedName, setEditedName] = useState("");
   const wakeLockRef = useRef<any>(null);
   const hasSavedToHistoryRef = useRef<boolean>(false);
   const currentRequestIdRef = useRef<string | null>(null);
   const resolveRef = useRef<((value: AnalysisResult) => void) | null>(null);
   const rejectRef = useRef<((reason: any) => void) | null>(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
 
   // Auto-retry mutation with Service Worker polling for mobile background support
   const analyzeMutation = useMutation({
@@ -426,17 +429,66 @@ export default function ResultsPage() {
 
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 py-8">
-        {/* Product Name */}
-        {analysisResult.productName && (
-          <div className="mb-6">
-            <h2 className="text-2xl md:text-3xl font-bold" data-testid="text-product-name">
-              {analysisResult.productName}
-            </h2>
-            <p className="text-sm text-muted-foreground capitalize">
-              {analysisResult.productType.replace('-', ' ')} {t('results.productType')}
-            </p>
-          </div>
-        )}
+        {/* Product Name - Editable */}
+        <div className="mb-6">
+          {isEditingName ? (
+            <div className="flex items-center gap-2">
+              <Input
+                ref={nameInputRef}
+                value={editedName}
+                onChange={(e) => setEditedName(e.target.value)}
+                placeholder={t('results.productName.placeholder')}
+                className="text-2xl font-bold h-auto py-1"
+                data-testid="input-product-name"
+                autoFocus
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    setAnalysisResult(prev => prev ? { ...prev, productName: editedName || t('results.productName.unnamed') } : null);
+                    setIsEditingName(false);
+                  } else if (e.key === 'Escape') {
+                    setIsEditingName(false);
+                  }
+                }}
+              />
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() => {
+                  setAnalysisResult(prev => prev ? { ...prev, productName: editedName || t('results.productName.unnamed') } : null);
+                  setIsEditingName(false);
+                }}
+                data-testid="button-save-name"
+              >
+                <Check className="h-4 w-4" />
+              </Button>
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() => setIsEditingName(false)}
+                data-testid="button-cancel-name"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          ) : (
+            <button
+              onClick={() => {
+                setEditedName(analysisResult.productName || '');
+                setIsEditingName(true);
+              }}
+              className="group flex items-center gap-2 text-left hover-elevate rounded-md px-2 py-1 -ml-2"
+              data-testid="button-edit-product-name"
+            >
+              <h2 className="text-2xl md:text-3xl font-bold" data-testid="text-product-name">
+                {analysisResult.productName || t('results.productName.placeholder')}
+              </h2>
+              <Pencil className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+            </button>
+          )}
+          <p className="text-sm text-muted-foreground capitalize mt-1">
+            {t(`history.categories.${analysisResult.productType === 'food' ? 'food' : 'personal_care'}`)} {t('results.productType')}
+          </p>
+        </div>
 
         {/* Risk Summary */}
         <RiskSummary 
