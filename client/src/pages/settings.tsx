@@ -254,10 +254,10 @@ export default function SettingsPage() {
             </h1>
             <p className="text-xs text-muted-foreground">
               {lang === 'zh' 
-                ? `${activeRiskCount} 个风险偏好, ${activeAllergenCount} 个过敏原` 
+                ? `${activeRiskCount} 个风险设置, ${activeAllergenCount} 个过敏原警报` 
                 : lang === 'es' 
-                ? `${activeRiskCount} preferencias, ${activeAllergenCount} alérgenos`
-                : `${activeRiskCount} risk preferences, ${activeAllergenCount} allergens`}
+                ? `${activeRiskCount} sensibilidades, ${activeAllergenCount} alertas`
+                : `${activeRiskCount} risk settings, ${activeAllergenCount} allergen alerts`}
             </p>
           </div>
           <Settings className="h-5 w-5 text-muted-foreground" />
