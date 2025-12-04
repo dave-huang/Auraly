@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Camera, Loader2, Search, AlertCircle, Pencil, Check, X, Settings } from "lucide-react";
 import { IngredientCard } from "@/components/ingredient-card";
 import { RiskSummary } from "@/components/risk-summary";
+import { AllergenFlags } from "@/components/allergen-flags";
 import type { AnalysisResult, Ingredient, RiskLevel, RiskPreferences } from "@shared/schema";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
@@ -582,6 +583,9 @@ export default function ResultsPage() {
           riskCounts={riskCounts}
           totalIngredients={displayResult.ingredients.length}
         />
+
+        {/* Allergen Flags */}
+        <AllergenFlags ingredients={displayResult.ingredients} />
 
         {/* Search Bar */}
         <div className="relative mb-6">

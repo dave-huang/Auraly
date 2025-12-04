@@ -279,5 +279,31 @@
     "adjustedRisk": "Riesgo ajustado según tus preferencias",
     "baseRisk": "Riesgo base",
     "personalizedFor": "Personalizado para ti"
+  },
+  "allergens": {
+    "title": "Alertas de Alérgenos",
+    "subtitle": "Marcados según tus sensibilidades",
+    "noFlags": "No se detectaron alérgenos según tus preferencias",
+    "categories": {
+      "nuts": "Frutos Secos",
+      "soy": "Soja",
+      "dairy": "Lácteos",
+      "gluten_wheat": "Gluten / Trigo",
+      "eggs": "Huevos",
+      "seafood_shellfish": "Mariscos / Pescado",
+      "fragrance_allergens_cosmetic": "Alérgenos de Fragancia",
+      "preservative_allergens": "Alérgenos de Conservantes",
+      "lanolin": "Lanolina",
+      "botanical_extracts": "Extractos Botánicos",
+      "colorants_dyes": "Colorantes / Tintes",
+      "drying_alcohols": "Alcoholes Secantes"
+    },
+    "groups": {
+      "food": "Alimentarios",
+      "cosmetic": "Cosméticos",
+      "chemical": "Aditivos Químicos"
+    },
+    "flagged": "marcado",
+    "ingredientContains": "contiene"
   }
 }

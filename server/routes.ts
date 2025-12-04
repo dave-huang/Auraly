@@ -14,6 +14,7 @@ import {
   ocrRequestSchema, 
   analysisRequestSchema,
   riskPreferencesSchema,
+  allergenPreferencesSchema,
   users,
   type ProductType,
   type AnalysisResult,
@@ -166,6 +167,54 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error resetting onboarding:", error);
       res.status(500).json({ message: "Failed to reset onboarding" });
+    }
+  });
+
+  // ==========================================
+  // ALLERGEN PREFERENCES ENDPOINTS
+  // ==========================================
+
+  // GET /api/user/allergen-preferences - Get current user's allergen preferences
+  app.get('/api/user/allergen-preferences', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const preferences = await storage.getUserAllergenPreferences(userId);
+      res.json({ preferences });
+    } catch (error) {
+      console.error("Error fetching allergen preferences:", error);
+      res.status(500).json({ message: "Failed to fetch allergen preferences" });
+    }
+  });
+
+  // PATCH /api/user/allergen-preferences - Update user's allergen preferences
+  app.patch('/api/user/allergen-preferences', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const preferences = allergenPreferencesSchema.partial().parse(req.body);
+      const user = await storage.updateUserAllergenPreferences(userId, preferences);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.json({ success: true, preferences: user.allergenPreferences });
+    } catch (error: any) {
+      console.error("Error updating allergen preferences:", error);
+      res.status(400).json({ message: error.message || "Failed to update allergen preferences" });
+    }
+  });
+
+  // POST /api/user/allergen-onboarding - Complete allergen onboarding with preferences
+  app.post('/api/user/allergen-onboarding', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const preferences = allergenPreferencesSchema.parse(req.body);
+      const user = await storage.completeAllergenOnboarding(userId, preferences);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.json({ success: true });
+    } catch (error: any) {
+      console.error("Error completing allergen onboarding:", error);
+      res.status(400).json({ message: error.message || "Failed to complete allergen onboarding" });
     }
   });
 

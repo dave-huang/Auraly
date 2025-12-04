@@ -1,0 +1,72 @@
+Update Auraly’s user preference system and ingredient-analysis engine to support a new categorized allergen-detection framework and an onboarding flow that captures allergen preferences during sign-up.
+
+⸻
+
+FUNCTIONAL REQUIREMENTS
+
+1. Add New Allergen Categories
+
+Implement a structured allergen-detection system based on label-detectable allergens.
+Add the following high-level categories and ensure the system can identify allergens by ingredient name, alias, or synonym:
+
+Food-Derived Allergens
+	•	Nuts
+	•	Soy
+	•	Dairy
+	•	Gluten / Wheat
+	•	Eggs
+	•	Seafood / Shellfish
+
+Cosmetic Allergens
+	•	Fragrance Allergens (e.g., linalool, limonene, geraniol, citral, coumarin, eugenol, etc.)
+	•	Preservative Allergens (e.g., MI, MCI, DMDM hydantoin, quaternium-15, diazolidinyl urea, bronopol, etc.)
+	•	Lanolin
+	•	Botanical Extract Allergens (e.g., essential oils, propolis, arnica, chamomile, tea tree, ylang-ylang, citrus peel oils)
+
+Chemical Additive Allergens
+	•	Colorants / Dyes (FD&C dyes, CI numbers)
+	•	Drying Alcohols (denatured alcohol, SD alcohol, isopropanol)
+
+2. Detection Logic
+
+Implement allergen detection rules with the following behavior:
+	•	Each allergen category should map to a list of recognizable ingredient names and aliases.
+	•	Ingredient alias resolution must be supported so synonyms (e.g., “tocopherol” vs “vitamin E”) map to the same allergen category if applicable.
+	•	When scanning a label, ingredients that match any category should be grouped under that category.
+	•	Return both:
+	•	the specific matched ingredient(s)
+	•	the category they belong to
+	•	These allergen categories should not affect the product’s main health risk score (per the Auraly Risk Framework), but should be displayed as “Allergen Flags.”
+
+3. User Preference Model Updates
+
+Expand the user preferences data model to store which allergen categories the user wants to flag.
+	•	Store preferences in the database per user.
+	•	Preferences must support toggling entire categories on/off.
+	•	Default: all allergen categories OFF unless user enables them during onboarding or settings.
+
+4. Onboarding Flow (first-time sign-up)
+
+Create an onboarding sequence shown after a user creates an account. Requirements:
+	•	Screen 1: “Your Ingredient Sensitivities” intro
+	•	Screen 2: Allow user to enable/disable allergen categories (multi-select).
+	•	Pre-populate all toggles OFF by default.
+	•	Save preferences automatically.
+	•	Skip option must also exist.
+
+5. Ingredient Analysis Output Changes
+
+Modify product-level output to include:
+	•	A new section: Allergen Flags (based on your sensitivities)
+	•	List allergens only if BOTH conditions are met:
+	1.	The ingredient label contains an allergen in one of the categories
+	2.	The user enabled that category in their preferences
+
+If the user has no enabled allergen preferences, omit the section entirely.
+
+6. UI Requirements
+	•	Allergen settings should be editable at any time in the user’s “Preferences” or “Profile” page.
+	•	Each category should show:
+	•	A toggle
+	•	A short description
+	•	An example ingredient (optional but recommended)

@@ -1,4 +1,4 @@
-import { users, scanHistory, type User, type UpsertUser, type ScanHistory, type InsertScanHistory, type RiskPreferences, defaultRiskPreferences } from "@shared/schema";
+import { users, scanHistory, type User, type UpsertUser, type ScanHistory, type InsertScanHistory, type RiskPreferences, type AllergenPreferences, defaultRiskPreferences, defaultAllergenPreferences } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, sql } from "drizzle-orm";
 
@@ -12,6 +12,11 @@ export interface IStorage {
   updateUserPreferences(userId: string, preferences: Partial<RiskPreferences>): Promise<User | undefined>;
   completeOnboarding(userId: string, preferences: RiskPreferences): Promise<User | undefined>;
   isOnboardingCompleted(userId: string): Promise<boolean>;
+  
+  // Allergen preference operations
+  getUserAllergenPreferences(userId: string): Promise<AllergenPreferences>;
+  updateUserAllergenPreferences(userId: string, preferences: Partial<AllergenPreferences>): Promise<User | undefined>;
+  completeAllergenOnboarding(userId: string, allergenPreferences: AllergenPreferences): Promise<User | undefined>;
   
   // Scan history operations
   createScanHistory(scan: InsertScanHistory): Promise<ScanHistory>;
@@ -84,6 +89,42 @@ export class DatabaseStorage implements IStorage {
   async isOnboardingCompleted(userId: string): Promise<boolean> {
     const user = await this.getUser(userId);
     return user?.onboardingCompleted ?? false;
+  }
+
+  // Allergen preference operations
+  async getUserAllergenPreferences(userId: string): Promise<AllergenPreferences> {
+    const user = await this.getUser(userId);
+    return (user?.allergenPreferences as AllergenPreferences) || defaultAllergenPreferences;
+  }
+
+  async updateUserAllergenPreferences(userId: string, preferences: Partial<AllergenPreferences>): Promise<User | undefined> {
+    const currentUser = await this.getUser(userId);
+    if (!currentUser) return undefined;
+    
+    const currentPrefs = (currentUser.allergenPreferences as AllergenPreferences) || defaultAllergenPreferences;
+    const updatedPrefs = { ...currentPrefs, ...preferences };
+    
+    const [user] = await db
+      .update(users)
+      .set({ 
+        allergenPreferences: updatedPrefs,
+        updatedAt: new Date()
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    return user;
+  }
+
+  async completeAllergenOnboarding(userId: string, allergenPreferences: AllergenPreferences): Promise<User | undefined> {
+    const [user] = await db
+      .update(users)
+      .set({ 
+        allergenPreferences: allergenPreferences,
+        updatedAt: new Date()
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    return user;
   }
 
   // Scan history operations

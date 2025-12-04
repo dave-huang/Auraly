@@ -33,6 +33,88 @@ export const preferenceCategories = [
 
 export type PreferenceCategory = typeof preferenceCategories[number];
 
+// ==========================================
+// ALLERGEN CATEGORIES & TYPES
+// ==========================================
+
+// Food-Derived Allergens
+export const foodAllergenCategories = [
+  "nuts",
+  "soy",
+  "dairy",
+  "gluten_wheat",
+  "eggs",
+  "seafood_shellfish"
+] as const;
+
+// Cosmetic Allergens
+export const cosmeticAllergenCategories = [
+  "fragrance_allergens_cosmetic",
+  "preservative_allergens",
+  "lanolin",
+  "botanical_extracts"
+] as const;
+
+// Chemical Additive Allergens
+export const chemicalAllergenCategories = [
+  "colorants_dyes",
+  "drying_alcohols"
+] as const;
+
+// All allergen categories combined
+export const allergenCategories = [
+  ...foodAllergenCategories,
+  ...cosmeticAllergenCategories,
+  ...chemicalAllergenCategories
+] as const;
+
+export type AllergenCategory = typeof allergenCategories[number];
+export type FoodAllergenCategory = typeof foodAllergenCategories[number];
+export type CosmeticAllergenCategory = typeof cosmeticAllergenCategories[number];
+export type ChemicalAllergenCategory = typeof chemicalAllergenCategories[number];
+
+// Allergen preferences schema (all default to false/OFF)
+export const allergenPreferencesSchema = z.object({
+  // Food-Derived
+  nuts: z.boolean().default(false),
+  soy: z.boolean().default(false),
+  dairy: z.boolean().default(false),
+  gluten_wheat: z.boolean().default(false),
+  eggs: z.boolean().default(false),
+  seafood_shellfish: z.boolean().default(false),
+  // Cosmetic
+  fragrance_allergens_cosmetic: z.boolean().default(false),
+  preservative_allergens: z.boolean().default(false),
+  lanolin: z.boolean().default(false),
+  botanical_extracts: z.boolean().default(false),
+  // Chemical
+  colorants_dyes: z.boolean().default(false),
+  drying_alcohols: z.boolean().default(false),
+});
+
+export type AllergenPreferences = z.infer<typeof allergenPreferencesSchema>;
+
+export const defaultAllergenPreferences: AllergenPreferences = {
+  nuts: false,
+  soy: false,
+  dairy: false,
+  gluten_wheat: false,
+  eggs: false,
+  seafood_shellfish: false,
+  fragrance_allergens_cosmetic: false,
+  preservative_allergens: false,
+  lanolin: false,
+  botanical_extracts: false,
+  colorants_dyes: false,
+  drying_alcohols: false,
+};
+
+// Helper to check if user has any allergen preferences enabled
+export function hasActiveAllergenPreferences(prefs: AllergenPreferences | null | undefined): boolean {
+  if (!prefs) return false;
+  return Object.values(prefs).some(v => v === true);
+}
+
 export const riskToleranceLevels = [
   "avoid",           // Avoid Completely - elevates risk to high
   "caution",         // Use With Caution - elevates risk by one level
@@ -79,6 +161,7 @@ export const users = pgTable("users", {
   lastName: varchar("last_name"),
   profileImageUrl: varchar("profile_image_url"),
   riskPreferences: jsonb("risk_preferences").$type<RiskPreferences>().default(defaultRiskPreferences),
+  allergenPreferences: jsonb("allergen_preferences").$type<AllergenPreferences>().default(defaultAllergenPreferences),
   onboardingCompleted: boolean("onboarding_completed").default(false),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
@@ -307,6 +390,341 @@ export function getIngredientCategories(ingredientName: string): PreferenceCateg
   }
   
   return Array.from(matchedCategories);
+}
+
+// ==========================================
+// ALLERGEN CATEGORY MAPPING (for allergen detection)
+// ==========================================
+
+// Maps ingredient names/patterns to allergen categories
+export const allergenCategoryMap: Record<string, AllergenCategory[]> = {
+  // ========== FOOD-DERIVED ALLERGENS ==========
+  
+  // Nuts
+  "almond": ["nuts"],
+  "cashew": ["nuts"],
+  "walnut": ["nuts"],
+  "pecan": ["nuts"],
+  "pistachio": ["nuts"],
+  "hazelnut": ["nuts"],
+  "macadamia": ["nuts"],
+  "brazil nut": ["nuts"],
+  "chestnut": ["nuts"],
+  "pine nut": ["nuts"],
+  "peanut": ["nuts"],
+  "groundnut": ["nuts"],
+  "arachis hypogaea": ["nuts"],
+  "prunus amygdalus": ["nuts"],
+  "juglans regia": ["nuts"],
+  "tree nut": ["nuts"],
+  "nut oil": ["nuts"],
+  "nut butter": ["nuts"],
+  "nut extract": ["nuts"],
+  "shea butter": ["nuts"],
+  "butyrospermum parkii": ["nuts"],
+  
+  // Soy
+  "soy": ["soy"],
+  "soya": ["soy"],
+  "soybean": ["soy"],
+  "glycine max": ["soy"],
+  "soy lecithin": ["soy"],
+  "tofu": ["soy"],
+  "edamame": ["soy"],
+  "miso": ["soy"],
+  "tempeh": ["soy"],
+  "soy protein": ["soy"],
+  "soy isolate": ["soy"],
+  "hydrolyzed soy": ["soy"],
+  "soy flour": ["soy"],
+  
+  // Dairy
+  "milk": ["dairy"],
+  "dairy": ["dairy"],
+  "lactose": ["dairy"],
+  "casein": ["dairy"],
+  "whey": ["dairy"],
+  "cream": ["dairy"],
+  "butter": ["dairy"],
+  "cheese": ["dairy"],
+  "yogurt": ["dairy"],
+  "lactis": ["dairy"],
+  "lactic acid": ["dairy"],
+  "lactoferrin": ["dairy"],
+  "lactoglobulin": ["dairy"],
+  "lactalbumin": ["dairy"],
+  "galactose": ["dairy"],
+  "ghee": ["dairy"],
+  "curd": ["dairy"],
+  "buttermilk": ["dairy"],
+  "milk protein": ["dairy"],
+  "sodium caseinate": ["dairy"],
+  "calcium caseinate": ["dairy"],
+  
+  // Gluten / Wheat
+  "wheat": ["gluten_wheat"],
+  "gluten": ["gluten_wheat"],
+  "barley": ["gluten_wheat"],
+  "rye": ["gluten_wheat"],
+  "oat": ["gluten_wheat"],
+  "spelt": ["gluten_wheat"],
+  "kamut": ["gluten_wheat"],
+  "triticale": ["gluten_wheat"],
+  "semolina": ["gluten_wheat"],
+  "durum": ["gluten_wheat"],
+  "couscous": ["gluten_wheat"],
+  "farina": ["gluten_wheat"],
+  "seitan": ["gluten_wheat"],
+  "triticum": ["gluten_wheat"],
+  "hordeum vulgare": ["gluten_wheat"],
+  "secale cereale": ["gluten_wheat"],
+  "avena sativa": ["gluten_wheat"],
+  "hydrolyzed wheat": ["gluten_wheat"],
+  "wheat germ": ["gluten_wheat"],
+  "wheat starch": ["gluten_wheat"],
+  "modified food starch": ["gluten_wheat"],
+  
+  // Eggs
+  "egg": ["eggs"],
+  "albumin": ["eggs"],
+  "ovalbumin": ["eggs"],
+  "ovomucin": ["eggs"],
+  "ovomucoid": ["eggs"],
+  "ovovitellin": ["eggs"],
+  "lysozyme": ["eggs"],
+  "egg lecithin": ["eggs"],
+  "globulin": ["eggs"],
+  "mayonnaise": ["eggs"],
+  "meringue": ["eggs"],
+  "eggnog": ["eggs"],
+  
+  // Seafood / Shellfish
+  "fish": ["seafood_shellfish"],
+  "seafood": ["seafood_shellfish"],
+  "shellfish": ["seafood_shellfish"],
+  "shrimp": ["seafood_shellfish"],
+  "crab": ["seafood_shellfish"],
+  "lobster": ["seafood_shellfish"],
+  "oyster": ["seafood_shellfish"],
+  "mussel": ["seafood_shellfish"],
+  "clam": ["seafood_shellfish"],
+  "scallop": ["seafood_shellfish"],
+  "squid": ["seafood_shellfish"],
+  "calamari": ["seafood_shellfish"],
+  "anchovy": ["seafood_shellfish"],
+  "sardine": ["seafood_shellfish"],
+  "salmon": ["seafood_shellfish"],
+  "tuna": ["seafood_shellfish"],
+  "cod": ["seafood_shellfish"],
+  "mackerel": ["seafood_shellfish"],
+  "herring": ["seafood_shellfish"],
+  "caviar": ["seafood_shellfish"],
+  "roe": ["seafood_shellfish"],
+  "fish oil": ["seafood_shellfish"],
+  "omega-3": ["seafood_shellfish"],
+  "marine collagen": ["seafood_shellfish"],
+  "chitosan": ["seafood_shellfish"],
+  "glucosamine": ["seafood_shellfish"],
+  "isinglass": ["seafood_shellfish"],
+  
+  // ========== COSMETIC ALLERGENS ==========
+  
+  // Fragrance Allergens (EU 26 allergens + common ones)
+  "limonene": ["fragrance_allergens_cosmetic"],
+  "linalool": ["fragrance_allergens_cosmetic"],
+  "citronellol": ["fragrance_allergens_cosmetic"],
+  "geraniol": ["fragrance_allergens_cosmetic"],
+  "eugenol": ["fragrance_allergens_cosmetic"],
+  "coumarin": ["fragrance_allergens_cosmetic"],
+  "cinnamal": ["fragrance_allergens_cosmetic"],
+  "cinnamic": ["fragrance_allergens_cosmetic"],
+  "citral": ["fragrance_allergens_cosmetic"],
+  "benzyl alcohol": ["fragrance_allergens_cosmetic"],
+  "benzyl benzoate": ["fragrance_allergens_cosmetic"],
+  "benzyl salicylate": ["fragrance_allergens_cosmetic"],
+  "benzyl cinnamate": ["fragrance_allergens_cosmetic"],
+  "hexyl cinnamal": ["fragrance_allergens_cosmetic"],
+  "hydroxycitronellal": ["fragrance_allergens_cosmetic"],
+  "isoeugenol": ["fragrance_allergens_cosmetic"],
+  "oakmoss": ["fragrance_allergens_cosmetic"],
+  "oak moss": ["fragrance_allergens_cosmetic"],
+  "treemoss": ["fragrance_allergens_cosmetic"],
+  "tree moss": ["fragrance_allergens_cosmetic"],
+  "evernia prunastri": ["fragrance_allergens_cosmetic"],
+  "evernia furfuracea": ["fragrance_allergens_cosmetic"],
+  "farnesol": ["fragrance_allergens_cosmetic"],
+  "amyl cinnamal": ["fragrance_allergens_cosmetic"],
+  "amylcinnamyl alcohol": ["fragrance_allergens_cosmetic"],
+  "anise alcohol": ["fragrance_allergens_cosmetic"],
+  "butylphenyl methylpropional": ["fragrance_allergens_cosmetic"],
+  "lilial": ["fragrance_allergens_cosmetic"],
+  "alpha-isomethyl ionone": ["fragrance_allergens_cosmetic"],
+  "methyl 2-octynoate": ["fragrance_allergens_cosmetic"],
+  
+  // Preservative Allergens
+  "methylisothiazolinone": ["preservative_allergens"],
+  "mi ": ["preservative_allergens"],
+  "methylchloroisothiazolinone": ["preservative_allergens"],
+  "mci": ["preservative_allergens"],
+  "kathon": ["preservative_allergens"],
+  "dmdm hydantoin": ["preservative_allergens"],
+  "quaternium-15": ["preservative_allergens"],
+  "diazolidinyl urea": ["preservative_allergens"],
+  "imidazolidinyl urea": ["preservative_allergens"],
+  "bronopol": ["preservative_allergens"],
+  "2-bromo-2-nitropropane": ["preservative_allergens"],
+  "formaldehyde": ["preservative_allergens"],
+  "formalin": ["preservative_allergens"],
+  "formaldehyde releaser": ["preservative_allergens"],
+  
+  // Lanolin
+  "lanolin": ["lanolin"],
+  "lanolinum": ["lanolin"],
+  "wool wax": ["lanolin"],
+  "wool fat": ["lanolin"],
+  "wool alcohol": ["lanolin"],
+  "laneth": ["lanolin"],
+  "lanolic acid": ["lanolin"],
+  "adeps lanae": ["lanolin"],
+  
+  // Botanical Extract Allergens
+  "essential oil": ["botanical_extracts"],
+  "propolis": ["botanical_extracts"],
+  "arnica": ["botanical_extracts"],
+  "chamomile": ["botanical_extracts"],
+  "chamomilla": ["botanical_extracts"],
+  "matricaria": ["botanical_extracts"],
+  "tea tree": ["botanical_extracts"],
+  "melaleuca": ["botanical_extracts"],
+  "ylang ylang": ["botanical_extracts"],
+  "ylang-ylang": ["botanical_extracts"],
+  "cananga odorata": ["botanical_extracts"],
+  "citrus peel": ["botanical_extracts"],
+  "citrus oil": ["botanical_extracts"],
+  "lemon oil": ["botanical_extracts"],
+  "orange oil": ["botanical_extracts"],
+  "bergamot": ["botanical_extracts"],
+  "grapefruit oil": ["botanical_extracts"],
+  "lime oil": ["botanical_extracts"],
+  "lavender": ["botanical_extracts"],
+  "lavandula": ["botanical_extracts"],
+  "rosemary": ["botanical_extracts"],
+  "rosmarinus": ["botanical_extracts"],
+  "peppermint": ["botanical_extracts"],
+  "mentha": ["botanical_extracts"],
+  "eucalyptus": ["botanical_extracts"],
+  "clove": ["botanical_extracts"],
+  "cinnamon": ["botanical_extracts"],
+  "cinnamomum": ["botanical_extracts"],
+  "jasmine": ["botanical_extracts"],
+  "jasminum": ["botanical_extracts"],
+  "rose oil": ["botanical_extracts"],
+  "rosa damascena": ["botanical_extracts"],
+  "sandalwood": ["botanical_extracts"],
+  "santalum": ["botanical_extracts"],
+  "neroli": ["botanical_extracts"],
+  "frankincense": ["botanical_extracts"],
+  "boswellia": ["botanical_extracts"],
+  "balsam": ["botanical_extracts"],
+  "peru balsam": ["botanical_extracts"],
+  "myroxylon": ["botanical_extracts"],
+  "turpentine": ["botanical_extracts"],
+  "pine tar": ["botanical_extracts"],
+  "juniper": ["botanical_extracts"],
+  
+  // ========== CHEMICAL ADDITIVE ALLERGENS ==========
+  
+  // Colorants / Dyes
+  "fd&c": ["colorants_dyes"],
+  "d&c": ["colorants_dyes"],
+  "ci ": ["colorants_dyes"],
+  "red 40": ["colorants_dyes"],
+  "red no.": ["colorants_dyes"],
+  "red no ": ["colorants_dyes"],
+  "yellow 5": ["colorants_dyes"],
+  "yellow 6": ["colorants_dyes"],
+  "yellow no.": ["colorants_dyes"],
+  "yellow no ": ["colorants_dyes"],
+  "blue 1": ["colorants_dyes"],
+  "blue no.": ["colorants_dyes"],
+  "blue no ": ["colorants_dyes"],
+  "green 3": ["colorants_dyes"],
+  "tartrazine": ["colorants_dyes"],
+  "sunset yellow": ["colorants_dyes"],
+  "brilliant blue": ["colorants_dyes"],
+  "allura red": ["colorants_dyes"],
+  "erythrosine": ["colorants_dyes"],
+  "amaranth": ["colorants_dyes"],
+  "ponceau": ["colorants_dyes"],
+  "quinoline yellow": ["colorants_dyes"],
+  "patent blue": ["colorants_dyes"],
+  "indigo carmine": ["colorants_dyes"],
+  "fast green": ["colorants_dyes"],
+  "coal tar": ["colorants_dyes"],
+  "azo dye": ["colorants_dyes"],
+  "p-phenylenediamine": ["colorants_dyes"],
+  "ppd": ["colorants_dyes"],
+  "carmine": ["colorants_dyes"],
+  
+  // Drying Alcohols
+  "alcohol denat": ["drying_alcohols"],
+  "denatured alcohol": ["drying_alcohols"],
+  "sd alcohol": ["drying_alcohols"],
+  "isopropyl alcohol": ["drying_alcohols"],
+  "isopropanol": ["drying_alcohols"],
+  "ethyl alcohol": ["drying_alcohols"],
+  "ethanol": ["drying_alcohols"],
+};
+
+// Allergen flag type for ingredient analysis output
+export interface AllergenFlag {
+  ingredientName: string;
+  category: AllergenCategory;
+  categoryLabel: string;
+}
+
+// Helper function to find which allergen categories an ingredient belongs to
+export function getIngredientAllergenCategories(ingredientName: string): AllergenCategory[] {
+  const normalizedName = ingredientName.toLowerCase().trim();
+  const matchedCategories: Set<AllergenCategory> = new Set();
+  
+  for (const [pattern, categories] of Object.entries(allergenCategoryMap)) {
+    if (normalizedName.includes(pattern.toLowerCase())) {
+      categories.forEach(cat => matchedCategories.add(cat));
+    }
+  }
+  
+  return Array.from(matchedCategories);
+}
+
+// Detect allergens in ingredients based on user preferences
+export function detectAllergens(
+  ingredients: Array<{ name: string }>,
+  preferences: AllergenPreferences
+): AllergenFlag[] {
+  const flags: AllergenFlag[] = [];
+  const seenCombinations = new Set<string>();
+  
+  for (const ingredient of ingredients) {
+    const categories = getIngredientAllergenCategories(ingredient.name);
+    
+    for (const category of categories) {
+      // Only flag if user has enabled this category
+      if (preferences[category]) {
+        const key = `${ingredient.name.toLowerCase()}-${category}`;
+        if (!seenCombinations.has(key)) {
+          seenCombinations.add(key);
+          flags.push({
+            ingredientName: ingredient.name,
+            category,
+            categoryLabel: category.replace(/_/g, ' ')
+          });
+        }
+      }
+    }
+  }
+  
+  return flags;
 }
 
 // Analysis request schema

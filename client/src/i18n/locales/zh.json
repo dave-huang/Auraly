@@ -279,5 +279,31 @@
     "adjustedRisk": "根据您的偏好调整了风险等级",
     "baseRisk": "基础风险",
     "personalizedFor": "为您个性化定制"
+  },
+  "allergens": {
+    "title": "过敏原警报",
+    "subtitle": "根据您的敏感性标记",
+    "noFlags": "根据您的偏好未检测到过敏原",
+    "categories": {
+      "nuts": "坚果",
+      "soy": "大豆",
+      "dairy": "乳制品",
+      "gluten_wheat": "麸质/小麦",
+      "eggs": "鸡蛋",
+      "seafood_shellfish": "海鲜/贝类",
+      "fragrance_allergens_cosmetic": "香料过敏原",
+      "preservative_allergens": "防腐剂过敏原",
+      "lanolin": "羊毛脂",
+      "botanical_extracts": "植物提取物",
+      "colorants_dyes": "着色剂/染料",
+      "drying_alcohols": "干燥性酒精"
+    },
+    "groups": {
+      "food": "食物性",
+      "cosmetic": "化妆品",
+      "chemical": "化学添加剂"
+    },
+    "flagged": "已标记",
+    "ingredientContains": "含有"
   }
 }

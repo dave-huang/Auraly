@@ -3,66 +3,12 @@
 ## Overview
 Auraly is a mobile-friendly web application designed to help users understand the ingredients in their food, skincare, and personal care products. It allows users to scan or upload product labels in any language, using AI to extract and analyze ingredients, highlighting potential health risks with clear, user-friendly explanations. The project's vision is to empower users with knowledge about product compositions, fostering informed choices for better health and wellness.
 
-## Recent Changes (December 4, 2025)
-### Personalized Risk Settings Feature
-- **User Risk Preferences**: 11 ingredient categories users can configure:
-  * Artificial Fragrances, Artificial Colors, Preservatives, Endocrine Disruptors
-  * Allergens, Alcohols, Fragrance Allergens, Parabens, Sulfates, PEGs, Silicones
-- **Tolerance Levels**: Three options per category - "Avoid" (raises risk), "Caution" (moderate increase), "No Preference" (no adjustment)
-- **Onboarding Wizard**: First-time users see a mobile-friendly wizard to set their preferences before scanning
-- **Settings Page**: Access via settings icon in upload page header to view/update preferences anytime
-- **Client-Side Risk Adjustment**: Display-time adjustment preserves cached base analysis integrity
-- **Visual Indicators**: Results page shows "Personalized for you" banner with base risk and adjustment reasons
-- **Database Changes**: Added `riskPreferences` JSONB and `onboardingCompleted` boolean to users table
-- **Complete Translations**: All preference categories and UI in EN, ES, ZH
-
-## Previous Changes (December 3, 2025)
-### Simplified Two-Category System
-- **Two Categories Only**: Streamlined from multiple product types to just two main categories:
-  * **Food & Supplements** (`food`): Food, beverages, vitamins, minerals, protein powders, and anything consumable
-  * **Personal Care** (`personal_care`): Skincare, haircare, cosmetics, fragrance, soaps, oral care, and body care products
-- **Redesigned Category Selection**: Large, touch-friendly category cards with icons (utensils for food, spray bottle for personal care)
-- **Updated AI Analysis Context**: Category-specific safety criteria for more relevant ingredient analysis
-- **History Page Filtering**: Filter scans by category (All, Food & Supplements, Personal Care) with visual category badges
-- **Full Translation Updates**: All three languages (EN, ES, ZH) updated for new category structure
-
-### Mobile Background Resilience Improvements
-- **Visibility Change Handler**: Automatically resumes polling when user returns from background (minimizing browser or locking screen)
-- **Wake Lock Re-acquisition**: Screen Wake Lock is re-acquired when page becomes visible again
-- **Request ID Tracking**: Active analysis request IDs are stored to enable polling resumption
-- **Removed "Keep Active" Message**: Cleaned up loading UI - no longer shows advice about keeping app active
-- **5-Minute Polling Timeout**: Direct polling continues for up to 300 attempts (5 minutes) to handle long analyses
-
-## Previous Changes (November 21, 2025)
-### Backend Ingredient Caching with Auto-Refresh
-- **New `/api/analyze-ingredients` Endpoint**: Batch ingredient analysis with intelligent caching
-- **Cache Architecture**: 
-  * Category-specific cache keys (ingredient name + product type)
-  * 30-day automatic refresh - stale entries re-analyzed on next request
-  * In-memory cache with JSON file persistence for durability
-  * Automatic deduplication of ingredients within same request
-- **Performance Impact**: Repeat scans of same products return cached results instantly (near-zero latency for cached hits)
-- **Cache Monitoring**: `/api/cache-stats` endpoint provides hit rate, fresh/stale counts for debugging
-- **Error Handling**: Graceful ingredient-level errors - one failure doesn't crash entire batch
-
-## Previous Changes (November 15, 2025)
-### Major Performance & Reliability Overhaul
-- **75% Faster Processing**: Simplified to use only Gemini 2.5 Flash for OCR (2-5s, reliable and fast)
-- **Single Fast OCR**: Gemini Flash as primary, Google Vision as optional fallback only on failure
-- **Removed Complexity**: Eliminated slow Tesseract (20-30s) and parallel OCR overhead
-- **Combined Pipeline**: New `/api/scan-and-analyze` endpoint eliminates client round-trip latency
-- **Reverted to GPT-4o**: Using Replit AI Integrations for reliability (GPT-5.1 had quota issues)
-- **Total Time Reduction**: 
-  * English/Spanish: 30-40s → 7-15s (75% faster)
-  * Chinese: 60-120s → 35-50s (60% faster)
-- **Higher Reliability**: Replit integrations handle all billing/quotas automatically
-
 ## User Preferences
 - Privacy-focused: Images not stored on server
 - Mobile-friendly: Optimized for on-the-go scanning
 - Multi-language support: Full English, Spanish, and Chinese UI, OCR works with various languages, AI analysis results in user's preferred language
 - Language preference: Stored locally in browser, persists across sessions
-- **Personalized Risk Settings**: Users can configure sensitivity to 11 ingredient categories, with risk levels adjusted at display time based on preferences
+- Personalized Risk Settings: Users can configure sensitivity to 11 ingredient categories, with risk levels adjusted at display time based on preferences
 
 ## System Architecture
 
@@ -74,78 +20,49 @@ Auraly is a mobile-friendly web application designed to help users understand th
 - **UI/UX Decisions**:
     - **Design System**: Wellness-inspired palette (soft greens, creams, pastels), Inter and Space Grotesk fonts.
     - **Principles**: Mobile-first, calm aesthetic, clear visual hierarchy, risk color-coding, generous whitespace, rounded corners, subtle animations.
-    - **Image Preprocessing**: Automatic client-side image enhancement (max 2400px, grayscale conversion for better OCR character recognition) to improve OCR accuracy. Optimized to prevent sessionStorage quota errors while maintaining excellent text clarity. Removed aggressive sharpening that was destroying character edges.
+    - **Image Preprocessing**: Automatic client-side image enhancement (max 2400px, grayscale conversion for better OCR character recognition) to improve OCR accuracy.
     - **Progress Bar**: Smooth 0-95% animation over 20 seconds for visual feedback during analysis.
 
 ### Backend (Node.js + Express)
 - **API Endpoints**:
-    - `POST /api/scan-and-analyze`: **PRIMARY ENDPOINT** - Combined OCR + Analysis for maximum speed (7-50s total)
-    - `POST /api/analyze-ingredients`: Batch ingredient analysis with category-specific caching (instant for cached)
-    - `GET /api/cache-stats`: Cache performance metrics (hit rate, fresh/stale counts)
-    - `POST /api/ocr`: Extracts text using Gemini Flash (2-5s, with optional Google Vision fallback)
-    - `POST /api/analyze`: Analyzes ingredients with OpenAI GPT-4o (with GPT-4o-mini fallback)
-- **Services**:
-    - `services/cache.ts`: Ingredient cache with 30-day auto-refresh, deduplication, and JSON persistence
-    - `services/ocr.ts`: Simple OCR orchestration - Gemini Flash primary, Google Vision fallback
-    - `services/geminiOcr.ts`: Gemini 2.5 Flash vision-based OCR (2-5s, fast and reliable)
-    - `services/googleVisionOcr.ts`: Google Cloud Vision fallback (only runs if Gemini fails)
-    - `services/analyzer.ts`: GPT-4o ingredient analysis (with GPT-4o-mini fallback) with Zod schema validation and multi-language support
-    - `gemini.ts`: Gemini client using Replit AI Integrations
-    - `openai.ts`: OpenAI client using Replit AI Integrations
-- **Error Handling**: Robust validation for OCR text length and AI response schemas.
+    - `POST /api/scan-and-analyze`: **PRIMARY ENDPOINT** - Combined OCR + Analysis for maximum speed.
+    - `POST /api/analyze-ingredients`: Batch ingredient analysis with category-specific caching.
+    - `GET /api/cache-stats`: Cache performance metrics.
+    - `POST /api/ocr`: Extracts text using Gemini Flash.
+    - `POST /api/analyze`: Analyzes ingredients with OpenAI GPT-4o.
+    - `GET /api/user/allergen-preferences` - Fetch current preferences
+    - `PATCH /api/user/allergen-preferences` - Update preferences
+    - `POST /api/user/allergen-onboarding` - Complete allergen onboarding
+- **Services**: `services/cache.ts`, `services/ocr.ts`, `services/geminiOcr.ts`, `services/googleVisionOcr.ts`, `services/analyzer.ts`, `gemini.ts`, `openai.ts`.
 - **Feature Specifications**:
-    - **Fast OCR with Fallback**: Simplified single-engine approach for speed and reliability:
-      * **Gemini 2.5 Flash** (primary, 2-5s) - Vision-based OCR using Replit AI Integrations, returns immediately on success
-      * **Google Cloud Vision API** (fallback) - Only runs if Gemini fails and API key is configured
-      * Sequential execution: fast path completes in 2-5s, no waiting for slower engines
-    - **Combined Scan & Analyze Pipeline**: `/api/scan-and-analyze` endpoint eliminates round-trip latency by running OCR and AI analysis sequentially in a single request. Supports optional `ocrText` parameter to skip OCR when cached text is available. Total processing time: 7-15s (EN/ES) or 35-50s (ZH) - down from 30-120s baseline.
-    - **Automatic Retry System**: Frontend auto-retries failed requests to handle intermittent API issues invisibly:
-      * Up to 2 automatic retries with exponential backoff (3s, 6s delays)
-      * OCR text caching: successful OCR results are cached and reused on retries to skip the 2-5s OCR stage
-      * Smart retry: retries only re-run the failed stage (Analysis), not the entire pipeline
-      * Non-retryable errors (OCR failures, client errors) fail immediately without wasting retry attempts
-      * User sees retry status in UI with translations in EN, ES, ZH
-      * Total attempts: up to 6 (3 backend + 2 frontend) before showing error
-      * Makes transient GPT-4o rate limits and timeouts invisible to users
-    - **AI-Powered Analysis**: Utilizes GPT-4o for fast and accurate ingredient analysis (automatically falls back to GPT-4o-mini if unavailable). Provides risk assessments and clear explanations in the user's chosen language. Enhanced with:
-      - **Parenthetical Expansion**: Stack-based parser that intelligently handles parenthetical patterns:
-        * Category expansion: "Enriched Flour (Wheat, Niacin)" → extracts "Wheat, Niacin" (multiple items)
-        * Alias/qualifier: "Niacin (Vitamin B3)" → keeps "Niacin" only (single item, drops alias)
-        * Certification: "Palm Oil (RSPO Certified)" → keeps "Palm Oil" only (drops qualifier)
-      - **Deduplication**: Counts each distinct ingredient only once
-      - **Comprehensive Extraction**: Ensures ALL ingredients are identified, including additives, vitamins, preservatives, and colorings
-      - **Dynamic Token Allocation**: Language-aware token optimization for speed and completeness:
-        * English/Spanish: ingredientCount × 140 + 800, capped at 6,000 tokens
-        * Chinese: ingredientCount × 110 + 600, capped at 4,500 tokens (faster due to higher token density)
-      - **Robust Retry Logic**: Up to 3 retry attempts with exponential backoff (2s, 4s, 8s) to handle OpenAI API intermittent failures (500/502/503 server errors, timeouts, rate limits)
-      - **Extended Timeout**: 5-minute frontend timeout to accommodate longest analyses (Chinese mode can take 2-3 minutes)
-      - **Clear Error Messages**: Specific user-friendly messages for server errors, timeouts, rate limits, and network issues instead of generic "Load failed"
-      - **Lower Temperature**: Uses 0.3 temperature for more consistent JSON output
-    - **Intelligent Completeness Validation**: 
-      - Schema-level minimum validation (requires at least 1 ingredient)
-      - Smart section boundary detection: finds "INGREDIENTS:" markers in multiple languages and stops at "CONTAINS:", "DIRECTIONS:", etc.
-      - Currently DISABLED: Completeness check temporarily disabled to avoid false positives from parenthetical expansion
-      - Bulletproof pattern matching: only counts line-start bullets (`^[•·∙\*]\s`), ignoring hyphens in ingredient names like "beta-carotene"
-    - **Cross-Language Consistency**: 
-      - Acceptable variance: ±3-4 ingredients across languages (EN, ES, ZH)
-      - Variance source: AI temperature=0.3 + non-deterministic translation-based deduplication
-      - Tested with curry label: EN=40, ES=41, ZH=43 (variance=3, within acceptable range)
-    - **Multi-Language Support**: Full internationalization for UI and AI analysis results in English, Spanish, and Chinese, ensuring the AI responds in the user's selected language regardless of the scanned product's language.
-    - **Mobile Optimization**: Redesigned ImageUploader with camera scan as primary CTA, 5-minute timeout protection, and mobile browser compatibility fixes.
-    - **Product-Specific Analysis**: Analyzer uses different safety criteria based on product type (Food, Skincare, Oral Care, Cosmetics).
+    - **Fast OCR with Fallback**: Gemini 2.5 Flash (primary, 2-5s) with Google Cloud Vision API as fallback.
+    - **Combined Scan & Analyze Pipeline**: `/api/scan-and-analyze` endpoint for sequential OCR and AI analysis in a single request.
+    - **Automatic Retry System**: Frontend auto-retries failed requests with exponential backoff and OCR text caching.
+    - **AI-Powered Analysis**: Utilizes GPT-4o for accurate ingredient analysis, risk assessments, and explanations in the user's chosen language. Includes parenthetical expansion, deduplication, and dynamic token allocation.
+    - **Intelligent Completeness Validation**: Schema-level validation and smart section boundary detection for ingredient lists.
+    - **Cross-Language Consistency**: Acceptable ingredient count variance across English, Spanish, and Chinese analyses.
+    - **Multi-Language Support**: Full internationalization for UI and AI analysis results in English, Spanish, and Chinese.
+    - **Mobile Optimization**: Redesigned ImageUploader, 5-minute timeout protection, and mobile browser compatibility.
+    - **Product-Specific Analysis**: Analyzer uses different safety criteria based on product type (Food & Supplements, Personal Care).
+    - **Allergen Detection Framework**: 12 allergen categories (Food, Cosmetic, Chemical Additives) with toggle-based user preferences and intelligent detection.
+    - **Personalized Risk Settings**: Users can configure tolerance levels ("Avoid", "Caution", "No Preference") for 11 ingredient categories.
+    - **Simplified Two-Category System**: Streamlined product categories to "Food & Supplements" and "Personal Care" for improved analysis context and filtering.
+    - **Mobile Background Resilience**: Automatically resumes polling and re-acquires Wake Lock when the app returns from the background.
+    - **Backend Ingredient Caching**: `/api/analyze-ingredients` endpoint with intelligent, category-specific caching and 30-day auto-refresh.
+    - **Performance & Reliability Overhaul**: Simplified OCR to Gemini 2.5 Flash, combined pipeline, and use of GPT-4o via Replit AI Integrations for faster and more reliable processing.
 
 ### Tech Stack
 - **Frontend**: React, TypeScript, Tailwind CSS, shadcn/ui, TanStack Query, Wouter
 - **Backend**: Node.js, Express, TypeScript
-- **Storage**: 
-    - **PostgreSQL Database**: User profiles with risk preferences (riskPreferences JSONB, onboardingCompleted boolean)
-    - Ingredient cache: In-memory + JSON file persistence (ingredient_cache.json)
-    - Client-side: localStorage for scan history and language preference
+- **Storage**:
+    - **PostgreSQL Database**: User profiles with risk preferences (`riskPreferences` JSONB, `onboardingCompleted` boolean), `allergenPreferences` JSONB.
+    - Ingredient cache: In-memory + JSON file persistence (ingredient_cache.json).
+    - Client-side: localStorage for scan history and language preference.
 
 ## External Dependencies
 - **AI/ML**:
-    - **Gemini 2.5 Flash** (via Replit AI Integrations) - Primary OCR, no API key required
-    - **OpenAI GPT-4o** (via Replit AI Integrations) - Primary ingredient analysis, with GPT-4o-mini fallback, no API key required
-    - **Google Cloud Vision API** - Optional OCR fallback (requires API key, only used if Gemini fails)
-- **Internationalization**: i18next, react-i18next
-- **Deployment**: Replit (hosting platform)
+    - **Gemini 2.5 Flash** (via Replit AI Integrations) - Primary OCR.
+    - **OpenAI GPT-4o** (via Replit AI Integrations) - Primary ingredient analysis, with GPT-4o-mini fallback.
+    - **Google Cloud Vision API** - Optional OCR fallback.
+- **Internationalization**: i18next, react-i18next.
+- **Deployment**: Replit (hosting platform).
