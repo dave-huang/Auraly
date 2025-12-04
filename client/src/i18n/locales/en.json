@@ -254,5 +254,30 @@
       "food": "Food & Supplements",
       "personal_care": "Personal Care"
     }
+  },
+  "preferences": {
+    "title": "Risk Preferences",
+    "settings": "Settings",
+    "categories": {
+      "artificial_fragrances": "Artificial Fragrances",
+      "artificial_colors": "Artificial Colors",
+      "preservatives": "Preservatives",
+      "endocrine_disruptors": "Endocrine Disruptors",
+      "allergens": "Allergens",
+      "alcohols": "Drying Alcohols",
+      "fragrance_allergens": "Fragrance Allergens",
+      "parabens": "Parabens",
+      "sulfates": "Sulfates",
+      "pegs_ethoxylated": "PEGs / Ethoxylated",
+      "silicones": "Silicones"
+    },
+    "tolerance": {
+      "no_preference": "No Preference",
+      "caution": "Use with Caution",
+      "avoid": "Avoid Completely"
+    },
+    "adjustedRisk": "Risk adjusted based on your preferences",
+    "baseRisk": "Base risk",
+    "personalizedFor": "Personalized for you"
   }
 }
