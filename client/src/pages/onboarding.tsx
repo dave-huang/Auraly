@@ -149,20 +149,20 @@ const riskCategoryGroups = [
     ]
   },
   {
-    title: { en: "Allergens & Alcohols", es: "Alérgenos y Alcoholes", zh: "过敏原与酒精" },
+    title: { en: "Sensitizers & Alcohols", es: "Sensibilizantes y Alcoholes", zh: "致敏剂与酒精" },
     subtitle: { 
-      en: "Common sensitizers and drying agents", 
-      es: "Sensibilizantes comunes y agentes secantes",
-      zh: "常见致敏剂和干燥剂"
+      en: "Common contact sensitizers and drying agents", 
+      es: "Sensibilizantes de contacto comunes y agentes secantes",
+      zh: "常见接触性致敏剂和干燥剂"
     },
     categories: [
       { 
-        key: "allergens" as PreferenceCategory, 
+        key: "contact_sensitizers" as PreferenceCategory, 
         icon: "🚨",
         description: { 
-          en: "Common contact allergens", 
-          es: "Alérgenos de contacto comunes",
-          zh: "常见接触性过敏原"
+          en: "Common contact sensitizers like nickel, lanolin", 
+          es: "Sensibilizantes de contacto comunes como níquel, lanolina",
+          zh: "常见接触性致敏剂如镍、羊毛脂"
         }
       },
       { 

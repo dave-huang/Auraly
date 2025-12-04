@@ -23,8 +23,8 @@ const categoryInfo: Record<PreferenceCategory, { icon: string; group: string }> 
   sulfates: { icon: "🫧", group: "surfactants" },
   silicones: { icon: "✨", group: "surfactants" },
   pegs_ethoxylated: { icon: "💧", group: "surfactants" },
-  allergens: { icon: "🚨", group: "allergens" },
-  alcohols: { icon: "🍷", group: "allergens" },
+  contact_sensitizers: { icon: "🚨", group: "sensitizers" },
+  alcohols: { icon: "🍷", group: "sensitizers" },
 };
 
 interface AllergenCategoryInfo {
@@ -269,11 +269,11 @@ export default function SettingsPage() {
           <TabsList className="grid w-full grid-cols-2 mb-4">
             <TabsTrigger value="risk" className="flex items-center gap-2" data-testid="tab-risk">
               <Shield className="w-4 h-4" />
-              {lang === 'zh' ? '风险偏好' : lang === 'es' ? 'Riesgos' : 'Risk'}
+              {lang === 'zh' ? '风险敏感度' : lang === 'es' ? 'Sensibilidad' : 'Risk Sensitivity'}
             </TabsTrigger>
             <TabsTrigger value="allergen" className="flex items-center gap-2" data-testid="tab-allergen">
               <AlertTriangle className="w-4 h-4" />
-              {lang === 'zh' ? '过敏原' : lang === 'es' ? 'Alérgenos' : 'Allergens'}
+              {lang === 'zh' ? '过敏原警报' : lang === 'es' ? 'Alertas' : 'Allergen Alerts'}
             </TabsTrigger>
           </TabsList>
 
@@ -282,7 +282,7 @@ export default function SettingsPage() {
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm flex items-center gap-2">
                   <Shield className="w-4 h-4" />
-                  {lang === 'zh' ? '关于风险偏好' : lang === 'es' ? 'Acerca de Preferencias' : 'About Risk Preferences'}
+                  {lang === 'zh' ? '关于风险敏感度' : lang === 'es' ? 'Acerca de Sensibilidad de Riesgo' : 'About Risk Sensitivity'}
                 </CardTitle>
                 <CardDescription className="text-xs">
                   {lang === 'zh' 
