@@ -181,6 +181,82 @@ export function hasActivePreferences(preferences: RiskPreferences): boolean {
   return Object.values(preferences).some(v => v !== 'no_preference');
 }
 
+export function applyRiskPreferencesToIngredients(
+  ingredients: Ingredient[],
+  preferences: RiskPreferences,
+  language: string = 'en'
+): Ingredient[] {
+  if (!ingredients || ingredients.length === 0) {
+    return ingredients;
+  }
+
+  const allPrefsDefault = Object.values(preferences).every(
+    v => v === 'no_preference'
+  );
+  if (allPrefsDefault) {
+    return ingredients;
+  }
+
+  return ingredients.map(ingredient => {
+    const categories = getIngredientCategories(ingredient.name);
+    
+    if (categories.length === 0) {
+      return {
+        ...ingredient,
+        baseRiskLevel: ingredient.baseRiskLevel || ingredient.riskLevel,
+        preferenceCategories: []
+      };
+    }
+
+    const baseRisk = ingredient.baseRiskLevel || ingredient.riskLevel;
+    let highestAdjustedRisk: RiskLevel = baseRisk;
+    const appliedCategories: PreferenceCategory[] = [];
+    
+    for (const category of categories) {
+      const tolerance = preferences[category];
+      if (tolerance && tolerance !== 'no_preference') {
+        const adjustedForCategory = adjustRiskLevel(baseRisk, tolerance);
+        appliedCategories.push(category);
+        
+        const riskOrder: RiskLevel[] = ['low', 'moderate', 'high'];
+        if (riskOrder.indexOf(adjustedForCategory) > riskOrder.indexOf(highestAdjustedRisk)) {
+          highestAdjustedRisk = adjustedForCategory;
+        }
+      }
+    }
+
+    if (appliedCategories.length === 0) {
+      return {
+        ...ingredient,
+        baseRiskLevel: baseRisk,
+        preferenceCategories: categories
+      };
+    }
+
+    const categoryNames = appliedCategories
+      .map(cat => getCategoryDisplayName(cat, language))
+      .join(', ');
+    
+    const toleranceLabel = preferences[appliedCategories[0]] === 'avoid' 
+      ? (language === 'zh' ? '完全避免' : language === 'es' ? 'evitar completamente' : 'avoid completely')
+      : (language === 'zh' ? '谨慎使用' : language === 'es' ? 'usar con precaución' : 'use with caution');
+
+    const adjustmentReason = language === 'zh'
+      ? `根据您的偏好设置（${categoryNames}: ${toleranceLabel}）调整了风险等级`
+      : language === 'es'
+      ? `Riesgo ajustado según sus preferencias (${categoryNames}: ${toleranceLabel})`
+      : `Risk adjusted based on your preferences (${categoryNames}: ${toleranceLabel})`;
+
+    return {
+      ...ingredient,
+      baseRiskLevel: baseRisk,
+      riskLevel: highestAdjustedRisk,
+      preferenceCategories: categories,
+      riskAdjustmentReason: baseRisk !== highestAdjustedRisk ? adjustmentReason : undefined
+    };
+  });
+}
+
 export function getActivePreferenceSummary(
   preferences: RiskPreferences,
   language: string = 'en'

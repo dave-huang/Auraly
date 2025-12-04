@@ -23,7 +23,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useTranslation } from "react-i18next";
 import { useToast } from "@/hooks/use-toast";
-import { applyRiskPreferences, hasActivePreferences } from "@/lib/riskAdjustment";
+import { applyRiskPreferencesToIngredients, hasActivePreferences } from "@/lib/riskAdjustment";
 import type { ScanHistory, Ingredient, RiskLevel, RiskPreferences, User } from "@shared/schema";
 
 
@@ -110,6 +110,44 @@ export default function ScanDetailPage() {
     });
   };
 
+  const rawIngredients = useMemo(() => {
+    if (!scan) return [];
+    return (scan.analysisResults as Ingredient[]) || [];
+  }, [scan]);
+  
+  const adjustedIngredients = useMemo(() => {
+    if (!userPreferences || rawIngredients.length === 0) return rawIngredients;
+    return applyRiskPreferencesToIngredients(rawIngredients, userPreferences);
+  }, [rawIngredients, userPreferences]);
+
+  const adjustedOverallRisk = useMemo((): RiskLevel => {
+    if (!scan) return 'low';
+    if (adjustedIngredients.length === 0) return scan.overallRisk as RiskLevel;
+    const hasHigh = adjustedIngredients.some((i: Ingredient) => i.riskLevel === 'high');
+    if (hasHigh) return 'high';
+    const hasModerate = adjustedIngredients.some((i: Ingredient) => i.riskLevel === 'moderate');
+    if (hasModerate) return 'moderate';
+    return 'low';
+  }, [adjustedIngredients, scan]);
+  
+  const riskOrder: Record<RiskLevel, number> = { high: 0, moderate: 1, low: 2 };
+  
+  const filteredIngredients = useMemo(() => {
+    return adjustedIngredients
+      .filter((ingredient: Ingredient) => {
+        const matchesSearch = ingredient.name.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesRisk = selectedRisk === "all" || ingredient.riskLevel === selectedRisk;
+        return matchesSearch && matchesRisk;
+      })
+      .sort((a: Ingredient, b: Ingredient) => riskOrder[a.riskLevel] - riskOrder[b.riskLevel]);
+  }, [adjustedIngredients, searchQuery, selectedRisk]);
+
+  const riskCounts = useMemo(() => ({
+    low: adjustedIngredients.filter((i: Ingredient) => i.riskLevel === 'low').length,
+    moderate: adjustedIngredients.filter((i: Ingredient) => i.riskLevel === 'moderate').length,
+    high: adjustedIngredients.filter((i: Ingredient) => i.riskLevel === 'high').length,
+  }), [adjustedIngredients]);
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -144,38 +182,6 @@ export default function ScanDetailPage() {
       </div>
     );
   }
-
-  const rawIngredients = (scan.analysisResults as Ingredient[]) || [];
-  
-  const adjustedIngredients = useMemo(() => {
-    if (!userPreferences) return rawIngredients;
-    return applyRiskPreferences(rawIngredients, userPreferences);
-  }, [rawIngredients, userPreferences]);
-
-  const adjustedOverallRisk = useMemo((): RiskLevel => {
-    if (adjustedIngredients.length === 0) return scan.overallRisk as RiskLevel;
-    const hasHigh = adjustedIngredients.some((i: Ingredient) => i.riskLevel === 'high');
-    if (hasHigh) return 'high';
-    const hasModerate = adjustedIngredients.some((i: Ingredient) => i.riskLevel === 'moderate');
-    if (hasModerate) return 'moderate';
-    return 'low';
-  }, [adjustedIngredients, scan.overallRisk]);
-  
-  const riskOrder: Record<RiskLevel, number> = { high: 0, moderate: 1, low: 2 };
-  
-  const filteredIngredients = adjustedIngredients
-    .filter((ingredient: Ingredient) => {
-      const matchesSearch = ingredient.name.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesRisk = selectedRisk === "all" || ingredient.riskLevel === selectedRisk;
-      return matchesSearch && matchesRisk;
-    })
-    .sort((a: Ingredient, b: Ingredient) => riskOrder[a.riskLevel] - riskOrder[b.riskLevel]);
-
-  const riskCounts = {
-    low: adjustedIngredients.filter((i: Ingredient) => i.riskLevel === 'low').length,
-    moderate: adjustedIngredients.filter((i: Ingredient) => i.riskLevel === 'moderate').length,
-    high: adjustedIngredients.filter((i: Ingredient) => i.riskLevel === 'high').length,
-  };
 
   return (
     <div className="min-h-screen bg-background">

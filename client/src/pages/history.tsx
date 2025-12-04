@@ -20,7 +20,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useTranslation } from "react-i18next";
 import { useToast } from "@/hooks/use-toast";
-import { applyRiskPreferences, hasActivePreferences } from "@/lib/riskAdjustment";
+import { applyRiskPreferencesToIngredients, hasActivePreferences } from "@/lib/riskAdjustment";
 import type { ScanHistory, Ingredient, RiskLevel, RiskPreferences, User } from "@shared/schema";
 
 const riskConfig = {
@@ -144,7 +144,7 @@ export default function HistoryPage() {
   const getAdjustedResults = useCallback((scan: ScanHistory) => {
     const rawIngredients = scan.analysisResults as Ingredient[];
     if (!userPreferences) return rawIngredients;
-    return applyRiskPreferences(rawIngredients, userPreferences);
+    return applyRiskPreferencesToIngredients(rawIngredients, userPreferences);
   }, [userPreferences]);
 
   const getRiskSummary = (scan: ScanHistory) => {
