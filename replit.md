@@ -3,7 +3,20 @@
 ## Overview
 Auraly is a mobile-friendly web application designed to help users understand the ingredients in their food, skincare, and personal care products. It allows users to scan or upload product labels in any language, using AI to extract and analyze ingredients, highlighting potential health risks with clear, user-friendly explanations. The project's vision is to empower users with knowledge about product compositions, fostering informed choices for better health and wellness.
 
-## Recent Changes (December 3, 2025)
+## Recent Changes (December 4, 2025)
+### Personalized Risk Settings Feature
+- **User Risk Preferences**: 11 ingredient categories users can configure:
+  * Artificial Fragrances, Artificial Colors, Preservatives, Endocrine Disruptors
+  * Allergens, Alcohols, Fragrance Allergens, Parabens, Sulfates, PEGs, Silicones
+- **Tolerance Levels**: Three options per category - "Avoid" (raises risk), "Caution" (moderate increase), "No Preference" (no adjustment)
+- **Onboarding Wizard**: First-time users see a mobile-friendly wizard to set their preferences before scanning
+- **Settings Page**: Access via settings icon in upload page header to view/update preferences anytime
+- **Client-Side Risk Adjustment**: Display-time adjustment preserves cached base analysis integrity
+- **Visual Indicators**: Results page shows "Personalized for you" banner with base risk and adjustment reasons
+- **Database Changes**: Added `riskPreferences` JSONB and `onboardingCompleted` boolean to users table
+- **Complete Translations**: All preference categories and UI in EN, ES, ZH
+
+## Previous Changes (December 3, 2025)
 ### Simplified Two-Category System
 - **Two Categories Only**: Streamlined from multiple product types to just two main categories:
   * **Food & Supplements** (`food`): Food, beverages, vitamins, minerals, protein powders, and anything consumable
@@ -13,7 +26,7 @@ Auraly is a mobile-friendly web application designed to help users understand th
 - **History Page Filtering**: Filter scans by category (All, Food & Supplements, Personal Care) with visual category badges
 - **Full Translation Updates**: All three languages (EN, ES, ZH) updated for new category structure
 
-### Previous: Mobile Background Resilience Improvements
+### Mobile Background Resilience Improvements
 - **Visibility Change Handler**: Automatically resumes polling when user returns from background (minimizing browser or locking screen)
 - **Wake Lock Re-acquisition**: Screen Wake Lock is re-acquired when page becomes visible again
 - **Request ID Tracking**: Active analysis request IDs are stored to enable polling resumption
@@ -45,16 +58,16 @@ Auraly is a mobile-friendly web application designed to help users understand th
 - **Higher Reliability**: Replit integrations handle all billing/quotas automatically
 
 ## User Preferences
-- Privacy-focused: No user accounts, images not stored on server
+- Privacy-focused: Images not stored on server
 - Mobile-friendly: Optimized for on-the-go scanning
 - Multi-language support: Full English, Spanish, and Chinese UI, OCR works with various languages, AI analysis results in user's preferred language
-- Instant results: Real-time analysis without registration
 - Language preference: Stored locally in browser, persists across sessions
+- **Personalized Risk Settings**: Users can configure sensitivity to 11 ingredient categories, with risk levels adjusted at display time based on preferences
 
 ## System Architecture
 
 ### Frontend (React + TypeScript)
-- **Pages**: Landing (`/`), Upload (`/upload`), Results (`/results`). All fully internationalized.
+- **Pages**: Landing (`/`), Onboarding (`/onboarding`), Settings (`/settings`), Upload (`/upload`), Results (`/results`), History (`/history`). All fully internationalized.
 - **Components**: `ProductTypeSelector`, `ImageUploader` (mobile-first design with camera as primary CTA), `IngredientCard`, `RiskSummary`, `LanguageSwitcher`.
 - **Internationalization**: i18next configured with `en`, `es`, `zh` locales. Language preference stored in localStorage.
 - **State Management**: TanStack Query for API calls (with 5-minute timeout), sessionStorage for pending analysis, localStorage for scan history and language preference.
@@ -125,9 +138,9 @@ Auraly is a mobile-friendly web application designed to help users understand th
 - **Frontend**: React, TypeScript, Tailwind CSS, shadcn/ui, TanStack Query, Wouter
 - **Backend**: Node.js, Express, TypeScript
 - **Storage**: 
+    - **PostgreSQL Database**: User profiles with risk preferences (riskPreferences JSONB, onboardingCompleted boolean)
     - Ingredient cache: In-memory + JSON file persistence (ingredient_cache.json)
     - Client-side: localStorage for scan history and language preference
-    - No external database required
 
 ## External Dependencies
 - **AI/ML**:
