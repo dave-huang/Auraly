@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2, Settings } from "lucide-react";
 import { ProductTypeSelector } from "@/components/product-type-selector";
 import { ImageUploader } from "@/components/image-uploader";
 import { LanguageSwitcher } from "@/components/language-switcher";
@@ -74,9 +74,17 @@ export default function UploadPage() {
             <ArrowLeft className="w-4 h-4" />
             {t('common.back')}
           </Button>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2">
             <h1 className="font-serif text-lg font-bold hidden sm:block">{t('app.title')}</h1>
             <LanguageSwitcher />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setLocation('/settings')}
+              data-testid="button-settings"
+            >
+              <Settings className="h-5 w-5" />
+            </Button>
           </div>
         </div>
       </header>

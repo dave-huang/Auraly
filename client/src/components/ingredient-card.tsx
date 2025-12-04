@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, AlertTriangle } from "lucide-react";
 import type { Ingredient } from "@shared/schema";
 import { useTranslation } from "react-i18next";
 
@@ -34,6 +34,10 @@ export function IngredientCard({ ingredient }: IngredientCardProps) {
   const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
   const config = riskConfig[ingredient.riskLevel];
+  const hasRiskAdjustment = ingredient.riskAdjustmentReason && 
+    ingredient.baseRiskLevel && 
+    ingredient.baseRiskLevel !== ingredient.riskLevel;
+  const baseConfig = hasRiskAdjustment ? riskConfig[ingredient.baseRiskLevel!] : null;
 
   return (
     <Card className={`border-l-4 ${config.borderColor} overflow-hidden`}>
@@ -44,15 +48,37 @@ export function IngredientCard({ ingredient }: IngredientCardProps) {
             <h3 className="font-semibold text-lg mb-2" data-testid={`text-ingredient-name-${ingredient.name}`}>
               {ingredient.name}
             </h3>
-            <Badge 
-              className={`${config.bgColor} ${config.textColor} border-0 text-xs font-semibold`}
-              data-testid={`badge-risk-${ingredient.riskLevel}`}
-            >
-              {t(`results.riskLevels.${ingredient.riskLevel}`)}
-            </Badge>
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge 
+                className={`${config.bgColor} ${config.textColor} border-0 text-xs font-semibold`}
+                data-testid={`badge-risk-${ingredient.riskLevel}`}
+              >
+                {t(`results.riskLevels.${ingredient.riskLevel}`)}
+              </Badge>
+              {hasRiskAdjustment && baseConfig && (
+                <Badge 
+                  variant="outline"
+                  className="text-xs font-normal gap-1"
+                  data-testid={`badge-adjusted-${ingredient.name}`}
+                >
+                  <AlertTriangle className="w-3 h-3" />
+                  {t('preferences.baseRisk')}: {t(`results.riskLevels.${ingredient.baseRiskLevel}`)}
+                </Badge>
+              )}
+            </div>
           </div>
           <div className={`w-3 h-3 rounded-full ${config.color} mt-1 flex-shrink-0`} />
         </div>
+        
+        {/* Risk Adjustment Notice */}
+        {hasRiskAdjustment && (
+          <div className="mb-3 p-2 bg-muted/50 rounded-md flex items-start gap-2">
+            <AlertTriangle className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
+            <p className="text-xs text-muted-foreground" data-testid={`text-adjustment-reason-${ingredient.name}`}>
+              {ingredient.riskAdjustmentReason}
+            </p>
+          </div>
+        )}
 
         {/* Summary */}
         <p className="text-sm text-foreground mb-3">

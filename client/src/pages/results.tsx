@@ -1,16 +1,17 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Camera, Loader2, Search, AlertCircle, Pencil, Check, X } from "lucide-react";
+import { ArrowLeft, Camera, Loader2, Search, AlertCircle, Pencil, Check, X, Settings } from "lucide-react";
 import { IngredientCard } from "@/components/ingredient-card";
 import { RiskSummary } from "@/components/risk-summary";
-import type { AnalysisResult, Ingredient, RiskLevel } from "@shared/schema";
-import { useMutation } from "@tanstack/react-query";
+import type { AnalysisResult, Ingredient, RiskLevel, RiskPreferences } from "@shared/schema";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useTranslation } from "react-i18next";
+import { applyRiskPreferences, hasActivePreferences } from "@/lib/riskAdjustment";
 
 // Helper function for direct polling fallback
 const directPoll = async (requestId: string, resolve: any, reject: any) => {
@@ -66,6 +67,29 @@ export default function ResultsPage() {
   const resolveRef = useRef<((value: AnalysisResult) => void) | null>(null);
   const rejectRef = useRef<((reason: any) => void) | null>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
+
+  const preferencesQuery = useQuery<{ preferences: RiskPreferences }>({
+    queryKey: ['/api/user/preferences'],
+    retry: false,
+    staleTime: 60000
+  });
+
+  const userLanguage = useMemo(() => {
+    if (i18n.language.startsWith('zh')) return 'zh';
+    if (i18n.language.startsWith('es')) return 'es';
+    return 'en';
+  }, [i18n.language]);
+
+  const displayResult = useMemo(() => {
+    if (!analysisResult) return null;
+    
+    const preferences = preferencesQuery.data?.preferences;
+    if (!preferences || !hasActivePreferences(preferences)) {
+      return analysisResult;
+    }
+    
+    return applyRiskPreferences(analysisResult, preferences, userLanguage);
+  }, [analysisResult, preferencesQuery.data, userLanguage]);
 
   // Auto-retry mutation with Service Worker polling for mobile background support
   const analyzeMutation = useMutation({
@@ -319,20 +343,22 @@ export default function ResultsPage() {
     low: 1
   };
 
-  const filteredIngredients = (analysisResult?.ingredients.filter(ingredient => {
+  const filteredIngredients = (displayResult?.ingredients.filter(ingredient => {
     const matchesSearch = ingredient.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesRisk = selectedRisk === "all" || ingredient.riskLevel === selectedRisk;
     return matchesSearch && matchesRisk;
   }) || []).sort((a, b) => {
-    // Sort by risk level (highest first)
     return riskLevelOrder[b.riskLevel] - riskLevelOrder[a.riskLevel];
   });
 
   const riskCounts = {
-    low: analysisResult?.ingredients.filter(i => i.riskLevel === "low").length || 0,
-    moderate: analysisResult?.ingredients.filter(i => i.riskLevel === "moderate").length || 0,
-    high: analysisResult?.ingredients.filter(i => i.riskLevel === "high").length || 0,
+    low: displayResult?.ingredients.filter(i => i.riskLevel === "low").length || 0,
+    moderate: displayResult?.ingredients.filter(i => i.riskLevel === "moderate").length || 0,
+    high: displayResult?.ingredients.filter(i => i.riskLevel === "high").length || 0,
   };
+  
+  const hasPreferences = preferencesQuery.data?.preferences && 
+    hasActivePreferences(preferencesQuery.data.preferences);
 
   if (analyzeMutation.isPending) {
     return (
@@ -436,7 +462,7 @@ export default function ResultsPage() {
     );
   }
 
-  if (!analysisResult) {
+  if (!displayResult) {
     return null;
   }
 
@@ -455,7 +481,14 @@ export default function ResultsPage() {
             {t('results.header.home')}
           </Button>
           <h1 className="font-serif text-xl font-bold">{t('app.title')}</h1>
-          <div className="w-10" />
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setLocation('/settings')}
+            data-testid="button-settings"
+          >
+            <Settings className="h-5 w-5" />
+          </Button>
         </div>
       </header>
 
@@ -507,28 +540,47 @@ export default function ResultsPage() {
           ) : (
             <button
               onClick={() => {
-                setEditedName(analysisResult.productName || '');
+                setEditedName(displayResult.productName || '');
                 setIsEditingName(true);
               }}
               className="group flex items-center gap-2 text-left hover-elevate rounded-md px-2 py-1 -ml-2"
               data-testid="button-edit-product-name"
             >
               <h2 className="text-2xl md:text-3xl font-bold" data-testid="text-product-name">
-                {analysisResult.productName || t('results.productName.placeholder')}
+                {displayResult.productName || t('results.productName.placeholder')}
               </h2>
               <Pencil className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
           )}
           <p className="text-sm text-muted-foreground capitalize mt-1">
-            {t(`history.categories.${analysisResult.productType === 'food' ? 'food' : 'personal_care'}`)} {t('results.productType')}
+            {t(`history.categories.${displayResult.productType === 'food' ? 'food' : 'personal_care'}`)} {t('results.productType')}
           </p>
         </div>
 
+        {/* Personalization Notice */}
+        {hasPreferences && (
+          <div className="mb-4 p-3 bg-primary/5 border border-primary/20 rounded-lg flex items-center gap-2">
+            <Settings className="h-4 w-4 text-primary flex-shrink-0" />
+            <p className="text-sm text-muted-foreground">
+              {t('preferences.personalizedFor')}
+            </p>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="ml-auto text-primary"
+              onClick={() => setLocation('/settings')}
+              data-testid="link-edit-preferences"
+            >
+              {t('preferences.settings')}
+            </Button>
+          </div>
+        )}
+
         {/* Risk Summary */}
         <RiskSummary 
-          overallRisk={analysisResult.overallRisk}
+          overallRisk={displayResult.overallRisk}
           riskCounts={riskCounts}
-          totalIngredients={analysisResult.ingredients.length}
+          totalIngredients={displayResult.ingredients.length}
         />
 
         {/* Search Bar */}
@@ -548,7 +600,7 @@ export default function ResultsPage() {
         <Tabs value={selectedRisk} onValueChange={(value) => setSelectedRisk(value as RiskLevel | "all")} className="mb-6">
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="all" data-testid="tab-all">
-              {t('results.filters.all')} ({analysisResult.ingredients.length})
+              {t('results.filters.all')} ({displayResult.ingredients.length})
             </TabsTrigger>
             <TabsTrigger value="low" data-testid="tab-low">
               {t('results.filters.low')} ({riskCounts.low})
