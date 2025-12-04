@@ -19,6 +19,7 @@ import {
 import { ArrowLeft, Trash2, Search, Loader2, AlertTriangle, Clock, Pencil, Check, X, Settings } from "lucide-react";
 import { IngredientCard } from "@/components/ingredient-card";
 import { RiskSummary } from "@/components/risk-summary";
+import { AllergenFlags } from "@/components/allergen-flags";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useTranslation } from "react-i18next";
@@ -329,6 +330,9 @@ export default function ScanDetailPage() {
           riskCounts={riskCounts}
           totalIngredients={adjustedIngredients.length}
         />
+
+        {/* Allergen Flags */}
+        <AllergenFlags ingredients={adjustedIngredients} />
 
         <div className="mb-4 relative mt-6">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
