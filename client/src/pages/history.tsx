@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useLocation, Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -15,12 +15,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { ArrowLeft, Trash2, Clock, AlertTriangle, Loader2, Package, UtensilsCrossed, SprayCan } from "lucide-react";
+import { ArrowLeft, Trash2, Clock, AlertTriangle, Loader2, Package, UtensilsCrossed, SprayCan, Settings } from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useTranslation } from "react-i18next";
 import { useToast } from "@/hooks/use-toast";
-import type { ScanHistory } from "@shared/schema";
+import { applyRiskPreferences, hasActivePreferences } from "@/lib/riskAdjustment";
+import type { ScanHistory, Ingredient, RiskLevel, RiskPreferences, User } from "@shared/schema";
 
 const riskConfig = {
   low: {
@@ -72,6 +73,13 @@ export default function HistoryPage() {
   const [allScans, setAllScans] = useState<ScanHistory[]>([]);
   const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>("all");
   const limit = 20;
+
+  const { data: user } = useQuery<User>({
+    queryKey: ['/api/auth/user'],
+  });
+
+  const userPreferences = user?.riskPreferences as RiskPreferences | undefined;
+  const showPersonalizedBanner = userPreferences && hasActivePreferences(userPreferences);
 
   const { data, isLoading, error, isFetching } = useQuery<HistoryResponse>({
     queryKey: ['/api/history', { limit, offset }],
@@ -133,12 +141,28 @@ export default function HistoryPage() {
     }
   });
 
+  const getAdjustedResults = useCallback((scan: ScanHistory) => {
+    const rawIngredients = scan.analysisResults as Ingredient[];
+    if (!userPreferences) return rawIngredients;
+    return applyRiskPreferences(rawIngredients, userPreferences);
+  }, [userPreferences]);
+
   const getRiskSummary = (scan: ScanHistory) => {
-    const results = scan.analysisResults as any[];
-    const high = results.filter(r => r.riskLevel === 'high').length;
-    const moderate = results.filter(r => r.riskLevel === 'moderate').length;
-    const low = results.filter(r => r.riskLevel === 'low').length;
+    const adjustedResults = getAdjustedResults(scan);
+    const high = adjustedResults.filter((r: Ingredient) => r.riskLevel === 'high').length;
+    const moderate = adjustedResults.filter((r: Ingredient) => r.riskLevel === 'moderate').length;
+    const low = adjustedResults.filter((r: Ingredient) => r.riskLevel === 'low').length;
     return { high, moderate, low };
+  };
+
+  const getAdjustedOverallRisk = (scan: ScanHistory): RiskLevel => {
+    const adjustedResults = getAdjustedResults(scan);
+    if (adjustedResults.length === 0) return scan.overallRisk as RiskLevel;
+    const hasHigh = adjustedResults.some((i: Ingredient) => i.riskLevel === 'high');
+    if (hasHigh) return 'high';
+    const hasModerate = adjustedResults.some((i: Ingredient) => i.riskLevel === 'moderate');
+    if (hasModerate) return 'moderate';
+    return 'low';
   };
 
   const formatDate = (dateString: string | Date) => {
@@ -229,6 +253,25 @@ export default function HistoryPage() {
           )}
         </div>
 
+        {showPersonalizedBanner && allScans.length > 0 && (
+          <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/5 border border-primary/10 mb-4">
+            <Settings className="h-4 w-4 text-primary flex-shrink-0" />
+            <p className="text-sm text-muted-foreground">
+              {t('preferences.personalizedFor')}
+            </p>
+            <Link href="/settings">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="ml-auto text-primary"
+                data-testid="link-edit-preferences"
+              >
+                {t('preferences.settings')}
+              </Button>
+            </Link>
+          </div>
+        )}
+
         {allScans.length > 0 && (
           <Tabs value={categoryFilter} onValueChange={(v) => setCategoryFilter(v as CategoryFilter)} className="mb-6">
             <TabsList className="grid w-full grid-cols-3">
@@ -278,7 +321,8 @@ export default function HistoryPage() {
           <div className="space-y-4">
             {filteredScans.map((scan) => {
               const riskSummary = getRiskSummary(scan);
-              const riskConf = riskConfig[scan.overallRisk as keyof typeof riskConfig] || riskConfig.low;
+              const adjustedRisk = getAdjustedOverallRisk(scan);
+              const riskConf = riskConfig[adjustedRisk] || riskConfig.low;
               const normalizedCat = normalizeCategory(scan.productCategory);
               const catConf = categoryConfig[normalizedCat];
               const CatIcon = catConf.icon;
@@ -307,7 +351,7 @@ export default function HistoryPage() {
                             {scan.productName}
                           </h3>
                           <Badge className={`${riskConf.bgColor} ${riskConf.textColor} border-0 text-xs flex-shrink-0`}>
-                            {t(`results.riskLevels.${scan.overallRisk}`)}
+                            {t(`results.riskLevels.${adjustedRisk}`)}
                           </Badge>
                         </div>
                         
