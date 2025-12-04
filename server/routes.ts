@@ -3,14 +3,18 @@ import { createServer, type Server } from "http";
 import multer from "multer";
 import z from "zod";
 import crypto from "crypto";
+import { eq } from "drizzle-orm";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { storage } from "./storage";
+import { db } from "./db";
 import { extractTextFromImage } from "./services/ocr";
 import { analyzeIngredients, analyzeIngredientsParallel, extractIngredientsFromText } from "./services/analyzer";
 import { batchAnalyzeIngredientsWithCache, getCacheStats } from "./services/cache";
 import { 
   ocrRequestSchema, 
   analysisRequestSchema,
+  riskPreferencesSchema,
+  users,
   type ProductType,
   type AnalysisResult,
   type InsertScanHistory,
@@ -94,6 +98,74 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching user:", error);
       res.status(500).json({ message: "Failed to fetch user" });
+    }
+  });
+
+  // ==========================================
+  // RISK PREFERENCES ENDPOINTS
+  // ==========================================
+
+  // GET /api/user/preferences - Get current user's risk preferences
+  app.get('/api/user/preferences', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const preferences = await storage.getUserPreferences(userId);
+      const onboardingCompleted = await storage.isOnboardingCompleted(userId);
+      res.json({ preferences, onboardingCompleted });
+    } catch (error) {
+      console.error("Error fetching preferences:", error);
+      res.status(500).json({ message: "Failed to fetch preferences" });
+    }
+  });
+
+  // PATCH /api/user/preferences - Update user's risk preferences
+  app.patch('/api/user/preferences', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const preferences = riskPreferencesSchema.partial().parse(req.body);
+      const user = await storage.updateUserPreferences(userId, preferences);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.json({ success: true, preferences: user.riskPreferences });
+    } catch (error: any) {
+      console.error("Error updating preferences:", error);
+      res.status(400).json({ message: error.message || "Failed to update preferences" });
+    }
+  });
+
+  // POST /api/user/onboarding - Complete onboarding with preferences
+  app.post('/api/user/onboarding', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const preferences = riskPreferencesSchema.parse(req.body);
+      const user = await storage.completeOnboarding(userId, preferences);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.json({ success: true, onboardingCompleted: true });
+    } catch (error: any) {
+      console.error("Error completing onboarding:", error);
+      res.status(400).json({ message: error.message || "Failed to complete onboarding" });
+    }
+  });
+
+  // POST /api/user/reset-onboarding - Reset onboarding (for testing/re-doing)
+  app.post('/api/user/reset-onboarding', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const [user] = await db
+        .update(users)
+        .set({ onboardingCompleted: false, updatedAt: new Date() })
+        .where(eq(users.id, userId))
+        .returning();
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.json({ success: true, onboardingCompleted: false });
+    } catch (error) {
+      console.error("Error resetting onboarding:", error);
+      res.status(500).json({ message: "Failed to reset onboarding" });
     }
   });
 
