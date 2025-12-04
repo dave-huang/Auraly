@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useLocation, Link, useParams } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -16,14 +16,15 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { ArrowLeft, Trash2, Search, Loader2, AlertTriangle, Clock, Pencil, Check, X } from "lucide-react";
+import { ArrowLeft, Trash2, Search, Loader2, AlertTriangle, Clock, Pencil, Check, X, Settings } from "lucide-react";
 import { IngredientCard } from "@/components/ingredient-card";
 import { RiskSummary } from "@/components/risk-summary";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useTranslation } from "react-i18next";
 import { useToast } from "@/hooks/use-toast";
-import type { ScanHistory, Ingredient, RiskLevel } from "@shared/schema";
+import { applyRiskPreferences, hasActivePreferences } from "@/lib/riskAdjustment";
+import type { ScanHistory, Ingredient, RiskLevel, RiskPreferences, User } from "@shared/schema";
 
 
 export default function ScanDetailPage() {
@@ -38,6 +39,10 @@ export default function ScanDetailPage() {
   const [isEditingName, setIsEditingName] = useState(false);
   const [editedName, setEditedName] = useState("");
 
+  const { data: user } = useQuery<User>({
+    queryKey: ['/api/auth/user'],
+  });
+
   const { data: scan, isLoading, error } = useQuery<ScanHistory>({
     queryKey: ['/api/history', scanId],
     queryFn: async () => {
@@ -47,6 +52,9 @@ export default function ScanDetailPage() {
     },
     enabled: !!scanId,
   });
+
+  const userPreferences = user?.riskPreferences as RiskPreferences | undefined;
+  const showPersonalizedBanner = userPreferences && hasActivePreferences(userPreferences);
 
   const deleteMutation = useMutation({
     mutationFn: async () => {
@@ -137,22 +145,36 @@ export default function ScanDetailPage() {
     );
   }
 
-  const ingredients = (scan.analysisResults as Ingredient[]) || [];
+  const rawIngredients = (scan.analysisResults as Ingredient[]) || [];
+  
+  const adjustedIngredients = useMemo(() => {
+    if (!userPreferences) return rawIngredients;
+    return applyRiskPreferences(rawIngredients, userPreferences);
+  }, [rawIngredients, userPreferences]);
+
+  const adjustedOverallRisk = useMemo((): RiskLevel => {
+    if (adjustedIngredients.length === 0) return scan.overallRisk as RiskLevel;
+    const hasHigh = adjustedIngredients.some((i: Ingredient) => i.riskLevel === 'high');
+    if (hasHigh) return 'high';
+    const hasModerate = adjustedIngredients.some((i: Ingredient) => i.riskLevel === 'moderate');
+    if (hasModerate) return 'moderate';
+    return 'low';
+  }, [adjustedIngredients, scan.overallRisk]);
   
   const riskOrder: Record<RiskLevel, number> = { high: 0, moderate: 1, low: 2 };
   
-  const filteredIngredients = ingredients
-    .filter(ingredient => {
+  const filteredIngredients = adjustedIngredients
+    .filter((ingredient: Ingredient) => {
       const matchesSearch = ingredient.name.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesRisk = selectedRisk === "all" || ingredient.riskLevel === selectedRisk;
       return matchesSearch && matchesRisk;
     })
-    .sort((a, b) => riskOrder[a.riskLevel] - riskOrder[b.riskLevel]);
+    .sort((a: Ingredient, b: Ingredient) => riskOrder[a.riskLevel] - riskOrder[b.riskLevel]);
 
   const riskCounts = {
-    low: ingredients.filter(i => i.riskLevel === 'low').length,
-    moderate: ingredients.filter(i => i.riskLevel === 'moderate').length,
-    high: ingredients.filter(i => i.riskLevel === 'high').length,
+    low: adjustedIngredients.filter((i: Ingredient) => i.riskLevel === 'low').length,
+    moderate: adjustedIngredients.filter((i: Ingredient) => i.riskLevel === 'moderate').length,
+    high: adjustedIngredients.filter((i: Ingredient) => i.riskLevel === 'high').length,
   };
 
   return (
@@ -278,10 +300,28 @@ export default function ScanDetailPage() {
           </Card>
         )}
 
+        {showPersonalizedBanner && (
+          <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/5 border border-primary/10 mb-4">
+            <Settings className="h-4 w-4 text-primary flex-shrink-0" />
+            <p className="text-sm text-muted-foreground">
+              {t('preferences.personalizedFor')}
+            </p>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="ml-auto text-primary"
+              onClick={() => setLocation('/settings')}
+              data-testid="link-edit-preferences"
+            >
+              {t('preferences.settings')}
+            </Button>
+          </div>
+        )}
+
         <RiskSummary 
-          overallRisk={scan.overallRisk as RiskLevel}
+          overallRisk={adjustedOverallRisk}
           riskCounts={riskCounts}
-          totalIngredients={ingredients.length}
+          totalIngredients={adjustedIngredients.length}
         />
 
         <div className="mb-4 relative mt-6">
@@ -302,7 +342,7 @@ export default function ScanDetailPage() {
               onClick={() => setSelectedRisk("all")}
               data-testid="tab-filter-all"
             >
-              {t('results.filters.all')} ({ingredients.length})
+              {t('results.filters.all')} ({adjustedIngredients.length})
             </TabsTrigger>
             <TabsTrigger 
               value="low" 
