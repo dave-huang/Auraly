@@ -5293,5 +5293,255 @@
     "analysis": "{\"name\":\"乙二胺四乙酸二钠\",\"riskLevel\":\"low\",\"summary\":\"乙二胺四乙酸二钠是一种常用螯合剂，帮助稳定配方并提升清洁或防腐成分的效果。通常被认为安全性较高，对敏感肌肤一般也较为温和。\",\"details\":\"在个人护理品中，乙二胺四乙酸二钠通过络合金属离子，减少配方因金属杂质而变色、变质或降低功效。常用于洗发水、沐浴露、洁面、乳液和彩妆等，典型使用浓度较低。已有安全评估表明在化妆品常规用量下刺激性和致敏风险较低，但极少数敏感人群仍可能出现轻微刺激或接触性皮炎，应在严重受损或高度敏感皮肤上适度留意。\",\"category\":\"螯合剂 / 配方稳定剂\"}",
     "lastUpdated": 1764803353847,
     "createdAt": 1764803353847
+  },
+  "water__personal_care__en": {
+    "analysis": "{\"name\":\"Water\",\"riskLevel\":\"low\",\"summary\":\"This term is French for water and serves as the main solvent in many personal care products.\",\"details\":\"As a cosmetic ingredient, water (eau) acts as the base in which active and functional ingredients are dissolved or dispersed. It is considered very safe, assuming the finished product is properly preserved to prevent microbial contamination.\",\"category\":\"Solvent / vehicle\"}",
+    "lastUpdated": 1764806664953,
+    "createdAt": 1764806529908
+  },
+  "glycerin__personal_care__en": {
+    "analysis": "{\"name\":\"Glycerin\",\"riskLevel\":\"low\",\"summary\":\"Glycerin is a humectant that attracts and retains moisture in the skin and hair. It is widely used and considered safe and beneficial in most concentrations used in cosmetics.\",\"details\":\"By drawing water into the outer layer of the skin, glycerin helps improve hydration, smoothness, and barrier function. It is generally non-irritating and suitable for sensitive skin, though very high concentrations in poorly balanced formulas can occasionally feel sticky or, in dry environments, be mildly drying. Glycerin does not belong to the main controversial ingredient groups such as parabens, sulfates, or phthalates.\",\"category\":\"Humectant / Moisturizer\"}",
+    "lastUpdated": 1764806529908,
+    "createdAt": 1764806529908
+  },
+  "sodium laureth sulfate__personal_care__en": {
+    "analysis": "{\"name\":\"Sodium Laureth Sulfate\",\"riskLevel\":\"moderate\",\"summary\":\"Sodium Laureth Sulfate (SLES) is a surfactant and cleansing agent that creates foam and removes oils and dirt. It is effective but can be irritating or drying for some individuals, especially with frequent use or on sensitive skin.\",\"details\":\"SLES is generally milder than Sodium Lauryl Sulfate (SLS), but as a sulfate-based surfactant it can still disrupt the skin and scalp barrier, leading to dryness, irritation, or exacerbation of conditions like eczema in susceptible people. Manufacturing impurities such as 1,4-dioxane are a historical concern, though reputable manufacturers typically minimize these through purification. While widely approved for cosmetic use, individuals with sensitive or dry skin or color-treated hair may wish to limit or avoid frequent exposure.\",\"category\":\"Surfactant / Cleansing agent (Sulfate)\"}",
+    "lastUpdated": 1764806529908,
+    "createdAt": 1764806529908
+  },
+  "avena sativa (oat) kernel oil__personal_care__en": {
+    "analysis": "{\"name\":\"Avena Sativa (oat) Kernel Oil\",\"riskLevel\":\"low\",\"summary\":\"Oat kernel oil is a plant-derived emollient that helps moisturize and soothe the skin. It is generally well tolerated and considered low risk for most people.\",\"details\":\"This oil is rich in lipids, fatty acids, and antioxidants that help support the skin barrier and reduce dryness and irritation. It is not associated with parabens, sulfates, phthalates, formaldehyde releasers, or other major controversial cosmetic chemicals. Rarely, individuals with strong oat or gluten-related sensitivities may experience irritation, so patch testing is advisable for very sensitive users.\",\"category\":\"Plant oil / emollient\"}",
+    "lastUpdated": 1764806530190,
+    "createdAt": 1764806530190
+  },
+  "avena sativa (oat) kernel extract__personal_care__en": {
+    "analysis": "{\"name\":\"Avena Sativa (oat) Kernel Extract\",\"riskLevel\":\"low\",\"summary\":\"Oat kernel extract is a soothing plant extract used for its calming, moisturizing, and anti-itch properties. It is typically low risk and suitable for sensitive or irritated skin.\",\"details\":\"The extract contains beneficial compounds such as beta-glucans, avenanthramides, and polysaccharides that help reduce redness, support the skin barrier, and provide mild antioxidant benefits. It is not related to parabens, sulfates, phthalates, formaldehyde releasers, or other high-concern synthetic additives. As with other oat-based ingredients, people with known oat allergies should use it cautiously and consider patch testing.\",\"category\":\"Botanical extract / skin-soothing agent\"}",
+    "lastUpdated": 1764806530190,
+    "createdAt": 1764806530190
+  },
+  "guar hydroxypropyltrimonium chloride__personal_care__en": {
+    "analysis": "{\"name\":\"Guar Hydroxypropyltrimonium Chloride\",\"riskLevel\":\"low\",\"summary\":\"Guar hydroxypropyltrimonium chloride is a cationic, conditioning polymer derived from guar gum, commonly used in hair and skin products. It is generally considered low risk at typical cosmetic concentrations.\",\"details\":\"This ingredient improves combability, reduces static, and provides a smooth feel to hair and skin by forming a light conditioning film. It is not a sulfate, paraben, phthalate, formaldehyde-releasing preservative, or silicone, and it is not known as a major endocrine disruptor. Mild irritation is possible in very sensitive individuals, but serious adverse effects are uncommon when formulated and rinsed off as directed.\",\"category\":\"Conditioning polymer / thickener\"}",
+    "lastUpdated": 1764806530190,
+    "createdAt": 1764806530190
+  },
+  "polyquaternium-10__personal_care__en": {
+    "analysis": "{\"name\":\"Polyquaternium-10\",\"riskLevel\":\"low\",\"summary\":\"Polyquaternium-10 is a conditioning polymer commonly used in hair and skin care products to improve smoothness and reduce static. It is generally considered safe with low irritation potential for most users.\",\"details\":\"This water-soluble cationic cellulose derivative coats hair and skin to enhance softness, detangling, and conditioning without being a sulfate, paraben, or silicone. Adverse effects are uncommon and typically limited to mild irritation or allergic reaction in sensitive individuals. It is not associated with endocrine disruption, heavy metals, or other major cosmetic toxicants of concern.\",\"category\":\"Conditioning polymer\"}",
+    "lastUpdated": 1764806531119,
+    "createdAt": 1764806531119
+  },
+  "tetrasodium glutamate diacetate__personal_care__en": {
+    "analysis": "{\"name\":\"Tetrasodium Glutamate Diacetate\",\"riskLevel\":\"low\",\"summary\":\"Tetrasodium Glutamate Diacetate is a chelating agent used to bind metal ions and improve product stability. It is considered a safer, more biodegradable alternative to EDTA-type chelators.\",\"details\":\"Derived from glutamic acid, this ingredient helps prevent product degradation, discoloration, and rancidity by binding trace metals in formulations. It is not a paraben, sulfate, phthalate, or formaldehyde-releasing preservative, and it has a low irritation and sensitization profile in typical cosmetic use levels. Its good biodegradability also makes it preferable from an environmental perspective compared with many older chelating agents.\",\"category\":\"Chelating agent\"}",
+    "lastUpdated": 1764806531119,
+    "createdAt": 1764806531119
+  },
+  "glycol distearate__personal_care__en": {
+    "analysis": "{\"name\":\"Glycol Distearate\",\"riskLevel\":\"low\",\"summary\":\"Glycol Distearate is an emulsifying and opacifying agent used to create a pearly appearance and improve texture in shampoos, body washes, and other personal care products. It has a low toxicity profile and is generally well tolerated.\",\"details\":\"This ingredient is an ester of ethylene glycol and stearic acid that helps thicken formulations and gives them a creamy or pearlescent look, without functioning as a sulfate, paraben, or phthalate. It is not known to be an endocrine disruptor or a formaldehyde-releasing preservative, and irritation is rare at typical cosmetic concentrations. As with many fatty acid esters, it may occasionally contribute to comedogenicity for very acne-prone individuals, but overall safety concerns are low.\",\"category\":\"Emollient and texture enhancer\"}",
+    "lastUpdated": 1764806531119,
+    "createdAt": 1764806531119
+  },
+  "laureth-4__personal_care__en": {
+    "analysis": "{\"name\":\"Laureth-4\",\"riskLevel\":\"moderate\",\"summary\":\"Laureth-4 is an ethoxylated surfactant and emulsifier used to help mix oil and water and improve texture and foaming. It is generally considered safe but can be irritating to sensitive or compromised skin and may contain trace impurities from its manufacturing process.\",\"details\":\"As an ethoxylated ingredient, Laureth-4 can contain low levels of contaminants such as 1,4-dioxane if not properly purified, though reputable manufacturers typically minimize these residues. It may cause dryness, irritation, or stinging, especially in leave-on products or on damaged skin barriers. It is not a paraben, sulfate (like SLS/SLES), phthalate, or formaldehyde-releasing preservative, but people with very sensitive skin or eczema may prefer to limit frequent exposure.\",\"category\":\"Surfactant / Emulsifier\"}",
+    "lastUpdated": 1764806531234,
+    "createdAt": 1764806531234
+  },
+  "acrylates/c10-30 alkyl acrylate crosspolymer__personal_care__en": {
+    "analysis": "{\"name\":\"Acrylates/c10-30 Alkyl Acrylate Crosspolymer\",\"riskLevel\":\"low\",\"summary\":\"Acrylates/C10-30 Alkyl Acrylate Crosspolymer is a synthetic polymer used mainly as a thickener, stabilizer, and texture enhancer in personal care products. It is generally considered low risk for most users.\",\"details\":\"This crosslinked acrylic polymer helps create gel-like textures, stabilize emulsions, and control product viscosity, and it is usually present at low concentrations. It is not associated with endocrine disruption, carcinogenicity, or the main groups of concerning cosmetic ingredients listed (such as parabens, sulfates, phthalates, or formaldehyde releasers). Mild irritation is possible in very sensitive individuals, but it is typically well tolerated in both rinse-off and leave-on products.\",\"category\":\"Polymer / Thickener\"}",
+    "lastUpdated": 1764806531234,
+    "createdAt": 1764806531234
+  },
+  "sodium benzoate__personal_care__en": {
+    "analysis": "{\"name\":\"Sodium Benzoate\",\"riskLevel\":\"low\",\"summary\":\"Sodium Benzoate is a widely used preservative that helps prevent the growth of bacteria and fungi in personal care products. It is generally recognized as safe at typical cosmetic concentrations.\",\"details\":\"This ingredient is effective mainly in water-based formulas and is often used as an alternative to more controversial preservatives like parabens and formaldehyde-releasing agents. In rare cases, it can contribute to mild irritation or sensitivity, especially in people with very reactive skin or when combined with certain other ingredients (like high levels of vitamin C in foods and beverages). At the levels used in cosmetics and skincare, it is considered a low-risk preservative by major regulatory bodies.\",\"category\":\"Preservative\"}",
+    "lastUpdated": 1764806531234,
+    "createdAt": 1764806531234
+  },
+  "citric acid__personal_care__en": {
+    "analysis": "{\"name\":\"Citric Acid\",\"riskLevel\":\"low\",\"summary\":\"Citric acid is a weak organic acid commonly used in personal care products to adjust pH and act as a mild preservative or chelating agent. It is generally considered safe but can cause irritation in some sensitive or compromised skin types.\",\"details\":\"In skincare and haircare, citric acid helps maintain a product’s acidity so it is more compatible with skin and can improve the stability and performance of other ingredients. At typical cosmetic concentrations, it is not associated with systemic toxicity or major long‑term health concerns. However, in higher amounts or on sensitive, broken, or allergy‑prone skin, it can trigger stinging, redness, or contact irritation, so patch testing is advisable for very reactive individuals.\",\"category\":\"pH adjuster / chelating agent\"}",
+    "lastUpdated": 1764806536146,
+    "createdAt": 1764806536146
+  },
+  "sodium hydroxide__personal_care__en": {
+    "analysis": "{\"name\":\"Sodium Hydroxide\",\"riskLevel\":\"moderate\",\"summary\":\"Sodium hydroxide is a strong alkali used in personal care products primarily as a pH adjuster or in soap making. It is highly caustic in concentrated form and can be irritating, but finished products typically contain it in very low, neutralized levels.\",\"details\":\"In cosmetics and skincare, sodium hydroxide is added in small amounts to precisely control formulation pH or to saponify oils into soap, after which little to no free alkali should remain. While properly formulated products are generally safe, exposure to higher concentrations or improperly neutralized products can cause burning, severe irritation, or eye damage. People with very sensitive or disrupted skin barriers may experience stinging or dryness even at low levels, so cautious use is recommended if irritation occurs.\",\"category\":\"pH adjuster / strong base\"}",
+    "lastUpdated": 1764806536147,
+    "createdAt": 1764806536147
+  },
+  "cocamidopropyl betaine__personal_care__en": {
+    "analysis": "{\"name\":\"Cocamidopropyl Betaine\",\"riskLevel\":\"moderate\",\"summary\":\"Cocamidopropyl betaine is a mild surfactant derived from coconut oil commonly used in cleansers, shampoos, and body washes. It is generally safe but is a well-known cause of skin irritation and allergic contact dermatitis in some people.\",\"details\":\"This ingredient helps create foam and improves the cleansing performance of personal care products while being milder than harsh sulfates like SLS and SLES. Its main concern is sensitization: impurities (such as amidoamine and DMAPA) formed during manufacturing can trigger irritation, especially on damaged or sensitive skin. Patch testing or discontinuing use is recommended if redness, itching, or burning occurs with products containing this surfactant.\",\"category\":\"Surfactant / Cleansing agent\"}",
+    "lastUpdated": 1764806544910,
+    "createdAt": 1764806544910
+  },
+  "sodium hydrolyzed potato starch dodecenylsuccinate__personal_care__en": {
+    "analysis": "{\"name\":\"Sodium Hydrolyzed Potato Starch Dodecenylsuccinate\",\"riskLevel\":\"low\",\"summary\":\"Sodium hydrolyzed potato starch dodecenylsuccinate is a modified starch derivative used mainly as a texture enhancer, stabilizer, and film former. It is generally considered low risk and well tolerated on skin.\",\"details\":\"This ingredient is derived from potato starch that has been chemically modified to improve its performance in cosmetic formulations, such as providing slip, thickening, and helping products spread evenly. Available safety data and its starch origin suggest low irritation and sensitization potential for most users. Adverse reactions are uncommon and are more likely in individuals with very sensitive or reactive skin than in the general population.\",\"category\":\"Texture enhancer / Film former\"}",
+    "lastUpdated": 1764806544910,
+    "createdAt": 1764806544910
+  },
+  "avena sativa (oat) kernel flour__personal_care__en": {
+    "analysis": "{\"name\":\"Avena Sativa (oat) Kernel Flour\",\"riskLevel\":\"low\",\"summary\":\"Avena sativa (oat) kernel flour is a colloidal oat ingredient used for its soothing, anti-itch, and skin-protective properties. It is widely regarded as safe and beneficial, especially for dry, irritated, or eczema-prone skin.\",\"details\":\"This ingredient contains moisturizing lipids, beta-glucans, and anti-inflammatory compounds that help calm redness and support the skin barrier. It is commonly used in gentle cleansers, lotions, and bath treatments for sensitive skin. Although rare, individuals with true oat or gluten-related allergies may experience reactions, so those with known cereal grain allergies should introduce it cautiously.\",\"category\":\"Soothing plant extract / Skin protectant\"}",
+    "lastUpdated": 1764806544910,
+    "createdAt": 1764806544910
+  },
+  "sodium phosphate__personal_care__en": {
+    "analysis": "{\"name\":\"Sodium Phosphate\",\"riskLevel\":\"low\",\"summary\":\"Sodium phosphate is an inorganic salt used mainly as a pH adjuster and buffering agent in personal care products. It is generally considered low risk at the concentrations used in cosmetics and skincare.\",\"details\":\"In personal care formulations, sodium phosphate helps maintain product stability and optimal pH, which can support the effectiveness and shelf life of the product. It is not associated with common cosmetic concerns such as endocrine disruption, carcinogenicity, or sensitization at typical use levels. Very sensitive or damaged skin may experience mild irritation if exposed to high concentrations, but this is uncommon in finished products.\",\"category\":\"pH adjuster / buffering agent\"}",
+    "lastUpdated": 1764806663514,
+    "createdAt": 1764806663514
+  },
+  "cetearyl alcohol__personal_care__en": {
+    "analysis": "{\"name\":\"Cetearyl Alcohol\",\"riskLevel\":\"low\",\"summary\":\"Cetearyl alcohol is a fatty alcohol used as an emollient, thickener, and stabilizer in personal care products.\",\"details\":\"Unlike drying simple alcohols (such as ethanol or isopropyl alcohol), this fatty alcohol helps soften and condition skin and hair while improving product texture and stability. It is generally well tolerated, though very sensitive individuals may rarely experience mild irritation or contact allergy.\",\"category\":\"Emollient / fatty alcohol / emulsifier\"}",
+    "lastUpdated": 1764806664953,
+    "createdAt": 1764806664953
+  },
+  "polyquaternium-47__personal_care__en": {
+    "analysis": "{\"name\":\"Polyquaternium-47\",\"riskLevel\":\"low\",\"summary\":\"Polyquaternium-47 is a conditioning polymer commonly used in hair and skin care products to improve smoothness, detangling, and feel. It is generally considered low risk for most users, with irritation being uncommon.\",\"details\":\"This ingredient is a cationic polymer that forms a lightweight film on hair or skin, enhancing softness, manageability, and reducing static or frizz. It is not associated with major health concerns such as hormone disruption, carcinogenicity, or heavy metal contamination. Mild irritation or buildup is possible in very sensitive individuals, but overall it is regarded as a safe, low-toxicity conditioning agent in rinse-off and leave-on products.\",\"category\":\"Conditioning polymer / film-former\"}",
+    "lastUpdated": 1764806665359,
+    "createdAt": 1764806665359
+  },
+  "glyceryl stearate__personal_care__en": {
+    "analysis": "{\"name\":\"Glyceryl Stearate\",\"riskLevel\":\"low\",\"summary\":\"Glyceryl Stearate is an emulsifier and skin-conditioning agent used to blend oil and water and provide a smooth texture in personal care products. It has a strong safety record and is generally well tolerated by most skin types.\",\"details\":\"Derived from glycerin and stearic acid (which can be plant- or animal-based), Glyceryl Stearate helps stabilize creams and lotions while adding a soft, lubricating feel to the skin. It is not linked to endocrine disruption, formaldehyde release, or major sensitization concerns, and is widely approved for cosmetic use. Irritation or pore-clogging is uncommon but can occur in a small number of people with very acne-prone or highly sensitive skin.\",\"category\":\"Emulsifier / emollient\"}",
+    "lastUpdated": 1764806665359,
+    "createdAt": 1764806665359
+  },
+  "hydroxyethylcellulose__personal_care__en": {
+    "analysis": "{\"name\":\"Hydroxyethylcellulose\",\"riskLevel\":\"low\",\"summary\":\"Hydroxyethylcellulose is a cellulose-derived thickener and film-forming agent commonly used in skincare and haircare products. It is generally considered very safe and non-irritating for most skin types.\",\"details\":\"This ingredient helps adjust viscosity, stabilize formulas, and improve texture and spreadability without acting as a harsh surfactant or preservative. It is not a paraben, sulfate, phthalate, formaldehyde-releaser, or synthetic fragrance, and it has a low potential for sensitization. Adverse reactions are rare and usually related to individual sensitivities rather than inherent toxicity.\",\"category\":\"Texture enhancer / thickener\"}",
+    "lastUpdated": 1764806666385,
+    "createdAt": 1764806666385
+  },
+  "undecane__personal_care__en": {
+    "analysis": "{\"name\":\"Undecane\",\"riskLevel\":\"low\",\"summary\":\"Undecane is a lightweight emollient and solvent used to improve spreadability and sensory feel in personal care products. It is generally considered low risk when used as intended in cosmetics.\",\"details\":\"Often derived from plant or synthetic sources, undecane is used as a volatile or semi-volatile hydrocarbon to give a dry, non-greasy finish, sometimes as an alternative to silicones or mineral oils. It is not associated with endocrine disruption like parabens or phthalates and is not a known formaldehyde-releasing preservative or common allergen. Mild irritation is possible in very sensitive individuals but is uncommon at cosmetic use levels.\",\"category\":\"Emollient / solvent\"}",
+    "lastUpdated": 1764806666385,
+    "createdAt": 1764806666385
+  },
+  "tridecane__personal_care__en": {
+    "analysis": "{\"name\":\"Tridecane\",\"riskLevel\":\"low\",\"summary\":\"Tridecane is a hydrocarbon used as a light emollient and solvent that contributes to a smooth, silky feel in formulations. It is typically regarded as low risk in cosmetic use concentrations.\",\"details\":\"Similar to undecane, tridecane can be plant-derived or synthetic and is often paired with other light emollients to replace heavier oils or some silicones. It is not a paraben, sulfate, phthalate, or formaldehyde-releasing preservative and is not linked to major health concerns at normal topical exposure. Skin irritation is rare and usually limited to individuals with particularly sensitive or reactive skin.\",\"category\":\"Emollient / solvent\"}",
+    "lastUpdated": 1764806666385,
+    "createdAt": 1764806666385
+  },
+  "alcohol__personal_care__en": {
+    "analysis": "{\"name\":\"Alcohol\",\"riskLevel\":\"moderate\",\"summary\":\"In personal care products, 'alcohol' usually refers to simple drying alcohols like ethanol, denatured alcohol, or isopropyl alcohol, which can strip moisture and irritate skin. They are sometimes useful for quick-drying formulas or as solvents but may compromise the skin barrier, especially at high concentrations.\",\"details\":\"Drying alcohols (short-chain alcohols) can dehydrate the outer skin layer, increase transepidermal water loss, and potentially worsen irritation, acne, or sensitivity, particularly for dry or compromised skin. They are less concerning in rinse-off products or in very low amounts, but frequent or high-level use in leave-on products can be problematic. This risk assessment does not apply to fatty alcohols (like cetyl or stearyl alcohol), which are generally moisturizing and well tolerated.\",\"category\":\"Drying alcohol / solvent\"}",
+    "lastUpdated": 1764806666479,
+    "createdAt": 1764806666479
+  },
+  "bht (butylated hydroxytoluene)__personal_care__en": {
+    "analysis": "{\"name\":\"Bht (butylated Hydroxytoluene)\",\"riskLevel\":\"moderate\",\"summary\":\"BHT is a synthetic antioxidant used to prevent oils and fragrances from oxidizing and going rancid. It is effective at stabilizing formulas but has raised concerns related to potential endocrine disruption and irritation in some individuals.\",\"details\":\"Toxicological data on BHT are mixed: regulatory agencies allow it at low concentrations, yet some studies suggest possible effects on the endocrine system and organs at higher or chronic exposures, mainly in animal models. In personal care products, it is typically used in very small amounts, but people seeking a more precautionary approach or with sensitive skin may prefer to avoid it or limit exposure, especially when combined with other synthetic antioxidants or potential endocrine disruptors.\",\"category\":\"Synthetic antioxidant / preservative\"}",
+    "lastUpdated": 1764806666479,
+    "createdAt": 1764806666479
+  },
+  "dimethicone__personal_care__en": {
+    "analysis": "{\"name\":\"Dimethicone\",\"riskLevel\":\"low\",\"summary\":\"Dimethicone is a silicone-based polymer used to create a smooth, protective film on skin and hair. It is generally considered safe and well tolerated in personal care products.\",\"details\":\"Dimethicone helps to reduce transepidermal water loss, improve slip, and give a silky feel, which is why it is common in moisturizers, primers, and hair conditioners. It is non-irritating for most people, though a small number of users with very acne-prone or sensitive skin may experience buildup or clogged pores if it is used in heavy, occlusive formulas without proper cleansing.\",\"category\":\"Silicone / Skin protectant\"}",
+    "lastUpdated": 1764806666912,
+    "createdAt": 1764806666912
+  },
+  "panthenol__personal_care__en": {
+    "analysis": "{\"name\":\"Panthenol\",\"riskLevel\":\"low\",\"summary\":\"Panthenol, also known as provitamin B5, is a humectant that helps attract and hold moisture in skin and hair. It is widely regarded as safe and beneficial in personal care products.\",\"details\":\"Panthenol can improve skin hydration, support the skin barrier, and provide soothing benefits, which makes it useful in moisturizers, after-sun care, and products for sensitive or irritated skin. It also helps condition hair by improving softness and shine, with a very low risk of irritation or sensitization in most users.\",\"category\":\"Humectant / Provitamin B5\"}",
+    "lastUpdated": 1764806666912,
+    "createdAt": 1764806666912
+  },
+  "panthenyl ethyl ether__personal_care__en": {
+    "analysis": "{\"name\":\"Panthenyl Ethyl Ether\",\"riskLevel\":\"low\",\"summary\":\"Panthenyl Ethyl Ether is a derivative of panthenol designed to be more stable and compatible in cosmetic formulations. It is used for moisturizing and conditioning effects and is generally considered safe.\",\"details\":\"This ingredient functions similarly to panthenol by helping to improve skin and hair moisture levels and overall feel, and it is often included in skincare and haircare products for conditioning benefits. Reports of irritation or sensitization are rare, and it is not associated with major endocrine, carcinogenic, or systemic toxicity concerns at typical cosmetic use levels.\",\"category\":\"Humectant / Conditioning agent\"}",
+    "lastUpdated": 1764806666912,
+    "createdAt": 1764806666912
+  },
+  "polysorbate 60__personal_care__en": {
+    "analysis": "{\"name\":\"Polysorbate 60\",\"riskLevel\":\"moderate\",\"summary\":\"Polysorbate 60 is an emulsifier used to help oil and water mix in personal care products. It is generally considered safe, but can sometimes cause irritation or be contaminated with trace impurities from its manufacturing process.\",\"details\":\"Polysorbate 60 is derived from sorbitol and fatty acids and is widely used in creams, lotions, and hair products to stabilize formulas. While toxicity is low, it can occasionally trigger mild skin or eye irritation, especially on compromised or sensitive skin. Because it is ethoxylated, there is a theoretical risk of contamination with 1,4-dioxane or ethylene oxide if not properly purified, so some cautious consumers may prefer to limit frequent leave-on use.\",\"category\":\"Emulsifier / Solubilizer\"}",
+    "lastUpdated": 1764806667524,
+    "createdAt": 1764806667524
+  },
+  "silica__personal_care__en": {
+    "analysis": "{\"name\":\"Silica\",\"riskLevel\":\"low\",\"summary\":\"Silica is a mineral-based ingredient used for oil absorption, thickening, and providing a smooth texture in cosmetics and skincare. In its typical cosmetic, non-inhaled forms, it is generally considered low risk.\",\"details\":\"In personal care products, silica usually appears as hydrated silica or amorphous silica, which helps control shine, improve slip, and support the structure of powders and creams. The main safety concern with silica relates to inhalation of crystalline silica dust in occupational settings, which is not typical of finished cosmetic products. For topical use on skin or hair, cosmetic-grade silica has a good safety profile, with irritation being uncommon.\",\"category\":\"Mineral / Absorbent / Texturizer\"}",
+    "lastUpdated": 1764806667525,
+    "createdAt": 1764806667525
+  },
+  "magnesium chloride__personal_care__en": {
+    "analysis": "{\"name\":\"Magnesium Chloride\",\"riskLevel\":\"low\",\"summary\":\"Magnesium chloride is a mineral salt used in personal care products as a viscosity regulator, humectant, or therapeutic mineral. It is generally considered low risk and well tolerated on the skin.\",\"details\":\"This ingredient can help maintain formula stability and may support skin hydration by attracting water. In higher concentrations or on very sensitive or broken skin, it can cause a stinging sensation, but serious adverse effects from topical use are rare. Magnesium chloride is not associated with common cosmetic concern groups such as parabens, phthalates, sulfates, or formaldehyde releasers.\",\"category\":\"Mineral salt / Functional additive\"}",
+    "lastUpdated": 1764806667525,
+    "createdAt": 1764806667525
+  },
+  "magnesium nitrate__personal_care__en": {
+    "analysis": "{\"name\":\"Magnesium Nitrate\",\"riskLevel\":\"moderate\",\"summary\":\"Magnesium nitrate is an inorganic salt used mainly as a stabilizer or corrosion inhibitor in personal care products. It can be a minor source of nitrate and is sometimes present with formaldehyde-releasing preservatives such as DMDM hydantoin or diazolidinyl urea in preservative blends.\",\"details\":\"In rinse-off and leave-on cosmetics, magnesium nitrate is typically used at low concentrations, where systemic toxicity is unlikely for the general population. However, nitrate salts may contribute to nitrosamine formation in the presence of certain amines and under specific conditions, which is a theoretical long-term safety concern. Some individuals with sensitive or compromised skin may experience mild irritation, especially when it appears in formulas that already contain other potential irritants or formaldehyde releasers.\",\"category\":\"Inorganic salt / stabilizer\"}",
+    "lastUpdated": 1764806667560,
+    "createdAt": 1764806667560
+  },
+  "disodium edta__personal_care__en": {
+    "analysis": "{\"name\":\"Disodium Edta\",\"riskLevel\":\"low\",\"summary\":\"Disodium EDTA is a chelating agent used to bind metal ions, improve product stability, and enhance preservative efficacy in personal care products. At typical cosmetic levels, it is generally regarded as safe with low irritation potential for most users.\",\"details\":\"By sequestering metal ions like calcium and iron, disodium EDTA helps prevent product discoloration, rancidity, and reduced preservative performance. It has very low skin penetration and is not associated with endocrine disruption, parabens, sulfates, phthalates, or formaldehyde release on its own. The main broader concern is environmental persistence and aquatic toxicity, but in terms of direct human skin and health exposure from cosmetics, risk is considered low for the average consumer.\",\"category\":\"Chelating agent / stabilizer\"}",
+    "lastUpdated": 1764806667560,
+    "createdAt": 1764806667560
+  },
+  "disodium phosphate__personal_care__en": {
+    "analysis": "{\"name\":\"Disodium Phosphate\",\"riskLevel\":\"low\",\"summary\":\"Disodium phosphate is an inorganic salt used as a buffering and pH-adjusting agent in personal care formulations. It is generally considered low risk and is widely used in foods and cosmetics at low concentrations.\",\"details\":\"This ingredient helps maintain a stable pH, which can improve both product performance and skin tolerability. It is not linked to hormone disruption, formaldehyde release, phthalates, or other major cosmetic hazard classes listed, and it is not typically irritating at the low levels used. Only extremely sensitive individuals or those with disrupted skin barriers might experience mild irritation, but this is uncommon.\",\"category\":\"Buffering agent / pH adjuster\"}",
+    "lastUpdated": 1764806667560,
+    "createdAt": 1764806667560
+  },
+  "salvia officinalis (sage) extract__personal_care__en": {
+    "analysis": "{\"name\":\"Salvia Officinalis (sage) Extract\",\"riskLevel\":\"low\",\"summary\":\"Sage extract is a plant-derived ingredient used for its antioxidant, soothing, and antimicrobial properties in personal care products. It is generally well tolerated, though it can occasionally cause irritation or allergy in sensitive individuals.\",\"details\":\"Sage extract contains polyphenols and essential oils that may help protect skin and scalp from oxidative stress and support a balanced microbiome. In leave-on products or at higher concentrations, the fragrant components can pose a mild irritation or sensitization risk for very reactive skin. It is not associated with major systemic toxicity at the low levels used in cosmetics.\",\"category\":\"Botanical extract / Antioxidant\"}",
+    "lastUpdated": 1764806668030,
+    "createdAt": 1764806668030
+  },
+  "tocopherol__personal_care__en": {
+    "analysis": "{\"name\":\"Tocopherol\",\"riskLevel\":\"low\",\"summary\":\"Tocopherol is a form of vitamin E used as an antioxidant to protect both skin and product formulas from oxidative damage. It is widely regarded as safe and beneficial for most skin types.\",\"details\":\"In personal care products, tocopherol helps stabilize oils and can support the skin barrier and hydration while providing some protection against free radicals. Rarely, high concentrations or oxidized vitamin E can cause mild irritation or contact allergy in very sensitive users, but this is uncommon at typical cosmetic levels. It is not linked to the major controversial cosmetic chemicals such as parabens, sulfates, or phthalates.\",\"category\":\"Antioxidant / Vitamin\"}",
+    "lastUpdated": 1764806668030,
+    "createdAt": 1764806668030
+  },
+  "behentrimonium methosulfate__personal_care__en": {
+    "analysis": "{\"name\":\"Behentrimonium Methosulfate\",\"riskLevel\":\"low\",\"summary\":\"Behentrimonium methosulfate is a quaternary ammonium compound commonly used as a conditioning and detangling agent, especially in hair care products. It is different from harsh cleansing sulfates like SLS and is generally considered mild and safe for cosmetic use.\",\"details\":\"Derived typically from rapeseed (canola) oil, this ingredient helps reduce static, improve slip, and make hair easier to comb without significant build-up when properly formulated. Although quaternary ammonium compounds can occasionally cause irritation or sensitization in very sensitive skin, behentrimonium methosulfate has a good safety profile at typical use levels and is not associated with endocrine disruption or the major controversial preservative and solvent groups listed.\",\"category\":\"Conditioning agent / Cationic surfactant\"}",
+    "lastUpdated": 1764806668030,
+    "createdAt": 1764806668030
+  },
+  "hexyl cinnamal__personal_care__en": {
+    "analysis": "{\"name\":\"Hexyl Cinnamal\",\"riskLevel\":\"moderate\",\"summary\":\"Hexyl Cinnamal is a synthetic fragrance ingredient that can cause allergic reactions, especially in sensitive or allergy-prone skin. It is one of the EU-declared fragrance allergens that must be listed on labels above certain concentrations.\",\"details\":\"This compound is used to impart a jasmine-like scent in many personal care and cosmetic products. It is primarily associated with skin sensitization and contact dermatitis in susceptible individuals, rather than systemic toxicity. People with known fragrance allergies, eczema, or very sensitive skin may prefer to avoid it or patch test products containing it.\",\"category\":\"Fragrance / fragrance allergen\"}",
+    "lastUpdated": 1764806668061,
+    "createdAt": 1764806668061
+  },
+  "limonene__personal_care__en": {
+    "analysis": "{\"name\":\"Limonene\",\"riskLevel\":\"moderate\",\"summary\":\"Limonene is a citrus-derived fragrance and solvent that can oxidize in air and become a common cause of contact allergy and irritation. While generally recognized as safe at low levels, it is a known fragrance allergen.\",\"details\":\"Used widely to provide a citrus scent or act as a solvent in skincare, haircare, soaps, and cleaning products, limonene itself is relatively low in acute toxicity. However, when exposed to air, it forms oxidation products that are more allergenic and can trigger skin irritation, allergic contact dermatitis, or respiratory sensitivity in some individuals. Sensitive users, those with fragrance allergies, or compromised skin barriers may benefit from limiting exposure to limonene-containing products.\",\"category\":\"Fragrance / solvent\"}",
+    "lastUpdated": 1764806668061,
+    "createdAt": 1764806668061
+  },
+  "tetramethyl acetyloctahydronaphthalenes__personal_care__en": {
+    "analysis": "{\"name\":\"Tetramethyl Acetyloctahydronaphthalenes\",\"riskLevel\":\"moderate\",\"summary\":\"Tetramethyl Acetyloctahydronaphthalenes (often known as AHTN or tonalide-type musk) is a synthetic polycyclic musk used as a fragrance ingredient, with concerns about persistence in the environment and potential bioaccumulation. It may also act as a skin sensitizer in some individuals.\",\"details\":\"This ingredient is added to personal care products to provide a long-lasting musk-like scent and is part of the broader group of synthetic fragrance compounds. Studies have shown that some polycyclic musks can accumulate in human tissue and the environment, raising questions about long-term ecological and potential endocrine-related effects, though data in humans are still limited and mixed. From a user perspective, the main immediate concern is fragrance sensitivity or allergy, so individuals with fragrance intolerance or sensitive skin may wish to minimize products containing this ingredient.\",\"category\":\"Synthetic fragrance / polycyclic musk\"}",
+    "lastUpdated": 1764806668061,
+    "createdAt": 1764806668061
+  },
+  "methylchloroisothiazolinone__personal_care__en": {
+    "analysis": "{\"name\":\"Methylchloroisothiazolinone\",\"riskLevel\":\"high\",\"summary\":\"Methylchloroisothiazolinone is a synthetic preservative known to cause allergic contact dermatitis and skin irritation, especially in leave-on products. It is heavily restricted in many regions due to its strong sensitizing potential.\",\"details\":\"This isothiazolinone preservative is effective at preventing bacterial and fungal growth, but it is one of the more common causes of cosmetic-related skin allergies and can trigger rashes, redness, and itching, particularly on sensitive or compromised skin. Regulatory bodies such as the EU have banned or severely limited its use in leave-on cosmetics and restricted its concentration in rinse-off products because of high sensitization rates. People with eczema, sensitive skin, or a history of allergies are generally advised to avoid it when possible.\",\"category\":\"Preservative\"}",
+    "lastUpdated": 1764806668729,
+    "createdAt": 1764806668729
+  },
+  "methylisothiazolinone__personal_care__en": {
+    "analysis": "{\"name\":\"Methylisothiazolinone\",\"riskLevel\":\"high\",\"summary\":\"Methylisothiazolinone is a synthetic preservative associated with a high risk of skin allergy and irritation. Due to widespread sensitization cases, its use is now restricted in many personal care products, especially leave-on items.\",\"details\":\"Methylisothiazolinone (MI) is used to control microbial growth in water-based formulations, but it has become a well-recognized contact allergen in dermatology. Many regulatory authorities, including in the EU, have banned MI from leave-on products and limited its amount in rinse-off products because of high rates of allergic contact dermatitis. Individuals with sensitive skin, eczema, or prior reactions to cosmetics are more likely to react and may benefit from avoiding products containing MI.\",\"category\":\"Preservative\"}",
+    "lastUpdated": 1764806668729,
+    "createdAt": 1764806668729
+  },
+  "parfum (fragrance)__personal_care__en": {
+    "analysis": "{\"name\":\"Parfum (fragrance)\",\"riskLevel\":\"moderate\",\"summary\":\"Parfum (fragrance) is a generic term for a mixture of scenting chemicals that can include potential allergens and sensitizers. Its exact composition is usually undisclosed, which makes it difficult for sensitive users to identify specific triggers.\",\"details\":\"Fragrance blends may contain dozens to hundreds of synthetic and natural compounds, including potential allergens, phthalates, and other sensitizing substances, though not all products use these. Fragrance is a common cause of contact dermatitis, headaches, and respiratory irritation in sensitive individuals, and the lack of full ingredient disclosure can complicate avoidance. Fragrance-free or explicitly “no added fragrance” products are often recommended for people with sensitive skin, eczema, rosacea, or fragrance allergies.\",\"category\":\"Fragrance\"}",
+    "lastUpdated": 1764806668729,
+    "createdAt": 1764806668729
+  },
+  "stearamidopropyl dimethylamine__personal_care__en": {
+    "analysis": "{\"name\":\"Stearamidopropyl Dimethylamine\",\"riskLevel\":\"low\",\"summary\":\"Stearamidopropyl Dimethylamine is a conditioning agent commonly used in haircare products to reduce static and improve manageability. It is generally considered low risk, though it can cause irritation in people with very sensitive skin or eyes.\",\"details\":\"This ingredient is a fatty amine derived from vegetable oils and is often used as a milder alternative to traditional hair conditioning quaternary ammonium compounds. It works by helping the hair cuticle lie flat, improving smoothness and detangling. Most safety data indicate low overall toxicity, but as with many surfactant-like ingredients, it may cause irritation if used in high concentrations or if not well-rinsed from the skin or eyes.\",\"category\":\"Hair conditioning agent / surfactant\"}",
+    "lastUpdated": 1764806675404,
+    "createdAt": 1764806675404
+  },
+  "melaleuca alternifolia (tea tree) leaf water__personal_care__en": {
+    "analysis": "{\"name\":\"Melaleuca Alternifolia (tea Tree) Leaf Water\",\"riskLevel\":\"low\",\"summary\":\"Melaleuca Alternifolia (Tea Tree) Leaf Water is a diluted water-based form of tea tree, used for its soothing and mild antimicrobial properties. It is generally safe but may cause irritation or allergic reactions in sensitive individuals.\",\"details\":\"Compared to concentrated tea tree essential oil, tea tree leaf water typically contains lower levels of active compounds, reducing the risk of irritation while still offering some purifying and refreshing benefits. It is used in skincare and haircare for blemish-prone or oily skin and scalp. People with a history of sensitivity to essential oils or fragrance-type botanicals should patch test before regular use.\",\"category\":\"Botanical water / soothing and antimicrobial agent\"}",
+    "lastUpdated": 1764806675404,
+    "createdAt": 1764806675404
+  },
+  "citrus limon (lemon) fruit extract__personal_care__en": {
+    "analysis": "{\"name\":\"Citrus Limon (lemon) Fruit Extract\",\"riskLevel\":\"moderate\",\"summary\":\"Citrus Limon (Lemon) Fruit Extract is a plant extract used for its antioxidant, astringent, and brightening properties. It can increase the risk of skin irritation and photosensitivity, especially in sun-exposed areas.\",\"details\":\"Lemon fruit extract contains natural acids and compounds that can help gently exfoliate and improve skin tone, but these same components may trigger irritation for sensitive or compromised skin. Certain citrus components can make skin more reactive to UV light, potentially contributing to redness or hyperpigmentation without adequate sun protection. It is generally safe for most users at typical cosmetic concentrations, but people with sensitive skin or high sun exposure should use it with care and combine it with daily sunscreen.\",\"category\":\"Botanical extract / antioxidant and astringent agent\"}",
+    "lastUpdated": 1764806675404,
+    "createdAt": 1764806675404
+  },
+  "olealkonium chloride__personal_care__en": {
+    "analysis": "{\"name\":\"Olealkonium Chloride\",\"riskLevel\":\"moderate\",\"summary\":\"Olealkonium Chloride is a quaternary ammonium compound used mainly as a conditioning agent and preservative in personal care products. It can be irritating to skin and eyes at higher concentrations or with prolonged contact, especially in leave-on products or for sensitive individuals.\",\"details\":\"As a cationic surfactant, Olealkonium Chloride provides conditioning and antistatic effects, particularly in hair and skin formulations, and may also contribute to antimicrobial preservation. However, quaternary ammonium compounds are known to cause irritation and, in some cases, allergic contact dermatitis, especially in people with compromised or sensitive skin or with frequent exposure. While it is generally considered acceptable at low concentrations in rinse-off products, more caution is advised in leave-on formulations and around the eyes.\",\"category\":\"Preservative and conditioning surfactant (quaternary ammonium compound)\"}",
+    "lastUpdated": 1764806690136,
+    "createdAt": 1764806690136
+  },
+  "oleyl alcohol__personal_care__en": {
+    "analysis": "{\"name\":\"Oleyl Alcohol\",\"riskLevel\":\"low\",\"summary\":\"Oleyl alcohol is a fatty alcohol used as an emollient, texture enhancer, and emulsifier in personal care products. It is generally considered low risk and is usually well tolerated by most skin types.\",\"details\":\"As a long-chain fatty alcohol derived typically from natural oils, oleyl alcohol helps soften and smooth the skin or hair and can improve the spreadability of formulations. It is not the same as simple drying alcohols (like ethanol or isopropyl alcohol) and is much less likely to cause irritation or dryness. Rarely, sensitive individuals may experience mild irritation or contact allergy, but this is uncommon in typical cosmetic use levels.\",\"category\":\"Fatty alcohol / Emollient\"}",
+    "lastUpdated": 1764806692802,
+    "createdAt": 1764806692802
+  },
+  "peg-2m__personal_care__en": {
+    "analysis": "{\"name\":\"Peg-2m\",\"riskLevel\":\"low\",\"summary\":\"PEG-2M is a polyethylene glycol polymer used mainly as a thickener, film former, and skin conditioning agent in personal care products. It is generally considered low risk when properly purified and used in rinse-off or leave-on cosmetics at typical concentrations.\",\"details\":\"The primary safety concern with PEG-2M, as with other PEG compounds, is potential contamination with impurities such as ethylene oxide or 1,4-dioxane during manufacturing, but reputable manufacturers typically minimize these through purification and quality control. PEG-2M itself has low irritation and sensitization potential for most users, although very sensitive or compromised skin may occasionally react to PEGs. Avoid use on severely damaged or broken skin unless directed by a professional, and choose brands that adhere to good manufacturing practices to reduce contamination risks.\",\"category\":\"Emollient / Humectant / Texture enhancer\"}",
+    "lastUpdated": 1764806696028,
+    "createdAt": 1764806696028
   }
 }

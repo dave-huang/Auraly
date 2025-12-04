@@ -1,4 +1,4 @@
-import { users, scanHistory, type User, type UpsertUser, type ScanHistory, type InsertScanHistory } from "@shared/schema";
+import { users, scanHistory, type User, type UpsertUser, type ScanHistory, type InsertScanHistory, type RiskPreferences, defaultRiskPreferences } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, sql } from "drizzle-orm";
 
@@ -6,6 +6,12 @@ export interface IStorage {
   // User operations
   getUser(id: string): Promise<User | undefined>;
   upsertUser(user: UpsertUser): Promise<User>;
+  
+  // Risk preference operations
+  getUserPreferences(userId: string): Promise<RiskPreferences>;
+  updateUserPreferences(userId: string, preferences: Partial<RiskPreferences>): Promise<User | undefined>;
+  completeOnboarding(userId: string, preferences: RiskPreferences): Promise<User | undefined>;
+  isOnboardingCompleted(userId: string): Promise<boolean>;
   
   // Scan history operations
   createScanHistory(scan: InsertScanHistory): Promise<ScanHistory>;
@@ -36,6 +42,48 @@ export class DatabaseStorage implements IStorage {
       })
       .returning();
     return user;
+  }
+
+  // Risk preference operations
+  async getUserPreferences(userId: string): Promise<RiskPreferences> {
+    const user = await this.getUser(userId);
+    return (user?.riskPreferences as RiskPreferences) || defaultRiskPreferences;
+  }
+
+  async updateUserPreferences(userId: string, preferences: Partial<RiskPreferences>): Promise<User | undefined> {
+    const currentUser = await this.getUser(userId);
+    if (!currentUser) return undefined;
+    
+    const currentPrefs = (currentUser.riskPreferences as RiskPreferences) || defaultRiskPreferences;
+    const updatedPrefs = { ...currentPrefs, ...preferences };
+    
+    const [user] = await db
+      .update(users)
+      .set({ 
+        riskPreferences: updatedPrefs,
+        updatedAt: new Date()
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    return user;
+  }
+
+  async completeOnboarding(userId: string, preferences: RiskPreferences): Promise<User | undefined> {
+    const [user] = await db
+      .update(users)
+      .set({ 
+        riskPreferences: preferences,
+        onboardingCompleted: true,
+        updatedAt: new Date()
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    return user;
+  }
+
+  async isOnboardingCompleted(userId: string): Promise<boolean> {
+    const user = await this.getUser(userId);
+    return user?.onboardingCompleted ?? false;
   }
 
   // Scan history operations

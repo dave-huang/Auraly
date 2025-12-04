@@ -1,0 +1,129 @@
+Implement a Personalized Risk Settings feature for Auraly.
+All functionality must rely only on information that can be derived from an ingredient label (ingredient name, order/weight inference, category classification, and known safety profiles).
+Functional Requirements
+1. Onboarding Flow (First-Time Users Only)
+Create a multi-step onboarding wizard that appears once per new user:
+Ask users to set risk strictness across several domains:
+
+
+Artificial Fragrances
+
+
+Artificial Colors / Dyes
+
+
+Preservatives
+
+
+Endocrine Disruptors
+
+
+Allergens
+
+
+Alcohols (skin-drying types)
+
+
+Fragrance Allergens
+
+
+Parabens
+
+
+Sulfates
+
+
+PEGs / Ethoxylated Ingredients
+
+
+Silicones
+
+
+Each setting must support:
+
+
+3 levels: “Avoid Completely”, “Use With Caution”, “No Preference”.
+
+
+A brief description of what the category means (but no deep scientific essay).
+
+
+Store these preferences in the user profile for use in the risk engine.
+
+
+2. Integration With Ingredient Risk Engine
+Modify the existing ingredient-risk framework so it can:
+Accept user preference settings.
+
+
+Modify the risk score per ingredient based on:
+
+
+The ingredient’s base scientific risk rating.
+
+
+User’s strictness preference for that ingredient’s category.
+
+
+Provide a final cumulative product risk score after adjustments.
+
+
+3. Ingredient-Label-Only Detectability Rules
+All settings must be applied only if the preference is determinable from:
+Ingredient name
+
+
+Ingredient parent category
+
+
+Known alias mapping
+
+
+Known hazard mapping
+
+
+Label order (for concentration inference)
+
+ Do NOT include settings that can’t be inferred from an ingredient list.
+
+
+4. Alias & Category Matching
+All user preferences must work even when:
+Ingredients appear under alternative names.
+
+
+Ingredients appear as part of mixtures.
+
+ Implement:
+
+
+An alias lookup table.
+
+
+A category classification lookup (e.g., “all parabens → preservatives + parabens category”).
+
+
+5. UI & UX Requirements
+A clean, mobile-first onboarding flow.
+
+
+Ability to revisit and update preferences in Settings.
+
+
+A clear indication in the ingredient report showing:
+
+
+Base risk
+
+
+User-adjusted risk
+
+
+Why the adjustment occurred (e.g., “User avoids parabens”).
+
+
+6. Persistence
+Store user preferences in a persistent backend or local storage (depending on the app architecture).
+
+
+Ensure onboarding is shown only once per user unless reset.
