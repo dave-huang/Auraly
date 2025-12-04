@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Sparkles, Shield, Zap, Camera, Globe, Lock, History, LogOut } from "lucide-react";
+import { Sparkles, Shield, Zap, Camera, Globe, History, LogOut } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { useAuth } from "@/hooks/useAuth";
@@ -88,10 +88,6 @@ export default function Landing() {
 
           {/* Trust indicators - simplified */}
           <div className="mt-12 flex flex-wrap items-center justify-center gap-8 text-sm">
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Lock className="w-4 h-4 text-primary flex-shrink-0" />
-              <span>{t('landing.hero.trust.privacy')}</span>
-            </div>
             <div className="flex items-center gap-2 text-muted-foreground">
               <Zap className="w-4 h-4 text-primary flex-shrink-0" />
               <span>{t('landing.hero.trust.instant')}</span>
@@ -180,31 +176,6 @@ export default function Landing() {
               <h3 className="font-semibold mb-2">{t('landing.features.risk.title')}</h3>
               <p className="text-sm text-muted-foreground">{t('landing.features.risk.description')}</p>
             </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Privacy Notice - Minimal */}
-      <section className="py-16 bg-gradient-to-r from-primary/5 to-primary/10 border-t border-b">
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Lock className="w-5 h-5 text-primary" />
-            <span className="font-semibold text-primary">{t('landing.privacy.title')}</span>
-          </div>
-          <p className="text-muted-foreground text-sm mb-6">{t('landing.privacy.description')}</p>
-          <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-              {t('landing.privacy.features.noAccount')}
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-              {t('landing.privacy.features.notStored')}
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-              {t('landing.privacy.features.localOnly')}
-            </div>
           </div>
         </div>
       </section>

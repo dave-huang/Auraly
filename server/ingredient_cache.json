@@ -930,8 +930,8 @@
     "createdAt": 1764379125713
   },
   "mono- and diglycerides__food__en": {
-    "analysis": "{\"name\":\"Mono- And Diglycerides\",\"riskLevel\":\"moderate\",\"summary\":\"Mono- and diglycerides are emulsifiers used to improve texture and shelf life in processed foods, and they may contain small amounts of trans fats. They are generally recognized as safe but can contribute to overall intake of processed fats.\",\"details\":\"Mono- and diglycerides are derived from glycerol and fatty acids, which can be sourced from vegetable oils or animal fats, and the label often does not specify the origin. While they are widely approved by food safety authorities, they may carry residual trans fats and can add to total fat intake without being clearly labeled as trans fat. People aiming to minimize ultra-processed foods, avoid potential animal-derived ingredients, or strictly limit trans fat may wish to reduce frequent consumption.\",\"category\":\"Emulsifier / food additive\"}",
-    "lastUpdated": 1764805290966,
+    "analysis": "{\"name\":\"Mono- And Diglycerides\",\"riskLevel\":\"moderate\",\"summary\":\"Mono- and diglycerides are emulsifiers used to blend fats and water in processed foods. They are generally recognized as safe but can be a hidden source of trans fats and may be derived from soy or other allergenic oils.\",\"details\":\"These additives are partial breakdown products of fats and are used in baked goods, margarines, ice cream, and many packaged foods to improve texture and shelf life. While not counted as trans fat on nutrition labels, they can contain small amounts of industrial trans fats depending on how they are manufactured. People concerned about highly processed ingredients, trans fat intake, or potential allergen sources in refined oils may wish to limit frequent consumption of products high in mono- and diglycerides.\",\"category\":\"Emulsifier / processed fat\"}",
+    "lastUpdated": 1764875843643,
     "createdAt": 1764379125713
   },
   "cocoa powder (processed with alkali)__food__en": {
@@ -2025,8 +2025,8 @@
     "createdAt": 1764467541313
   },
   "titanium dioxide (color)__food__en": {
-    "analysis": "{\"name\":\"Titanium Dioxide (color)\",\"riskLevel\":\"moderate\",\"summary\":\"Titanium dioxide is a white pigment used to whiten or brighten foods and supplements. It is controversial because some regulatory agencies have raised concerns about potential genotoxicity, especially in nanoparticle form, leading to bans in certain regions for precautionary reasons.\",\"details\":\"Titanium dioxide (often E171) is poorly absorbed in the gut, but a small fraction can accumulate in tissues, and some animal and in vitro studies suggest possible DNA damage and inflammation at higher or chronic exposures. The European Food Safety Authority (EFSA) concluded in 2021 that a safe daily intake could not be established and it has been removed from foods in the EU, while other authorities such as the U.S. FDA still permit its use at limited levels. Occasional intake from food is likely low risk for most healthy adults, but minimizing frequent, long-term exposure, especially in children or people with inflammatory bowel conditions, may be prudent.\",\"category\":\"Color additive\"}",
-    "lastUpdated": 1764805294122,
+    "analysis": "{\"name\":\"Titanium Dioxide (color)\",\"riskLevel\":\"moderate\",\"summary\":\"Titanium dioxide is an inorganic white pigment used to whiten or brighten foods and supplements. Its safety has become controversial, especially regarding nanoparticle forms and potential effects on the gut and DNA.\",\"details\":\"Regulators differ on its safety: the European Union has banned titanium dioxide as a food additive due to concerns about possible genotoxicity, while some other authorities still permit it within set limits. Most human exposure studies suggest low acute toxicity, but long-term effects of chronic ingestion, especially of very small (nano-sized) particles, remain uncertain. People seeking to minimize potential risks or with inflammatory gut conditions may prefer to avoid it when alternatives are available.\",\"category\":\"Color additive / food colorant\"}",
+    "lastUpdated": 1764875854274,
     "createdAt": 1764467541580
   },
   "monocalcium phosphate__food__en": {
@@ -2035,8 +2035,8 @@
     "createdAt": 1764467541580
   },
   "sorbic acid and potassium sorbate__food__en": {
-    "analysis": "{\"name\":\"Sorbic Acid And Potassium Sorbate\",\"riskLevel\":\"low\",\"summary\":\"Sorbic acid and potassium sorbate are common food preservatives used to inhibit the growth of molds, yeast, and some bacteria, helping to retain freshness. They are generally recognized as safe for most people at typical dietary levels.\",\"details\":\"These preservatives work by disrupting the metabolism of microorganisms, extending the shelf life of foods and beverages. Most safety evaluations show low toxicity and good tolerance, though a small number of individuals may experience mild sensitivities or irritation, particularly with high or frequent exposure. Overall, when used within regulatory limits, they are considered low-risk compared with many other synthetic preservatives.\",\"category\":\"Preservative\"}",
-    "lastUpdated": 1764805281238,
+    "analysis": "{\"name\":\"Sorbic Acid And Potassium Sorbate\",\"riskLevel\":\"low\",\"summary\":\"Sorbic acid and potassium sorbate are common food preservatives used to inhibit the growth of mold, yeast, and some bacteria, helping to retain freshness. They are generally recognized as safe for most people at typical food-use levels.\",\"details\":\"These preservatives work by interfering with the metabolism of microbes, extending shelf life in baked goods, beverages, cheeses, and other processed foods. Some sensitive individuals may experience mild irritation or intolerance reactions, but serious adverse effects are rare at regulated doses. Overall exposure from a normal diet is considered safe by major food safety authorities when used within legal limits.\",\"category\":\"Preservative\"}",
+    "lastUpdated": 1764875843669,
     "createdAt": 1764467541631
   },
   "agave syrup__food__en": {
@@ -5085,8 +5085,8 @@
     "createdAt": 1764657938360
   },
   "soybean and wheat ingredients (includes bioengineered sources)__food__en": {
-    "analysis": "{\"name\":\"Soybean And Wheat Ingredients (includes Bioengineered Sources)\",\"riskLevel\":\"moderate\",\"summary\":\"Soybean and wheat are common food allergens, and this statement also indicates the presence of bioengineered (genetically modified) ingredients. For most people they are safe, but they can trigger allergic reactions and may be avoided by those who are sensitive to GMOs.\",\"details\":\"Soy and wheat proteins are among the major allergens and can cause reactions ranging from mild (rash, digestive upset) to severe (anaphylaxis) in susceptible individuals, and wheat also contains gluten, which is harmful for people with celiac disease or gluten sensitivity. The declaration of bioengineered food ingredients means that one or more components are genetically modified, which current evidence suggests is generally safe, but some consumers prefer to limit GMOs for personal or precautionary reasons. People with soy, wheat, or gluten allergies or intolerances should avoid products with this labeling and read all related ingredient information carefully.\",\"category\":\"Allergens / Bioengineered (GMO) ingredients\"}",
-    "lastUpdated": 1764805294529,
+    "analysis": "{\"name\":\"Soybean And Wheat Ingredients (includes Bioengineered Sources)\",\"riskLevel\":\"moderate\",\"summary\":\"Soybean and wheat ingredients are common food components that provide protein and carbohydrates but are major allergens and may include genetically modified (bioengineered) sources. They can trigger allergic reactions and are unsuitable for people with soy or wheat/gluten allergies or intolerances.\",\"details\":\"Soy and wheat are among the top food allergens and can cause symptoms ranging from mild digestive upset or skin reactions to severe anaphylaxis in sensitive individuals. The statement that the product contains bioengineered food ingredients indicates that some or all of the soy and/or wheat components are genetically modified, which is considered safe by major regulatory agencies but may be of concern for people who prefer to avoid GMOs for personal or ethical reasons. People with celiac disease, non-celiac gluten sensitivity, or soy allergy should avoid such ingredients or consume only under guidance.\",\"category\":\"Allergens and genetically modified (bioengineered) ingredients\"}",
+    "lastUpdated": 1764875853468,
     "createdAt": 1764793757997
   },
   "soybean and wheat ingredients (bioengineered)__food__en": {
@@ -5543,5 +5543,10 @@
     "analysis": "{\"name\":\"Peg-2m\",\"riskLevel\":\"low\",\"summary\":\"PEG-2M is a polyethylene glycol polymer used mainly as a thickener, film former, and skin conditioning agent in personal care products. It is generally considered low risk when properly purified and used in rinse-off or leave-on cosmetics at typical concentrations.\",\"details\":\"The primary safety concern with PEG-2M, as with other PEG compounds, is potential contamination with impurities such as ethylene oxide or 1,4-dioxane during manufacturing, but reputable manufacturers typically minimize these through purification and quality control. PEG-2M itself has low irritation and sensitization potential for most users, although very sensitive or compromised skin may occasionally react to PEGs. Avoid use on severely damaged or broken skin unless directed by a professional, and choose brands that adhere to good manufacturing practices to reduce contamination risks.\",\"category\":\"Emollient / Humectant / Texture enhancer\"}",
     "lastUpdated": 1764806696028,
     "createdAt": 1764806696028
+  },
+  "defatted soy flour__food__en": {
+    "analysis": "{\"name\":\"Defatted Soy Flour\",\"riskLevel\":\"moderate\",\"summary\":\"Defatted soy flour is a high-protein soy ingredient with most of the oil removed, commonly used in baked goods and processed foods. It is a major allergen for individuals with soy allergy and may cause reactions in sensitive people.\",\"details\":\"Defatted soy flour provides protein, fiber, and some minerals, but it is a concentrated source of soy proteins that can trigger allergic reactions such as hives, digestive upset, or, rarely, anaphylaxis in soy-allergic individuals. It may also be problematic for some people with thyroid issues or those advised to limit soy intake, especially in large amounts. For most healthy consumers without soy allergy, it is generally safe, but its allergen status raises the overall risk level.\",\"category\":\"Soy-based ingredient, major allergen\"}",
+    "lastUpdated": 1764875847275,
+    "createdAt": 1764875847275
   }
 }

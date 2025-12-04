@@ -19,7 +19,6 @@
       "cta": "Start Scanning",
       "guardian": "Your ingredient guardian",
       "trust": {
-        "privacy": "Privacy-first",
         "noAccount": "No account needed",
         "instant": "Instant results"
       }
@@ -53,15 +52,6 @@
       "smart": {
         "title": "Smart Analysis",
         "description": "Context-aware analysis tailored to product type — food, skincare, oral care, or cosmetics."
-      }
-    },
-    "privacy": {
-      "title": "Your Privacy Matters",
-      "description": "Your data stays private — images aren't stored on our servers. Analysis happens in real-time and results are only saved in your browser.",
-      "features": {
-        "noAccount": "No account required",
-        "notStored": "Images not stored",
-        "localOnly": "Local-only history"
       }
     },
     "footer": {

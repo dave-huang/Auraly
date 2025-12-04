@@ -19,7 +19,6 @@
       "cta": "Comenzar a Escanear",
       "guardian": "Tu guardián de ingredientes",
       "trust": {
-        "privacy": "Privacidad primero",
         "noAccount": "Sin cuenta necesaria",
         "instant": "Resultados instantáneos"
       }
@@ -53,15 +52,6 @@
       "smart": {
         "title": "Análisis Inteligente",
         "description": "Análisis contextual adaptado al tipo de producto: alimentos, cuidado de la piel, cuidado bucal o cosméticos."
-      }
-    },
-    "privacy": {
-      "title": "Tu Privacidad Importa",
-      "description": "Tus datos permanecen privados: las imágenes no se almacenan en nuestros servidores. El análisis ocurre en tiempo real y los resultados solo se guardan en tu navegador.",
-      "features": {
-        "noAccount": "No se requiere cuenta",
-        "notStored": "Imágenes no almacenadas",
-        "localOnly": "Historial solo local"
       }
     },
     "footer": {
