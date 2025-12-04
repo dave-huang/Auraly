@@ -256,14 +256,15 @@
     }
   },
   "preferences": {
-    "title": "风险偏好设置",
+    "title": "风险敏感度",
+    "subtitle": "调整成分风险的计算方式",
     "settings": "设置",
     "categories": {
       "artificial_fragrances": "人工香料",
       "artificial_colors": "人工色素",
       "preservatives": "防腐剂",
       "endocrine_disruptors": "内分泌干扰物",
-      "allergens": "过敏原",
+      "contact_sensitizers": "接触性致敏物",
       "alcohols": "干燥性酒精",
       "fragrance_allergens": "香料过敏原",
       "parabens": "对羟基苯甲酸酯",

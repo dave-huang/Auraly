@@ -256,14 +256,15 @@
     }
   },
   "preferences": {
-    "title": "Preferencias de Riesgo",
+    "title": "Sensibilidad de Riesgo",
+    "subtitle": "Ajusta cómo se calculan los riesgos de ingredientes",
     "settings": "Configuración",
     "categories": {
       "artificial_fragrances": "Fragancias Artificiales",
       "artificial_colors": "Colorantes Artificiales",
       "preservatives": "Conservantes",
       "endocrine_disruptors": "Disruptores Endocrinos",
-      "allergens": "Alérgenos",
+      "contact_sensitizers": "Sensibilizantes de Contacto",
       "alcohols": "Alcoholes Secantes",
       "fragrance_allergens": "Alérgenos de Fragancia",
       "parabens": "Parabenos",
