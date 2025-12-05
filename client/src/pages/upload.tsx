@@ -2,10 +2,10 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Loader2, Settings } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { ProductTypeSelector } from "@/components/product-type-selector";
 import { ImageUploader } from "@/components/image-uploader";
-import { LanguageSwitcher } from "@/components/language-switcher";
+import { NavigationMenu } from "@/components/navigation-menu";
 import type { ProductType } from "@shared/schema";
 import { useTranslation } from "react-i18next";
 
@@ -76,15 +76,7 @@ export default function UploadPage() {
           </Button>
           <div className="flex items-center gap-2">
             <h1 className="font-serif text-lg font-bold hidden sm:block">{t('app.title')}</h1>
-            <LanguageSwitcher />
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setLocation('/settings')}
-              data-testid="button-settings"
-            >
-              <Settings className="h-5 w-5" />
-            </Button>
+            <NavigationMenu showHomeLink />
           </div>
         </div>
       </header>

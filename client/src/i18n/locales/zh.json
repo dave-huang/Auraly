@@ -3,6 +3,14 @@
     "title": "Auraly",
     "tagline": "了解产品成分的真相"
   },
+  "nav": {
+    "menu": "菜单",
+    "home": "首页",
+    "history": "扫描历史",
+    "settings": "设置",
+    "language": "语言",
+    "logout": "退出登录"
+  },
   "auth": {
     "signIn": "登录以开始",
     "signInShort": "登录",

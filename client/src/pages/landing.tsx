@@ -1,9 +1,10 @@
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Sparkles, Shield, Zap, Camera, Globe, History, LogOut } from "lucide-react";
+import { Sparkles, Shield, Zap, Camera, Globe } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { NavigationMenu } from "@/components/navigation-menu";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function Landing() {
@@ -12,26 +13,13 @@ export default function Landing() {
   
   return (
     <div className="min-h-screen bg-background">
-      {/* Header - Language Switcher and History */}
+      {/* Header - Language Switcher (logged out) or Navigation Menu (logged in) */}
       <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
-        {isAuthenticated && (
-          <>
-            <Link href="/history">
-              <Button variant="ghost" size="icon" data-testid="button-history">
-                <History className="w-5 h-5" />
-              </Button>
-            </Link>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={() => window.location.href = "/api/logout"}
-              data-testid="button-logout"
-            >
-              <LogOut className="w-5 h-5" />
-            </Button>
-          </>
+        {isAuthenticated ? (
+          <NavigationMenu />
+        ) : (
+          <LanguageSwitcher />
         )}
-        <LanguageSwitcher />
       </div>
 
       {/* Hero Section */}

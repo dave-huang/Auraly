@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Check, Settings, RefreshCw, Shield, AlertTriangle, UtensilsCrossed, Flower2, FlaskConical } from "lucide-react";
+import { ArrowLeft, Check, Settings, RefreshCw, Shield, AlertTriangle, UtensilsCrossed, Flower2, FlaskConical, Menu } from "lucide-react";
+import { NavigationMenu } from "@/components/navigation-menu";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import type { RiskPreferences, AllergenPreferences, PreferenceCategory, AllergenCategory, RiskTolerance } from "@shared/schema";
 import { defaultRiskPreferences, defaultAllergenPreferences, preferenceCategories, allergenCategories } from "@shared/schema";
@@ -260,7 +261,7 @@ export default function SettingsPage() {
                 : `${activeRiskCount} risk settings, ${activeAllergenCount} allergen alerts`}
             </p>
           </div>
-          <Settings className="h-5 w-5 text-muted-foreground" />
+          <NavigationMenu showHomeLink />
         </div>
       </div>
 

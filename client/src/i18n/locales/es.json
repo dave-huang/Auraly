@@ -3,6 +3,14 @@
     "title": "Auraly",
     "tagline": "Comprende Lo Que Realmente Hay En Tus Productos"
   },
+  "nav": {
+    "menu": "Menú",
+    "home": "Inicio",
+    "history": "Historial de Escaneos",
+    "settings": "Configuración",
+    "language": "Idioma",
+    "logout": "Cerrar Sesión"
+  },
   "auth": {
     "signIn": "Inicia Sesión para Comenzar",
     "signInShort": "Iniciar Sesión",

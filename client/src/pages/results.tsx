@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Camera, Loader2, Search, AlertCircle, Pencil, Check, X, Settings } from "lucide-react";
+import { NavigationMenu } from "@/components/navigation-menu";
 import { IngredientCard } from "@/components/ingredient-card";
 import { RiskSummary } from "@/components/risk-summary";
 import { AllergenFlags } from "@/components/allergen-flags";
@@ -482,14 +483,7 @@ export default function ResultsPage() {
             {t('results.header.home')}
           </Button>
           <h1 className="font-serif text-xl font-bold">{t('app.title')}</h1>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setLocation('/settings')}
-            data-testid="button-settings"
-          >
-            <Settings className="h-5 w-5" />
-          </Button>
+          <NavigationMenu showHomeLink />
         </div>
       </header>
 
