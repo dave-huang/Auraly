@@ -43,10 +43,6 @@ export function AllergenFlags({ ingredients }: AllergenFlagsProps) {
   }, [ingredients, allergenPreferences]);
 
   const hasEnabledAllergens = Object.values(allergenPreferences).some(v => v === true);
-  
-  if (!hasEnabledAllergens) {
-    return null;
-  }
 
   const groupedAllergens = useMemo(() => {
     const groups: Record<string, AllergenFlag[]> = {
@@ -70,6 +66,10 @@ export function AllergenFlags({ ingredients }: AllergenFlagsProps) {
   }, [detectedAllergens]);
 
   const hasDetectedAllergens = detectedAllergens.length > 0;
+  
+  if (!hasEnabledAllergens) {
+    return null;
+  }
 
   return (
     <Card className={cn(
