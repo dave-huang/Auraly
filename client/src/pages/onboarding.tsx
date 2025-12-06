@@ -289,29 +289,32 @@ function ToleranceSelector({
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
 
-  const options: { value: RiskTolerance; label: string; description: string; color: string }[] = [
+  const options: { value: RiskTolerance; label: string; description: string; color: string; selectedColor: string }[] = [
     { 
       value: "no_preference", 
       label: lang === 'zh' ? '无偏好' : lang === 'es' ? 'Sin Preferencia' : 'No Preference',
       description: lang === 'zh' ? '使用基于科学的风险评估' : lang === 'es' ? 'Usar evaluación de riesgo científica' : 'Use scientific risk assessment',
-      color: "border-muted-foreground/30 bg-muted/20"
+      color: "border-border/50 bg-card/30",
+      selectedColor: "border-primary/40 bg-primary/5 ring-2 ring-primary/20"
     },
     { 
       value: "caution", 
       label: lang === 'zh' ? '谨慎使用' : lang === 'es' ? 'Usar con Precaución' : 'Use with Caution',
       description: lang === 'zh' ? '提升风险等级一级' : lang === 'es' ? 'Elevar nivel de riesgo uno' : 'Elevate risk level by one',
-      color: "border-yellow-500 bg-yellow-500/10"
+      color: "border-border/50 bg-card/30",
+      selectedColor: "border-amber-400/50 bg-amber-50/50 dark:bg-amber-950/20 ring-2 ring-amber-400/20"
     },
     { 
       value: "avoid", 
       label: lang === 'zh' ? '完全避免' : lang === 'es' ? 'Evitar Completamente' : 'Avoid Completely',
       description: lang === 'zh' ? '标记为高风险' : lang === 'es' ? 'Marcar como alto riesgo' : 'Mark as high risk',
-      color: "border-red-500 bg-red-500/10"
+      color: "border-border/50 bg-card/30",
+      selectedColor: "border-rose-400/50 bg-rose-50/50 dark:bg-rose-950/20 ring-2 ring-rose-400/20"
     },
   ];
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2.5">
       {options.map((option) => (
         <button
           key={option.value}
@@ -319,18 +322,18 @@ function ToleranceSelector({
           data-testid={`tolerance-${categoryKey}-${option.value}`}
           onClick={() => onChange(option.value)}
           className={cn(
-            "flex items-center justify-between p-3 rounded-lg border-2 transition-all text-left",
+            "flex items-center justify-between p-4 rounded-xl border transition-all text-left",
             value === option.value 
-              ? option.color + " ring-2 ring-offset-2 ring-primary" 
-              : "border-border hover-elevate"
+              ? option.selectedColor
+              : option.color + " hover:bg-card/60"
           )}
         >
           <div>
             <div className="font-medium text-sm">{option.label}</div>
-            <div className="text-xs text-muted-foreground">{option.description}</div>
+            <div className="text-xs text-muted-foreground/70 font-light mt-0.5">{option.description}</div>
           </div>
           {value === option.value && (
-            <Check className="h-5 w-5 text-primary shrink-0" />
+            <Check className="h-4 w-4 text-primary shrink-0" />
           )}
         </button>
       ))}
@@ -354,18 +357,20 @@ function AllergenToggle({
   return (
     <div 
       className={cn(
-        "flex items-center justify-between p-4 rounded-lg border transition-all",
-        enabled ? "border-primary bg-primary/5" : "border-border"
+        "flex items-center justify-between p-4 rounded-xl border transition-all",
+        enabled 
+          ? "border-primary/40 bg-primary/5 ring-1 ring-primary/10" 
+          : "border-border/40 bg-card/30 hover:bg-card/50"
       )}
     >
       <div className="flex-1 min-w-0 mr-4">
         <div className="font-medium text-sm">
           {t(`allergens.categories.${category.key}`)}
         </div>
-        <div className="text-xs text-muted-foreground mt-0.5">
+        <div className="text-xs text-muted-foreground/70 font-light mt-1">
           {category.description[lang] || category.description.en}
         </div>
-        <div className="text-xs text-muted-foreground/70 mt-1 italic">
+        <div className="text-xs text-muted-foreground/50 mt-1.5 font-light italic">
           {lang === 'zh' ? '例如：' : lang === 'es' ? 'Ej: ' : 'e.g. '}
           {category.example[lang] || category.example.en}
         </div>
@@ -467,15 +472,15 @@ export default function OnboardingPage() {
   };
 
   const renderWelcomeStep = () => (
-    <div className="flex flex-col items-center text-center py-6 space-y-6">
-      <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
-        <Sparkles className="w-10 h-10 text-primary" />
+    <div className="flex flex-col items-center text-center py-8 space-y-8">
+      <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center">
+        <Sparkles className="w-12 h-12 text-primary" />
       </div>
       <div>
-        <h2 className="text-2xl font-bold mb-2">
+        <h2 className="font-display text-3xl mb-3">
           {lang === 'zh' ? '个性化您的设置' : lang === 'es' ? 'Personaliza tu Configuración' : 'Personalize Your Settings'}
         </h2>
-        <p className="text-muted-foreground max-w-sm">
+        <p className="text-muted-foreground/80 font-light max-w-sm leading-relaxed">
           {lang === 'zh' 
             ? '告诉我们您希望避免哪些成分和过敏原。这有助于我们为您提供个性化的风险评估。' 
             : lang === 'es' 
@@ -483,16 +488,20 @@ export default function OnboardingPage() {
             : 'Tell us which ingredients and allergens you prefer to avoid. This helps us personalize assessments for you.'}
         </p>
       </div>
-      <div className="flex flex-col gap-4 w-full max-w-xs">
-        <div className="flex items-center gap-3 text-left p-3 rounded-lg bg-muted/50">
-          <Shield className="w-5 h-5 text-primary shrink-0" />
-          <div className="text-sm">
+      <div className="flex flex-col gap-3 w-full max-w-xs">
+        <div className="flex items-center gap-4 text-left p-4 rounded-xl bg-card/50 border border-border/30">
+          <div className="p-2 rounded-full bg-primary/10">
+            <Shield className="w-4 h-4 text-primary shrink-0" />
+          </div>
+          <div className="text-sm font-light">
             {lang === 'zh' ? '根据您的偏好调整风险评估' : lang === 'es' ? 'Evaluaciones de riesgo ajustadas a tus preferencias' : 'Risk assessments adjusted to your preferences'}
           </div>
         </div>
-        <div className="flex items-center gap-3 text-left p-3 rounded-lg bg-muted/50">
-          <AlertTriangle className="w-5 h-5 text-yellow-500 shrink-0" />
-          <div className="text-sm">
+        <div className="flex items-center gap-4 text-left p-4 rounded-xl bg-card/50 border border-border/30">
+          <div className="p-2 rounded-full bg-amber-500/10">
+            <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0" />
+          </div>
+          <div className="text-sm font-light">
             {lang === 'zh' ? '标记您的过敏原' : lang === 'es' ? 'Marcar tus alérgenos' : 'Flag your allergens'}
           </div>
         </div>
@@ -503,24 +512,24 @@ export default function OnboardingPage() {
   const renderRiskCategoryStep = (groupIndex: number) => {
     const group = riskCategoryGroups[groupIndex];
     return (
-      <div className="py-4 space-y-4">
-        <div className="text-center mb-6">
-          <h2 className="text-xl font-bold">{group.title[lang] || group.title.en}</h2>
-          <p className="text-sm text-muted-foreground mt-1">{group.subtitle[lang] || group.subtitle.en}</p>
+      <div className="py-6 space-y-5">
+        <div className="text-center mb-8">
+          <h2 className="font-display text-2xl mb-2">{group.title[lang] || group.title.en}</h2>
+          <p className="text-sm text-muted-foreground/70 font-light">{group.subtitle[lang] || group.subtitle.en}</p>
         </div>
         
         {group.categories.map((category) => (
-          <Card key={category.key} className="overflow-hidden">
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-base">
+          <Card key={category.key} className="overflow-hidden rounded-xl border-border/30 bg-card/50">
+            <CardHeader className="pb-3 pt-5 px-5">
+              <CardTitle className="flex items-center gap-3 text-base font-display">
                 <span className="text-xl">{category.icon}</span>
                 {t(`preferences.categories.${category.key}`)}
               </CardTitle>
-              <CardDescription className="text-xs">
+              <CardDescription className="text-xs font-light text-muted-foreground/70 mt-1">
                 {category.description[lang] || category.description.en}
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-5 pb-5">
               <ToleranceSelector
                 value={preferences[category.key]}
                 onChange={(value) => updatePreference(category.key, value)}
@@ -534,15 +543,15 @@ export default function OnboardingPage() {
   };
 
   const renderAllergenIntroStep = () => (
-    <div className="flex flex-col items-center text-center py-6 space-y-6">
-      <div className="w-20 h-20 rounded-full bg-orange-500/10 flex items-center justify-center">
-        <AlertTriangle className="w-10 h-10 text-orange-500" />
+    <div className="flex flex-col items-center text-center py-8 space-y-8">
+      <div className="w-24 h-24 rounded-full bg-amber-500/10 flex items-center justify-center">
+        <AlertTriangle className="w-12 h-12 text-amber-500" />
       </div>
       <div>
-        <h2 className="text-2xl font-bold mb-2">
+        <h2 className="font-display text-3xl mb-3">
           {lang === 'zh' ? '您的成分敏感性' : lang === 'es' ? 'Tus Sensibilidades a Ingredientes' : 'Your Ingredient Sensitivities'}
         </h2>
-        <p className="text-muted-foreground max-w-sm">
+        <p className="text-muted-foreground/80 font-light max-w-sm leading-relaxed">
           {lang === 'zh' 
             ? '选择您希望在产品中标记的过敏原类别。这些不会影响风险评分，但会作为警告显示。' 
             : lang === 'es' 
@@ -551,21 +560,27 @@ export default function OnboardingPage() {
         </p>
       </div>
       <div className="flex flex-col gap-3 w-full max-w-xs text-left">
-        <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
-          <UtensilsCrossed className="w-5 h-5 text-orange-500 shrink-0" />
-          <div className="text-sm">
+        <div className="flex items-center gap-4 p-4 rounded-xl bg-card/50 border border-border/30">
+          <div className="p-2 rounded-full bg-amber-500/10">
+            <UtensilsCrossed className="w-4 h-4 text-amber-500 shrink-0" />
+          </div>
+          <div className="text-sm font-light">
             {lang === 'zh' ? '食物过敏原（坚果、乳制品等）' : lang === 'es' ? 'Alérgenos alimentarios (frutos secos, lácteos, etc.)' : 'Food allergens (nuts, dairy, etc.)'}
           </div>
         </div>
-        <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
-          <Flower2 className="w-5 h-5 text-pink-500 shrink-0" />
-          <div className="text-sm">
+        <div className="flex items-center gap-4 p-4 rounded-xl bg-card/50 border border-border/30">
+          <div className="p-2 rounded-full bg-rose-500/10">
+            <Flower2 className="w-4 h-4 text-rose-400 shrink-0" />
+          </div>
+          <div className="text-sm font-light">
             {lang === 'zh' ? '化妆品过敏原（香料、防腐剂等）' : lang === 'es' ? 'Alérgenos cosméticos (fragancias, conservantes, etc.)' : 'Cosmetic allergens (fragrances, preservatives, etc.)'}
           </div>
         </div>
-        <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
-          <FlaskConical className="w-5 h-5 text-purple-500 shrink-0" />
-          <div className="text-sm">
+        <div className="flex items-center gap-4 p-4 rounded-xl bg-card/50 border border-border/30">
+          <div className="p-2 rounded-full bg-violet-500/10">
+            <FlaskConical className="w-4 h-4 text-violet-400 shrink-0" />
+          </div>
+          <div className="text-sm font-light">
             {lang === 'zh' ? '化学添加剂（染料、酒精等）' : lang === 'es' ? 'Aditivos químicos (tintes, alcoholes, etc.)' : 'Chemical additives (dyes, alcohols, etc.)'}
           </div>
         </div>
@@ -576,15 +591,24 @@ export default function OnboardingPage() {
   const renderAllergenCategoryStep = (groupIndex: number) => {
     const group = allergenCategoryGroups[groupIndex];
     const IconComponent = group.icon;
+    const groupColor = group.id === 'food' ? 'amber' : group.id === 'cosmetic' ? 'rose' : 'violet';
     
     return (
-      <div className="py-4 space-y-4">
-        <div className="text-center mb-6">
-          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
-            <IconComponent className="w-6 h-6 text-primary" />
+      <div className="py-6 space-y-5">
+        <div className="text-center mb-8">
+          <div className={cn(
+            "w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4",
+            groupColor === 'amber' ? "bg-amber-500/10" :
+            groupColor === 'rose' ? "bg-rose-500/10" : "bg-violet-500/10"
+          )}>
+            <IconComponent className={cn(
+              "w-7 h-7",
+              groupColor === 'amber' ? "text-amber-500" :
+              groupColor === 'rose' ? "text-rose-400" : "text-violet-400"
+            )} />
           </div>
-          <h2 className="text-xl font-bold">{group.title[lang] || group.title.en}</h2>
-          <p className="text-sm text-muted-foreground mt-1">{group.subtitle[lang] || group.subtitle.en}</p>
+          <h2 className="font-display text-2xl mb-2">{group.title[lang] || group.title.en}</h2>
+          <p className="text-sm text-muted-foreground/70 font-light">{group.subtitle[lang] || group.subtitle.en}</p>
         </div>
         
         <div className="space-y-3">
@@ -611,15 +635,15 @@ export default function OnboardingPage() {
     );
     
     return (
-      <div className="py-6 space-y-6">
+      <div className="py-8 space-y-6">
         <div className="text-center">
-          <div className="w-16 h-16 rounded-full bg-green-500/10 flex items-center justify-center mx-auto mb-4">
-            <Check className="w-8 h-8 text-green-500" />
+          <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-5">
+            <Check className="w-10 h-10 text-primary" />
           </div>
-          <h2 className="text-xl font-bold">
+          <h2 className="font-display text-3xl mb-3">
             {lang === 'zh' ? '设置完成！' : lang === 'es' ? '¡Configuración Completa!' : 'Setup Complete!'}
           </h2>
-          <p className="text-sm text-muted-foreground mt-2">
+          <p className="text-sm text-muted-foreground/70 font-light">
             {lang === 'zh' 
               ? '您可以随时在设置中更改这些偏好' 
               : lang === 'es' 
@@ -629,20 +653,24 @@ export default function OnboardingPage() {
         </div>
 
         {activeRiskPrefs.length > 0 && (
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base flex items-center gap-2">
-                <Shield className="w-4 h-4" />
+          <Card className="rounded-xl border-border/30 bg-card/50">
+            <CardHeader className="pb-3 pt-5 px-5">
+              <CardTitle className="text-base font-display flex items-center gap-3">
+                <div className="p-2 rounded-full bg-primary/10">
+                  <Shield className="w-4 h-4 text-primary" />
+                </div>
                 {lang === 'zh' ? '风险偏好' : lang === 'es' ? 'Preferencias de Riesgo' : 'Risk Preferences'}
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2">
+            <CardContent className="px-5 pb-5 space-y-2">
               {activeRiskPrefs.map(([key, value]) => (
-                <div key={key} className="flex items-center justify-between py-2 border-b last:border-0">
-                  <span className="text-sm">{t(`preferences.categories.${key}`)}</span>
+                <div key={key} className="flex items-center justify-between py-2.5 border-b border-border/20 last:border-0">
+                  <span className="text-sm font-light">{t(`preferences.categories.${key}`)}</span>
                   <span className={cn(
-                    "text-xs font-medium px-2 py-1 rounded",
-                    value === 'avoid' ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400" : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
+                    "text-xs font-medium px-2.5 py-1 rounded-full",
+                    value === 'avoid' 
+                      ? "bg-rose-100/60 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400" 
+                      : "bg-amber-100/60 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
                   )}>
                     {value === 'avoid' 
                       ? (lang === 'zh' ? '避免' : lang === 'es' ? 'Evitar' : 'Avoid')
@@ -655,17 +683,19 @@ export default function OnboardingPage() {
         )}
 
         {activeAllergenPrefs.length > 0 && (
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4 text-orange-500" />
+          <Card className="rounded-xl border-border/30 bg-card/50">
+            <CardHeader className="pb-3 pt-5 px-5">
+              <CardTitle className="text-base font-display flex items-center gap-3">
+                <div className="p-2 rounded-full bg-amber-500/10">
+                  <AlertTriangle className="w-4 h-4 text-amber-500" />
+                </div>
                 {lang === 'zh' ? '过敏原警报' : lang === 'es' ? 'Alertas de Alérgenos' : 'Allergen Alerts'}
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-5 pb-5">
               <div className="flex flex-wrap gap-2">
                 {activeAllergenPrefs.map(([key]) => (
-                  <span key={key} className="text-xs font-medium px-2 py-1 rounded bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400">
+                  <span key={key} className="text-xs font-medium px-3 py-1.5 rounded-full bg-amber-100/60 text-amber-700 border border-amber-200/50 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-700/30">
                     {t(`allergens.categories.${key}`)}
                   </span>
                 ))}
@@ -675,8 +705,8 @@ export default function OnboardingPage() {
         )}
 
         {activeRiskPrefs.length === 0 && activeAllergenPrefs.length === 0 && (
-          <Card>
-            <CardContent className="py-6 text-center text-muted-foreground">
+          <Card className="rounded-xl border-border/30 bg-card/50">
+            <CardContent className="py-8 text-center text-muted-foreground/70 font-light">
               {lang === 'zh' 
                 ? '未设置任何偏好 - 将使用标准科学风险评估' 
                 : lang === 'es' 
@@ -707,11 +737,11 @@ export default function OnboardingPage() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <div className="flex-1 overflow-auto pb-24">
-        <div className="max-w-md mx-auto px-4 pt-6">
-          <Progress value={progress} className="h-2 mb-6" data-testid="onboarding-progress" />
+      <div className="flex-1 overflow-auto pb-28">
+        <div className="max-w-md mx-auto px-5 pt-8">
+          <Progress value={progress} className="h-1.5 mb-4" data-testid="onboarding-progress" />
           
-          <div className="text-xs text-center text-muted-foreground mb-4">
+          <div className="text-xs text-center text-muted-foreground/60 font-light tracking-wide mb-2">
             {lang === 'zh' 
               ? `第 ${currentStep + 1} 步，共 ${totalSteps} 步` 
               : lang === 'es' 
@@ -723,13 +753,13 @@ export default function OnboardingPage() {
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 bg-background border-t p-4 safe-area-pb">
+      <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-md border-t border-border/30 p-4 safe-area-pb">
         <div className="max-w-md mx-auto flex gap-3">
           {currentStep > 0 && (
             <Button 
               variant="outline" 
               onClick={handlePrev}
-              className="flex-1"
+              className="flex-1 rounded-full"
               data-testid="button-prev"
               disabled={isPending}
             >
@@ -742,7 +772,7 @@ export default function OnboardingPage() {
             <Button 
               variant="ghost" 
               onClick={handleSkip}
-              className="flex-1"
+              className="flex-1 rounded-full"
               data-testid="button-skip"
               disabled={isPending}
             >
@@ -753,7 +783,7 @@ export default function OnboardingPage() {
           {currentStep < totalSteps - 1 ? (
             <Button 
               onClick={handleNext}
-              className="flex-1"
+              className="flex-1 rounded-full"
               data-testid="button-next"
             >
               {lang === 'zh' ? '下一步' : lang === 'es' ? 'Siguiente' : 'Next'}
@@ -762,7 +792,7 @@ export default function OnboardingPage() {
           ) : (
             <Button 
               onClick={handleComplete}
-              className="flex-1"
+              className="flex-1 rounded-full"
               disabled={isPending}
               data-testid="button-complete"
             >
