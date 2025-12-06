@@ -185,18 +185,18 @@ export default function ScanDetailPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b border-border/30 bg-background/90 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link href="/history">
-              <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground" data-testid="button-back">
+              <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground/70 hover:text-foreground" data-testid="button-back">
                 <ArrowLeft className="w-4 h-4" />
                 <span className="font-light hidden sm:inline">{t('common.back')}</span>
               </Button>
             </Link>
           </div>
-          <div className="hidden sm:flex items-center gap-2">
-            <Leaf className="w-4 h-4 text-primary/60" />
+          <div className="hidden sm:flex items-center gap-2.5">
+            <Leaf className="w-4 h-4 text-primary/50" />
             <span className="font-display text-lg">{t('app.title')}</span>
           </div>
           <div className="flex items-center gap-2">
@@ -246,9 +246,9 @@ export default function ScanDetailPage() {
         />
 
         {showPersonalizedBanner && (
-          <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/5 border border-primary/10 mb-4">
-            <Settings className="h-4 w-4 text-primary flex-shrink-0" />
-            <p className="text-sm text-muted-foreground">
+          <div className="flex items-center gap-2 p-3 rounded-xl bg-primary/5 border border-primary/10 mb-4">
+            <Settings className="h-4 w-4 text-primary/70 flex-shrink-0" />
+            <p className="text-sm text-muted-foreground font-light">
               {t('preferences.personalizedFor')}
             </p>
             <Button

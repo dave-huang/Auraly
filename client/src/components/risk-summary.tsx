@@ -39,45 +39,45 @@ export function RiskSummary({ overallRisk, riskCounts, totalIngredients }: RiskS
   const Icon = config.icon;
 
   return (
-    <div className={`${config.bgColor} rounded-lg border ${config.borderColor} mb-8`}>
+    <div className={`${config.bgColor} rounded-xl border ${config.borderColor} mb-8`}>
       <div className="p-6">
         <div className="flex items-start gap-4 mb-5">
           <div className={`p-3 rounded-full ${config.bgColor} border ${config.borderColor}`}>
             <Icon className={`w-5 h-5 ${config.color}`} />
           </div>
           <div className="flex-1">
-            <h3 className={`font-medium text-lg mb-1.5 ${config.color}`} data-testid="text-overall-risk">
+            <h3 className={`font-display text-lg mb-1.5 ${config.color}`} data-testid="text-overall-risk">
               {t(`results.riskSummary.${overallRisk}.label`)}
             </h3>
-            <p className="text-sm text-foreground/75 leading-relaxed">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               {t(`results.riskSummary.${overallRisk}.message`)}
             </p>
           </div>
         </div>
 
         {/* Risk Breakdown */}
-        <div className="grid grid-cols-3 gap-4 pt-5 border-t border-border/30">
+        <div className="grid grid-cols-3 gap-4 pt-5 border-t border-border/20">
           <div className="text-center">
-            <div className="text-2xl font-medium text-emerald-600/90 dark:text-emerald-400">
+            <div className="text-2xl font-display text-emerald-600/90 dark:text-emerald-400">
               {riskCounts.low}
             </div>
             <div className="text-xs text-muted-foreground mt-1.5 font-light">{t('results.riskSummary.breakdown.lowRisk')}</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-medium text-amber-600/90 dark:text-amber-400">
+            <div className="text-2xl font-display text-amber-600/90 dark:text-amber-400">
               {riskCounts.moderate}
             </div>
             <div className="text-xs text-muted-foreground mt-1.5 font-light">{t('results.riskSummary.breakdown.moderate')}</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-medium text-red-600/90 dark:text-red-400">
+            <div className="text-2xl font-display text-red-600/90 dark:text-red-400">
               {riskCounts.high}
             </div>
             <div className="text-xs text-muted-foreground mt-1.5 font-light">{t('results.riskSummary.breakdown.highRisk')}</div>
           </div>
         </div>
 
-        <p className="text-xs text-muted-foreground/80 text-center mt-5 font-light">
+        <p className="text-xs text-muted-foreground/70 text-center mt-5 font-light">
           {t('results.riskSummary.ingredientsAnalyzed', { count: totalIngredients })}
         </p>
       </div>

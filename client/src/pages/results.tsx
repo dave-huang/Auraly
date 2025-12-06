@@ -472,20 +472,20 @@ export default function ResultsPage() {
   return (
     <div className="min-h-screen bg-background pb-24">
       {/* Header */}
-      <header className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b border-border/30 bg-background/90 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setLocation('/')}
-            className="gap-2 text-muted-foreground hover:text-foreground"
+            className="gap-2 text-muted-foreground/70 hover:text-foreground"
             data-testid="button-home"
           >
             <ArrowLeft className="h-4 w-4" />
             <span className="font-light">{t('results.header.home')}</span>
           </Button>
-          <div className="hidden sm:flex items-center gap-2">
-            <Leaf className="w-4 h-4 text-primary/60" />
+          <div className="hidden sm:flex items-center gap-2.5">
+            <Leaf className="w-4 h-4 text-primary/50" />
             <span className="font-display text-lg">{t('app.title')}</span>
           </div>
           <NavigationMenu showHomeLink />
@@ -504,9 +504,9 @@ export default function ResultsPage() {
 
         {/* Personalization Notice */}
         {hasPreferences && (
-          <div className="mb-4 p-3 bg-primary/5 border border-primary/20 rounded-lg flex items-center gap-2">
-            <Settings className="h-4 w-4 text-primary flex-shrink-0" />
-            <p className="text-sm text-muted-foreground">
+          <div className="mb-4 p-3 bg-primary/5 border border-primary/10 rounded-xl flex items-center gap-2">
+            <Settings className="h-4 w-4 text-primary/70 flex-shrink-0" />
+            <p className="text-sm text-muted-foreground font-light">
               {t('preferences.personalizedFor')}
             </p>
             <Button

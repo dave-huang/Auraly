@@ -39,12 +39,12 @@ export function IngredientCard({ ingredient }: IngredientCardProps) {
   const baseConfig = hasRiskAdjustment ? riskConfig[ingredient.baseRiskLevel!] : null;
 
   return (
-    <div className={`border-l-3 ${config.borderColor} rounded-lg bg-card/60 border border-border/40 overflow-hidden transition-all duration-200`}>
+    <div className={`border-l-3 ${config.borderColor} rounded-xl bg-card/50 border border-border/30 overflow-hidden transition-all duration-200`}>
       <div className="p-6">
         {/* Header */}
         <div className="flex items-start justify-between gap-4 mb-4">
           <div className="flex-1">
-            <h3 className="font-medium text-lg mb-3" data-testid={`text-ingredient-name-${ingredient.name}`}>
+            <h3 className="font-display text-lg mb-3" data-testid={`text-ingredient-name-${ingredient.name}`}>
               {ingredient.name}
             </h3>
             <div className="flex flex-wrap items-center gap-2">
@@ -80,7 +80,7 @@ export function IngredientCard({ ingredient }: IngredientCardProps) {
         )}
 
         {/* Summary */}
-        <p className="text-sm text-foreground/90 leading-relaxed mb-4">
+        <p className="text-sm text-muted-foreground leading-relaxed mb-4">
           {ingredient.summary}
         </p>
 
@@ -89,7 +89,7 @@ export function IngredientCard({ ingredient }: IngredientCardProps) {
           <>
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="flex items-center gap-1.5 text-sm font-medium text-primary/80 hover:text-primary hover-elevate active-elevate-2 px-3 py-2 rounded-md -ml-3 transition-colors"
+              className="flex items-center gap-1.5 text-sm text-primary/80 hover:text-primary hover-elevate active-elevate-2 px-3 py-2 rounded-lg -ml-3 transition-colors"
               data-testid={`button-toggle-details-${ingredient.name}`}
             >
               {isExpanded ? (
@@ -106,8 +106,8 @@ export function IngredientCard({ ingredient }: IngredientCardProps) {
             </button>
 
             {isExpanded && (
-              <div className={`mt-4 p-5 rounded-md ${config.bgColor}`}>
-                <p className="text-sm text-foreground/85 leading-relaxed" data-testid={`text-ingredient-details-${ingredient.name}`}>
+              <div className={`mt-4 p-5 rounded-lg ${config.bgColor}`}>
+                <p className="text-sm text-foreground/80 leading-relaxed" data-testid={`text-ingredient-details-${ingredient.name}`}>
                   {ingredient.details}
                 </p>
               </div>

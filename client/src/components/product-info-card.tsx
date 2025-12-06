@@ -61,10 +61,10 @@ export function ProductInfoCard({
   const CategoryIcon = normalizedType === 'food' ? UtensilsCrossed : Sparkles;
 
   return (
-    <Card className="p-6 mb-8">
+    <Card className="p-6 mb-8 rounded-xl bg-card/50 border-border/30">
       <div className="flex gap-5">
         {imageUrl && (
-          <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 bg-muted/50 border border-border/30">
+          <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 bg-muted/30 border border-border/20">
             <img 
               src={imageUrl} 
               alt={productName}
@@ -133,14 +133,14 @@ export function ProductInfoCard({
           )}
           
           <div className="flex items-center gap-3 mb-3">
-            <Badge variant="outline" className="whitespace-nowrap inline-flex items-center rounded-md px-2.5 py-0.5 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover-elevate [border-color:var(--badge-outline)] shadow-xs text-xs bg-orange-50/50 dark:bg-orange-950/15 text-orange-700 dark:text-orange-400 border-0 pl-[0px] pr-[0px]">
-              <CategoryIcon className="w-3 h-3 mr-1" />
+            <Badge variant="outline" className="whitespace-nowrap inline-flex items-center rounded-full px-2.5 py-0.5 font-medium transition-colors text-xs bg-primary/5 text-primary/80 border-primary/10">
+              <CategoryIcon className="w-3 h-3 mr-1.5" />
               {t(`history.categories.${normalizedType}`)}
             </Badge>
           </div>
           
           {createdAt && (
-            <div className="text-xs text-muted-foreground/60 flex items-center gap-1">
+            <div className="text-xs text-muted-foreground/50 flex items-center gap-1.5 font-light">
               <Clock className="w-3 h-3" />
               {formatDate(createdAt)}
             </div>
