@@ -374,35 +374,37 @@ export default function HistoryPage() {
                           </Badge>
                         </div>
                         
-                        {/* Meta: Category + Date */}
-                        <div className="flex items-center gap-3 mb-3">
+                        {/* Meta: Category */}
+                        <div className="mb-3">
                           <Badge variant="outline" className={`${catConf.bgColor} ${catConf.textColor} border-0 text-xs`}>
                             <CatIcon className="w-3 h-3 mr-1" />
                             {t(`history.categories.${normalizedCat}`)}
                           </Badge>
-                          <span className="text-xs text-muted-foreground/70 flex items-center gap-1">
+                        </div>
+                        
+                        {/* Risk Summary + Date */}
+                        <div className="flex items-center justify-between gap-4 text-xs pt-2 border-t border-border/30">
+                          <div className="flex items-center gap-4">
+                            {riskSummary.high > 0 && (
+                              <span className="text-red-600/90 dark:text-red-400 font-medium">
+                                {riskSummary.high} {t('results.riskSummary.breakdown.highRisk')}
+                              </span>
+                            )}
+                            {riskSummary.moderate > 0 && (
+                              <span className="text-amber-600/90 dark:text-amber-400 font-medium">
+                                {riskSummary.moderate} {t('results.riskSummary.breakdown.moderate')}
+                              </span>
+                            )}
+                            {riskSummary.low > 0 && (
+                              <span className="text-emerald-600/90 dark:text-emerald-400 font-medium">
+                                {riskSummary.low} {t('results.riskSummary.breakdown.lowRisk')}
+                              </span>
+                            )}
+                          </div>
+                          <span className="text-muted-foreground/60 flex items-center gap-1 whitespace-nowrap">
                             <Clock className="w-3 h-3" />
                             {formatDate(scan.createdAt)}
                           </span>
-                        </div>
-                        
-                        {/* Risk Summary */}
-                        <div className="flex items-center gap-4 text-xs pt-2 border-t border-border/30">
-                          {riskSummary.high > 0 && (
-                            <span className="text-red-600/90 dark:text-red-400 font-medium">
-                              {riskSummary.high} {t('results.riskSummary.breakdown.highRisk')}
-                            </span>
-                          )}
-                          {riskSummary.moderate > 0 && (
-                            <span className="text-amber-600/90 dark:text-amber-400 font-medium">
-                              {riskSummary.moderate} {t('results.riskSummary.breakdown.moderate')}
-                            </span>
-                          )}
-                          {riskSummary.low > 0 && (
-                            <span className="text-emerald-600/90 dark:text-emerald-400 font-medium">
-                              {riskSummary.low} {t('results.riskSummary.breakdown.lowRisk')}
-                            </span>
-                          )}
                         </div>
                       </div>
                     </div>
