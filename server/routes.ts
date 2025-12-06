@@ -27,7 +27,7 @@ import {
 // In-memory store for analysis requests (for background processing)
 interface AnalysisRequest {
   id: string;
-  status: 'processing' | 'completed' | 'failed';
+  status: 'processing' | 'ocr_complete' | 'completed' | 'failed';
   result?: AnalysisResult;
   error?: string;
   ocrText?: string;
@@ -354,6 +354,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       return res.status(202).json({ status: 'processing' });
     }
     
+    if (request.status === 'ocr_complete') {
+      return res.status(202).json({ status: 'ocr_complete' });
+    }
+    
     if (request.status === 'failed') {
       return res.status(400).json({ 
         status: 'failed',
@@ -447,6 +451,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }
           }
         }
+        
+        // Update status to indicate OCR is complete, now analyzing
+        analysisRequest.status = 'ocr_complete';
+        analysisRequest.timestamp = Date.now();
+        console.log(`[SCAN-AND-ANALYZE-${requestId}] OCR phase complete, starting analysis phase`);
         
         // Step 2a: Extract ingredients ONCE (language-independent) and cache them
         const extractionStartTime = Date.now();

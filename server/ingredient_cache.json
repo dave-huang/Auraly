@@ -5555,8 +5555,8 @@
     "createdAt": 1764998417623
   },
   "pecan__food__en": {
-    "analysis": "{\"name\":\"Pecan\",\"riskLevel\":\"high\",\"summary\":\"Pecans are tree nuts that provide healthy fats, fiber, and micronutrients but are a major allergen. They can trigger severe allergic reactions in sensitive individuals.\",\"details\":\"Pecans are nutritionally beneficial, offering monounsaturated fats, antioxidants, and some vitamins and minerals, and are generally safe for most people when eaten in moderation. However, as a tree nut, pecans are a common cause of serious allergic reactions, including anaphylaxis, in susceptible individuals, so strict avoidance and label checking are critical for those with nut allergies. People with nut allergies should consult healthcare providers about cross-contact risks in foods containing or processed with tree nuts.\",\"category\":\"Tree nut allergen\"}",
-    "lastUpdated": 1764998487973,
+    "analysis": "{\"name\":\"Pecan\",\"riskLevel\":\"high\",\"summary\":\"Pecans are tree nuts that provide healthy fats, fiber, and micronutrients but are a major allergen. They can trigger severe allergic reactions in sensitive individuals, including anaphylaxis.\",\"details\":\"For most people, pecans are a nutrient-dense food rich in monounsaturated fats, vitamin E, and antioxidants, and they can support heart health when eaten in moderation. However, as a common tree nut allergen, pecans may cause symptoms ranging from hives and swelling to life-threatening breathing difficulties in allergic individuals, requiring strict avoidance. People with nut allergies or those advised to limit calorie-dense foods should be cautious with pecan consumption.\",\"category\":\"Tree nut allergen\"}",
+    "lastUpdated": 1765058102678,
     "createdAt": 1764998417623
   },
   "peanut__food__en": {
@@ -5575,8 +5575,8 @@
     "createdAt": 1764998419380
   },
   "ground coffee beans (contains milk)__food__en": {
-    "analysis": "{\"name\":\"Ground Coffee Beans (contains Milk)\",\"riskLevel\":\"moderate\",\"summary\":\"Ground coffee beans are generally safe for most healthy adults but can pose issues due to caffeine content and the presence of milk, a common allergen. People sensitive to caffeine or allergic/intolerant to dairy should exercise caution.\",\"details\":\"Ground coffee beans naturally contain caffeine, which in excess may cause jitteriness, insomnia, increased heart rate, or digestive upset, especially in sensitive individuals, children, pregnant people, or those with heart conditions. The declared presence of milk introduces a dairy allergen risk, which can trigger reactions ranging from mild digestive discomfort to severe allergic responses in susceptible individuals or those with lactose intolerance or milk protein allergy. Overall safety depends on total caffeine intake and whether the consumer can safely tolerate milk.\",\"category\":\"Beverage ingredient with caffeine and dairy allergen\"}",
-    "lastUpdated": 1764998511828,
+    "analysis": "{\"name\":\"Ground Coffee Beans (contains Milk)\",\"riskLevel\":\"moderate\",\"summary\":\"Ground coffee beans are generally safe for most people, but the added milk introduces a dairy allergen and coffee contains caffeine. This can pose risks for individuals with milk allergy, lactose intolerance, or sensitivity to caffeine.\",\"details\":\"The primary concern is the milk component, which can trigger reactions in people with dairy allergy or cause digestive discomfort in those who are lactose intolerant. Caffeine in coffee may contribute to anxiety, sleep disturbances, increased heart rate, or acid reflux in sensitive individuals or at high intakes. Overall nutritional risk is otherwise low if consumed in moderate amounts and tolerated well.\",\"category\":\"Caffeinated beverage with dairy allergen\"}",
+    "lastUpdated": 1765058105318,
     "createdAt": 1764998419748
   },
   "soy__food__en": {
@@ -5585,8 +5585,8 @@
     "createdAt": 1764998419748
   },
   "wheat (may contain egg)__food__en": {
-    "analysis": "{\"name\":\"Wheat (may Contain Egg)\",\"riskLevel\":\"high\",\"summary\":\"Wheat is a common cereal grain that naturally contains gluten and is a major allergen. This product may also contain egg, another major allergen, due to possible cross-contact during manufacturing.\",\"details\":\"For individuals with celiac disease, non-celiac gluten sensitivity, or wheat allergy, wheat can trigger significant adverse reactions and should be strictly avoided. The advisory that it may contain egg indicates potential cross-contamination, posing an additional risk for people with egg allergies even if egg is not an intentional ingredient. For those without wheat or egg-related conditions, it is generally safe as a staple carbohydrate source, but it remains unsuitable for gluten-free diets.\",\"category\":\"Cereal grain and major allergens (gluten, egg)\"}",
-    "lastUpdated": 1764998515522,
+    "analysis": "{\"name\":\"Wheat (may Contain Egg)\",\"riskLevel\":\"high\",\"summary\":\"Wheat is a major source of gluten and is a common allergen, and the possible presence of egg adds another significant allergen. This combination can be high risk for people with celiac disease, non-celiac gluten sensitivity, wheat allergy, or egg allergy.\",\"details\":\"Wheat contains gluten, which can damage the intestinal lining in people with celiac disease and cause gastrointestinal or systemic symptoms in those with gluten sensitivity or wheat allergy. The advisory that it may contain egg indicates potential cross-contact with egg proteins, which can cause serious allergic reactions in susceptible individuals. For those without these conditions, wheat is generally safe, but for at-risk groups this ingredient requires strict avoidance.\",\"category\":\"Gluten-containing grain with potential egg allergen\"}",
+    "lastUpdated": 1765058105318,
     "createdAt": 1764998419750
   },
   "citrus medica limonum (lemon) peel extract__personal_care__en": {
