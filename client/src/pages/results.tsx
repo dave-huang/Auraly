@@ -532,40 +532,40 @@ export default function ResultsPage() {
         <AllergenFlags ingredients={displayResult.ingredients} />
 
         {/* Search Bar */}
-        <div className="relative mb-8">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <div className="relative mb-6">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60" />
           <Input
             type="search"
             placeholder={t('results.search')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-11 py-5 rounded-lg bg-card/60 border-border/40"
+            className="pl-11 py-5 rounded-xl bg-card/50 border-border/30 focus:border-primary/30 transition-colors"
             data-testid="input-search-ingredients"
           />
         </div>
 
         {/* Risk Filter Tabs */}
         <Tabs value={selectedRisk} onValueChange={(value) => setSelectedRisk(value as RiskLevel | "all")} className="mb-8">
-          <TabsList className="grid w-full grid-cols-4 bg-muted/40 p-1">
-            <TabsTrigger value="all" className="text-sm" data-testid="tab-all">
+          <TabsList className="grid w-full grid-cols-4 bg-muted/30 p-1.5 rounded-xl">
+            <TabsTrigger value="all" className="text-sm rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm" data-testid="tab-all">
               {t('results.filters.all')} ({displayResult.ingredients.length})
             </TabsTrigger>
-            <TabsTrigger value="low" className="text-sm" data-testid="tab-low">
+            <TabsTrigger value="low" className="text-sm rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm" data-testid="tab-low">
               {t('results.filters.low')} ({riskCounts.low})
             </TabsTrigger>
-            <TabsTrigger value="moderate" className="text-sm" data-testid="tab-moderate">
+            <TabsTrigger value="moderate" className="text-sm rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm" data-testid="tab-moderate">
               {t('results.filters.moderate')} ({riskCounts.moderate})
             </TabsTrigger>
-            <TabsTrigger value="high" className="text-sm" data-testid="tab-high">
+            <TabsTrigger value="high" className="text-sm rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm" data-testid="tab-high">
               {t('results.filters.high')} ({riskCounts.high})
             </TabsTrigger>
           </TabsList>
         </Tabs>
 
         {/* Ingredients List */}
-        <div className="space-y-4">
+        <div className="space-y-4 pb-28">
           {filteredIngredients.length === 0 ? (
-            <div className="p-10 rounded-lg bg-card/60 border border-border/40 text-center">
+            <div className="p-10 rounded-xl bg-card/50 border border-border/30 text-center">
               <p className="text-muted-foreground font-light">
                 {t('results.noResults')}
               </p>
@@ -582,11 +582,11 @@ export default function ResultsPage() {
       </main>
 
       {/* Sticky Bottom CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-border/40 bg-background/80 backdrop-blur-sm p-4 safe-area-pb">
+      <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-border/30 bg-background/95 backdrop-blur-md p-4 safe-area-pb">
         <div className="max-w-3xl mx-auto">
           <Button 
             onClick={() => setLocation('/upload')}
-            className="w-full rounded-full py-6"
+            className="w-full rounded-full shadow-sm"
             size="lg"
             data-testid="button-scan-another"
           >

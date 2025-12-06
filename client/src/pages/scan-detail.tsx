@@ -272,22 +272,23 @@ export default function ScanDetailPage() {
         {/* Allergen Flags */}
         <AllergenFlags ingredients={adjustedIngredients} />
 
-        <div className="mb-4 relative mt-6">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+        <div className="mb-6 relative mt-6">
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground/60 w-4 h-4" />
           <Input
             placeholder={t('results.search')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10"
+            className="pl-11 py-5 rounded-xl bg-card/50 border-border/30 focus:border-primary/30 transition-colors"
             data-testid="input-search"
           />
         </div>
 
-        <Tabs defaultValue="all" className="mb-6">
-          <TabsList className="grid w-full grid-cols-4">
+        <Tabs defaultValue="all" className="mb-8">
+          <TabsList className="grid w-full grid-cols-4 bg-muted/30 p-1.5 rounded-xl">
             <TabsTrigger 
               value="all" 
               onClick={() => setSelectedRisk("all")}
+              className="text-sm rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm"
               data-testid="tab-filter-all"
             >
               {t('results.filters.all')} ({adjustedIngredients.length})
@@ -295,6 +296,7 @@ export default function ScanDetailPage() {
             <TabsTrigger 
               value="low" 
               onClick={() => setSelectedRisk("low")}
+              className="text-sm rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm"
               data-testid="tab-filter-low"
             >
               {t('results.filters.low')} ({riskCounts.low})
@@ -302,6 +304,7 @@ export default function ScanDetailPage() {
             <TabsTrigger 
               value="moderate" 
               onClick={() => setSelectedRisk("moderate")}
+              className="text-sm rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm"
               data-testid="tab-filter-moderate"
             >
               {t('results.filters.moderate')} ({riskCounts.moderate})
@@ -309,6 +312,7 @@ export default function ScanDetailPage() {
             <TabsTrigger 
               value="high" 
               onClick={() => setSelectedRisk("high")}
+              className="text-sm rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm"
               data-testid="tab-filter-high"
             >
               {t('results.filters.high')} ({riskCounts.high})
@@ -316,11 +320,11 @@ export default function ScanDetailPage() {
           </TabsList>
         </Tabs>
 
-        <div className="space-y-4 pb-8">
+        <div className="space-y-4 pb-28">
           {filteredIngredients.length === 0 ? (
-            <Card className="p-8 text-center">
-              <p className="text-muted-foreground">{t('results.noResults')}</p>
-            </Card>
+            <div className="p-10 rounded-xl bg-card/50 border border-border/30 text-center">
+              <p className="text-muted-foreground font-light">{t('results.noResults')}</p>
+            </div>
           ) : (
             filteredIngredients.map((ingredient, index) => (
               <IngredientCard key={`${ingredient.name}-${index}`} ingredient={ingredient} />
@@ -328,10 +332,10 @@ export default function ScanDetailPage() {
           )}
         </div>
 
-        <div className="fixed bottom-0 left-0 right-0 p-4 bg-background/95 backdrop-blur border-t">
+        <div className="fixed bottom-0 left-0 right-0 p-4 bg-background/95 backdrop-blur-md border-t border-border/30">
           <div className="max-w-3xl mx-auto">
             <Link href="/upload">
-              <Button className="w-full" size="lg" data-testid="button-scan-another">
+              <Button className="w-full rounded-full shadow-sm" size="lg" data-testid="button-scan-another">
                 {t('results.scanAnother')}
               </Button>
             </Link>
