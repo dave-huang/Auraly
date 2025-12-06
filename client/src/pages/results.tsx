@@ -496,69 +496,77 @@ export default function ResultsPage() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-3xl mx-auto px-6 py-10">
-        {/* Product Name - Editable */}
-        <div className="mb-6">
-          {isEditingName ? (
-            <div className="flex items-center gap-2">
-              <Input
-                ref={nameInputRef}
-                value={editedName}
-                onChange={(e) => setEditedName(e.target.value)}
-                placeholder={t('results.productName.placeholder')}
-                className="text-2xl font-bold h-auto py-1"
-                data-testid="input-product-name"
-                autoFocus
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    saveProductName(editedName);
-                  } else if (e.key === 'Escape') {
-                    setIsEditingName(false);
-                  }
-                }}
-              />
-              <Button
-                size="icon"
-                variant="ghost"
-                onClick={() => saveProductName(editedName)}
-                disabled={renameMutation.isPending}
-                data-testid="button-save-name"
-              >
-                {renameMutation.isPending ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <Check className="h-4 w-4" />
-                )}
-              </Button>
-              <Button
-                size="icon"
-                variant="ghost"
-                onClick={() => setIsEditingName(false)}
-                disabled={renameMutation.isPending}
-                data-testid="button-cancel-name"
-              >
-                <X className="h-4 w-4" />
-              </Button>
+      <main className="max-w-3xl mx-auto px-6 py-8">
+        {/* Product Info Card */}
+        <Card className="p-6 mb-8">
+          <div className="flex gap-5">
+            {/* Product Details */}
+            <div className="flex-1 min-w-0">
+              {/* Product Name */}
+              {isEditingName ? (
+                <div className="flex items-center gap-2 mb-3">
+                  <Input
+                    ref={nameInputRef}
+                    value={editedName}
+                    onChange={(e) => setEditedName(e.target.value)}
+                    placeholder={t('results.productName.placeholder')}
+                    className="font-display text-lg h-auto py-1.5"
+                    data-testid="input-product-name"
+                    autoFocus
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        saveProductName(editedName);
+                      } else if (e.key === 'Escape') {
+                        setIsEditingName(false);
+                      }
+                    }}
+                  />
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => saveProductName(editedName)}
+                    disabled={renameMutation.isPending}
+                    data-testid="button-save-name"
+                  >
+                    {renameMutation.isPending ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Check className="h-4 w-4" />
+                    )}
+                  </Button>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => setIsEditingName(false)}
+                    disabled={renameMutation.isPending}
+                    data-testid="button-cancel-name"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => {
+                    setEditedName(displayResult.productName || '');
+                    setIsEditingName(true);
+                  }}
+                  className="group flex items-center gap-2 text-left hover-elevate rounded-md px-2 py-1 -ml-2 mb-2"
+                  data-testid="button-edit-product-name"
+                >
+                  <h1 className="font-display text-xl truncate" data-testid="text-product-name">
+                    {displayResult.productName || t('results.productName.placeholder')}
+                  </h1>
+                  <Pencil className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                </button>
+              )}
+              
+              {/* Meta Info */}
+              <div className="text-xs text-muted-foreground/60">
+                {t(`history.categories.${displayResult.productType === 'food' ? 'food' : 'personal_care'}`)} {t('results.productType')}
+              </div>
             </div>
-          ) : (
-            <button
-              onClick={() => {
-                setEditedName(displayResult.productName || '');
-                setIsEditingName(true);
-              }}
-              className="group flex items-center gap-2 text-left hover-elevate rounded-md px-2 py-1 -ml-2"
-              data-testid="button-edit-product-name"
-            >
-              <h2 className="text-2xl md:text-3xl font-bold" data-testid="text-product-name">
-                {displayResult.productName || t('results.productName.placeholder')}
-              </h2>
-              <Pencil className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-            </button>
-          )}
-          <p className="text-sm text-muted-foreground capitalize mt-1">
-            {t(`history.categories.${displayResult.productType === 'food' ? 'food' : 'personal_care'}`)} {t('results.productType')}
-          </p>
-        </div>
+          </div>
+        </Card>
 
         {/* Personalization Notice */}
         {hasPreferences && (

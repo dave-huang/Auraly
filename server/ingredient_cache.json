@@ -5310,13 +5310,13 @@
     "createdAt": 1764806529908
   },
   "avena sativa (oat) kernel oil__personal_care__en": {
-    "analysis": "{\"name\":\"Avena Sativa (oat) Kernel Oil\",\"riskLevel\":\"low\",\"summary\":\"Oat kernel oil is a plant-derived oil rich in lipids and antioxidants that helps moisturize and soothe the skin and hair. It is generally well tolerated, with low risk for most users.\",\"details\":\"This ingredient is extracted from oat kernels and contains fatty acids, ceramides, and vitamin E, which support the skin barrier and provide emollient and conditioning benefits. It is not a paraben, sulfate, phthalate, formaldehyde releaser, synthetic fragrance, or mineral oil, and it is not associated with the major controversial cosmetic chemicals listed. People with known oat or grain allergies or very sensitive, reactive skin may rarely experience irritation or allergy and should patch test before use.\",\"category\":\"Plant-derived emollient oil\"}",
-    "lastUpdated": 1764822374800,
+    "analysis": "{\"name\":\"Avena Sativa (oat) Kernel Oil\",\"riskLevel\":\"low\",\"summary\":\"Oat kernel oil is a plant-derived emollient oil used to moisturize and soothe the skin. It is generally well tolerated but may rarely trigger reactions in people with oat or gluten-related sensitivities.\",\"details\":\"This oil is rich in lipids and antioxidants, helping to support the skin barrier and reduce dryness and irritation. It is not a paraben, sulfate, phthalate, formaldehyde releaser, or other major red-flag cosmetic ingredient. Adverse effects are uncommon and mainly limited to potential allergic or sensitivity reactions in very susceptible individuals.\",\"category\":\"Plant oil / emollient\"}",
+    "lastUpdated": 1764998140994,
     "createdAt": 1764806530190
   },
   "avena sativa (oat) kernel extract__personal_care__en": {
-    "analysis": "{\"name\":\"Avena Sativa (oat) Kernel Extract\",\"riskLevel\":\"low\",\"summary\":\"Oat kernel extract is a botanical extract used for its soothing, anti-inflammatory, and moisturizing properties in skin and hair care products. It is typically considered low risk and suitable for sensitive skin.\",\"details\":\"This extract is derived from oat kernels and may contain beta-glucans, antioxidants, and soothing compounds that help calm redness, reduce irritation, and support skin barrier function. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, synthetic fragrance, mineral oil, or other high-concern synthetic additive from the listed groups. Individuals with oat or gluten-related allergies or very reactive skin should patch test first, as plant extracts can occasionally trigger allergic reactions.\",\"category\":\"Botanical extract / skin-soothing agent\"}",
-    "lastUpdated": 1764822374801,
+    "analysis": "{\"name\":\"Avena Sativa (oat) Kernel Extract\",\"riskLevel\":\"low\",\"summary\":\"Oat kernel extract is a soothing plant extract used for its calming, moisturizing, and anti-itch properties. It is typically safe for most skin types, with rare allergic reactions in those sensitive to oats.\",\"details\":\"The extract contains beneficial compounds such as beta-glucans and avenanthramides that help reduce redness and irritation and support skin barrier function. It does not belong to high-concern groups like parabens, sulfates, phthalates, formaldehyde releasers, or synthetic fragrances. The main risk is mild irritation or allergy in individuals with known oat allergies or very reactive skin.\",\"category\":\"Botanical extract / skin soothing agent\"}",
+    "lastUpdated": 1764998140994,
     "createdAt": 1764806530190
   },
   "guar hydroxypropyltrimonium chloride__personal_care__en": {
@@ -5375,8 +5375,8 @@
     "createdAt": 1764806544910
   },
   "avena sativa (oat) kernel flour__personal_care__en": {
-    "analysis": "{\"name\":\"Avena Sativa (oat) Kernel Flour\",\"riskLevel\":\"low\",\"summary\":\"Avena sativa (oat) kernel flour is a finely ground oat-derived ingredient used for its soothing, moisturizing, and skin-conditioning properties. It is generally well tolerated and often used in products for sensitive or irritated skin.\",\"details\":\"This ingredient contains beta-glucans, lipids, and antioxidants that help support the skin barrier, reduce dryness, and calm mild irritation or itching. It is not associated with common controversial chemicals such as parabens, sulfates, phthalates, formaldehyde-releasing preservatives, or synthetic fragrance. The main risk is a potential allergic reaction in individuals with oat or gluten-related sensitivities, though true reactions on skin are relatively uncommon.\",\"category\":\"Plant-derived soothing and conditioning agent\"}",
-    "lastUpdated": 1764822372510,
+    "analysis": "{\"name\":\"Avena Sativa (oat) Kernel Flour\",\"riskLevel\":\"low\",\"summary\":\"Avena sativa (oat) kernel flour is a soothing, skin-conditioning ingredient commonly used for sensitive or irritated skin. It is generally considered safe and gentle in personal care products.\",\"details\":\"This ingredient is derived from oat kernels and is rich in beta-glucans and antioxidants that can help calm redness, support the skin barrier, and provide mild moisturizing benefits. It is not associated with parabens, sulfates, phthalates, formaldehyde releasers, or other major cosmetic toxins of concern. Rarely, individuals with oat or gluten-related sensitivities may experience irritation or allergic reactions, so patch testing is advisable for very sensitive users.\",\"category\":\"Botanical extract / Skin conditioning agent\"}",
+    "lastUpdated": 1764998155184,
     "createdAt": 1764806544910
   },
   "sodium phosphate__personal_care__en": {
