@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2, Leaf } from "lucide-react";
 import { ProductTypeSelector } from "@/components/product-type-selector";
 import { ImageUploader } from "@/components/image-uploader";
 import { NavigationMenu } from "@/components/navigation-menu";
@@ -61,41 +60,44 @@ export default function UploadPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header - Minimal */}
-      <header className="border-b bg-background/95 backdrop-blur sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+      {/* Header - Refined and minimal */}
+      <header className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
           <Button
             variant="ghost"
             size="sm"
             onClick={handleBack}
             data-testid="button-back"
-            className="gap-1"
+            className="gap-2 text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="w-4 h-4" />
-            {t('common.back')}
+            <span className="font-light">{t('common.back')}</span>
           </Button>
-          <div className="flex items-center gap-2">
-            <h1 className="font-serif text-lg font-bold hidden sm:block">{t('app.title')}</h1>
+          <div className="flex items-center gap-3">
+            <div className="hidden sm:flex items-center gap-2">
+              <Leaf className="w-4 h-4 text-primary/60" />
+              <span className="font-display text-lg">{t('app.title')}</span>
+            </div>
             <NavigationMenu showHomeLink />
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 py-16">
+      {/* Main Content - Generous spacing */}
+      <main className="max-w-3xl mx-auto px-6 py-16 sm:py-20">
         {!selectedType ? (
-          <div>
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-3">{t('upload.selectType.title')}</h2>
-              <p className="text-muted-foreground">{t('upload.selectType.subtitle')}</p>
+          <div className="animate-fade-in">
+            <div className="text-center mb-14">
+              <p className="text-label mb-3">{t('upload.selectType.subtitle')}</p>
+              <h2 className="font-display text-3xl md:text-4xl">{t('upload.selectType.title')}</h2>
             </div>
             <ProductTypeSelector onSelect={handleProductTypeSelect} />
           </div>
         ) : (
-          <div>
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-3">{t('upload.uploadImage.title')}</h2>
-              <p className="text-muted-foreground">{t('upload.uploadImage.subtitle')}</p>
+          <div className="animate-fade-in">
+            <div className="text-center mb-14">
+              <p className="text-label mb-3">{t('upload.uploadImage.subtitle')}</p>
+              <h2 className="font-display text-3xl md:text-4xl">{t('upload.uploadImage.title')}</h2>
             </div>
 
             <ImageUploader 
@@ -104,24 +106,24 @@ export default function UploadPage() {
             />
 
             {isProcessing && (
-              <div className="mt-12">
-                <Card className="p-10 bg-gradient-to-br from-primary/5 to-background text-center">
+              <div className="mt-14">
+                <div className="p-10 rounded-lg bg-card/60 border border-border/40 text-center">
                   <div className="flex flex-col items-center gap-6">
                     <div className="relative">
-                      <div className="absolute inset-0 bg-primary/20 rounded-full blur-lg" />
-                      <Loader2 className="w-16 h-16 text-primary animate-spin relative" />
+                      <div className="absolute inset-0 bg-primary/10 rounded-full blur-xl" />
+                      <Loader2 className="w-14 h-14 text-primary/70 animate-spin relative" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-lg mb-1">{t('upload.analyzing.title')}</h3>
-                      <p className="text-sm text-muted-foreground max-w-sm">
+                      <h3 className="font-medium text-lg mb-2">{t('upload.analyzing.title')}</h3>
+                      <p className="text-sm text-muted-foreground max-w-sm leading-relaxed">
                         {t('upload.analyzing.description')}
                       </p>
                     </div>
-                    <div className="w-full max-w-xs rounded-full h-2 bg-muted overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-primary to-primary/60 rounded-full animate-pulse" />
+                    <div className="w-full max-w-xs rounded-full h-1.5 bg-muted overflow-hidden">
+                      <div className="h-full bg-primary/60 rounded-full animate-pulse" style={{ width: '70%' }} />
                     </div>
                   </div>
-                </Card>
+                </div>
               </div>
             )}
           </div>

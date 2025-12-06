@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Camera, Loader2, Search, AlertCircle, Pencil, Check, X, Settings } from "lucide-react";
+import { ArrowLeft, Camera, Loader2, Search, AlertCircle, Pencil, Check, X, Settings, Leaf } from "lucide-react";
 import { NavigationMenu } from "@/components/navigation-menu";
 import { IngredientCard } from "@/components/ingredient-card";
 import { RiskSummary } from "@/components/risk-summary";
@@ -364,34 +364,37 @@ export default function ResultsPage() {
 
   if (analyzeMutation.isPending) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <Card className="p-8 max-w-md w-full">
-          <div className="flex flex-col items-center gap-4 text-center">
-            <Loader2 className="w-16 h-16 text-primary animate-spin" />
+      <div className="min-h-screen bg-background flex items-center justify-center p-6">
+        <div className="p-10 max-w-md w-full rounded-lg bg-card/60 border border-border/40 text-center">
+          <div className="flex flex-col items-center gap-6">
+            <div className="relative">
+              <div className="absolute inset-0 bg-primary/10 rounded-full blur-xl" />
+              <Loader2 className="w-14 h-14 text-primary/70 animate-spin relative" />
+            </div>
             <div>
-              <h3 className="font-semibold text-xl mb-2">
+              <h3 className="font-medium text-xl mb-3">
                 {retryCount > 0 ? t('results.retrying.title', { attempt: retryCount + 1 }) : t('results.analyzing.title')}
               </h3>
-              <p className="text-sm text-muted-foreground mb-4">
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 {retryCount > 0 
                   ? t('results.retrying.description') 
                   : t('results.analyzing.description')
                 }
               </p>
             </div>
-            <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
+            <div className="w-full bg-muted/60 rounded-full h-1.5 overflow-hidden">
               <div 
-                className="h-full bg-primary rounded-full transition-all duration-300 ease-out"
+                className="h-full bg-primary/60 rounded-full transition-all duration-500 ease-out"
                 style={{ width: `${progress}%` }}
               />
             </div>
             {retryCount > 0 && (
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-muted-foreground font-light">
                 {cachedOcrText ? t('results.retrying.cached') : t('results.retrying.full')}
               </p>
             )}
           </div>
-        </Card>
+        </div>
       </div>
     );
   }
@@ -422,28 +425,28 @@ export default function ResultsPage() {
                        errorMessage.includes('OCR failed');
     
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <Card className="p-8 max-w-md w-full">
-          <div className="flex flex-col items-center gap-4 text-center">
-            <div className="w-16 h-16 rounded-full bg-destructive/10 flex items-center justify-center">
-              <AlertCircle className="w-8 h-8 text-destructive" />
+      <div className="min-h-screen bg-background flex items-center justify-center p-6">
+        <div className="p-10 max-w-md w-full rounded-lg bg-card/60 border border-border/40 text-center">
+          <div className="flex flex-col items-center gap-6">
+            <div className="w-16 h-16 rounded-full bg-destructive/8 flex items-center justify-center border border-destructive/10">
+              <AlertCircle className="w-7 h-7 text-destructive/70" />
             </div>
             <div>
-              <h3 className="font-semibold text-xl mb-2">
+              <h3 className="font-medium text-xl mb-3">
                 {isOCRError ? t('results.error.ocr.title') : t('results.error.analysis.title')}
               </h3>
-              <p className="text-sm text-muted-foreground mb-4">
+              <p className="text-sm text-muted-foreground leading-relaxed mb-4">
                 {isOCRError 
                   ? t('results.error.ocr.description')
                   : errorMessage
                 }
               </p>
               {isOCRError && (
-                <ul className="text-xs text-muted-foreground text-left mb-4 space-y-1">
-                  <li>• {t('results.error.ocr.tips.lighting')}</li>
-                  <li>• {t('results.error.ocr.tips.closer')}</li>
-                  <li>• {t('results.error.ocr.tips.steady')}</li>
-                  <li>• {t('results.error.ocr.tips.clear')}</li>
+                <ul className="text-xs text-muted-foreground text-left mb-6 space-y-1.5 font-light">
+                  <li>{t('results.error.ocr.tips.lighting')}</li>
+                  <li>{t('results.error.ocr.tips.closer')}</li>
+                  <li>{t('results.error.ocr.tips.steady')}</li>
+                  <li>{t('results.error.ocr.tips.clear')}</li>
                 </ul>
               )}
             </div>
@@ -453,13 +456,14 @@ export default function ResultsPage() {
                 setCachedOcrText(null);
                 setLocation('/upload');
               }} 
+              className="rounded-full px-8"
               data-testid="button-try-again"
             >
               <Camera className="mr-2 h-4 w-4" />
               {t('results.error.tryAgain')}
             </Button>
           </div>
-        </Card>
+        </div>
       </div>
     );
   }
@@ -469,26 +473,30 @@ export default function ResultsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background pb-24">
       {/* Header */}
-      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <header className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setLocation('/')}
+            className="gap-2 text-muted-foreground hover:text-foreground"
             data-testid="button-home"
           >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            {t('results.header.home')}
+            <ArrowLeft className="h-4 w-4" />
+            <span className="font-light">{t('results.header.home')}</span>
           </Button>
-          <h1 className="font-serif text-xl font-bold">{t('app.title')}</h1>
+          <div className="hidden sm:flex items-center gap-2">
+            <Leaf className="w-4 h-4 text-primary/60" />
+            <span className="font-display text-lg">{t('app.title')}</span>
+          </div>
           <NavigationMenu showHomeLink />
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 py-8">
+      <main className="max-w-3xl mx-auto px-6 py-10">
         {/* Product Name - Editable */}
         <div className="mb-6">
           {isEditingName ? (
@@ -582,31 +590,31 @@ export default function ResultsPage() {
         <AllergenFlags ingredients={displayResult.ingredients} />
 
         {/* Search Bar */}
-        <div className="relative mb-6">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <div className="relative mb-8">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
             placeholder={t('results.search')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10"
+            className="pl-11 py-5 rounded-lg bg-card/60 border-border/40"
             data-testid="input-search-ingredients"
           />
         </div>
 
         {/* Risk Filter Tabs */}
-        <Tabs value={selectedRisk} onValueChange={(value) => setSelectedRisk(value as RiskLevel | "all")} className="mb-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="all" data-testid="tab-all">
+        <Tabs value={selectedRisk} onValueChange={(value) => setSelectedRisk(value as RiskLevel | "all")} className="mb-8">
+          <TabsList className="grid w-full grid-cols-4 bg-muted/40 p-1">
+            <TabsTrigger value="all" className="text-sm" data-testid="tab-all">
               {t('results.filters.all')} ({displayResult.ingredients.length})
             </TabsTrigger>
-            <TabsTrigger value="low" data-testid="tab-low">
+            <TabsTrigger value="low" className="text-sm" data-testid="tab-low">
               {t('results.filters.low')} ({riskCounts.low})
             </TabsTrigger>
-            <TabsTrigger value="moderate" data-testid="tab-moderate">
+            <TabsTrigger value="moderate" className="text-sm" data-testid="tab-moderate">
               {t('results.filters.moderate')} ({riskCounts.moderate})
             </TabsTrigger>
-            <TabsTrigger value="high" data-testid="tab-high">
+            <TabsTrigger value="high" className="text-sm" data-testid="tab-high">
               {t('results.filters.high')} ({riskCounts.high})
             </TabsTrigger>
           </TabsList>
@@ -615,11 +623,11 @@ export default function ResultsPage() {
         {/* Ingredients List */}
         <div className="space-y-4">
           {filteredIngredients.length === 0 ? (
-            <Card className="p-8 text-center">
-              <p className="text-muted-foreground">
+            <div className="p-10 rounded-lg bg-card/60 border border-border/40 text-center">
+              <p className="text-muted-foreground font-light">
                 {t('results.noResults')}
               </p>
-            </Card>
+            </div>
           ) : (
             filteredIngredients.map((ingredient, index) => (
               <IngredientCard 
@@ -632,15 +640,15 @@ export default function ResultsPage() {
       </main>
 
       {/* Sticky Bottom CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4">
-        <div className="max-w-4xl mx-auto">
+      <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-border/40 bg-background/80 backdrop-blur-sm p-4 safe-area-pb">
+        <div className="max-w-3xl mx-auto">
           <Button 
             onClick={() => setLocation('/upload')}
-            className="w-full rounded-full"
+            className="w-full rounded-full py-6"
             size="lg"
             data-testid="button-scan-another"
           >
-            <Camera className="mr-2 h-5 w-5" />
+            <Camera className="mr-2 h-4 w-4" />
             {t('results.scanAnother')}
           </Button>
         </div>

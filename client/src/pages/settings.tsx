@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Check, Settings, RefreshCw, Shield, AlertTriangle, UtensilsCrossed, Flower2, FlaskConical, Menu } from "lucide-react";
+import { ArrowLeft, Check, Settings, RefreshCw, Shield, AlertTriangle, UtensilsCrossed, Flower2, FlaskConical, Leaf } from "lucide-react";
 import { NavigationMenu } from "@/components/navigation-menu";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import type { RiskPreferences, AllergenPreferences, PreferenceCategory, AllergenCategory, RiskTolerance } from "@shared/schema";
@@ -242,30 +242,42 @@ export default function SettingsPage() {
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      <div className="sticky top-0 z-10 bg-background border-b">
-        <div className="max-w-md mx-auto px-4 py-3 flex items-center gap-3">
-          <Link href="/upload" asChild>
-            <Button variant="ghost" size="icon" data-testid="button-back">
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-          </Link>
-          <div className="flex-1">
-            <h1 className="font-semibold">
-              {lang === 'zh' ? '偏好设置' : lang === 'es' ? 'Preferencias' : 'Preferences'}
-            </h1>
-            <p className="text-xs text-muted-foreground">
-              {lang === 'zh' 
-                ? `${activeRiskCount} 个风险设置, ${activeAllergenCount} 个过敏原警报` 
-                : lang === 'es' 
-                ? `${activeRiskCount} sensibilidades, ${activeAllergenCount} alertas`
-                : `${activeRiskCount} risk settings, ${activeAllergenCount} allergen alerts`}
-            </p>
+      {/* Header */}
+      <header className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-2xl mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Link href="/upload">
+              <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground" data-testid="button-back">
+                <ArrowLeft className="w-4 h-4" />
+                <span className="font-light hidden sm:inline">{t('common.back')}</span>
+              </Button>
+            </Link>
+          </div>
+          <div className="hidden sm:flex items-center gap-2">
+            <Leaf className="w-4 h-4 text-primary/60" />
+            <span className="font-display text-lg">{t('app.title')}</span>
           </div>
           <NavigationMenu showHomeLink />
         </div>
-      </div>
+      </header>
 
-      <div className="max-w-md mx-auto px-4 pt-4">
+      {/* Main Content */}
+      <main className="max-w-2xl mx-auto px-6 py-10">
+        {/* Page Title */}
+        <div className="mb-8">
+          <h1 className="font-display text-2xl md:text-3xl mb-2">
+            {lang === 'zh' ? '偏好设置' : lang === 'es' ? 'Preferencias' : 'Preferences'}
+          </h1>
+          <p className="text-sm text-muted-foreground font-light">
+            {lang === 'zh' 
+              ? `${activeRiskCount} 个风险设置, ${activeAllergenCount} 个过敏原警报` 
+              : lang === 'es' 
+              ? `${activeRiskCount} sensibilidades, ${activeAllergenCount} alertas`
+              : `${activeRiskCount} risk settings, ${activeAllergenCount} allergen alerts`}
+          </p>
+        </div>
+
+        <div className="max-w-md mx-auto">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2 mb-4">
             <TabsTrigger value="risk" className="flex items-center gap-2" data-testid="tab-risk">
@@ -436,7 +448,8 @@ export default function SettingsPage() {
             </Card>
           </TabsContent>
         </Tabs>
-      </div>
+        </div>
+      </main>
 
       {hasChanges && (
         <div className="fixed bottom-0 left-0 right-0 bg-background border-t p-4 safe-area-pb">

@@ -1,95 +1,107 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* LIGHT MODE */
+/* LIGHT MODE - Serene Spa Aesthetic */
 :root {
-  --button-outline: rgba(0,0,0, .10);
-  --badge-outline: rgba(0,0,0, .05);
+  --button-outline: rgba(0,0,0, .08);
+  --badge-outline: rgba(0,0,0, .04);
 
   /* Automatic computation of border around primary / danger buttons */
-  --opaque-button-border-intensity: -8; /* In terms of percentages */
+  --opaque-button-border-intensity: -6; /* In terms of percentages */
 
   /* Backgrounds applied on top of other backgrounds when hovered/active */
-  --elevate-1: rgba(0,0,0, .03);
-  --elevate-2: rgba(0,0,0, .08);
+  --elevate-1: rgba(0,0,0, .025);
+  --elevate-2: rgba(0,0,0, .06);
 
-  --background: 0 0% 98%;
+  /* Warm cream/off-white background - serene spa feel */
+  --background: 40 33% 98%;
 
-  --foreground: 0 0% 12%;
+  /* Deep charcoal for primary text */
+  --foreground: 30 10% 12%;
 
-  --border: 0 0% 88%;
+  /* Soft natural border */
+  --border: 35 15% 88%;
 
-  --card: 0 0% 96%;
+  /* Slightly warm card background */
+  --card: 40 25% 97%;
 
-  --card-foreground: 0 0% 12%;
+  --card-foreground: 30 10% 12%;
 
-  --card-border: 0 0% 92%;
+  --card-border: 35 12% 90%;
 
-  --sidebar: 150 4% 94%;
+  /* Sidebar with subtle sage undertone */
+  --sidebar: 140 8% 96%;
 
-  --sidebar-foreground: 150 4% 14%;
+  --sidebar-foreground: 140 8% 15%;
 
-  --sidebar-border: 150 4% 88%;
+  --sidebar-border: 140 6% 90%;
 
-  --sidebar-primary: 158 64% 42%;
+  /* Muted sage green primary */
+  --sidebar-primary: 145 35% 38%;
 
-  --sidebar-primary-foreground: 158 64% 98%;
+  --sidebar-primary-foreground: 145 35% 98%;
 
-  --sidebar-accent: 150 6% 88%;
+  --sidebar-accent: 140 8% 92%;
 
-  --sidebar-accent-foreground: 150 6% 18%;
+  --sidebar-accent-foreground: 140 8% 20%;
 
-  --sidebar-ring: 158 64% 42%;
+  --sidebar-ring: 145 35% 38%;
 
-  --popover: 0 0% 90%;
+  /* Warm popover */
+  --popover: 40 20% 96%;
 
-  --popover-foreground: 0 0% 12%;
+  --popover-foreground: 30 10% 12%;
 
-  --popover-border: 0 0% 85%;
+  --popover-border: 35 12% 88%;
 
-  --primary: 158 64% 42%;
+  /* Muted sage green as primary accent */
+  --primary: 145 35% 40%;
 
-  --primary-foreground: 158 64% 98%;
+  --primary-foreground: 145 35% 98%;
 
-  --secondary: 150 5% 86%;
+  /* Warm beige secondary */
+  --secondary: 35 20% 92%;
 
-  --secondary-foreground: 150 5% 16%;
+  --secondary-foreground: 35 20% 18%;
 
-  --muted: 150 6% 90%;
+  /* Soft muted tones */
+  --muted: 35 15% 94%;
 
-  --muted-foreground: 150 6% 35%;
+  --muted-foreground: 30 8% 45%;
 
-  --accent: 155 8% 88%;
+  /* Earthy sage accent */
+  --accent: 140 12% 92%;
 
-  --accent-foreground: 155 8% 18%;
+  --accent-foreground: 140 12% 20%;
 
-  --destructive: 0 72% 51%;
+  /* Softer destructive */
+  --destructive: 0 65% 50%;
 
-  --destructive-foreground: 0 72% 98%;
+  --destructive-foreground: 0 65% 98%;
 
-  --input: 0 0% 75%;
-  --ring: 158 64% 42%;
-  --chart-1: 158 64% 35%;
-  --chart-2: 262 52% 47%;
-  --chart-3: 200 80% 40%;
-  --chart-4: 43 96% 45%;
-  --chart-5: 340 75% 45%;
+  --input: 35 12% 80%;
+  --ring: 145 35% 40%;
+  --chart-1: 145 35% 38%;
+  --chart-2: 30 45% 55%;
+  --chart-3: 180 35% 45%;
+  --chart-4: 50 70% 50%;
+  --chart-5: 340 50% 55%;
 
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-serif: 'Space Grotesk', Georgia, serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
   --font-mono: 'SF Mono', Menlo, Monaco, 'Courier New', monospace;
-  --radius: .5rem;
-  --shadow-2xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.02);
-  --shadow-xs: 0px 1px 3px 0px hsl(0 0% 0% / 0.04);
-  --shadow-sm: 0px 2px 4px -1px hsl(0 0% 0% / 0.06), 0px 1px 2px -1px hsl(0 0% 0% / 0.04);
-  --shadow: 0px 4px 6px -1px hsl(0 0% 0% / 0.08), 0px 2px 4px -2px hsl(0 0% 0% / 0.06);
-  --shadow-md: 0px 6px 12px -2px hsl(0 0% 0% / 0.10), 0px 3px 6px -3px hsl(0 0% 0% / 0.08);
-  --shadow-lg: 0px 10px 20px -3px hsl(0 0% 0% / 0.12), 0px 4px 8px -4px hsl(0 0% 0% / 0.10);
-  --shadow-xl: 0px 20px 25px -5px hsl(0 0% 0% / 0.14), 0px 8px 10px -6px hsl(0 0% 0% / 0.12);
-  --shadow-2xl: 0px 25px 50px -12px hsl(0 0% 0% / 0.16);
+  --radius: .375rem;
+  --shadow-2xs: 0px 1px 2px 0px hsl(35 20% 20% / 0.02);
+  --shadow-xs: 0px 1px 3px 0px hsl(35 20% 20% / 0.03);
+  --shadow-sm: 0px 2px 4px -1px hsl(35 20% 20% / 0.04), 0px 1px 2px -1px hsl(35 20% 20% / 0.03);
+  --shadow: 0px 4px 6px -1px hsl(35 20% 20% / 0.06), 0px 2px 4px -2px hsl(35 20% 20% / 0.04);
+  --shadow-md: 0px 6px 12px -2px hsl(35 20% 20% / 0.08), 0px 3px 6px -3px hsl(35 20% 20% / 0.05);
+  --shadow-lg: 0px 10px 20px -3px hsl(35 20% 20% / 0.10), 0px 4px 8px -4px hsl(35 20% 20% / 0.06);
+  --shadow-xl: 0px 20px 25px -5px hsl(35 20% 20% / 0.12), 0px 8px 10px -6px hsl(35 20% 20% / 0.08);
+  --shadow-2xl: 0px 25px 50px -12px hsl(35 20% 20% / 0.14);
   --tracking-normal: -0.011em;
   --spacing: 0.25rem;
 
@@ -124,86 +136,99 @@
   --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
 }
 
+/* DARK MODE - Serene Spa Aesthetic */
 .dark {
-  --button-outline: rgba(255,255,255, .10);
-  --badge-outline: rgba(255,255,255, .05);
+  --button-outline: rgba(255,255,255, .08);
+  --badge-outline: rgba(255,255,255, .04);
 
-  --opaque-button-border-intensity: 9;  /* In terms of percentages */
+  --opaque-button-border-intensity: 8;  /* In terms of percentages */
 
   /* Backgrounds applied on top of other backgrounds when hovered/active */
-  --elevate-1: rgba(255,255,255, .04);
-  --elevate-2: rgba(255,255,255, .09);
+  --elevate-1: rgba(255,255,255, .035);
+  --elevate-2: rgba(255,255,255, .07);
 
-  --background: 150 4% 8%;
+  /* Deep warm charcoal background */
+  --background: 30 8% 8%;
 
-  --foreground: 150 4% 92%;
+  /* Warm cream foreground */
+  --foreground: 35 15% 92%;
 
-  --border: 150 4% 18%;
+  /* Subtle warm border */
+  --border: 30 6% 20%;
 
-  --card: 150 4% 10%;
+  /* Rich card background */
+  --card: 30 6% 11%;
 
-  --card-foreground: 150 4% 92%;
+  --card-foreground: 35 15% 92%;
 
-  --card-border: 150 4% 15%;
+  --card-border: 30 5% 16%;
 
-  --sidebar: 150 5% 12%;
+  /* Sidebar with earthy undertones */
+  --sidebar: 140 5% 10%;
 
-  --sidebar-foreground: 150 5% 90%;
+  --sidebar-foreground: 140 8% 90%;
 
-  --sidebar-border: 150 5% 18%;
+  --sidebar-border: 140 4% 16%;
 
-  --sidebar-primary: 158 58% 35%;
+  /* Sage green primary in dark mode */
+  --sidebar-primary: 145 32% 45%;
 
-  --sidebar-primary-foreground: 158 58% 96%;
+  --sidebar-primary-foreground: 145 32% 96%;
 
-  --sidebar-accent: 150 6% 16%;
+  --sidebar-accent: 140 5% 15%;
 
-  --sidebar-accent-foreground: 150 6% 88%;
+  --sidebar-accent-foreground: 140 5% 85%;
 
-  --sidebar-ring: 158 58% 45%;
+  --sidebar-ring: 145 32% 50%;
 
-  --popover: 150 4% 14%;
+  /* Warm popover */
+  --popover: 30 6% 14%;
 
-  --popover-foreground: 150 4% 90%;
+  --popover-foreground: 35 15% 90%;
 
-  --popover-border: 150 4% 20%;
+  --popover-border: 30 5% 22%;
 
-  --primary: 158 58% 35%;
+  /* Muted sage green primary */
+  --primary: 145 32% 48%;
 
-  --primary-foreground: 158 58% 96%;
+  --primary-foreground: 145 32% 96%;
 
-  --secondary: 150 5% 18%;
+  /* Warm secondary */
+  --secondary: 30 8% 18%;
 
-  --secondary-foreground: 150 5% 88%;
+  --secondary-foreground: 30 8% 88%;
 
-  --muted: 150 6% 16%;
+  /* Soft muted tones */
+  --muted: 30 6% 16%;
 
-  --muted-foreground: 150 6% 68%;
+  --muted-foreground: 30 6% 60%;
 
-  --accent: 155 8% 18%;
+  /* Earthy accent */
+  --accent: 140 6% 16%;
 
-  --accent-foreground: 155 8% 88%;
+  --accent-foreground: 140 6% 85%;
 
-  --destructive: 0 68% 42%;
+  /* Softer destructive */
+  --destructive: 0 55% 45%;
 
-  --destructive-foreground: 0 68% 96%;
+  --destructive-foreground: 0 55% 96%;
 
-  --input: 150 4% 28%;
-  --ring: 158 58% 45%;
-  --chart-1: 158 64% 65%;
-  --chart-2: 262 52% 68%;
-  --chart-3: 200 80% 65%;
-  --chart-4: 43 96% 65%;
-  --chart-5: 340 75% 65%;
+  --input: 30 6% 26%;
+  --ring: 145 32% 50%;
+  --chart-1: 145 35% 55%;
+  --chart-2: 30 45% 65%;
+  --chart-3: 180 35% 55%;
+  --chart-4: 50 70% 60%;
+  --chart-5: 340 50% 60%;
 
-  --shadow-2xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.12);
-  --shadow-xs: 0px 1px 3px 0px hsl(0 0% 0% / 0.18);
-  --shadow-sm: 0px 2px 4px -1px hsl(0 0% 0% / 0.24), 0px 1px 2px -1px hsl(0 0% 0% / 0.18);
-  --shadow: 0px 4px 6px -1px hsl(0 0% 0% / 0.32), 0px 2px 4px -2px hsl(0 0% 0% / 0.24);
-  --shadow-md: 0px 6px 12px -2px hsl(0 0% 0% / 0.40), 0px 3px 6px -3px hsl(0 0% 0% / 0.32);
-  --shadow-lg: 0px 10px 20px -3px hsl(0 0% 0% / 0.48), 0px 4px 8px -4px hsl(0 0% 0% / 0.40);
-  --shadow-xl: 0px 20px 25px -5px hsl(0 0% 0% / 0.56), 0px 8px 10px -6px hsl(0 0% 0% / 0.48);
-  --shadow-2xl: 0px 25px 50px -12px hsl(0 0% 0% / 0.64);
+  --shadow-2xs: 0px 1px 2px 0px hsl(30 20% 5% / 0.15);
+  --shadow-xs: 0px 1px 3px 0px hsl(30 20% 5% / 0.20);
+  --shadow-sm: 0px 2px 4px -1px hsl(30 20% 5% / 0.28), 0px 1px 2px -1px hsl(30 20% 5% / 0.20);
+  --shadow: 0px 4px 6px -1px hsl(30 20% 5% / 0.35), 0px 2px 4px -2px hsl(30 20% 5% / 0.25);
+  --shadow-md: 0px 6px 12px -2px hsl(30 20% 5% / 0.42), 0px 3px 6px -3px hsl(30 20% 5% / 0.32);
+  --shadow-lg: 0px 10px 20px -3px hsl(30 20% 5% / 0.50), 0px 4px 8px -4px hsl(30 20% 5% / 0.40);
+  --shadow-xl: 0px 20px 25px -5px hsl(30 20% 5% / 0.58), 0px 8px 10px -6px hsl(30 20% 5% / 0.48);
+  --shadow-2xl: 0px 25px 50px -12px hsl(30 20% 5% / 0.65);
 
   /* Fallback for older browsers */
   --sidebar-primary-border: hsl(var(--sidebar-primary));
@@ -241,6 +266,66 @@
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Typography hierarchy for spa aesthetic */
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight;
+    font-weight: 500;
+  }
+
+  h1 {
+    @apply text-3xl sm:text-4xl lg:text-5xl leading-tight;
+  }
+
+  h2 {
+    @apply text-2xl sm:text-3xl leading-snug;
+  }
+
+  h3 {
+    @apply text-xl sm:text-2xl leading-snug;
+  }
+
+  h4 {
+    @apply text-lg sm:text-xl;
+  }
+
+  /* Generous line-height for body text */
+  p {
+    @apply leading-relaxed;
+  }
+}
+
+/* Typography utility classes */
+@layer utilities {
+  /* Small caps for labels and navigation */
+  .text-small-caps {
+    font-variant: small-caps;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+  }
+
+  /* Elegant serif for headings */
+  .font-display {
+    font-family: var(--font-serif);
+    font-weight: 400;
+  }
+
+  /* Refined label styling */
+  .text-label {
+    @apply text-xs font-medium tracking-wide uppercase text-muted-foreground;
+  }
+
+  /* Section spacing for generous whitespace */
+  .section-spacing {
+    @apply py-16 sm:py-20 lg:py-24;
+  }
+
+  .section-spacing-sm {
+    @apply py-10 sm:py-12 lg:py-16;
   }
 }
 

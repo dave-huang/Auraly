@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ChevronDown, ChevronUp, AlertTriangle } from "lucide-react";
 import type { Ingredient } from "@shared/schema";
@@ -11,21 +10,21 @@ interface IngredientCardProps {
 
 const riskConfig = {
   low: {
-    color: "bg-emerald-500",
-    bgColor: "bg-emerald-50 dark:bg-emerald-950/20",
-    borderColor: "border-l-emerald-500",
+    color: "bg-emerald-500/80",
+    bgColor: "bg-emerald-50/50 dark:bg-emerald-950/15",
+    borderColor: "border-l-emerald-400",
     textColor: "text-emerald-700 dark:text-emerald-400"
   },
   moderate: {
-    color: "bg-amber-500",
-    bgColor: "bg-amber-50 dark:bg-amber-950/20",
-    borderColor: "border-l-amber-500",
+    color: "bg-amber-500/80",
+    bgColor: "bg-amber-50/50 dark:bg-amber-950/15",
+    borderColor: "border-l-amber-400",
     textColor: "text-amber-700 dark:text-amber-400"
   },
   high: {
-    color: "bg-red-500",
-    bgColor: "bg-red-50 dark:bg-red-950/20",
-    borderColor: "border-l-red-500",
+    color: "bg-red-500/80",
+    bgColor: "bg-red-50/50 dark:bg-red-950/15",
+    borderColor: "border-l-red-400",
     textColor: "text-red-700 dark:text-red-400"
   }
 };
@@ -40,17 +39,17 @@ export function IngredientCard({ ingredient }: IngredientCardProps) {
   const baseConfig = hasRiskAdjustment ? riskConfig[ingredient.baseRiskLevel!] : null;
 
   return (
-    <Card className={`border-l-4 ${config.borderColor} overflow-hidden`}>
+    <div className={`border-l-3 ${config.borderColor} rounded-lg bg-card/60 border border-border/40 overflow-hidden transition-all duration-200`}>
       <div className="p-6">
         {/* Header */}
-        <div className="flex items-start justify-between gap-4 mb-3">
+        <div className="flex items-start justify-between gap-4 mb-4">
           <div className="flex-1">
-            <h3 className="font-semibold text-lg mb-2" data-testid={`text-ingredient-name-${ingredient.name}`}>
+            <h3 className="font-medium text-lg mb-3" data-testid={`text-ingredient-name-${ingredient.name}`}>
               {ingredient.name}
             </h3>
             <div className="flex flex-wrap items-center gap-2">
               <Badge 
-                className={`${config.bgColor} ${config.textColor} border-0 text-xs font-semibold`}
+                className={`${config.bgColor} ${config.textColor} border-0 text-xs font-medium`}
                 data-testid={`badge-risk-${ingredient.riskLevel}`}
               >
                 {t(`results.riskLevels.${ingredient.riskLevel}`)}
@@ -58,7 +57,7 @@ export function IngredientCard({ ingredient }: IngredientCardProps) {
               {hasRiskAdjustment && baseConfig && (
                 <Badge 
                   variant="outline"
-                  className="text-xs font-normal gap-1"
+                  className="text-xs font-normal gap-1.5"
                   data-testid={`badge-adjusted-${ingredient.name}`}
                 >
                   <AlertTriangle className="w-3 h-3" />
@@ -67,21 +66,21 @@ export function IngredientCard({ ingredient }: IngredientCardProps) {
               )}
             </div>
           </div>
-          <div className={`w-3 h-3 rounded-full ${config.color} mt-1 flex-shrink-0`} />
+          <div className={`w-2.5 h-2.5 rounded-full ${config.color} mt-1.5 flex-shrink-0`} />
         </div>
         
         {/* Risk Adjustment Notice */}
         {hasRiskAdjustment && (
-          <div className="mb-3 p-2 bg-muted/50 rounded-md flex items-start gap-2">
-            <AlertTriangle className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
-            <p className="text-xs text-muted-foreground" data-testid={`text-adjustment-reason-${ingredient.name}`}>
+          <div className="mb-4 p-3 bg-muted/30 rounded-md flex items-start gap-2.5">
+            <AlertTriangle className="w-4 h-4 text-amber-500/80 flex-shrink-0 mt-0.5" />
+            <p className="text-xs text-muted-foreground leading-relaxed" data-testid={`text-adjustment-reason-${ingredient.name}`}>
               {ingredient.riskAdjustmentReason}
             </p>
           </div>
         )}
 
         {/* Summary */}
-        <p className="text-sm text-foreground mb-3">
+        <p className="text-sm text-foreground/90 leading-relaxed mb-4">
           {ingredient.summary}
         </p>
 
@@ -90,7 +89,7 @@ export function IngredientCard({ ingredient }: IngredientCardProps) {
           <>
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="flex items-center gap-1 text-sm font-medium text-primary hover-elevate active-elevate-2 px-3 py-1.5 rounded-md -ml-3 transition-colors"
+              className="flex items-center gap-1.5 text-sm font-medium text-primary/80 hover:text-primary hover-elevate active-elevate-2 px-3 py-2 rounded-md -ml-3 transition-colors"
               data-testid={`button-toggle-details-${ingredient.name}`}
             >
               {isExpanded ? (
@@ -107,8 +106,8 @@ export function IngredientCard({ ingredient }: IngredientCardProps) {
             </button>
 
             {isExpanded && (
-              <div className={`mt-4 p-4 rounded-lg ${config.bgColor} border ${config.borderColor.replace('border-l-', 'border-')}`}>
-                <p className="text-sm text-foreground/90" data-testid={`text-ingredient-details-${ingredient.name}`}>
+              <div className={`mt-4 p-5 rounded-md ${config.bgColor}`}>
+                <p className="text-sm text-foreground/85 leading-relaxed" data-testid={`text-ingredient-details-${ingredient.name}`}>
                   {ingredient.details}
                 </p>
               </div>
@@ -116,6 +115,6 @@ export function IngredientCard({ ingredient }: IngredientCardProps) {
           </>
         )}
       </div>
-    </Card>
+    </div>
   );
 }

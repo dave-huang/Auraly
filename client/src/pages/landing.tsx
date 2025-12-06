@@ -1,7 +1,6 @@
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Sparkles, Shield, Zap, Camera, Globe } from "lucide-react";
+import { Sparkles, Shield, Zap, Camera, Leaf } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { NavigationMenu } from "@/components/navigation-menu";
@@ -14,7 +13,7 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header - Language Switcher (logged out) or Navigation Menu (logged in) */}
-      <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
+      <div className="fixed top-6 right-6 z-50 flex items-center gap-2">
         {isAuthenticated ? (
           <NavigationMenu />
         ) : (
@@ -22,156 +21,150 @@ export default function Landing() {
         )}
       </div>
 
-      {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20">
-        {/* Background gradient blobs */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-1/2 -right-1/2 w-full h-full bg-primary/8 rounded-full blur-3xl" />
-          <div className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-primary/5 rounded-full blur-3xl" />
+      {/* Hero Section - Serene and spacious */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Subtle organic background shapes */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl translate-x-1/3 -translate-y-1/4" />
+          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent/30 rounded-full blur-3xl -translate-x-1/3 translate-y-1/4" />
         </div>
 
         {/* Content */}
-        <div className="relative z-10 max-w-5xl mx-auto px-4 text-center">
-          {/* Logo/Brand */}
-          <div className="mb-6 inline-block">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <div className="p-2 bg-primary/10 rounded-lg">
-                <Shield className="w-5 h-5 text-primary" />
+        <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
+          {/* Brand mark */}
+          <div className="mb-10 inline-flex flex-col items-center">
+            <div className="flex items-center gap-2.5 mb-8">
+              <div className="p-2.5 bg-primary/10 rounded-full">
+                <Leaf className="w-5 h-5 text-primary" />
               </div>
-              <span className="text-sm font-semibold text-primary">{t('landing.hero.guardian')}</span>
+              <span className="text-label">{t('landing.hero.guardian')}</span>
             </div>
-            <h1 className="font-serif text-5xl md:text-6xl font-bold text-foreground tracking-tight">
+            <h1 className="font-display text-5xl md:text-6xl lg:text-7xl text-foreground mb-6">
               {t('app.title')}
             </h1>
           </div>
 
-          {/* Main headline - simple and bold */}
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
+          {/* Tagline - generous line height */}
+          <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto mb-12 leading-relaxed">
             {t('landing.hero.subtitle')}
           </p>
 
-          {/* CTA Button */}
+          {/* CTA Button - refined and elegant */}
           {isAuthenticated ? (
             <Link href="/upload" data-testid="link-upload">
               <Button 
                 size="lg" 
-                className="rounded-full px-10 py-7 text-lg font-semibold shadow-lg hover:shadow-xl transition-all gap-2"
+                className="rounded-full px-10 py-6 text-base font-medium shadow-md hover:shadow-lg transition-all duration-300 gap-3"
                 data-testid="button-start-scanning"
               >
-                <Camera className="w-5 h-5" />
+                <Camera className="w-4 h-4" />
                 {t('landing.hero.cta')}
               </Button>
             </Link>
           ) : (
             <Button
               size="lg"
-              className="rounded-full px-10 py-7 text-lg font-semibold shadow-lg hover:shadow-xl transition-all gap-2"
+              className="rounded-full px-10 py-6 text-base font-medium shadow-md hover:shadow-lg transition-all duration-300 gap-3"
               onClick={() => window.location.href = "/api/login"}
               data-testid="button-login"
             >
-              <Camera className="w-5 h-5" />
+              <Camera className="w-4 h-4" />
               {t('auth.signIn')}
             </Button>
           )}
 
-          {/* Trust indicators - simplified */}
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-8 text-sm">
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Zap className="w-4 h-4 text-primary flex-shrink-0" />
-              <span>{t('landing.hero.trust.instant')}</span>
+          {/* Trust indicators - minimal and elegant */}
+          <div className="mt-16 flex flex-wrap items-center justify-center gap-10 text-sm">
+            <div className="flex items-center gap-2.5 text-muted-foreground">
+              <Zap className="w-4 h-4 text-primary/70" />
+              <span className="font-light">{t('landing.hero.trust.instant')}</span>
             </div>
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Sparkles className="w-4 h-4 text-primary flex-shrink-0" />
-              <span>{t('landing.hero.trust.noAccount')}</span>
+            <div className="flex items-center gap-2.5 text-muted-foreground">
+              <Shield className="w-4 h-4 text-primary/70" />
+              <span className="font-light">{t('landing.hero.trust.noAccount')}</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* How It Works - Visual Steps */}
-      <section className="py-24 bg-card/50">
-        <div className="max-w-5xl mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">{t('landing.howItWorks.title')}</h2>
-          <p className="text-center text-muted-foreground mb-16">{t('landing.howItWorks.subtitle')}</p>
+      {/* How It Works - Clean with generous spacing */}
+      <section className="section-spacing bg-card/40">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <p className="text-label mb-3">{t('landing.howItWorks.subtitle')}</p>
+            <h2 className="font-display text-3xl md:text-4xl">{t('landing.howItWorks.title')}</h2>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
             {/* Step 1 */}
-            <div className="relative">
-              <div className="flex flex-col items-center text-center">
-                <div className="w-20 h-20 rounded-full bg-primary/15 flex items-center justify-center mb-6 relative z-10 border-2 border-primary/20">
-                  <Camera className="w-10 h-10 text-primary" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">{t('landing.howItWorks.step1.title')}</h3>
-                <p className="text-sm text-muted-foreground">{t('landing.howItWorks.step1.description')}</p>
+            <div className="flex flex-col items-center text-center">
+              <div className="w-20 h-20 rounded-full bg-primary/8 flex items-center justify-center mb-6 border border-primary/10">
+                <Camera className="w-8 h-8 text-primary/80" />
               </div>
-              {/* Connector line */}
-              <div className="hidden md:block absolute top-10 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-primary/50 to-transparent" />
+              <h3 className="text-lg font-medium mb-3">{t('landing.howItWorks.step1.title')}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{t('landing.howItWorks.step1.description')}</p>
             </div>
 
             {/* Step 2 */}
-            <div className="relative">
-              <div className="flex flex-col items-center text-center">
-                <div className="w-20 h-20 rounded-full bg-primary/15 flex items-center justify-center mb-6 relative z-10 border-2 border-primary/20">
-                  <Sparkles className="w-10 h-10 text-primary" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">{t('landing.howItWorks.step2.title')}</h3>
-                <p className="text-sm text-muted-foreground">{t('landing.howItWorks.step2.description')}</p>
+            <div className="flex flex-col items-center text-center">
+              <div className="w-20 h-20 rounded-full bg-primary/8 flex items-center justify-center mb-6 border border-primary/10">
+                <Sparkles className="w-8 h-8 text-primary/80" />
               </div>
-              {/* Connector line */}
-              <div className="hidden md:block absolute top-10 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-primary/50 to-transparent" />
+              <h3 className="text-lg font-medium mb-3">{t('landing.howItWorks.step2.title')}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{t('landing.howItWorks.step2.description')}</p>
             </div>
 
             {/* Step 3 */}
-            <div>
-              <div className="flex flex-col items-center text-center">
-                <div className="w-20 h-20 rounded-full bg-primary/15 flex items-center justify-center mb-6 relative z-10 border-2 border-primary/20">
-                  <Shield className="w-10 h-10 text-primary" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">{t('landing.howItWorks.step3.title')}</h3>
-                <p className="text-sm text-muted-foreground">{t('landing.howItWorks.step3.description')}</p>
+            <div className="flex flex-col items-center text-center">
+              <div className="w-20 h-20 rounded-full bg-primary/8 flex items-center justify-center mb-6 border border-primary/10">
+                <Shield className="w-8 h-8 text-primary/80" />
               </div>
+              <h3 className="text-lg font-medium mb-3">{t('landing.howItWorks.step3.title')}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{t('landing.howItWorks.step3.description')}</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features - Quick highlights */}
-      <section className="py-24">
-        <div className="max-w-5xl mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">{t('landing.features.title')}</h2>
+      {/* Features - Elegant cards with subtle styling */}
+      <section className="section-spacing">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="font-display text-3xl md:text-4xl">{t('landing.features.title')}</h2>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="p-8 hover-elevate transition-all text-center bg-card/50">
-              <div className="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Globe className="w-7 h-7 text-primary" />
+            <div className="p-8 rounded-lg bg-card/60 border border-border/50 hover-elevate transition-all duration-300 text-center">
+              <div className="w-12 h-12 bg-primary/8 rounded-full flex items-center justify-center mx-auto mb-5">
+                <Leaf className="w-5 h-5 text-primary/80" />
               </div>
-              <h3 className="font-semibold mb-2">{t('landing.features.multilang.title')}</h3>
-              <p className="text-sm text-muted-foreground">{t('landing.features.multilang.description')}</p>
-            </Card>
+              <h3 className="font-medium mb-2">{t('landing.features.multilang.title')}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{t('landing.features.multilang.description')}</p>
+            </div>
 
-            <Card className="p-8 hover-elevate transition-all text-center bg-card/50">
-              <div className="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Sparkles className="w-7 h-7 text-primary" />
+            <div className="p-8 rounded-lg bg-card/60 border border-border/50 hover-elevate transition-all duration-300 text-center">
+              <div className="w-12 h-12 bg-primary/8 rounded-full flex items-center justify-center mx-auto mb-5">
+                <Sparkles className="w-5 h-5 text-primary/80" />
               </div>
-              <h3 className="font-semibold mb-2">{t('landing.features.smart.title')}</h3>
-              <p className="text-sm text-muted-foreground">{t('landing.features.smart.description')}</p>
-            </Card>
+              <h3 className="font-medium mb-2">{t('landing.features.smart.title')}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{t('landing.features.smart.description')}</p>
+            </div>
 
-            <Card className="p-8 hover-elevate transition-all text-center bg-card/50">
-              <div className="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Shield className="w-7 h-7 text-primary" />
+            <div className="p-8 rounded-lg bg-card/60 border border-border/50 hover-elevate transition-all duration-300 text-center">
+              <div className="w-12 h-12 bg-primary/8 rounded-full flex items-center justify-center mx-auto mb-5">
+                <Shield className="w-5 h-5 text-primary/80" />
               </div>
-              <h3 className="font-semibold mb-2">{t('landing.features.risk.title')}</h3>
-              <p className="text-sm text-muted-foreground">{t('landing.features.risk.description')}</p>
-            </Card>
+              <h3 className="font-medium mb-2">{t('landing.features.risk.title')}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{t('landing.features.risk.description')}</p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-12 text-center border-t">
-        <p className="font-serif text-xl font-bold mb-1">{t('app.title')}</p>
-        <p className="text-xs text-muted-foreground">{t('landing.footer.tagline')}</p>
+      {/* Footer - Minimal and refined */}
+      <footer className="py-16 text-center border-t border-border/30">
+        <p className="font-display text-xl mb-2">{t('app.title')}</p>
+        <p className="text-xs text-muted-foreground font-light">{t('landing.footer.tagline')}</p>
       </footer>
     </div>
   );

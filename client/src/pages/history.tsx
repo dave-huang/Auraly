@@ -15,7 +15,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { ArrowLeft, Trash2, Clock, AlertTriangle, Loader2, Package, UtensilsCrossed, SprayCan, Settings, Menu } from "lucide-react";
+import { ArrowLeft, Trash2, Clock, AlertTriangle, Loader2, Package, UtensilsCrossed, Sparkles, Settings, Leaf } from "lucide-react";
 import { NavigationMenu } from "@/components/navigation-menu";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
@@ -26,18 +26,18 @@ import type { ScanHistory, Ingredient, RiskLevel, RiskPreferences, User } from "
 
 const riskConfig = {
   low: {
-    color: "bg-emerald-500",
-    bgColor: "bg-emerald-50 dark:bg-emerald-950/20",
+    color: "bg-emerald-500/80",
+    bgColor: "bg-emerald-50/50 dark:bg-emerald-950/15",
     textColor: "text-emerald-700 dark:text-emerald-400",
   },
   moderate: {
-    color: "bg-amber-500", 
-    bgColor: "bg-amber-50 dark:bg-amber-950/20",
+    color: "bg-amber-500/80", 
+    bgColor: "bg-amber-50/50 dark:bg-amber-950/15",
     textColor: "text-amber-700 dark:text-amber-400",
   },
   high: {
-    color: "bg-red-500",
-    bgColor: "bg-red-50 dark:bg-red-950/20",
+    color: "bg-red-500/80",
+    bgColor: "bg-red-50/50 dark:bg-red-950/15",
     textColor: "text-red-700 dark:text-red-400",
   }
 };
@@ -45,13 +45,13 @@ const riskConfig = {
 const categoryConfig = {
   food: {
     icon: UtensilsCrossed,
-    bgColor: "bg-orange-50 dark:bg-orange-950/20",
+    bgColor: "bg-orange-50/50 dark:bg-orange-950/15",
     textColor: "text-orange-700 dark:text-orange-400",
   },
   personal_care: {
-    icon: SprayCan,
-    bgColor: "bg-purple-50 dark:bg-purple-950/20", 
-    textColor: "text-purple-700 dark:text-purple-400",
+    icon: Sparkles,
+    bgColor: "bg-violet-50/50 dark:bg-violet-950/15", 
+    textColor: "text-violet-700 dark:text-violet-400",
   }
 };
 
@@ -209,24 +209,28 @@ export default function HistoryPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-2xl mx-auto p-4">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-4">
+      {/* Header */}
+      <header className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3">
             <Link href="/">
-              <Button variant="ghost" size="icon" data-testid="button-back">
-                <ArrowLeft className="w-5 h-5" />
+              <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground" data-testid="button-back">
+                <ArrowLeft className="w-4 h-4" />
+                <span className="font-light hidden sm:inline">{t('common.back')}</span>
               </Button>
             </Link>
-            <h1 className="text-2xl font-bold">{t('history.title')}</h1>
           </div>
-          
+          <div className="hidden sm:flex items-center gap-2">
+            <Leaf className="w-4 h-4 text-primary/60" />
+            <span className="font-display text-lg">{t('app.title')}</span>
+          </div>
           <div className="flex items-center gap-2">
             {allScans.length > 0 && (
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button variant="outline" size="sm" data-testid="button-delete-all">
-                    <Trash2 className="w-4 h-4 mr-2" />
-                    {t('history.deleteAll')}
+                  <Button variant="ghost" size="sm" className="text-muted-foreground" data-testid="button-delete-all">
+                    <Trash2 className="w-4 h-4" />
+                    <span className="hidden sm:inline ml-2">{t('history.deleteAll')}</span>
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
@@ -255,6 +259,14 @@ export default function HistoryPage() {
             )}
             <NavigationMenu showHomeLink />
           </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-3xl mx-auto px-6 py-10">
+        {/* Page Title */}
+        <div className="mb-8">
+          <h1 className="font-display text-2xl md:text-3xl">{t('history.title')}</h1>
         </div>
 
         {showPersonalizedBanner && allScans.length > 0 && (
@@ -287,7 +299,7 @@ export default function HistoryPage() {
                 {t('history.filters.food')}
               </TabsTrigger>
               <TabsTrigger value="personal_care" data-testid="filter-personal-care">
-                <SprayCan className="w-4 h-4 mr-1" />
+                <Sparkles className="w-4 h-4 mr-1" />
                 {t('history.filters.personal_care')}
               </TabsTrigger>
             </TabsList>
@@ -407,7 +419,7 @@ export default function HistoryPage() {
             )}
           </div>
         )}
-      </div>
+      </main>
     </div>
   );
 }
