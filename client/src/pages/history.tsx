@@ -349,10 +349,11 @@ export default function HistoryPage() {
                   href={`/history/${scan.id}`}
                   data-testid={`link-scan-${scan.id}`}
                 >
-                  <Card className="p-4 hover-elevate cursor-pointer transition-all">
+                  <Card className="p-5 hover-elevate cursor-pointer transition-all overflow-hidden">
                     <div className="flex gap-4">
+                      {/* Product Image */}
                       {scan.originalImageUrl && (
-                        <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-muted">
+                        <div className="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 bg-muted/50 border border-border/30">
                           <img 
                             src={scan.originalImageUrl} 
                             alt={scan.productName}
@@ -361,9 +362,11 @@ export default function HistoryPage() {
                         </div>
                       )}
                       
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between gap-2 mb-1">
-                          <h3 className="font-semibold truncate" data-testid={`text-product-name-${scan.id}`}>
+                      {/* Content */}
+                      <div className="flex-1 min-w-0 overflow-hidden">
+                        {/* Header: Product Name + Risk Badge */}
+                        <div className="flex items-start justify-between gap-3 mb-2">
+                          <h3 className="font-display text-base truncate" data-testid={`text-product-name-${scan.id}`}>
                             {scan.productName}
                           </h3>
                           <Badge className={`${riskConf.bgColor} ${riskConf.textColor} border-0 text-xs flex-shrink-0`}>
@@ -371,30 +374,32 @@ export default function HistoryPage() {
                           </Badge>
                         </div>
                         
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-                          <Badge variant="outline" className={`${catConf.bgColor} ${catConf.textColor} border-0 text-xs whitespace-nowrap`}>
+                        {/* Meta: Category + Date */}
+                        <div className="flex items-center gap-3 mb-3">
+                          <Badge variant="outline" className={`${catConf.bgColor} ${catConf.textColor} border-0 text-xs`}>
                             <CatIcon className="w-3 h-3 mr-1" />
                             {t(`history.categories.${normalizedCat}`)}
                           </Badge>
-                          <span className="flex items-center gap-1 whitespace-nowrap">
+                          <span className="text-xs text-muted-foreground/70 flex items-center gap-1">
                             <Clock className="w-3 h-3" />
                             {formatDate(scan.createdAt)}
                           </span>
                         </div>
                         
-                        <div className="flex items-center gap-3 text-xs">
+                        {/* Risk Summary */}
+                        <div className="flex items-center gap-4 text-xs pt-2 border-t border-border/30">
                           {riskSummary.high > 0 && (
-                            <span className="text-red-600 dark:text-red-400">
+                            <span className="text-red-600/90 dark:text-red-400 font-medium">
                               {riskSummary.high} {t('results.riskSummary.breakdown.highRisk')}
                             </span>
                           )}
                           {riskSummary.moderate > 0 && (
-                            <span className="text-amber-600 dark:text-amber-400">
+                            <span className="text-amber-600/90 dark:text-amber-400 font-medium">
                               {riskSummary.moderate} {t('results.riskSummary.breakdown.moderate')}
                             </span>
                           )}
                           {riskSummary.low > 0 && (
-                            <span className="text-emerald-600 dark:text-emerald-400">
+                            <span className="text-emerald-600/90 dark:text-emerald-400 font-medium">
                               {riskSummary.low} {t('results.riskSummary.breakdown.lowRisk')}
                             </span>
                           )}
