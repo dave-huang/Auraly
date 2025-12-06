@@ -284,7 +284,7 @@ export default function ScanDetailPage() {
         </div>
 
         <Tabs defaultValue="all" className="mb-8">
-          <TabsList className="grid w-full grid-cols-4 bg-transparent p-1.5 rounded-xl gap-1.5 border border-border/30">
+          <TabsList className="grid w-full grid-cols-4 h-auto bg-card/50 p-1.5 rounded-xl gap-1.5 border border-border/30">
             <TabsTrigger 
               value="all" 
               onClick={() => setSelectedRisk("all")}

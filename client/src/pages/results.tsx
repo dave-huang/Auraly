@@ -612,7 +612,7 @@ export default function ResultsPage() {
 
         {/* Risk Filter Tabs */}
         <Tabs value={selectedRisk} onValueChange={(value) => setSelectedRisk(value as RiskLevel | "all")} className="mb-8">
-          <TabsList className="grid w-full grid-cols-4 bg-transparent p-1.5 rounded-xl gap-1.5 border border-border/30">
+          <TabsList className="grid w-full grid-cols-4 h-auto bg-card/50 p-1.5 rounded-xl gap-1.5 border border-border/30">
             <TabsTrigger value="all" className="flex flex-col items-center gap-0.5 py-2.5 px-1 text-xs rounded-lg transition-all data-[state=active]:bg-card data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-primary/40 data-[state=active]:text-primary" data-testid="tab-all">
               <span className="font-medium">{t('results.filters.all')}</span>
               <span className="text-[10px] data-[state=active]:text-primary/70">{displayResult.ingredients.length}</span>
