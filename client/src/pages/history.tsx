@@ -382,7 +382,7 @@ export default function HistoryPage() {
                         </div>
                         
                         {/* Risk Summary */}
-                        <div className="flex items-center gap-4 text-xs pt-2 border-t border-border/30">
+                        <div className="flex items-center gap-4 text-xs border-t border-border/30 pt-[0px] pb-[0px]">
                           {riskSummary.high > 0 && (
                             <span className="text-red-600/90 dark:text-red-400 font-medium">
                               {riskSummary.high} {t('results.riskSummary.breakdown.highRisk')}
