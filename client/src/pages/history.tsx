@@ -382,29 +382,29 @@ export default function HistoryPage() {
                           </Badge>
                         </div>
                         
-                        {/* Risk Summary + Date */}
-                        <div className="flex items-center justify-between gap-4 text-xs pt-2 border-t border-border/30">
-                          <div className="flex items-center gap-4">
-                            {riskSummary.high > 0 && (
-                              <span className="text-red-600/90 dark:text-red-400 font-medium">
-                                {riskSummary.high} {t('results.riskSummary.breakdown.highRisk')}
-                              </span>
-                            )}
-                            {riskSummary.moderate > 0 && (
-                              <span className="text-amber-600/90 dark:text-amber-400 font-medium">
-                                {riskSummary.moderate} {t('results.riskSummary.breakdown.moderate')}
-                              </span>
-                            )}
-                            {riskSummary.low > 0 && (
-                              <span className="text-emerald-600/90 dark:text-emerald-400 font-medium">
-                                {riskSummary.low} {t('results.riskSummary.breakdown.lowRisk')}
-                              </span>
-                            )}
-                          </div>
-                          <span className="text-muted-foreground/60 flex items-center gap-1 whitespace-nowrap">
-                            <Clock className="w-3 h-3" />
-                            {formatDate(scan.createdAt)}
-                          </span>
+                        {/* Risk Summary */}
+                        <div className="flex items-center gap-4 text-xs pt-2 border-t border-border/30">
+                          {riskSummary.high > 0 && (
+                            <span className="text-red-600/90 dark:text-red-400 font-medium">
+                              {riskSummary.high} {t('results.riskSummary.breakdown.highRisk')}
+                            </span>
+                          )}
+                          {riskSummary.moderate > 0 && (
+                            <span className="text-amber-600/90 dark:text-amber-400 font-medium">
+                              {riskSummary.moderate} {t('results.riskSummary.breakdown.moderate')}
+                            </span>
+                          )}
+                          {riskSummary.low > 0 && (
+                            <span className="text-emerald-600/90 dark:text-emerald-400 font-medium">
+                              {riskSummary.low} {t('results.riskSummary.breakdown.lowRisk')}
+                            </span>
+                          )}
+                        </div>
+                        
+                        {/* Date */}
+                        <div className="text-xs text-muted-foreground/60 flex items-center gap-1 mt-2">
+                          <Clock className="w-3 h-3" />
+                          {formatDate(scan.createdAt)}
                         </div>
                       </div>
                     </div>
