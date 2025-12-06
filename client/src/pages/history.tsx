@@ -346,6 +346,7 @@ export default function HistoryPage() {
                 <Link
                   key={scan.id}
                   href={`/history/${scan.id}`}
+                  draggable="false"
                   data-testid={`link-scan-${scan.id}`}
                 >
                   <Card className="p-5 hover-elevate cursor-pointer transition-all overflow-hidden">

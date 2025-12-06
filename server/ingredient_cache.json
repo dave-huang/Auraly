@@ -3795,8 +3795,8 @@
     "createdAt": 1764537956870
   },
   "amaranth flakes__food__en": {
-    "analysis": "{\"name\":\"Amaranth Flakes\",\"riskLevel\":\"low\",\"summary\":\"Amaranth flakes are a whole-grain-like seed product that is generally considered safe and nutritious for most people. They provide protein, fiber, and minerals and are naturally gluten-free.\",\"details\":\"Amaranth is a pseudocereal that typically does not contain gluten, making it suitable for many people with gluten intolerance or celiac disease, provided there is no cross-contamination during processing. It is rich in protein, including lysine, and provides minerals such as iron and magnesium, supporting overall nutritional intake. Adverse reactions are uncommon, though individuals with rare seed allergies or sensitivities should introduce it cautiously.\",\"category\":\"Whole grain / pseudocereal\"}",
-    "lastUpdated": 1765056775058,
+    "analysis": "{\"name\":\"Amaranth Flakes\",\"riskLevel\":\"low\",\"summary\":\"Amaranth flakes are a whole grain-like cereal ingredient generally considered safe and nutritious for most people. They are naturally gluten-free but can be an issue for individuals with specific grain or seed allergies.\",\"details\":\"Amaranth is a pseudocereal rich in protein, fiber, and micronutrients such as iron and magnesium, and it does not contain gluten, making it suitable for many people with celiac disease if processed in a gluten-free facility. The main health considerations are potential cross-contamination with gluten-containing grains during processing and rare individual allergies or intolerances to amaranth. It is not associated with artificial additives, colorants, or sweeteners and is typically viewed as a wholesome ingredient.\",\"category\":\"Whole grain / pseudocereal\"}",
+    "lastUpdated": 1765059797649,
     "createdAt": 1764537956870
   },
   "whole grain oat flakes__food__en": {
