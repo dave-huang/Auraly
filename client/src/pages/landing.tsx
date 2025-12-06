@@ -11,6 +11,7 @@ import skincareImage from "@assets/stock_images/natural_skincare_pro_821a26b5.jp
 import organicFoodImage from "@assets/stock_images/healthy_organic_food_ca6a79e0.jpg";
 import womanReadingLabel from "@assets/stock_images/woman_reading_produc_8340e9f2.jpg";
 import heroSkincareImage from "@assets/image_1765003551521.png";
+import featureMultilangImage from "@assets/image_1765003664657.png";
 
 export default function Landing() {
   const { t } = useTranslation();
@@ -216,7 +217,7 @@ export default function Landing() {
             <div className="group relative overflow-hidden rounded-2xl bg-card border border-border/50 hover-elevate transition-all duration-300">
               <div className="aspect-[4/3] overflow-hidden">
                 <img 
-                  src={organicFoodImage} 
+                  src={featureMultilangImage} 
                   alt="Global ingredients" 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
