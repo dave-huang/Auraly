@@ -88,20 +88,20 @@ export default function Landing() {
 
             {/* Right: Layered product imagery */}
             <div className="hidden lg:block relative h-[600px]">
-              {/* Floating organic food image */}
+              {/* Floating skincare products image */}
               <div className="absolute top-0 right-0 w-72 h-80 rounded-2xl overflow-hidden shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
                 <img 
-                  src={organicFoodImage} 
-                  alt="Fresh organic ingredients" 
+                  src={skincareImage} 
+                  alt="Natural skincare products" 
                   className="w-full h-full object-cover"
                 />
               </div>
               
-              {/* Skincare products image */}
+              {/* Organic food image */}
               <div className="absolute bottom-0 left-0 w-80 h-64 rounded-2xl overflow-hidden shadow-2xl transform -rotate-2 hover:rotate-0 transition-transform duration-500">
                 <img 
-                  src={skincareImage} 
-                  alt="Natural skincare products" 
+                  src={organicFoodImage} 
+                  alt="Fresh organic ingredients" 
                   className="w-full h-full object-cover"
                 />
               </div>
