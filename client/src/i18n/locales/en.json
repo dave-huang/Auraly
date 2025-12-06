@@ -36,7 +36,7 @@
       "subtitle": "Get ingredient insights in three simple steps",
       "step1": {
         "title": "Scan or Upload",
-        "description": "Take a photo of any product label or upload an existing image"
+        "description": "Take a photo of any product ingredient label or upload an existing image"
       },
       "step2": {
         "title": "AI Analysis",

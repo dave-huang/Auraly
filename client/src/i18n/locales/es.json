@@ -36,7 +36,7 @@
       "subtitle": "Obtén información sobre ingredientes en tres sencillos pasos",
       "step1": {
         "title": "Escanear o Subir",
-        "description": "Toma una foto de cualquier etiqueta de producto o sube una imagen existente"
+        "description": "Toma una foto de cualquier etiqueta de ingredientes del producto o sube una imagen existente"
       },
       "step2": {
         "title": "Análisis de IA",
