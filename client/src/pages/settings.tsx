@@ -67,26 +67,29 @@ function ToleranceSelector({
   const { i18n } = useTranslation();
   const lang = i18n.language;
 
-  const options: { value: RiskTolerance; label: string; color: string }[] = [
+  const options: { value: RiskTolerance; label: string; color: string; selectedColor: string }[] = [
     { 
       value: "no_preference", 
       label: lang === 'zh' ? '默认' : lang === 'es' ? 'Def.' : 'Default',
-      color: "border-muted-foreground/30 bg-muted/20"
+      color: "border-border/40 bg-card/30",
+      selectedColor: "border-primary/40 bg-primary/5 ring-1 ring-primary/20"
     },
     { 
       value: "caution", 
       label: lang === 'zh' ? '谨慎' : lang === 'es' ? 'Prec.' : 'Caution',
-      color: "border-yellow-500 bg-yellow-500/10"
+      color: "border-border/40 bg-card/30",
+      selectedColor: "border-amber-400/50 bg-amber-50/50 dark:bg-amber-950/20 ring-1 ring-amber-400/30"
     },
     { 
       value: "avoid", 
       label: lang === 'zh' ? '避免' : lang === 'es' ? 'Evitar' : 'Avoid',
-      color: "border-red-500 bg-red-500/10"
+      color: "border-border/40 bg-card/30",
+      selectedColor: "border-rose-400/50 bg-rose-50/50 dark:bg-rose-950/20 ring-1 ring-rose-400/30"
     },
   ];
 
   return (
-    <div className="flex gap-1">
+    <div className="flex gap-1.5">
       {options.map((option) => (
         <button
           key={option.value}
@@ -95,10 +98,10 @@ function ToleranceSelector({
           data-testid={`setting-${categoryKey}-${option.value}`}
           onClick={() => onChange(option.value)}
           className={cn(
-            "flex-1 py-1.5 px-2 rounded text-xs font-medium transition-all",
+            "flex-1 py-2 px-3 rounded-lg text-xs font-medium transition-all",
             value === option.value 
-              ? option.color + " ring-1 ring-primary" 
-              : "border border-border hover-elevate",
+              ? option.selectedColor
+              : option.color + " hover:bg-card/60",
             disabled && "opacity-50 cursor-not-allowed"
           )}
         >
@@ -279,38 +282,44 @@ export default function SettingsPage() {
 
         <div className="max-w-md mx-auto">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-4">
-            <TabsTrigger value="risk" className="flex items-center gap-2" data-testid="tab-risk">
+          <TabsList className="grid w-full grid-cols-2 mb-6 rounded-xl p-1 bg-muted/30">
+            <TabsTrigger value="risk" className="flex items-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm" data-testid="tab-risk">
               <Shield className="w-4 h-4" />
-              {lang === 'zh' ? '风险敏感度' : lang === 'es' ? 'Sensibilidad' : 'Risk Sensitivity'}
+              <span className="font-medium">{lang === 'zh' ? '风险敏感度' : lang === 'es' ? 'Sensibilidad' : 'Risk Sensitivity'}</span>
             </TabsTrigger>
-            <TabsTrigger value="allergen" className="flex items-center gap-2" data-testid="tab-allergen">
+            <TabsTrigger value="allergen" className="flex items-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm" data-testid="tab-allergen">
               <AlertTriangle className="w-4 h-4" />
-              {lang === 'zh' ? '过敏原警报' : lang === 'es' ? 'Alertas' : 'Allergen Alerts'}
+              <span className="font-medium">{lang === 'zh' ? '过敏原警报' : lang === 'es' ? 'Alertas' : 'Allergen Alerts'}</span>
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="risk" className="space-y-4">
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm flex items-center gap-2">
-                  <Shield className="w-4 h-4" />
-                  {lang === 'zh' ? '关于风险敏感度' : lang === 'es' ? 'Acerca de Sensibilidad de Riesgo' : 'About Risk Sensitivity'}
-                </CardTitle>
-                <CardDescription className="text-xs">
-                  {lang === 'zh' 
-                    ? '设置您希望避免或谨慎使用的成分类别。这些偏好将调整扫描结果中相关成分的风险等级。' 
-                    : lang === 'es' 
-                    ? 'Configure las categorías de ingredientes que prefiere evitar. Estas ajustarán los niveles de riesgo en los resultados.'
-                    : 'Configure ingredient categories you prefer to avoid. These will adjust risk levels in your scan results.'}
-                </CardDescription>
+            <Card className="rounded-xl border-border/30 bg-card/50">
+              <CardHeader className="pb-3 pt-5 px-5">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-full bg-primary/10">
+                    <Shield className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-sm font-display">
+                      {lang === 'zh' ? '关于风险敏感度' : lang === 'es' ? 'Acerca de Sensibilidad de Riesgo' : 'About Risk Sensitivity'}
+                    </CardTitle>
+                    <CardDescription className="text-xs font-light text-muted-foreground/70 mt-0.5">
+                      {lang === 'zh' 
+                        ? '设置您希望避免或谨慎使用的成分类别。这些偏好将调整扫描结果中相关成分的风险等级。' 
+                        : lang === 'es' 
+                        ? 'Configure las categorías de ingredientes que prefiere evitar. Estas ajustarán los niveles de riesgo en los resultados.'
+                        : 'Configure ingredient categories you prefer to avoid. These will adjust risk levels in your scan results.'}
+                    </CardDescription>
+                  </div>
+                </div>
               </CardHeader>
             </Card>
 
             {preferenceCategories.map((category) => (
-              <Card key={category}>
-                <CardContent className="py-3 px-4">
-                  <div className="flex items-center gap-3 mb-2">
+              <Card key={category} className="rounded-xl border-border/30 bg-card/50">
+                <CardContent className="py-4 px-5">
+                  <div className="flex items-center gap-3 mb-3">
                     <span className="text-xl">{categoryInfo[category].icon}</span>
                     <span className="text-sm font-medium flex-1">{t(`preferences.categories.${category}`)}</span>
                   </div>
@@ -324,11 +333,11 @@ export default function SettingsPage() {
               </Card>
             ))}
 
-            <Card className="mt-6">
-              <CardContent className="py-4">
+            <Card className="mt-6 rounded-xl border-border/30 bg-card/50">
+              <CardContent className="py-5 px-5">
                 <Button
                   variant="outline"
-                  className="w-full"
+                  className="w-full rounded-full"
                   onClick={() => resetOnboarding.mutate()}
                   disabled={resetOnboarding.isPending}
                   data-testid="button-redo-onboarding"
@@ -341,38 +350,50 @@ export default function SettingsPage() {
           </TabsContent>
 
           <TabsContent value="allergen" className="space-y-4">
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4 text-orange-500" />
-                  {lang === 'zh' ? '关于过敏原警报' : lang === 'es' ? 'Acerca de Alertas de Alérgenos' : 'About Allergen Alerts'}
-                </CardTitle>
-                <CardDescription className="text-xs">
-                  {lang === 'zh' 
-                    ? '启用您希望标记的过敏原类别。这些不会影响风险评分，但会作为单独的警告显示。' 
-                    : lang === 'es' 
-                    ? 'Activa las categorías de alérgenos que deseas marcar. Estas no afectarán la puntuación de riesgo, pero aparecerán como advertencias.'
-                    : 'Enable allergen categories you want flagged. These won\'t affect risk scores, but will appear as separate warnings.'}
-                </CardDescription>
+            <Card className="rounded-xl border-border/30 bg-card/50">
+              <CardHeader className="pb-3 pt-5 px-5">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-full bg-amber-500/10">
+                    <AlertTriangle className="w-4 h-4 text-amber-500" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-sm font-display">
+                      {lang === 'zh' ? '关于过敏原警报' : lang === 'es' ? 'Acerca de Alertas de Alérgenos' : 'About Allergen Alerts'}
+                    </CardTitle>
+                    <CardDescription className="text-xs font-light text-muted-foreground/70 mt-0.5">
+                      {lang === 'zh' 
+                        ? '启用您希望标记的过敏原类别。这些不会影响风险评分，但会作为单独的警告显示。' 
+                        : lang === 'es' 
+                        ? 'Activa las categorías de alérgenos que deseas marcar. Estas no afectarán la puntuación de riesgo, pero aparecerán como advertencias.'
+                        : 'Enable allergen categories you want flagged. These won\'t affect risk scores, but will appear as separate warnings.'}
+                    </CardDescription>
+                  </div>
+                </div>
               </CardHeader>
             </Card>
 
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm flex items-center gap-2">
-                  <UtensilsCrossed className="w-4 h-4 text-orange-500" />
-                  {lang === 'zh' ? '食物过敏原' : lang === 'es' ? 'Alérgenos Alimentarios' : 'Food Allergens'}
-                </CardTitle>
+            <Card className="rounded-xl border-border/30 bg-card/50">
+              <CardHeader className="pb-3 pt-5 px-5">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-full bg-amber-500/10">
+                    <UtensilsCrossed className="w-4 h-4 text-amber-500" />
+                  </div>
+                  <CardTitle className="text-sm font-display">
+                    {lang === 'zh' ? '食物过敏原' : lang === 'es' ? 'Alérgenos Alimentarios' : 'Food Allergens'}
+                  </CardTitle>
+                </div>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-3 px-5 pb-5">
                 {foodAllergens.map((cat) => (
                   <div key={cat.key} className={cn(
-                    "flex items-center justify-between p-3 rounded-lg border transition-all",
-                    allergenPreferences[cat.key] ? "border-primary bg-primary/5" : "border-border"
+                    "flex items-center justify-between p-4 rounded-xl border transition-all",
+                    allergenPreferences[cat.key] 
+                      ? "border-primary/40 bg-primary/5 ring-1 ring-primary/10" 
+                      : "border-border/40 bg-card/30 hover:bg-card/50"
                   )}>
                     <div className="flex-1 min-w-0 mr-3">
                       <div className="font-medium text-sm">{t(`allergens.categories.${cat.key}`)}</div>
-                      <div className="text-xs text-muted-foreground/70 italic">
+                      <div className="text-xs text-muted-foreground/50 font-light italic mt-1">
                         {cat.example[lang] || cat.example.en}
                       </div>
                     </div>
@@ -387,22 +408,28 @@ export default function SettingsPage() {
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm flex items-center gap-2">
-                  <Flower2 className="w-4 h-4 text-pink-500" />
-                  {lang === 'zh' ? '化妆品过敏原' : lang === 'es' ? 'Alérgenos Cosméticos' : 'Cosmetic Allergens'}
-                </CardTitle>
+            <Card className="rounded-xl border-border/30 bg-card/50">
+              <CardHeader className="pb-3 pt-5 px-5">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-full bg-rose-500/10">
+                    <Flower2 className="w-4 h-4 text-rose-400" />
+                  </div>
+                  <CardTitle className="text-sm font-display">
+                    {lang === 'zh' ? '化妆品过敏原' : lang === 'es' ? 'Alérgenos Cosméticos' : 'Cosmetic Allergens'}
+                  </CardTitle>
+                </div>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-3 px-5 pb-5">
                 {cosmeticAllergens.map((cat) => (
                   <div key={cat.key} className={cn(
-                    "flex items-center justify-between p-3 rounded-lg border transition-all",
-                    allergenPreferences[cat.key] ? "border-primary bg-primary/5" : "border-border"
+                    "flex items-center justify-between p-4 rounded-xl border transition-all",
+                    allergenPreferences[cat.key] 
+                      ? "border-primary/40 bg-primary/5 ring-1 ring-primary/10" 
+                      : "border-border/40 bg-card/30 hover:bg-card/50"
                   )}>
                     <div className="flex-1 min-w-0 mr-3">
                       <div className="font-medium text-sm">{t(`allergens.categories.${cat.key}`)}</div>
-                      <div className="text-xs text-muted-foreground/70 italic">
+                      <div className="text-xs text-muted-foreground/50 font-light italic mt-1">
                         {cat.example[lang] || cat.example.en}
                       </div>
                     </div>
@@ -417,22 +444,28 @@ export default function SettingsPage() {
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm flex items-center gap-2">
-                  <FlaskConical className="w-4 h-4 text-purple-500" />
-                  {lang === 'zh' ? '化学添加剂' : lang === 'es' ? 'Aditivos Químicos' : 'Chemical Additives'}
-                </CardTitle>
+            <Card className="rounded-xl border-border/30 bg-card/50">
+              <CardHeader className="pb-3 pt-5 px-5">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-full bg-violet-500/10">
+                    <FlaskConical className="w-4 h-4 text-violet-400" />
+                  </div>
+                  <CardTitle className="text-sm font-display">
+                    {lang === 'zh' ? '化学添加剂' : lang === 'es' ? 'Aditivos Químicos' : 'Chemical Additives'}
+                  </CardTitle>
+                </div>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-3 px-5 pb-5">
                 {chemicalAllergens.map((cat) => (
                   <div key={cat.key} className={cn(
-                    "flex items-center justify-between p-3 rounded-lg border transition-all",
-                    allergenPreferences[cat.key] ? "border-primary bg-primary/5" : "border-border"
+                    "flex items-center justify-between p-4 rounded-xl border transition-all",
+                    allergenPreferences[cat.key] 
+                      ? "border-primary/40 bg-primary/5 ring-1 ring-primary/10" 
+                      : "border-border/40 bg-card/30 hover:bg-card/50"
                   )}>
                     <div className="flex-1 min-w-0 mr-3">
                       <div className="font-medium text-sm">{t(`allergens.categories.${cat.key}`)}</div>
-                      <div className="text-xs text-muted-foreground/70 italic">
+                      <div className="text-xs text-muted-foreground/50 font-light italic mt-1">
                         {cat.example[lang] || cat.example.en}
                       </div>
                     </div>
@@ -452,12 +485,12 @@ export default function SettingsPage() {
       </main>
 
       {hasChanges && (
-        <div className="fixed bottom-0 left-0 right-0 bg-background border-t p-4 safe-area-pb">
+        <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-md border-t border-border/30 p-4 safe-area-pb">
           <div className="max-w-md mx-auto flex gap-3">
             <Button 
               variant="outline" 
               onClick={activeTab === 'risk' ? handleResetRisk : handleResetAllergen}
-              className="flex-1"
+              className="flex-1 rounded-full"
               disabled={isPending}
               data-testid="button-reset"
             >
@@ -465,7 +498,7 @@ export default function SettingsPage() {
             </Button>
             <Button 
               onClick={activeTab === 'risk' ? handleSaveRisk : handleSaveAllergen}
-              className="flex-1"
+              className="flex-1 rounded-full"
               disabled={isPending}
               data-testid="button-save-preferences"
             >
