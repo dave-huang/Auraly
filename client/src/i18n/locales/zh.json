@@ -45,7 +45,15 @@
       "step3": {
         "title": "获取分析",
         "description": "用简单的语言了解哪些成分安全，哪些需要注意"
+      },
+      "resultCard": {
+        "title": "分析完成",
+        "description": "已分析23种成分并进行详细风险评估"
       }
+    },
+    "cta": {
+      "title": "准备好了解您产品的成分了吗？",
+      "description": "加入成千上万做出明智选择的人，每天了解他们使用的产品。"
     },
     "features": {
       "title": "强大功能",

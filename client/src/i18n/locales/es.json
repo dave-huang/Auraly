@@ -45,7 +45,15 @@
       "step3": {
         "title": "Obtener Información",
         "description": "Comprende qué es seguro y qué debes vigilar en lenguaje sencillo"
+      },
+      "resultCard": {
+        "title": "Análisis Completo",
+        "description": "23 ingredientes analizados con evaluación detallada de riesgos"
       }
+    },
+    "cta": {
+      "title": "¿Listo para saber qué hay en tus productos?",
+      "description": "Únete a miles que toman decisiones informadas sobre los productos que usan todos los días."
     },
     "features": {
       "title": "Características Poderosas",

@@ -45,7 +45,15 @@
       "step3": {
         "title": "Get Insights",
         "description": "Understand what's safe and what to watch out for in plain language"
+      },
+      "resultCard": {
+        "title": "Analysis Complete",
+        "description": "23 ingredients analyzed with detailed risk assessment"
       }
+    },
+    "cta": {
+      "title": "Ready to know what's in your products?",
+      "description": "Join thousands making informed choices about the products they use every day."
     },
     "features": {
       "title": "Powerful Features",
