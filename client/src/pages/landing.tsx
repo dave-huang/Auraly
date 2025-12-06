@@ -10,6 +10,7 @@ import phoneScanImage from "@assets/image_1765002733857.png";
 import skincareImage from "@assets/stock_images/natural_skincare_pro_821a26b5.jpg";
 import organicFoodImage from "@assets/stock_images/healthy_organic_food_ca6a79e0.jpg";
 import womanReadingLabel from "@assets/stock_images/woman_reading_produc_8340e9f2.jpg";
+import heroSkincareImage from "@assets/image_1765003551521.png";
 
 export default function Landing() {
   const { t } = useTranslation();
@@ -88,11 +89,11 @@ export default function Landing() {
 
             {/* Right: Layered product imagery */}
             <div className="hidden lg:block relative h-[600px]">
-              {/* Floating organic food image */}
+              {/* Floating skincare products image */}
               <div className="absolute top-0 right-0 w-72 h-80 rounded-2xl overflow-hidden shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
                 <img 
-                  src={organicFoodImage} 
-                  alt="Fresh organic ingredients" 
+                  src={heroSkincareImage} 
+                  alt="Natural skincare products" 
                   className="w-full h-full object-cover"
                 />
               </div>
