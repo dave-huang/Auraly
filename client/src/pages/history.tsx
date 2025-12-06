@@ -371,12 +371,12 @@ export default function HistoryPage() {
                           </Badge>
                         </div>
                         
-                        <div className="flex items-center flex-wrap gap-2 text-sm text-muted-foreground mb-2">
-                          <Badge variant="outline" className={`${catConf.bgColor} ${catConf.textColor} border-0 text-xs`}>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
+                          <Badge variant="outline" className={`${catConf.bgColor} ${catConf.textColor} border-0 text-xs whitespace-nowrap`}>
                             <CatIcon className="w-3 h-3 mr-1" />
                             {t(`history.categories.${normalizedCat}`)}
                           </Badge>
-                          <span className="flex items-center gap-1">
+                          <span className="flex items-center gap-1 whitespace-nowrap">
                             <Clock className="w-3 h-3" />
                             {formatDate(scan.createdAt)}
                           </span>
