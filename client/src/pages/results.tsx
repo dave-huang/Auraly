@@ -546,18 +546,22 @@ export default function ResultsPage() {
 
         {/* Risk Filter Tabs */}
         <Tabs value={selectedRisk} onValueChange={(value) => setSelectedRisk(value as RiskLevel | "all")} className="mb-8">
-          <TabsList className="grid w-full grid-cols-4 bg-muted/30 p-1.5 rounded-xl">
-            <TabsTrigger value="all" className="text-sm rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm" data-testid="tab-all">
-              {t('results.filters.all')} ({displayResult.ingredients.length})
+          <TabsList className="grid w-full grid-cols-4 bg-muted/30 p-1.5 rounded-xl gap-1">
+            <TabsTrigger value="all" className="flex flex-col items-center gap-0.5 py-2 px-1 text-xs rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm" data-testid="tab-all">
+              <span className="font-medium">{t('results.filters.all')}</span>
+              <span className="text-muted-foreground text-[10px]">{displayResult.ingredients.length}</span>
             </TabsTrigger>
-            <TabsTrigger value="low" className="text-sm rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm" data-testid="tab-low">
-              {t('results.filters.low')} ({riskCounts.low})
+            <TabsTrigger value="low" className="flex flex-col items-center gap-0.5 py-2 px-1 text-xs rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm" data-testid="tab-low">
+              <span className="font-medium">{t('results.filters.low')}</span>
+              <span className="text-muted-foreground text-[10px]">{riskCounts.low}</span>
             </TabsTrigger>
-            <TabsTrigger value="moderate" className="text-sm rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm" data-testid="tab-moderate">
-              {t('results.filters.moderate')} ({riskCounts.moderate})
+            <TabsTrigger value="moderate" className="flex flex-col items-center gap-0.5 py-2 px-1 text-xs rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm" data-testid="tab-moderate">
+              <span className="font-medium">{t('results.filters.moderate')}</span>
+              <span className="text-muted-foreground text-[10px]">{riskCounts.moderate}</span>
             </TabsTrigger>
-            <TabsTrigger value="high" className="text-sm rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm" data-testid="tab-high">
-              {t('results.filters.high')} ({riskCounts.high})
+            <TabsTrigger value="high" className="flex flex-col items-center gap-0.5 py-2 px-1 text-xs rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm" data-testid="tab-high">
+              <span className="font-medium">{t('results.filters.high')}</span>
+              <span className="text-muted-foreground text-[10px]">{riskCounts.high}</span>
             </TabsTrigger>
           </TabsList>
         </Tabs>
