@@ -6,7 +6,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
-import { Leaf } from "lucide-react";
 import Landing from "@/pages/landing";
 import UploadPage from "@/pages/upload";
 import ResultsPage from "@/pages/results";
@@ -39,14 +38,8 @@ function ProtectedPage({ component: Component }: { component: any }) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="flex flex-col items-center gap-4">
-          <div className="p-4 bg-primary/10 rounded-full">
-            <Leaf className="w-8 h-8 text-primary animate-pulse" />
-          </div>
-          <p className="font-display text-xl text-foreground">Auraly</p>
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-        </div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     );
   }
