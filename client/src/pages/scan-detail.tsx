@@ -16,7 +16,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { ArrowLeft, Trash2, Search, Loader2, AlertTriangle, Clock, Pencil, Check, X, Settings } from "lucide-react";
+import { ArrowLeft, Trash2, Search, Loader2, AlertTriangle, Clock, Pencil, Check, X, Settings, Leaf, Sparkles, UtensilsCrossed } from "lucide-react";
 import { IngredientCard } from "@/components/ingredient-card";
 import { RiskSummary } from "@/components/risk-summary";
 import { AllergenFlags } from "@/components/allergen-flags";
@@ -185,24 +185,87 @@ export default function ScanDetailPage() {
     );
   }
 
+  const CategoryIcon = scan.productCategory === 'food' ? UtensilsCrossed : Sparkles;
+
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-2xl mx-auto p-4">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-4">
+      {/* Header */}
+      <header className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3">
             <Link href="/history">
-              <Button variant="ghost" size="icon" data-testid="button-back">
-                <ArrowLeft className="w-5 h-5" />
+              <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground" data-testid="button-back">
+                <ArrowLeft className="w-4 h-4" />
+                <span className="font-light hidden sm:inline">{t('common.back')}</span>
               </Button>
             </Link>
+          </div>
+          <div className="hidden sm:flex items-center gap-2">
+            <Leaf className="w-4 h-4 text-primary/60" />
+            <span className="font-display text-lg">{t('app.title')}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="ghost" size="sm" className="text-muted-foreground" data-testid="button-delete-scan">
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>{t('history.deleteConfirmTitle')}</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    {t('history.deleteConfirmDesc')}
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel data-testid="button-cancel-delete">{t('common.cancel')}</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() => deleteMutation.mutate()}
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                    data-testid="button-confirm-delete"
+                  >
+                    {deleteMutation.isPending ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      t('history.delete')
+                    )}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+            <NavigationMenu showHomeLink />
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-3xl mx-auto px-6 py-8">
+        {/* Product Info Card */}
+        <Card className="p-6 mb-8">
+          <div className="flex gap-5">
+            {/* Product Image */}
+            {scan.originalImageUrl && (
+              <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 bg-muted/50 border border-border/30">
+                <img 
+                  src={scan.originalImageUrl} 
+                  alt={scan.productName}
+                  className="w-full h-full object-cover"
+                  data-testid="img-product"
+                />
+              </div>
+            )}
+            
+            {/* Product Details */}
             <div className="flex-1 min-w-0">
+              {/* Product Name */}
               {isEditingName ? (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 mb-3">
                   <Input
                     value={editedName}
                     onChange={(e) => setEditedName(e.target.value)}
                     placeholder={t('results.productName.placeholder')}
-                    className="text-xl font-bold h-auto py-1"
+                    className="font-display text-lg h-auto py-1.5"
                     data-testid="input-product-name"
                     autoFocus
                     onKeyDown={(e) => {
@@ -246,70 +309,32 @@ export default function ScanDetailPage() {
                     setEditedName(scan.productName || '');
                     setIsEditingName(true);
                   }}
-                  className="group flex items-center gap-2 text-left hover-elevate rounded-md px-2 py-1 -ml-2"
+                  className="group flex items-center gap-2 text-left hover-elevate rounded-md px-2 py-1 -ml-2 mb-2"
                   data-testid="button-edit-product-name"
                 >
-                  <h1 className="text-xl font-bold truncate" data-testid="text-product-name">
+                  <h1 className="font-display text-xl truncate" data-testid="text-product-name">
                     {scan.productName || t('results.productName.placeholder')}
                   </h1>
                   <Pencil className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
                 </button>
               )}
-              <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
-                <span>{t(`history.categories.${scan.productCategory === 'food' ? 'food' : 'personal_care'}`)}</span>
-                <span>•</span>
-                <span className="flex items-center gap-1">
-                  <Clock className="w-3 h-3" />
-                  {formatDate(scan.createdAt)}
-                </span>
+              
+              {/* Meta Info */}
+              <div className="flex items-center gap-3 mb-3">
+                <Badge variant="outline" className={`text-xs ${scan.productCategory === 'food' ? 'bg-orange-50/50 dark:bg-orange-950/15 text-orange-700 dark:text-orange-400' : 'bg-violet-50/50 dark:bg-violet-950/15 text-violet-700 dark:text-violet-400'} border-0`}>
+                  <CategoryIcon className="w-3 h-3 mr-1" />
+                  {t(`history.categories.${scan.productCategory === 'food' ? 'food' : 'personal_care'}`)}
+                </Badge>
+              </div>
+              
+              {/* Date */}
+              <div className="text-xs text-muted-foreground/60 flex items-center gap-1">
+                <Clock className="w-3 h-3" />
+                {formatDate(scan.createdAt)}
               </div>
             </div>
           </div>
-          
-          <div className="flex items-center gap-2">
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button variant="destructive" size="icon" data-testid="button-delete-scan">
-                  <Trash2 className="w-4 h-4" />
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>{t('history.deleteConfirmTitle')}</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    {t('history.deleteConfirmDesc')}
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel data-testid="button-cancel-delete">{t('common.cancel')}</AlertDialogCancel>
-                  <AlertDialogAction
-                    onClick={() => deleteMutation.mutate()}
-                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                    data-testid="button-confirm-delete"
-                  >
-                    {deleteMutation.isPending ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      t('history.delete')
-                    )}
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-            <NavigationMenu showHomeLink />
-          </div>
-        </div>
-
-        {scan.originalImageUrl && (
-          <Card className="mb-6 overflow-hidden">
-            <img 
-              src={scan.originalImageUrl} 
-              alt={scan.productName}
-              className="w-full max-h-64 object-contain bg-muted"
-              data-testid="img-product"
-            />
-          </Card>
-        )}
+        </Card>
 
         {showPersonalizedBanner && (
           <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/5 border border-primary/10 mb-4">
@@ -395,7 +420,7 @@ export default function ScanDetailPage() {
         </div>
 
         <div className="fixed bottom-0 left-0 right-0 p-4 bg-background/95 backdrop-blur border-t">
-          <div className="max-w-2xl mx-auto">
+          <div className="max-w-3xl mx-auto">
             <Link href="/upload">
               <Button className="w-full" size="lg" data-testid="button-scan-another">
                 {t('results.scanAnother')}
@@ -403,7 +428,7 @@ export default function ScanDetailPage() {
             </Link>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
