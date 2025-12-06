@@ -5295,8 +5295,8 @@
     "createdAt": 1764803353847
   },
   "water__personal_care__en": {
-    "analysis": "{\"name\":\"Water\",\"riskLevel\":\"low\",\"summary\":\"This term is French for water and serves as the main solvent in many personal care products.\",\"details\":\"As a cosmetic ingredient, water (eau) acts as the base in which active and functional ingredients are dissolved or dispersed. It is considered very safe, assuming the finished product is properly preserved to prevent microbial contamination.\",\"category\":\"Solvent / vehicle\"}",
-    "lastUpdated": 1764806664953,
+    "analysis": "{\"name\":\"Water\",\"riskLevel\":\"low\",\"summary\":\"Water (Eau) is a fundamental solvent and base in many cosmetic and personal care formulations.\",\"details\":\"It is used to dilute other ingredients, adjust texture, and enable proper application of the product on skin or hair. Like other purified water used in cosmetics, it is generally considered safe and is not linked to endocrine disruptors, heavy metals, or other major high-risk cosmetic contaminants.\",\"category\":\"Solvent / Base\"}",
+    "lastUpdated": 1765048561026,
     "createdAt": 1764806529908
   },
   "glycerin__personal_care__en": {
@@ -5420,8 +5420,8 @@
     "createdAt": 1764806666479
   },
   "bht (butylated hydroxytoluene)__personal_care__en": {
-    "analysis": "{\"name\":\"Bht (butylated Hydroxytoluene)\",\"riskLevel\":\"moderate\",\"summary\":\"BHT is a synthetic antioxidant used to prevent oils and fragrances from oxidizing and going rancid. It is effective at stabilizing formulas but has raised concerns related to potential endocrine disruption and irritation in some individuals.\",\"details\":\"Toxicological data on BHT are mixed: regulatory agencies allow it at low concentrations, yet some studies suggest possible effects on the endocrine system and organs at higher or chronic exposures, mainly in animal models. In personal care products, it is typically used in very small amounts, but people seeking a more precautionary approach or with sensitive skin may prefer to avoid it or limit exposure, especially when combined with other synthetic antioxidants or potential endocrine disruptors.\",\"category\":\"Synthetic antioxidant / preservative\"}",
-    "lastUpdated": 1764806666479,
+    "analysis": "{\"name\":\"Bht (butylated Hydroxytoluene)\",\"riskLevel\":\"moderate\",\"summary\":\"BHT is a synthetic antioxidant used to prevent oils and formulas from going rancid. It is effective as a preservative but has raised concerns about potential endocrine disruption and irritation in some individuals.\",\"details\":\"BHT helps stabilize cosmetic and personal care products by slowing oxidation, which can extend shelf life and maintain product performance. However, some animal and in vitro studies suggest it may have endocrine-disrupting and organ toxicity potential at higher exposures, though typical cosmetic levels are lower. Sensitive users may experience skin or eye irritation, and people seeking very precautionary formulas may prefer to avoid it in favor of alternative antioxidants like tocopherol (vitamin E).\",\"category\":\"Antioxidant preservative\"}",
+    "lastUpdated": 1765048560793,
     "createdAt": 1764806666479
   },
   "dimethicone__personal_care__en": {
@@ -5470,8 +5470,8 @@
     "createdAt": 1764806667560
   },
   "salvia officinalis (sage) extract__personal_care__en": {
-    "analysis": "{\"name\":\"Salvia Officinalis (sage) Extract\",\"riskLevel\":\"low\",\"summary\":\"Sage extract is a plant-derived ingredient used for its antioxidant, soothing, and antimicrobial properties in personal care products. It is generally well tolerated, though it can occasionally cause irritation or allergy in sensitive individuals.\",\"details\":\"Sage extract contains polyphenols and essential oils that may help protect skin and scalp from oxidative stress and support a balanced microbiome. In leave-on products or at higher concentrations, the fragrant components can pose a mild irritation or sensitization risk for very reactive skin. It is not associated with major systemic toxicity at the low levels used in cosmetics.\",\"category\":\"Botanical extract / Antioxidant\"}",
-    "lastUpdated": 1764806668030,
+    "analysis": "{\"name\":\"Salvia Officinalis (sage) Extract\",\"riskLevel\":\"low\",\"summary\":\"Sage extract is a plant-derived ingredient used for its antioxidant, antimicrobial, and soothing properties in personal care products. It is generally well tolerated but can occasionally cause irritation or allergy in sensitive individuals.\",\"details\":\"Salvia officinalis (sage) extract contains flavonoids and phenolic compounds that provide antioxidant benefits and may help protect skin from environmental stress. It also has mild astringent and antimicrobial properties, making it useful in skincare, haircare, and oral care formulas. Adverse effects are uncommon but may include contact irritation or allergic reactions, especially in individuals with sensitivities to botanical extracts or members of the Lamiaceae (mint) family.\",\"category\":\"Botanical extract\"}",
+    "lastUpdated": 1765048560521,
     "createdAt": 1764806668030
   },
   "tocopherol__personal_care__en": {
@@ -5588,5 +5588,145 @@
     "analysis": "{\"name\":\"Wheat (may Contain Egg)\",\"riskLevel\":\"high\",\"summary\":\"Wheat is a common cereal grain that naturally contains gluten and is a major allergen. This product may also contain egg, another major allergen, due to possible cross-contact during manufacturing.\",\"details\":\"For individuals with celiac disease, non-celiac gluten sensitivity, or wheat allergy, wheat can trigger significant adverse reactions and should be strictly avoided. The advisory that it may contain egg indicates potential cross-contamination, posing an additional risk for people with egg allergies even if egg is not an intentional ingredient. For those without wheat or egg-related conditions, it is generally safe as a staple carbohydrate source, but it remains unsuitable for gluten-free diets.\",\"category\":\"Cereal grain and major allergens (gluten, egg)\"}",
     "lastUpdated": 1764998515522,
     "createdAt": 1764998419750
+  },
+  "citrus medica limonum (lemon) peel extract__personal_care__en": {
+    "analysis": "{\"name\":\"Citrus Medica Limonum (lemon) Peel Extract\",\"riskLevel\":\"moderate\",\"summary\":\"Lemon peel extract is a plant-derived ingredient rich in vitamin C and antioxidants, used for brightening and astringent benefits. It can be irritating or sensitizing, especially on sensitive or compromised skin and when exposed to sunlight.\",\"details\":\"This extract may help improve skin tone and provide mild exfoliation due to its natural acids and antioxidant content. However, citrus peel extracts can increase photosensitivity and may trigger redness, stinging, or allergic reactions in some individuals, particularly at higher concentrations or in leave-on products. It is generally safe for most users but should be paired with sun protection and patch-tested on sensitive skin.\",\"category\":\"Botanical extract / Citrus-derived ingredient\"}",
+    "lastUpdated": 1765048365768,
+    "createdAt": 1765048365768
+  },
+  "yucca schidigera extract__personal_care__en": {
+    "analysis": "{\"name\":\"Yucca Schidigera Extract\",\"riskLevel\":\"low\",\"summary\":\"Yucca schidigera extract is a plant-derived ingredient used mainly for its foaming, cleansing, and soothing properties in personal care products. It is generally considered safe and well tolerated for most skin types.\",\"details\":\"This extract is rich in saponins, which act as natural surfactants to help cleanse skin and hair without the harshness of strong synthetic sulfates like SLS or SLES. It is not associated with parabens, phthalates, formaldehyde-releasing preservatives, or other major controversial cosmetic additives. Some individuals with plant or botanical sensitivities may experience irritation or allergy, but such reactions are uncommon.\",\"category\":\"Botanical extract / Natural surfactant\"}",
+    "lastUpdated": 1765048367640,
+    "createdAt": 1765048367640
+  },
+  "citrus aurantium dulcis (orange) peel extract__personal_care__en": {
+    "analysis": "{\"name\":\"Citrus Aurantium Dulcis (orange) Peel Extract\",\"riskLevel\":\"low\",\"summary\":\"Citrus aurantium dulcis (orange) peel extract is a citrus-derived botanical used for its antioxidant, fragrance, and skin-refreshing effects. It is generally safe, though it can be mildly irritating or sensitizing in some people, especially at higher concentrations.\",\"details\":\"This extract contains natural compounds such as flavonoids and essential oils that can provide antioxidant benefits and a pleasant scent, acting as a natural fragrance component. While it is not a paraben, sulfate, phthalate, or formaldehyde releaser, citrus extracts can sometimes increase photosensitivity or cause irritation in sensitive skin, particularly when combined with sun exposure. Patch testing may be advisable for those with reactive or allergy-prone skin.\",\"category\":\"Botanical extract / Natural fragrance\"}",
+    "lastUpdated": 1765048367640,
+    "createdAt": 1765048367640
+  },
+  "capric/caprylic triglyceride__personal_care__en": {
+    "analysis": "{\"name\":\"Capric/caprylic Triglyceride\",\"riskLevel\":\"low\",\"summary\":\"A skin-conditioning and emollient ingredient derived from coconut oil and glycerin, generally considered very safe and non-irritating.\",\"details\":\"Capric/caprylic triglyceride helps soften skin, improve spreadability, and reduce moisture loss, making it common in moisturizers, creams, and makeup. It is not a paraben, sulfate, phthalate, formaldehyde releaser, or silicone, and it has a low potential for allergy or irritation in most users, including sensitive skin types. It is also non-comedogenic for most people and widely accepted in clean and natural formulations.\",\"category\":\"Emollient / Skin-conditioning agent\"}",
+    "lastUpdated": 1765048367797,
+    "createdAt": 1765048367797
+  },
+  "glyceryl stearate se__personal_care__en": {
+    "analysis": "{\"name\":\"Glyceryl Stearate Se\",\"riskLevel\":\"low\",\"summary\":\"An emulsifier and emollient used to blend oil and water in formulas, generally regarded as safe and well tolerated.\",\"details\":\"Glyceryl Stearate SE (self-emulsifying) helps stabilize creams and lotions, giving them a smooth, spreadable texture while also providing some skin-softening benefits. It is not related to parabens, sulfates, phthalates, formaldehyde-releasing preservatives, or other major concern chemicals listed, and it rarely causes irritation except in very sensitive individuals. It is widely used in skincare, haircare, and cosmetics and is considered low risk in typical product concentrations.\",\"category\":\"Emulsifier / Emollient\"}",
+    "lastUpdated": 1765048367797,
+    "createdAt": 1765048367797
+  },
+  "purified water__personal_care__en": {
+    "analysis": "{\"name\":\"Purified Water\",\"riskLevel\":\"low\",\"summary\":\"Purified water is used as a solvent and base in most personal care formulations. It is generally considered very safe and non-irritating.\",\"details\":\"Purified water helps dissolve and evenly distribute other ingredients and determines the texture and spreadability of the product. It does not belong to concerning groups like parabens, sulfates, phthalates, or formaldehyde releasers. Potential risk arises only if the product is contaminated due to poor manufacturing or storage, not from the water itself.\",\"category\":\"Solvent / Base\"}",
+    "lastUpdated": 1765048369391,
+    "createdAt": 1765048369391
+  },
+  "coconut oil (cocos nucifera oil)__personal_care__en": {
+    "analysis": "{\"name\":\"Coconut Oil (cocos Nucifera Oil)\",\"riskLevel\":\"low\",\"summary\":\"Coconut oil is a plant-derived emollient that helps moisturize and soften skin and hair. It is widely used and generally safe for most people.\",\"details\":\"Coconut oil forms a protective, occlusive layer that reduces water loss and can improve skin smoothness and hair shine. It is not a paraben, sulfate, phthalate, formaldehyde releaser, or silicone, and it is not associated with heavy metals or triclosan. Some individuals, especially those with acne-prone or very oily skin, may experience clogged pores or breakouts, and a small number of people may have contact allergies.\",\"category\":\"Emollient / Plant oil\"}",
+    "lastUpdated": 1765048369391,
+    "createdAt": 1765048369391
+  },
+  "cetyl alcohol__personal_care__en": {
+    "analysis": "{\"name\":\"Cetyl Alcohol\",\"riskLevel\":\"low\",\"summary\":\"Cetyl alcohol is a fatty alcohol used as an emollient, thickener, and emulsifier in personal care products. It is considered low risk and is typically non-drying and non-irritating.\",\"details\":\"Unlike simple drying alcohols (like ethanol or isopropyl alcohol), fatty alcohols such as cetyl alcohol help condition and soften the skin and stabilize creams and lotions. It does not fall into high-concern groups such as parabens, sulfates, phthalates, formaldehyde releasers, or silicones, and it is not linked to heavy metals or coal tar dyes. Rarely, very sensitive individuals may experience mild irritation or contact allergy, but this is uncommon.\",\"category\":\"Fatty alcohol / Emollient / Emulsifier\"}",
+    "lastUpdated": 1765048369391,
+    "createdAt": 1765048369391
+  },
+  "equisetum arvense extract vaccinium myrtillus fruit/leaf extract__personal_care__en": {
+    "analysis": "{\"name\":\"Equisetum Arvense Extract, Vaccinium Myrtillus Fruit/leaf Extract\",\"riskLevel\":\"low\",\"summary\":\"These are plant extracts from horsetail and bilberry used for antioxidant, soothing, and conditioning benefits in personal care products. They are generally well tolerated by most skin types.\",\"details\":\"Equisetum arvense (horsetail) extract is rich in silica and flavonoids, which may support skin conditioning and antioxidant protection. Vaccinium myrtillus (bilberry) fruit/leaf extract contains anthocyanins and other antioxidants that can help protect skin from environmental stress. The main potential concern is mild irritation or allergy in sensitive individuals to botanical components, but serious adverse effects are uncommon.\",\"category\":\"Botanical extract\"}",
+    "lastUpdated": 1765048370066,
+    "createdAt": 1765048370066
+  },
+  "fragrance__personal_care__en": {
+    "analysis": "{\"name\":\"Fragrance\",\"riskLevel\":\"moderate\",\"summary\":\"Fragrance is a mixture of scent ingredients that can include allergens and sensitizers. Because its composition is often undisclosed, it poses a higher risk for irritation and allergic reactions.\",\"details\":\"In personal care products, fragrance can be made from numerous synthetic and natural compounds, including potential allergens such as certain musks, terpenes, and phthalates. Fragrance mixtures are a common cause of contact dermatitis, especially in people with sensitive or compromised skin. The lack of full ingredient disclosure and the possibility of endocrine-disrupting or sensitizing substances justify a moderate risk classification.\",\"category\":\"Fragrance / Perfume\"}",
+    "lastUpdated": 1765048370066,
+    "createdAt": 1765048370066
+  },
+  "ethylhexylglycerin__personal_care__en": {
+    "analysis": "{\"name\":\"Ethylhexylglycerin\",\"riskLevel\":\"low\",\"summary\":\"Ethylhexylglycerin is a preservative and skin-conditioning agent often used as an alternative or booster to traditional preservatives. It is generally considered safe with a relatively low rate of irritation.\",\"details\":\"This ingredient helps inhibit microbial growth in formulations and can enhance the effectiveness of other preservatives while also providing some emollient benefits. It has a good safety profile in typical cosmetic concentrations, with occasional reports of mild irritation or contact allergy, mainly in very sensitive individuals or with prolonged exposure. It is not known to be a hormone disruptor, formaldehyde releaser, or a major systemic toxin at cosmetic use levels.\",\"category\":\"Preservative / Skin-conditioning agent\"}",
+    "lastUpdated": 1765048370066,
+    "createdAt": 1765048370066
+  },
+  "phenoxyethanol__personal_care__en": {
+    "analysis": "{\"name\":\"Phenoxyethanol\",\"riskLevel\":\"moderate\",\"summary\":\"Phenoxyethanol is a synthetic preservative used to prevent microbial growth in personal care products. It is generally considered safe at low concentrations but can cause irritation and sensitivity in some individuals.\",\"details\":\"Phenoxyethanol is widely used as a paraben-free preservative in skincare, haircare, and cosmetics, typically at concentrations up to 1%. While most regulatory bodies consider it safe at these levels, it may cause skin or eye irritation, allergic reactions, or contact dermatitis in sensitive users, especially on compromised skin or in leave-on products. It is not a formaldehyde-releasing preservative, but due to its sensitization potential and reports of adverse reactions, it is often categorized as a moderate-risk ingredient for susceptible individuals.\",\"category\":\"Preservative\"}",
+    "lastUpdated": 1765048370145,
+    "createdAt": 1765048370145
+  },
+  "potassium sorbate__personal_care__en": {
+    "analysis": "{\"name\":\"Potassium Sorbate\",\"riskLevel\":\"low\",\"summary\":\"Potassium sorbate is a widely used preservative that helps inhibit the growth of mold and yeast in personal care products. It is generally regarded as low risk and well tolerated at typical use levels.\",\"details\":\"Potassium sorbate is the potassium salt of sorbic acid and is used in both foods and cosmetics to extend shelf life by preventing microbial growth. In skincare and haircare, it is considered one of the milder preservative options, with a relatively low incidence of irritation or allergy when used within recommended concentrations. Some individuals with very sensitive or damaged skin may still experience mild irritation, but overall it is viewed as a safer alternative to harsher or more sensitizing preservatives.\",\"category\":\"Preservative\"}",
+    "lastUpdated": 1765048370145,
+    "createdAt": 1765048370145
+  },
+  "matricaria (chamomilla recutita) flower extract__personal_care__en": {
+    "analysis": "{\"name\":\"Matricaria (chamomilla Recutita) Flower Extract\",\"riskLevel\":\"low\",\"summary\":\"Chamomile flower extract is a soothing botanical commonly used for its calming and anti-redness properties in personal care products. It is generally well tolerated and considered low risk for most skin types.\",\"details\":\"This plant extract contains flavonoids and bisabolol, which can help reduce irritation, redness, and mild inflammation, making it popular in sensitive-skin formulas. The main concern is potential allergic reactions in individuals sensitive to plants in the Asteraceae/Compositae family (such as ragweed or daisies), but this is relatively uncommon. It does not belong to major controversial groups like parabens, sulfates, phthalates, or formaldehyde releasers.\",\"category\":\"Botanical extract / soothing agent\"}",
+    "lastUpdated": 1765048370712,
+    "createdAt": 1765048370712
+  },
+  "polysorbate 20__personal_care__en": {
+    "analysis": "{\"name\":\"Polysorbate 20\",\"riskLevel\":\"moderate\",\"summary\":\"Polysorbate 20 is a synthetic emulsifier and solubilizer used to help mix oil- and water-based ingredients. It is generally considered safe but sometimes discussed due to potential impurities from its manufacturing process.\",\"details\":\"This ingredient is derived from sorbitol and ethoxylated fatty acids, and it helps fragrances and essential oils disperse evenly in water-based products. While polysorbate 20 itself has low irritation potential for most users, ethoxylated ingredients can theoretically contain trace contaminants such as 1,4-dioxane if not properly purified, which is a concern more related to manufacturing quality than the ingredient itself. It is not a sulfate, paraben, phthalate, or formaldehyde-releasing preservative, but individuals seeking extremely “clean” formulations sometimes choose to limit ethoxylated surfactants.\",\"category\":\"Emulsifier / solubilizer (ethoxylated surfactant)\"}",
+    "lastUpdated": 1765048370713,
+    "createdAt": 1765048370713
+  },
+  "humulus lupulus (hops) extract__personal_care__en": {
+    "analysis": "{\"name\":\"Humulus Lupulus (hops) Extract\",\"riskLevel\":\"low\",\"summary\":\"Hops extract is a botanical ingredient used for its antioxidant, soothing, and potential antimicrobial properties in personal care products. It is generally low risk, with irritation or allergy being the main possible concern for sensitive individuals.\",\"details\":\"Derived from the flowers of the hops plant, this extract can provide mild astringent and calming benefits to skin and scalp, and it may support preservation due to some natural antimicrobial activity. Adverse reactions are uncommon, though plant-sensitive users may experience irritation or contact allergy. It is not associated with major controversial chemical groups such as sulfates, parabens, phthalates, formaldehyde releasers, or synthetic fragrances.\",\"category\":\"Botanical extract / antioxidant\"}",
+    "lastUpdated": 1765048370713,
+    "createdAt": 1765048370713
+  },
+  "stearyl alcohol__personal_care__en": {
+    "analysis": "{\"name\":\"Stearyl Alcohol\",\"riskLevel\":\"low\",\"summary\":\"Stearyl alcohol is a fatty alcohol used as an emollient, thickener, and emulsifier in personal care products. It is generally considered low risk and well tolerated by most skin types.\",\"details\":\"Unlike simple drying alcohols (like ethanol or isopropyl alcohol), stearyl alcohol is a long-chain fatty alcohol that helps soften and condition skin and hair and improve product texture. It is not associated with major concerns such as hormone disruption, carcinogenicity, or severe irritation, though very sensitive individuals may rarely experience mild contact irritation. It does not belong to problematic groups like parabens, sulfates, phthalates, formaldehyde releasers, or silicones.\",\"category\":\"Emollient / fatty alcohol\"}",
+    "lastUpdated": 1765048371081,
+    "createdAt": 1765048371081
+  },
+  "butyrospermum parkii (shea) butter__personal_care__en": {
+    "analysis": "{\"name\":\"Butyrospermum Parkii (shea) Butter\",\"riskLevel\":\"low\",\"summary\":\"Shea butter is a natural fat extracted from the nuts of the shea tree, widely used as a moisturizing and skin-conditioning agent. It is generally regarded as low risk and beneficial for dry or sensitive skin.\",\"details\":\"Rich in triglycerides and minor components like vitamins and antioxidants, shea butter helps improve skin barrier function, reduce dryness, and provide a soothing effect. It is not linked to endocrine disruption, carcinogenicity, or the major controversial ingredient groups listed (parabens, sulfates, phthalates, formaldehyde releasers, etc.). Rarely, individuals with nut sensitivities or highly reactive skin may experience mild irritation or allergic reactions.\",\"category\":\"Natural emollient / plant butter\"}",
+    "lastUpdated": 1765048371081,
+    "createdAt": 1765048371081
+  },
+  "aloe barbadensis leaf juice__personal_care__en": {
+    "analysis": "{\"name\":\"Aloe Barbadensis Leaf Juice\",\"riskLevel\":\"low\",\"summary\":\"Aloe vera leaf juice is a plant-derived ingredient used for its soothing, hydrating, and calming properties on the skin. It is typically considered low risk when properly processed and used in cosmetic concentrations.\",\"details\":\"Aloe contains polysaccharides and other bioactive compounds that can help support skin hydration and reduce the feeling of irritation or redness. In cosmetics, the juice is usually decolorized and purified to remove most anthraquinones (like aloin), which in high oral doses have laxative properties and potential safety concerns, but these are not a typical issue in topical, regulated personal care use. Some people with very sensitive or allergy-prone skin may experience mild irritation or sensitization, but it is not associated with the major controversial chemical groups of concern.\",\"category\":\"Botanical extract / soothing agent\"}",
+    "lastUpdated": 1765048371081,
+    "createdAt": 1765048371081
+  },
+  "clary sage (salvia sclarea) extract__personal_care__en": {
+    "analysis": "{\"name\":\"Clary Sage (salvia Sclarea) Extract\",\"riskLevel\":\"low\",\"summary\":\"Clary sage extract is a plant-derived ingredient used for its soothing, antioxidant, and aromatic properties in personal care products. It is generally well tolerated on the skin, with irritation being uncommon except in sensitive individuals or at high concentrations.\",\"details\":\"This botanical extract contains various natural compounds that can provide mild anti-inflammatory and antioxidant benefits, supporting skin comfort and protection. In topical use it is not associated with major systemic toxicity, endocrine disruption, or the key controversial cosmetic chemicals listed (such as parabens, sulfates, phthalates, or formaldehyde releasers). People with known sensitivities to essential oils or Lamiaceae-family plants may experience irritation or allergic reactions and should patch test before use.\",\"category\":\"Botanical extract / plant-derived active\"}",
+    "lastUpdated": 1765048371196,
+    "createdAt": 1765048371196
+  },
+  "tocopheryl acetate (vitamin e acetate)__personal_care__en": {
+    "analysis": "{\"name\":\"Tocopheryl Acetate (vitamin e Acetate)\",\"riskLevel\":\"low\",\"summary\":\"Tocopheryl acetate is a stabilized form of vitamin E commonly used as an antioxidant and skin-conditioning agent. It is widely considered safe for topical use, with occasional irritation or allergy in very sensitive individuals.\",\"details\":\"As an ester of vitamin E, tocopheryl acetate helps protect oils in the formula from oxidation and can support the skin barrier by providing antioxidant benefits. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, or synthetic fragrance and is not associated with major endocrine disruption concerns in typical cosmetic use. Rarely, it may trigger contact dermatitis in people with vitamin E sensitivity, so patch testing can be prudent for reactive skin.\",\"category\":\"Antioxidant / vitamin derivative\"}",
+    "lastUpdated": 1765048371196,
+    "createdAt": 1765048371196
+  },
+  "grapefruit (citrus paradisi / citrus grandis) fruit extract__personal_care__en": {
+    "analysis": "{\"name\":\"Grapefruit (citrus Paradisi / Citrus Grandis) Fruit Extract\",\"riskLevel\":\"low\",\"summary\":\"Grapefruit fruit extract is a citrus-derived ingredient used for its antioxidant, astringent, and fragrance-like properties. It is generally safe, but may cause irritation or photosensitivity in some users, particularly those with sensitive skin.\",\"details\":\"This extract can provide mild toning and antioxidant effects due to its natural acids and flavonoids, and it may impart a fresh citrus scent to formulations. It is not among the primary controversial cosmetic chemicals such as parabens, sulfates, phthalates, formaldehyde releasers, or mineral oils. However, citrus ingredients can increase the risk of irritation or, if photoreactive compounds are present and not removed, potential light sensitivity, so sun protection and patch testing are advisable for sensitive or sun-exposed areas.\",\"category\":\"Botanical extract / citrus-derived ingredient\"}",
+    "lastUpdated": 1765048371196,
+    "createdAt": 1765048371196
+  },
+  "rosemary leaf extract marshmallow root extract lemongrass extract__personal_care__en": {
+    "analysis": "{\"name\":\"Rosemary Leaf Extract, Marshmallow Root Extract, Lemongrass Extract\",\"riskLevel\":\"low\",\"summary\":\"These are plant extracts commonly used for their soothing, antioxidant, and aromatic properties in personal care products. They are generally well tolerated but can occasionally cause irritation or allergy in sensitive individuals, especially due to lemongrass’ fragrance components.\",\"details\":\"Rosmarinus officinalis (rosemary) leaf extract provides antioxidant and mild antimicrobial benefits and is often used to support skin and scalp health. Althaea officinalis (marshmallow) root extract is valued for its soothing, film-forming, and hydrating properties that can help calm irritated skin. Cymbopogon schoenanthus (lemongrass) extract contributes fragrance and potential antimicrobial effects but, like many aromatic botanicals, may trigger contact dermatitis in people with fragrance or essential oil sensitivities.\",\"category\":\"Botanical extracts / fragrance-related plant ingredients\"}",
+    "lastUpdated": 1765048376376,
+    "createdAt": 1765048376376
+  },
+  "carbomer__personal_care__en": {
+    "analysis": "{\"name\":\"Carbomer\",\"riskLevel\":\"low\",\"summary\":\"Carbomer is a synthetic polymer used as a thickener and gelling agent in many skincare and cosmetic products. It is generally considered safe and non-irritating at typical use levels.\",\"details\":\"Carbomer helps stabilize emulsions and gives products a smooth, gel-like texture without contributing to comedogenicity. It is not a paraben, sulfate, phthalate, formaldehyde releaser, or silicone, and it has a long history of use with a low rate of adverse reactions. Rarely, some individuals may experience mild irritation if a product’s overall formula is not well balanced, but carbomer itself is not regarded as a high-risk ingredient.\",\"category\":\"Polymer thickener / rheology modifier\"}",
+    "lastUpdated": 1765048376376,
+    "createdAt": 1765048376376
+  },
+  "centella asiatica extract__personal_care__en": {
+    "analysis": "{\"name\":\"Centella Asiatica Extract\",\"riskLevel\":\"low\",\"summary\":\"Centella asiatica extract is a botanical ingredient widely used for its soothing, skin-repairing, and anti-redness properties. It is typically well tolerated and considered low risk for most skin types.\",\"details\":\"Also known as gotu kola or cica, Centella asiatica contains triterpenoids such as asiaticoside and madecassoside, which may support skin barrier function and help calm irritation. It does not belong to major concern groups like parabens, sulfates, phthalates, or formaldehyde-releasing preservatives. Allergic reactions are uncommon but can occur in very sensitive individuals, as with any plant extract.\",\"category\":\"Botanical extract / skin-soothing agent\"}",
+    "lastUpdated": 1765048376376,
+    "createdAt": 1765048376376
+  },
+  "tea tree leaf water (melaleuca alternifolia)__personal_care__en": {
+    "analysis": "{\"name\":\"Tea Tree Leaf Water (melaleuca Alternifolia)\",\"riskLevel\":\"low\",\"summary\":\"Tea tree leaf water is a diluted, water-based derivative of tea tree that provides mild antibacterial and refreshing benefits in personal care products.\",\"details\":\"Compared with concentrated tea tree essential oil, tea tree leaf water is typically gentler and less likely to cause irritation, though very sensitive or allergy‑prone skin may still react. It is not associated with major systemic health concerns like parabens, phthalates, or formaldehyde‑releasing preservatives, and is generally considered safe at the low concentrations used in skincare and haircare.\",\"category\":\"Botanical extract / plant water\"}",
+    "lastUpdated": 1765048562364,
+    "createdAt": 1765048562364
+  },
+  "lemon fruit extract (citrus limon)__personal_care__en": {
+    "analysis": "{\"name\":\"Lemon Fruit Extract (citrus Limon)\",\"riskLevel\":\"moderate\",\"summary\":\"Lemon fruit extract is a botanical ingredient used for brightening and antioxidant benefits but can increase skin sensitivity and irritation, especially in sun-exposed areas.\",\"details\":\"This extract may contain natural acids and furocoumarins that can make skin more prone to irritation or photosensitivity, particularly in leave-on products or on sensitive skin. While it is not linked to endocrine disruption like parabens or phthalates, the potential for stinging, redness, and sun sensitivity places it in a moderate risk category for those with reactive skin or high UV exposure.\",\"category\":\"Botanical extract / citrus fruit extract\"}",
+    "lastUpdated": 1765048562364,
+    "createdAt": 1765048562364
+  },
+  "fragrance (parfum)__personal_care__en": {
+    "analysis": "{\"name\":\"Fragrance (parfum)\",\"riskLevel\":\"moderate\",\"summary\":\"Fragrance (parfum) is a generic term for a mixture of scent chemicals and ingredients that give products a pleasant smell. It can trigger skin irritation, allergies, or headaches in sensitive individuals and may contain undisclosed potentially harmful compounds.\",\"details\":\"Because 'fragrance' is a trade-secret mixture, the specific chemicals used are not disclosed, which may include allergens, synthetic musks, and sometimes phthalates or other sensitizing ingredients. It is a common cause of contact dermatitis, especially in people with sensitive or compromised skin, and can also contribute to respiratory irritation or migraines in fragrance-sensitive users. Fragrance-free or transparently labeled products may be preferable for those with allergies, asthma, or very sensitive skin.\",\"category\":\"Fragrance / Sensitizer\"}",
+    "lastUpdated": 1765048566373,
+    "createdAt": 1765048566373
   }
 }
