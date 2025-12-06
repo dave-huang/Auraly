@@ -125,6 +125,13 @@ export function ImageUploader({ onImageCapture, isProcessing = false }: ImageUpl
     }
   };
 
+  const handleCameraKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      cameraInputRef.current?.click();
+    }
+  };
+
   if (previewUrl && !isProcessing) {
     return (
       <div className="p-6 rounded-lg bg-card/60 border border-border/40">
@@ -173,7 +180,15 @@ export function ImageUploader({ onImageCapture, isProcessing = false }: ImageUpl
       />
 
       {/* Primary CTA: Scan with Camera */}
-      <div className="p-10 rounded-lg bg-card/60 border border-border/40 text-center hover-elevate transition-all duration-300">
+      <div
+        className="p-10 rounded-lg bg-card/60 border border-border/40 text-center hover-elevate transition-all duration-300 cursor-pointer"
+        onClick={() => cameraInputRef.current?.click()}
+        onKeyDown={handleCameraKeyDown}
+        tabIndex={0}
+        role="button"
+        aria-label={t('imageUploader.scanWithCamera')}
+        data-testid="button-scan-camera"
+      >
         <div className="w-20 h-20 rounded-full bg-primary/8 flex items-center justify-center mx-auto mb-6 border border-primary/10">
           <ScanLine className="w-9 h-9 text-primary/70" />
         </div>
@@ -182,9 +197,8 @@ export function ImageUploader({ onImageCapture, isProcessing = false }: ImageUpl
         <Button
           variant="default"
           size="lg"
-          onClick={() => cameraInputRef.current?.click()}
           disabled={isProcessing}
-          className="w-full max-w-xs rounded-full"
+          className="w-full max-w-xs rounded-full pointer-events-none"
           data-testid="button-scan-camera"
         >
           <Camera className="mr-2 h-4 w-4" />
