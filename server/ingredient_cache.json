@@ -5548,5 +5548,45 @@
     "analysis": "{\"name\":\"Defatted Soy Flour\",\"riskLevel\":\"moderate\",\"summary\":\"Defatted soy flour is a high-protein soy ingredient with most of the oil removed, commonly used in baked goods and processed foods. It is a major allergen for individuals with soy allergy and may cause reactions in sensitive people.\",\"details\":\"Defatted soy flour provides protein, fiber, and some minerals, but it is a concentrated source of soy proteins that can trigger allergic reactions such as hives, digestive upset, or, rarely, anaphylaxis in soy-allergic individuals. It may also be problematic for some people with thyroid issues or those advised to limit soy intake, especially in large amounts. For most healthy consumers without soy allergy, it is generally safe, but its allergen status raises the overall risk level.\",\"category\":\"Soy-based ingredient, major allergen\"}",
     "lastUpdated": 1764875847275,
     "createdAt": 1764875847275
+  },
+  "coconut__food__en": {
+    "analysis": "{\"name\":\"Coconut\",\"riskLevel\":\"moderate\",\"summary\":\"Coconut is a natural tree nut-derived ingredient that is generally safe and nutritious but can cause allergic reactions in some individuals. It provides fats, fiber, and some minerals.\",\"details\":\"Although coconut is well tolerated by most people, it is classified as a tree nut allergen in many countries and can trigger reactions ranging from mild itching to anaphylaxis in sensitized individuals. It is relatively high in saturated fat, which may be a concern for people who must strictly limit saturated fat intake for cardiovascular reasons, though in normal food amounts it is safe for the general population. Those with known coconut or tree nut allergies should avoid products containing coconut and check labels carefully.\",\"category\":\"Tree nut allergen / natural food ingredient\"}",
+    "lastUpdated": 1764998417623,
+    "createdAt": 1764998417623
+  },
+  "pecan__food__en": {
+    "analysis": "{\"name\":\"Pecan\",\"riskLevel\":\"high\",\"summary\":\"Pecans are tree nuts that provide healthy fats, fiber, and micronutrients but are a major allergen. They can trigger severe allergic reactions in sensitive individuals.\",\"details\":\"Pecans are nutritionally beneficial, offering monounsaturated fats, antioxidants, and some vitamins and minerals, and are generally safe for most people when eaten in moderation. However, as a tree nut, pecans are a common cause of serious allergic reactions, including anaphylaxis, in susceptible individuals, so strict avoidance and label checking are critical for those with nut allergies. People with nut allergies should consult healthcare providers about cross-contact risks in foods containing or processed with tree nuts.\",\"category\":\"Tree nut allergen\"}",
+    "lastUpdated": 1764998487973,
+    "createdAt": 1764998417623
+  },
+  "peanut__food__en": {
+    "analysis": "{\"name\":\"Peanut\",\"riskLevel\":\"high\",\"summary\":\"Peanuts are a nutrient-dense legume but are one of the most common and serious food allergens. They also may be contaminated with aflatoxins if not properly stored or processed.\",\"details\":\"For individuals with peanut allergy, even trace amounts can trigger severe reactions, including anaphylaxis, so strict avoidance and clear labeling are critical. For most people without allergies, peanuts can be part of a healthy diet, but those with liver disease or high aflatoxin exposure risk should be cautious and choose products from reputable manufacturers. In food products, peanuts should be clearly declared as a major allergen.\",\"category\":\"Major food allergen (legume/nut-like)\"}",
+    "lastUpdated": 1764998419380,
+    "createdAt": 1764998419380
+  },
+  "almond__food__en": {
+    "analysis": "{\"name\":\"Almond\",\"riskLevel\":\"high\",\"summary\":\"Almonds are a tree nut rich in healthy fats, fiber, and micronutrients, but they are a common allergen. People with tree nut allergies may experience serious reactions upon exposure.\",\"details\":\"Tree nut allergies, including almond allergy, can cause symptoms ranging from hives and swelling to life-threatening anaphylaxis, so avoidance and clear labeling are essential. For non-allergic individuals, almonds are generally safe and beneficial, though portion control is important due to their high calorie density. Cross-contact with other nuts is also a concern in manufacturing environments.\",\"category\":\"Major food allergen (tree nut)\"}",
+    "lastUpdated": 1764998419380,
+    "createdAt": 1764998419380
+  },
+  "cashew__food__en": {
+    "analysis": "{\"name\":\"Cashew\",\"riskLevel\":\"high\",\"summary\":\"Cashews are a tree nut that provide healthy fats and minerals but are a potent allergen for some individuals. Allergic reactions to cashews can be particularly severe.\",\"details\":\"Cashew allergy is a type of tree nut allergy and can provoke strong immune responses, including anaphylaxis, even in small amounts, so strict avoidance and clear allergen labeling are required. For those without allergies, cashews are generally safe when properly processed, but raw or improperly handled cashews may contain irritating compounds from the shell. Manufacturing facilities must manage cross-contact with other nuts and allergens.\",\"category\":\"Major food allergen (tree nut)\"}",
+    "lastUpdated": 1764998419380,
+    "createdAt": 1764998419380
+  },
+  "ground coffee beans (contains milk)__food__en": {
+    "analysis": "{\"name\":\"Ground Coffee Beans (contains Milk)\",\"riskLevel\":\"moderate\",\"summary\":\"Ground coffee beans are generally safe for most healthy adults but can pose issues due to caffeine content and the presence of milk, a common allergen. People sensitive to caffeine or allergic/intolerant to dairy should exercise caution.\",\"details\":\"Ground coffee beans naturally contain caffeine, which in excess may cause jitteriness, insomnia, increased heart rate, or digestive upset, especially in sensitive individuals, children, pregnant people, or those with heart conditions. The declared presence of milk introduces a dairy allergen risk, which can trigger reactions ranging from mild digestive discomfort to severe allergic responses in susceptible individuals or those with lactose intolerance or milk protein allergy. Overall safety depends on total caffeine intake and whether the consumer can safely tolerate milk.\",\"category\":\"Beverage ingredient with caffeine and dairy allergen\"}",
+    "lastUpdated": 1764998511828,
+    "createdAt": 1764998419748
+  },
+  "soy__food__en": {
+    "analysis": "{\"name\":\"Soy\",\"riskLevel\":\"high\",\"summary\":\"Soy is a common major food allergen that can trigger reactions ranging from mild to severe in sensitive individuals. For most people it is safe, but for those with soy allergy it can be dangerous.\",\"details\":\"Soy proteins can provoke immune reactions that include hives, digestive upset, or potentially life-threatening anaphylaxis in allergic individuals. It may also be a concern for people advised to limit phytoestrogens, such as certain hormone-sensitive conditions, though typical dietary amounts are generally considered safe for most. Because soy allergy is relatively common and can be severe, strict avoidance is required for affected individuals.\",\"category\":\"Legume and major allergen\"}",
+    "lastUpdated": 1764998419748,
+    "createdAt": 1764998419748
+  },
+  "wheat (may contain egg)__food__en": {
+    "analysis": "{\"name\":\"Wheat (may Contain Egg)\",\"riskLevel\":\"high\",\"summary\":\"Wheat is a common cereal grain that naturally contains gluten and is a major allergen. This product may also contain egg, another major allergen, due to possible cross-contact during manufacturing.\",\"details\":\"For individuals with celiac disease, non-celiac gluten sensitivity, or wheat allergy, wheat can trigger significant adverse reactions and should be strictly avoided. The advisory that it may contain egg indicates potential cross-contamination, posing an additional risk for people with egg allergies even if egg is not an intentional ingredient. For those without wheat or egg-related conditions, it is generally safe as a staple carbohydrate source, but it remains unsuitable for gluten-free diets.\",\"category\":\"Cereal grain and major allergens (gluten, egg)\"}",
+    "lastUpdated": 1764998515522,
+    "createdAt": 1764998419750
   }
 }
