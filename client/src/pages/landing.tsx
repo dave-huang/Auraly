@@ -79,10 +79,6 @@ export default function Landing() {
               <Zap className="w-4 h-4 text-primary/70" />
               <span className="font-light">{t('landing.hero.trust.instant')}</span>
             </div>
-            <div className="flex items-center gap-2.5 text-muted-foreground">
-              <Shield className="w-4 h-4 text-primary/70" />
-              <span className="font-light">{t('landing.hero.trust.noAccount')}</span>
-            </div>
           </div>
         </div>
       </section>
