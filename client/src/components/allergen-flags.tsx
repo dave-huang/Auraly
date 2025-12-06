@@ -73,40 +73,54 @@ export function AllergenFlags({ ingredients }: AllergenFlagsProps) {
 
   return (
     <Card className={cn(
-      "mb-6 transition-all",
-      hasDetectedAllergens ? "border-orange-500/50 bg-orange-50/50 dark:bg-orange-950/20" : ""
+      "mb-8 transition-all rounded-xl",
+      hasDetectedAllergens 
+        ? "border-amber-400/30 bg-amber-50/40 dark:bg-amber-950/15" 
+        : "bg-card/50 border-border/30"
     )} data-testid="allergen-flags-card">
-      <CardHeader className="pb-2">
-        <CardTitle className="flex items-center gap-2 text-base">
-          <AlertTriangle className={cn(
-            "w-5 h-5",
-            hasDetectedAllergens ? "text-orange-500" : "text-muted-foreground"
-          )} />
-          {t('allergens.title')}
-        </CardTitle>
-        <p className="text-xs text-muted-foreground">
-          {t('allergens.subtitle')}
-        </p>
+      <CardHeader className="pb-3 pt-5 px-6">
+        <div className="flex items-center gap-3">
+          <div className={cn(
+            "p-2 rounded-full",
+            hasDetectedAllergens 
+              ? "bg-amber-100/60 dark:bg-amber-900/30" 
+              : "bg-muted/50"
+          )}>
+            <AlertTriangle className={cn(
+              "w-4 h-4",
+              hasDetectedAllergens ? "text-amber-600 dark:text-amber-400" : "text-muted-foreground"
+            )} />
+          </div>
+          <div>
+            <CardTitle className="text-base font-display">
+              {t('allergens.title')}
+            </CardTitle>
+            <p className="text-xs text-muted-foreground/70 font-light mt-0.5">
+              {t('allergens.subtitle')}
+            </p>
+          </div>
+        </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="px-6 pb-5">
         {!hasDetectedAllergens ? (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground font-light">
             {t('allergens.noFlags')}
           </p>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-5">
             {Object.entries(groupedAllergens).map(([groupKey, allergens]) => {
               if (allergens.length === 0) return null;
               const GroupIcon = allergenGroupInfo[groupKey].icon;
+              const groupColor = groupKey === 'food' ? "amber" : groupKey === 'cosmetic' ? "rose" : "violet";
               return (
                 <div key={groupKey}>
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-2 mb-3">
                     <GroupIcon className={cn(
-                      "w-4 h-4",
-                      groupKey === 'food' ? "text-orange-500" :
-                      groupKey === 'cosmetic' ? "text-pink-500" : "text-purple-500"
+                      "w-3.5 h-3.5",
+                      groupKey === 'food' ? "text-amber-500/70" :
+                      groupKey === 'cosmetic' ? "text-rose-400/70" : "text-violet-400/70"
                     )} />
-                    <span className="text-xs font-medium text-muted-foreground">
+                    <span className="text-xs text-muted-foreground/80 font-medium uppercase tracking-wide">
                       {t(`allergens.groups.${groupKey}`)}
                     </span>
                   </div>
@@ -115,14 +129,24 @@ export function AllergenFlags({ ingredients }: AllergenFlagsProps) {
                       <div 
                         key={`${allergen.category}-${allergen.ingredientName}-${index}`}
                         className={cn(
-                          "text-xs px-2.5 py-1.5 rounded-full border",
-                          "bg-orange-100 text-orange-800 border-orange-200",
-                          "dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-800"
+                          "text-xs px-3 py-1.5 rounded-full border",
+                          groupKey === 'food' 
+                            ? "bg-amber-100/50 text-amber-700 border-amber-200/50 dark:bg-amber-900/20 dark:text-amber-300 dark:border-amber-700/30"
+                            : groupKey === 'cosmetic'
+                            ? "bg-rose-100/50 text-rose-700 border-rose-200/50 dark:bg-rose-900/20 dark:text-rose-300 dark:border-rose-700/30"
+                            : "bg-violet-100/50 text-violet-700 border-violet-200/50 dark:bg-violet-900/20 dark:text-violet-300 dark:border-violet-700/30"
                         )}
                         data-testid={`allergen-flag-${allergen.category}`}
                       >
                         <span className="font-medium">{t(`allergens.categories.${allergen.category}`)}</span>
-                        <span className="text-orange-600/70 dark:text-orange-400/70 ml-1">
+                        <span className={cn(
+                          "ml-1.5 font-light",
+                          groupKey === 'food' 
+                            ? "text-amber-600/60 dark:text-amber-400/60"
+                            : groupKey === 'cosmetic'
+                            ? "text-rose-600/60 dark:text-rose-400/60"
+                            : "text-violet-600/60 dark:text-violet-400/60"
+                        )}>
                           ({allergen.ingredientName})
                         </span>
                       </div>
