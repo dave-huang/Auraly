@@ -290,15 +290,15 @@ export default function HistoryPage() {
 
         {allScans.length > 0 && (
           <Tabs value={categoryFilter} onValueChange={(v) => setCategoryFilter(v as CategoryFilter)} className="mb-6">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="all" data-testid="filter-all">
+            <TabsList className="flex w-full gap-1 p-1 h-auto">
+              <TabsTrigger value="all" className="flex-[0.8] py-2" data-testid="filter-all">
                 {t('history.filters.all')}
               </TabsTrigger>
-              <TabsTrigger value="food" data-testid="filter-food">
+              <TabsTrigger value="food" className="flex-1 py-2" data-testid="filter-food">
                 <UtensilsCrossed className="w-4 h-4 mr-1" />
                 {t('history.filters.food')}
               </TabsTrigger>
-              <TabsTrigger value="personal_care" data-testid="filter-personal-care">
+              <TabsTrigger value="personal_care" className="flex-1 py-2" data-testid="filter-personal-care">
                 <Sparkles className="w-4 h-4 mr-1" />
                 {t('history.filters.personal_care')}
               </TabsTrigger>
