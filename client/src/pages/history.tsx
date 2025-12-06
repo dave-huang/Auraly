@@ -368,14 +368,14 @@ export default function HistoryPage() {
                           <h3 className="font-display text-base truncate" data-testid={`text-product-name-${scan.id}`}>
                             {scan.productName}
                           </h3>
-                          <Badge className="whitespace-nowrap inline-flex items-center rounded-md px-2.5 py-0.5 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover-elevate border-transparent shadow-xs bg-red-50/50 dark:bg-red-950/15 text-red-700 dark:text-red-400 border-0 text-xs flex-shrink-0 pt-[0px] pb-[0px] pl-[0px] pr-[0px]">
+                          <Badge className={`${riskConf.bgColor} ${riskConf.textColor} border-0 text-xs flex-shrink-0`}>
                             {t(`results.riskLevels.${adjustedRisk}`)}
                           </Badge>
                         </div>
                         
                         {/* Meta: Category */}
                         <div className="mb-3">
-                          <Badge variant="outline" className="whitespace-nowrap inline-flex items-center rounded-md px-2.5 py-0.5 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover-elevate [border-color:var(--badge-outline)] shadow-xs bg-orange-50/50 dark:bg-orange-950/15 text-orange-700 dark:text-orange-400 border-0 text-xs pl-[0px] pr-[0px] pt-[0px] pb-[0px]">
+                          <Badge variant="outline" className={`${catConf.bgColor} ${catConf.textColor} border-0 text-xs`}>
                             <CatIcon className="w-3 h-3 mr-1" />
                             {t(`history.categories.${normalizedCat}`)}
                           </Badge>
