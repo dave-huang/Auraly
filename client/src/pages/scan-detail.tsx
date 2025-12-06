@@ -238,7 +238,6 @@ export default function ScanDetailPage() {
           </div>
         </div>
       </header>
-
       {/* Main Content */}
       <main className="max-w-3xl mx-auto px-6 py-8">
         {/* Product Info Card */}
@@ -321,7 +320,7 @@ export default function ScanDetailPage() {
               
               {/* Meta Info */}
               <div className="flex items-center gap-3 mb-3">
-                <Badge variant="outline" className={`text-xs ${scan.productCategory === 'food' ? 'bg-orange-50/50 dark:bg-orange-950/15 text-orange-700 dark:text-orange-400' : 'bg-violet-50/50 dark:bg-violet-950/15 text-violet-700 dark:text-violet-400'} border-0`}>
+                <Badge variant="outline" className="whitespace-nowrap inline-flex items-center rounded-md px-2.5 py-0.5 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover-elevate [border-color:var(--badge-outline)] shadow-xs text-xs bg-orange-50/50 dark:bg-orange-950/15 text-orange-700 dark:text-orange-400 border-0 pl-[0px] pr-[0px]">
                   <CategoryIcon className="w-3 h-3 mr-1" />
                   {t(`history.categories.${scan.productCategory === 'food' ? 'food' : 'personal_care'}`)}
                 </Badge>
