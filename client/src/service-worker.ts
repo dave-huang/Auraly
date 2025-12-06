@@ -26,6 +26,9 @@ self.addEventListener('message', (event: any) => {
   }
 });
 
+// Track OCR completion per request to avoid sending duplicate notifications
+const ocrNotified: Record<string, boolean> = {};
+
 async function pollAnalysisStatus(requestId: string, port: any) {
   try {
     const response = await fetch(`/api/analysis-status/${requestId}`);
@@ -39,11 +42,12 @@ async function pollAnalysisStatus(requestId: string, port: any) {
         data
       });
       
-      // Stop polling
+      // Stop polling and cleanup
       if (activePolling[requestId]) {
         clearInterval(activePolling[requestId]);
         delete activePolling[requestId];
       }
+      delete ocrNotified[requestId];
     } else if (data.status === 'failed') {
       console.log(`[SERVICE-WORKER] Analysis failed. Notifying client.`);
       port.postMessage({
@@ -52,11 +56,19 @@ async function pollAnalysisStatus(requestId: string, port: any) {
         error: data.error
       });
       
-      // Stop polling
+      // Stop polling and cleanup
       if (activePolling[requestId]) {
         clearInterval(activePolling[requestId]);
         delete activePolling[requestId];
       }
+      delete ocrNotified[requestId];
+    } else if (data.status === 'ocr_complete' && !ocrNotified[requestId]) {
+      console.log(`[SERVICE-WORKER] OCR complete! Notifying client.`);
+      port.postMessage({
+        type: 'OCR_COMPLETE',
+        requestId
+      });
+      ocrNotified[requestId] = true;
     }
   } catch (error) {
     console.error(`[SERVICE-WORKER] Error polling analysis status:`, error);

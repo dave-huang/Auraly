@@ -17,9 +17,10 @@ import { useTranslation } from "react-i18next";
 import { applyRiskPreferences, hasActivePreferences } from "@/lib/riskAdjustment";
 
 // Helper function for direct polling fallback
-const directPoll = async (requestId: string, resolve: any, reject: any) => {
+const directPoll = async (requestId: string, resolve: any, reject: any, onOcrComplete?: () => void) => {
   const maxAttempts = 300; // 5 minutes with 1s polling
   let attempts = 0;
+  let ocrNotified = false;
   
   while (attempts < maxAttempts) {
     try {
@@ -37,8 +38,14 @@ const directPoll = async (requestId: string, resolve: any, reject: any) => {
         return;
       }
       
+      if (statusData.status === 'ocr_complete' && !ocrNotified) {
+        console.log(`[DIRECT-POLL] OCR completed!`);
+        ocrNotified = true;
+        onOcrComplete?.();
+      }
+      
       // Still processing - wait 1 second before next poll
-      console.log(`[DIRECT-POLL] Status: processing (attempt ${attempts + 1}/${maxAttempts})`);
+      console.log(`[DIRECT-POLL] Status: ${statusData.status} (attempt ${attempts + 1}/${maxAttempts})`);
       await new Promise(r => setTimeout(r, 1000));
       attempts++;
       
@@ -62,11 +69,13 @@ export default function ResultsPage() {
   const [cachedOcrText, setCachedOcrText] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
   const [savedScanId, setSavedScanId] = useState<number | null>(null);
+  const [ocrComplete, setOcrComplete] = useState(false);
   const wakeLockRef = useRef<any>(null);
   const hasSavedToHistoryRef = useRef<boolean>(false);
   const currentRequestIdRef = useRef<string | null>(null);
   const resolveRef = useRef<((value: AnalysisResult) => void) | null>(null);
   const rejectRef = useRef<((reason: any) => void) | null>(null);
+  const onOcrCompleteRef = useRef<(() => void) | null>(null);
 
   const preferencesQuery = useQuery<{ preferences: RiskPreferences }>({
     queryKey: ['/api/user/preferences'],
@@ -147,6 +156,9 @@ export default function ResultsPage() {
               } else if (msg.type === 'ANALYSIS_FAILED') {
                 console.log('[RESULT-PAGE] Received ANALYSIS_FAILED from Service Worker');
                 reject(new Error(msg.error || 'Analysis failed'));
+              } else if (msg.type === 'OCR_COMPLETE') {
+                console.log('[RESULT-PAGE] Received OCR_COMPLETE from Service Worker');
+                onOcrCompleteRef.current?.();
               }
             };
             
@@ -159,15 +171,15 @@ export default function ResultsPage() {
             } else {
               // Fallback: Service Worker not active yet, use direct polling
               console.log('[RESULT-PAGE] Service Worker not ready, using direct polling fallback');
-              directPoll(requestId, resolve, reject);
+              directPoll(requestId, resolve, reject, onOcrCompleteRef.current || undefined);
             }
           }).catch((error: any) => {
             console.error('[SERVICE-WORKER] Registration failed, falling back to direct polling:', error);
-            directPoll(requestId, resolve, reject);
+            directPoll(requestId, resolve, reject, onOcrCompleteRef.current || undefined);
           });
         } else {
           console.log('[RESULT-PAGE] Service Workers not supported, using direct polling');
-          directPoll(requestId, resolve, reject);
+          directPoll(requestId, resolve, reject, onOcrCompleteRef.current || undefined);
         }
       });
     },
@@ -305,7 +317,7 @@ export default function ResultsPage() {
         // Resume polling if there's an active request
         if (currentRequestIdRef.current && resolveRef.current && rejectRef.current) {
           console.log('[VISIBILITY] Resuming polling for request:', currentRequestIdRef.current);
-          directPoll(currentRequestIdRef.current, resolveRef.current, rejectRef.current);
+          directPoll(currentRequestIdRef.current, resolveRef.current, rejectRef.current, onOcrCompleteRef.current || undefined);
         }
       }
     };
@@ -314,26 +326,58 @@ export default function ResultsPage() {
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, [analyzeMutation.isPending]);
 
-  // Animate progress bar over 20 seconds
+  // Set up OCR complete callback and reset state when mutation starts
   useEffect(() => {
     if (analyzeMutation.isPending) {
-      setProgress(0);
-      const duration = 20000; // 20 seconds
-      const interval = 100; // Update every 100ms
-      const increment = (95 / duration) * interval; // Fill to 95% over 20 seconds
-      
-      const timer = setInterval(() => {
-        setProgress(prev => {
-          const next = prev + increment;
-          return next >= 95 ? 95 : next; // Cap at 95%
-        });
-      }, interval);
-      
-      return () => clearInterval(timer);
+      setOcrComplete(false);
+      onOcrCompleteRef.current = () => {
+        console.log('[PROGRESS] OCR phase complete, transitioning to analysis phase');
+        setOcrComplete(true);
+      };
+    } else {
+      setOcrComplete(false);
+      onOcrCompleteRef.current = null;
+    }
+  }, [analyzeMutation.isPending]);
+
+  // Animate progress bar with two phases based on actual OCR completion
+  useEffect(() => {
+    if (analyzeMutation.isPending) {
+      if (!ocrComplete) {
+        // Phase 1: OCR - animate from 0 to 40% over ~8 seconds (typical OCR time)
+        setProgress(0);
+        const ocrDuration = 8000;
+        const interval = 100;
+        const increment = (40 / ocrDuration) * interval;
+        
+        const timer = setInterval(() => {
+          setProgress(prev => {
+            const next = prev + increment;
+            return next >= 40 ? 40 : next; // Cap at 40% during OCR phase
+          });
+        }, interval);
+        
+        return () => clearInterval(timer);
+      } else {
+        // Phase 2: Analysis - animate from 40% to 95% over ~12 seconds
+        setProgress(40);
+        const analysisDuration = 12000;
+        const interval = 100;
+        const increment = (55 / analysisDuration) * interval;
+        
+        const timer = setInterval(() => {
+          setProgress(prev => {
+            const next = prev + increment;
+            return next >= 95 ? 95 : next; // Cap at 95%
+          });
+        }, interval);
+        
+        return () => clearInterval(timer);
+      }
     } else {
       setProgress(0);
     }
-  }, [analyzeMutation.isPending]);
+  }, [analyzeMutation.isPending, ocrComplete]);
 
   // Map risk levels to sort order (higher number = higher priority)
   const riskLevelOrder: Record<RiskLevel, number> = {
@@ -360,15 +404,14 @@ export default function ResultsPage() {
     hasActivePreferences(preferencesQuery.data.preferences);
 
   if (analyzeMutation.isPending) {
-    const isPhase2 = progress >= 40;
     const phaseTitle = retryCount > 0 
       ? t('results.retrying.title', { attempt: retryCount + 1 })
-      : isPhase2 
+      : ocrComplete 
         ? t('results.analyzing.phase2.title')
         : t('results.analyzing.phase1.title');
     const phaseDescription = retryCount > 0 
       ? t('results.retrying.description')
-      : isPhase2 
+      : ocrComplete 
         ? t('results.analyzing.phase2.description')
         : t('results.analyzing.phase1.description');
 
@@ -398,12 +441,12 @@ export default function ResultsPage() {
                 />
               </div>
               <div className="flex justify-center gap-4">
-                <div className={`flex items-center gap-2 text-xs ${!isPhase2 ? 'text-primary font-medium' : 'text-muted-foreground/60'}`}>
-                  <div className={`w-2 h-2 rounded-full ${!isPhase2 ? 'bg-primary' : 'bg-muted-foreground/30'}`} />
+                <div className={`flex items-center gap-2 text-xs ${!ocrComplete ? 'text-primary font-medium' : 'text-muted-foreground/60'}`}>
+                  <div className={`w-2 h-2 rounded-full ${!ocrComplete ? 'bg-primary' : 'bg-muted-foreground/30'}`} />
                   <span>{t('results.analyzing.phase1.title')}</span>
                 </div>
-                <div className={`flex items-center gap-2 text-xs ${isPhase2 ? 'text-primary font-medium' : 'text-muted-foreground/60'}`}>
-                  <div className={`w-2 h-2 rounded-full ${isPhase2 ? 'bg-primary' : 'bg-muted-foreground/30'}`} />
+                <div className={`flex items-center gap-2 text-xs ${ocrComplete ? 'text-primary font-medium' : 'text-muted-foreground/60'}`}>
+                  <div className={`w-2 h-2 rounded-full ${ocrComplete ? 'bg-primary' : 'bg-muted-foreground/30'}`} />
                   <span>{t('results.analyzing.phase2.title')}</span>
                 </div>
               </div>
