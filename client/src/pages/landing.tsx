@@ -35,7 +35,7 @@ export default function Landing() {
           <div className="mb-10 inline-flex flex-col items-center">
             <div className="flex items-center gap-2.5 mb-8">
               <div className="p-2.5 bg-primary/10 rounded-full">
-                <Globe className="w-5 h-5 text-primary" />
+                <Leaf className="w-5 h-5 text-primary" />
               </div>
               <span className="text-label">{t('landing.hero.guardian')}</span>
             </div>
