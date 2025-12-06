@@ -190,7 +190,15 @@
     "analyzing": {
       "title": "Analyzing Ingredients",
       "description": "Extracting text and identifying potential health risks...",
-      "keepActive": "Keep this app active during analysis for best results"
+      "keepActive": "Keep this app active during analysis for best results",
+      "phase1": {
+        "title": "Reading Label",
+        "description": "Extracting text from your image..."
+      },
+      "phase2": {
+        "title": "Analyzing Ingredients",
+        "description": "Identifying potential health risks..."
+      }
     },
     "retrying": {
       "title": "Retrying (Attempt {{attempt}})",

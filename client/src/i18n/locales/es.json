@@ -190,7 +190,15 @@
     "analyzing": {
       "title": "Analizando Ingredientes",
       "description": "Extrayendo texto e identificando posibles riesgos para la salud...",
-      "keepActive": "Mantén esta aplicación activa durante el análisis para mejores resultados"
+      "keepActive": "Mantén esta aplicación activa durante el análisis para mejores resultados",
+      "phase1": {
+        "title": "Leyendo Etiqueta",
+        "description": "Extrayendo texto de tu imagen..."
+      },
+      "phase2": {
+        "title": "Analizando Ingredientes",
+        "description": "Identificando posibles riesgos para la salud..."
+      }
     },
     "retrying": {
       "title": "Reintentando (Intento {{attempt}})",

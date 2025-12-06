@@ -360,33 +360,56 @@ export default function ResultsPage() {
     hasActivePreferences(preferencesQuery.data.preferences);
 
   if (analyzeMutation.isPending) {
+    const isPhase2 = progress >= 40;
+    const phaseTitle = retryCount > 0 
+      ? t('results.retrying.title', { attempt: retryCount + 1 })
+      : isPhase2 
+        ? t('results.analyzing.phase2.title')
+        : t('results.analyzing.phase1.title');
+    const phaseDescription = retryCount > 0 
+      ? t('results.retrying.description')
+      : isPhase2 
+        ? t('results.analyzing.phase2.description')
+        : t('results.analyzing.phase1.description');
+
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-6">
-        <div className="p-10 max-w-md w-full rounded-lg bg-card/60 border border-border/40 text-center">
-          <div className="flex flex-col items-center gap-6">
+        <div className="p-12 max-w-md w-full rounded-xl bg-card/50 border border-border/30 text-center shadow-sm">
+          <div className="flex flex-col items-center gap-8">
             <div className="relative">
-              <div className="absolute inset-0 bg-primary/10 rounded-full blur-xl" />
-              <Loader2 className="w-14 h-14 text-primary/70 animate-spin relative" />
+              <div className="absolute inset-0 bg-primary/10 rounded-full blur-2xl scale-150" />
+              <div className="w-20 h-20 rounded-full bg-primary/5 border border-primary/20 flex items-center justify-center relative">
+                <Loader2 className="w-10 h-10 text-primary animate-spin" />
+              </div>
             </div>
-            <div>
-              <h3 className="font-medium text-xl mb-3">
-                {retryCount > 0 ? t('results.retrying.title', { attempt: retryCount + 1 }) : t('results.analyzing.title')}
+            <div className="space-y-3">
+              <h3 className="font-display text-2xl text-foreground">
+                {phaseTitle}
               </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {retryCount > 0 
-                  ? t('results.retrying.description') 
-                  : t('results.analyzing.description')
-                }
+              <p className="text-sm text-muted-foreground font-light leading-relaxed max-w-xs mx-auto">
+                {phaseDescription}
               </p>
             </div>
-            <div className="w-full bg-muted/60 rounded-full h-1.5 overflow-hidden">
-              <div 
-                className="h-full bg-primary/60 rounded-full transition-all duration-500 ease-out"
-                style={{ width: `${progress}%` }}
-              />
+            <div className="w-full space-y-3">
+              <div className="w-full bg-muted/40 rounded-full h-2 overflow-hidden">
+                <div 
+                  className="h-full bg-primary rounded-full transition-all duration-500 ease-out"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+              <div className="flex justify-center gap-4">
+                <div className={`flex items-center gap-2 text-xs ${!isPhase2 ? 'text-primary font-medium' : 'text-muted-foreground/60'}`}>
+                  <div className={`w-2 h-2 rounded-full ${!isPhase2 ? 'bg-primary' : 'bg-muted-foreground/30'}`} />
+                  <span>{t('results.analyzing.phase1.title')}</span>
+                </div>
+                <div className={`flex items-center gap-2 text-xs ${isPhase2 ? 'text-primary font-medium' : 'text-muted-foreground/60'}`}>
+                  <div className={`w-2 h-2 rounded-full ${isPhase2 ? 'bg-primary' : 'bg-muted-foreground/30'}`} />
+                  <span>{t('results.analyzing.phase2.title')}</span>
+                </div>
+              </div>
             </div>
             {retryCount > 0 && (
-              <p className="text-xs text-muted-foreground font-light">
+              <p className="text-xs text-muted-foreground/70 font-light">
                 {cachedOcrText ? t('results.retrying.cached') : t('results.retrying.full')}
               </p>
             )}

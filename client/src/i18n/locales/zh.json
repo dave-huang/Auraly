@@ -190,7 +190,15 @@
     "analyzing": {
       "title": "正在分析成分",
       "description": "正在提取文本并识别潜在健康风险...",
-      "keepActive": "分析期间请保持应用活跃以获得最佳效果"
+      "keepActive": "分析期间请保持应用活跃以获得最佳效果",
+      "phase1": {
+        "title": "读取标签",
+        "description": "正在从图片中提取文字..."
+      },
+      "phase2": {
+        "title": "分析成分",
+        "description": "正在识别潜在健康风险..."
+      }
     },
     "retrying": {
       "title": "重试中（第 {{attempt}} 次尝试）",
