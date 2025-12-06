@@ -790,8 +790,8 @@
     "createdAt": 1764378950734
   },
   "salt__food__en": {
-    "analysis": "{\"name\":\"Salt\",\"riskLevel\":\"moderate\",\"summary\":\"Salt is commonly used for seasoning and preservation but can contribute to high sodium intake. Excessive sodium consumption is associated with high blood pressure and increased cardiovascular risk.\",\"details\":\"In normal amounts, salt is safe for most people and is essential for fluid balance and nerve function. However, frequent consumption of high-salt foods can lead to elevated blood pressure, increased risk of heart disease and stroke, and may worsen kidney problems and fluid retention. Individuals with hypertension, kidney disease, or heart failure should pay particular attention to limiting added salt and overall sodium intake.\",\"category\":\"Sodium / Mineral / Flavoring\"}",
-    "lastUpdated": 1764874553633,
+    "analysis": "{\"name\":\"Salt\",\"riskLevel\":\"moderate\",\"summary\":\"Salt is commonly used to enhance flavor and preserve food but can contribute to high sodium intake. Excessive sodium consumption is associated with high blood pressure and increased cardiovascular risk.\",\"details\":\"In normal amounts, salt (sodium chloride) is essential for fluid balance, nerve function, and muscle contraction. However, frequent consumption of high-salt foods can lead to elevated blood pressure, increased risk of heart disease and stroke, and may worsen kidney problems in susceptible individuals. People with hypertension, kidney disease, or those on sodium-restricted diets should monitor their salt intake carefully.\",\"category\":\"Mineral / Sodium source\"}",
+    "lastUpdated": 1765044502023,
     "createdAt": 1764379123272
   },
   "corn starch__food__en": {
@@ -935,8 +935,8 @@
     "createdAt": 1764379125713
   },
   "cocoa powder (processed with alkali)__food__en": {
-    "analysis": "{\"name\":\"Cocoa Powder (processed With Alkali)\",\"riskLevel\":\"low\",\"summary\":\"Cocoa powder processed with alkali (also called Dutch-processed cocoa) is used to reduce acidity and create a smoother, milder chocolate flavor. For most people it is generally safe when consumed in normal food amounts.\",\"details\":\"Alkalization lowers the natural acidity of cocoa and can reduce some beneficial polyphenols, but it does not introduce major safety concerns for healthy individuals. Cocoa naturally contains small amounts of caffeine and theobromine, which may be irritating in large amounts for those sensitive to stimulants. People with chocolate allergies or advised to limit stimulants should monitor intake, but for the general population this ingredient is considered low risk in typical serving sizes.\",\"category\":\"Cocoa and chocolate ingredient\"}",
-    "lastUpdated": 1764874556647,
+    "analysis": "{\"name\":\"Cocoa Powder (processed With Alkali)\",\"riskLevel\":\"low\",\"summary\":\"Cocoa powder processed with alkali, also called Dutch-processed cocoa, is generally safe for most people when consumed in typical food amounts. The alkalization reduces acidity and can slightly lower some antioxidant content compared to natural cocoa.\",\"details\":\"Dutch-processing uses an alkaline solution to mellow flavor and darken color, which may modestly reduce certain flavonoids but does not introduce major safety concerns. Cocoa naturally contains small amounts of caffeine and theobromine, so very sensitive individuals or those advised to limit stimulants should moderate intake. People with cocoa allergy or intolerance should avoid it, but for the general population this ingredient poses a low health risk when eaten as part of a balanced diet.\",\"category\":\"Cocoa and chocolate ingredient\"}",
+    "lastUpdated": 1765044502919,
     "createdAt": 1764379125713
   },
   "enzymes__food__en": {

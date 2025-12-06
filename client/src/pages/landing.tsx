@@ -224,7 +224,7 @@ export default function Landing() {
                 <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
               </div>
               <div className="absolute bottom-0 left-0 right-0 p-6">
-                <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mb-3 backdrop-blur-sm">
+                <div className="w-10 h-10 bg-background/60 rounded-full flex items-center justify-center mb-3 backdrop-blur-sm border border-primary/10">
                   <Globe className="w-5 h-5 text-primary" />
                 </div>
                 <h3 className="font-medium mb-1.5">{t('landing.features.multilang.title')}</h3>
@@ -243,7 +243,7 @@ export default function Landing() {
                 <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
               </div>
               <div className="absolute bottom-0 left-0 right-0 p-6">
-                <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mb-3 backdrop-blur-sm">
+                <div className="w-10 h-10 bg-background/60 rounded-full flex items-center justify-center mb-3 backdrop-blur-sm border border-primary/10">
                   <Sparkles className="w-5 h-5 text-primary" />
                 </div>
                 <h3 className="font-medium mb-1.5">{t('landing.features.smart.title')}</h3>
@@ -262,7 +262,7 @@ export default function Landing() {
                 <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
               </div>
               <div className="absolute bottom-0 left-0 right-0 p-6">
-                <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mb-3 backdrop-blur-sm">
+                <div className="w-10 h-10 bg-background/60 rounded-full flex items-center justify-center mb-3 backdrop-blur-sm border border-primary/10">
                   <Shield className="w-5 h-5 text-primary" />
                 </div>
                 <h3 className="font-medium mb-1.5">{t('landing.features.risk.title')}</h3>
