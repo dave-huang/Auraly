@@ -368,7 +368,7 @@ export default function HistoryPage() {
                           <h3 className="font-display text-base truncate" data-testid={`text-product-name-${scan.id}`}>
                             {scan.productName}
                           </h3>
-                          <Badge className="whitespace-nowrap inline-flex items-center rounded-md px-2.5 py-0.5 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover-elevate border-transparent shadow-xs bg-amber-50/50 dark:bg-amber-950/15 text-amber-700 dark:text-amber-400 border-0 text-xs flex-shrink-0 pl-[0px] pr-[0px] pt-[3px] pb-[3px]">
+                          <Badge className={`${riskConf.bgColor} ${riskConf.textColor} border-0 text-xs flex-shrink-0`}>
                             {t(`results.riskLevels.${adjustedRisk}`)}
                           </Badge>
                         </div>
