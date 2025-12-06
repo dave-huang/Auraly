@@ -375,7 +375,7 @@ export default function HistoryPage() {
                         
                         {/* Meta: Category */}
                         <div className="mb-3">
-                          <Badge variant="outline" className="bg-muted/50 dark:bg-muted/20 text-muted-foreground border-0 text-xs">
+                          <Badge variant="outline" className="bg-muted/50 dark:bg-muted/20 text-muted-foreground border-0 text-xs pl-[0px] pr-[0px] pt-[0px] pb-[0px]">
                             <CatIcon className="w-3 h-3 mr-1" />
                             {t(`history.categories.${normalizedCat}`)}
                           </Badge>
