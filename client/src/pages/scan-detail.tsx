@@ -2,7 +2,6 @@ import { useState, useMemo } from "react";
 import { useLocation, Link, useParams } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -16,7 +15,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { ArrowLeft, Trash2, Search, Loader2, AlertTriangle, Clock, Pencil, Check, X, Settings, Leaf, Sparkles, UtensilsCrossed } from "lucide-react";
+import { ArrowLeft, Trash2, Search, Loader2, AlertTriangle, Settings, Leaf } from "lucide-react";
+import { ProductInfoCard } from "@/components/product-info-card";
 import { IngredientCard } from "@/components/ingredient-card";
 import { RiskSummary } from "@/components/risk-summary";
 import { AllergenFlags } from "@/components/allergen-flags";
@@ -38,8 +38,6 @@ export default function ScanDetailPage() {
   const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedRisk, setSelectedRisk] = useState<RiskLevel | "all">("all");
-  const [isEditingName, setIsEditingName] = useState(false);
-  const [editedName, setEditedName] = useState("");
 
   const { data: user } = useQuery<User>({
     queryKey: ['/api/auth/user'],
@@ -91,7 +89,6 @@ export default function ScanDetailPage() {
         title: t('results.productName.updated'),
         description: t('results.productName.updatedDesc'),
       });
-      setIsEditingName(false);
     },
     onError: () => {
       toast({
@@ -185,8 +182,6 @@ export default function ScanDetailPage() {
     );
   }
 
-  const CategoryIcon = scan.productCategory === 'food' ? UtensilsCrossed : Sparkles;
-
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -241,99 +236,14 @@ export default function ScanDetailPage() {
       {/* Main Content */}
       <main className="max-w-3xl mx-auto px-6 py-8">
         {/* Product Info Card */}
-        <Card className="p-6 mb-8">
-          <div className="flex gap-5">
-            {/* Product Image */}
-            {scan.originalImageUrl && (
-              <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 bg-muted/50 border border-border/30">
-                <img 
-                  src={scan.originalImageUrl} 
-                  alt={scan.productName}
-                  className="w-full h-full object-cover"
-                  data-testid="img-product"
-                />
-              </div>
-            )}
-            
-            {/* Product Details */}
-            <div className="flex-1 min-w-0">
-              {/* Product Name */}
-              {isEditingName ? (
-                <div className="flex items-center gap-2 mb-3">
-                  <Input
-                    value={editedName}
-                    onChange={(e) => setEditedName(e.target.value)}
-                    placeholder={t('results.productName.placeholder')}
-                    className="font-display text-lg h-auto py-1.5"
-                    data-testid="input-product-name"
-                    autoFocus
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && editedName.trim()) {
-                        renameMutation.mutate(editedName.trim());
-                      } else if (e.key === 'Escape') {
-                        setIsEditingName(false);
-                      }
-                    }}
-                  />
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={() => {
-                      if (editedName.trim()) {
-                        renameMutation.mutate(editedName.trim());
-                      }
-                    }}
-                    disabled={renameMutation.isPending || !editedName.trim()}
-                    data-testid="button-save-name"
-                  >
-                    {renameMutation.isPending ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <Check className="h-4 w-4" />
-                    )}
-                  </Button>
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={() => setIsEditingName(false)}
-                    disabled={renameMutation.isPending}
-                    data-testid="button-cancel-name"
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-              ) : (
-                <button
-                  onClick={() => {
-                    setEditedName(scan.productName || '');
-                    setIsEditingName(true);
-                  }}
-                  className="group flex items-center gap-2 text-left hover-elevate rounded-md px-2 py-1 -ml-2 mb-2"
-                  data-testid="button-edit-product-name"
-                >
-                  <h1 className="font-display text-xl truncate" data-testid="text-product-name">
-                    {scan.productName || t('results.productName.placeholder')}
-                  </h1>
-                  <Pencil className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
-                </button>
-              )}
-              
-              {/* Meta Info */}
-              <div className="flex items-center gap-3 mb-3">
-                <Badge variant="outline" className="whitespace-nowrap inline-flex items-center rounded-md px-2.5 py-0.5 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover-elevate [border-color:var(--badge-outline)] shadow-xs text-xs bg-orange-50/50 dark:bg-orange-950/15 text-orange-700 dark:text-orange-400 border-0 pl-[0px] pr-[0px]">
-                  <CategoryIcon className="w-3 h-3 mr-1" />
-                  {t(`history.categories.${scan.productCategory === 'food' ? 'food' : 'personal_care'}`)}
-                </Badge>
-              </div>
-              
-              {/* Date */}
-              <div className="text-xs text-muted-foreground/60 flex items-center gap-1">
-                <Clock className="w-3 h-3" />
-                {formatDate(scan.createdAt)}
-              </div>
-            </div>
-          </div>
-        </Card>
+        <ProductInfoCard
+          productName={scan.productName}
+          productType={scan.productCategory}
+          imageUrl={scan.originalImageUrl}
+          createdAt={scan.createdAt}
+          onRename={(newName) => renameMutation.mutate(newName)}
+          isRenaming={renameMutation.isPending}
+        />
 
         {showPersonalizedBanner && (
           <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/5 border border-primary/10 mb-4">

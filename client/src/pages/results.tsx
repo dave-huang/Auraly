@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Camera, Loader2, Search, AlertCircle, Pencil, Check, X, Settings, Leaf, UtensilsCrossed, Sparkles } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { ArrowLeft, Camera, Loader2, Search, AlertCircle, Settings, Leaf } from "lucide-react";
+import { ProductInfoCard } from "@/components/product-info-card";
 import { NavigationMenu } from "@/components/navigation-menu";
 import { IngredientCard } from "@/components/ingredient-card";
 import { RiskSummary } from "@/components/risk-summary";
@@ -61,15 +61,12 @@ export default function ResultsPage() {
   const [progress, setProgress] = useState(0);
   const [cachedOcrText, setCachedOcrText] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
-  const [isEditingName, setIsEditingName] = useState(false);
-  const [editedName, setEditedName] = useState("");
   const [savedScanId, setSavedScanId] = useState<number | null>(null);
   const wakeLockRef = useRef<any>(null);
   const hasSavedToHistoryRef = useRef<boolean>(false);
   const currentRequestIdRef = useRef<string | null>(null);
   const resolveRef = useRef<((value: AnalysisResult) => void) | null>(null);
   const rejectRef = useRef<((reason: any) => void) | null>(null);
-  const nameInputRef = useRef<HTMLInputElement>(null);
 
   const preferencesQuery = useQuery<{ preferences: RiskPreferences }>({
     queryKey: ['/api/user/preferences'],
@@ -236,7 +233,6 @@ export default function ResultsPage() {
   const saveProductName = (newName: string) => {
     const finalName = newName.trim() || t('results.productName.unnamed');
     setAnalysisResult(prev => prev ? { ...prev, productName: finalName } : null);
-    setIsEditingName(false);
     
     // If we have a saved scan ID, update the history
     if (savedScanId) {
@@ -499,82 +495,12 @@ export default function ResultsPage() {
       {/* Main Content */}
       <main className="max-w-3xl mx-auto px-6 py-8">
         {/* Product Info Card */}
-        <Card className="p-6 mb-8">
-          <div className="flex gap-5">
-            {/* Product Details */}
-            <div className="flex-1 min-w-0">
-              {/* Product Name */}
-              {isEditingName ? (
-                <div className="flex items-center gap-2 mb-3">
-                  <Input
-                    ref={nameInputRef}
-                    value={editedName}
-                    onChange={(e) => setEditedName(e.target.value)}
-                    placeholder={t('results.productName.placeholder')}
-                    className="font-display text-lg h-auto py-1.5"
-                    data-testid="input-product-name"
-                    autoFocus
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        saveProductName(editedName);
-                      } else if (e.key === 'Escape') {
-                        setIsEditingName(false);
-                      }
-                    }}
-                  />
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={() => saveProductName(editedName)}
-                    disabled={renameMutation.isPending}
-                    data-testid="button-save-name"
-                  >
-                    {renameMutation.isPending ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <Check className="h-4 w-4" />
-                    )}
-                  </Button>
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={() => setIsEditingName(false)}
-                    disabled={renameMutation.isPending}
-                    data-testid="button-cancel-name"
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-              ) : (
-                <button
-                  onClick={() => {
-                    setEditedName(displayResult.productName || '');
-                    setIsEditingName(true);
-                  }}
-                  className="group flex items-center gap-2 text-left hover-elevate rounded-md px-2 py-1 -ml-2 mb-2"
-                  data-testid="button-edit-product-name"
-                >
-                  <h1 className="font-display text-xl truncate" data-testid="text-product-name">
-                    {displayResult.productName || t('results.productName.placeholder')}
-                  </h1>
-                  <Pencil className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
-                </button>
-              )}
-              
-              {/* Meta Info */}
-              <div className="flex items-center gap-3">
-                <Badge variant="outline" className="whitespace-nowrap inline-flex items-center rounded-md px-2.5 py-0.5 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover-elevate [border-color:var(--badge-outline)] shadow-xs text-xs bg-orange-50/50 dark:bg-orange-950/15 text-orange-700 dark:text-orange-400 border-0 pl-[0px] pr-[0px]">
-                  {displayResult.productType === 'food' ? (
-                    <UtensilsCrossed className="w-3 h-3 mr-1" />
-                  ) : (
-                    <Sparkles className="w-3 h-3 mr-1" />
-                  )}
-                  {t(`history.categories.${displayResult.productType === 'food' ? 'food' : 'personal_care'}`)}
-                </Badge>
-              </div>
-            </div>
-          </div>
-        </Card>
+        <ProductInfoCard
+          productName={displayResult.productName || ''}
+          productType={displayResult.productType}
+          onRename={saveProductName}
+          isRenaming={renameMutation.isPending}
+        />
 
         {/* Personalization Notice */}
         {hasPreferences && (
