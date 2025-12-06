@@ -6,7 +6,7 @@ import { LanguageSwitcher } from "@/components/language-switcher";
 import { NavigationMenu } from "@/components/navigation-menu";
 import { useAuth } from "@/hooks/useAuth";
 
-import phoneScanImage from "@assets/stock_images/person_using_smartph_e98d0bed.jpg";
+import phoneScanImage from "@assets/stock_images/hand_holding_smartph_8218fbac.jpg";
 import skincareImage from "@assets/stock_images/natural_skincare_pro_821a26b5.jpg";
 import organicFoodImage from "@assets/stock_images/healthy_organic_food_ca6a79e0.jpg";
 import womanReadingLabel from "@assets/stock_images/woman_reading_produc_8340e9f2.jpg";
