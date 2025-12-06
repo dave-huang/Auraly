@@ -375,8 +375,8 @@ export default function HistoryPage() {
                         </div>
                         
                         {/* Meta: Category + Date */}
-                        <div className="flex items-center gap-3 mb-3">
-                          <Badge variant="outline" className={`${catConf.bgColor} ${catConf.textColor} border-0 text-xs`}>
+                        <div className="flex flex-col gap-1 mb-3">
+                          <Badge variant="outline" className={`${catConf.bgColor} ${catConf.textColor} border-0 text-xs w-fit`}>
                             <CatIcon className="w-3 h-3 mr-1" />
                             {t(`history.categories.${normalizedCat}`)}
                           </Badge>
