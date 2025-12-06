@@ -5310,13 +5310,13 @@
     "createdAt": 1764806529908
   },
   "avena sativa (oat) kernel oil__personal_care__en": {
-    "analysis": "{\"name\":\"Avena Sativa (oat) Kernel Oil\",\"riskLevel\":\"low\",\"summary\":\"Oat kernel oil is a plant-derived emollient oil used to moisturize and soothe the skin. It is generally well tolerated but may rarely trigger reactions in people with oat or gluten-related sensitivities.\",\"details\":\"This oil is rich in lipids and antioxidants, helping to support the skin barrier and reduce dryness and irritation. It is not a paraben, sulfate, phthalate, formaldehyde releaser, or other major red-flag cosmetic ingredient. Adverse effects are uncommon and mainly limited to potential allergic or sensitivity reactions in very susceptible individuals.\",\"category\":\"Plant oil / emollient\"}",
-    "lastUpdated": 1764998140994,
+    "analysis": "{\"name\":\"Avena Sativa (oat) Kernel Oil\",\"riskLevel\":\"low\",\"summary\":\"Avena Sativa (Oat) Kernel Oil is a plant-derived oil rich in lipids and antioxidants, commonly used for its soothing and moisturizing properties. It is generally well tolerated and considered safe for most skin types.\",\"details\":\"This ingredient is extracted from oat kernels and contains fatty acids, vitamin E, and other beneficial compounds that help support the skin barrier and reduce dryness or irritation. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, synthetic fragrance, or petrochemical, and it is not associated with heavy metals or common endocrine disruptors. Rarely, individuals with oat or grain allergies or very sensitive skin may experience irritation, so patch testing is advised for those with known sensitivities.\",\"category\":\"Plant-derived emollient / moisturizing oil\"}",
+    "lastUpdated": 1765059013206,
     "createdAt": 1764806530190
   },
   "avena sativa (oat) kernel extract__personal_care__en": {
-    "analysis": "{\"name\":\"Avena Sativa (oat) Kernel Extract\",\"riskLevel\":\"low\",\"summary\":\"Oat kernel extract is a soothing plant extract used for its calming, moisturizing, and anti-itch properties. It is typically safe for most skin types, with rare allergic reactions in those sensitive to oats.\",\"details\":\"The extract contains beneficial compounds such as beta-glucans and avenanthramides that help reduce redness and irritation and support skin barrier function. It does not belong to high-concern groups like parabens, sulfates, phthalates, formaldehyde releasers, or synthetic fragrances. The main risk is mild irritation or allergy in individuals with known oat allergies or very reactive skin.\",\"category\":\"Botanical extract / skin soothing agent\"}",
-    "lastUpdated": 1764998140994,
+    "analysis": "{\"name\":\"Avena Sativa (oat) Kernel Extract\",\"riskLevel\":\"low\",\"summary\":\"Avena sativa (oat) kernel extract is a plant-derived soothing and moisturizing ingredient commonly used in skincare for sensitive or irritated skin. It is generally well tolerated and not associated with major systemic health risks.\",\"details\":\"Oat kernel extract contains polysaccharides, lipids, and antioxidants that help calm redness, support the skin barrier, and provide mild anti-inflammatory and moisturizing benefits. It is not related to parabens, sulfates, phthalates, formaldehyde releasers, or other high-concern synthetic chemicals listed, and does not pose known risks of heavy metal or talc contamination. The main concern is potential allergic reactions in individuals with oat or gluten-related sensitivities, though true topical reactions are relatively uncommon.\",\"category\":\"Plant-derived soothing and moisturizing agent\"}",
+    "lastUpdated": 1765059018340,
     "createdAt": 1764806530190
   },
   "guar hydroxypropyltrimonium chloride__personal_care__en": {
@@ -5375,8 +5375,8 @@
     "createdAt": 1764806544910
   },
   "avena sativa (oat) kernel flour__personal_care__en": {
-    "analysis": "{\"name\":\"Avena Sativa (oat) Kernel Flour\",\"riskLevel\":\"low\",\"summary\":\"Avena sativa (oat) kernel flour is a soothing, skin-conditioning ingredient commonly used for sensitive or irritated skin. It is generally considered safe and gentle in personal care products.\",\"details\":\"This ingredient is derived from oat kernels and is rich in beta-glucans and antioxidants that can help calm redness, support the skin barrier, and provide mild moisturizing benefits. It is not associated with parabens, sulfates, phthalates, formaldehyde releasers, or other major cosmetic toxins of concern. Rarely, individuals with oat or gluten-related sensitivities may experience irritation or allergic reactions, so patch testing is advisable for very sensitive users.\",\"category\":\"Botanical extract / Skin conditioning agent\"}",
-    "lastUpdated": 1764998155184,
+    "analysis": "{\"name\":\"Avena Sativa (oat) Kernel Flour\",\"riskLevel\":\"low\",\"summary\":\"Oat kernel flour is a soothing, skin-conditioning ingredient commonly used for sensitive or irritated skin. It is generally considered safe and well-tolerated, with low risk for most users.\",\"details\":\"Avena sativa (oat) kernel flour provides anti-inflammatory, calming, and moisturizing benefits, and is frequently used in products for dry, itchy, or eczema-prone skin. It does not belong to major concern groups like parabens, sulfates, phthalates, formaldehyde-releasers, or synthetic fragrances. Rarely, individuals with oat or grain allergies may experience irritation or allergic reactions, so patch testing can be prudent for very sensitive or allergy-prone users.\",\"category\":\"Plant-derived skin conditioning and soothing agent\"}",
+    "lastUpdated": 1765058989116,
     "createdAt": 1764806544910
   },
   "sodium phosphate__personal_care__en": {
@@ -5898,5 +5898,110 @@
     "analysis": "{\"name\":\"Soybean And Wheat Ingredients\",\"riskLevel\":\"moderate\",\"summary\":\"This indicates the product contains soy and wheat, which are common food allergens and sources of gluten. Most people tolerate them well, but they can cause reactions in individuals with allergies, celiac disease, or gluten sensitivity.\",\"details\":\"Soy and wheat are nutritious sources of protein and carbohydrates, but they are recognized as major allergens and must be declared on labels in many countries. Wheat contains gluten, which can trigger serious immune reactions in people with celiac disease and symptoms in those with non-celiac gluten sensitivity. Soy can cause mild to severe allergic reactions in sensitive individuals, ranging from digestive upset to anaphylaxis, so those with known allergies must avoid it.\",\"category\":\"Allergens and gluten-containing grains\"}",
     "lastUpdated": 1765056914141,
     "createdAt": 1765056914141
+  },
+  "aloe barbadensis leaf extract__food__en": {
+    "analysis": "{\"name\":\"Aloe Barbadensis Leaf Extract\",\"riskLevel\":\"low\",\"summary\":\"Aloe barbadensis (aloe vera) leaf extract is commonly used in foods and supplements for its soothing and digestive-support properties. In typical food and beverage amounts, it is generally considered safe for most people.\",\"details\":\"When used in foods and supplements, aloe vera leaf extract is usually decolorized and purified to remove most of the latex components (like aloin) that can cause strong laxative effects and potential gut irritation. High or long-term intake of non-decolorized aloe latex has been associated with diarrhea and possible kidney stress, but these forms are not typically used in mainstream food products. People with sensitive digestion or on medications that affect electrolytes should be cautious with very high-dose aloe products.\",\"category\":\"Botanical extract / functional ingredient\"}",
+    "lastUpdated": 1765058759541,
+    "createdAt": 1765058759541
+  },
+  "avena sativa (oat) kernel extract__food__en": {
+    "analysis": "{\"name\":\"Avena Sativa (oat) Kernel Extract\",\"riskLevel\":\"low\",\"summary\":\"Avena sativa (oat) kernel extract is derived from oats and is used in foods and supplements for its fiber-related and soothing properties. It is generally safe for most people when consumed in normal dietary amounts.\",\"details\":\"Oat-derived ingredients can provide beneficial compounds such as beta-glucans and antioxidants that may support heart and digestive health. The main concern is for individuals with oat allergy or those with celiac disease who are highly sensitive to gluten contamination, as some oat ingredients may be cross-contaminated with wheat or barley. For most consumers, oat kernel extract in food or supplements poses minimal risk and can be part of a balanced diet.\",\"category\":\"Cereal-derived ingredient / botanical extract\"}",
+    "lastUpdated": 1765058759542,
+    "createdAt": 1765058759542
+  },
+  "sodium lauroamphoacetate__food__en": {
+    "analysis": "{\"name\":\"Sodium Lauroamphoacetate\",\"riskLevel\":\"moderate\",\"summary\":\"Sodium lauroamphoacetate is a synthetic surfactant primarily used in personal care products, not typically approved or appropriate as a food ingredient. Its presence in a food or supplement would be unusual and potentially concerning.\",\"details\":\"This compound is commonly found in shampoos, body washes, and cleansers, where it helps to create foam and remove oils from surfaces. It is not generally recognized as safe (GRAS) for ingestion, and safety data focus on topical use rather than oral consumption. If listed on a food or supplement label, it may indicate mislabeling or inappropriate formulation and should be questioned with the manufacturer.\",\"category\":\"Non‑food surfactant / cosmetic ingredient\"}",
+    "lastUpdated": 1765058762425,
+    "createdAt": 1765058762425
+  },
+  "coco-glucoside__food__en": {
+    "analysis": "{\"name\":\"Coco-glucoside\",\"riskLevel\":\"moderate\",\"summary\":\"Coco-glucoside is a mild, plant-derived surfactant widely used in personal care products, not typically used as a direct food additive. Its ingestion safety is not as well characterized as common food emulsifiers or stabilizers.\",\"details\":\"It is produced from coconut-derived fatty alcohols and glucose and is valued in cosmetics for being gentle and biodegradable. While components (fatty alcohols, glucose) are food-related, the finished surfactant is mainly safety-tested for topical use, not for routine oral consumption. If present in a food or supplement, it may indicate cross-over from cosmetic formulations and warrants clarification from the manufacturer.\",\"category\":\"Non‑food surfactant / cosmetic ingredient\"}",
+    "lastUpdated": 1765058762425,
+    "createdAt": 1765058762425
+  },
+  "sodium chloride__food__en": {
+    "analysis": "{\"name\":\"Sodium Chloride\",\"riskLevel\":\"low\",\"summary\":\"Sodium chloride is common table salt, widely used in foods for flavor and preservation. In normal amounts it is generally safe, but excessive intake contributes to high blood pressure and cardiovascular risk.\",\"details\":\"For most healthy adults, moderate sodium chloride intake is well tolerated and essential for fluid balance and nerve function. However, high-sodium diets are associated with increased risk of hypertension, stroke, and heart disease, so people with cardiovascular or kidney issues should limit total sodium from all sources. In supplements or functional foods, it is usually present in small amounts for taste, stability, or as part of mineral blends.\",\"category\":\"Mineral / salt\"}",
+    "lastUpdated": 1765058762425,
+    "createdAt": 1765058762425
+  },
+  "glyceryl oleate__food__en": {
+    "analysis": "{\"name\":\"Glyceryl Oleate\",\"riskLevel\":\"low\",\"summary\":\"Glyceryl oleate is an emulsifier derived from glycerin and oleic acid, used to help mix fats and water. It is generally considered safe in the small amounts typically used in foods and supplements.\",\"details\":\"In food applications, glyceryl oleate can help stabilize emulsions, improve texture, and aid in the uniform distribution of fats. It is metabolized into glycerol and fatty acids, which the body can handle like normal dietary fats. Adverse reactions are uncommon, though highly sensitive individuals may prefer to limit exposure to multiple emulsifiers in ultra-processed foods.\",\"category\":\"Emulsifier / texture agent\"}",
+    "lastUpdated": 1765058763109,
+    "createdAt": 1765058763109
+  },
+  "polyquaternium-7__food__en": {
+    "analysis": "{\"name\":\"Polyquaternium-7\",\"riskLevel\":\"high\",\"summary\":\"Polyquaternium-7 is a synthetic cationic polymer commonly used in cosmetics and personal care products, not in foods. It is not approved as a food additive and should not be present in food or dietary supplements.\",\"details\":\"This ingredient is designed to condition hair and skin, reduce static, and improve the feel of cosmetic formulations, and it is regulated for external use only. Its presence in a food or supplement would be inappropriate and potentially unsafe because it has not been evaluated or authorized for ingestion. Any product marketed as a food or supplement containing polyquaternium-7 should be treated with caution and avoided until clarified with the manufacturer or relevant safety authorities.\",\"category\":\"Non-food synthetic polymer (cosmetic conditioning agent)\"}",
+    "lastUpdated": 1765058763110,
+    "createdAt": 1765058763110
+  },
+  "avena sativa (oat) kernel flour__food__en": {
+    "analysis": "{\"name\":\"Avena Sativa (oat) Kernel Flour\",\"riskLevel\":\"moderate\",\"summary\":\"Avena sativa (oat) kernel flour is a milled form of oats used as a nutritious ingredient, providing fiber, carbohydrates, and some protein. It is generally healthy but poses an allergy and gluten cross-contamination concern for some individuals.\",\"details\":\"Oat flour can support digestive health due to its beta-glucan fiber and may help with cholesterol and blood sugar control when part of a balanced diet. However, oats are a known allergen for some people and are often processed in facilities that also handle wheat, which can lead to gluten contamination and issues for those with celiac disease or gluten sensitivity unless certified gluten-free. Individuals with known oat or gluten-related conditions should check sourcing and labeling carefully.\",\"category\":\"Cereal grain ingredient / potential allergen (oat, possible gluten cross-contact)\"}",
+    "lastUpdated": 1765058763110,
+    "createdAt": 1765058763110
+  },
+  "sodium benzoate__food__en": {
+    "analysis": "{\"name\":\"Sodium Benzoate\",\"riskLevel\":\"moderate\",\"summary\":\"Sodium benzoate is a common preservative used to prevent microbial growth in acidic foods and beverages. It is generally recognized as safe at approved levels but can pose concerns in certain conditions.\",\"details\":\"When combined with ascorbic acid (vitamin C) under heat and light, sodium benzoate can form small amounts of benzene, a known carcinogen, so limiting intake from multiple beverages may be prudent. Some individuals report sensitivity reactions such as mild skin rashes or hyperactivity, although evidence is mixed and effects, if present, are usually subtle at typical dietary exposures. Regulatory agencies set strict maximum use levels to keep intake within conservative safety margins.\",\"category\":\"Preservative (food additive)\"}",
+    "lastUpdated": 1765058763489,
+    "createdAt": 1765058763489
+  },
+  "panthenol__food__en": {
+    "analysis": "{\"name\":\"Panthenol\",\"riskLevel\":\"low\",\"summary\":\"Panthenol is a provitamin of B5 sometimes added to foods and supplements for its vitamin activity and stability. It is considered safe at typical intake levels.\",\"details\":\"In the body, panthenol is converted to pantothenic acid (vitamin B5), a water-soluble vitamin with low toxicity because excess is excreted in urine. Adverse effects from oral panthenol are rare and usually limited to very high supplemental doses, which may cause mild gastrointestinal discomfort in sensitive individuals. Its inclusion at normal food or supplement levels is not associated with significant health risks.\",\"category\":\"Vitamin / provitamin (nutrient additive)\"}",
+    "lastUpdated": 1765058763489,
+    "createdAt": 1765058763489
+  },
+  "sodium hydroxide__food__en": {
+    "analysis": "{\"name\":\"Sodium Hydroxide\",\"riskLevel\":\"low\",\"summary\":\"Sodium hydroxide is used in food processing mainly as a pH regulator or processing aid, not as a nutrient. In properly manufactured foods, it is neutralized and not present in corrosive form.\",\"details\":\"While concentrated sodium hydroxide is highly caustic and dangerous on its own, food-grade use involves very small amounts that are reacted or washed away, leaving negligible residual levels in the final product. It can be used to adjust acidity, peel certain foods, or modify texture, and regulatory authorities restrict its use to safe technological purposes. For consumers, normal dietary exposure from processed foods does not present a meaningful health risk.\",\"category\":\"pH regulator / processing aid\"}",
+    "lastUpdated": 1765058763489,
+    "createdAt": 1765058763489
+  },
+  "cocamidopropyl betaine__food__en": {
+    "analysis": "{\"name\":\"Cocamidopropyl Betaine\",\"riskLevel\":\"high\",\"summary\":\"Cocamidopropyl betaine is a surfactant commonly used in personal care and cleaning products, not in foods. Its presence in a food or supplement would be inappropriate and potentially unsafe for ingestion.\",\"details\":\"This ingredient is designed for external use (such as in shampoos, soaps, and cosmetics) to create foam and aid in cleansing, and it is not approved or intended as a food additive. Ingestion could pose health risks, especially to individuals with sensitivities or allergies, and indicates that the product may be misformulated or mislabeled if found in a food or dietary supplement context.\",\"category\":\"Non‑food surfactant / cosmetic ingredient\"}",
+    "lastUpdated": 1765058773552,
+    "createdAt": 1765058773552
+  },
+  "hydroxypropyl starch phosphate__food__en": {
+    "analysis": "{\"name\":\"Hydroxypropyl Starch Phosphate\",\"riskLevel\":\"low\",\"summary\":\"Hydroxypropyl starch phosphate is a modified starch used as a thickener, stabilizer, and texturizer in many processed foods. It is generally recognized as safe for most people when consumed in typical food amounts.\",\"details\":\"This ingredient is produced by chemically modifying starch (often from corn, potato, or tapioca) with hydroxypropyl and phosphate groups to improve stability, texture, and resistance to heat or acid. It is not known to be toxic and is largely broken down and handled by the body similarly to other starches, though some individuals with very sensitive digestion may experience mild discomfort with large intakes of modified starches. People with specific starch source allergies (e.g., corn) should be aware of the origin if they are highly sensitive.\",\"category\":\"Thickener / Stabilizer (Modified Starch Food Additive)\"}",
+    "lastUpdated": 1765058789304,
+    "createdAt": 1765058789304
+  },
+  "acrylates/c10-30 alkyl acrylate crosspolymer__food__en": {
+    "analysis": "{\"name\":\"Acrylates/c10-30 Alkyl Acrylate Crosspolymer\",\"riskLevel\":\"moderate\",\"summary\":\"Acrylates/C10-30 Alkyl Acrylate Crosspolymer is a synthetic polymer commonly used in cosmetics and topical products as a thickener and stabilizer, not as a food additive. Its presence in foods or supplements would be unusual and generally not appropriate because it is not approved as a food ingredient in most jurisdictions.\",\"details\":\"This ingredient is derived from acrylic acid esters and is designed to form gels or stabilize emulsions in personal care products, not for ingestion. Toxicological data suggest low skin irritation at typical cosmetic use levels, but there is limited safety data for oral consumption, and acrylate polymers may contain trace residual monomers with higher toxicity concerns. In the context of foods or supplements, its use should be questioned, and products listing this ingredient for ingestion should be avoided unless there is clear regulatory approval and safety data for oral use.\",\"category\":\"Non-food synthetic polymer / cosmetic thickener\"}",
+    "lastUpdated": 1765058801470,
+    "createdAt": 1765058801470
+  },
+  "hydroxypropyl starch phosphate__personal_care__en": {
+    "analysis": "{\"name\":\"Hydroxypropyl Starch Phosphate\",\"riskLevel\":\"low\",\"summary\":\"Hydroxypropyl Starch Phosphate is a modified starch used as a thickener, stabilizer, and texture enhancer in personal care products. It is generally considered low risk and well tolerated by most skin types.\",\"details\":\"This ingredient is derived from plant starch that has been chemically modified to improve stability, spreadability, and feel in formulations such as creams, lotions, and makeup. It is not associated with major concerns like parabens, sulfates, phthalates, or formaldehyde-releasing preservatives, and it has a low potential for irritation or sensitization in typical cosmetic use. It is usually suitable for sensitive skin, though any ingredient can rarely cause reactions in highly reactive individuals.\",\"category\":\"Texture enhancer / thickener\"}",
+    "lastUpdated": 1765058852666,
+    "createdAt": 1765058852666
+  },
+  "aloe barbadensis leaf extract__personal_care__en": {
+    "analysis": "{\"name\":\"Aloe Barbadensis Leaf Extract\",\"riskLevel\":\"low\",\"summary\":\"Aloe barbadensis leaf extract is a plant-derived ingredient commonly used for its soothing, hydrating, and skin-calming properties. It is generally considered safe and well-tolerated in personal care products.\",\"details\":\"This extract from the aloe vera plant contains polysaccharides, vitamins, and antioxidants that can help moisturize skin and reduce the feeling of irritation. Adverse reactions are uncommon, though people with known sensitivities to aloe or other Liliaceae family plants should use it cautiously. It does not belong to common concerning groups such as parabens, sulfates, phthalates, formaldehyde releasers, silicones, or synthetic fragrances.\",\"category\":\"Botanical extract / Skin-soothing agent\"}",
+    "lastUpdated": 1765058856802,
+    "createdAt": 1765058856802
+  },
+  "sodium lauroamphoacetate__personal_care__en": {
+    "analysis": "{\"name\":\"Sodium Lauroamphoacetate\",\"riskLevel\":\"low\",\"summary\":\"Sodium Lauroamphoacetate is a mild amphoteric surfactant used for gentle cleansing and foaming in personal care products. It is generally considered safe and well tolerated by most skin types.\",\"details\":\"This ingredient helps reduce irritation from harsher surfactants and is often used in baby products, facial cleansers, and shampoos designed for sensitive skin. It is not a sulfate, paraben, phthalate, or formaldehyde-releasing preservative and has a low potential for sensitization, though very sensitive individuals may still experience mild irritation. Overall toxicological data indicate a good safety profile at typical use concentrations.\",\"category\":\"Surfactant / Cleansing agent\"}",
+    "lastUpdated": 1765058859932,
+    "createdAt": 1765058859932
+  },
+  "coco-glucoside__personal_care__en": {
+    "analysis": "{\"name\":\"Coco-glucoside\",\"riskLevel\":\"low\",\"summary\":\"Coco-Glucoside is a non-ionic surfactant derived from coconut fatty alcohols and glucose, used for mild cleansing and foaming. It is widely used in natural and gentle formulations.\",\"details\":\"Known for being mild and biodegradable, coco-glucoside is suitable for sensitive skin and is commonly found in sulfate-free shampoos, body washes, and facial cleansers. It is not related to parabens, sulfates (SLS/SLES), phthalates, silicones, or formaldehyde releasers, and it has a low irritation and sensitization potential. Adverse reactions are rare and usually limited to individuals with very reactive skin.\",\"category\":\"Surfactant / Cleansing agent\"}",
+    "lastUpdated": 1765058859932,
+    "createdAt": 1765058859932
+  },
+  "sodium chloride__personal_care__en": {
+    "analysis": "{\"name\":\"Sodium Chloride\",\"riskLevel\":\"low\",\"summary\":\"Sodium Chloride is common table salt used in cosmetics primarily as a viscosity modifier and bulking agent, and occasionally as a mild abrasive. It is generally recognized as safe in topical products.\",\"details\":\"In personal care formulations, sodium chloride helps thicken surfactant systems and can adjust product feel without contributing to major safety concerns. It is not associated with parabens, sulfates, phthalates, formaldehyde releasers, or other priority cosmetic hazards, though at high concentrations it may cause dryness or stinging on compromised or very sensitive skin. Typical use levels in shampoos and cleansers pose minimal risk for most users.\",\"category\":\"Viscosity modifier / Bulking agent\"}",
+    "lastUpdated": 1765058859932,
+    "createdAt": 1765058859932
+  },
+  "glyceryl oleate__personal_care__en": {
+    "analysis": "{\"name\":\"Glyceryl Oleate\",\"riskLevel\":\"low\",\"summary\":\"Glyceryl Oleate is an emulsifier and skin-conditioning agent derived from glycerin and oleic acid, often from plant oils. It is generally considered safe and well tolerated in personal care products.\",\"details\":\"This ingredient helps mix oil and water and can improve the skin’s softness and the texture of formulas such as cleansers, creams, and hair products. It is not a paraben, sulfate, phthalate, formaldehyde releaser, or synthetic fragrance, and it has a low irritation and sensitization profile for most users. Rarely, very sensitive or lipid-reactive skin may experience mild irritation, but this is uncommon.\",\"category\":\"Emulsifier / Skin-conditioning agent\"}",
+    "lastUpdated": 1765058862789,
+    "createdAt": 1765058862789
+  },
+  "polyquaternium-7__personal_care__en": {
+    "analysis": "{\"name\":\"Polyquaternium-7\",\"riskLevel\":\"low\",\"summary\":\"Polyquaternium-7 is a synthetic conditioning polymer used mainly in hair and skin products to provide slip, softness, and anti-static benefits. It is generally regarded as safe with a low irritation potential in rinse-off and leave-on formulas.\",\"details\":\"As a cationic polymer, it forms a thin film on hair or skin, improving detangling, smoothness, and feel, especially in shampoos, conditioners, and body washes. It is not related to parabens, sulfates, phthalates, formaldehyde-releasing preservatives, or heavy metals, and it is not an alcohol, silicone, or fragrance ingredient, though very sensitive individuals may occasionally experience mild build-up or irritation. Its large molecular size limits skin penetration, which contributes to its favorable safety profile.\",\"category\":\"Conditioning polymer / Film-former\"}",
+    "lastUpdated": 1765058862789,
+    "createdAt": 1765058862789
   }
 }
