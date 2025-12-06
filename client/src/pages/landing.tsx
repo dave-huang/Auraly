@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Shield, Zap, Camera, Leaf } from "lucide-react";
+import { Sparkles, Shield, Zap, Camera, Leaf, Globe } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { NavigationMenu } from "@/components/navigation-menu";
@@ -132,7 +132,7 @@ export default function Landing() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="p-8 rounded-lg bg-card/60 border border-border/50 hover-elevate transition-all duration-300 text-center">
               <div className="w-12 h-12 bg-primary/8 rounded-full flex items-center justify-center mx-auto mb-5">
-                <Leaf className="w-5 h-5 text-primary/80" />
+                <Globe className="w-5 h-5 text-primary/80" />
               </div>
               <h3 className="font-medium mb-2">{t('landing.features.multilang.title')}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{t('landing.features.multilang.description')}</p>
