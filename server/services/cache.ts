@@ -58,11 +58,11 @@ function getCacheKey(ingredient: string, category: string, language: string = 'e
   return `${normalizeIngredient(ingredient)}__${category}__${language}`;
 }
 
-// Check if cache entry needs refresh (older than 30 days)
+// Check if cache entry needs refresh (older than 12 months)
 function shouldRefreshCache(lastUpdatedTimestamp: number): boolean {
   const now = Date.now();
-  const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000;
-  return (now - lastUpdatedTimestamp) > thirtyDaysMs;
+  const twelveMonthsMs = 365 * 24 * 60 * 60 * 1000;
+  return (now - lastUpdatedTimestamp) > twelveMonthsMs;
 }
 
 // Get cached ingredient analysis with language support
@@ -81,7 +81,7 @@ export function getCachedIngredientAnalysis(
   
   // Check if cache is stale
   if (shouldRefreshCache(entry.lastUpdated)) {
-    console.log(`[CACHE] Stale (30+ days): ${key}`);
+    console.log(`[CACHE] Stale (12+ months): ${key}`);
     return null;
   }
   
@@ -162,8 +162,8 @@ export async function batchAnalyzeIngredientsWithCache(
 
 // Clear expired cache entries
 export function clearExpiredCache(): number {
-  const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000;
-  const cutoffTime = Date.now() - thirtyDaysMs;
+  const twelveMonthsMs = 365 * 24 * 60 * 60 * 1000;
+  const cutoffTime = Date.now() - twelveMonthsMs;
   
   let deletedCount = 0;
   for (const [key, entry] of Object.entries(cacheData)) {
@@ -183,8 +183,8 @@ export function clearExpiredCache(): number {
 
 // Get cache statistics
 export function getCacheStats(): { total: number; fresh: number; stale: number } {
-  const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000;
-  const cutoffTime = Date.now() - thirtyDaysMs;
+  const twelveMonthsMs = 365 * 24 * 60 * 60 * 1000;
+  const cutoffTime = Date.now() - twelveMonthsMs;
   
   let fresh = 0;
   let stale = 0;
