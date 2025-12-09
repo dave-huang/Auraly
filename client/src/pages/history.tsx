@@ -15,7 +15,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { ArrowLeft, Trash2, Clock, AlertTriangle, Loader2, Package, UtensilsCrossed, Sparkles, Settings, Leaf } from "lucide-react";
+import { ArrowLeft, Trash2, Clock, AlertTriangle, Loader2, Package, UtensilsCrossed, Sparkles, Settings, Leaf, Search, X } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { NavigationMenu } from "@/components/navigation-menu";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
@@ -73,6 +74,7 @@ export default function HistoryPage() {
   const [offset, setOffset] = useState(0);
   const [allScans, setAllScans] = useState<ScanHistory[]>([]);
   const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>("all");
+  const [searchQuery, setSearchQuery] = useState("");
   const limit = 20;
 
   const { data: user } = useQuery<User>({
@@ -182,9 +184,27 @@ export default function HistoryPage() {
     return "personal_care";
   };
 
+  // Filter by search query (product name and ingredient names)
+  const searchFilteredScans = useMemo(() => {
+    if (!searchQuery.trim()) return allScans;
+    
+    const query = searchQuery.toLowerCase().trim();
+    return allScans.filter(scan => {
+      // Check product name
+      if (scan.productName.toLowerCase().includes(query)) return true;
+      
+      // Check ingredient names
+      const ingredients = scan.analysisResults as Ingredient[];
+      if (ingredients?.some(ing => ing.name.toLowerCase().includes(query))) return true;
+      
+      return false;
+    });
+  }, [allScans, searchQuery]);
+
+  // Apply category filter on top of search results
   const filteredScans = categoryFilter === "all" 
-    ? allScans 
-    : allScans.filter(scan => normalizeCategory(scan.productCategory) === categoryFilter);
+    ? searchFilteredScans 
+    : searchFilteredScans.filter(scan => normalizeCategory(scan.productCategory) === categoryFilter);
 
   if (error) {
     return (
@@ -287,6 +307,32 @@ export default function HistoryPage() {
           </div>
         )}
 
+        {/* Search Input */}
+        {allScans.length > 0 && (
+          <div className="relative mb-4">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder={t('history.searchPlaceholder')}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 pr-10 h-11 rounded-xl bg-card border-border/50"
+              data-testid="input-search"
+            />
+            {searchQuery && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8"
+                onClick={() => setSearchQuery("")}
+                data-testid="button-clear-search"
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            )}
+          </div>
+        )}
+
         {allScans.length > 0 && (
           <Tabs value={categoryFilter} onValueChange={(v) => setCategoryFilter(v as CategoryFilter)} className="mb-6">
             <TabsList className="flex w-full gap-1 p-1 h-auto">
@@ -323,14 +369,28 @@ export default function HistoryPage() {
           </Card>
         ) : filteredScans.length === 0 ? (
           <Card className="p-8 text-center">
-            <Package className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-            <h2 className="text-lg font-semibold mb-2">{t('history.noResultsForFilter')}</h2>
+            <Search className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+            <h2 className="text-lg font-semibold mb-2">
+              {searchQuery ? t('history.noSearchResults') : t('history.noResultsForFilter')}
+            </h2>
             <p className="text-muted-foreground mb-4">
-              {t(`history.categories.${categoryFilter}`)}
+              {searchQuery 
+                ? t('history.noSearchResultsDesc', { query: searchQuery })
+                : t(`history.categories.${categoryFilter}`)
+              }
             </p>
-            <Button variant="outline" onClick={() => setCategoryFilter("all")} data-testid="button-show-all">
-              {t('history.filters.all')}
-            </Button>
+            <div className="flex gap-2 justify-center">
+              {searchQuery && (
+                <Button variant="outline" onClick={() => setSearchQuery("")} data-testid="button-clear-search-empty">
+                  {t('history.clearSearch')}
+                </Button>
+              )}
+              {categoryFilter !== "all" && (
+                <Button variant="outline" onClick={() => setCategoryFilter("all")} data-testid="button-show-all">
+                  {t('history.filters.all')}
+                </Button>
+              )}
+            </div>
           </Card>
         ) : (
           <div className="space-y-4">
