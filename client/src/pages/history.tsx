@@ -307,23 +307,23 @@ export default function HistoryPage() {
           </div>
         )}
 
-        {/* Search Input */}
+        {/* Search Input - Spa aesthetic with soft focus ring */}
         {allScans.length > 0 && (
-          <div className="relative mb-4">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <div className="relative mb-5">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/70" />
             <Input
               type="text"
               placeholder={t('history.searchPlaceholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 pr-10 h-11 rounded-xl bg-card border-border/50"
+              className="pl-11 pr-11 h-12 rounded-xl bg-card/80 border-border/30 shadow-sm font-light text-sm placeholder:text-muted-foreground/50 focus:border-primary/40 focus:ring-primary/20 focus:bg-card transition-all"
               data-testid="input-search"
             />
             {searchQuery && (
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8"
+                className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 text-muted-foreground/60 hover:text-foreground"
                 onClick={() => setSearchQuery("")}
                 data-testid="button-clear-search"
               >
@@ -333,18 +333,31 @@ export default function HistoryPage() {
           </div>
         )}
 
+        {/* Category Tabs - Spa aesthetic with soft active states */}
         {allScans.length > 0 && (
           <Tabs value={categoryFilter} onValueChange={(v) => setCategoryFilter(v as CategoryFilter)} className="mb-6">
-            <TabsList className="flex w-full gap-1 p-1 h-auto">
-              <TabsTrigger value="all" className="flex-[0.8] py-2" data-testid="filter-all">
+            <TabsList className="flex w-full gap-1.5 p-1.5 h-auto bg-muted/30 rounded-xl border border-border/20">
+              <TabsTrigger 
+                value="all" 
+                className="flex-[0.8] py-2.5 rounded-lg text-sm font-light data-[state=active]:bg-card data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-primary/30 data-[state=active]:text-primary transition-all" 
+                data-testid="filter-all"
+              >
                 {t('history.filters.all')}
               </TabsTrigger>
-              <TabsTrigger value="food" className="flex-1 py-2" data-testid="filter-food">
-                <UtensilsCrossed className="w-4 h-4 mr-1" />
+              <TabsTrigger 
+                value="food" 
+                className="flex-1 py-2.5 rounded-lg text-sm font-light data-[state=active]:bg-card data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-primary/30 data-[state=active]:text-primary transition-all" 
+                data-testid="filter-food"
+              >
+                <UtensilsCrossed className="w-4 h-4 mr-1.5" />
                 {t('history.filters.food')}
               </TabsTrigger>
-              <TabsTrigger value="personal_care" className="flex-1 py-2" data-testid="filter-personal-care">
-                <Sparkles className="w-4 h-4 mr-1" />
+              <TabsTrigger 
+                value="personal_care" 
+                className="flex-1 py-2.5 rounded-lg text-sm font-light data-[state=active]:bg-card data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-primary/30 data-[state=active]:text-primary transition-all" 
+                data-testid="filter-personal-care"
+              >
+                <Sparkles className="w-4 h-4 mr-1.5" />
                 {t('history.filters.personal_care')}
               </TabsTrigger>
             </TabsList>
@@ -357,36 +370,40 @@ export default function HistoryPage() {
             <p className="text-muted-foreground">{t('common.loading')}</p>
           </div>
         ) : allScans.length === 0 ? (
-          <Card className="p-8 text-center">
-            <Package className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-            <h2 className="text-lg font-semibold mb-2">{t('history.empty')}</h2>
-            <p className="text-muted-foreground mb-6">{t('history.emptyDesc')}</p>
+          <Card className="p-10 text-center rounded-xl border-border/30 shadow-sm">
+            <div className="w-16 h-16 mx-auto mb-5 rounded-full bg-primary/5 flex items-center justify-center">
+              <Package className="w-8 h-8 text-primary/60" />
+            </div>
+            <h2 className="font-display text-xl mb-2">{t('history.empty')}</h2>
+            <p className="text-muted-foreground/80 font-light mb-6 max-w-xs mx-auto">{t('history.emptyDesc')}</p>
             <Link href="/upload">
-              <Button data-testid="button-start-scanning">
+              <Button className="rounded-xl px-6" data-testid="button-start-scanning">
                 {t('history.startScanning')}
               </Button>
             </Link>
           </Card>
         ) : filteredScans.length === 0 ? (
-          <Card className="p-8 text-center">
-            <Search className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-            <h2 className="text-lg font-semibold mb-2">
+          <Card className="p-10 text-center rounded-xl border-border/30 shadow-sm">
+            <div className="w-16 h-16 mx-auto mb-5 rounded-full bg-muted/50 flex items-center justify-center">
+              <Search className="w-8 h-8 text-muted-foreground/60" />
+            </div>
+            <h2 className="font-display text-xl mb-2">
               {searchQuery ? t('history.noSearchResults') : t('history.noResultsForFilter')}
             </h2>
-            <p className="text-muted-foreground mb-4">
+            <p className="text-muted-foreground/80 font-light mb-5 max-w-xs mx-auto">
               {searchQuery 
                 ? t('history.noSearchResultsDesc', { query: searchQuery })
                 : t(`history.categories.${categoryFilter}`)
               }
             </p>
-            <div className="flex gap-2 justify-center">
+            <div className="flex gap-3 justify-center flex-wrap">
               {searchQuery && (
-                <Button variant="outline" onClick={() => setSearchQuery("")} data-testid="button-clear-search-empty">
+                <Button variant="outline" className="rounded-xl" onClick={() => setSearchQuery("")} data-testid="button-clear-search-empty">
                   {t('history.clearSearch')}
                 </Button>
               )}
               {categoryFilter !== "all" && (
-                <Button variant="outline" onClick={() => setCategoryFilter("all")} data-testid="button-show-all">
+                <Button variant="outline" className="rounded-xl" onClick={() => setCategoryFilter("all")} data-testid="button-show-all">
                   {t('history.filters.all')}
                 </Button>
               )}
