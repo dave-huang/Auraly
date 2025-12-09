@@ -677,7 +677,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // ==========================================
-  // FEEDBACK ENDPOINT
+  // FEEDBACK ENDPOINT (using Replit Resend integration)
   // ==========================================
   
   const feedbackSchema = z.object({
@@ -692,15 +692,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = req.user.claims.sub;
       const userEmail = req.user.claims.email || 'Unknown';
       
-      // Send email via Resend
-      // Note: In Resend testing mode, emails can only be sent to the account owner's email
-      const RESEND_API_KEY = process.env.RESEND_API_KEY;
-      const YOUR_EMAIL = process.env.FEEDBACK_EMAIL || 'davehuang01@gmail.com';
+      // Import and use Replit Resend integration
+      const { getResendClient } = await import('./services/resend');
+      const { client, fromEmail } = await getResendClient();
       
-      if (!RESEND_API_KEY) {
-        console.error('[FEEDBACK] RESEND_API_KEY not configured');
-        return res.status(500).json({ error: 'Email service not configured' });
-      }
+      const YOUR_EMAIL = process.env.FEEDBACK_EMAIL || 'davehuang01@gmail.com';
       
       const typeLabels: Record<string, string> = {
         bug: 'Bug Report',
@@ -723,24 +719,16 @@ ${message}
 Sent from Auraly Feedback System
       `.trim();
       
-      const response = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${RESEND_API_KEY}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          from: 'Auraly Feedback <onboarding@resend.dev>',
-          to: YOUR_EMAIL,
-          reply_to: email || undefined,
-          subject: `[Auraly] ${typeLabels[type]} from ${userEmail}`,
-          text: emailContent
-        })
+      const result = await client.emails.send({
+        from: fromEmail || 'Auraly Feedback <onboarding@resend.dev>',
+        to: YOUR_EMAIL,
+        replyTo: email || undefined,
+        subject: `[Auraly] ${typeLabels[type]} from ${userEmail}`,
+        text: emailContent
       });
       
-      if (!response.ok) {
-        const errorData = await response.text();
-        console.error('[FEEDBACK] Resend API error:', errorData);
+      if (result.error) {
+        console.error('[FEEDBACK] Resend API error:', result.error);
         return res.status(500).json({ error: 'Failed to send feedback' });
       }
       
