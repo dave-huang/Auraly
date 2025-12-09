@@ -8,6 +8,7 @@
     "home": "Home",
     "history": "Scan History",
     "settings": "Settings",
+    "feedback": "Help & Feedback",
     "language": "Language",
     "logout": "Sign Out"
   },
@@ -72,8 +73,31 @@
     },
     "footer": {
       "tagline": "Your ingredient guardian",
-      "copyright": "© 2025 Auraly. AI-powered ingredient analysis."
+      "copyright": "© 2025 Auraly. AI-powered ingredient analysis.",
+      "contact": "Contact Us"
     }
+  },
+  "feedback": {
+    "title": "Help & Feedback",
+    "subtitle": "We'd love to hear from you",
+    "typeLabel": "What would you like to share?",
+    "types": {
+      "bug": "Report a bug",
+      "improvement": "Suggest an improvement",
+      "positive": "Share something positive"
+    },
+    "emailLabel": "Your email (optional)",
+    "emailPlaceholder": "your@email.com",
+    "emailHint": "Provide your email if you'd like us to follow up",
+    "messageLabel": "Your message",
+    "messagePlaceholder": "Tell us more...",
+    "submit": "Send Feedback",
+    "sending": "Sending...",
+    "successTitle": "Thank you!",
+    "successMessage": "Your feedback has been sent. We appreciate you taking the time to help us improve.",
+    "errorTitle": "Something went wrong",
+    "errorMessage": "We couldn't send your feedback. Please try again later.",
+    "backHome": "Back to Home"
   },
   "upload": {
     "header": {

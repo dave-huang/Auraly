@@ -8,6 +8,7 @@
     "home": "Inicio",
     "history": "Historial de Escaneos",
     "settings": "Configuración",
+    "feedback": "Ayuda y Comentarios",
     "language": "Idioma",
     "logout": "Cerrar Sesión"
   },
@@ -72,8 +73,31 @@
     },
     "footer": {
       "tagline": "Tu guardián de ingredientes",
-      "copyright": "© 2025 Auraly. Análisis de ingredientes impulsado por IA."
+      "copyright": "© 2025 Auraly. Análisis de ingredientes impulsado por IA.",
+      "contact": "Contáctanos"
     }
+  },
+  "feedback": {
+    "title": "Ayuda y Comentarios",
+    "subtitle": "Nos encantaría saber de ti",
+    "typeLabel": "Que te gustaria compartir?",
+    "types": {
+      "bug": "Reportar un error",
+      "improvement": "Sugerir una mejora",
+      "positive": "Compartir algo positivo"
+    },
+    "emailLabel": "Tu correo (opcional)",
+    "emailPlaceholder": "tu@correo.com",
+    "emailHint": "Proporciona tu correo si deseas que te contactemos",
+    "messageLabel": "Tu mensaje",
+    "messagePlaceholder": "Cuéntanos más...",
+    "submit": "Enviar Comentarios",
+    "sending": "Enviando...",
+    "successTitle": "Gracias!",
+    "successMessage": "Tus comentarios han sido enviados. Agradecemos que te hayas tomado el tiempo para ayudarnos a mejorar.",
+    "errorTitle": "Algo salió mal",
+    "errorMessage": "No pudimos enviar tus comentarios. Por favor intenta de nuevo más tarde.",
+    "backHome": "Volver al Inicio"
   },
   "upload": {
     "header": {

@@ -8,6 +8,7 @@
     "home": "首页",
     "history": "扫描历史",
     "settings": "设置",
+    "feedback": "帮助与反馈",
     "language": "语言",
     "logout": "退出登录"
   },
@@ -72,8 +73,31 @@
     },
     "footer": {
       "tagline": "您的成分守护者",
-      "copyright": "© 2025 Auraly. AI智能成分分析。"
+      "copyright": "© 2025 Auraly. AI智能成分分析。",
+      "contact": "联系我们"
     }
+  },
+  "feedback": {
+    "title": "帮助与反馈",
+    "subtitle": "我们很想听听您的意见",
+    "typeLabel": "您想分享什么?",
+    "types": {
+      "bug": "报告问题",
+      "improvement": "提出建议",
+      "positive": "分享好评"
+    },
+    "emailLabel": "您的邮箱 (可选)",
+    "emailPlaceholder": "your@email.com",
+    "emailHint": "如果您希望我们回复,请提供邮箱",
+    "messageLabel": "您的留言",
+    "messagePlaceholder": "请告诉我们更多...",
+    "submit": "发送反馈",
+    "sending": "发送中...",
+    "successTitle": "感谢您!",
+    "successMessage": "您的反馈已发送。感谢您花时间帮助我们改进。",
+    "errorTitle": "出错了",
+    "errorMessage": "无法发送您的反馈。请稍后重试。",
+    "backHome": "返回首页"
   },
   "upload": {
     "header": {
