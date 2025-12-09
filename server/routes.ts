@@ -693,8 +693,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userEmail = req.user.claims.email || 'Unknown';
       
       // Send email via Resend
+      // Note: In Resend testing mode, emails can only be sent to the account owner's email
       const RESEND_API_KEY = process.env.RESEND_API_KEY;
-      const YOUR_EMAIL = process.env.FEEDBACK_EMAIL || 'dh2013@caa.columbia.edu';
+      const YOUR_EMAIL = process.env.FEEDBACK_EMAIL || 'davehuang01@gmail.com';
       
       if (!RESEND_API_KEY) {
         console.error('[FEEDBACK] RESEND_API_KEY not configured');
