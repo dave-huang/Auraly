@@ -314,7 +314,17 @@ export default function Landing() {
       {/* Footer */}
       <footer className="py-16 text-center border-t border-border/30">
         <p className="font-display text-xl mb-2">{t('app.title')}</p>
-        <p className="text-xs text-muted-foreground font-light">{t('landing.footer.tagline')}</p>
+        <p className="text-xs text-muted-foreground font-light mb-4">{t('landing.footer.tagline')}</p>
+        <Link href="/feedback">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-muted-foreground/70 hover:text-primary font-light text-xs"
+            data-testid="link-contact-us"
+          >
+            {t('landing.footer.contact')}
+          </Button>
+        </Link>
       </footer>
     </div>
   );

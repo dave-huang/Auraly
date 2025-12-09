@@ -676,6 +676,81 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // ==========================================
+  // FEEDBACK ENDPOINT
+  // ==========================================
+  
+  const feedbackSchema = z.object({
+    type: z.enum(['bug', 'improvement', 'positive']),
+    email: z.string().email().optional(),
+    message: z.string().min(1).max(5000)
+  });
+
+  app.post("/api/feedback", isAuthenticated, async (req: any, res) => {
+    try {
+      const { type, email, message } = feedbackSchema.parse(req.body);
+      const userId = req.user.claims.sub;
+      const userEmail = req.user.claims.email || 'Unknown';
+      
+      // Send email via Resend
+      const RESEND_API_KEY = process.env.RESEND_API_KEY;
+      const YOUR_EMAIL = process.env.FEEDBACK_EMAIL || 'dh2013@caa.columbia.edu';
+      
+      if (!RESEND_API_KEY) {
+        console.error('[FEEDBACK] RESEND_API_KEY not configured');
+        return res.status(500).json({ error: 'Email service not configured' });
+      }
+      
+      const typeLabels: Record<string, string> = {
+        bug: 'Bug Report',
+        improvement: 'Improvement Suggestion',
+        positive: 'Positive Feedback'
+      };
+      
+      const emailContent = `
+New ${typeLabels[type]} from Auraly
+
+User ID: ${userId}
+User Email: ${userEmail}
+Feedback Type: ${typeLabels[type]}
+Contact Email: ${email || 'Not provided'}
+
+Message:
+${message}
+
+---
+Sent from Auraly Feedback System
+      `.trim();
+      
+      const response = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${RESEND_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: 'Auraly Feedback <onboarding@resend.dev>',
+          to: YOUR_EMAIL,
+          reply_to: email || undefined,
+          subject: `[Auraly] ${typeLabels[type]} from ${userEmail}`,
+          text: emailContent
+        })
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.text();
+        console.error('[FEEDBACK] Resend API error:', errorData);
+        return res.status(500).json({ error: 'Failed to send feedback' });
+      }
+      
+      console.log(`[FEEDBACK] Sent ${type} feedback from user ${userId}`);
+      res.json({ success: true });
+    } catch (error: any) {
+      console.error('[FEEDBACK] Error:', error);
+      res.status(500).json({ error: error.message || 'Failed to send feedback' });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;

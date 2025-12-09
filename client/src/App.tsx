@@ -13,6 +13,7 @@ import HistoryPage from "@/pages/history";
 import ScanDetailPage from "@/pages/scan-detail";
 import OnboardingPage from "@/pages/onboarding";
 import SettingsPage from "@/pages/settings";
+import FeedbackPage from "@/pages/feedback";
 import NotFound from "@/pages/not-found";
 import "./i18n/config";
 import { useEffect } from "react";
@@ -72,6 +73,9 @@ function Router() {
       </Route>
       <Route path="/history/:scanId">
         <ProtectedPage component={ScanDetailPage} />
+      </Route>
+      <Route path="/feedback">
+        <ProtectedPage component={FeedbackPage} />
       </Route>
       <Route component={NotFound} />
     </Switch>

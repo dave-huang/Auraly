@@ -80,7 +80,7 @@
   "feedback": {
     "title": "Ayuda y Comentarios",
     "subtitle": "Nos encantaría saber de ti",
-    "typeLabel": "Que te gustaria compartir?",
+    "typeLabel": "¿Qué te gustaría compartir?",
     "types": {
       "bug": "Reportar un error",
       "improvement": "Sugerir una mejora",
@@ -93,7 +93,7 @@
     "messagePlaceholder": "Cuéntanos más...",
     "submit": "Enviar Comentarios",
     "sending": "Enviando...",
-    "successTitle": "Gracias!",
+    "successTitle": "¡Gracias!",
     "successMessage": "Tus comentarios han sido enviados. Agradecemos que te hayas tomado el tiempo para ayudarnos a mejorar.",
     "errorTitle": "Algo salió mal",
     "errorMessage": "No pudimos enviar tus comentarios. Por favor intenta de nuevo más tarde.",
