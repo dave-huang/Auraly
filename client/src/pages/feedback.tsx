@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "wouter";
 import { useMutation } from "@tanstack/react-query";
@@ -30,6 +30,11 @@ export default function FeedbackPage() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
+
+  // Scroll to top when page loads
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const feedbackMutation = useMutation({
     mutationFn: async (data: { type: FeedbackType; email?: string; message: string }) => {
