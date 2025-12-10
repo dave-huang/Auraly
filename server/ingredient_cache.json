@@ -790,8 +790,8 @@
     "createdAt": 1764378950734
   },
   "salt__food__en": {
-    "analysis": "{\"name\":\"Salt\",\"riskLevel\":\"moderate\",\"summary\":\"Salt (sodium chloride) is widely used for flavor and preservation but can pose health risks when consumed in excess. High intake is associated with elevated blood pressure and increased cardiovascular risk.\",\"details\":\"Moderate salt consumption is generally safe for healthy individuals and is essential for normal fluid balance and nerve and muscle function. However, frequent intake of high-sodium foods can contribute to hypertension, kidney strain, and fluid retention, especially in people with heart, kidney, or blood pressure issues. Individuals on sodium-restricted diets should monitor total daily intake from all food sources.\",\"category\":\"Mineral / Sodium source\"}",
-    "lastUpdated": 1765060296256,
+    "analysis": "{\"name\":\"Salt\",\"riskLevel\":\"moderate\",\"summary\":\"Salt is a common seasoning and preservative that provides sodium, an essential mineral, but can be harmful in excess. High intake is linked to elevated blood pressure and increased cardiovascular risk.\",\"details\":\"In typical diets, salt (sodium chloride) is a major source of sodium, which helps regulate fluid balance, nerve function, and muscle contraction. However, frequent consumption of high-salt foods can contribute to hypertension, kidney strain, and greater risk of heart disease and stroke, especially in salt-sensitive individuals. People with high blood pressure, kidney disease, or heart conditions are usually advised to limit sodium intake and choose lower-sodium products when possible.\",\"category\":\"Mineral / seasoning\"}",
+    "lastUpdated": 1765339911017,
     "createdAt": 1764379123272
   },
   "corn starch__food__en": {
@@ -930,13 +930,13 @@
     "createdAt": 1764379125713
   },
   "mono- and diglycerides__food__en": {
-    "analysis": "{\"name\":\"Mono- And Diglycerides\",\"riskLevel\":\"moderate\",\"summary\":\"Mono- and diglycerides are emulsifiers made from glycerol and fatty acids, often derived from vegetable oils or animal fats. They are generally recognized as safe but may contain small amounts of trans fats and be highly processed.\",\"details\":\"These compounds help blend fats and water in processed foods like baked goods, margarine, and ice cream, improving texture and shelf life. While typical intakes are unlikely to cause acute harm, they can be a hidden source of industrial trans fats and may come from genetically modified or animal sources, which some people wish to avoid. Individuals aiming to minimize ultra-processed ingredients or trans fat intake may prefer to limit products containing mono- and diglycerides.\",\"category\":\"Emulsifier / processed fat derivative\"}",
-    "lastUpdated": 1765060405254,
+    "analysis": "{\"name\":\"Mono- And Diglycerides\",\"riskLevel\":\"moderate\",\"summary\":\"Mono- and diglycerides are emulsifiers used to blend fats and water in processed foods. They may contain small amounts of trans fats and are typically derived from vegetable oils or animal fats.\",\"details\":\"These compounds are generally recognized as safe, but because they can be a hidden source of industrial trans fats, high intake from many processed foods may contribute to cardiovascular risk over time. They can also be derived from soy or other allergenic sources, though allergenic proteins are usually removed during processing. For most healthy individuals occasional consumption is not a concern, but it is advisable to limit them as part of minimizing ultra-processed foods and hidden trans fats in the diet.\",\"category\":\"Emulsifier / food additive\"}",
+    "lastUpdated": 1765339776132,
     "createdAt": 1764379125713
   },
   "cocoa powder (processed with alkali)__food__en": {
-    "analysis": "{\"name\":\"Cocoa Powder (processed With Alkali)\",\"riskLevel\":\"low\",\"summary\":\"Cocoa powder processed with alkali, also called Dutch-processed cocoa, is used to reduce acidity and create a milder flavor and darker color. It is generally safe for most people when consumed in typical food amounts.\",\"details\":\"Alkalized cocoa has lower acidity and may have slightly reduced levels of some natural antioxidants compared to natural cocoa, but this is not usually a concern in a balanced diet. People sensitive to caffeine or theobromine should be aware that cocoa naturally contains these stimulants, though the amounts per serving are usually modest. It may contain trace heavy metals like cadmium or lead depending on the source, but reputable brands typically stay within regulatory safety limits.\",\"category\":\"Cocoa and chocolate ingredient\"}",
-    "lastUpdated": 1765060297214,
+    "analysis": "{\"name\":\"Cocoa Powder (processed With Alkali)\",\"riskLevel\":\"low\",\"summary\":\"Cocoa powder processed with alkali, also known as Dutch-processed cocoa, is used to improve color and reduce acidity. It is generally safe for most people when consumed in normal food amounts.\",\"details\":\"Alkalization lowers the natural acidity of cocoa and can reduce some beneficial polyphenols, but this does not typically create major health concerns at typical intake levels. Sensitive individuals may need to watch overall caffeine and theobromine intake from cocoa products, and those with kidney disease may need to moderate high-cocoa diets due to mineral content. Overall, this ingredient is considered low risk as part of a balanced diet.\",\"category\":\"Cocoa and chocolate ingredient\"}",
+    "lastUpdated": 1765339911935,
     "createdAt": 1764379125713
   },
   "enzymes__food__en": {
@@ -1165,8 +1165,8 @@
     "createdAt": 1764387691711
   },
   "salt (sodium chloride)__food__en": {
-    "analysis": "{\"name\":\"Salt (sodium Chloride)\",\"riskLevel\":\"moderate\",\"summary\":\"Salt is an essential mineral used for flavor and preservation, but excessive intake is linked to high blood pressure and increased cardiovascular risk.\",\"details\":\"Salt (sodium chloride) helps regulate fluid balance and nerve and muscle function, and is widely used to enhance taste and preserve foods. However, many processed foods already contain high amounts of sodium, and chronic high intake is associated with hypertension, heart disease, stroke, and kidney strain. People with high blood pressure, kidney disease, or certain heart conditions are often advised to limit sodium, while most healthy adults are encouraged to keep intake within recommended daily limits.\",\"category\":\"Mineral / Flavoring / Preservative\"}",
-    "lastUpdated": 1764388674641,
+    "analysis": "{\"name\":\"Salt (sodium Chloride)\",\"riskLevel\":\"moderate\",\"summary\":\"Salt is commonly used for flavor and preservation but high intake is linked to elevated blood pressure and cardiovascular risk. In normal amounts it is generally safe for healthy individuals.\",\"details\":\"Excessive sodium consumption can contribute to hypertension, kidney strain, and increased risk of heart disease and stroke, especially in salt-sensitive individuals. People with high blood pressure, kidney disease, or heart conditions are often advised to limit sodium intake, and many processed foods already contain substantial hidden salt. Adequate but not excessive use is important to balance electrolyte needs with long-term health.\",\"category\":\"Mineral / seasoning\"}",
+    "lastUpdated": 1765339707996,
     "createdAt": 1764388674641
   },
   "soy sauce (soybean-based)__food__en": {
@@ -2025,8 +2025,8 @@
     "createdAt": 1764467541313
   },
   "titanium dioxide (color)__food__en": {
-    "analysis": "{\"name\":\"Titanium Dioxide (color)\",\"riskLevel\":\"moderate\",\"summary\":\"Titanium dioxide is an inorganic white pigment used to whiten or brighten foods and supplements. It has raised safety concerns, and some regulators (such as the EU for food use) have restricted or banned it due to possible genotoxicity risks.\",\"details\":\"Titanium dioxide is poorly absorbed in the gut, but very small particles (including nanoparticles) may interact with intestinal cells and DNA in laboratory studies, leading to concerns about long-term safety. While some authorities still consider limited intake acceptable, others have concluded that a safe daily intake level cannot be established, prompting precautionary bans in foods. For most healthy adults, occasional exposure from food is unlikely to cause immediate harm, but frequent or high intake may pose potential long-term risks, especially when multiple products containing this colorant are consumed regularly.\",\"category\":\"Color additive\"}",
-    "lastUpdated": 1765060422101,
+    "analysis": "{\"name\":\"Titanium Dioxide (color)\",\"riskLevel\":\"moderate\",\"summary\":\"Titanium dioxide is an inorganic white pigment used to whiten or brighten foods, candies, and supplements. It is controversial because of potential health concerns, especially related to its nanoparticle form.\",\"details\":\"Titanium dioxide has been widely used as a color additive, but some regulatory bodies (such as the EU) have restricted or banned its use in foods over concerns about possible genotoxicity and accumulation in the body, particularly when nanoparticles are present. While other authorities, like the U.S. FDA, have considered it safe within specific limits, emerging research has led many experts to recommend minimizing frequent or high exposure, especially in children. It does not provide nutritional value and is used purely for visual appearance.\",\"category\":\"Color additive\"}",
+    "lastUpdated": 1765339781068,
     "createdAt": 1764467541580
   },
   "monocalcium phosphate__food__en": {
@@ -2035,8 +2035,8 @@
     "createdAt": 1764467541580
   },
   "sorbic acid and potassium sorbate__food__en": {
-    "analysis": "{\"name\":\"Sorbic Acid And Potassium Sorbate\",\"riskLevel\":\"low\",\"summary\":\"Sorbic acid and potassium sorbate are common food preservatives used to inhibit mold, yeast, and some bacteria and help retain freshness. They are generally recognized as safe at the levels used in foods.\",\"details\":\"These preservatives work by interfering with the growth and reproduction of microorganisms, thereby extending shelf life of many packaged foods and beverages. Most people tolerate them well, though a small number of sensitive individuals may experience mild irritation or allergic-type reactions, particularly with high intake or in topical products. Regulatory agencies worldwide have established acceptable daily intake limits that typical dietary exposure does not usually exceed.\",\"category\":\"Preservative\"}",
-    "lastUpdated": 1765060398619,
+    "analysis": "{\"name\":\"Sorbic Acid And Potassium Sorbate\",\"riskLevel\":\"low\",\"summary\":\"Sorbic acid and potassium sorbate are common food preservatives used to inhibit mold, yeast, and some bacteria, helping to retain freshness. They are generally recognized as safe at typical food-use levels.\",\"details\":\"These preservatives work by interfering with the growth and reproduction of microorganisms, which extends the shelf life of many processed foods and beverages. Most people tolerate them well, though a small number of individuals may experience mild sensitivity or irritation, particularly with high or frequent exposure. Regulatory agencies set maximum allowable levels to minimize any potential health concerns.\",\"category\":\"Preservative\"}",
+    "lastUpdated": 1765339775013,
     "createdAt": 1764467541631
   },
   "agave syrup__food__en": {
@@ -4670,8 +4670,8 @@
     "createdAt": 1764539595980
   },
   "ergocalciferol (vitamin d2)__food__en": {
-    "analysis": "{\"name\":\"Ergocalciferol (vitamin D2)\",\"riskLevel\":\"low\",\"summary\":\"Ergocalciferol is a form of vitamin D used to fortify foods and supplements to support bone health and calcium metabolism. At typical food and supplement doses, it is generally safe for most people.\",\"details\":\"Ergocalciferol (vitamin D2) helps regulate calcium and phosphate balance, contributing to healthy bones, teeth, and muscle function. In foods and standard-dose supplements, it poses low risk, though excessive intake of any vitamin D (especially from high-dose supplements) can lead to toxicity with symptoms such as hypercalcemia, nausea, and kidney issues. People with certain medical conditions affecting calcium metabolism or who take high-dose vitamin D should use it under medical supervision.\",\"category\":\"Vitamin / Nutrient\"}",
-    "lastUpdated": 1764802988809,
+    "analysis": "{\"name\":\"Ergocalciferol (vitamin D2)\",\"riskLevel\":\"low\",\"summary\":\"Ergocalciferol is a form of vitamin D used to fortify foods and supplements to support bone and immune health. It is generally safe at typical dietary and supplement doses.\",\"details\":\"As a fat-soluble vitamin, vitamin D2 can accumulate in the body if taken in excessively high doses over time, potentially leading to toxicity with symptoms like high blood calcium and kidney issues. In normal fortified foods and standard supplement doses, it is considered safe for most people, though individuals on high-dose vitamin D therapy should be monitored by a healthcare professional. Some evidence suggests vitamin D3 may be slightly more effective at raising blood vitamin D levels, but D2 remains an acceptable and regulated source.\",\"category\":\"Vitamin / nutrient fortification\"}",
+    "lastUpdated": 1765339963399,
     "createdAt": 1764539595980
   },
   "sea salt__food__en": {
@@ -5545,8 +5545,8 @@
     "createdAt": 1764806696028
   },
   "defatted soy flour__food__en": {
-    "analysis": "{\"name\":\"Defatted Soy Flour\",\"riskLevel\":\"moderate\",\"summary\":\"Defatted soy flour is a high-protein product made from soybeans with most of the fat removed. It is generally safe but is a common allergen and may not be suitable for people with soy allergies or certain thyroid conditions.\",\"details\":\"Defatted soy flour is often used to boost protein content and improve texture in baked goods and processed foods. It contains soy proteins and residual isoflavones, which can mildly affect hormone activity in sensitive individuals or those with thyroid issues when consumed in large amounts. Because soy is a major allergen, this ingredient poses a significant risk for people with soy allergy and should be clearly avoided by them.\",\"category\":\"Soy ingredient and allergen\"}",
-    "lastUpdated": 1765056919794,
+    "analysis": "{\"name\":\"Defatted Soy Flour\",\"riskLevel\":\"low\",\"summary\":\"Defatted soy flour is made from soybeans with most of the oil removed, providing protein and fiber with reduced fat content. It is generally safe for the general population but can trigger reactions in people with soy allergy.\",\"details\":\"Defatted soy flour is commonly used to boost protein content, improve texture, and enhance moisture retention in baked goods and processed foods. It contains naturally occurring soy isoflavones and may have mild hormonal effects, but typical dietary amounts are considered safe for most people. Individuals with soy allergy or sensitivity should avoid it, and those with thyroid conditions may wish to monitor large, frequent intakes of soy products with their healthcare provider.\",\"category\":\"Soy-based protein ingredient\"}",
+    "lastUpdated": 1765339775144,
     "createdAt": 1764875847275
   },
   "coconut__food__en": {
@@ -6003,5 +6003,10 @@
     "analysis": "{\"name\":\"Polyquaternium-7\",\"riskLevel\":\"low\",\"summary\":\"Polyquaternium-7 is a synthetic conditioning polymer used mainly in hair and skin products to provide slip, softness, and anti-static benefits. It is generally regarded as safe with a low irritation potential in rinse-off and leave-on formulas.\",\"details\":\"As a cationic polymer, it forms a thin film on hair or skin, improving detangling, smoothness, and feel, especially in shampoos, conditioners, and body washes. It is not related to parabens, sulfates, phthalates, formaldehyde-releasing preservatives, or heavy metals, and it is not an alcohol, silicone, or fragrance ingredient, though very sensitive individuals may occasionally experience mild build-up or irritation. Its large molecular size limits skin penetration, which contributes to its favorable safety profile.\",\"category\":\"Conditioning polymer / Film-former\"}",
     "lastUpdated": 1765058862789,
     "createdAt": 1765058862789
+  },
+  "dl-alpha tocopherol acetate (vitamin e) from almonds__food__en": {
+    "analysis": "{\"name\":\"Dl-alpha Tocopherol Acetate (vitamin E) From Almonds\",\"riskLevel\":\"low\",\"summary\":\"DL-alpha tocopherol acetate is a synthetic, fat-soluble form of vitamin E used as a nutrient supplement and antioxidant in foods and supplements. It is generally safe at typical dietary doses but can cause reactions in individuals with almond or tree nut allergies when sourced from almonds.\",\"details\":\"This ingredient is a stabilized acetate form of vitamin E that helps prevent oxidation of fats and provides vitamin E supplementation in many processed foods and dietary supplements. While vitamin E is essential for immune function and cell protection, excessive intake from high-dose supplements can increase bleeding risk, especially in people on blood thinners or with bleeding disorders. The statement \\\"contains almonds\\\" indicates a tree nut allergen source, which is safe for the general population but can trigger serious allergic reactions in those with almond or tree nut allergies.\",\"category\":\"Vitamin and antioxidant\"}",
+    "lastUpdated": 1765339976749,
+    "createdAt": 1765339976749
   }
 }
