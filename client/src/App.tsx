@@ -74,9 +74,7 @@ function Router() {
       <Route path="/history/:scanId">
         <ProtectedPage component={ScanDetailPage} />
       </Route>
-      <Route path="/feedback">
-        <ProtectedPage component={FeedbackPage} />
-      </Route>
+      <Route path="/feedback" component={FeedbackPage} />
       <Route component={NotFound} />
     </Switch>
   );
