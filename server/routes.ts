@@ -719,6 +719,8 @@ ${message}
 Sent from Auraly Feedback System
       `.trim();
       
+      console.log(`[FEEDBACK] Attempting to send email from: ${fromEmail} to: ${YOUR_EMAIL}`);
+      
       const result = await client.emails.send({
         from: fromEmail || 'Auraly Feedback <onboarding@resend.dev>',
         to: YOUR_EMAIL,
@@ -727,12 +729,14 @@ Sent from Auraly Feedback System
         text: emailContent
       });
       
+      console.log('[FEEDBACK] Resend response:', JSON.stringify(result, null, 2));
+      
       if (result.error) {
         console.error('[FEEDBACK] Resend API error:', result.error);
         return res.status(500).json({ error: 'Failed to send feedback' });
       }
       
-      console.log(`[FEEDBACK] Sent ${type} feedback from user ${userId}`);
+      console.log(`[FEEDBACK] Sent ${type} feedback from user ${userId}, email id: ${result.data?.id}`);
       res.json({ success: true });
     } catch (error: any) {
       console.error('[FEEDBACK] Error:', error);
