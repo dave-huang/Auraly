@@ -686,11 +686,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     message: z.string().min(1).max(5000)
   });
 
-  app.post("/api/feedback", isAuthenticated, async (req: any, res) => {
+  app.post("/api/feedback", async (req: any, res) => {
     try {
       const { type, email, message } = feedbackSchema.parse(req.body);
-      const userId = req.user.claims.sub;
-      const userEmail = req.user.claims.email || 'Unknown';
+      const userId = req.user?.claims?.sub || 'Anonymous';
+      const userEmail = req.user?.claims?.email || 'Anonymous';
       
       // Import and use Replit Resend integration
       const { getResendClient } = await import('./services/resend');
