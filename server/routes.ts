@@ -696,7 +696,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { getResendClient } = await import('./services/resend');
       const { client, fromEmail } = await getResendClient();
       
-      const YOUR_EMAIL = process.env.FEEDBACK_EMAIL || 'davehuang01@gmail.com';
+      const YOUR_EMAIL = process.env.FEEDBACK_EMAIL || 'dh.dave@gmail.com';
       
       const typeLabels: Record<string, string> = {
         bug: 'Bug Report',
