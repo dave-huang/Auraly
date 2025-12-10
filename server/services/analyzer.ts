@@ -555,13 +555,23 @@ const PRODUCT_TYPE_CONTEXTS: Record<ProductType, string> = {
     - Artificial sweeteners (aspartame, sucralose, saccharin)
     - Trans fats and hydrogenated oils
     - High sodium content
-    - Allergens (gluten, nuts, dairy, soy)
     - Artificial flavors and colors
     - High fructose corn syrup
     - MSG and flavor enhancers
     - Supplement fillers and binders
     - Heavy metals in supplements
-    - Vitamin toxicity risks (fat-soluble vitamins)`,
+    - Vitamin toxicity risks (fat-soluble vitamins)
+    
+    IMPORTANT - Common Food Allergens: The following are common allergens but are SAFE for the general population and should be marked as "low" risk:
+    - Wheat, gluten, barley, rye, oats
+    - Soy, soybeans, soy lecithin
+    - Milk, dairy, whey, casein, lactose
+    - Eggs, egg whites, egg yolks
+    - Peanuts, tree nuts (almonds, cashews, walnuts, pecans, hazelnuts, pistachios, macadamia, Brazil nuts)
+    - Fish, shellfish, crustaceans
+    - Sesame, sesame oil, sesame seeds
+    - Coconut
+    These ingredients are only risky for individuals with specific allergies. Do NOT mark them as "moderate" or "high" risk unless they pose a universal health concern beyond allergies.`,
   
   personal_care: `Personal Care products (skincare, haircare, cosmetics, fragrance, soaps, body care, oral care). Focus on:
     - Parabens (hormone disruptors)
