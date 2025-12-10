@@ -1,0 +1,308 @@
+You are updating the Auraly web app to support a full monetization system.
+Implement the following functional requirements. You may choose the best architecture, database updates, and API routes needed. Focus on correctness, maintainability, and security.
+Ensure all UI updates follow Auraly’s overall design theme
+
+AURALY MONETIZATION — FUNCTIONAL REQUIREMENTS
+1. Subscription System (Auraly+)
+Implement a new paid subscription tier called Auraly+.
+Behavior
+A user with an active Auraly+ subscription automatically receives:
+
+
+Unlimited scans (but scans should still be rate-limited to prevent abuse: max 20 scans per hour).
+
+
+Full ingredient explanations (detailed “Learn More” content).
+
+
+Full scan history access (no limits).
+
+
+Personalization features (allergen selection, ingredient flags, etc.).
+
+
+Free tier users do not get the above.
+
+
+Billing
+Subscription price: $4.99/month.
+
+
+Implement billing via Stripe.
+
+
+Store the subscription status in the database (status, timestamps, etc)
+
+
+Support webhooks for renewal, cancellation, failed payment, etc.
+
+
+Internal Free Subscriptions
+Add an admin-only interface or API function allowing me (the owner) to assign a free Auraly+ subscription to any user.
+
+
+This should bypass billing entirely.
+
+
+Include:
+
+
+Admin input: user email
+
+
+Output: user becomes an active subscriber instantly
+
+
+
+2. Scan Limitations for Free Users
+Implement a monthly quota for free-tier users.
+Free Users
+Maximum 5 scans per month.
+
+
+Show a persistent counter in the UI (e.g., “3 of 5 free scans remaining”).
+
+
+When the user reaches 5 scans:
+
+
+Block further scans.
+
+
+Display upgrade modal with:
+
+
+“Upgrade to Auraly+”
+
+
+“Purchase scan pack”
+
+
+“Cancel”
+
+
+Automatically reset counts every month.
+
+3. Scan Packs for Non-Subscribers
+Users may purchase additional scans without subscribing.
+Scan Pack Options
+20 scans → $2.99
+
+
+50 scans → $4.99
+
+
+120 scans → $9.99
+
+
+Behavior
+Purchased scan pack scans accumulate into extraScansAvailable.
+
+
+When a free-tier user scans:
+
+
+Use monthly free scans first.
+
+
+If exhausted, consume from extraScansAvailable.
+
+
+If both are 0 → block and show paywall.
+
+Only deduct a scan when a scan analysis is completed successfully. Any errors or timeouts upon scanning should not deduct a scan from the user.
+
+
+UI Behavior
+After a scan, show remaining balance.
+
+
+In settings or billing page, show:
+
+
+Free-tier monthly remaining scans
+
+
+Remaining paid scan pack scans
+
+
+Button to purchase more
+
+
+
+4. Gated Feature Access (Feature Locking)
+Enforce strict access control based on subscription status.
+Free Tier:
+❌ No personalized preferences
+
+ (allergen settings, ingredient categories, etc.)
+
+
+❌ No full ingredient explanations
+
+ (“Learn more” should be disabled and replaced with a locked state)
+
+
+❌ No scan history
+
+
+❌ No unlimited scans (based on monthly limit)
+
+
+✔ Basic ingredient summary only
+
+
+Premium Tier (Auraly+):
+✔ Unlimited scans (with hourly rate-limit)
+
+
+✔ Full ingredient explanations
+
+ (remove locked UI)
+
+
+✔ Personalization and allergen preferences
+
+
+✔ Full scan history + search
+
+
+UI Locking Behavior
+Any locked item should show:
+
+ “Unlock with Auraly+”
+
+
+
+5. Rate Limiting for Abuse Prevention
+Even Auraly+ subscribers should have limits to prevent abuse.
+Subscriber Rate-Limit
+Max 20 scans per hour
+
+
+If exceeded:
+
+
+Show a warning:
+
+ “You’ve reached the hourly scan limit to ensure fair usage. Try again later.”
+
+
+
+6. Onboarding Flow Update
+If user is free-tier, personalization screens should be hidden.
+
+
+Instead show:
+
+ “Unlock personalized risk settings with Auraly+.”
+
+
+
+7. Paywall Behavior
+Implement consistent paywalls across the app.
+Trigger Points
+Attempting a scan over the free limit
+
+
+Tapping “Learn More” for an ingredient
+
+
+Attempting to access scan history
+
+
+Attempting to open personalization settings
+
+
+Paywall Modal
+Should include:
+Auraly+ subscription option
+
+
+Scan pack purchase options
+
+
+Pricing
+
+
+Benefits list
+
+
+Cancel button
+
+
+
+8. Admin Controls
+Implement backend routes/UI for admin-only tasks:
+Admin Features
+View all users and subscription status
+
+
+Grant free Auraly+ subscription
+
+
+Revoke internal free subscription
+
+
+See scan usage logs
+
+
+See scan pack purchase logs
+
+
+Adjust scan limits (optional)
+
+
+Implement RBAC to restrict access.
+
+9. Analytics + Logging
+Add analytics events for:
+Scan attempt
+
+
+Scan success
+
+
+Scan blocked due to limit
+
+
+Tap on gated content
+
+
+Paywall view
+
+
+Subscription purchase
+
+
+Scan pack purchase
+
+
+Churn / cancellation
+
+
+
+IMPORTANT
+Replit should determine:
+DB schema updates
+
+
+API endpoints
+
+
+Stripe integration
+
+
+Middleware for gating logic
+
+
+UI changes
+
+
+Error handling
+
+
+Rate-limiting implementation
+
+
+Paywall component(s)
