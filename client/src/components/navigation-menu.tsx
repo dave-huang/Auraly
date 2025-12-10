@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "wouter";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -19,6 +20,15 @@ interface NavigationMenuProps {
 
 export function NavigationMenu({ showHomeLink = false }: NavigationMenuProps) {
   const { t, i18n } = useTranslation();
+  
+  const { data: user } = useQuery<{ id: string } | null>({
+    queryKey: ['/api/auth/user'],
+  });
+  
+  // Don't render menu if user is not authenticated
+  if (!user) {
+    return null;
+  }
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
