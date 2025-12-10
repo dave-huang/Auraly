@@ -310,7 +310,7 @@ export default function HistoryPage() {
         {/* Search Input - Spa aesthetic with soft focus ring */}
         {allScans.length > 0 && (
           <div className="relative mb-5">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/70" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/70 pointer-events-none" />
             <Input
               type="text"
               placeholder={t('history.searchPlaceholder')}
@@ -319,17 +319,18 @@ export default function HistoryPage() {
               className="pl-11 pr-11 h-12 rounded-xl bg-card/80 border-border/30 shadow-sm font-light text-sm placeholder:text-muted-foreground/50 focus:border-primary/40 focus:ring-primary/20 focus:bg-card transition-all"
               data-testid="input-search"
             />
-            {searchQuery && (
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 text-muted-foreground/60 hover:text-foreground"
-                onClick={() => setSearchQuery("")}
-                data-testid="button-clear-search"
-              >
-                <X className="w-4 h-4" />
-              </Button>
-            )}
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-6 h-6">
+              {searchQuery ? (
+                <button
+                  type="button"
+                  className="flex items-center justify-center w-6 h-6 rounded-full text-muted-foreground/60 hover:text-foreground hover:bg-muted/50 transition-colors"
+                  onClick={() => setSearchQuery("")}
+                  data-testid="button-clear-search"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              ) : null}
+            </div>
           </div>
         )}
 
