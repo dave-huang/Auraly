@@ -153,6 +153,10 @@ export const defaultRiskPreferences: RiskPreferences = {
   silicones: "no_preference",
 };
 
+// Subscription status enum
+export const subscriptionStatuses = ["free", "active", "cancelled", "past_due"] as const;
+export type SubscriptionStatus = typeof subscriptionStatuses[number];
+
 // Users table (REQUIRED for Replit Auth)
 export const users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
@@ -163,12 +167,100 @@ export const users = pgTable("users", {
   riskPreferences: jsonb("risk_preferences").$type<RiskPreferences>().default(defaultRiskPreferences),
   allergenPreferences: jsonb("allergen_preferences").$type<AllergenPreferences>().default(defaultAllergenPreferences),
   onboardingCompleted: boolean("onboarding_completed").default(false),
+  
+  // Subscription fields
+  subscriptionStatus: varchar("subscription_status").$type<SubscriptionStatus>().default("free"),
+  stripeCustomerId: varchar("stripe_customer_id"),
+  stripeSubscriptionId: varchar("stripe_subscription_id"),
+  subscriptionStartedAt: timestamp("subscription_started_at"),
+  subscriptionEndsAt: timestamp("subscription_ends_at"),
+  
+  // Admin-granted premium
+  isAdminGrantedPremium: boolean("is_admin_granted_premium").default(false),
+  adminGrantedBy: varchar("admin_granted_by"),
+  adminGrantedAt: timestamp("admin_granted_at"),
+  
+  // Scan quota tracking
+  monthlyFreeScansUsed: integer("monthly_free_scans_used").default(0),
+  lastFreeResetAt: timestamp("last_free_reset_at").defaultNow(),
+  scanPackBalance: integer("scan_pack_balance").default(0),
+  
+  // Rate limiting (hourly for premium users)
+  hourlyScansCount: integer("hourly_scans_count").default(0),
+  hourlyScansResetAt: timestamp("hourly_scans_reset_at").defaultNow(),
+  
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 export type User = typeof users.$inferSelect;
 export type UpsertUser = typeof users.$inferInsert;
+
+// Helper to check if user has premium access (subscription or admin-granted)
+export function hasPremiumAccess(user: User | null | undefined): boolean {
+  if (!user) return false;
+  return user.subscriptionStatus === "active" || user.isAdminGrantedPremium === true;
+}
+
+// Scan usage logs table (for analytics)
+export const scanUsageLogs = pgTable(
+  "scan_usage_logs",
+  {
+    id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+    userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+    action: varchar("action").notNull(), // 'scan_attempt', 'scan_success', 'scan_blocked', 'scan_error'
+    scanSource: varchar("scan_source"), // 'free', 'pack', 'premium'
+    productType: varchar("product_type"),
+    metadata: jsonb("metadata"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    index("IDX_scan_usage_user_id").on(table.userId),
+    index("IDX_scan_usage_created_at").on(table.createdAt),
+  ]
+);
+
+export type ScanUsageLog = typeof scanUsageLogs.$inferSelect;
+
+// Purchase logs table (for tracking scan pack purchases)
+export const purchaseLogs = pgTable(
+  "purchase_logs",
+  {
+    id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+    userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+    purchaseType: varchar("purchase_type").notNull(), // 'subscription', 'scan_pack'
+    amount: integer("amount").notNull(), // in cents
+    currency: varchar("currency").default("usd"),
+    scansAdded: integer("scans_added"), // for scan packs
+    stripePaymentIntentId: varchar("stripe_payment_intent_id"),
+    stripeCheckoutSessionId: varchar("stripe_checkout_session_id"),
+    status: varchar("status").default("completed"), // 'completed', 'refunded', 'failed'
+    metadata: jsonb("metadata"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    index("IDX_purchase_user_id").on(table.userId),
+    index("IDX_purchase_created_at").on(table.createdAt),
+  ]
+);
+
+export type PurchaseLog = typeof purchaseLogs.$inferSelect;
+
+// Analytics events table (for conversion tracking)
+export const analyticsEvents = pgTable(
+  "analytics_events",
+  {
+    id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+    userId: varchar("user_id").references(() => users.id, { onDelete: "set null" }),
+    eventType: varchar("event_type").notNull(), // 'paywall_view', 'paywall_dismiss', 'upgrade_click', 'gated_content_tap'
+    eventData: jsonb("event_data"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    index("IDX_analytics_event_type").on(table.eventType),
+    index("IDX_analytics_created_at").on(table.createdAt),
+  ]
+);
 
 // Simplified product categories (2 main categories)
 export const productCategories = [
