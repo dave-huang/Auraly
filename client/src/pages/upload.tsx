@@ -5,6 +5,9 @@ import { ArrowLeft, Loader2, Leaf } from "lucide-react";
 import { ProductTypeSelector } from "@/components/product-type-selector";
 import { ImageUploader } from "@/components/image-uploader";
 import { NavigationMenu } from "@/components/navigation-menu";
+import { PaywallModal } from "@/components/paywall-modal";
+import { ScanCounter } from "@/components/scan-counter";
+import { useSubscriptionStatus, getRemainingScans } from "@/hooks/use-subscription";
 import type { ProductType } from "@shared/schema";
 import { useTranslation } from "react-i18next";
 
@@ -13,12 +16,19 @@ export default function UploadPage() {
   const [, setLocation] = useLocation();
   const [selectedType, setSelectedType] = useState<ProductType | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showPaywall, setShowPaywall] = useState(false);
+  const { data: subscriptionStatus } = useSubscriptionStatus();
 
   const handleProductTypeSelect = (type: ProductType) => {
     setSelectedType(type);
   };
 
   const handleImageCapture = async (imageData: string) => {
+    const remaining = getRemainingScans(subscriptionStatus);
+    if (remaining <= 0 && !subscriptionStatus?.isPremium) {
+      setShowPaywall(true);
+      return;
+    }
     try {
       setIsProcessing(true);
       
@@ -74,6 +84,7 @@ export default function UploadPage() {
             <span className="font-light">{t('common.back')}</span>
           </Button>
           <div className="flex items-center gap-3">
+            <ScanCounter variant="badge" />
             <div className="hidden sm:flex items-center gap-2">
               <Leaf className="w-4 h-4 text-primary/60" />
               <span className="font-display text-lg">{t('app.title')}</span>
@@ -82,6 +93,12 @@ export default function UploadPage() {
           </div>
         </div>
       </header>
+
+      <PaywallModal 
+        open={showPaywall} 
+        onClose={() => setShowPaywall(false)} 
+        source="upload_page"
+      />
 
       {/* Main Content - Generous spacing */}
       <main className="max-w-3xl mx-auto px-6 py-16 sm:py-20">
