@@ -744,6 +744,187 @@ Sent from Auraly Feedback System
     }
   });
 
+  // ==========================================
+  // SUBSCRIPTION & BILLING ENDPOINTS
+  // ==========================================
+
+  const { subscriptionService } = await import('./services/subscription');
+  const { getUncachableStripeClient, getStripePublishableKey } = await import('./stripeClient');
+  const { sql: sqlDrizzle } = await import('drizzle-orm');
+
+  app.get('/api/stripe/publishable-key', async (_req, res) => {
+    try {
+      const publishableKey = await getStripePublishableKey();
+      res.json({ publishableKey });
+    } catch (error: any) {
+      console.error('Error getting publishable key:', error);
+      res.status(500).json({ error: 'Failed to get Stripe key' });
+    }
+  });
+
+  app.get('/api/subscription/status', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const status = await subscriptionService.getUserQuotaStatus(userId);
+      res.json(status);
+    } catch (error: any) {
+      console.error('Error fetching subscription status:', error);
+      res.status(500).json({ error: 'Failed to fetch subscription status' });
+    }
+  });
+
+  app.get('/api/subscription/products', async (_req, res) => {
+    try {
+      const result = await db.execute(
+        sqlDrizzle`
+          SELECT 
+            p.id as product_id,
+            p.name as product_name,
+            p.description as product_description,
+            p.metadata as product_metadata,
+            pr.id as price_id,
+            pr.unit_amount,
+            pr.currency,
+            pr.recurring,
+            pr.metadata as price_metadata
+          FROM stripe.products p
+          LEFT JOIN stripe.prices pr ON pr.product = p.id AND pr.active = true
+          WHERE p.active = true
+          ORDER BY p.name, pr.unit_amount
+        `
+      );
+
+      const productsMap = new Map();
+      for (const row of result.rows as any[]) {
+        if (!productsMap.has(row.product_id)) {
+          productsMap.set(row.product_id, {
+            id: row.product_id,
+            name: row.product_name,
+            description: row.product_description,
+            metadata: row.product_metadata,
+            prices: []
+          });
+        }
+        if (row.price_id) {
+          productsMap.get(row.product_id).prices.push({
+            id: row.price_id,
+            unitAmount: row.unit_amount,
+            currency: row.currency,
+            recurring: row.recurring,
+            metadata: row.price_metadata,
+          });
+        }
+      }
+
+      res.json({ products: Array.from(productsMap.values()) });
+    } catch (error: any) {
+      console.error('Error fetching products:', error);
+      res.status(500).json({ error: 'Failed to fetch products' });
+    }
+  });
+
+  app.post('/api/subscription/checkout', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { priceId, mode, scanPackSize } = req.body;
+
+      if (!priceId) {
+        return res.status(400).json({ error: 'priceId is required' });
+      }
+
+      const stripe = await getUncachableStripeClient();
+      const user = await storage.getUser(userId);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      let customerId = user.stripeCustomerId;
+      if (!customerId) {
+        const customer = await stripe.customers.create({
+          email: user.email || undefined,
+          metadata: { userId },
+        });
+        await db.update(users)
+          .set({ stripeCustomerId: customer.id, updatedAt: new Date() })
+          .where(eq(users.id, userId));
+        customerId = customer.id;
+      }
+
+      const successUrl = `${req.protocol}://${req.get('host')}/upgrade/success`;
+      const cancelUrl = `${req.protocol}://${req.get('host')}/upgrade`;
+
+      const sessionConfig: any = {
+        customer: customerId,
+        payment_method_types: ['card'],
+        line_items: [{ price: priceId, quantity: 1 }],
+        mode: mode || 'subscription',
+        success_url: successUrl,
+        cancel_url: cancelUrl,
+      };
+
+      if (mode === 'payment' && scanPackSize) {
+        sessionConfig.metadata = { scanPackSize: String(scanPackSize) };
+      }
+
+      const session = await stripe.checkout.sessions.create(sessionConfig);
+
+      await subscriptionService.logUpgradeClick(userId, mode === 'subscription' ? 'auraly_plus' : `scan_pack_${scanPackSize}`);
+
+      res.json({ url: session.url });
+    } catch (error: any) {
+      console.error('Error creating checkout session:', error);
+      res.status(500).json({ error: 'Failed to create checkout session' });
+    }
+  });
+
+  app.post('/api/subscription/portal', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+
+      if (!user?.stripeCustomerId) {
+        return res.status(400).json({ error: 'No active subscription' });
+      }
+
+      const stripe = await getUncachableStripeClient();
+      const returnUrl = `${req.protocol}://${req.get('host')}/settings`;
+
+      const session = await stripe.billingPortal.sessions.create({
+        customer: user.stripeCustomerId,
+        return_url: returnUrl,
+      });
+
+      res.json({ url: session.url });
+    } catch (error: any) {
+      console.error('Error creating portal session:', error);
+      res.status(500).json({ error: 'Failed to create portal session' });
+    }
+  });
+
+  app.post('/api/analytics/paywall-view', async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub || null;
+      const { source } = req.body;
+      await subscriptionService.logPaywallView(userId, source || 'unknown');
+      res.json({ success: true });
+    } catch (error: any) {
+      console.error('Error logging paywall view:', error);
+      res.status(500).json({ error: 'Failed to log event' });
+    }
+  });
+
+  app.post('/api/analytics/gated-content', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { contentType } = req.body;
+      await subscriptionService.logGatedContentTap(userId, contentType || 'unknown');
+      res.json({ success: true });
+    } catch (error: any) {
+      console.error('Error logging gated content tap:', error);
+      res.status(500).json({ error: 'Failed to log event' });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;
