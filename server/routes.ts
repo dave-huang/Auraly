@@ -925,6 +925,148 @@ Sent from Auraly Feedback System
     }
   });
 
+  // ==========================================
+  // ADMIN ENDPOINTS
+  // ==========================================
+  const ADMIN_USER_ID = "48931740";
+
+  const isAdmin = (req: any, res: any, next: any) => {
+    if (!req.user?.claims?.sub) {
+      return res.status(401).json({ error: 'Not authenticated' });
+    }
+    if (req.user.claims.sub !== ADMIN_USER_ID) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+    next();
+  };
+
+  app.get('/api/admin/dashboard', isAuthenticated, isAdmin, async (req: any, res) => {
+    try {
+      const allUsers = await db.select().from(users);
+      
+      const totalUsers = allUsers.length;
+      const premiumUsers = allUsers.filter(u => u.subscriptionStatus === 'active').length;
+      const freeUsers = totalUsers - premiumUsers;
+      
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+      
+      const totalScansToday = allUsers.reduce((sum, u) => {
+        const lastReset = u.freeScansResetDate ? new Date(u.freeScansResetDate) : null;
+        if (lastReset && lastReset >= today) {
+          return sum + (u.monthlyFreeScansUsed || 0);
+        }
+        return sum;
+      }, 0);
+      
+      const totalScansThisMonth = allUsers.reduce((sum, u) => sum + (u.monthlyFreeScansUsed || 0), 0);
+
+      const recentUsers = allUsers
+        .sort((a, b) => {
+          const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+          const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+          return dateB - dateA;
+        })
+        .slice(0, 50)
+        .map(u => ({
+          id: u.id,
+          replitId: u.id,
+          email: u.email || '',
+          name: `${u.firstName || ''} ${u.lastName || ''}`.trim() || 'Unknown',
+          subscriptionStatus: u.subscriptionStatus,
+          scanPackBalance: u.scanPackBalance || 0,
+          monthlyFreeScansUsed: u.monthlyFreeScansUsed || 0,
+          createdAt: u.createdAt?.toString() || '',
+        }));
+
+      res.json({
+        stats: {
+          totalUsers,
+          premiumUsers,
+          freeUsers,
+          totalScansToday,
+          totalScansThisMonth,
+        },
+        recentUsers,
+      });
+    } catch (error: any) {
+      console.error('Admin dashboard error:', error);
+      res.status(500).json({ error: 'Failed to load dashboard' });
+    }
+  });
+
+  app.post('/api/admin/grant-subscription', isAuthenticated, isAdmin, async (req: any, res) => {
+    try {
+      const { userId } = req.body;
+      if (!userId) {
+        return res.status(400).json({ error: 'User ID required' });
+      }
+
+      const user = await storage.getUser(userId);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      await db.update(users)
+        .set({ 
+          subscriptionStatus: 'active',
+          subscriptionStartedAt: new Date(),
+        })
+        .where(eq(users.id, userId));
+
+      res.json({ success: true });
+    } catch (error: any) {
+      console.error('Grant subscription error:', error);
+      res.status(500).json({ error: 'Failed to grant subscription' });
+    }
+  });
+
+  app.post('/api/admin/revoke-subscription', isAuthenticated, isAdmin, async (req: any, res) => {
+    try {
+      const { userId } = req.body;
+      if (!userId) {
+        return res.status(400).json({ error: 'User ID required' });
+      }
+
+      await db.update(users)
+        .set({ 
+          subscriptionStatus: 'free',
+          subscriptionEndsAt: new Date(),
+        })
+        .where(eq(users.id, userId));
+
+      res.json({ success: true });
+    } catch (error: any) {
+      console.error('Revoke subscription error:', error);
+      res.status(500).json({ error: 'Failed to revoke subscription' });
+    }
+  });
+
+  app.post('/api/admin/grant-scans', isAuthenticated, isAdmin, async (req: any, res) => {
+    try {
+      const { userId, amount } = req.body;
+      if (!userId || !amount || amount < 1) {
+        return res.status(400).json({ error: 'User ID and valid amount required' });
+      }
+
+      const user = await storage.getUser(userId);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      const newBalance = (user.scanPackBalance || 0) + amount;
+      await db.update(users)
+        .set({ scanPackBalance: newBalance })
+        .where(eq(users.id, userId));
+
+      res.json({ success: true, newBalance });
+    } catch (error: any) {
+      console.error('Grant scans error:', error);
+      res.status(500).json({ error: 'Failed to grant scans' });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;
