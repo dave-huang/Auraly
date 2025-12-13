@@ -108,7 +108,7 @@ export function PaywallModal({ open, onClose, source = 'unknown' }: PaywallModal
                 className="w-full" 
                 size="lg"
                 onClick={handleSubscribe}
-                disabled={createCheckout.isPending}
+                disabled={createCheckout.isPending || !subscriptionProduct?.prices[0]}
                 data-testid="button-subscribe"
               >
                 {createCheckout.isPending ? (
@@ -116,7 +116,9 @@ export function PaywallModal({ open, onClose, source = 'unknown' }: PaywallModal
                 ) : (
                   <Sparkles className="w-4 h-4 mr-2" />
                 )}
-                {t('paywall.subscribe', 'Upgrade to Auraly+')}
+                {!subscriptionProduct?.prices[0] && !loadingProducts 
+                  ? t('paywall.unavailable', 'Subscription unavailable')
+                  : t('paywall.subscribe', 'Upgrade to Auraly+')}
               </Button>
             </div>
 

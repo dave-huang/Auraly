@@ -17,6 +17,7 @@ export default function UploadPage() {
   const [selectedType, setSelectedType] = useState<ProductType | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
+  const [uploaderKey, setUploaderKey] = useState(0); // Key to reset ImageUploader
   const { data: subscriptionStatus } = useSubscriptionStatus();
 
   const handleProductTypeSelect = (type: ProductType) => {
@@ -27,6 +28,7 @@ export default function UploadPage() {
     const remaining = getRemainingScans(subscriptionStatus);
     if (remaining <= 0 && !subscriptionStatus?.isPremium) {
       setShowPaywall(true);
+      setUploaderKey(prev => prev + 1); // Reset ImageUploader to allow re-capture
       return;
     }
     try {
@@ -118,6 +120,7 @@ export default function UploadPage() {
             </div>
 
             <ImageUploader 
+              key={uploaderKey}
               onImageCapture={handleImageCapture}
               isProcessing={isProcessing}
             />
