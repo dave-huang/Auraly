@@ -825,8 +825,8 @@
     "createdAt": 1764379123558
   },
   "soy lecithin__food__en": {
-    "analysis": "{\"name\":\"Soy Lecithin\",\"riskLevel\":\"low\",\"summary\":\"Soy lecithin is an emulsifier derived from soy, commonly used in small amounts in processed foods and generally recognized as safe.\",\"details\":\"Soy lecithin helps keep fats and water mixed in foods like chocolate, baked goods, and dressings, and is usually present in very small quantities. It is generally well tolerated, though people with soy allergies should be aware that it is soy-derived, even though it is often highly refined and may contain only trace amounts of soy protein. For the general population, it is considered a low-risk food additive.\",\"category\":\"Emulsifier / Soy-derived additive\"}",
-    "lastUpdated": 1764379123558,
+    "analysis": "{\"name\":\"Soy Lecithin\",\"riskLevel\":\"low\",\"summary\":\"Soy lecithin is an emulsifier derived from soy that helps blend fats and water in foods. It is generally recognized as safe for most people when consumed in typical food amounts.\",\"details\":\"Soy lecithin is commonly used in chocolates, baked goods, margarines, and supplements to improve texture and shelf life. While it comes from soy, it contains only trace amounts of soy protein, so it rarely triggers allergic reactions, though highly sensitive individuals should still be cautious. At normal dietary levels, it does not present significant health concerns for the general population.\",\"category\":\"Emulsifier / food additive\"}",
+    "lastUpdated": 1765601818662,
     "createdAt": 1764379123558
   },
   "wheat flour__food__en": {
