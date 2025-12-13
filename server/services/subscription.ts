@@ -1,5 +1,5 @@
 import { db } from '../db';
-import { users, scanUsageLogs, analyticsEvents, hasPremiumAccess, type User } from '@shared/schema';
+import { users, scanUsageLogs, analyticsEvents, hasPremiumAccess, isTrialActive, getTrialDaysRemaining, type User } from '@shared/schema';
 import { eq, sql } from 'drizzle-orm';
 
 const FREE_SCANS_PER_MONTH = 5;
@@ -7,13 +7,15 @@ const PREMIUM_HOURLY_RATE_LIMIT = 20;
 
 export interface ScanQuotaStatus {
   canScan: boolean;
-  reason?: 'no_scans' | 'rate_limited' | 'not_authenticated';
+  reason?: 'no_scans' | 'rate_limited' | 'not_authenticated' | 'trial_expired';
   isPremium: boolean;
+  isTrialActive: boolean;
+  trialDaysRemaining: number;
   freeScansUsed: number;
   freeScansLimit: number;
-  scanPackBalance: number;
   nextResetDate?: Date;
   hourlyScansRemaining?: number;
+  subscriptionStatus: string;
 }
 
 export class SubscriptionService {
@@ -25,17 +27,23 @@ export class SubscriptionService {
         canScan: false,
         reason: 'not_authenticated',
         isPremium: false,
+        isTrialActive: false,
+        trialDaysRemaining: 0,
         freeScansUsed: 0,
         freeScansLimit: FREE_SCANS_PER_MONTH,
-        scanPackBalance: 0,
+        subscriptionStatus: 'free',
       };
     }
 
+    // Check and handle expired trial
+    await this.maybeExpireTrial(user);
     await this.maybeResetMonthlyScans(user);
     await this.maybeResetHourlyRate(user);
 
     const [refreshedUser] = await db.select().from(users).where(eq(users.id, userId));
     const isPremium = hasPremiumAccess(refreshedUser);
+    const trialActive = isTrialActive(refreshedUser);
+    const trialDaysRemaining = getTrialDaysRemaining(refreshedUser);
 
     if (isPremium) {
       const hourlyScansRemaining = PREMIUM_HOURLY_RATE_LIMIT - (refreshedUser.hourlyScansCount || 0);
@@ -43,17 +51,18 @@ export class SubscriptionService {
         canScan: hourlyScansRemaining > 0,
         reason: hourlyScansRemaining <= 0 ? 'rate_limited' : undefined,
         isPremium: true,
+        isTrialActive: trialActive,
+        trialDaysRemaining,
         freeScansUsed: 0,
         freeScansLimit: 0,
-        scanPackBalance: refreshedUser.scanPackBalance || 0,
         hourlyScansRemaining,
+        subscriptionStatus: refreshedUser.subscriptionStatus || 'free',
       };
     }
 
+    // Free user (trial expired or never had one)
     const freeScansUsed = refreshedUser.monthlyFreeScansUsed || 0;
-    const scanPackBalance = refreshedUser.scanPackBalance || 0;
     const hasFreeScansRemaining = freeScansUsed < FREE_SCANS_PER_MONTH;
-    const hasScanPacks = scanPackBalance > 0;
 
     const nextMonth = new Date();
     nextMonth.setMonth(nextMonth.getMonth() + 1);
@@ -61,14 +70,39 @@ export class SubscriptionService {
     nextMonth.setHours(0, 0, 0, 0);
 
     return {
-      canScan: hasFreeScansRemaining || hasScanPacks,
-      reason: (!hasFreeScansRemaining && !hasScanPacks) ? 'no_scans' : undefined,
+      canScan: hasFreeScansRemaining,
+      reason: !hasFreeScansRemaining ? 'no_scans' : undefined,
       isPremium: false,
+      isTrialActive: false,
+      trialDaysRemaining: 0,
       freeScansUsed,
       freeScansLimit: FREE_SCANS_PER_MONTH,
-      scanPackBalance,
       nextResetDate: nextMonth,
+      subscriptionStatus: refreshedUser.subscriptionStatus || 'free',
     };
+  }
+
+  private async maybeExpireTrial(user: User): Promise<void> {
+    if (user.subscriptionStatus !== 'trial') return;
+    if (!user.trialEndsAt) return;
+    
+    const now = new Date();
+    const trialEndsAt = new Date(user.trialEndsAt);
+    
+    if (now >= trialEndsAt) {
+      await db.update(users)
+        .set({
+          subscriptionStatus: 'free',
+          updatedAt: now,
+        })
+        .where(eq(users.id, user.id));
+      
+      await db.insert(analyticsEvents).values({
+        userId: user.id,
+        eventType: 'trial_expired',
+        eventData: { trialEndedAt: trialEndsAt.toISOString() },
+      });
+    }
   }
 
   private async maybeResetMonthlyScans(user: User): Promise<void> {
@@ -105,7 +139,7 @@ export class SubscriptionService {
     }
   }
 
-  async consumeScan(userId: string, productType?: string): Promise<{ success: boolean; source: 'free' | 'pack' | 'premium' }> {
+  async consumeScan(userId: string, productType?: string): Promise<{ success: boolean; source: 'free' | 'premium' }> {
     const quotaStatus = await this.getUserQuotaStatus(userId);
     
     if (!quotaStatus.canScan) {
@@ -118,7 +152,7 @@ export class SubscriptionService {
       throw new Error(quotaStatus.reason || 'Cannot scan');
     }
 
-    let source: 'free' | 'pack' | 'premium' = 'free';
+    let source: 'free' | 'premium' = 'free';
 
     if (quotaStatus.isPremium) {
       await db.update(users)
@@ -128,7 +162,7 @@ export class SubscriptionService {
         })
         .where(eq(users.id, userId));
       source = 'premium';
-    } else if (quotaStatus.freeScansUsed < quotaStatus.freeScansLimit) {
+    } else {
       await db.update(users)
         .set({
           monthlyFreeScansUsed: sql`${users.monthlyFreeScansUsed} + 1`,
@@ -136,14 +170,6 @@ export class SubscriptionService {
         })
         .where(eq(users.id, userId));
       source = 'free';
-    } else if (quotaStatus.scanPackBalance > 0) {
-      await db.update(users)
-        .set({
-          scanPackBalance: sql`${users.scanPackBalance} - 1`,
-          updatedAt: new Date(),
-        })
-        .where(eq(users.id, userId));
-      source = 'pack';
     }
 
     await db.insert(scanUsageLogs).values({
@@ -178,6 +204,14 @@ export class SubscriptionService {
       userId,
       eventType: 'gated_content_tap',
       eventData: { contentType },
+    });
+  }
+
+  async logTrialStarted(userId: string): Promise<void> {
+    await db.insert(analyticsEvents).values({
+      userId,
+      eventType: 'trial_started',
+      eventData: {},
     });
   }
 }

@@ -154,7 +154,7 @@ export const defaultRiskPreferences: RiskPreferences = {
 };
 
 // Subscription status enum
-export const subscriptionStatuses = ["free", "active", "cancelled", "past_due"] as const;
+export const subscriptionStatuses = ["free", "trial", "active", "cancelled", "past_due"] as const;
 export type SubscriptionStatus = typeof subscriptionStatuses[number];
 
 // Users table (REQUIRED for Replit Auth)
@@ -169,11 +169,15 @@ export const users = pgTable("users", {
   onboardingCompleted: boolean("onboarding_completed").default(false),
   
   // Subscription fields
-  subscriptionStatus: varchar("subscription_status").$type<SubscriptionStatus>().default("free"),
+  subscriptionStatus: varchar("subscription_status").$type<SubscriptionStatus>().default("trial"),
   stripeCustomerId: varchar("stripe_customer_id"),
   stripeSubscriptionId: varchar("stripe_subscription_id"),
   subscriptionStartedAt: timestamp("subscription_started_at"),
   subscriptionEndsAt: timestamp("subscription_ends_at"),
+  
+  // Trial tracking
+  trialStartedAt: timestamp("trial_started_at"),
+  trialEndsAt: timestamp("trial_ends_at"),
   
   // Admin-granted premium
   isAdminGrantedPremium: boolean("is_admin_granted_premium").default(false),
@@ -196,10 +200,30 @@ export const users = pgTable("users", {
 export type User = typeof users.$inferSelect;
 export type UpsertUser = typeof users.$inferInsert;
 
-// Helper to check if user has premium access (subscription or admin-granted)
+// Helper to check if trial is currently active
+export function isTrialActive(user: User | null | undefined): boolean {
+  if (!user) return false;
+  if (user.subscriptionStatus !== "trial") return false;
+  if (!user.trialEndsAt) return false;
+  return new Date() < new Date(user.trialEndsAt);
+}
+
+// Helper to get trial days remaining
+export function getTrialDaysRemaining(user: User | null | undefined): number {
+  if (!user || !user.trialEndsAt) return 0;
+  const now = new Date();
+  const endsAt = new Date(user.trialEndsAt);
+  const diffMs = endsAt.getTime() - now.getTime();
+  return Math.max(0, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
+}
+
+// Helper to check if user has premium access (subscription, admin-granted, or active trial)
 export function hasPremiumAccess(user: User | null | undefined): boolean {
   if (!user) return false;
-  return user.subscriptionStatus === "active" || user.isAdminGrantedPremium === true;
+  if (user.subscriptionStatus === "active") return true;
+  if (user.isAdminGrantedPremium === true) return true;
+  if (isTrialActive(user)) return true;
+  return false;
 }
 
 // Scan usage logs table (for analytics)

@@ -1,11 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Check, Crown, Sparkles, Zap, History, Settings, Loader2 } from 'lucide-react';
-import { useStripeProducts, useCreateCheckout, useLogPaywallView, type StripeProduct } from '@/hooks/use-subscription';
+import { Check, Crown, Sparkles, History, Settings, Loader2 } from 'lucide-react';
+import { useStripeProducts, useCreateCheckout, useLogPaywallView, useSubscriptionStatus } from '@/hooks/use-subscription';
 
 interface PaywallModalProps {
   open: boolean;
@@ -16,9 +14,9 @@ interface PaywallModalProps {
 export function PaywallModal({ open, onClose, source = 'unknown' }: PaywallModalProps) {
   const { t } = useTranslation();
   const { data: productsData, isLoading: loadingProducts } = useStripeProducts();
+  const { data: status } = useSubscriptionStatus();
   const createCheckout = useCreateCheckout();
   const logPaywallView = useLogPaywallView();
-  const [selectedOption, setSelectedOption] = useState<'subscription' | 'pack20' | 'pack50' | 'pack120' | null>(null);
 
   useEffect(() => {
     if (open) {
@@ -27,9 +25,7 @@ export function PaywallModal({ open, onClose, source = 'unknown' }: PaywallModal
   }, [open, source]);
 
   const products = productsData?.products || [];
-  
   const subscriptionProduct = products.find(p => p.metadata?.type === 'subscription');
-  const scanPacks = products.filter(p => p.metadata?.type === 'scan_pack');
 
   const handleSubscribe = () => {
     const price = subscriptionProduct?.prices[0];
@@ -37,31 +33,34 @@ export function PaywallModal({ open, onClose, source = 'unknown' }: PaywallModal
     createCheckout.mutate({ priceId: price.id, mode: 'subscription' });
   };
 
-  const handleBuyScanPack = (product: StripeProduct) => {
-    const price = product.prices[0];
-    if (!price) return;
-    const scanCount = parseInt(product.metadata?.scanCount || '0', 10);
-    createCheckout.mutate({ priceId: price.id, mode: 'payment', scanPackSize: scanCount });
-  };
-
   const formatPrice = (amount: number) => {
     return `$${(amount / 100).toFixed(2)}`;
   };
 
+  const getResetDateString = () => {
+    if (!status?.nextResetDate) {
+      const nextMonth = new Date();
+      nextMonth.setMonth(nextMonth.getMonth() + 1);
+      nextMonth.setDate(1);
+      return nextMonth.toLocaleDateString();
+    }
+    return new Date(status.nextResetDate).toLocaleDateString();
+  };
+
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto" data-testid="paywall-modal">
+      <DialogContent className="max-w-md" data-testid="paywall-modal">
         <DialogHeader className="text-center">
-          <div className="flex justify-center mb-2">
-            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-              <Crown className="w-6 h-6 text-primary" />
+          <div className="flex justify-center mb-3">
+            <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
+              <Crown className="w-7 h-7 text-primary" />
             </div>
           </div>
           <DialogTitle className="text-2xl font-display">
-            {t('paywall.title', 'Unlock Full Access')}
+            {t('paywall.title', "You've used all 5 free scans this month")}
           </DialogTitle>
-          <DialogDescription>
-            {t('paywall.description', "You've used all your free scans this month. Upgrade to continue scanning.")}
+          <DialogDescription className="text-base mt-2">
+            {t('paywall.description', 'Upgrade to Auraly+ for unlimited scans and personalized ingredient analysis.')}
           </DialogDescription>
         </DialogHeader>
 
@@ -71,47 +70,43 @@ export function PaywallModal({ open, onClose, source = 'unknown' }: PaywallModal
           </div>
         ) : (
           <div className="space-y-4 mt-4">
-            <Card 
-              className={`p-4 cursor-pointer transition-all border-2 ${
-                selectedOption === 'subscription' ? 'border-primary ring-2 ring-primary/20' : 'border-border'
-              }`}
-              onClick={() => setSelectedOption('subscription')}
-              data-testid="option-subscription"
-            >
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <Crown className="w-5 h-5 text-primary" />
-                  <span className="font-semibold">Auraly+</span>
-                </div>
-                <Badge variant="secondary" className="bg-primary/10 text-primary">
-                  {t('paywall.bestValue', 'Best Value')}
-                </Badge>
+            <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-xl p-5 border border-primary/20">
+              <div className="flex items-center gap-2 mb-4">
+                <Crown className="w-5 h-5 text-primary" />
+                <span className="font-semibold text-lg">Auraly+</span>
               </div>
               
-              <div className="mb-3">
-                <span className="text-2xl font-bold">
+              <div className="mb-4">
+                <span className="text-3xl font-bold">
                   {subscriptionProduct?.prices[0] ? formatPrice(subscriptionProduct.prices[0].unitAmount) : '$4.99'}
                 </span>
                 <span className="text-muted-foreground">/month</span>
               </div>
               
-              <ul className="space-y-2 text-sm">
-                <li className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-primary" />
+              <ul className="space-y-3 mb-5">
+                <li className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
+                    <Check className="w-3 h-3 text-primary" />
+                  </div>
                   <span>{t('paywall.unlimitedScans', 'Unlimited ingredient scans')}</span>
                 </li>
-                <li className="flex items-center gap-2">
-                  <History className="w-4 h-4 text-primary" />
-                  <span>{t('paywall.fullHistory', 'Full scan history access')}</span>
+                <li className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
+                    <Check className="w-3 h-3 text-primary" />
+                  </div>
+                  <span>{t('paywall.personalization', 'Personalized allergen analysis')}</span>
                 </li>
-                <li className="flex items-center gap-2">
-                  <Settings className="w-4 h-4 text-primary" />
-                  <span>{t('paywall.personalization', 'Personalized allergen settings')}</span>
+                <li className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
+                    <Check className="w-3 h-3 text-primary" />
+                  </div>
+                  <span>{t('paywall.fullHistory', 'Full scan history access')}</span>
                 </li>
               </ul>
 
               <Button 
-                className="w-full mt-4" 
+                className="w-full" 
+                size="lg"
                 onClick={handleSubscribe}
                 disabled={createCheckout.isPending}
                 data-testid="button-subscribe"
@@ -121,68 +116,23 @@ export function PaywallModal({ open, onClose, source = 'unknown' }: PaywallModal
                 ) : (
                   <Sparkles className="w-4 h-4 mr-2" />
                 )}
-                {t('paywall.subscribe', 'Subscribe to Auraly+')}
+                {t('paywall.subscribe', 'Upgrade to Auraly+')}
               </Button>
-            </Card>
-
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">
-                  {t('paywall.or', 'Or buy scan packs')}
-                </span>
-              </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-2">
-              {scanPacks.sort((a, b) => {
-                const countA = parseInt(a.metadata?.scanCount || '0', 10);
-                const countB = parseInt(b.metadata?.scanCount || '0', 10);
-                return countA - countB;
-              }).map((pack) => {
-                const scanCount = pack.metadata?.scanCount || '0';
-                const price = pack.prices[0];
-                const packKey = `pack${scanCount}` as 'pack20' | 'pack50' | 'pack120';
-                
-                return (
-                  <Card
-                    key={pack.id}
-                    className={`p-3 cursor-pointer transition-all border-2 text-center ${
-                      selectedOption === packKey ? 'border-primary ring-2 ring-primary/20' : 'border-border'
-                    }`}
-                    onClick={() => setSelectedOption(packKey)}
-                    data-testid={`option-${packKey}`}
-                  >
-                    <div className="flex items-center justify-center gap-1 mb-1">
-                      <Zap className="w-4 h-4 text-amber-500" />
-                      <span className="font-bold">{scanCount}</span>
-                    </div>
-                    <div className="text-xs text-muted-foreground mb-2">scans</div>
-                    <div className="font-semibold">
-                      {price ? formatPrice(price.unitAmount) : '-'}
-                    </div>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="w-full mt-2"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleBuyScanPack(pack);
-                      }}
-                      disabled={createCheckout.isPending}
-                      data-testid={`button-buy-${packKey}`}
-                    >
-                      Buy
-                    </Button>
-                  </Card>
-                );
-              })}
+            <div className="text-center">
+              <Button 
+                variant="ghost" 
+                onClick={onClose}
+                className="text-muted-foreground"
+                data-testid="button-cancel-paywall"
+              >
+                {t('paywall.cancel', 'Cancel')}
+              </Button>
             </div>
 
-            <p className="text-xs text-muted-foreground text-center mt-4">
-              {t('paywall.termsNote', 'By subscribing, you agree to our terms of service. Cancel anytime.')}
+            <p className="text-xs text-muted-foreground text-center">
+              {t('paywall.resetNote', 'Your quota resets on {{date}}', { date: getResetDateString() })}
             </p>
           </div>
         )}

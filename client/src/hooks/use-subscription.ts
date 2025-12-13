@@ -3,13 +3,15 @@ import { apiRequest, queryClient } from '@/lib/queryClient';
 
 export interface ScanQuotaStatus {
   canScan: boolean;
-  reason?: 'no_scans' | 'rate_limited' | 'not_authenticated';
+  reason?: 'no_scans' | 'rate_limited' | 'not_authenticated' | 'trial_expired';
   isPremium: boolean;
+  isTrialActive: boolean;
+  trialDaysRemaining: number;
   freeScansUsed: number;
   freeScansLimit: number;
-  scanPackBalance: number;
   nextResetDate?: string;
   hourlyScansRemaining?: number;
+  subscriptionStatus: string;
 }
 
 export interface StripeProduct {
@@ -43,7 +45,7 @@ export function useStripeProducts() {
 
 export function useCreateCheckout() {
   return useMutation({
-    mutationFn: async (params: { priceId: string; mode: 'subscription' | 'payment'; scanPackSize?: number }) => {
+    mutationFn: async (params: { priceId: string; mode: 'subscription' }) => {
       const response = await apiRequest('POST', '/api/subscription/checkout', params);
       return response.json();
     },
@@ -89,14 +91,19 @@ export function useLogGatedContentTap() {
 
 export function getRemainingScans(status: ScanQuotaStatus | undefined): number {
   if (!status) return 0;
-  if (status.isPremium) return Infinity;
-  const freeRemaining = Math.max(0, status.freeScansLimit - status.freeScansUsed);
-  return freeRemaining + status.scanPackBalance;
+  if (status.isPremium || status.isTrialActive) return Infinity;
+  return Math.max(0, status.freeScansLimit - status.freeScansUsed);
 }
 
 export function formatRemainingScans(status: ScanQuotaStatus | undefined): string {
   if (!status) return '...';
-  if (status.isPremium) return 'Unlimited';
-  const remaining = getRemainingScans(status);
-  return String(remaining);
+  if (status.isPremium || status.isTrialActive) return 'Unlimited';
+  return String(getRemainingScans(status));
+}
+
+export function getSubscriptionTier(status: ScanQuotaStatus | undefined): 'free' | 'trial' | 'premium' {
+  if (!status) return 'free';
+  if (status.subscriptionStatus === 'active' || status.isPremium) return 'premium';
+  if (status.isTrialActive) return 'trial';
+  return 'free';
 }
