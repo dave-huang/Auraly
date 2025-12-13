@@ -411,7 +411,9 @@ export default function ResultsPage() {
     high: displayResult?.ingredients.filter(i => i.riskLevel === "high").length || 0,
   };
   
-  const hasPreferences = preferencesQuery.data?.preferences && 
+  // Only show personalization features for Premium/Trial users
+  const hasPreferences = hasPremiumAccess && 
+    preferencesQuery.data?.preferences && 
     hasActivePreferences(preferencesQuery.data.preferences);
 
   if (analyzeMutation.isPending) {
@@ -605,8 +607,8 @@ export default function ResultsPage() {
           totalIngredients={displayResult.ingredients.length}
         />
 
-        {/* Allergen Flags */}
-        <AllergenFlags ingredients={displayResult.ingredients} />
+        {/* Allergen Flags - Premium/Trial only */}
+        {hasPremiumAccess && <AllergenFlags ingredients={displayResult.ingredients} />}
 
         {/* Search Bar */}
         <div className="relative mb-6">
