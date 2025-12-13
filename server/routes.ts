@@ -10,6 +10,7 @@ import { db } from "./db";
 import { extractTextFromImage } from "./services/ocr";
 import { analyzeIngredients, analyzeIngredientsParallel, extractIngredientsFromText } from "./services/analyzer";
 import { batchAnalyzeIngredientsWithCache, getCacheStats } from "./services/cache";
+import { subscriptionService } from "./services/subscription";
 import { 
   ocrRequestSchema, 
   analysisRequestSchema,
@@ -554,6 +555,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const scan = await storage.createScanHistory(scanData);
       console.log(`[HISTORY] Saved scan ${scan.id} for user ${userId}`);
+      
+      // Consume a scan from user's quota (tracks free scans / premium rate limits)
+      try {
+        await subscriptionService.consumeScan(userId, data.productCategory);
+        console.log(`[HISTORY] Consumed scan for user ${userId}`);
+      } catch (scanError: any) {
+        console.error(`[HISTORY] Failed to consume scan for user ${userId}:`, scanError.message);
+        // Don't fail the request - scan is already saved
+      }
       
       res.status(201).json({ success: true, scanId: scan.id });
     } catch (error: any) {

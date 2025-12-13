@@ -12,7 +12,7 @@ import { RiskSummary } from "@/components/risk-summary";
 import { AllergenFlags } from "@/components/allergen-flags";
 import type { AnalysisResult, Ingredient, RiskLevel, RiskPreferences } from "@shared/schema";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useTranslation } from "react-i18next";
 import { applyRiskPreferences, hasActivePreferences } from "@/lib/riskAdjustment";
 import { useSubscriptionStatus } from "@/hooks/use-subscription";
@@ -219,6 +219,8 @@ export default function ResultsPage() {
           if (result.scanId) {
             setSavedScanId(result.scanId);
             console.log('[HISTORY] Scan saved to history with ID:', result.scanId);
+            // Invalidate subscription status to refresh scan counter immediately
+            queryClient.invalidateQueries({ queryKey: ['/api/subscription/status'] });
           }
         } catch (error) {
           console.error('[HISTORY] Failed to save scan to history:', error);
