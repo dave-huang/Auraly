@@ -1,0 +1,336 @@
+Auraly Monetization System — Simplified Launch Version
+You are updating the Auraly web app to support a streamlined monetization system optimized for launch and user validation.
+Implement the following functional requirements using the existing architecture and codebase. Choose the best approach for database updates, API routes, and integrations while maintaining the current system's structure and patterns.
+
+CORE MONETIZATION MODEL
+Free Tier
+
+5 scans per month (resets on the 1st of each month)
+Basic ingredient analysis only (no personalized flags applied)
+No scan history access
+User can view/edit their personalization preferences in settings, but preferences are not applied to scan results
+
+Premium Tier (Auraly+)
+
+Price: $4.99/month
+Unlimited scans (with abuse prevention: max 20 scans per hour)
+Full personalized ingredient analysis (allergen flags, preference-based highlights are applied)
+Full scan history access with search
+Detailed "Learn More" content for ingredients
+
+7-Day Free Trial
+
+All new users automatically start with a 7-day Premium trial (no credit card required)
+During trial: full access to all Premium features including personalization
+After trial expires: user automatically converts to Free tier (5 scans/month) unless they subscribe
+User's personalization preferences remain saved but are not applied to scan results until they subscribe
+
+
+1. NEW USER EXPERIENCE & 7-DAY TRIAL
+Sign-Up Flow
+
+User creates account (email/password or social auth)
+User is automatically granted a 7-day Premium trial
+Show onboarding wizard:
+
+Welcome screen explaining Auraly
+Personalization setup screen: allergen selection, ingredient categories to avoid
+Explain that they're on a 7-day trial with full Premium access
+Let them know what happens after trial (converts to Free tier unless they subscribe)
+
+
+After onboarding, user can immediately scan with full Premium features
+
+During Trial (Days 1-7)
+
+Display trial status in app: "Premium Trial: 4 days remaining"
+Show gentle upgrade CTA: "Subscribe now for $4.99/month"
+Send reminder notifications:
+
+At 3 days remaining
+At 1 day remaining
+When trial expires
+
+
+
+After Trial Expires (Day 8+)
+If user has NOT subscribed:
+
+Automatically convert to Free tier
+Show one-time modal: "Your trial has ended. You now have 5 free scans per month. Upgrade to Auraly+ anytime for unlimited scans."
+Personalization preferences remain saved in database but are NOT applied to scan results
+Scan history becomes hidden (but data is preserved in database)
+User can still view/edit preferences in settings, but a notice appears: "Subscribe to Auraly+ to see personalized flags in your scan results"
+
+
+2. SCAN QUOTA MANAGEMENT FOR FREE USERS
+Monthly Quota
+
+Free users get 5 scans per month
+Quota resets on the 1st of each month at midnight UTC
+Only deduct a scan when analysis completes successfully
+Errors, timeouts, or failed OCR should NOT count toward quota
+
+Scan Counter UI
+
+Before scanning, show: "3 of 5 free scans remaining this month"
+After scanning, show: "2 of 5 free scans remaining"
+Counter should be visible on scan screen
+
+When Quota Exhausted
+When free user tries to scan after using all 5 scans:
+
+Block the scan
+Show upgrade modal:
+
+Headline: "You've used all 5 free scans this month"
+Subheading: "Upgrade to Auraly+ for unlimited scans"
+Show pricing: $4.99/month
+List Premium benefits:
+
+Unlimited scans
+Personalized ingredient analysis
+Full scan history
+Detailed ingredient information
+
+
+Primary button: "Upgrade to Auraly+" (opens Stripe checkout)
+Secondary button: "Cancel"
+Small text: "Your quota resets on [date]"
+
+
+
+
+3. FEATURE ACCESS CONTROL
+Free Tier Access (Post-Trial)
+
+✅ Can scan up to 5 times per month
+✅ Basic ingredient risk analysis (generic, no personalization)
+✅ Can view and edit personalization preferences in settings
+❌ Personalized flags are NOT shown in scan results
+❌ Cannot access scan history
+❌ Cannot scan beyond 5/month quota
+
+Premium Tier Access
+
+✅ Unlimited scans (with 20/hour rate limit for abuse prevention)
+✅ Personalized ingredient flags based on user preferences
+✅ Full scan history with search functionality
+✅ Detailed "Learn More" content for ingredients
+
+Personalization Behavior
+Important distinction:
+
+Free users CAN set and edit their allergen/ingredient preferences in settings
+However, these preferences are only APPLIED to scan results for Premium users
+When a free user scans, they see generic analysis without any personalized highlighting
+Settings page should show a notice for free users: "Your preferences are saved. Subscribe to Auraly+ to see them applied in your scan results."
+
+Scan History Gating
+When free user tries to access scan history:
+
+Show empty state with message: "Unlock your scan history with Auraly+"
+Show upgrade button
+Explain benefit: "Keep track of every product you've analyzed"
+
+
+4. SUBSCRIPTION MANAGEMENT
+Stripe Integration
+
+Use Stripe for payment processing
+Monthly subscription: $4.99/month
+Support subscription lifecycle:
+
+New subscription creation
+Successful renewal
+Failed payment
+Cancellation
+Reactivation
+
+
+
+Billing Page
+Create a subscription management page showing:
+For Free Users:
+
+Current plan: "Free"
+Scan usage: "3 of 5 scans used this month (resets on Jan 1)"
+Upgrade button: "Upgrade to Auraly+ - $4.99/month"
+List of Premium benefits
+
+For Trial Users:
+
+Current plan: "Premium Trial"
+Days remaining: "4 days left in your trial"
+Scan usage: "Unlimited (15 scans this month)"
+Upgrade button: "Subscribe now - $4.99/month"
+
+For Premium Users:
+
+Current plan: "Auraly+ Premium"
+Next billing date: "Next payment on Jan 15, 2025"
+Scan usage: "Unlimited (47 scans this month)"
+Button: "Manage Subscription" (opens Stripe portal)
+Allow users to cancel or update payment method via Stripe portal
+
+
+5. RATE LIMITING FOR ABUSE PREVENTION
+Premium User Rate Limit
+Even Premium subscribers are limited to 20 scans per hour to prevent abuse.
+When rate limit is hit:
+
+Block scan temporarily
+Show friendly message: "You've reached the hourly scan limit (20 scans) to ensure fair usage for all users. Please try again in [X minutes]."
+Do not count this as a failed scan
+
+
+6. PAYWALL DESIGN & TRIGGERS
+When to Show Paywall
+Show upgrade modal when free users (post-trial) attempt to:
+
+Scan when they've used all 5 monthly scans
+Access scan history page
+(Optional) Tap "Learn More" for detailed ingredient info
+
+Paywall Modal Content
+
+Clear, benefit-focused headline
+Pricing prominently displayed: $4.99/month
+Feature comparison table (Free vs Premium)
+Primary CTA: "Upgrade to Auraly+"
+Cancel option
+No aggressive or guilt-tripping language
+
+
+7. ADMIN CAPABILITIES
+Admin Dashboard
+Create admin-only interface for:
+User Management:
+
+View all users with their subscription status
+See user details: email, sign-up date, trial status, scan usage
+Search and filter users
+
+Internal Free Subscriptions:
+
+Admin can grant free Auraly+ subscription to any user (by email)
+This bypasses Stripe billing entirely
+User receives permanent Premium access
+Admin can later revoke this internal subscription
+
+Analytics Overview:
+
+Total users (broken down by: trial, free, premium)
+Trial conversion rate
+Active subscriptions count
+Total scans (free vs premium users)
+Monthly Recurring Revenue (MRR)
+
+Access Control:
+
+Only admin users can access this dashboard
+Protected by authentication and role checking
+
+
+8. USER NOTIFICATIONS & COMMUNICATION
+Trial Reminders
+Send in-app notifications (and/or email if configured):
+
+3 days before trial ends: "Your Premium trial ends in 3 days"
+1 day before trial ends: "Last day of your Premium trial"
+When trial ends: "Your trial has ended. Subscribe to keep Premium features"
+
+Quota Notifications
+For free users:
+
+When they have 1 scan remaining: "You have 1 free scan left this month"
+When quota resets: "Your 5 free scans have been reset for this month"
+
+
+9. ANALYTICS & TRACKING
+Track these key events for product insights:
+User Lifecycle:
+
+user_signed_up
+trial_started
+trial_expired
+subscription_started
+subscription_canceled
+subscription_renewed
+
+Engagement:
+
+scan_attempted
+scan_completed
+scan_blocked_quota_exceeded
+rate_limit_hit
+
+Monetization:
+
+paywall_viewed
+upgrade_button_clicked
+checkout_started
+checkout_completed
+
+Store this data for later analysis to understand user behavior and optimize conversion.
+
+10. UI/UX GUIDELINES
+Design Consistency
+
+All monetization UI (paywalls, billing page, upgrade prompts) should match Auraly's existing design system
+Use consistent colors, typography, spacing
+Maintain mobile-responsive design
+Follow existing component patterns
+
+Messaging Tone
+
+Be helpful and transparent, not pushy
+Clearly explain what users get at each tier
+Make trial status and scan quotas obvious
+No dark patterns or confusing language
+Focus on value, not pressure
+
+Error Handling
+
+Handle failed payments gracefully with clear next steps
+Show user-friendly error messages
+Provide retry options
+Don't block users unnecessarily
+
+
+SUMMARY OF CHANGES
+This simplified model:
+
+Two tiers only: Free (5/month) vs Premium ($4.99/month)
+7-day trial for all new users (no credit card)
+Onboarding with personalization during trial
+Preferences saved but not applied for free users post-trial
+No scan packs (removed for simplicity)
+No referral system (can add later)
+Clean data for measuring trial → paid conversion
+
+Key user flows:
+
+Sign up → Trial → Onboarding → Use Premium features → Trial expires → Convert to Free or Subscribe
+Free user scans → Hits quota → Sees paywall → Subscribes or waits for reset
+Premium user scans → No limits (except 20/hour) → Sees personalized results
+
+
+TECHNICAL NOTES FOR REPLIT
+Use the existing codebase architecture and patterns. You'll need to:
+
+Update database schema to track subscription status, trial dates, and scan quotas
+Integrate Stripe for billing (subscription creation, webhooks, customer portal)
+Implement feature gating middleware/logic
+Create billing/subscription UI pages
+Add admin dashboard
+Track analytics events
+Handle trial expiration automatically
+Reset monthly quotas on schedule
+
+Maintain security best practices, especially for:
+
+Stripe webhook signature verification
+Admin route protection
+Payment information handling
+Feature access control enforcement
