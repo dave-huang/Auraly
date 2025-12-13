@@ -82,7 +82,8 @@ export default function HistoryPage() {
   const logGatedContent = useLogGatedContentTap();
   const createCheckout = useCreateCheckout();
   const { data: productsData } = useStripeProducts();
-  const isPremium = subscriptionStatus?.isPremium ?? false;
+  // Premium access includes both active subscriptions and active trials
+  const isPremium = (subscriptionStatus?.isPremium || subscriptionStatus?.isTrialActive) ?? false;
 
   const { data: user } = useQuery<User>({
     queryKey: ['/api/auth/user'],

@@ -15,6 +15,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useTranslation } from "react-i18next";
 import { applyRiskPreferences, hasActivePreferences } from "@/lib/riskAdjustment";
+import { useSubscriptionStatus } from "@/hooks/use-subscription";
 
 // Helper function for direct polling fallback
 const directPoll = async (requestId: string, resolve: any, reject: any, onOcrComplete?: () => void) => {
@@ -83,6 +84,9 @@ export default function ResultsPage() {
     staleTime: 60000
   });
 
+  const { data: subscriptionStatus } = useSubscriptionStatus();
+  const hasPremiumAccess = subscriptionStatus?.isPremium || subscriptionStatus?.isTrialActive || false;
+
   const userLanguage = useMemo(() => {
     if (i18n.language.startsWith('zh')) return 'zh';
     if (i18n.language.startsWith('es')) return 'es';
@@ -92,13 +96,18 @@ export default function ResultsPage() {
   const displayResult = useMemo(() => {
     if (!analysisResult) return null;
     
+    // Only apply personalization for Premium/Trial users
+    if (!hasPremiumAccess) {
+      return analysisResult;
+    }
+    
     const preferences = preferencesQuery.data?.preferences;
     if (!preferences || !hasActivePreferences(preferences)) {
       return analysisResult;
     }
     
     return applyRiskPreferences(analysisResult, preferences, userLanguage);
-  }, [analysisResult, preferencesQuery.data, userLanguage]);
+  }, [analysisResult, preferencesQuery.data, userLanguage, hasPremiumAccess]);
 
   // Auto-retry mutation with Service Worker polling for mobile background support
   const analyzeMutation = useMutation({

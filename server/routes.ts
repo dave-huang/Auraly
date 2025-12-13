@@ -826,7 +826,7 @@ Sent from Auraly Feedback System
   app.post('/api/subscription/checkout', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
-      const { priceId, mode, scanPackSize } = req.body;
+      const { priceId, mode } = req.body;
 
       if (!priceId) {
         return res.status(400).json({ error: 'priceId is required' });
@@ -862,13 +862,9 @@ Sent from Auraly Feedback System
         cancel_url: cancelUrl,
       };
 
-      if (mode === 'payment' && scanPackSize) {
-        sessionConfig.metadata = { scanPackSize: String(scanPackSize) };
-      }
-
       const session = await stripe.checkout.sessions.create(sessionConfig);
 
-      await subscriptionService.logUpgradeClick(userId, mode === 'subscription' ? 'auraly_plus' : `scan_pack_${scanPackSize}`);
+      await subscriptionService.logUpgradeClick(userId, 'auraly_plus');
 
       res.json({ url: session.url });
     } catch (error: any) {
@@ -948,18 +944,6 @@ Sent from Auraly Feedback System
       const premiumUsers = allUsers.filter(u => u.subscriptionStatus === 'active').length;
       const freeUsers = totalUsers - premiumUsers;
       
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
-      
-      const totalScansToday = allUsers.reduce((sum, u) => {
-        const lastReset = u.freeScansResetDate ? new Date(u.freeScansResetDate) : null;
-        if (lastReset && lastReset >= today) {
-          return sum + (u.monthlyFreeScansUsed || 0);
-        }
-        return sum;
-      }, 0);
-      
       const totalScansThisMonth = allUsers.reduce((sum, u) => sum + (u.monthlyFreeScansUsed || 0), 0);
 
       const recentUsers = allUsers
@@ -985,7 +969,6 @@ Sent from Auraly Feedback System
           totalUsers,
           premiumUsers,
           freeUsers,
-          totalScansToday,
           totalScansThisMonth,
         },
         recentUsers,

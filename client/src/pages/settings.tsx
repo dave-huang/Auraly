@@ -129,7 +129,7 @@ export default function SettingsPage() {
   const logGatedContent = useLogGatedContentTap();
   const createCheckout = useCreateCheckout();
   const { data: productsData } = useStripeProducts();
-  const isPremium = subscriptionStatus?.isPremium ?? false;
+  const isPremium = subscriptionStatus?.isPremium || subscriptionStatus?.isTrialActive || false;
 
   const handleUpgrade = () => {
     logGatedContent.mutate('settings');
