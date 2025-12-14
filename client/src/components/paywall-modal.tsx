@@ -58,19 +58,22 @@ export function PaywallModal({ open, onClose, source = 'unknown' }: PaywallModal
           <div className="px-6 pb-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Auraly Basic Card */}
-              <div className="rounded-xl p-5 border border-border bg-card/50" data-testid="card-basic">
-                <div className="flex items-center gap-2 mb-4">
+              <div className="flex flex-col rounded-xl p-5 border border-border bg-card/50" data-testid="card-basic">
+                {/* Tier Name Row */}
+                <div className="flex items-center gap-2 h-10">
                   <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
                     <Leaf className="w-4 h-4 text-muted-foreground" />
                   </div>
                   <span className="font-semibold text-lg">Auraly Basic</span>
                 </div>
                 
-                <div className="mb-4">
+                {/* Price Row */}
+                <div className="h-12 flex items-center mt-2">
                   <span className="text-3xl font-bold">Free</span>
                 </div>
                 
-                <ul className="space-y-3 mb-5 text-muted-foreground">
+                {/* Features List - flex-grow to push button to bottom */}
+                <ul className="space-y-3 mt-4 mb-6 flex-grow text-muted-foreground">
                   <li className="flex items-start gap-3">
                     <span className="text-muted-foreground/60 mt-0.5">•</span>
                     <span>{t('paywall.basic.scans', '5 scans per month')}</span>
@@ -79,15 +82,12 @@ export function PaywallModal({ open, onClose, source = 'unknown' }: PaywallModal
                     <span className="text-muted-foreground/60 mt-0.5">•</span>
                     <span>{t('paywall.basic.analysis', 'Basic ingredient analysis')}</span>
                   </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-muted-foreground/60 mt-0.5">•</span>
-                    <span>{t('paywall.basic.history', 'Recent scan history')}</span>
-                  </li>
                 </ul>
 
+                {/* CTA Button */}
                 <Button 
                   variant="outline"
-                  className="w-full" 
+                  className="w-full mt-auto" 
                   size="lg"
                   onClick={onClose}
                   data-testid="button-stay-basic"
@@ -97,7 +97,7 @@ export function PaywallModal({ open, onClose, source = 'unknown' }: PaywallModal
               </div>
 
               {/* Auraly+ Card (Featured) */}
-              <div className="relative rounded-xl p-5 border-2 border-primary/30 bg-gradient-to-br from-primary/5 via-primary/8 to-primary/12" data-testid="card-plus">
+              <div className="relative flex flex-col rounded-xl p-5 border-2 border-primary/30 bg-gradient-to-br from-primary/5 via-primary/8 to-primary/12" data-testid="card-plus">
                 <Badge 
                   className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-3 py-0.5"
                   data-testid="badge-recommended"
@@ -106,28 +106,31 @@ export function PaywallModal({ open, onClose, source = 'unknown' }: PaywallModal
                   {t('paywall.recommended', 'Recommended')}
                 </Badge>
 
-                <div className="flex items-center gap-2 mb-4 mt-1">
+                {/* Tier Name Row */}
+                <div className="flex items-center gap-2 h-10">
                   <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
                     <Crown className="w-4 h-4 text-primary" />
                   </div>
                   <span className="font-semibold text-lg">Auraly+</span>
                 </div>
                 
-                <div className="mb-4">
+                {/* Price Row */}
+                <div className="h-12 flex items-center mt-2">
                   <span className="text-3xl font-bold">
                     {subscriptionProduct?.prices[0] ? formatPrice(subscriptionProduct.prices[0].unitAmount) : '$4.99'}
                   </span>
-                  <span className="text-muted-foreground">/month</span>
+                  <span className="text-muted-foreground ml-1">/month</span>
                 </div>
                 
-                <ul className="space-y-3 mb-5">
+                {/* Features List - flex-grow to push button to bottom */}
+                <ul className="space-y-3 mt-4 mb-6 flex-grow">
                   <li className="flex items-start gap-3">
                     <span className="text-primary mt-0.5">•</span>
                     <span>{t('paywall.plus.scans', 'Unlimited ingredient scans')}</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-primary mt-0.5">•</span>
-                    <span>{t('paywall.plus.personalization', 'Personalized analysis based on your preferences')}</span>
+                    <span>{t('paywall.plus.personalization', 'Personalized analysis based on your allergen and ingredient preferences')}</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-primary mt-0.5">•</span>
@@ -139,8 +142,9 @@ export function PaywallModal({ open, onClose, source = 'unknown' }: PaywallModal
                   </li>
                 </ul>
 
+                {/* CTA Button */}
                 <Button 
-                  className="w-full" 
+                  className="w-full mt-auto" 
                   size="lg"
                   onClick={handleSubscribe}
                   disabled={createCheckout.isPending || !subscriptionProduct?.prices[0]}
