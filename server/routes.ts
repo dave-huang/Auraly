@@ -860,8 +860,9 @@ Sent from Auraly Feedback System
         customerId = customer.id;
       }
 
-      const successUrl = `${req.protocol}://${req.get('host')}/upgrade/success`;
-      const cancelUrl = `${req.protocol}://${req.get('host')}/upgrade`;
+      // Redirect to /results after successful payment - this resumes pending analysis from sessionStorage
+      const successUrl = `${req.protocol}://${req.get('host')}/results?payment=success`;
+      const cancelUrl = `${req.protocol}://${req.get('host')}/upload`;
 
       const sessionConfig: any = {
         customer: customerId,

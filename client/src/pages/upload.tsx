@@ -25,22 +25,15 @@ export default function UploadPage() {
   };
 
   const handleImageCapture = async (imageData: string) => {
-    const remaining = getRemainingScans(subscriptionStatus);
-    if (remaining <= 0 && !subscriptionStatus?.isPremium) {
-      setShowPaywall(true);
-      setUploaderKey(prev => prev + 1); // Reset ImageUploader to allow re-capture
-      return;
-    }
+    // Always save pending analysis data first (before checking scan limits)
+    // This ensures data is preserved if user goes through paywall flow
+    const analysisData = {
+      productType: selectedType,
+      imageData: imageData
+    };
+    
     try {
-      setIsProcessing(true);
-      
-      const analysisData = {
-        productType: selectedType,
-        imageData: imageData
-      };
-      
       const dataString = JSON.stringify(analysisData);
-      
       try {
         sessionStorage.setItem('pendingAnalysis', dataString);
       } catch (storageError: any) {
@@ -51,15 +44,22 @@ export default function UploadPage() {
           throw storageError;
         }
       }
-      
-      setTimeout(() => {
-        setLocation('/results');
-      }, 100);
     } catch (error) {
-      console.error('[UploadPage] Error:', error);
-      setIsProcessing(false);
-      alert('Image is too large. Please try a clearer photo.');
+      console.error('[UploadPage] Error saving pending analysis:', error);
     }
+    
+    const remaining = getRemainingScans(subscriptionStatus);
+    if (remaining <= 0 && !subscriptionStatus?.isPremium) {
+      setShowPaywall(true);
+      setUploaderKey(prev => prev + 1); // Reset ImageUploader to allow re-capture
+      return;
+    }
+    
+    // Data is already saved, just navigate to results
+    setIsProcessing(true);
+    setTimeout(() => {
+      setLocation('/results');
+    }, 100);
   };
 
   const handleBack = () => {
