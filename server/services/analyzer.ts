@@ -560,18 +560,7 @@ const PRODUCT_TYPE_CONTEXTS: Record<ProductType, string> = {
     - MSG and flavor enhancers
     - Supplement fillers and binders
     - Heavy metals in supplements
-    - Vitamin toxicity risks (fat-soluble vitamins)
-    
-    IMPORTANT - Common Food Allergens: The following are common allergens but are SAFE for the general population and should be marked as "low" risk:
-    - Wheat, gluten, barley, rye, oats
-    - Soy, soybeans, soy lecithin
-    - Milk, dairy, whey, casein, lactose
-    - Eggs, egg whites, egg yolks
-    - Peanuts, tree nuts (almonds, cashews, walnuts, pecans, hazelnuts, pistachios, macadamia, Brazil nuts)
-    - Fish, shellfish, crustaceans
-    - Sesame, sesame oil, sesame seeds
-    - Coconut
-    These ingredients are only risky for individuals with specific allergies. Do NOT mark them as "moderate" or "high" risk unless they pose a universal health concern beyond allergies.`,
+    - Vitamin toxicity risks (fat-soluble vitamins)`,
   
   personal_care: `Personal Care products (skincare, haircare, cosmetics, fragrance, soaps, body care, oral care). Focus on:
     - Parabens (hormone disruptors)
@@ -650,6 +639,22 @@ For each ingredient, determine:
 2. Risk level: "low" (safe), "moderate" (limited evidence/moderate concern), or "high" (known health risks)
 3. A brief summary (1-2 sentences) explaining what it is and why it's flagged - MUST be in the user's language
 4. Detailed explanation (2-3 sentences) with more context about health impacts - MUST be in the user's language
+
+⚠️ MANDATORY ALLERGEN RISK RULES - YOU MUST FOLLOW THESE ⚠️
+The following common allergens are SAFE for the general population and MUST be marked as "low" risk:
+• Soy, soybeans, soy lecithin, soy protein → riskLevel: "low"
+• Peanuts, peanut oil, peanut butter → riskLevel: "low"
+• Tree nuts (almonds, cashews, walnuts, pecans, hazelnuts, pistachios, macadamia, Brazil nuts) → riskLevel: "low"
+• Wheat, gluten, barley, rye, oats → riskLevel: "low"
+• Milk, dairy, whey, casein, lactose → riskLevel: "low"
+• Eggs, egg whites, egg yolks → riskLevel: "low"
+• Fish, shellfish, crustaceans → riskLevel: "low"
+• Sesame, sesame oil, sesame seeds → riskLevel: "low"
+• Coconut → riskLevel: "low"
+
+These are only dangerous to individuals with specific allergies - NOT to the general population.
+DO NOT mark these as "moderate" or "high" risk. This is a hard requirement.
+In the summary, you may mention "common allergen" but the riskLevel MUST still be "low".
 
 INGREDIENT NAME TRANSLATION REQUIREMENTS:
 - ALWAYS translate ingredient names to the user's language accurately
@@ -1155,6 +1160,19 @@ CRITICAL INSTRUCTIONS FOR ${targetLanguage.toUpperCase()}:
 - ALL text (name, summary, details, category) MUST be in ${targetLanguage}
 - Risk level MUST ALWAYS be exactly one of: "low" or "moderate" or "high" (ENGLISH ONLY, case sensitive, no translation)
 - Return ONLY valid JSON array starting with [ and ending with ], no markdown, no code blocks, no extra text
+
+⚠️ MANDATORY ALLERGEN RISK RULES ⚠️
+Common food allergens are SAFE for the general population and MUST be marked as "low" risk:
+• Soy, soybeans, soy lecithin, soy protein → "low"
+• Peanuts, peanut oil → "low"
+• Tree nuts (almonds, cashews, walnuts, pecans, hazelnuts, pistachios) → "low"
+• Wheat, gluten, barley, rye, oats → "low"
+• Milk, dairy, whey, casein, lactose → "low"
+• Eggs → "low"
+• Fish, shellfish → "low"
+• Sesame → "low"
+• Coconut → "low"
+These are only dangerous to people with allergies, NOT the general population. You may mention "common allergen" in summary but riskLevel MUST be "low".
 
 For each ingredient provide these exact JSON fields:
 {
