@@ -126,7 +126,7 @@ export function PaywallModal({ open, onClose, source = 'unknown' }: PaywallModal
                 <ul className="space-y-3 mt-4 mb-6 flex-grow">
                   <li className="flex items-start gap-3">
                     <span className="text-primary mt-0.5">•</span>
-                    <span>{t('paywall.plus.scans', 'Unlimited ingredient scans')}</span>
+                    <span>{t('paywall.plus.scans', 'Unlimited scans')}</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-primary mt-0.5">•</span>
