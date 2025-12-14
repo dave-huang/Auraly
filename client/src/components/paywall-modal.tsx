@@ -99,7 +99,7 @@ export function PaywallModal({ open, onClose, source = 'unknown' }: PaywallModal
               {/* Auraly+ Card (Featured) */}
               <div className="relative flex flex-col rounded-xl p-5 pt-7 border-2 border-primary/30 bg-gradient-to-br from-primary/5 via-primary/8 to-primary/12" data-testid="card-plus">
                 <Badge 
-                  className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-3 py-0.5"
+                  className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-3 py-0.5 flex items-center justify-center"
                   data-testid="badge-recommended"
                 >
                   <Zap className="w-3 h-3 mr-1" />
