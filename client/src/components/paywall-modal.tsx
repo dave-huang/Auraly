@@ -40,12 +40,12 @@ export function PaywallModal({ open, onClose, source = 'unknown' }: PaywallModal
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <DialogContent className="max-w-2xl p-0 gap-0 overflow-hidden" data-testid="paywall-modal">
-        <DialogHeader className="text-center px-6 pt-6 pb-4">
-          <DialogTitle className="text-2xl font-display">
+      <DialogContent className="max-w-2xl p-0 gap-0 overflow-hidden max-h-[90vh] overflow-y-auto" data-testid="paywall-modal">
+        <DialogHeader className="text-center px-4 sm:px-6 pt-5 sm:pt-6 pb-3 sm:pb-4">
+          <DialogTitle className="text-xl sm:text-2xl font-display">
             {t('paywall.title', "You've used all your free scans")}
           </DialogTitle>
-          <DialogDescription className="text-base mt-2">
+          <DialogDescription className="text-sm sm:text-base mt-2">
             {t('paywall.description', 'Choose the plan that works best for you')}
           </DialogDescription>
         </DialogHeader>
@@ -55,49 +55,10 @@ export function PaywallModal({ open, onClose, source = 'unknown' }: PaywallModal
             <Loader2 className="w-8 h-8 animate-spin text-primary" />
           </div>
         ) : (
-          <div className="px-6 pb-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Auraly Basic Card */}
-              <div className="flex flex-col rounded-xl p-5 pt-12 border border-border bg-card/50" data-testid="card-basic">
-                {/* Tier Name Row - pt-12 accounts for Recommended badge height on Auraly+ */}
-                <div className="flex items-center gap-2 h-10">
-                  <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
-                    <Leaf className="w-4 h-4 text-muted-foreground" />
-                  </div>
-                  <span className="font-semibold text-lg">Auraly Basic</span>
-                </div>
-                
-                {/* Price Row */}
-                <div className="h-12 flex items-center mt-2">
-                  <span className="text-3xl font-bold">Free</span>
-                </div>
-                
-                {/* Features List - flex-grow to push button to bottom */}
-                <ul className="space-y-3 mt-4 mb-6 flex-grow text-muted-foreground">
-                  <li className="flex items-start gap-3">
-                    <span className="text-muted-foreground/60 mt-0.5">•</span>
-                    <span>{t('paywall.basic.scans', '5 scans per month')}</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-muted-foreground/60 mt-0.5">•</span>
-                    <span>{t('paywall.basic.analysis', 'Basic ingredient analysis')}</span>
-                  </li>
-                </ul>
-
-                {/* CTA Button */}
-                <Button 
-                  variant="outline"
-                  className="w-full mt-auto" 
-                  size="lg"
-                  onClick={onClose}
-                  data-testid="button-stay-basic"
-                >
-                  {t('paywall.stayBasic', 'Stay on Basic')}
-                </Button>
-              </div>
-
-              {/* Auraly+ Card (Featured) */}
-              <div className="relative flex flex-col rounded-xl p-5 pt-7 border-2 border-primary/30 bg-gradient-to-br from-primary/5 via-primary/8 to-primary/12" data-testid="card-plus">
+          <div className="px-4 sm:px-6 pb-5 sm:pb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+              {/* Auraly+ Card (Featured) - Shows first on mobile via order */}
+              <div className="relative flex flex-col rounded-xl p-4 sm:p-5 pt-6 sm:pt-7 border-2 border-primary/30 bg-gradient-to-br from-primary/5 via-primary/8 to-primary/12 order-1 md:order-2" data-testid="card-plus">
                 <Badge 
                   className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-3 py-0.5 flex items-center justify-center"
                   data-testid="badge-recommended"
@@ -106,43 +67,39 @@ export function PaywallModal({ open, onClose, source = 'unknown' }: PaywallModal
                   {t('paywall.recommended', 'Recommended')}
                 </Badge>
 
-                {/* Tier Name Row */}
-                <div className="flex items-center gap-2 h-10">
-                  <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                <div className="flex items-center gap-2 min-h-[2.5rem]">
+                  <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
                     <Crown className="w-4 h-4 text-primary" />
                   </div>
                   <span className="font-semibold text-lg">Auraly+</span>
                 </div>
                 
-                {/* Price Row */}
-                <div className="h-12 flex items-center mt-2">
-                  <span className="text-3xl font-bold">
+                <div className="min-h-[3rem] flex items-center mt-2">
+                  <span className="text-2xl sm:text-3xl font-bold">
                     {subscriptionProduct?.prices[0] ? formatPrice(subscriptionProduct.prices[0].unitAmount) : '$4.99'}
                   </span>
                   <span className="text-muted-foreground ml-1">/month</span>
                 </div>
                 
-                {/* Features List - flex-grow to push button to bottom */}
-                <ul className="space-y-3 mt-4 mb-6 flex-grow">
-                  <li className="flex items-start gap-3">
+                <ul className="space-y-2.5 sm:space-y-3 mt-3 sm:mt-4 mb-4 sm:mb-6 flex-grow text-sm sm:text-base">
+                  <li className="flex items-start gap-2.5 sm:gap-3">
                     <span className="text-primary mt-0.5">•</span>
                     <span>{t('paywall.plus.scans', 'Unlimited scans')}</span>
                   </li>
-                  <li className="flex items-start gap-3">
+                  <li className="flex items-start gap-2.5 sm:gap-3">
                     <span className="text-primary mt-0.5">•</span>
                     <span>{t('paywall.plus.personalization', 'Personalized allergen and ingredient alerts')}</span>
                   </li>
-                  <li className="flex items-start gap-3">
+                  <li className="flex items-start gap-2.5 sm:gap-3">
                     <span className="text-primary mt-0.5">•</span>
                     <span>{t('paywall.plus.history', 'Full scan history access')}</span>
                   </li>
-                  <li className="flex items-start gap-3">
+                  <li className="flex items-start gap-2.5 sm:gap-3">
                     <span className="text-primary mt-0.5">•</span>
                     <span>{t('paywall.plus.earlyAccess', 'Early access to new features')}</span>
                   </li>
                 </ul>
 
-                {/* CTA Button */}
                 <Button 
                   className="w-full mt-auto" 
                   size="lg"
@@ -158,6 +115,41 @@ export function PaywallModal({ open, onClose, source = 'unknown' }: PaywallModal
                   {!subscriptionProduct?.prices[0] && !loadingProducts 
                     ? t('paywall.unavailable', 'Subscription unavailable')
                     : t('paywall.subscribe', 'Upgrade to Auraly+')}
+                </Button>
+              </div>
+
+              {/* Auraly Basic Card - Shows second on mobile via order */}
+              <div className="flex flex-col rounded-xl p-4 sm:p-5 pt-4 sm:pt-5 md:pt-12 border border-border bg-card/50 order-2 md:order-1" data-testid="card-basic">
+                <div className="flex items-center gap-2 min-h-[2.5rem]">
+                  <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
+                    <Leaf className="w-4 h-4 text-muted-foreground" />
+                  </div>
+                  <span className="font-semibold text-lg">Auraly Basic</span>
+                </div>
+                
+                <div className="min-h-[3rem] flex items-center mt-2">
+                  <span className="text-2xl sm:text-3xl font-bold">Free</span>
+                </div>
+                
+                <ul className="space-y-2.5 sm:space-y-3 mt-3 sm:mt-4 mb-4 sm:mb-6 flex-grow text-muted-foreground text-sm sm:text-base">
+                  <li className="flex items-start gap-2.5 sm:gap-3">
+                    <span className="text-muted-foreground/60 mt-0.5">•</span>
+                    <span>{t('paywall.basic.scans', '5 scans per month')}</span>
+                  </li>
+                  <li className="flex items-start gap-2.5 sm:gap-3">
+                    <span className="text-muted-foreground/60 mt-0.5">•</span>
+                    <span>{t('paywall.basic.analysis', 'Basic ingredient analysis')}</span>
+                  </li>
+                </ul>
+
+                <Button 
+                  variant="outline"
+                  className="w-full mt-auto" 
+                  size="lg"
+                  onClick={onClose}
+                  data-testid="button-stay-basic"
+                >
+                  {t('paywall.stayBasic', 'Stay on Basic')}
                 </Button>
               </div>
             </div>
