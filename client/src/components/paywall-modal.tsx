@@ -58,8 +58,8 @@ export function PaywallModal({ open, onClose, source = 'unknown' }: PaywallModal
           <div className="px-6 pb-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Auraly Basic Card */}
-              <div className="flex flex-col rounded-xl p-5 pt-7 border border-border bg-card/50" data-testid="card-basic">
-                {/* Tier Name Row - pt-7 on card accounts for Recommended badge on Auraly+ */}
+              <div className="flex flex-col rounded-xl p-5 pt-12 border border-border bg-card/50" data-testid="card-basic">
+                {/* Tier Name Row - pt-12 accounts for Recommended badge height on Auraly+ */}
                 <div className="flex items-center gap-2 h-10">
                   <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
                     <Leaf className="w-4 h-4 text-muted-foreground" />
