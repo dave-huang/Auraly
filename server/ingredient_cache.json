@@ -5555,8 +5555,8 @@
     "createdAt": 1764998417623
   },
   "pecan__food__en": {
-    "analysis": "{\"name\":\"Pecan\",\"riskLevel\":\"low\",\"summary\":\"Pecans are tree nuts that provide healthy fats, fiber, vitamins, and minerals. They are generally safe for most people but can cause serious reactions in individuals with tree nut allergies.\",\"details\":\"Pecans are rich in monounsaturated fats, which can support heart health, and contain antioxidants, magnesium, and vitamin E. For the general population they are a nutritious whole-food ingredient, but those with tree nut allergies must strictly avoid them due to the risk of severe allergic reactions, including anaphylaxis. Portion size should be considered for people monitoring calorie intake, as pecans are energy-dense.\",\"category\":\"Tree nut\"}",
-    "lastUpdated": 1765685051825,
+    "analysis": "{\"name\":\"Pecan\",\"riskLevel\":\"low\",\"summary\":\"Pecans are edible tree nuts commonly used in snacks and baked goods and are generally safe and nutritious for most people. They are a common allergen, but this is only a concern for individuals with tree nut allergies.\",\"details\":\"Pecans provide healthy unsaturated fats, fiber, vitamins, and minerals, and can support heart health when consumed in moderation as part of a balanced diet. For the general population without nut allergies, pecans pose no significant health risks and do not contain problematic additives like artificial colors, preservatives, or trans fats. People with known tree nut allergies must strictly avoid pecans due to the risk of allergic reactions, but this does not increase risk for those without allergies.\",\"category\":\"Tree nut\"}",
+    "lastUpdated": 1765691561733,
     "createdAt": 1764998417623
   },
   "peanut__food__en": {
@@ -5575,8 +5575,8 @@
     "createdAt": 1764998419380
   },
   "ground coffee beans (contains milk)__food__en": {
-    "analysis": "{\"name\":\"Ground Coffee Beans (contains Milk)\",\"riskLevel\":\"low\",\"summary\":\"Ground coffee beans are roasted coffee seeds used to brew coffee, and this product also contains milk, a common allergen. For most healthy adults, moderate coffee and milk intake is generally safe.\",\"details\":\"Ground coffee beans supply caffeine, which can improve alertness but may cause jitteriness, sleep disruption, or increased heart rate in sensitive individuals or at high intakes. The presence of milk adds protein, fats, and sugars, and while it is nutritionally useful, it is a common allergen and unsuitable for people with lactose intolerance or milk allergy. There are no artificial additives, colors, or preservatives indicated in this ingredient.\",\"category\":\"Beverage ingredient\"}",
-    "lastUpdated": 1765691442775,
+    "analysis": "{\"name\":\"Ground Coffee Beans (contains Milk)\",\"riskLevel\":\"low\",\"summary\":\"Ground coffee beans are roasted coffee seeds that are ground for brewing, and milk is a common dairy additive. For the general population, both are considered safe, though milk is a common allergen for sensitive individuals.\",\"details\":\"Ground coffee beans provide caffeine and various bioactive compounds, which most healthy adults can consume in moderate amounts without issue. Excessive coffee intake may cause jitteriness, sleep disturbance, or increased heart rate in some people, but this is dose-related rather than an inherent toxicity. The presence of milk indicates a dairy allergen, which is safe for most people but can cause reactions in those with milk allergy or lactose intolerance. There are no artificial additives, colors, or preservatives indicated in this ingredient description.\",\"category\":\"Coffee and dairy ingredient\"}",
+    "lastUpdated": 1765691571589,
     "createdAt": 1764998419748
   },
   "soy__food__en": {
@@ -5585,8 +5585,8 @@
     "createdAt": 1764998419748
   },
   "wheat (may contain egg)__food__en": {
-    "analysis": "{\"name\":\"Wheat (may Contain Egg)\",\"riskLevel\":\"low\",\"summary\":\"Wheat is a cereal grain commonly used in many foods, and this ingredient may contain egg, another common allergen. For the general population, wheat and egg are safe but must be avoided by those with specific allergies or celiac disease.\",\"details\":\"Wheat provides carbohydrates, some protein, and fiber, but it contains gluten, which can trigger adverse reactions in people with celiac disease or non-celiac gluten sensitivity. The “may contain egg” statement indicates possible cross-contact with egg during processing, important for individuals with egg allergy but not a concern for most others. This listing does not involve artificial additives, colors, preservatives, or sweeteners.\",\"category\":\"Cereal grain ingredient\"}",
-    "lastUpdated": 1765691442775,
+    "analysis": "{\"name\":\"Wheat (may Contain Egg)\",\"riskLevel\":\"low\",\"summary\":\"Wheat is a common cereal grain used as a staple food, and egg may be present due to shared processing equipment. For the general population, wheat and egg are safe, though both are common allergens for susceptible individuals.\",\"details\":\"Wheat primarily provides carbohydrates along with some protein and fiber, and it does not inherently involve artificial additives, colors, or preservatives in its basic form. While gluten in wheat can cause issues for people with celiac disease or gluten sensitivity, it is safe for most individuals. The statement \\\"may contain egg\\\" signals possible cross-contact with egg, which is important for people with egg allergy but does not increase risk for the general population. This ingredient listing does not suggest problematic additives such as artificial sweeteners, trans fats, or flavor enhancers.\",\"category\":\"Cereal grain ingredient\"}",
+    "lastUpdated": 1765691571589,
     "createdAt": 1764998419750
   },
   "citrus medica limonum (lemon) peel extract__personal_care__en": {
