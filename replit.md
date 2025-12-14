@@ -33,12 +33,14 @@ Auraly is a mobile-friendly web application designed to help users understand th
     - `GET /api/user/allergen-preferences` - Fetch current preferences
     - `PATCH /api/user/allergen-preferences` - Update preferences
     - `POST /api/user/allergen-onboarding` - Complete allergen onboarding
+    - `POST /api/admin/clear-cache` - **ADMIN ONLY** - Clears ingredient cache (use when AI prompts change)
 - **Services**: `services/cache.ts`, `services/ocr.ts`, `services/geminiOcr.ts`, `services/googleVisionOcr.ts`, `services/analyzer.ts`, `gemini.ts`, `openai.ts`.
 - **Feature Specifications**:
     - **Fast OCR with Fallback**: Gemini 2.5 Flash (primary, 2-5s) with Google Cloud Vision API as fallback.
     - **Combined Scan & Analyze Pipeline**: `/api/scan-and-analyze` endpoint for sequential OCR and AI analysis in a single request.
     - **Automatic Retry System**: Frontend auto-retries failed requests with exponential backoff and OCR text caching.
     - **AI-Powered Analysis**: Utilizes GPT-4o for accurate ingredient analysis, risk assessments, and explanations in the user's chosen language. Includes parenthetical expansion, deduplication, and dynamic token allocation.
+    - **Allergen Risk Rules**: Common food allergens (soy, peanuts, tree nuts, dairy, eggs, wheat, fish, shellfish, sesame, coconut) are marked as "low" risk by default since they're only dangerous to individuals with allergies, not the general population. The AI prompt explicitly enforces this rule.
     - **Intelligent Completeness Validation**: Schema-level validation and smart section boundary detection for ingredient lists.
     - **Cross-Language Consistency**: Acceptable ingredient count variance across English, Spanish, and Chinese analyses.
     - **Multi-Language Support**: Full internationalization for UI and AI analysis results in English, Spanish, and Chinese.

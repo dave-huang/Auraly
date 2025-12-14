@@ -9,7 +9,7 @@ import { storage } from "./storage";
 import { db } from "./db";
 import { extractTextFromImage } from "./services/ocr";
 import { analyzeIngredients, analyzeIngredientsParallel, extractIngredientsFromText } from "./services/analyzer";
-import { batchAnalyzeIngredientsWithCache, getCacheStats } from "./services/cache";
+import { batchAnalyzeIngredientsWithCache, getCacheStats, clearAllCache } from "./services/cache";
 import { subscriptionService } from "./services/subscription";
 import { 
   ocrRequestSchema, 
@@ -1058,6 +1058,18 @@ Sent from Auraly Feedback System
     } catch (error: any) {
       console.error('Grant scans error:', error);
       res.status(500).json({ error: 'Failed to grant scans' });
+    }
+  });
+
+  // Clear ingredient cache (admin only - use when AI prompts change)
+  app.post('/api/admin/clear-cache', isAuthenticated, isAdmin, async (req: any, res) => {
+    try {
+      const clearedCount = clearAllCache();
+      console.log(`[ADMIN] Cache cleared by user ${req.user.claims.sub}: ${clearedCount} entries removed`);
+      res.json({ success: true, clearedCount, message: `Cleared ${clearedCount} cached ingredient analyses` });
+    } catch (error: any) {
+      console.error('Clear cache error:', error);
+      res.status(500).json({ error: 'Failed to clear cache' });
     }
   });
 

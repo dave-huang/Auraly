@@ -203,3 +203,12 @@ export function getCacheStats(): { total: number; fresh: number; stale: number }
     stale
   };
 }
+
+// Clear ALL cache entries (for admin use when prompts change)
+export function clearAllCache(): number {
+  const count = Object.keys(cacheData).length;
+  cacheData = {};
+  saveCache();
+  console.log(`[CACHE-ADMIN] Cleared all ${count} cache entries`);
+  return count;
+}
