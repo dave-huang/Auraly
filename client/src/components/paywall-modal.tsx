@@ -58,8 +58,8 @@ export function PaywallModal({ open, onClose, source = 'unknown' }: PaywallModal
           <div className="px-6 pb-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Auraly Basic Card */}
-              <div className="flex flex-col rounded-xl p-5 border border-border bg-card/50" data-testid="card-basic">
-                {/* Tier Name Row */}
+              <div className="flex flex-col rounded-xl p-5 pt-7 border border-border bg-card/50" data-testid="card-basic">
+                {/* Tier Name Row - pt-7 on card accounts for Recommended badge on Auraly+ */}
                 <div className="flex items-center gap-2 h-10">
                   <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
                     <Leaf className="w-4 h-4 text-muted-foreground" />
@@ -97,7 +97,7 @@ export function PaywallModal({ open, onClose, source = 'unknown' }: PaywallModal
               </div>
 
               {/* Auraly+ Card (Featured) */}
-              <div className="relative flex flex-col rounded-xl p-5 border-2 border-primary/30 bg-gradient-to-br from-primary/5 via-primary/8 to-primary/12" data-testid="card-plus">
+              <div className="relative flex flex-col rounded-xl p-5 pt-7 border-2 border-primary/30 bg-gradient-to-br from-primary/5 via-primary/8 to-primary/12" data-testid="card-plus">
                 <Badge 
                   className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-3 py-0.5"
                   data-testid="badge-recommended"
