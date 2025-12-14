@@ -130,7 +130,7 @@ export function PaywallModal({ open, onClose, source = 'unknown' }: PaywallModal
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-primary mt-0.5">•</span>
-                    <span>{t('paywall.plus.personalization', 'Personalized allergen and ingredient alerts')}</span>
+                    <span>{t('paywall.plus.personalization', 'Personal allergen/ingredient alerts')}</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-primary mt-0.5">•</span>
