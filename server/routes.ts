@@ -293,20 +293,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
           // Get subscription details for next billing date (only for paying subscribers, not admin-granted)
           if (!user.isAdminGrantedPremium && user.subscriptionStatus === 'active') {
-            // List active subscriptions for the customer to get the most recent one
+            // List active subscriptions for the customer to get the subscription ID
             const subscriptions = await stripe.subscriptions.list({
               customer: user.stripeCustomerId,
               status: 'active',
               limit: 1,
-              expand: ['data.items.data.price'],
             });
             
             console.log(`[BILLING] Found ${subscriptions.data.length} active subscriptions for customer ${user.stripeCustomerId}`);
             
             if (subscriptions.data.length > 0) {
-              const subscription = subscriptions.data[0] as any;
-              console.log(`[BILLING] Full subscription object keys: ${Object.keys(subscription).join(', ')}`);
-              console.log(`[BILLING] Subscription ID: ${subscription.id}, current_period_end: ${subscription.current_period_end}, status: ${subscription.status}`);
+              const subscriptionId = subscriptions.data[0].id;
+              
+              // Retrieve the full subscription to get all fields including current_period_end
+              const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
+                expand: ['items.data.price'],
+              }) as any;
+              
+              console.log(`[BILLING] Retrieved subscription ${subscription.id}, current_period_end: ${subscription.current_period_end}, status: ${subscription.status}`);
               
               // current_period_end is a Unix timestamp
               if (subscription.current_period_end) {
