@@ -15,6 +15,7 @@ import OnboardingPage from "@/pages/onboarding";
 import SettingsPage from "@/pages/settings";
 import FeedbackPage from "@/pages/feedback";
 import AdminPage from "@/pages/admin";
+import AccountPage from "@/pages/account";
 import NotFound from "@/pages/not-found";
 import "./i18n/config";
 import { useEffect } from "react";
@@ -76,6 +77,9 @@ function Router() {
         <ProtectedPage component={ScanDetailPage} />
       </Route>
       <Route path="/feedback" component={FeedbackPage} />
+      <Route path="/account">
+        <ProtectedPage component={AccountPage} />
+      </Route>
       <Route path="/admin">
         <ProtectedPage component={AdminPage} />
       </Route>

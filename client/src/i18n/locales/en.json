@@ -7,6 +7,7 @@
     "menu": "Menu",
     "home": "Home",
     "history": "Scan History",
+    "account": "Account",
     "settings": "Settings",
     "feedback": "Help & Feedback",
     "language": "Language",
@@ -348,5 +349,27 @@
     },
     "flagged": "flagged",
     "ingredientContains": "contains"
+  },
+  "account": {
+    "title": "Account",
+    "accountInfo": "Account Info",
+    "email": "Email",
+    "name": "Name",
+    "memberSince": "Member since",
+    "subscription": "Subscription",
+    "subscriptionDescription": "Manage your plan and billing",
+    "trialEnds": "Trial ends",
+    "daysLeft": "days left",
+    "trialDescription": "Your trial includes unlimited scans. Subscribe to keep your premium access after the trial ends.",
+    "upgradeToPremium": "Upgrade to Auraly+",
+    "nextBilling": "Next billing date",
+    "billingAmount": "Billing amount",
+    "paymentMethod": "Payment method",
+    "manageBilling": "Manage Billing",
+    "billingPortalError": "Could not open billing portal",
+    "freeScansUsed": "Free scans used",
+    "scansRefresh": "Scans refresh on",
+    "scanPackBalance": "Scan pack balance",
+    "adminGrantedDescription": "Your premium access has been granted by an administrator."
   }
 }

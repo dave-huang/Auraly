@@ -24,6 +24,7 @@ import {
   productTypes,
   productCategories
 } from "@shared/schema";
+import { getUncachableStripeClient } from "./stripeClient";
 
 // In-memory store for analysis requests (for background processing)
 interface AnalysisRequest {
@@ -216,6 +217,130 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error: any) {
       console.error("Error completing allergen onboarding:", error);
       res.status(400).json({ message: error.message || "Failed to complete allergen onboarding" });
+    }
+  });
+
+  // ==========================================
+  // ACCOUNT MANAGEMENT ENDPOINTS
+  // ==========================================
+
+  // GET /api/account/subscription - Get full subscription details
+  app.get('/api/account/subscription', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      // Calculate next free scan refresh date (1st of next month)
+      const now = new Date();
+      const nextRefreshDate = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+
+      // Base response with user info
+      const response: any = {
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        subscriptionStatus: user.subscriptionStatus,
+        monthlyFreeScansUsed: user.monthlyFreeScansUsed || 0,
+        scanPackBalance: user.scanPackBalance || 0,
+        nextFreeScansRefresh: nextRefreshDate.toISOString(),
+        createdAt: user.createdAt,
+      };
+
+      // Add trial info if on trial
+      if (user.subscriptionStatus === 'trial') {
+        response.trialEndsAt = user.trialEndsAt;
+        if (user.trialEndsAt) {
+          const trialEnd = new Date(user.trialEndsAt);
+          const daysRemaining = Math.max(0, Math.ceil((trialEnd.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)));
+          response.trialDaysRemaining = daysRemaining;
+        }
+      }
+
+      // Check if admin-granted premium
+      if (user.isAdminGrantedPremium) {
+        response.isAdminGrantedPremium = true;
+      }
+
+      // Fetch Stripe billing info if customer exists (regardless of subscription status)
+      if (user.stripeCustomerId) {
+        response.subscriptionEndsAt = user.subscriptionEndsAt;
+        
+        try {
+          const stripe = await getUncachableStripeClient();
+          
+          // Get payment methods for the customer
+          const paymentMethods = await stripe.paymentMethods.list({
+            customer: user.stripeCustomerId,
+            type: 'card',
+            limit: 1,
+          });
+          
+          if (paymentMethods.data && paymentMethods.data.length > 0) {
+            const pm = paymentMethods.data[0];
+            if (pm.card) {
+              response.paymentMethod = {
+                brand: pm.card.brand || 'card',
+                last4: pm.card.last4 || '****',
+                expMonth: pm.card.exp_month,
+                expYear: pm.card.exp_year,
+              };
+            }
+          }
+
+          // Get subscription details for next billing date (only for paying subscribers, not admin-granted)
+          if (user.stripeSubscriptionId && !user.isAdminGrantedPremium) {
+            const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId) as any;
+            response.nextBillingDate = subscription.current_period_end 
+              ? new Date(subscription.current_period_end * 1000).toISOString() 
+              : null;
+            response.billingAmount = subscription.items?.data?.[0]?.price?.unit_amount || null;
+            response.billingCurrency = subscription.items?.data?.[0]?.price?.currency || 'usd';
+            response.billingInterval = subscription.items?.data?.[0]?.price?.recurring?.interval || 'month';
+          }
+        } catch (stripeError: any) {
+          console.error('Error fetching Stripe details:', stripeError);
+        }
+      }
+
+      res.json(response);
+    } catch (error: any) {
+      console.error("Error fetching subscription:", error);
+      res.status(500).json({ message: "Failed to fetch subscription details" });
+    }
+  });
+
+  // POST /api/account/billing-portal - Create Stripe Customer Portal session
+  app.post('/api/account/billing-portal', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      if (!user.stripeCustomerId) {
+        return res.status(400).json({ message: "No billing account found" });
+      }
+
+      const stripe = await getUncachableStripeClient();
+      
+      // Determine return URL
+      const returnUrl = req.body.returnUrl || `${req.protocol}://${req.get('host')}/account`;
+      
+      const session = await stripe.billingPortal.sessions.create({
+        customer: user.stripeCustomerId,
+        return_url: returnUrl,
+      });
+
+      res.json({ url: session.url });
+    } catch (error: any) {
+      console.error("Error creating billing portal session:", error);
+      res.status(500).json({ message: "Failed to create billing portal session" });
     }
   });
 

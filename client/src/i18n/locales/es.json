@@ -7,6 +7,7 @@
     "menu": "Menú",
     "home": "Inicio",
     "history": "Historial de Escaneos",
+    "account": "Cuenta",
     "settings": "Configuración",
     "feedback": "Ayuda y Comentarios",
     "language": "Idioma",
@@ -348,5 +349,27 @@
     },
     "flagged": "marcado",
     "ingredientContains": "contiene"
+  },
+  "account": {
+    "title": "Cuenta",
+    "accountInfo": "Información de la Cuenta",
+    "email": "Correo electrónico",
+    "name": "Nombre",
+    "memberSince": "Miembro desde",
+    "subscription": "Suscripción",
+    "subscriptionDescription": "Gestiona tu plan y facturación",
+    "trialEnds": "El período de prueba termina",
+    "daysLeft": "días restantes",
+    "trialDescription": "Tu período de prueba incluye escaneos ilimitados. Suscríbete para mantener tu acceso premium después de que termine la prueba.",
+    "upgradeToPremium": "Actualizar a Auraly+",
+    "nextBilling": "Próxima fecha de facturación",
+    "billingAmount": "Monto de facturación",
+    "paymentMethod": "Método de pago",
+    "manageBilling": "Gestionar Facturación",
+    "billingPortalError": "No se pudo abrir el portal de facturación",
+    "freeScansUsed": "Escaneos gratuitos usados",
+    "scansRefresh": "Los escaneos se renuevan el",
+    "scanPackBalance": "Saldo de paquete de escaneos",
+    "adminGrantedDescription": "Tu acceso premium ha sido otorgado por un administrador."
   }
 }

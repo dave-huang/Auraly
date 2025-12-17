@@ -12,7 +12,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu";
-import { Menu, History, Settings, Globe, LogOut, Check, Home, MessageCircle } from "lucide-react";
+import { Menu, History, Settings, Globe, LogOut, Check, Home, MessageCircle, User } from "lucide-react";
 
 interface NavigationMenuProps {
   showHomeLink?: boolean;
@@ -68,6 +68,13 @@ export function NavigationMenu({ showHomeLink = false }: NavigationMenuProps) {
           <Link href="/history" className="flex items-center cursor-pointer">
             <History className="mr-2 h-4 w-4" />
             {t('nav.history')}
+          </Link>
+        </DropdownMenuItem>
+        
+        <DropdownMenuItem asChild data-testid="nav-account">
+          <Link href="/account" className="flex items-center cursor-pointer">
+            <User className="mr-2 h-4 w-4" />
+            {t('nav.account')}
           </Link>
         </DropdownMenuItem>
         
