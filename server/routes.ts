@@ -298,19 +298,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
               customer: user.stripeCustomerId,
               status: 'active',
               limit: 1,
+              expand: ['data.items.data.price'],
             });
             
             console.log(`[BILLING] Found ${subscriptions.data.length} active subscriptions for customer ${user.stripeCustomerId}`);
             
             if (subscriptions.data.length > 0) {
               const subscription = subscriptions.data[0] as any;
-              console.log(`[BILLING] Subscription ID: ${subscription.id}, current_period_end: ${subscription.current_period_end}`);
-              response.nextBillingDate = subscription.current_period_end 
-                ? new Date(subscription.current_period_end * 1000).toISOString() 
-                : null;
-              response.billingAmount = subscription.items?.data?.[0]?.price?.unit_amount || null;
-              response.billingCurrency = subscription.items?.data?.[0]?.price?.currency || 'usd';
-              response.billingInterval = subscription.items?.data?.[0]?.price?.recurring?.interval || 'month';
+              console.log(`[BILLING] Subscription ID: ${subscription.id}, current_period_end: ${subscription.current_period_end}, status: ${subscription.status}`);
+              
+              // current_period_end is a Unix timestamp
+              if (subscription.current_period_end) {
+                response.nextBillingDate = new Date(subscription.current_period_end * 1000).toISOString();
+              }
+              
+              // Get price info from expanded items
+              const priceData = subscription.items?.data?.[0]?.price;
+              if (priceData) {
+                response.billingAmount = priceData.unit_amount || null;
+                response.billingCurrency = priceData.currency || 'usd';
+                response.billingInterval = priceData.recurring?.interval || 'month';
+              }
+              
               console.log(`[BILLING] Response: nextBillingDate=${response.nextBillingDate}, amount=${response.billingAmount}`);
             } else {
               console.log(`[BILLING] No active subscriptions found for customer ${user.stripeCustomerId}`);
