@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   ArrowLeft, Users, Crown, Zap, TrendingUp, Search, 
-  Loader2, AlertTriangle, Gift, Ban, RefreshCw 
+  Loader2, AlertTriangle, Gift, Ban, RefreshCw, Trash2, Database 
 } from "lucide-react";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -48,6 +48,13 @@ interface AdminData {
   recentUsers: UserRecord[];
 }
 
+interface CacheStats {
+  totalEntries: number;
+  hitCount: number;
+  missCount: number;
+  hitRate: string;
+}
+
 export default function AdminPage() {
   const [, navigate] = useLocation();
   const { user, isLoading: authLoading } = useAuth();
@@ -61,6 +68,11 @@ export default function AdminPage() {
 
   const { data: adminData, isLoading, error, refetch } = useQuery<AdminData>({
     queryKey: ['/api/admin/dashboard'],
+    enabled: isAdmin,
+  });
+
+  const { data: cacheStats, refetch: refetchCache } = useQuery<CacheStats>({
+    queryKey: ['/api/cache-stats'],
     enabled: isAdmin,
   });
 
@@ -103,6 +115,22 @@ export default function AdminPage() {
     },
     onError: (error: any) => {
       toast({ title: "Failed to grant scans", description: error.message, variant: "destructive" });
+    }
+  });
+
+  const clearCacheMutation = useMutation({
+    mutationFn: async () => {
+      return apiRequest('POST', '/api/admin/clear-cache', {});
+    },
+    onSuccess: (data: any) => {
+      toast({ 
+        title: "Cache cleared", 
+        description: `${data.clearedCount} ingredient analyses removed` 
+      });
+      refetchCache();
+    },
+    onError: (error: any) => {
+      toast({ title: "Failed to clear cache", description: error.message, variant: "destructive" });
     }
   });
 
@@ -226,6 +254,7 @@ export default function AdminPage() {
           <TabsList>
             <TabsTrigger value="users" data-testid="tab-users">Users</TabsTrigger>
             <TabsTrigger value="grants" data-testid="tab-grants">Grant Access</TabsTrigger>
+            <TabsTrigger value="system" data-testid="tab-system">System</TabsTrigger>
           </TabsList>
 
           <TabsContent value="users" className="space-y-4">
@@ -383,6 +412,71 @@ export default function AdminPage() {
                       </Button>
                     </div>
                   </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="system" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Database className="w-5 h-5" />
+                  Ingredient Cache
+                </CardTitle>
+                <CardDescription>
+                  Manage the ingredient analysis cache. Clear when AI prompts are updated.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="p-4 rounded-lg bg-muted/50">
+                    <p className="text-sm text-muted-foreground">Cached Entries</p>
+                    <p className="text-2xl font-semibold" data-testid="stat-cache-entries">
+                      {cacheStats?.totalEntries ?? '-'}
+                    </p>
+                  </div>
+                  <div className="p-4 rounded-lg bg-muted/50">
+                    <p className="text-sm text-muted-foreground">Cache Hits</p>
+                    <p className="text-2xl font-semibold" data-testid="stat-cache-hits">
+                      {cacheStats?.hitCount ?? '-'}
+                    </p>
+                  </div>
+                  <div className="p-4 rounded-lg bg-muted/50">
+                    <p className="text-sm text-muted-foreground">Cache Misses</p>
+                    <p className="text-2xl font-semibold" data-testid="stat-cache-misses">
+                      {cacheStats?.missCount ?? '-'}
+                    </p>
+                  </div>
+                  <div className="p-4 rounded-lg bg-muted/50">
+                    <p className="text-sm text-muted-foreground">Hit Rate</p>
+                    <p className="text-2xl font-semibold" data-testid="stat-cache-hit-rate">
+                      {cacheStats?.hitRate ?? '-'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between p-4 rounded-lg border bg-destructive/5 border-destructive/20">
+                  <div>
+                    <p className="font-medium">Clear All Cache</p>
+                    <p className="text-sm text-muted-foreground">
+                      Remove all cached ingredient analyses. Use after updating AI prompts.
+                    </p>
+                  </div>
+                  <Button
+                    variant="outline"
+                    className="gap-2 text-destructive border-destructive/30 hover:bg-destructive/10"
+                    onClick={() => clearCacheMutation.mutate()}
+                    disabled={clearCacheMutation.isPending}
+                    data-testid="button-clear-cache"
+                  >
+                    {clearCacheMutation.isPending ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Trash2 className="w-4 h-4" />
+                    )}
+                    Clear Cache
+                  </Button>
                 </div>
               </CardContent>
             </Card>
