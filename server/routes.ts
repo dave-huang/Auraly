@@ -293,7 +293,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
           // Get subscription details for next billing date (only for paying subscribers, not admin-granted)
           if (!user.isAdminGrantedPremium && user.subscriptionStatus === 'active') {
-            // List active subscriptions for the customer to get the subscription ID
+            // List active subscriptions for the customer
             const subscriptions = await stripe.subscriptions.list({
               customer: user.stripeCustomerId,
               status: 'active',
@@ -303,26 +303,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
             console.log(`[BILLING] Found ${subscriptions.data.length} active subscriptions for customer ${user.stripeCustomerId}`);
             
             if (subscriptions.data.length > 0) {
-              const subscriptionId = subscriptions.data[0].id;
+              const subscription = subscriptions.data[0] as any;
               
-              // Retrieve the full subscription to get all fields including current_period_end
-              const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
-                expand: ['items.data.price'],
-              }) as any;
+              console.log(`[BILLING] Subscription billing_cycle_anchor: ${subscription.billing_cycle_anchor}, start_date: ${subscription.start_date}`);
               
-              console.log(`[BILLING] Retrieved subscription ${subscription.id}, current_period_end: ${subscription.current_period_end}, status: ${subscription.status}`);
-              
-              // current_period_end is a Unix timestamp
-              if (subscription.current_period_end) {
-                response.nextBillingDate = new Date(subscription.current_period_end * 1000).toISOString();
-              }
-              
-              // Get price info from expanded items
-              const priceData = subscription.items?.data?.[0]?.price;
-              if (priceData) {
-                response.billingAmount = priceData.unit_amount || null;
-                response.billingCurrency = priceData.currency || 'usd';
-                response.billingInterval = priceData.recurring?.interval || 'month';
+              // Calculate next billing date from billing_cycle_anchor
+              // The billing_cycle_anchor is the date of the first payment
+              if (subscription.billing_cycle_anchor) {
+                const anchorTimestamp = subscription.billing_cycle_anchor;
+                const anchorDate = new Date(anchorTimestamp * 1000);
+                const now = new Date();
+                
+                // Get the interval from price data
+                const priceData = subscription.items?.data?.[0]?.price;
+                const interval = priceData?.recurring?.interval || 'month';
+                
+                // Calculate next billing date by adding intervals until we're past now
+                let nextBillingDate = new Date(anchorDate);
+                while (nextBillingDate <= now) {
+                  if (interval === 'year') {
+                    nextBillingDate.setFullYear(nextBillingDate.getFullYear() + 1);
+                  } else {
+                    nextBillingDate.setMonth(nextBillingDate.getMonth() + 1);
+                  }
+                }
+                
+                response.nextBillingDate = nextBillingDate.toISOString();
+                console.log(`[BILLING] Calculated next billing date: ${response.nextBillingDate}`);
+                
+                // Set price info
+                if (priceData) {
+                  response.billingAmount = priceData.unit_amount || null;
+                  response.billingCurrency = priceData.currency || 'usd';
+                  response.billingInterval = interval;
+                }
               }
               
               console.log(`[BILLING] Response: nextBillingDate=${response.nextBillingDate}, amount=${response.billingAmount}`);
