@@ -292,14 +292,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
 
           // Get subscription details for next billing date (only for paying subscribers, not admin-granted)
-          if (user.stripeSubscriptionId && !user.isAdminGrantedPremium) {
-            const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId) as any;
-            response.nextBillingDate = subscription.current_period_end 
-              ? new Date(subscription.current_period_end * 1000).toISOString() 
-              : null;
-            response.billingAmount = subscription.items?.data?.[0]?.price?.unit_amount || null;
-            response.billingCurrency = subscription.items?.data?.[0]?.price?.currency || 'usd';
-            response.billingInterval = subscription.items?.data?.[0]?.price?.recurring?.interval || 'month';
+          if (!user.isAdminGrantedPremium && user.subscriptionStatus === 'active') {
+            // List active subscriptions for the customer to get the most recent one
+            const subscriptions = await stripe.subscriptions.list({
+              customer: user.stripeCustomerId,
+              status: 'active',
+              limit: 1,
+            });
+            
+            if (subscriptions.data.length > 0) {
+              const subscription = subscriptions.data[0] as any;
+              response.nextBillingDate = subscription.current_period_end 
+                ? new Date(subscription.current_period_end * 1000).toISOString() 
+                : null;
+              response.billingAmount = subscription.items?.data?.[0]?.price?.unit_amount || null;
+              response.billingCurrency = subscription.items?.data?.[0]?.price?.currency || 'usd';
+              response.billingInterval = subscription.items?.data?.[0]?.price?.recurring?.interval || 'month';
+            }
           }
         } catch (stripeError: any) {
           console.error('Error fetching Stripe details:', stripeError);
