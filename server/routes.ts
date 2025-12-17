@@ -305,6 +305,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             
             if (subscriptions.data.length > 0) {
               const subscription = subscriptions.data[0] as any;
+              console.log(`[BILLING] Full subscription object keys: ${Object.keys(subscription).join(', ')}`);
               console.log(`[BILLING] Subscription ID: ${subscription.id}, current_period_end: ${subscription.current_period_end}, status: ${subscription.status}`);
               
               // current_period_end is a Unix timestamp
