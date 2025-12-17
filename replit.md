@@ -13,7 +13,7 @@ Auraly is a mobile-friendly web application designed to help users understand th
 ## System Architecture
 
 ### Frontend (React + TypeScript)
-- **Pages**: Landing (`/`), Onboarding (`/onboarding`), Settings (`/settings`), Upload (`/upload`), Results (`/results`), History (`/history`). All fully internationalized.
+- **Pages**: Landing (`/`), Onboarding (`/onboarding`), Settings (`/settings`), Upload (`/upload`), Results (`/results`), History (`/history`), Account (`/account`). All fully internationalized.
 - **Components**: `ProductTypeSelector`, `ImageUploader` (mobile-first design with camera as primary CTA), `IngredientCard`, `RiskSummary`, `LanguageSwitcher`.
 - **Internationalization**: i18next configured with `en`, `es`, `zh` locales. Language preference stored in localStorage.
 - **State Management**: TanStack Query for API calls (with 5-minute timeout), sessionStorage for pending analysis, localStorage for scan history and language preference.
@@ -34,6 +34,8 @@ Auraly is a mobile-friendly web application designed to help users understand th
     - `PATCH /api/user/allergen-preferences` - Update preferences
     - `POST /api/user/allergen-onboarding` - Complete allergen onboarding
     - `POST /api/admin/clear-cache` - **ADMIN ONLY** - Clears ingredient cache (use when AI prompts change)
+    - `GET /api/account/subscription` - Returns subscription details, billing info, payment method
+    - `POST /api/account/billing-portal` - Creates Stripe Customer Portal session for payment management
 - **Services**: `services/cache.ts`, `services/ocr.ts`, `services/geminiOcr.ts`, `services/googleVisionOcr.ts`, `services/analyzer.ts`, `gemini.ts`, `openai.ts`.
 - **Feature Specifications**:
     - **Fast OCR with Fallback**: Gemini 2.5 Flash (primary, 2-5s) with Google Cloud Vision API as fallback.
@@ -52,6 +54,7 @@ Auraly is a mobile-friendly web application designed to help users understand th
     - **Mobile Background Resilience**: Automatically resumes polling and re-acquires Wake Lock when the app returns from the background.
     - **Backend Ingredient Caching**: `/api/analyze-ingredients` endpoint with intelligent, category-specific caching and 30-day auto-refresh.
     - **Performance & Reliability Overhaul**: Simplified OCR to Gemini 2.5 Flash, combined pipeline, and use of GPT-4o via Replit AI Integrations for faster and more reliable processing.
+    - **Account Management**: Account page (`/account`) showing subscription status, billing info, and payment methods. Integrates Stripe Customer Portal for secure payment management.
 
 ### Tech Stack
 - **Frontend**: React, TypeScript, Tailwind CSS, shadcn/ui, TanStack Query, Wouter
