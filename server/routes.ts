@@ -320,7 +320,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
               console.log(`[BILLING] Full subscription data: id=${subscription.id}, status=${subscription.status}, cancel_at_period_end=${subscription.cancel_at_period_end}, canceled_at=${subscription.canceled_at}, cancel_at=${subscription.cancel_at}`);
               
               // Check if subscription is cancelled but still active until period end
-              if (subscription.cancel_at_period_end) {
+              // In newer Stripe API versions, cancel_at (timestamp) is set instead of cancel_at_period_end=true
+              const isScheduledToCancel = subscription.cancel_at_period_end || subscription.cancel_at;
+              if (isScheduledToCancel) {
                 response.cancelAtPeriodEnd = true;
                 response.canceledAt = subscription.canceled_at ? new Date(subscription.canceled_at * 1000).toISOString() : null;
               }
@@ -347,8 +349,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 }
                 
                 // If cancelled, this becomes the access end date rather than next billing date
-                if (subscription.cancel_at_period_end) {
-                  response.accessUntil = nextBillingDate.toISOString();
+                if (isScheduledToCancel) {
+                  // Use cancel_at timestamp if available (more accurate), otherwise use calculated date
+                  if (subscription.cancel_at) {
+                    response.accessUntil = new Date(subscription.cancel_at * 1000).toISOString();
+                  } else {
+                    response.accessUntil = nextBillingDate.toISOString();
+                  }
                   console.log(`[BILLING] Subscription cancelled - access until: ${response.accessUntil}`);
                 } else {
                   response.nextBillingDate = nextBillingDate.toISOString();
