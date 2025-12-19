@@ -113,7 +113,7 @@ export default function AccountPage() {
     // Show "Cancelled" badge if subscription is cancelled but still active
     if (status === 'active' && subscription.cancelAtPeriodEnd && !subscription.isAdminGrantedPremium) {
       return (
-        <Badge className="bg-amber-50 text-amber-700 border-amber-100 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-700/30 gap-1 px-2 py-0.5 text-xs font-medium" data-testid="badge-plan">
+        <Badge className="bg-stone-100 text-stone-600 border-stone-200/60 dark:bg-stone-800/30 dark:text-stone-400 dark:border-stone-600/30 gap-1.5 px-2.5 py-0.5 text-xs font-medium" data-testid="badge-plan">
           <Clock className="w-3 h-3" />
           {t('account.cancelled')}
         </Badge>
@@ -197,10 +197,10 @@ export default function AccountPage() {
       
       return (
         <div className="space-y-0">
-          {/* Cancelled notice */}
+          {/* Cancelled notice - uses warm earth tones matching wellness aesthetic */}
           {isCancelled && (
-            <div className="p-3 mb-3 rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700/30">
-              <p className="text-sm text-amber-800 dark:text-amber-300 leading-relaxed">
+            <div className="p-3.5 mb-4 rounded-xl bg-gradient-to-br from-stone-50 to-stone-100/80 dark:from-stone-800/20 dark:to-stone-700/10 border border-stone-200/60 dark:border-stone-600/30">
+              <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">
                 {t('account.cancelledDescription')}
               </p>
             </div>
@@ -209,8 +209,8 @@ export default function AccountPage() {
           {/* Access until / Next billing row - responsive layout */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-2.5 border-b border-border/30 gap-1.5 sm:gap-4">
             <div className="flex items-center gap-2.5 text-muted-foreground">
-              <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${isCancelled ? 'bg-amber-50 dark:bg-amber-900/20' : 'bg-primary/10'}`}>
-                <Calendar className={`w-3.5 h-3.5 ${isCancelled ? 'text-amber-600 dark:text-amber-400' : 'text-primary'}`} />
+              <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${isCancelled ? 'bg-stone-100 dark:bg-stone-800/30' : 'bg-primary/10'}`}>
+                <Calendar className={`w-3.5 h-3.5 ${isCancelled ? 'text-stone-500 dark:text-stone-400' : 'text-primary'}`} />
               </div>
               <span className="text-sm">
                 {isCancelled ? t('account.accessUntil') : t('account.nextBilling')}
