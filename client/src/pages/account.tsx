@@ -141,21 +141,24 @@ export default function AccountPage() {
     if (status === 'trial') {
       return (
         <div className="space-y-5">
-          <div className="flex items-center justify-between py-3">
+          {/* Trial ends row - stacked on mobile for better readability */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3 gap-2 sm:gap-4">
             <div className="flex items-center gap-3 text-muted-foreground">
-              <div className="w-8 h-8 rounded-full bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center flex-shrink-0">
                 <Clock className="w-4 h-4 text-amber-600 dark:text-amber-400" />
               </div>
               <span className="text-sm">{t('account.trialEnds')}</span>
             </div>
-            <span className="font-medium text-foreground" data-testid="text-trial-ends">
-              {formatDate(subscription.trialEndsAt, lang)}
+            <div className="flex items-center gap-2 sm:gap-0 pl-11 sm:pl-0" data-testid="text-trial-ends">
+              <span className="font-medium text-foreground">
+                {formatDate(subscription.trialEndsAt, lang)}
+              </span>
               {subscription.trialDaysRemaining !== undefined && (
-                <span className="text-amber-600 dark:text-amber-400 ml-2 text-sm font-normal">
+                <span className="text-amber-600 dark:text-amber-400 text-sm font-normal whitespace-nowrap">
                   ({subscription.trialDaysRemaining} {t('account.daysLeft')})
                 </span>
               )}
-            </span>
+            </div>
           </div>
           
           <div className="p-4 rounded-xl bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/10">
@@ -165,7 +168,7 @@ export default function AccountPage() {
           </div>
           
           <Button 
-            className="w-full gap-2 h-12 text-base font-medium" 
+            className="w-full gap-2 h-12 text-base font-medium rounded-xl" 
             onClick={() => setShowPaywall(true)}
             data-testid="button-upgrade"
           >
@@ -179,27 +182,28 @@ export default function AccountPage() {
     if (status === 'active' && !subscription.isAdminGrantedPremium) {
       return (
         <div className="space-y-1">
-          <div className="flex items-center justify-between py-3.5 border-b border-border/30">
+          {/* Next billing row - responsive layout */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3.5 border-b border-border/30 gap-2 sm:gap-4">
             <div className="flex items-center gap-3 text-muted-foreground">
-              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                 <Calendar className="w-4 h-4 text-primary" />
               </div>
               <span className="text-sm">{t('account.nextBilling')}</span>
             </div>
-            <span className="font-medium text-foreground" data-testid="text-next-billing">
+            <span className="font-medium text-foreground pl-11 sm:pl-0" data-testid="text-next-billing">
               {formatDate(subscription.nextBillingDate, lang)}
             </span>
           </div>
           
           {subscription.billingAmount && (
-            <div className="flex items-center justify-between py-3.5 border-b border-border/30">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3.5 border-b border-border/30 gap-2 sm:gap-4">
               <div className="flex items-center gap-3 text-muted-foreground">
-                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                   <Zap className="w-4 h-4 text-primary" />
                 </div>
                 <span className="text-sm">{t('account.billingAmount')}</span>
               </div>
-              <span className="font-medium text-foreground" data-testid="text-billing-amount">
+              <span className="font-medium text-foreground pl-11 sm:pl-0" data-testid="text-billing-amount">
                 {formatCurrency(subscription.billingAmount, subscription.billingCurrency)}
                 <span className="text-muted-foreground font-normal">
                   /{subscription.billingInterval === 'year' ? 'yr' : 'mo'}
@@ -209,14 +213,14 @@ export default function AccountPage() {
           )}
           
           {subscription.paymentMethod && (
-            <div className="flex items-center justify-between py-3.5 border-b border-border/30">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3.5 border-b border-border/30 gap-2 sm:gap-4">
               <div className="flex items-center gap-3 text-muted-foreground">
-                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                   <CreditCard className="w-4 h-4 text-primary" />
                 </div>
                 <span className="text-sm">{t('account.paymentMethod')}</span>
               </div>
-              <span className="font-medium text-foreground" data-testid="text-payment-method">
+              <span className="font-medium text-foreground pl-11 sm:pl-0" data-testid="text-payment-method">
                 {capitalizeCardBrand(subscription.paymentMethod.brand)} •••• {subscription.paymentMethod.last4}
               </span>
             </div>
@@ -225,7 +229,7 @@ export default function AccountPage() {
           <div className="pt-4">
             <Button 
               variant="outline" 
-              className="w-full gap-2 h-11"
+              className="w-full gap-2 h-11 rounded-xl"
               onClick={() => billingPortalMutation.mutate()}
               disabled={billingPortalMutation.isPending}
               data-testid="button-manage-billing"
@@ -261,39 +265,41 @@ export default function AccountPage() {
     
     return (
       <div className="space-y-1">
-        <div className="flex items-center justify-between py-3.5 border-b border-border/30">
+        {/* Free scans used - responsive layout */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3.5 border-b border-border/30 gap-2 sm:gap-4">
           <div className="flex items-center gap-3 text-muted-foreground">
-            <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
               <Zap className="w-4 h-4 text-muted-foreground" />
             </div>
             <span className="text-sm">{t('account.freeScansUsed')}</span>
           </div>
-          <span className="font-medium text-foreground" data-testid="text-scans-used">
+          <span className="font-medium text-foreground pl-11 sm:pl-0" data-testid="text-scans-used">
             {subscription.monthlyFreeScansUsed} <span className="text-muted-foreground font-normal">/ 5</span>
           </span>
         </div>
         
-        <div className="flex items-center justify-between py-3.5 border-b border-border/30">
+        {/* Scans refresh - responsive layout */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3.5 border-b border-border/30 gap-2 sm:gap-4">
           <div className="flex items-center gap-3 text-muted-foreground">
-            <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
               <RefreshCw className="w-4 h-4 text-muted-foreground" />
             </div>
             <span className="text-sm">{t('account.scansRefresh')}</span>
           </div>
-          <span className="font-medium text-foreground" data-testid="text-scans-refresh">
+          <span className="font-medium text-foreground pl-11 sm:pl-0" data-testid="text-scans-refresh">
             {formatDate(subscription.nextFreeScansRefresh, lang)}
           </span>
         </div>
         
         {subscription.scanPackBalance > 0 && (
-          <div className="flex items-center justify-between py-3.5 border-b border-border/30">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3.5 border-b border-border/30 gap-2 sm:gap-4">
             <div className="flex items-center gap-3 text-muted-foreground">
-              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                 <Sparkles className="w-4 h-4 text-primary" />
               </div>
               <span className="text-sm">{t('account.scanPackBalance')}</span>
             </div>
-            <span className="font-medium text-foreground" data-testid="text-scan-pack-balance">
+            <span className="font-medium text-foreground pl-11 sm:pl-0" data-testid="text-scan-pack-balance">
               {subscription.scanPackBalance}
             </span>
           </div>
@@ -301,7 +307,7 @@ export default function AccountPage() {
         
         <div className="pt-4">
           <Button 
-            className="w-full gap-2 h-12 text-base font-medium" 
+            className="w-full gap-2 h-12 text-base font-medium rounded-xl" 
             onClick={() => setShowPaywall(true)}
             data-testid="button-upgrade"
           >
@@ -324,47 +330,48 @@ export default function AccountPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
       <header className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-2xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
           <Button 
             variant="ghost" 
             size="sm" 
-            className="gap-2 text-muted-foreground hover:text-foreground -ml-2"
+            className="gap-1.5 sm:gap-2 text-muted-foreground hover:text-foreground -ml-2"
             onClick={() => navigate("/")}
             data-testid="button-back"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span className="font-light">{t('common.back')}</span>
+            <span className="font-light text-sm sm:text-base">{t('common.back')}</span>
           </Button>
           <NavigationMenu showHomeLink />
         </div>
       </header>
 
-      <main className="max-w-2xl mx-auto px-6 py-8 sm:py-12">
-        <div className="flex items-center gap-3 mb-8">
-          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-            <User className="w-5 h-5 text-primary" />
+      <main className="max-w-2xl mx-auto px-4 sm:px-6 py-6 sm:py-12">
+        <div className="flex items-center gap-3 mb-6 sm:mb-8">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+            <User className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
           </div>
-          <h1 className="font-display text-3xl sm:text-4xl text-foreground">{t('account.title')}</h1>
+          <h1 className="font-display text-2xl sm:text-3xl md:text-4xl text-foreground">{t('account.title')}</h1>
         </div>
 
         <div className="space-y-6">
           <Card className="border-border/50 shadow-sm">
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center gap-2 text-lg font-medium">
-                <User className="w-5 h-5 text-primary" />
+                <User className="w-5 h-5 text-primary flex-shrink-0" />
                 {t('account.accountInfo')}
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-2">
-              <div className="flex items-center justify-between py-3.5 border-b border-border/30">
+              {/* Email row - responsive */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3.5 border-b border-border/30 gap-1 sm:gap-4">
                 <span className="text-sm text-muted-foreground">{t('account.email')}</span>
-                <span className="font-medium text-foreground" data-testid="text-email">
+                <span className="font-medium text-foreground text-sm sm:text-base break-all sm:break-normal" data-testid="text-email">
                   {subscription?.email || '-'}
                 </span>
               </div>
               
               {(subscription?.firstName || subscription?.lastName) && (
-                <div className="flex items-center justify-between py-3.5 border-b border-border/30">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3.5 border-b border-border/30 gap-1 sm:gap-4">
                   <span className="text-sm text-muted-foreground">{t('account.name')}</span>
                   <span className="font-medium text-foreground" data-testid="text-name">
                     {[subscription?.firstName, subscription?.lastName].filter(Boolean).join(' ')}
@@ -372,7 +379,7 @@ export default function AccountPage() {
                 </div>
               )}
               
-              <div className="flex items-center justify-between py-3.5">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3.5 gap-1 sm:gap-4">
                 <span className="text-sm text-muted-foreground">{t('account.memberSince')}</span>
                 <span className="font-medium text-foreground" data-testid="text-member-since">
                   {formatDate(subscription?.createdAt, lang)}
@@ -383,14 +390,14 @@ export default function AccountPage() {
 
           <Card className="border-border/50 shadow-sm overflow-hidden">
             <CardHeader className="pb-2">
-              <div className="flex items-center justify-between gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
                 <CardTitle className="flex items-center gap-2 text-lg font-medium">
-                  <Crown className="w-5 h-5 text-primary" />
+                  <Crown className="w-5 h-5 text-primary flex-shrink-0" />
                   {t('account.subscription')}
                 </CardTitle>
                 {getPlanBadge()}
               </div>
-              <CardDescription className="text-sm">
+              <CardDescription className="text-sm mt-1">
                 {t('account.subscriptionDescription')}
               </CardDescription>
             </CardHeader>
