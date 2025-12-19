@@ -305,9 +305,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
             if (subscriptions.data.length > 0) {
               const subscription = subscriptions.data[0] as any;
               
-              console.log(`[BILLING] Subscription billing_cycle_anchor: ${subscription.billing_cycle_anchor}, start_date: ${subscription.start_date}`);
+              console.log(`[BILLING] Subscription billing_cycle_anchor: ${subscription.billing_cycle_anchor}, start_date: ${subscription.start_date}, cancel_at_period_end: ${subscription.cancel_at_period_end}`);
               
-              // Calculate next billing date from billing_cycle_anchor
+              // Check if subscription is cancelled but still active until period end
+              if (subscription.cancel_at_period_end) {
+                response.cancelAtPeriodEnd = true;
+                response.canceledAt = subscription.canceled_at ? new Date(subscription.canceled_at * 1000).toISOString() : null;
+              }
+              
+              // Calculate next billing date (or access end date if cancelled) from billing_cycle_anchor
               // The billing_cycle_anchor is the date of the first payment
               if (subscription.billing_cycle_anchor) {
                 const anchorTimestamp = subscription.billing_cycle_anchor;
@@ -328,8 +334,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
                   }
                 }
                 
-                response.nextBillingDate = nextBillingDate.toISOString();
-                console.log(`[BILLING] Calculated next billing date: ${response.nextBillingDate}`);
+                // If cancelled, this becomes the access end date rather than next billing date
+                if (subscription.cancel_at_period_end) {
+                  response.accessUntil = nextBillingDate.toISOString();
+                  console.log(`[BILLING] Subscription cancelled - access until: ${response.accessUntil}`);
+                } else {
+                  response.nextBillingDate = nextBillingDate.toISOString();
+                  console.log(`[BILLING] Calculated next billing date: ${response.nextBillingDate}`);
+                }
                 
                 // Set price info
                 if (priceData) {
@@ -339,7 +351,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 }
               }
               
-              console.log(`[BILLING] Response: nextBillingDate=${response.nextBillingDate}, amount=${response.billingAmount}`);
+              console.log(`[BILLING] Response: nextBillingDate=${response.nextBillingDate}, accessUntil=${response.accessUntil}, cancelAtPeriodEnd=${response.cancelAtPeriodEnd}`);
             } else {
               console.log(`[BILLING] No active subscriptions found for customer ${user.stripeCustomerId}`);
             }

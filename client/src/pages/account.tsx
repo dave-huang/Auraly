@@ -38,6 +38,9 @@ interface SubscriptionData {
   trialDaysRemaining?: number;
   subscriptionEndsAt?: string;
   nextBillingDate?: string;
+  accessUntil?: string;
+  cancelAtPeriodEnd?: boolean;
+  canceledAt?: string;
   billingAmount?: number;
   billingCurrency?: string;
   billingInterval?: string;
@@ -106,6 +109,16 @@ export default function AccountPage() {
     if (!subscription) return null;
     
     const status = subscription.subscriptionStatus;
+    
+    // Show "Cancelled" badge if subscription is cancelled but still active
+    if (status === 'active' && subscription.cancelAtPeriodEnd && !subscription.isAdminGrantedPremium) {
+      return (
+        <Badge className="bg-amber-50 text-amber-700 border-amber-100 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-700/30 gap-1 px-2 py-0.5 text-xs font-medium" data-testid="badge-plan">
+          <Clock className="w-3 h-3" />
+          {t('account.cancelled')}
+        </Badge>
+      );
+    }
     
     if (status === 'active' || subscription.isAdminGrantedPremium) {
       return (
@@ -180,22 +193,36 @@ export default function AccountPage() {
     }
     
     if (status === 'active' && !subscription.isAdminGrantedPremium) {
+      const isCancelled = subscription.cancelAtPeriodEnd;
+      
       return (
         <div className="space-y-0">
-          {/* Next billing row - responsive layout */}
+          {/* Cancelled notice */}
+          {isCancelled && (
+            <div className="p-3 mb-3 rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700/30">
+              <p className="text-sm text-amber-800 dark:text-amber-300 leading-relaxed">
+                {t('account.cancelledDescription')}
+              </p>
+            </div>
+          )}
+          
+          {/* Access until / Next billing row - responsive layout */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-2.5 border-b border-border/30 gap-1.5 sm:gap-4">
             <div className="flex items-center gap-2.5 text-muted-foreground">
-              <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <Calendar className="w-3.5 h-3.5 text-primary" />
+              <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${isCancelled ? 'bg-amber-50 dark:bg-amber-900/20' : 'bg-primary/10'}`}>
+                <Calendar className={`w-3.5 h-3.5 ${isCancelled ? 'text-amber-600 dark:text-amber-400' : 'text-primary'}`} />
               </div>
-              <span className="text-sm">{t('account.nextBilling')}</span>
+              <span className="text-sm">
+                {isCancelled ? t('account.accessUntil') : t('account.nextBilling')}
+              </span>
             </div>
-            <span className="font-medium text-foreground text-sm pl-9 sm:pl-0" data-testid="text-next-billing">
-              {formatDate(subscription.nextBillingDate, lang)}
+            <span className="font-medium text-foreground text-sm pl-9 sm:pl-0" data-testid={isCancelled ? "text-access-until" : "text-next-billing"}>
+              {formatDate(isCancelled ? subscription.accessUntil : subscription.nextBillingDate, lang)}
             </span>
           </div>
           
-          {subscription.billingAmount && (
+          {/* Only show billing amount if not cancelled */}
+          {!isCancelled && subscription.billingAmount && (
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-2.5 border-b border-border/30 gap-1.5 sm:gap-4">
               <div className="flex items-center gap-2.5 text-muted-foreground">
                 <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -212,7 +239,8 @@ export default function AccountPage() {
             </div>
           )}
           
-          {subscription.paymentMethod && (
+          {/* Only show payment method if not cancelled */}
+          {!isCancelled && subscription.paymentMethod && (
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-2.5 border-b border-border/30 gap-1.5 sm:gap-4">
               <div className="flex items-center gap-2.5 text-muted-foreground">
                 <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -228,18 +256,20 @@ export default function AccountPage() {
           
           <div className="pt-3">
             <Button 
-              variant="outline" 
+              variant={isCancelled ? "default" : "outline"}
               className="w-full gap-2 h-10 rounded-xl"
               onClick={() => billingPortalMutation.mutate()}
               disabled={billingPortalMutation.isPending}
-              data-testid="button-manage-billing"
+              data-testid={isCancelled ? "button-resubscribe" : "button-manage-billing"}
             >
               {billingPortalMutation.isPending ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
+              ) : isCancelled ? (
+                <RefreshCw className="w-4 h-4" />
               ) : (
                 <ExternalLink className="w-4 h-4" />
               )}
-              {t('account.manageBilling')}
+              {isCancelled ? t('account.resubscribe') : t('account.manageBilling')}
             </Button>
           </div>
         </div>
