@@ -293,18 +293,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
           // Get subscription details for next billing date (only for paying subscribers, not admin-granted)
           if (!user.isAdminGrantedPremium && user.subscriptionStatus === 'active') {
-            // List active subscriptions for the customer
-            const subscriptions = await stripe.subscriptions.list({
-              customer: user.stripeCustomerId,
-              status: 'active',
-              limit: 1,
-            });
+            // Fetch subscription directly by ID for freshest data (avoid list caching)
+            let subscription: any = null;
             
-            console.log(`[BILLING] Found ${subscriptions.data.length} active subscriptions for customer ${user.stripeCustomerId}`);
+            if (user.stripeSubscriptionId) {
+              try {
+                subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId);
+                console.log(`[BILLING] Retrieved subscription ${user.stripeSubscriptionId} directly, status: ${subscription.status}, cancel_at_period_end: ${subscription.cancel_at_period_end}`);
+              } catch (e: any) {
+                console.log(`[BILLING] Could not retrieve subscription ${user.stripeSubscriptionId}: ${e.message}`);
+              }
+            }
             
-            if (subscriptions.data.length > 0) {
-              const subscription = subscriptions.data[0] as any;
-              
+            // Fallback to list if direct retrieval fails
+            if (!subscription) {
+              const subscriptions = await stripe.subscriptions.list({
+                customer: user.stripeCustomerId,
+                status: 'active',
+                limit: 1,
+              });
+              console.log(`[BILLING] Fallback: Found ${subscriptions.data.length} active subscriptions for customer ${user.stripeCustomerId}`);
+              subscription = subscriptions.data[0];
+            }
+            
+            if (subscription) {
               console.log(`[BILLING] Subscription billing_cycle_anchor: ${subscription.billing_cycle_anchor}, start_date: ${subscription.start_date}, cancel_at_period_end: ${subscription.cancel_at_period_end}`);
               
               // Check if subscription is cancelled but still active until period end
