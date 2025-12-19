@@ -10,9 +10,10 @@ interface PaywallModalProps {
   open: boolean;
   onClose: () => void;
   source?: string;
+  reason?: 'out_of_scans' | 'voluntary_upgrade';
 }
 
-export function PaywallModal({ open, onClose, source = 'unknown' }: PaywallModalProps) {
+export function PaywallModal({ open, onClose, source = 'unknown', reason = 'voluntary_upgrade' }: PaywallModalProps) {
   const { t } = useTranslation();
   const { data: productsData, isLoading: loadingProducts } = useStripeProducts();
   const { data: status } = useSubscriptionStatus();
@@ -38,15 +39,24 @@ export function PaywallModal({ open, onClose, source = 'unknown' }: PaywallModal
     return `$${(amount / 100).toFixed(2)}`;
   };
 
+  // Show different titles based on why the paywall was triggered
+  const title = reason === 'out_of_scans' 
+    ? t('paywall.titleOutOfScans', "You've used all your free scans")
+    : t('paywall.titleUpgrade', "Upgrade to Auraly+");
+  
+  const description = reason === 'out_of_scans'
+    ? t('paywall.descriptionOutOfScans', 'Upgrade now to continue scanning or wait for your monthly refresh')
+    : t('paywall.description', 'Choose the plan that works best for you');
+
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
       <DialogContent className="max-w-2xl p-0 gap-0 overflow-hidden max-h-[90vh] overflow-y-auto" data-testid="paywall-modal">
         <DialogHeader className="text-center px-4 sm:px-6 pt-5 sm:pt-6 pb-3 sm:pb-4">
           <DialogTitle className="text-xl sm:text-2xl font-display">
-            {t('paywall.title', "You've used all your free scans")}
+            {title}
           </DialogTitle>
           <DialogDescription className="text-sm sm:text-base mt-2">
-            {t('paywall.description', 'Choose the plan that works best for you')}
+            {description}
           </DialogDescription>
         </DialogHeader>
 

@@ -100,6 +100,7 @@ export default function UploadPage() {
         open={showPaywall} 
         onClose={() => setShowPaywall(false)} 
         source="upload_page"
+        reason="out_of_scans"
       />
 
       {/* Main Content - Generous spacing */}
