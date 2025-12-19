@@ -109,8 +109,8 @@ export default function AccountPage() {
     
     if (status === 'active' || subscription.isAdminGrantedPremium) {
       return (
-        <Badge className="bg-primary/15 text-primary border-primary/20 gap-1.5 px-3 py-1" data-testid="badge-plan">
-          <Crown className="w-3.5 h-3.5" />
+        <Badge className="bg-primary/10 text-primary border-primary/15 gap-1 px-2 py-0.5 text-xs font-medium" data-testid="badge-plan">
+          <Crown className="w-3 h-3" />
           Auraly+
         </Badge>
       );
@@ -118,16 +118,16 @@ export default function AccountPage() {
     
     if (status === 'trial') {
       return (
-        <Badge className="bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-700/30 gap-1.5 px-3 py-1" data-testid="badge-plan">
-          <Sparkles className="w-3.5 h-3.5" />
+        <Badge className="bg-amber-50 text-amber-700 border-amber-100 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-700/30 gap-1 px-2 py-0.5 text-xs font-medium" data-testid="badge-plan">
+          <Sparkles className="w-3 h-3" />
           Auraly+ Trial
         </Badge>
       );
     }
     
     return (
-      <Badge variant="secondary" className="gap-1.5 px-3 py-1 bg-muted/50" data-testid="badge-plan">
-        <Leaf className="w-3.5 h-3.5" />
+      <Badge variant="secondary" className="gap-1 px-2 py-0.5 text-xs font-medium bg-muted/50" data-testid="badge-plan">
+        <Leaf className="w-3 h-3" />
         Auraly Basic
       </Badge>
     );
@@ -140,35 +140,35 @@ export default function AccountPage() {
     
     if (status === 'trial') {
       return (
-        <div className="space-y-5">
+        <div className="space-y-4">
           {/* Trial ends row - stacked on mobile for better readability */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3 gap-2 sm:gap-4">
-            <div className="flex items-center gap-3 text-muted-foreground">
-              <div className="w-8 h-8 rounded-full bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center flex-shrink-0">
-                <Clock className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-2.5 gap-1.5 sm:gap-4">
+            <div className="flex items-center gap-2.5 text-muted-foreground">
+              <div className="w-7 h-7 rounded-full bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center flex-shrink-0">
+                <Clock className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
               </div>
               <span className="text-sm">{t('account.trialEnds')}</span>
             </div>
-            <div className="flex items-center gap-2 sm:gap-0 pl-11 sm:pl-0" data-testid="text-trial-ends">
-              <span className="font-medium text-foreground">
+            <div className="flex items-center gap-2 sm:gap-0 pl-9 sm:pl-0" data-testid="text-trial-ends">
+              <span className="font-medium text-foreground text-sm">
                 {formatDate(subscription.trialEndsAt, lang)}
               </span>
               {subscription.trialDaysRemaining !== undefined && (
-                <span className="text-amber-600 dark:text-amber-400 text-sm font-normal whitespace-nowrap">
+                <span className="text-amber-600 dark:text-amber-400 text-xs font-normal whitespace-nowrap ml-1.5">
                   ({subscription.trialDaysRemaining} {t('account.daysLeft')})
                 </span>
               )}
             </div>
           </div>
           
-          <div className="p-4 rounded-xl bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/10">
+          <div className="p-3 rounded-lg bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/10">
             <p className="text-sm text-muted-foreground leading-relaxed">
               {t('account.trialDescription')}
             </p>
           </div>
           
           <Button 
-            className="w-full gap-2 h-12 text-base font-medium rounded-xl" 
+            className="w-full gap-2 h-11 font-medium rounded-xl" 
             onClick={() => setShowPaywall(true)}
             data-testid="button-upgrade"
           >
@@ -181,29 +181,29 @@ export default function AccountPage() {
     
     if (status === 'active' && !subscription.isAdminGrantedPremium) {
       return (
-        <div className="space-y-1">
+        <div className="space-y-0">
           {/* Next billing row - responsive layout */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3.5 border-b border-border/30 gap-2 sm:gap-4">
-            <div className="flex items-center gap-3 text-muted-foreground">
-              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <Calendar className="w-4 h-4 text-primary" />
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-2.5 border-b border-border/30 gap-1.5 sm:gap-4">
+            <div className="flex items-center gap-2.5 text-muted-foreground">
+              <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <Calendar className="w-3.5 h-3.5 text-primary" />
               </div>
               <span className="text-sm">{t('account.nextBilling')}</span>
             </div>
-            <span className="font-medium text-foreground pl-11 sm:pl-0" data-testid="text-next-billing">
+            <span className="font-medium text-foreground text-sm pl-9 sm:pl-0" data-testid="text-next-billing">
               {formatDate(subscription.nextBillingDate, lang)}
             </span>
           </div>
           
           {subscription.billingAmount && (
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3.5 border-b border-border/30 gap-2 sm:gap-4">
-              <div className="flex items-center gap-3 text-muted-foreground">
-                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <Zap className="w-4 h-4 text-primary" />
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-2.5 border-b border-border/30 gap-1.5 sm:gap-4">
+              <div className="flex items-center gap-2.5 text-muted-foreground">
+                <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <Zap className="w-3.5 h-3.5 text-primary" />
                 </div>
                 <span className="text-sm">{t('account.billingAmount')}</span>
               </div>
-              <span className="font-medium text-foreground pl-11 sm:pl-0" data-testid="text-billing-amount">
+              <span className="font-medium text-foreground text-sm pl-9 sm:pl-0" data-testid="text-billing-amount">
                 {formatCurrency(subscription.billingAmount, subscription.billingCurrency)}
                 <span className="text-muted-foreground font-normal">
                   /{subscription.billingInterval === 'year' ? 'yr' : 'mo'}
@@ -213,23 +213,23 @@ export default function AccountPage() {
           )}
           
           {subscription.paymentMethod && (
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3.5 border-b border-border/30 gap-2 sm:gap-4">
-              <div className="flex items-center gap-3 text-muted-foreground">
-                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <CreditCard className="w-4 h-4 text-primary" />
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-2.5 border-b border-border/30 gap-1.5 sm:gap-4">
+              <div className="flex items-center gap-2.5 text-muted-foreground">
+                <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <CreditCard className="w-3.5 h-3.5 text-primary" />
                 </div>
                 <span className="text-sm">{t('account.paymentMethod')}</span>
               </div>
-              <span className="font-medium text-foreground pl-11 sm:pl-0" data-testid="text-payment-method">
+              <span className="font-medium text-foreground text-sm pl-9 sm:pl-0" data-testid="text-payment-method">
                 {capitalizeCardBrand(subscription.paymentMethod.brand)} •••• {subscription.paymentMethod.last4}
               </span>
             </div>
           )}
           
-          <div className="pt-4">
+          <div className="pt-3">
             <Button 
               variant="outline" 
-              className="w-full gap-2 h-11 rounded-xl"
+              className="w-full gap-2 h-10 rounded-xl"
               onClick={() => billingPortalMutation.mutate()}
               disabled={billingPortalMutation.isPending}
               data-testid="button-manage-billing"
@@ -248,11 +248,11 @@ export default function AccountPage() {
     
     if (subscription.isAdminGrantedPremium) {
       return (
-        <div className="space-y-4">
-          <div className="p-4 rounded-xl bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/10">
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0">
-                <Crown className="w-4 h-4 text-primary" />
+        <div className="space-y-3">
+          <div className="p-3 rounded-lg bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/10">
+            <div className="flex items-start gap-2.5">
+              <div className="w-7 h-7 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0">
+                <Crown className="w-3.5 h-3.5 text-primary" />
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 {t('account.adminGrantedDescription')}
@@ -264,50 +264,50 @@ export default function AccountPage() {
     }
     
     return (
-      <div className="space-y-1">
+      <div className="space-y-0">
         {/* Free scans used - responsive layout */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3.5 border-b border-border/30 gap-2 sm:gap-4">
-          <div className="flex items-center gap-3 text-muted-foreground">
-            <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
-              <Zap className="w-4 h-4 text-muted-foreground" />
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-2.5 border-b border-border/30 gap-1.5 sm:gap-4">
+          <div className="flex items-center gap-2.5 text-muted-foreground">
+            <div className="w-7 h-7 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
+              <Zap className="w-3.5 h-3.5 text-muted-foreground" />
             </div>
             <span className="text-sm">{t('account.freeScansUsed')}</span>
           </div>
-          <span className="font-medium text-foreground pl-11 sm:pl-0" data-testid="text-scans-used">
+          <span className="font-medium text-foreground text-sm pl-9 sm:pl-0" data-testid="text-scans-used">
             {subscription.monthlyFreeScansUsed} <span className="text-muted-foreground font-normal">/ 5</span>
           </span>
         </div>
         
         {/* Scans refresh - responsive layout */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3.5 border-b border-border/30 gap-2 sm:gap-4">
-          <div className="flex items-center gap-3 text-muted-foreground">
-            <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
-              <RefreshCw className="w-4 h-4 text-muted-foreground" />
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-2.5 border-b border-border/30 gap-1.5 sm:gap-4">
+          <div className="flex items-center gap-2.5 text-muted-foreground">
+            <div className="w-7 h-7 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
+              <RefreshCw className="w-3.5 h-3.5 text-muted-foreground" />
             </div>
             <span className="text-sm">{t('account.scansRefresh')}</span>
           </div>
-          <span className="font-medium text-foreground pl-11 sm:pl-0" data-testid="text-scans-refresh">
+          <span className="font-medium text-foreground text-sm pl-9 sm:pl-0" data-testid="text-scans-refresh">
             {formatDate(subscription.nextFreeScansRefresh, lang)}
           </span>
         </div>
         
         {subscription.scanPackBalance > 0 && (
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3.5 border-b border-border/30 gap-2 sm:gap-4">
-            <div className="flex items-center gap-3 text-muted-foreground">
-              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <Sparkles className="w-4 h-4 text-primary" />
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-2.5 border-b border-border/30 gap-1.5 sm:gap-4">
+            <div className="flex items-center gap-2.5 text-muted-foreground">
+              <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <Sparkles className="w-3.5 h-3.5 text-primary" />
               </div>
               <span className="text-sm">{t('account.scanPackBalance')}</span>
             </div>
-            <span className="font-medium text-foreground pl-11 sm:pl-0" data-testid="text-scan-pack-balance">
+            <span className="font-medium text-foreground text-sm pl-9 sm:pl-0" data-testid="text-scan-pack-balance">
               {subscription.scanPackBalance}
             </span>
           </div>
         )}
         
-        <div className="pt-4">
+        <div className="pt-3">
           <Button 
-            className="w-full gap-2 h-12 text-base font-medium rounded-xl" 
+            className="w-full gap-2 h-11 font-medium rounded-xl" 
             onClick={() => setShowPaywall(true)}
             data-testid="button-upgrade"
           >
@@ -345,43 +345,43 @@ export default function AccountPage() {
         </div>
       </header>
 
-      <main className="max-w-2xl mx-auto px-4 sm:px-6 py-6 sm:py-12">
-        <div className="flex items-center gap-3 mb-6 sm:mb-8">
-          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-            <User className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+      <main className="max-w-2xl mx-auto px-4 sm:px-6 py-5 sm:py-10">
+        <div className="flex items-center gap-2.5 mb-5 sm:mb-6">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+            <User className="w-4 h-4 text-primary" />
           </div>
-          <h1 className="font-display text-2xl sm:text-3xl md:text-4xl text-foreground">{t('account.title')}</h1>
+          <h1 className="font-display text-xl sm:text-2xl md:text-3xl text-foreground">{t('account.title')}</h1>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-4">
           <Card className="border-border/50 shadow-sm">
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-lg font-medium">
-                <User className="w-5 h-5 text-primary flex-shrink-0" />
+            <CardHeader className="pb-1">
+              <CardTitle className="flex items-center gap-2 text-base font-medium">
+                <User className="w-4 h-4 text-primary flex-shrink-0" />
                 {t('account.accountInfo')}
               </CardTitle>
             </CardHeader>
-            <CardContent className="pt-2">
+            <CardContent className="pt-1">
               {/* Email row - responsive */}
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3.5 border-b border-border/30 gap-1 sm:gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-2.5 border-b border-border/30 gap-1 sm:gap-4">
                 <span className="text-sm text-muted-foreground">{t('account.email')}</span>
-                <span className="font-medium text-foreground text-sm sm:text-base break-all sm:break-normal" data-testid="text-email">
+                <span className="font-medium text-foreground text-sm break-all sm:break-normal" data-testid="text-email">
                   {subscription?.email || '-'}
                 </span>
               </div>
               
               {(subscription?.firstName || subscription?.lastName) && (
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3.5 border-b border-border/30 gap-1 sm:gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-2.5 border-b border-border/30 gap-1 sm:gap-4">
                   <span className="text-sm text-muted-foreground">{t('account.name')}</span>
-                  <span className="font-medium text-foreground" data-testid="text-name">
+                  <span className="font-medium text-foreground text-sm" data-testid="text-name">
                     {[subscription?.firstName, subscription?.lastName].filter(Boolean).join(' ')}
                   </span>
                 </div>
               )}
               
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3.5 gap-1 sm:gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-2.5 gap-1 sm:gap-4">
                 <span className="text-sm text-muted-foreground">{t('account.memberSince')}</span>
-                <span className="font-medium text-foreground" data-testid="text-member-since">
+                <span className="font-medium text-foreground text-sm" data-testid="text-member-since">
                   {formatDate(subscription?.createdAt, lang)}
                 </span>
               </div>
@@ -389,19 +389,19 @@ export default function AccountPage() {
           </Card>
 
           <Card className="border-border/50 shadow-sm overflow-hidden">
-            <CardHeader className="pb-2">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
-                <CardTitle className="flex items-center gap-2 text-lg font-medium">
-                  <Crown className="w-5 h-5 text-primary flex-shrink-0" />
+            <CardHeader className="pb-1">
+              <div className="flex flex-row items-center justify-between gap-3">
+                <CardTitle className="flex items-center gap-2 text-base font-medium">
+                  <Crown className="w-4 h-4 text-primary flex-shrink-0" />
                   {t('account.subscription')}
                 </CardTitle>
                 {getPlanBadge()}
               </div>
-              <CardDescription className="text-sm mt-1">
+              <CardDescription className="text-sm mt-0.5">
                 {t('account.subscriptionDescription')}
               </CardDescription>
             </CardHeader>
-            <CardContent className="pt-2">
+            <CardContent className="pt-1">
               {renderSubscriptionDetails()}
             </CardContent>
           </Card>
