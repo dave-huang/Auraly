@@ -317,7 +317,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }
             
             if (subscription) {
-              console.log(`[BILLING] Subscription billing_cycle_anchor: ${subscription.billing_cycle_anchor}, start_date: ${subscription.start_date}, cancel_at_period_end: ${subscription.cancel_at_period_end}`);
+              console.log(`[BILLING] Full subscription data: id=${subscription.id}, status=${subscription.status}, cancel_at_period_end=${subscription.cancel_at_period_end}, canceled_at=${subscription.canceled_at}, cancel_at=${subscription.cancel_at}`);
               
               // Check if subscription is cancelled but still active until period end
               if (subscription.cancel_at_period_end) {
