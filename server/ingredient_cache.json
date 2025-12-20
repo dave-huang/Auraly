@@ -430,8 +430,8 @@
     "createdAt": 1766259995472
   },
   "peanut butter (ground peanuts)__food__en": {
-    "analysis": "{\"name\":\"Peanut Butter (ground Peanuts)\",\"riskLevel\":\"low\",\"summary\":\"Peanut butter made from ground peanuts is a calorie-dense source of healthy fats and protein, and is a common allergen. For the general population it is considered safe when eaten in moderation.\",\"details\":\"Ground peanuts provide monounsaturated and polyunsaturated fats, plant protein, and some fiber, along with vitamins and minerals such as vitamin E, magnesium, and niacin. The main health concern is for individuals with peanut allergy, who must avoid it completely, but for others it can be part of a balanced diet if portion sizes are controlled due to its high calorie density.\",\"category\":\"Nut and seed products\"}",
-    "lastUpdated": 1766259997716,
+    "analysis": "{\"name\":\"Peanut Butter (ground Peanuts)\",\"riskLevel\":\"low\",\"summary\":\"Peanut butter made from ground peanuts is a simple, minimally processed food that provides healthy fats and plant-based protein. It is a common allergen but is safe for the general population without peanut allergies.\",\"details\":\"Ground peanuts contain mostly unsaturated fats, protein, fiber, and some vitamins and minerals such as vitamin E, magnesium, and niacin. The main health considerations are its high calorie density, so large portions can contribute to excess calorie intake, and the risk of severe reactions for individuals with peanut allergy. When made only from peanuts, it does not contain common problematic additives like hydrogenated oils or artificial sweeteners.\",\"category\":\"Nut and seed products\"}",
+    "lastUpdated": 1766260783016,
     "createdAt": 1766259997716
   },
   "corn grits__food__en": {
