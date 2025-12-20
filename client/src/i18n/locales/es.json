@@ -392,6 +392,9 @@
     "description": "Elige el plan que mejor te funcione",
     "recommended": "Recomendado",
     "perMonth": "/mes",
+    "plusName": "Auraly+",
+    "basicName": "Auraly Basic",
+    "free": "Gratis",
     "plus": {
       "scans": "Escaneos ilimitados",
       "personalization": "Alertas personalizadas de alérgenos e ingredientes",

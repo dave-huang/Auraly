@@ -23,7 +23,7 @@ export function ScanCounter({ variant = 'badge', className = '' }: ScanCounterPr
       return (
         <Badge variant="secondary" className={`bg-primary/10 text-primary gap-1 ${className}`} data-testid="badge-premium">
           <Crown className="w-3 h-3" />
-          <span>Auraly+</span>
+          <span>{t('paywall.plusName', 'Auraly+')}</span>
         </Badge>
       );
     }

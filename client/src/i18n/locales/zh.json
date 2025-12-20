@@ -392,6 +392,9 @@
     "description": "选择最适合您的计划",
     "recommended": "推荐",
     "perMonth": "/月",
+    "plusName": "Auraly+",
+    "basicName": "Auraly 基础版",
+    "free": "免费",
     "plus": {
       "scans": "无限扫描",
       "personalization": "个性化过敏原和成分提醒",

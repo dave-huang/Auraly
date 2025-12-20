@@ -81,7 +81,7 @@ export function PaywallModal({ open, onClose, source = 'unknown', reason = 'volu
                   <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
                     <Crown className="w-4 h-4 text-primary" />
                   </div>
-                  <span className="font-semibold text-lg">Auraly+</span>
+                  <span className="font-semibold text-lg">{t('paywall.plusName', 'Auraly+')}</span>
                 </div>
                 
                 <div className="min-h-[3rem] flex items-center mt-2">
@@ -134,11 +134,11 @@ export function PaywallModal({ open, onClose, source = 'unknown', reason = 'volu
                   <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
                     <Leaf className="w-4 h-4 text-muted-foreground" />
                   </div>
-                  <span className="font-semibold text-lg">Auraly Basic</span>
+                  <span className="font-semibold text-lg">{t('paywall.basicName', 'Auraly Basic')}</span>
                 </div>
                 
                 <div className="min-h-[3rem] flex items-center mt-2">
-                  <span className="text-2xl sm:text-3xl font-bold">Free</span>
+                  <span className="text-2xl sm:text-3xl font-bold">{t('paywall.free', 'Free')}</span>
                 </div>
                 
                 <ul className="space-y-2.5 sm:space-y-3 mt-3 sm:mt-4 mb-4 sm:mb-6 flex-grow text-muted-foreground text-sm sm:text-base">
