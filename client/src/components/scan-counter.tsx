@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 import { Crown, Zap, Clock } from 'lucide-react';
-import { useSubscriptionStatus, formatRemainingScans, getSubscriptionTier } from '@/hooks/use-subscription';
+import { useSubscriptionStatus, formatRemainingScans, getSubscriptionTier, getRemainingScans } from '@/hooks/use-subscription';
 
 interface ScanCounterProps {
   variant?: 'badge' | 'inline';
@@ -54,7 +54,11 @@ export function ScanCounter({ variant = 'badge', className = '' }: ScanCounterPr
   }
 
   const remaining = formatRemainingScans(status);
+  const remainingCount = getRemainingScans(status);
   const isLow = status.freeScansLimit - status.freeScansUsed <= 2;
+  const scansText = remainingCount === 1 
+    ? t('subscription.scanLeft', 'scan left') 
+    : t('subscription.scansLeft', 'scans left');
 
   if (variant === 'badge') {
     return (
@@ -64,7 +68,7 @@ export function ScanCounter({ variant = 'badge', className = '' }: ScanCounterPr
         data-testid="badge-scans-remaining"
       >
         <Zap className="w-3 h-3" />
-        <span>{remaining} {t('subscription.scansLeft', 'scans left')}</span>
+        <span>{remaining} {scansText}</span>
       </Badge>
     );
   }
