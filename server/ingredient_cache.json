@@ -358,5 +358,55 @@
     "analysis": "{\"name\":\"Cetyl Alcohol\",\"riskLevel\":\"low\",\"summary\":\"Cetyl Alcohol is a fatty alcohol used as an emollient, thickener, and stabilizer in creams and lotions. Unlike simple drying alcohols, it is generally soothing and well tolerated by most skin types.\",\"details\":\"This long-chain fatty alcohol helps stabilize emulsions, improve texture, and reduce moisture loss from the skin’s surface. It is distinct from low-molecular-weight alcohols like ethanol or isopropyl alcohol, which can be drying or irritating; fatty alcohols like cetyl alcohol are typically non-drying and often beneficial in moisturizers. Allergic reactions are rare, though individuals with very reactive skin or specific sensitivities to fatty alcohols may experience mild irritation.\",\"category\":\"Fatty alcohol emollient and thickener\"}",
     "lastUpdated": 1766262763889,
     "createdAt": 1766262763889
+  },
+  "ground coffee beans__food__en": {
+    "analysis": "{\"name\":\"Ground Coffee Beans\",\"riskLevel\":\"low\",\"summary\":\"Ground coffee beans are roasted coffee seeds that are milled for brewing and are generally safe for most healthy adults when consumed in moderation.\",\"details\":\"The primary concern with ground coffee beans is their caffeine content, which can cause jitteriness, insomnia, increased heart rate, or digestive upset in sensitive individuals or at high intakes. Coffee can modestly raise blood pressure in some people and may aggravate certain conditions such as anxiety disorders, GERD, or heart rhythm issues. Overall, coffee also contains beneficial antioxidants and is considered safe at moderate daily consumption levels for most of the general population.\",\"category\":\"Beverage ingredient\"}",
+    "lastUpdated": 1766262811924,
+    "createdAt": 1766262811924
+  },
+  "malted barley flour__food__en": {
+    "analysis": "{\"name\":\"Malted Barley Flour\",\"riskLevel\":\"low\",\"summary\":\"Malted barley flour is a cereal-based flour made from sprouted and dried barley, often used to improve flavor and texture in baked goods. It is generally safe for most people but is a common gluten-containing ingredient.\",\"details\":\"Because it comes from barley, malted barley flour contains gluten and is unsuitable for individuals with celiac disease or gluten intolerance, but this does not pose a risk to the general population. It can add natural sweetness, color, and aid yeast fermentation in breads and cereals. Nutritionally, it contributes some carbohydrates and small amounts of vitamins and minerals typical of cereal grains.\",\"category\":\"Cereal grain ingredient\"}",
+    "lastUpdated": 1766262813327,
+    "createdAt": 1766262813327
+  },
+  "soybean oil__food__en": {
+    "analysis": "{\"name\":\"Soybean Oil\",\"riskLevel\":\"low\",\"summary\":\"Soybean oil is a widely used vegetable oil extracted from soybeans and is generally safe for the general population, though it is a common allergen source for those with soy allergy. It is often used for frying, baking, and as a base in processed foods and dressings.\",\"details\":\"Refined soybean oil is typically free of soy protein, so it rarely triggers allergic reactions, but sensitive individuals may still choose to avoid it. From a health perspective, it is high in polyunsaturated fats, including omega-6 fatty acids; excessive intake of omega-6 relative to omega-3 may contribute to inflammation if overall diet is unbalanced. It is not a trans fat unless it is specifically partially hydrogenated, which would then increase cardiovascular risk.\",\"category\":\"Vegetable oil\"}",
+    "lastUpdated": 1766262813328,
+    "createdAt": 1766262813328
+  },
+  "palm kernel oil__food__en": {
+    "analysis": "{\"name\":\"Palm Kernel Oil\",\"riskLevel\":\"moderate\",\"summary\":\"Palm kernel oil is a vegetable fat high in saturated fats, used for texture, shelf life, and frying stability. It is generally safe but may contribute to elevated LDL (“bad”) cholesterol when consumed in excess.\",\"details\":\"Palm kernel oil is extracted from the seed of the oil palm and is more saturated than many other vegetable oils, which can negatively impact cardiovascular health if it is a frequent, major fat source in the diet. It is often used in processed and packaged foods because it is inexpensive, stable at high temperatures, and resists oxidation, which can encourage higher intake of ultra-processed foods. Environmental and sustainability concerns are also associated with palm cultivation, though these do not directly affect short-term health risk from consumption.\",\"category\":\"Vegetable oil / saturated fat source\"}",
+    "lastUpdated": 1766262814364,
+    "createdAt": 1766262814364
+  },
+  "nonfat milk powder__food__en": {
+    "analysis": "{\"name\":\"Nonfat Milk Powder\",\"riskLevel\":\"low\",\"summary\":\"Nonfat milk powder is dehydrated skim milk that provides protein, calcium, and other nutrients without milk fat. It is generally safe for most people but can cause reactions in individuals with milk allergy or lactose intolerance.\",\"details\":\"This ingredient is made by removing most of the water and fat from milk, leaving primarily proteins (casein and whey), lactose, and minerals, making it a nutrient-dense dairy component. It is commonly used in baked goods, confectionery, and beverages to boost protein content and improve texture. For the general population it is a low-risk ingredient, though people with dairy allergy or lactose intolerance should avoid or limit it.\",\"category\":\"Dairy ingredient / protein source\"}",
+    "lastUpdated": 1766262814364,
+    "createdAt": 1766262814364
+  },
+  "palm kernel oil and palm oil__food__en": {
+    "analysis": "{\"name\":\"Palm Kernel Oil And Palm Oil\",\"riskLevel\":\"moderate\",\"summary\":\"Palm kernel oil and palm oil are plant-derived fats high in saturated fat, which can negatively impact heart health when consumed in excess. They are commonly used in processed foods for texture, stability, and long shelf life.\",\"details\":\"Both palm kernel oil and palm oil are naturally free of trans fats but contain a high proportion of saturated fatty acids, which are linked to elevated LDL cholesterol and increased cardiovascular risk when regularly consumed in large amounts. They are often used as cheaper alternatives to healthier oils and may indicate a highly processed product. Environmental and sustainability concerns are also associated with palm cultivation, though this does not change direct health risk but may influence consumer choice.\",\"category\":\"Fats and oils\"}",
+    "lastUpdated": 1766262815014,
+    "createdAt": 1766262815014
+  },
+  "cocoa powder__food__en": {
+    "analysis": "{\"name\":\"Cocoa Powder\",\"riskLevel\":\"low\",\"summary\":\"Cocoa powder is derived from cocoa beans and provides flavor, color, and some beneficial polyphenols. In typical food amounts it is generally safe and can offer antioxidant benefits.\",\"details\":\"Natural cocoa powder contains flavonoids and other bioactive compounds that may support cardiovascular health when part of an overall balanced diet and not overwhelmed by added sugar and fat. Some cocoa products can contain trace heavy metals like cadmium or lead, but levels in most regulated products are considered safe for average consumers; risk is more relevant with very high, chronic intake. People sensitive to caffeine or theobromine should be aware that cocoa naturally contains small amounts of these stimulants.\",\"category\":\"Cocoa and chocolate ingredients\"}",
+    "lastUpdated": 1766262815014,
+    "createdAt": 1766262815014
+  },
+  "cocoa powder processed with alkali__food__en": {
+    "analysis": "{\"name\":\"Cocoa Powder Processed With Alkali\",\"riskLevel\":\"low\",\"summary\":\"Cocoa powder processed with alkali, also called Dutch-processed cocoa, is treated to reduce acidity and create a milder flavor and darker color. It is generally safe for most people in typical dietary amounts.\",\"details\":\"The alkalization process lowers the natural acidity of cocoa and improves solubility, but also reduces some of the native antioxidant polyphenols compared to natural cocoa. Like other cocoa ingredients, it may contain trace levels of heavy metals such as cadmium depending on source, but regulated food products are usually within safety limits for average consumption. It still contributes cocoa flavor and small amounts of caffeine and theobromine, which may matter for very sensitive individuals.\",\"category\":\"Cocoa and chocolate ingredients\"}",
+    "lastUpdated": 1766262815014,
+    "createdAt": 1766262815014
+  },
+  "natural vanilla flavor__food__en": {
+    "analysis": "{\"name\":\"Natural Vanilla Flavor\",\"riskLevel\":\"low\",\"summary\":\"Natural vanilla flavor is a flavoring derived from vanilla beans or other natural sources that mimic vanilla taste. It is generally recognized as safe for most people when consumed in typical food amounts.\",\"details\":\"This ingredient is regulated as a natural flavor and may contain a mixture of vanilla extracts and other natural flavor compounds in an alcohol or glycerin base. While processing aids and solvents are allowed, they are used in small amounts that are not considered harmful at normal intake levels. People with very sensitive digestive systems or who avoid unspecified flavor blends may prefer products that specify pure vanilla extract instead.\",\"category\":\"Flavoring\"}",
+    "lastUpdated": 1766262815823,
+    "createdAt": 1766262815823
+  },
+  "unbleached enriched flour__food__en": {
+    "analysis": "{\"name\":\"Unbleached Enriched Flour\",\"riskLevel\":\"low\",\"summary\":\"Unbleached enriched flour is wheat flour that has not been chemically bleached and has vitamins and minerals added back after processing. It is safe for the general population but contains gluten and is not suitable for people with celiac disease or gluten intolerance.\",\"details\":\"During milling, parts of the wheat kernel and some nutrients are removed, and enrichment typically adds back iron and B vitamins such as folic acid, niacin, thiamin, and riboflavin. Although it is less processed than bleached flour, it is still a refined carbohydrate that can raise blood sugar more quickly than whole-grain flour. For most healthy individuals it is safe in moderation, but those managing blood sugar, heart health, or seeking higher fiber may prefer whole-grain alternatives.\",\"category\":\"Refined grain ingredient\"}",
+    "lastUpdated": 1766262815823,
+    "createdAt": 1766262815823
   }
 }

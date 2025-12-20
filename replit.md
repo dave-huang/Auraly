@@ -29,7 +29,7 @@ Auraly is a mobile-friendly web application designed to help users understand th
     - `POST /api/analyze-ingredients`: Batch ingredient analysis with category-specific caching.
     - `GET /api/cache-stats`: Cache performance metrics.
     - `POST /api/ocr`: Extracts text using Gemini Flash.
-    - `POST /api/analyze`: Analyzes ingredients with OpenAI GPT-4o.
+    - `POST /api/analyze`: Analyzes ingredients with OpenAI GPT-5.1.
     - `GET /api/user/allergen-preferences` - Fetch current preferences
     - `PATCH /api/user/allergen-preferences` - Update preferences
     - `POST /api/user/allergen-onboarding` - Complete allergen onboarding
@@ -41,7 +41,7 @@ Auraly is a mobile-friendly web application designed to help users understand th
     - **Fast OCR with Fallback**: Gemini 2.5 Flash (primary, 2-5s) with Google Cloud Vision API as fallback.
     - **Combined Scan & Analyze Pipeline**: `/api/scan-and-analyze` endpoint for sequential OCR and AI analysis in a single request.
     - **Automatic Retry System**: Frontend auto-retries failed requests with exponential backoff and OCR text caching.
-    - **AI-Powered Analysis**: Utilizes GPT-4o for accurate ingredient analysis, risk assessments, and explanations in the user's chosen language. Includes parenthetical expansion, deduplication, and dynamic token allocation.
+    - **AI-Powered Analysis**: Utilizes GPT-5.1 for accurate ingredient analysis, risk assessments, and explanations in the user's chosen language. Includes parenthetical expansion, deduplication, and dynamic token allocation.
     - **Allergen Risk Rules**: Common food allergens (soy, peanuts, tree nuts, dairy, eggs, wheat, fish, shellfish, sesame, coconut) are marked as "low" risk by default since they're only dangerous to individuals with allergies, not the general population. The AI prompt explicitly enforces this rule.
     - **Intelligent Completeness Validation**: Schema-level validation and smart section boundary detection for ingredient lists.
     - **Cross-Language Consistency**: Acceptable ingredient count variance across English, Spanish, and Chinese analyses.
@@ -53,7 +53,7 @@ Auraly is a mobile-friendly web application designed to help users understand th
     - **Simplified Two-Category System**: Streamlined product categories to "Food & Supplements" and "Personal Care" for improved analysis context and filtering.
     - **Mobile Background Resilience**: Automatically resumes polling and re-acquires Wake Lock when the app returns from the background.
     - **Backend Ingredient Caching**: `/api/analyze-ingredients` endpoint with intelligent, category-specific caching and 30-day auto-refresh.
-    - **Performance & Reliability Overhaul**: Simplified OCR to Gemini 2.5 Flash, combined pipeline, and use of GPT-4o via Replit AI Integrations for faster and more reliable processing.
+    - **Performance & Reliability Overhaul**: Simplified OCR to Gemini 2.5 Flash, combined pipeline, and use of GPT-5.1 via direct OpenAI API for faster and more reliable processing.
     - **Account Management**: Account page (`/account`) showing subscription status, billing info, and payment methods. Integrates Stripe Customer Portal for secure payment management.
 
 ### Tech Stack
@@ -67,7 +67,7 @@ Auraly is a mobile-friendly web application designed to help users understand th
 ## External Dependencies
 - **AI/ML**:
     - **Gemini 2.5 Flash** (via Replit AI Integrations) - Primary OCR.
-    - **OpenAI GPT-4o** (via Replit AI Integrations) - Primary ingredient analysis, with GPT-4o-mini fallback.
+    - **OpenAI GPT-5.1** (via direct OpenAI API) - Primary ingredient analysis.
     - **Google Cloud Vision API** - Optional OCR fallback.
 - **Internationalization**: i18next, react-i18next.
 - **Deployment**: Replit (hosting platform).

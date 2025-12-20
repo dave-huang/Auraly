@@ -720,7 +720,7 @@ Return your analysis as JSON with this structure:
       const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
       
       // Adjust max_tokens based on estimated ingredient count and language
-      // With GPT-4o, use moderate limits for speed while ensuring completeness
+      // With GPT-5.1, use moderate limits for speed while ensuring completeness
       // Each ingredient needs ~120-150 tokens (name, risk, concise summary/details) in English/Spanish
       // Chinese needs ~100-120 tokens per ingredient due to higher token density
       const tokensPerIngredient = userLanguage === 'zh' ? 110 : 140;
