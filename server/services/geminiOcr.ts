@@ -32,7 +32,31 @@ export async function extractTextWithGemini(imageData: string): Promise<GeminiOC
         role: "user",
         parts: [
           { 
-            text: `Extract ALL text from this product label image. Focus on the ingredients list section. Return ONLY the extracted text exactly as it appears, preserving all formatting, line breaks, parentheses, and punctuation. Do not add any explanations or formatting - just the raw text.` 
+            text: `Extract ONLY the ingredients list from this product label image.
+
+INSTRUCTIONS:
+1. Look for text that starts with "INGREDIENTS:", "Ingredients:", or similar heading
+2. Extract the ingredients list (comma-separated items)
+3. STOP extracting when you encounter any of these boundary markers:
+   - "Contains:" or "Contains" followed by allergen info
+   - "May contain:" or "May Contain"
+   - "Distributed by:" or "Distributed by"
+   - "Manufactured by:" or "Manufactured by"
+   - "Produced by:" or "Produced by"
+   - "Made in" or "Product of"
+   - Company names with "Inc.", "LLC", "Corp.", "Ltd."
+   - City, State ZIP patterns (e.g., "New York, NY 10001")
+   - Phone numbers, websites, or email addresses
+   - "Best Before:", "Best By:", "Exp:", expiration dates
+   - Nutrition Facts or nutritional information
+   - UPC codes, barcodes, lot numbers
+   - "Net Wt.", "Net Weight", serving size info
+
+4. Return ONLY the actual ingredient names and their sub-ingredients in parentheses
+5. Preserve parentheses for sub-ingredients like "Peanut Butter (Ground Peanuts)"
+6. Do NOT include allergen warnings, company addresses, or any non-ingredient text
+
+Return the extracted ingredients as a clean list, preserving commas and parentheses. No explanations.` 
           },
           { 
             inlineData: { 

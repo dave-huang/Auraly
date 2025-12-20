@@ -634,6 +634,18 @@ CRITICAL EXTRACTION RULES:
 4. The list contains approximately ${estimatedIngredientCount} ingredients based on separators
 5. If an ingredient name has OCR errors, correct them to the proper chemical/ingredient name
 
+⚠️ NON-INGREDIENT TEXT FILTERING - EXCLUDE THESE ⚠️
+Do NOT include any of the following in your ingredients list:
+• Company names (e.g., "Inc.", "LLC", "Corp.", "Ltd.", "USA", company/brand names)
+• Addresses, cities, states, ZIP codes (e.g., "Englewood Cliffs", "NJ 07632")
+• Country names like "Product of Israel", "Made in USA"
+• Allergen warnings after "Contains:" or "May contain:"
+• Phone numbers, websites, email addresses
+• "Distributed by", "Manufactured by", "Produced by" and text that follows
+• Expiration dates, lot numbers, UPC codes
+• Serving size info, nutrition facts text
+These are label metadata, NOT ingredients. Skip them entirely.
+
 For each ingredient, determine:
 1. The ingredient name (clean, standardized format) - MUST be in the user's language
 2. Risk level: "low" (safe), "moderate" (limited evidence/moderate concern), or "high" (known health risks)
