@@ -373,5 +373,75 @@
     "analysis": "{\"name\":\"Canola Oil\",\"riskLevel\":\"moderate\",\"summary\":\"Canola oil is a widely used vegetable oil that is low in saturated fat and contains omega-3 and omega-6 fatty acids. Its health impact depends on how it is processed and used in the diet.\",\"details\":\"Refined canola oil is often highly processed and may be exposed to high heat, which can reduce beneficial nutrients and promote oxidation, especially when used for deep frying. While moderate use in place of saturated fats can fit into a balanced diet, frequent consumption of heavily processed fried or ultra-processed foods rich in canola oil may contribute to excess omega-6 intake and oxidative byproducts. Choosing minimally processed or cold-pressed canola oil and avoiding repeated high-heat use can reduce potential concerns.\",\"category\":\"Vegetable oil / added fat\"}",
     "lastUpdated": 1765693641270,
     "createdAt": 1765693641270
+  },
+  "coconut__food__en": {
+    "analysis": "{\"name\":\"Coconut\",\"riskLevel\":\"low\",\"summary\":\"Coconut is a natural tree nut-derived ingredient commonly used for flavor, texture, and fat content. It is generally safe for the general population but is a common allergen for some individuals.\",\"details\":\"Coconut provides dietary fats, including medium-chain triglycerides, and some fiber and minerals when consumed in less processed forms. It does not involve artificial additives, colors, or preservatives by itself and poses no known risk of vitamin toxicity, heavy metals, or trans fats in typical food use. The main concern is for people with specific coconut or tree nut allergies, but for those without allergies it is considered safe.\",\"category\":\"Tree nut / natural food ingredient\"}",
+    "lastUpdated": 1766172442849,
+    "createdAt": 1766172442849
+  },
+  "pecan__food__en": {
+    "analysis": "{\"name\":\"Pecan\",\"riskLevel\":\"low\",\"summary\":\"Pecan is a type of tree nut used for flavor, crunch, and healthy fats in foods. It is generally safe for the general population but is a common allergen for some individuals.\",\"details\":\"Pecans provide unsaturated fats, some protein, fiber, and micronutrients, and they do not inherently contain artificial additives, colors, preservatives, or trans fats. In normal food amounts, they are not associated with heavy metal contamination or vitamin toxicity. The primary concern is for people with tree nut allergies, but otherwise pecans are considered a safe whole-food ingredient.\",\"category\":\"Tree nut / natural food ingredient\"}",
+    "lastUpdated": 1766172442849,
+    "createdAt": 1766172442849
+  },
+  "peanut__food__en": {
+    "analysis": "{\"name\":\"Peanut\",\"riskLevel\":\"low\",\"summary\":\"Peanuts are legumes commonly used as a source of protein and healthy fats in many foods. They are a common allergen but are safe for the general population without peanut allergy.\",\"details\":\"Peanuts provide protein, monounsaturated and polyunsaturated fats, fiber, and various vitamins and minerals such as niacin and magnesium. For people with peanut allergy, even small amounts can trigger severe reactions, but for most individuals they are a nutritious ingredient when eaten in moderation. In a processed product, added salt, sugar, or oils used with peanuts may influence overall health impact more than the peanuts themselves.\",\"category\":\"Legume; common food allergen\"}",
+    "lastUpdated": 1766172444964,
+    "createdAt": 1766172444964
+  },
+  "almond__food__en": {
+    "analysis": "{\"name\":\"Almond\",\"riskLevel\":\"low\",\"summary\":\"Almonds are tree nuts rich in healthy fats, fiber, and vitamin E. They are a common tree nut allergen but are safe for people without nut allergies.\",\"details\":\"Almonds contain monounsaturated fats, plant protein, fiber, and micronutrients such as magnesium and vitamin E, which can support heart and metabolic health when consumed as part of a balanced diet. For individuals with tree nut allergies, almonds can cause serious allergic reactions, but this does not affect the general population risk. In processed foods, sweetened or heavily salted almond ingredients may contribute added sugars or sodium.\",\"category\":\"Tree nut; common food allergen\"}",
+    "lastUpdated": 1766172444964,
+    "createdAt": 1766172444964
+  },
+  "cashew__food__en": {
+    "analysis": "{\"name\":\"Cashew\",\"riskLevel\":\"low\",\"summary\":\"Cashews are tree nuts that provide healthy fats, protein, and minerals. They are a frequent tree nut allergen but are safe for those without nut allergies.\",\"details\":\"Cashews supply unsaturated fats, plant protein, and nutrients such as copper, magnesium, and zinc, and can be a beneficial part of a balanced diet when portion sizes are controlled. People with tree nut allergies may experience severe reactions to cashews, yet this is a concern specific to those individuals rather than the general population. In manufactured foods, cashews may be roasted with added oils, salt, or flavorings that can affect overall nutritional quality.\",\"category\":\"Tree nut; common food allergen\"}",
+    "lastUpdated": 1766172444964,
+    "createdAt": 1766172444964
+  },
+  "ground coffee beans (contains milk)__food__en": {
+    "analysis": "{\"name\":\"Ground Coffee Beans (contains Milk)\",\"riskLevel\":\"low\",\"summary\":\"Ground coffee beans are roasted coffee seeds used to brew coffee, and this product also contains milk, a common allergen. For most healthy adults, moderate coffee and milk intake is generally safe.\",\"details\":\"Coffee naturally contains caffeine, which can cause jitteriness, sleep issues, or increased heart rate in sensitive individuals or at high intakes, but is well tolerated in moderation by most people. The added milk provides protein and fats but may cause digestive issues only in those with lactose intolerance or milk allergy; for the general population, both coffee and milk are considered low-risk ingredients when consumed in reasonable amounts.\",\"category\":\"Beverage ingredient\"}",
+    "lastUpdated": 1766172446572,
+    "createdAt": 1766172446572
+  },
+  "soy__food__en": {
+    "analysis": "{\"name\":\"Soy\",\"riskLevel\":\"low\",\"summary\":\"Soy is a legume commonly used as a protein source in many foods and is a common allergen. For the general population, soy is considered safe and nutritionally beneficial.\",\"details\":\"Soy provides plant-based protein, healthy fats, and various micronutrients, and is widely used in processed foods, meat alternatives, and emulsifiers. Although it can trigger allergic reactions in susceptible individuals, for people without a soy allergy it poses low health risk when consumed as part of a balanced diet.\",\"category\":\"Common allergen, plant-based protein\"}",
+    "lastUpdated": 1766172446572,
+    "createdAt": 1766172446572
+  },
+  "wheat (may contain egg)__food__en": {
+    "analysis": "{\"name\":\"Wheat (may Contain Egg)\",\"riskLevel\":\"low\",\"summary\":\"Wheat is a staple grain that provides carbohydrates and some protein, and this product may also contain egg, both of which are common allergens. For most people without wheat or egg allergies, these ingredients are safe.\",\"details\":\"Wheat is a major source of energy and contains gluten, which only poses a problem for individuals with celiac disease or gluten sensitivity. The possible presence of egg adds additional protein and nutrients but is only a concern for those with egg allergy; for the general population, both wheat and egg are considered low-risk ingredients in normal dietary amounts.\",\"category\":\"Grain ingredient and potential common allergen\"}",
+    "lastUpdated": 1766172446572,
+    "createdAt": 1766172446572
+  },
+  "nj 07632. usa__food__en": {
+    "analysis": "{\"name\":\"Nj 07632. Usa\",\"riskLevel\":\"low\",\"summary\":\"This text appears to be a location or postal code (Englewood Cliffs, New Jersey, USA), not a food ingredient. It has no nutritional or additive significance as an ingredient.\",\"details\":\"Sometimes packaging lines include manufacturer addresses or location codes that can be mistaken for ingredients. NJ 07632. USA indicates a geographic address and does not represent a substance that is consumed, so it presents no dietary or toxicological risk as an ingredient.\",\"category\":\"Non-ingredient / labeling information\"}",
+    "lastUpdated": 1766259994806,
+    "createdAt": 1766259994806
+  },
+  "inc__food__en": {
+    "analysis": "{\"name\":\"Inc\",\"riskLevel\":\"low\",\"summary\":\"This appears to be part of a company designation (such as “Incorporated”) rather than an actual food ingredient.\",\"details\":\"On food labels, “Inc” is typically found in the manufacturer’s name and not in the ingredient list, so it does not represent a consumable substance. Because it is not a real ingredient, it poses no nutritional or toxicological concern for consumers.\",\"category\":\"Not a food ingredient\"}",
+    "lastUpdated": 1766259995472,
+    "createdAt": 1766259995472
+  },
+  "englewood cliffs__food__en": {
+    "analysis": "{\"name\":\"Englewood Cliffs\",\"riskLevel\":\"low\",\"summary\":\"This is the name of a geographic location (a town in New Jersey, USA), not a food ingredient.\",\"details\":\"On packaging, “Englewood Cliffs” usually indicates the location of the company’s headquarters or manufacturing site, not something that is actually eaten. As it is not an edible substance, it has no health risk or functional role as a food or supplement ingredient.\",\"category\":\"Not a food ingredient\"}",
+    "lastUpdated": 1766259995472,
+    "createdAt": 1766259995472
+  },
+  "peanut butter (ground peanuts)__food__en": {
+    "analysis": "{\"name\":\"Peanut Butter (ground Peanuts)\",\"riskLevel\":\"low\",\"summary\":\"Peanut butter made from ground peanuts is a calorie-dense source of healthy fats and protein, and is a common allergen. For the general population it is considered safe when eaten in moderation.\",\"details\":\"Ground peanuts provide monounsaturated and polyunsaturated fats, plant protein, and some fiber, along with vitamins and minerals such as vitamin E, magnesium, and niacin. The main health concern is for individuals with peanut allergy, who must avoid it completely, but for others it can be part of a balanced diet if portion sizes are controlled due to its high calorie density.\",\"category\":\"Nut and seed products\"}",
+    "lastUpdated": 1766259997716,
+    "createdAt": 1766259997716
+  },
+  "corn grits__food__en": {
+    "analysis": "{\"name\":\"Corn Grits\",\"riskLevel\":\"low\",\"summary\":\"Corn grits are a processed corn product that primarily provides carbohydrates and some fiber and micronutrients. They are generally safe for most people when consumed as part of a varied diet.\",\"details\":\"Corn grits are made by grinding dried corn kernels into coarse particles, offering starch as the main energy source with modest amounts of fiber and B vitamins depending on processing and enrichment. Potential concerns are mainly nutritional rather than toxicological, as relying heavily on refined corn products without other whole foods may reduce overall nutrient diversity.\",\"category\":\"Grain and cereal products\"}",
+    "lastUpdated": 1766259997717,
+    "createdAt": 1766259997717
+  },
+  "sunflower oil__food__en": {
+    "analysis": "{\"name\":\"Sunflower Oil\",\"riskLevel\":\"low\",\"summary\":\"Sunflower oil is a common cooking oil rich in unsaturated fats and vitamin E. It is generally safe but should be used in moderation as part of an overall balanced fat intake.\",\"details\":\"This oil contains mainly polyunsaturated and monounsaturated fats, which can support heart health when used instead of saturated fats. Highly refined sunflower oil is typically low in contaminants, though excessive intake of any isolated oil adds extra calories and may contribute to an imbalanced omega-6 to omega-3 ratio if not balanced with other fat sources.\",\"category\":\"Oils and fats\"}",
+    "lastUpdated": 1766259997717,
+    "createdAt": 1766259997717
   }
 }
