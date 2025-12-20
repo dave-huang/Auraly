@@ -279,14 +279,10 @@ export default function SettingsPage() {
                 <Lock className="w-8 h-8 text-primary" />
               </div>
               <h2 className="font-display text-2xl md:text-3xl mb-3">
-                {lang === 'zh' ? '个性化设置是高级功能' : lang === 'es' ? 'La personalización es Premium' : 'Personalization is a Premium Feature'}
+                {t('premium.settingsTitle', 'Personalization is a Premium Feature')}
               </h2>
               <p className="text-muted-foreground max-w-md mx-auto mb-8">
-                {lang === 'zh' 
-                  ? '升级到Auraly+以自定义您的风险敏感度和过敏原警报，获得专属于您的分析结果。' 
-                  : lang === 'es' 
-                  ? 'Actualiza a Auraly+ para personalizar tu sensibilidad al riesgo y alertas de alérgenos, obteniendo análisis adaptados a ti.'
-                  : 'Upgrade to Auraly+ to customize your risk sensitivity and allergen alerts, getting analysis results tailored just for you.'}
+                {t('premium.settingsDescription', 'Upgrade to Auraly+ to customize your risk sensitivity and allergen alerts, getting analysis results tailored just for you.')}
               </p>
               <Button 
                 size="lg" 

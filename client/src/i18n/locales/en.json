@@ -375,5 +375,42 @@
     "scansRefresh": "Scans refresh on",
     "scanPackBalance": "Scan pack balance",
     "adminGrantedDescription": "Your premium access has been granted by an administrator."
+  },
+  "subscription": {
+    "scanLeft": "scan left",
+    "scansLeft": "scans left",
+    "premium": "Auraly+ Member",
+    "trialDays": "Trial: {{days}} days left",
+    "trialRemaining": "Premium Trial: {{days}} days remaining",
+    "freeScansRemaining": "free scans remaining",
+    "upgradeCta": "Upgrade to Auraly+"
+  },
+  "paywall": {
+    "titleOutOfScans": "You've used all your free scans",
+    "titleUpgrade": "Upgrade to Auraly+",
+    "descriptionOutOfScans": "Upgrade now to continue scanning or wait for your monthly refresh",
+    "description": "Choose the plan that works best for you",
+    "recommended": "Recommended",
+    "perMonth": "/month",
+    "plus": {
+      "scans": "Unlimited scans",
+      "personalization": "Personalized allergen and ingredient alerts",
+      "history": "Full scan history access",
+      "earlyAccess": "Early access to new features"
+    },
+    "unavailable": "Subscription unavailable",
+    "subscribe": "Upgrade to Auraly+",
+    "basic": {
+      "scans": "5 scans per month",
+      "analysis": "Basic ingredient analysis"
+    },
+    "stayBasic": "Stay on Basic",
+    "cancelAnytime": "Cancel anytime. No commitment required."
+  },
+  "premium": {
+    "historyTitle": "Scan History is a Premium Feature",
+    "historyDescription": "Upgrade to Auraly+ to access your complete scan history, review past analyses, and track products over time.",
+    "settingsTitle": "Personalization is a Premium Feature",
+    "settingsDescription": "Upgrade to Auraly+ to customize your risk sensitivity and allergen alerts, getting analysis results tailored just for you."
   }
 }

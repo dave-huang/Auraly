@@ -273,9 +273,9 @@ export default function HistoryPage() {
               <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
                 <Lock className="w-8 h-8 text-primary" />
               </div>
-              <h2 className="font-display text-2xl md:text-3xl mb-3">{t('history.premiumRequired', 'Scan History is a Premium Feature')}</h2>
+              <h2 className="font-display text-2xl md:text-3xl mb-3">{t('premium.historyTitle', 'Scan History is a Premium Feature')}</h2>
               <p className="text-muted-foreground max-w-md mx-auto mb-8">
-                {t('history.premiumDescription', 'Upgrade to Auraly+ to access your complete scan history, review past analyses, and track products over time.')}
+                {t('premium.historyDescription', 'Upgrade to Auraly+ to access your complete scan history, review past analyses, and track products over time.')}
               </p>
               <Button 
                 size="lg" 

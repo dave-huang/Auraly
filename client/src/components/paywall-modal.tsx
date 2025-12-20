@@ -88,7 +88,7 @@ export function PaywallModal({ open, onClose, source = 'unknown', reason = 'volu
                   <span className="text-2xl sm:text-3xl font-bold">
                     {subscriptionProduct?.prices[0] ? formatPrice(subscriptionProduct.prices[0].unitAmount) : '$4.99'}
                   </span>
-                  <span className="text-muted-foreground ml-1">/month</span>
+                  <span className="text-muted-foreground ml-1">{t('paywall.perMonth', '/month')}</span>
                 </div>
                 
                 <ul className="space-y-2.5 sm:space-y-3 mt-3 sm:mt-4 mb-4 sm:mb-6 flex-grow text-sm sm:text-base">
