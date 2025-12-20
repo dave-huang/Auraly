@@ -532,10 +532,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/cache-stats", (req, res) => {
     try {
       const stats = getCacheStats();
-      res.json({
-        ...stats,
-        hitRate: stats.total > 0 ? ((stats.fresh / stats.total) * 100).toFixed(2) + '%' : 'N/A'
-      });
+      res.json(stats);
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }

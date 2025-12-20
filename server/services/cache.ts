@@ -18,6 +18,10 @@ interface CacheData {
 
 let cacheData: CacheData = {};
 
+// Runtime hit/miss counters (reset on server restart)
+let cacheHitCount = 0;
+let cacheMissCount = 0;
+
 // Load cache from disk on startup
 function loadCache(): void {
   try {
@@ -76,16 +80,19 @@ export function getCachedIngredientAnalysis(
   
   if (!entry) {
     console.log(`[CACHE] Miss: ${key}`);
+    cacheMissCount++;
     return null;
   }
   
   // Check if cache is stale
   if (shouldRefreshCache(entry.lastUpdated)) {
     console.log(`[CACHE] Stale (12+ months): ${key}`);
+    cacheMissCount++;
     return null;
   }
   
   console.log(`[CACHE] Hit: ${key}`);
+  cacheHitCount++;
   return {
     analysis: entry.analysis,
     fromCache: true
@@ -181,8 +188,29 @@ export function clearExpiredCache(): number {
   return deletedCount;
 }
 
-// Get cache statistics
-export function getCacheStats(): { total: number; fresh: number; stale: number } {
+// Get cache statistics (matching frontend CacheStats interface)
+export function getCacheStats(): { 
+  totalEntries: number; 
+  hitCount: number; 
+  missCount: number; 
+  hitRate: string;
+} {
+  const totalEntries = Object.keys(cacheData).length;
+  const totalLookups = cacheHitCount + cacheMissCount;
+  const hitRate = totalLookups > 0 
+    ? ((cacheHitCount / totalLookups) * 100).toFixed(2) + '%' 
+    : '100.00%';
+  
+  return {
+    totalEntries,
+    hitCount: cacheHitCount,
+    missCount: cacheMissCount,
+    hitRate
+  };
+}
+
+// Get detailed cache statistics (legacy)
+export function getDetailedCacheStats(): { total: number; fresh: number; stale: number } {
   const twelveMonthsMs = 365 * 24 * 60 * 60 * 1000;
   const cutoffTime = Date.now() - twelveMonthsMs;
   
