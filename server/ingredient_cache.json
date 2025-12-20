@@ -408,5 +408,195 @@
     "analysis": "{\"name\":\"Unbleached Enriched Flour\",\"riskLevel\":\"low\",\"summary\":\"Unbleached enriched flour is wheat flour that has not been chemically bleached and has vitamins and minerals added back after processing. It is safe for the general population but contains gluten and is not suitable for people with celiac disease or gluten intolerance.\",\"details\":\"During milling, parts of the wheat kernel and some nutrients are removed, and enrichment typically adds back iron and B vitamins such as folic acid, niacin, thiamin, and riboflavin. Although it is less processed than bleached flour, it is still a refined carbohydrate that can raise blood sugar more quickly than whole-grain flour. For most healthy individuals it is safe in moderation, but those managing blood sugar, heart health, or seeking higher fiber may prefer whole-grain alternatives.\",\"category\":\"Refined grain ingredient\"}",
     "lastUpdated": 1766262815823,
     "createdAt": 1766262815823
+  },
+  "bleached wheat flour__food__en": {
+    "analysis": "{\"name\":\"Bleached Wheat Flour\",\"riskLevel\":\"low\",\"summary\":\"Bleached wheat flour is refined wheat flour treated with bleaching agents to make it whiter and finer. It is a common baking ingredient and a major source of carbohydrates, and it is also a common allergen for people sensitive to wheat or gluten.\",\"details\":\"The bleaching process uses approved chemicals (such as benzoyl peroxide or chlorine-based agents) to improve color and baking performance, but it also means the flour is more highly processed and lower in fiber and some nutrients than whole wheat flour. For most healthy individuals, occasional consumption is considered safe, though frequent intake of refined flours can contribute to blood sugar spikes and lower overall diet quality. People with celiac disease or wheat allergy must avoid it due to its gluten and wheat protein content.\",\"category\":\"Refined grain ingredient\"}",
+    "lastUpdated": 1766263570084,
+    "createdAt": 1766263570084
+  },
+  "chocolate liquor__food__en": {
+    "analysis": "{\"name\":\"Chocolate Liquor\",\"riskLevel\":\"low\",\"summary\":\"Chocolate liquor is the ground, roasted cocoa beans that form the base of chocolate products. It is generally safe for most people when consumed in typical food amounts.\",\"details\":\"Chocolate liquor naturally contains cocoa solids and cocoa butter, along with compounds like caffeine and theobromine. Excessive intake may contribute to calorie load and, in sensitive individuals, can trigger issues such as heartburn, jitters, or migraines due to its stimulants. It may also contain trace heavy metals (like cadmium or lead) depending on cocoa sourcing, but these are usually within regulatory limits in reputable products.\",\"category\":\"Cocoa and chocolate ingredient\"}",
+    "lastUpdated": 1766263570746,
+    "createdAt": 1766263570746
+  },
+  "defatted soy flour__food__en": {
+    "analysis": "{\"name\":\"Defatted Soy Flour\",\"riskLevel\":\"low\",\"summary\":\"Defatted soy flour is made from soybeans with most of the oil removed and ground into a fine flour. It is a high-protein, nutrient-dense ingredient and a common soy-based food component.\",\"details\":\"This flour is rich in plant protein and some fiber, and is often used to boost protein content in baked goods and processed foods. Soy is a common allergen, so it can cause reactions in people with soy allergy, but it is safe for the general population. It also contains natural phytoestrogens (isoflavones), which are typically well tolerated at normal dietary intakes.\",\"category\":\"Soy-based ingredient\"}",
+    "lastUpdated": 1766263570746,
+    "createdAt": 1766263570746
+  },
+  "high fructose corn syrup__food__en": {
+    "analysis": "{\"name\":\"High Fructose Corn Syrup\",\"riskLevel\":\"moderate\",\"summary\":\"High fructose corn syrup (HFCS) is a refined sweetener made from corn starch that contains a mixture of glucose and fructose. It is strongly associated with excess calorie intake and may contribute to weight gain and metabolic issues when consumed frequently.\",\"details\":\"Regular intake of products high in HFCS is linked in observational studies to a higher risk of obesity, non-alcoholic fatty liver disease, and insulin resistance, especially when overall diet quality is poor. HFCS is quickly absorbed and can encourage overeating because it adds calories without providing fullness or nutrients. For most healthy people, occasional consumption is unlikely to cause harm, but limiting HFCS and other added sugars is recommended for better long-term metabolic and cardiovascular health.\",\"category\":\"Added sugar / sweetener\"}",
+    "lastUpdated": 1766263571401,
+    "createdAt": 1766263571401
+  },
+  "corn syrup__food__en": {
+    "analysis": "{\"name\":\"Corn Syrup\",\"riskLevel\":\"moderate\",\"summary\":\"Corn syrup is a refined sweetener derived from corn starch that is primarily glucose. It contributes significant added sugar and calories without providing vitamins, minerals, or fiber.\",\"details\":\"High intake of corn syrup and other added sugars can promote weight gain, increased triglycerides, and a higher risk of metabolic and cardiovascular problems when part of a generally high-sugar diet. While it does not contain as much fructose as high fructose corn syrup, it still adds rapidly absorbed sugars that can spike blood glucose, especially in people with insulin resistance or diabetes. Occasional use is generally safe, but it is advisable to limit foods where corn syrup is listed among the first ingredients.\",\"category\":\"Added sugar / sweetener\"}",
+    "lastUpdated": 1766263571402,
+    "createdAt": 1766263571402
+  },
+  "cocoa__food__en": {
+    "analysis": "{\"name\":\"Cocoa\",\"riskLevel\":\"low\",\"summary\":\"Cocoa is derived from cocoa beans and is commonly used to provide chocolate flavor and antioxidants. It is generally safe for most people when consumed in typical food amounts.\",\"details\":\"Cocoa naturally contains flavonoids, which may have cardiovascular benefits, but it also contains small amounts of caffeine and theobromine that can be stimulating for sensitive individuals in large quantities. Some cocoa products can have added sugar or fat, but plain cocoa itself is not a major health concern when used moderately. Rarely, people may have sensitivities to cocoa, but it is not one of the most common allergens.\",\"category\":\"Flavoring ingredient\"}",
+    "lastUpdated": 1766263571412,
+    "createdAt": 1766263571412
+  },
+  "tallow__food__en": {
+    "analysis": "{\"name\":\"Tallow\",\"riskLevel\":\"moderate\",\"summary\":\"Tallow is rendered animal fat, typically from beef or mutton, used as a cooking fat or processing aid. It is high in saturated fat, which can impact heart health if consumed in excess.\",\"details\":\"Because tallow is predominantly saturated fat, frequent or high intake may contribute to elevated LDL cholesterol and increased cardiovascular risk, especially when combined with an overall high-saturated-fat diet. It does not usually pose an immediate toxicity or allergen risk, but it is not suitable for vegetarians, vegans, and some religious or cultural dietary patterns. Occasional use in small amounts is unlikely to be harmful for most healthy individuals, but regular high intake is best limited.\",\"category\":\"Animal fat / cooking fat\"}",
+    "lastUpdated": 1766263571413,
+    "createdAt": 1766263571413
+  },
+  "baking soda__food__en": {
+    "analysis": "{\"name\":\"Baking Soda\",\"riskLevel\":\"low\",\"summary\":\"Baking soda (sodium bicarbonate) is a common leavening agent used to help baked goods rise. For most healthy individuals, it is safe in the small amounts typically found in foods.\",\"details\":\"Baking soda works by releasing carbon dioxide when it reacts with acids in the dough or batter, creating a light and airy texture. In normal culinary amounts it poses minimal health concern, though very high intake can contribute to excess sodium and may be problematic for people with certain medical conditions such as hypertension or kidney issues. It is not considered an artificial color, flavor, or preservative and does not carry typical additive-related risks.\",\"category\":\"Leavening agent\"}",
+    "lastUpdated": 1766263571424,
+    "createdAt": 1766263571424
+  },
+  "whey__food__en": {
+    "analysis": "{\"name\":\"Whey\",\"riskLevel\":\"low\",\"summary\":\"Whey is a protein-rich component derived from milk and is commonly used in food products and supplements. It is generally safe for the general population but is a common allergen for individuals with dairy or milk protein allergies.\",\"details\":\"Whey provides high-quality protein and contains essential amino acids, making it popular in protein powders and fortified foods. For most people, it does not pose significant health risks when consumed in typical dietary amounts, although those with lactose intolerance may experience digestive discomfort, depending on the type and processing of the whey. It is not associated with artificial additives, colors, or preservatives by itself, but product formulations may include such substances separately.\",\"category\":\"Dairy protein\"}",
+    "lastUpdated": 1766263571424,
+    "createdAt": 1766263571424
+  },
+  "cocoa processed with alkali__food__en": {
+    "analysis": "{\"name\":\"Cocoa Processed With Alkali\",\"riskLevel\":\"low\",\"summary\":\"Cocoa processed with alkali, also called Dutch-processed cocoa, is cocoa powder treated with an alkaline substance to reduce acidity and darken color. It is generally safe for most people when consumed in typical food amounts.\",\"details\":\"Alkalization smooths the flavor of cocoa and changes its color but also reduces some natural antioxidants compared with natural cocoa. The alkali used (commonly potassium carbonate) is considered safe in regulated amounts, and there are no major toxicity concerns for the general population. People sensitive to caffeine or theobromine may still need to moderate intake, as those natural stimulants remain present.\",\"category\":\"Cocoa and chocolate ingredient\"}",
+    "lastUpdated": 1766263571623,
+    "createdAt": 1766263571623
+  },
+  "food starch modified__food__en": {
+    "analysis": "{\"name\":\"Food Starch Modified\",\"riskLevel\":\"low\",\"summary\":\"Modified food starch is starch (often from corn, potato, tapioca, or wheat) that has been physically, enzymatically, or chemically altered to improve thickening, stability, or texture. It is widely used in processed foods and is generally recognized as safe in normal dietary amounts.\",\"details\":\"Modification does not mean genetically modified; it refers to processing changes that alter how the starch behaves in heat, cold, or acidic conditions. Regulatory agencies typically consider approved forms of modified starch to be low risk, though very sensitive individuals may experience digestive discomfort with large amounts or may need to verify the source (e.g., wheat) if they have specific intolerances. For most consumers, it primarily contributes carbohydrates and texture without notable long-term health risks at common intake levels.\",\"category\":\"Thickener and stabilizer\"}",
+    "lastUpdated": 1766263571623,
+    "createdAt": 1766263571623
+  },
+  "niacin__food__en": {
+    "analysis": "{\"name\":\"Niacin\",\"riskLevel\":\"low\",\"summary\":\"Niacin is vitamin B3, commonly added to foods and supplements to support energy metabolism and nervous system function.\",\"details\":\"At normal amounts found in fortified foods, niacin is considered very safe for the general population. Very high supplemental doses (far above what is added in standard fortified foods) can cause flushing, itching, and, in rare extreme cases, liver stress, but these levels are not typically reached through regular foods.\",\"category\":\"Vitamin (B-complex)\"}",
+    "lastUpdated": 1766263571682,
+    "createdAt": 1766263571682
+  },
+  "reduced iron or ferrous sulfate__food__en": {
+    "analysis": "{\"name\":\"Reduced Iron or Ferrous Sulfate\",\"riskLevel\":\"low\",\"summary\":\"Reduced iron and ferrous sulfate are forms of iron used to fortify foods and prevent iron deficiency anemia.\",\"details\":\"In standard fortification doses, these iron sources are generally safe for healthy individuals and help maintain adequate iron levels. Excessive iron intake, especially from multiple supplements or in people with iron overload disorders (such as hemochromatosis), can be harmful, but this is uncommon from normal fortified food consumption alone.\",\"category\":\"Mineral (iron source)\"}",
+    "lastUpdated": 1766263571682,
+    "createdAt": 1766263571682
+  },
+  "thiamine mononitrate__food__en": {
+    "analysis": "{\"name\":\"Thiamine Mononitrate\",\"riskLevel\":\"low\",\"summary\":\"Thiamine mononitrate is a synthetic, stable form of vitamin B1 used to enrich foods and supplements.\",\"details\":\"It supports energy production and normal nervous system function and is widely used in flour and cereal fortification. Thiamine has very low toxicity, and even high intakes are generally well tolerated, making it safe at the levels typically present in fortified foods.\",\"category\":\"Vitamin (B-complex)\"}",
+    "lastUpdated": 1766263571682,
+    "createdAt": 1766263571682
+  },
+  "titanium dioxide (color)__food__en": {
+    "analysis": "{\"name\":\"Titanium Dioxide (color)\",\"riskLevel\":\"moderate\",\"summary\":\"Titanium dioxide is an inorganic white pigment used to whiten and brighten foods such as candies, baked goods, and supplements. Some safety concerns exist about its potential to cause DNA damage at high or chronic exposures, leading several regions (like the EU) to restrict or ban its use in foods.\",\"details\":\"Regulatory agencies such as the FDA have historically considered titanium dioxide generally recognized as safe (GRAS) at low levels, but newer studies on nanoparticles raise questions about possible genotoxicity and long‑term intestinal effects. In food, it usually represents a small portion of the product, yet frequent intake from multiple sources can increase cumulative exposure. Because of these uncertainties and differing regulatory positions across countries, many manufacturers are phasing it out in favor of alternative colorants.\",\"category\":\"Color additive\"}",
+    "lastUpdated": 1766263571691,
+    "createdAt": 1766263571691
+  },
+  "monocalcium phosphate__food__en": {
+    "analysis": "{\"name\":\"Monocalcium Phosphate\",\"riskLevel\":\"low\",\"summary\":\"Monocalcium phosphate is a leavening agent and mineral additive commonly used in baked goods and some supplements. It helps dough rise and can also contribute a small amount of dietary calcium and phosphorus.\",\"details\":\"This compound is generally recognized as safe when used within typical food manufacturing levels. For most healthy individuals, the amount of phosphorus contributed from monocalcium phosphate in foods is modest compared with total dietary intake. People with advanced kidney disease who must closely control phosphorus intake may need to monitor overall phosphate additives in their diet, but for the general population it poses low health concern.\",\"category\":\"Leavening agent / mineral additive\"}",
+    "lastUpdated": 1766263571691,
+    "createdAt": 1766263571691
+  },
+  "locust bean gum__food__en": {
+    "analysis": "{\"name\":\"Locust Bean Gum\",\"riskLevel\":\"low\",\"summary\":\"Locust bean gum is a thickener and stabilizer derived from carob tree seeds, commonly used to improve texture in foods. It is generally considered safe for most people when consumed in typical food amounts.\",\"details\":\"As a soluble fiber, locust bean gum helps thicken and stabilize products like ice cream, sauces, and dairy alternatives. It is not known to be toxic and is well tolerated by the general population, though very large amounts may cause mild digestive discomfort in sensitive individuals. It is not a common allergen and has no major health concerns at normal dietary levels.\",\"category\":\"Thickener and stabilizer (food additive)\"}",
+    "lastUpdated": 1766263571703,
+    "createdAt": 1766263571703
+  },
+  "dipotassium phosphate__food__en": {
+    "analysis": "{\"name\":\"Dipotassium Phosphate\",\"riskLevel\":\"low\",\"summary\":\"Dipotassium phosphate is a potassium and phosphate salt used as an acidity regulator, stabilizer, and emulsifier in foods and beverages. It is generally recognized as safe in regulated amounts.\",\"details\":\"This ingredient helps control pH, improve texture, and enhance stability in products such as coffee creamers, processed cheeses, and nutritional drinks. In typical food levels it is safe for healthy individuals, though people with kidney disease or those who must limit phosphate or potassium intake may need to monitor total intake from all sources. For the general population, its safety profile is considered acceptable under current food regulations.\",\"category\":\"Mineral salt, acidity regulator and stabilizer (food additive)\"}",
+    "lastUpdated": 1766263571703,
+    "createdAt": 1766263571703
+  },
+  "egg whites__food__en": {
+    "analysis": "{\"name\":\"Egg Whites\",\"riskLevel\":\"low\",\"summary\":\"Egg whites are the clear portion of an egg, rich in protein and low in fat and calories. They are generally safe for the general population but are a common allergen for some individuals.\",\"details\":\"Egg whites provide high-quality, complete protein and contain minimal fat and carbohydrates, making them popular in high-protein or low-fat diets. Potential concerns mainly involve people with egg allergies, who must avoid them entirely, and the small risk from consuming raw egg whites due to possible bacterial contamination. For most healthy individuals when properly cooked, egg whites are considered a safe and nutritious food ingredient.\",\"category\":\"Protein ingredient\"}",
+    "lastUpdated": 1766263571768,
+    "createdAt": 1766263571768
+  },
+  "dextrose__food__en": {
+    "analysis": "{\"name\":\"Dextrose\",\"riskLevel\":\"moderate\",\"summary\":\"Dextrose is a simple sugar (glucose) commonly used as a sweetener and energy source in foods and supplements. It can contribute to rapid increases in blood sugar when consumed in significant amounts.\",\"details\":\"As a refined carbohydrate, dextrose is quickly absorbed and can spike blood glucose and insulin levels, which may be problematic for people with diabetes, insulin resistance, or metabolic syndrome. High or frequent intake of added sugars like dextrose can contribute over time to weight gain, dental caries, and increased risk of cardiometabolic disease when not balanced by overall diet and activity. In modest amounts within a balanced diet, it is generally safe for most healthy individuals.\",\"category\":\"Added sugar / carbohydrate\"}",
+    "lastUpdated": 1766263571768,
+    "createdAt": 1766263571768
+  },
+  "hydrogenated tallow__food__en": {
+    "analysis": "{\"name\":\"Hydrogenated Tallow\",\"riskLevel\":\"high\",\"summary\":\"Hydrogenated tallow is animal fat (usually beef or mutton) that has been chemically hardened, often creating or concentrating trans fats. Intake of hydrogenated fats is strongly associated with negative cardiovascular health effects.\",\"details\":\"Hydrogenation alters the fat structure to make it more solid and shelf-stable, but this process can form trans fatty acids, which are linked to increased LDL (“bad”) cholesterol, reduced HDL (“good”) cholesterol, and a higher risk of heart disease and inflammation. Many health authorities recommend minimizing or avoiding hydrogenated fats and trans fats whenever possible, especially when consumed regularly or in combination with other sources of saturated and trans fats. For cardiovascular health, choosing products without hydrogenated tallow is generally advisable.\",\"category\":\"Hydrogenated fat / trans fat source\"}",
+    "lastUpdated": 1766263571768,
+    "createdAt": 1766263571768
+  },
+  "riboflavin__food__en": {
+    "analysis": "{\"name\":\"Riboflavin\",\"riskLevel\":\"low\",\"summary\":\"Riboflavin is vitamin B2, an essential water-soluble vitamin used in foods and supplements to support energy metabolism. It is generally very safe at typical dietary and supplement doses.\",\"details\":\"Riboflavin helps the body convert carbohydrates, fats, and proteins into energy and supports normal function of the skin, eyes, and nervous system. Excess riboflavin is usually excreted in urine, making toxicity rare, though very high supplemental doses may cause harmless bright yellow urine and occasional mild gastrointestinal discomfort in sensitive individuals. In food products it is sometimes also used as a yellow food colorant.\",\"category\":\"Vitamin (B-complex)\"}",
+    "lastUpdated": 1766263572015,
+    "createdAt": 1766263572015
+  },
+  "folic acid__food__en": {
+    "analysis": "{\"name\":\"Folic Acid\",\"riskLevel\":\"low\",\"summary\":\"Folic acid is a synthetic form of vitamin B9 commonly added to foods and supplements to support cell growth and prevent folate deficiency. It is generally safe at normal intake levels.\",\"details\":\"Adequate folic acid is important for DNA synthesis, red blood cell formation, and is especially critical during pregnancy to help prevent certain birth defects. Most people tolerate typical fortified-food and standard supplement doses well, but chronically very high intakes may mask symptoms of vitamin B12 deficiency. For the general population consuming normal amounts, folic acid is considered low risk and beneficial.\",\"category\":\"Vitamin (B-complex)\"}",
+    "lastUpdated": 1766263572015,
+    "createdAt": 1766263572015
+  },
+  "water__food__en": {
+    "analysis": "{\"name\":\"Water\",\"riskLevel\":\"low\",\"summary\":\"Water is the primary solvent and carrier in many foods and beverages. It is essential for life and generally safe when properly treated and free of contaminants.\",\"details\":\"In food products, water helps dissolve ingredients, control texture, and support processing and stability. Health concerns with water usually relate to potential contamination (such as microbes, heavy metals, or chemicals), not the water itself. When sourced and treated according to safety standards, its risk for the general population is very low.\",\"category\":\"Base ingredient\"}",
+    "lastUpdated": 1766263572015,
+    "createdAt": 1766263572015
+  },
+  "xanthan gum__food__en": {
+    "analysis": "{\"name\":\"Xanthan Gum\",\"riskLevel\":\"low\",\"summary\":\"Xanthan gum is a common thickener and stabilizer used in many processed foods and beverages. It is generally recognized as safe for most people when consumed in typical food amounts.\",\"details\":\"Xanthan gum is a polysaccharide produced by fermenting sugars with the bacterium Xanthomonas campestris, and it helps improve texture, viscosity, and shelf stability. In some sensitive individuals, high intakes may cause mild digestive discomfort such as gas or bloating, largely due to its fiber-like properties. Overall, it is well studied and considered safe at the levels normally found in foods and supplements.\",\"category\":\"Thickener and stabilizer\"}",
+    "lastUpdated": 1766263572187,
+    "createdAt": 1766263572187
+  },
+  "agar__food__en": {
+    "analysis": "{\"name\":\"Agar\",\"riskLevel\":\"low\",\"summary\":\"Agar is a gelling agent derived from seaweed and is used to thicken or gel foods and some supplements. It is generally safe for most people and contributes some indigestible fiber.\",\"details\":\"Agar is extracted from red algae and forms firm gels, often used as a vegetarian alternative to gelatin in desserts, jellies, and capsules. Because it is largely non-digestible, large amounts can have a laxative effect or cause mild digestive discomfort in some individuals. At normal food-use levels, it is considered safe and is widely approved as a food additive.\",\"category\":\"Gelling agent and thickener\"}",
+    "lastUpdated": 1766263572187,
+    "createdAt": 1766263572187
+  },
+  "cellulose gum__food__en": {
+    "analysis": "{\"name\":\"Cellulose Gum\",\"riskLevel\":\"low\",\"summary\":\"Cellulose gum, also known as carboxymethyl cellulose, is a thickener and stabilizer derived from plant cellulose. It is considered safe for most people when used in standard food and supplement amounts.\",\"details\":\"Cellulose gum is a modified form of plant fiber that improves texture, moisture retention, and stability in processed foods, beverages, and some supplement tablets. It is not significantly absorbed or metabolized by the body and mostly passes through the digestive tract, though high intakes may occasionally cause gas or loose stools in sensitive individuals. Regulatory agencies generally recognize it as safe at typical consumption levels.\",\"category\":\"Thickener and stabilizer\"}",
+    "lastUpdated": 1766263572188,
+    "createdAt": 1766263572188
+  },
+  "sodium acid pyrophosphate__food__en": {
+    "analysis": "{\"name\":\"Sodium Acid Pyrophosphate\",\"riskLevel\":\"low\",\"summary\":\"Sodium acid pyrophosphate is a leavening agent and acidity regulator commonly used in baked goods and processed foods. It is generally recognized as safe at typical food-use levels.\",\"details\":\"This additive helps dough rise and can also prevent discoloration in processed potatoes and other products. The main concern is that, like other phosphate additives, very high intakes may contribute to excess phosphorus load, which could be an issue for people with kidney disease or those on restricted phosphate diets. For the general population consuming it in normal amounts in foods, safety data and regulatory approvals indicate a low overall risk.\",\"category\":\"Leavening agent / acidity regulator\"}",
+    "lastUpdated": 1766263572683,
+    "createdAt": 1766263572683
+  },
+  "mono and diglycerides__food__en": {
+    "analysis": "{\"name\":\"Mono And Diglycerides\",\"riskLevel\":\"moderate\",\"summary\":\"Mono and diglycerides are emulsifiers used to improve texture and shelf life in processed foods. They can be a source of small amounts of trans fats and are often derived from vegetable oils or animal fats.\",\"details\":\"These compounds help mix fat and water, stabilizing products like baked goods, margarine, and ice cream. While considered safe by regulators, they may contain residual trans fats that do not have to be labeled separately, contributing slightly to overall trans fat intake, which is associated with negative cardiovascular effects. People aiming to minimize ultra-processed ingredients or trans fat exposure may wish to limit frequent consumption of products high in mono and diglycerides.\",\"category\":\"Emulsifier / fat-based additive\"}",
+    "lastUpdated": 1766263572684,
+    "createdAt": 1766263572684
+  },
+  "polysorbate 60__food__en": {
+    "analysis": "{\"name\":\"Polysorbate 60\",\"riskLevel\":\"moderate\",\"summary\":\"Polysorbate 60 is a synthetic emulsifier used to keep fats and liquids mixed in foods like whipped toppings and baked goods. It is permitted in many countries but is a marker of highly processed foods.\",\"details\":\"This additive improves texture and stability, helping prevent separation and staling. Animal and cell studies on some polysorbates (notably polysorbate 80) have raised questions about possible effects on the gut barrier and microbiota at high doses, though typical dietary exposures in humans are much lower and considered acceptable by regulators. Due to limited long-term human data and its role as a processed emulsifier, some health-conscious consumers may choose to limit frequent intake, making it a moderate rather than low concern.\",\"category\":\"Emulsifier / stabilizer\"}",
+    "lastUpdated": 1766263572684,
+    "createdAt": 1766263572684
+  },
+  "corn syrup solids__food__en": {
+    "analysis": "{\"name\":\"Corn Syrup Solids\",\"riskLevel\":\"moderate\",\"summary\":\"Corn syrup solids are a dehydrated form of corn syrup used as a sweetener and texture enhancer, contributing mostly simple carbohydrates with little nutritional value. High intake of added sugars like corn syrup solids may contribute to weight gain and metabolic issues over time.\",\"details\":\"Corn syrup solids are produced by hydrolyzing corn starch and then drying the resulting syrup into a powder, providing sweetness and bulk in many processed foods, infant formulas, and drink mixes. While generally recognized as safe, frequent or high consumption of products rich in added sugars can promote blood sugar spikes, increased calorie intake, and a higher risk of obesity and related conditions in the long term. For most healthy individuals, occasional intake is not a concern, but limiting overall added sugar is advisable.\",\"category\":\"Sweetener / carbohydrate filler\"}",
+    "lastUpdated": 1766263572750,
+    "createdAt": 1766263572750
+  },
+  "calcium sulfate__food__en": {
+    "analysis": "{\"name\":\"Calcium Sulfate\",\"riskLevel\":\"low\",\"summary\":\"Calcium sulfate is a mineral-based additive used as a firming agent, dough conditioner, and source of calcium. It is generally recognized as safe at the levels used in foods.\",\"details\":\"In foods, calcium sulfate can help maintain structure, regulate texture, and sometimes provide supplemental calcium, especially in baked goods and tofu. Typical dietary exposures are low and not associated with toxicity in healthy individuals. Excessive intake from multiple fortified sources is unlikely but, if extreme, could contribute to mineral imbalances, though this is rare in normal consumption.\",\"category\":\"Mineral additive / texture agent\"}",
+    "lastUpdated": 1766263572751,
+    "createdAt": 1766263572751
+  },
+  "egg__food__en": {
+    "analysis": "{\"name\":\"Egg\",\"riskLevel\":\"low\",\"summary\":\"Egg is a nutrient-dense whole food providing high-quality protein, fats, vitamins, and minerals. It is a common allergen but is safe for the general population without egg allergy when properly cooked and handled.\",\"details\":\"Eggs contain complete protein, choline, B vitamins, and fat-soluble vitamins, and their cholesterol content is not a major concern for most healthy people when eaten in moderation. The main risks are for individuals with egg allergy and from foodborne illness if eggs are undercooked or improperly stored. For the general population, eggs can be part of a balanced diet, while those with allergies must avoid them strictly.\",\"category\":\"Whole food ingredient / animal product\"}",
+    "lastUpdated": 1766263572751,
+    "createdAt": 1766263572751
+  },
+  "sorbic acid and potassium sorbate__food__en": {
+    "analysis": "{\"name\":\"Sorbic Acid And Potassium Sorbate\",\"riskLevel\":\"low\",\"summary\":\"Sorbic acid and potassium sorbate are food preservatives used to prevent mold and extend shelf life. They are generally recognized as safe at typical food-use levels.\",\"details\":\"These preservatives inhibit the growth of molds, yeasts, and some bacteria, helping to retain freshness in many processed foods and beverages. Regulatory authorities such as the FDA and EFSA consider them safe within established limits, though a small number of people may experience mild intolerance or sensitivity, usually as skin or mucosal irritation. For most healthy consumers, intake at normal dietary levels does not pose significant health concerns.\",\"category\":\"Preservative\"}",
+    "lastUpdated": 1766263572920,
+    "createdAt": 1766263572920
+  },
+  "agave syrup__food__en": {
+    "analysis": "{\"name\":\"Agave Syrup\",\"riskLevel\":\"moderate\",\"summary\":\"Agave syrup is a sweetener derived from the agave plant, often marketed as a natural alternative to sugar. It is typically high in fructose, which can stress the liver when consumed in excess.\",\"details\":\"Although agave syrup has a lower glycemic index than table sugar, its high fructose content may contribute to fatty liver, elevated blood triglycerides, and metabolic issues if frequently consumed in large amounts. For most people, occasional use in small quantities is unlikely to be harmful, but regular heavy use is not advisable, especially for individuals with insulin resistance, fatty liver disease, or metabolic syndrome. It is best treated as an added sugar and limited accordingly.\",\"category\":\"Sweetener\"}",
+    "lastUpdated": 1766263572920,
+    "createdAt": 1766263572920
+  },
+  "inulin__food__en": {
+    "analysis": "{\"name\":\"Inulin\",\"riskLevel\":\"low\",\"summary\":\"Inulin is a soluble fiber and prebiotic usually extracted from chicory root or other plants. It can support gut health by feeding beneficial intestinal bacteria.\",\"details\":\"As a prebiotic fiber, inulin may improve bowel regularity and support a healthy microbiome, and it is commonly added to foods to increase fiber content or improve texture. Some people, particularly those with irritable bowel syndrome or sensitive digestion, may experience gas, bloating, or discomfort at higher doses. For most healthy individuals, typical food amounts are well tolerated and considered safe.\",\"category\":\"Fiber / Prebiotic\"}",
+    "lastUpdated": 1766263572921,
+    "createdAt": 1766263572921
+  },
+  "sodium stearoyl lactylate__food__en": {
+    "analysis": "{\"name\":\"Sodium Stearoyl Lactylate\",\"riskLevel\":\"low\",\"summary\":\"Sodium stearoyl lactylate is an emulsifier used in baked goods and processed foods to improve texture and shelf life. It is generally recognized as safe for most people at typical food-use levels.\",\"details\":\"This additive is derived from stearic acid and lactic acid, and helps mix water and fat, improving dough strength, volume, and softness in products like bread and pastries. Regulatory agencies such as the FDA consider it safe within established limits, and adverse reactions are rare. People with very sensitive digestion may prefer to limit overall intake of processed foods containing multiple emulsifiers, but sodium stearoyl lactylate itself is not considered high risk.\",\"category\":\"Food additive – emulsifier\"}",
+    "lastUpdated": 1766263577449,
+    "createdAt": 1766263577449
+  },
+  "cottonseed oil__food__en": {
+    "analysis": "{\"name\":\"Cottonseed Oil\",\"riskLevel\":\"moderate\",\"summary\":\"Cottonseed oil is a vegetable oil commonly used for frying and in processed foods. It may be refined from conventionally grown cotton that can contain pesticide residues and often has a relatively high omega-6 fatty acid content.\",\"details\":\"Highly refined cottonseed oil is low in trans fat but is rich in omega-6 polyunsaturated fats, which, when consumed in excess relative to omega-3s, may contribute to inflammation and cardiovascular risk over time. Cotton is typically grown as a non-food crop and can be heavily treated with pesticides; refining reduces but does not entirely eliminate concerns about chemical residues and oxidation of the oil. For frequent or long-term consumption, emphasizing less processed oils with more favorable fatty acid profiles (such as olive oil) is generally considered a healthier choice.\",\"category\":\"Edible oil / added fat\"}",
+    "lastUpdated": 1766263577449,
+    "createdAt": 1766263577449
   }
 }
