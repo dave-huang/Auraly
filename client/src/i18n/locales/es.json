@@ -27,10 +27,15 @@
       "title": "Claridad para lo que comes y usas, todos los días.",
       "subtitle": "Auraly te ayuda a comprender los ingredientes en tus alimentos, cuidado de la piel y productos de cuidado personal con análisis impulsado por IA en cualquier idioma.",
       "cta": "Comenzar a Escanear",
+      "ctaTrial": "Iniciar Prueba Gratuita",
+      "ctaSignIn": "¿Ya tienes cuenta? Inicia sesión",
       "guardian": "Tu guardián de ingredientes",
+      "trialBadge": "Prueba Gratuita de 7 Días",
       "trust": {
         "noAccount": "Sin cuenta necesaria",
-        "instant": "Resultados instantáneos"
+        "instant": "Resultados instantáneos",
+        "noCreditCard": "Sin tarjeta de crédito",
+        "unlimitedScans": "Escaneos ilimitados por 7 días"
       }
     },
     "howItWorks": {

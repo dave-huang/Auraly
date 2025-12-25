@@ -76,15 +76,47 @@ export default function Landing() {
                   </Button>
                 </Link>
               ) : (
-                <Button
-                  size="lg"
-                  className="rounded-full px-10 py-6 text-base font-medium shadow-md hover:shadow-lg transition-all duration-300 gap-3"
-                  onClick={() => window.location.href = "/api/login"}
-                  data-testid="button-login"
-                >
-                  <Camera className="w-4 h-4" />
-                  {t('auth.signIn')}
-                </Button>
+                <div className="space-y-4">
+                  {/* Trial Badge */}
+                  <div className="flex items-center gap-2">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
+                      <Sparkles className="w-3.5 h-3.5" />
+                      {t('landing.hero.trialBadge')}
+                    </span>
+                  </div>
+                  
+                  {/* Primary CTA */}
+                  <Button
+                    size="lg"
+                    className="rounded-full px-10 py-6 text-base font-medium shadow-md hover:shadow-lg transition-all duration-300 gap-3"
+                    onClick={() => window.location.href = "/api/login"}
+                    data-testid="button-start-trial"
+                  >
+                    <Camera className="w-4 h-4" />
+                    {t('landing.hero.ctaTrial')}
+                  </Button>
+                  
+                  {/* Trust signals */}
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+                    <span className="flex items-center gap-1.5">
+                      <Check className="w-4 h-4 text-primary" />
+                      {t('landing.hero.trust.noCreditCard')}
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Check className="w-4 h-4 text-primary" />
+                      {t('landing.hero.trust.unlimitedScans')}
+                    </span>
+                  </div>
+                  
+                  {/* Secondary sign in link */}
+                  <button
+                    onClick={() => window.location.href = "/api/login"}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors underline-offset-4 hover:underline"
+                    data-testid="link-signin"
+                  >
+                    {t('landing.hero.ctaSignIn')}
+                  </button>
+                </div>
               )}
             </div>
 
@@ -194,8 +226,9 @@ export default function Landing() {
                     variant="outline" 
                     className="rounded-full gap-2"
                     onClick={() => window.location.href = "/api/login"}
+                    data-testid="button-try-free-how"
                   >
-                    {t('auth.signIn')}
+                    {t('landing.hero.ctaTrial')}
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                 )}
@@ -286,7 +319,7 @@ export default function Landing() {
         
         <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
           <h2 className="font-display text-3xl md:text-4xl mb-6">{t('landing.cta.title')}</h2>
-          <p className="text-muted-foreground mb-10 max-w-xl mx-auto">{t('landing.cta.description')}</p>
+          <p className="text-muted-foreground mb-8 max-w-xl mx-auto">{t('landing.cta.description')}</p>
           
           {isAuthenticated ? (
             <Link href="/upload">
@@ -299,14 +332,29 @@ export default function Landing() {
               </Button>
             </Link>
           ) : (
-            <Button
-              size="lg"
-              className="rounded-full px-10 py-6 text-base font-medium shadow-md gap-3"
-              onClick={() => window.location.href = "/api/login"}
-            >
-              <Camera className="w-4 h-4" />
-              {t('auth.signIn')}
-            </Button>
+            <div className="space-y-4 inline-flex flex-col items-center">
+              <Button
+                size="lg"
+                className="rounded-full px-10 py-6 text-base font-medium shadow-md gap-3"
+                onClick={() => window.location.href = "/api/login"}
+                data-testid="button-start-trial-footer"
+              >
+                <Camera className="w-4 h-4" />
+                {t('landing.hero.ctaTrial')}
+              </Button>
+              
+              {/* Trust signals */}
+              <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+                <span className="flex items-center gap-1.5">
+                  <Check className="w-4 h-4 text-primary" />
+                  {t('landing.hero.trust.noCreditCard')}
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Check className="w-4 h-4 text-primary" />
+                  {t('landing.hero.trust.unlimitedScans')}
+                </span>
+              </div>
+            </div>
           )}
         </div>
       </section>

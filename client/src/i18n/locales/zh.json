@@ -27,10 +27,15 @@
       "title": "了解您每天吃的和用的产品成分",
       "subtitle": "Auraly 帮助您通过AI智能分析，理解食品、护肤品和个人护理产品中的成分，支持任何语言。",
       "cta": "开始扫描",
+      "ctaTrial": "开始免费试用",
+      "ctaSignIn": "已有账户？立即登录",
       "guardian": "您的成分守护者",
+      "trialBadge": "7天免费试用",
       "trust": {
         "noAccount": "无需账户",
-        "instant": "即时结果"
+        "instant": "即时结果",
+        "noCreditCard": "无需信用卡",
+        "unlimitedScans": "7天内无限扫描"
       }
     },
     "howItWorks": {

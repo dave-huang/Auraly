@@ -27,10 +27,15 @@
       "title": "Clarity for what you eat and use, every day.",
       "subtitle": "Auraly helps you understand ingredients in your food, skincare, and personal care products with AI-powered analysis in any language.",
       "cta": "Start Scanning",
+      "ctaTrial": "Start Free Trial",
+      "ctaSignIn": "Already have an account? Sign in",
       "guardian": "Your ingredient guardian",
+      "trialBadge": "7-Day Free Trial",
       "trust": {
         "noAccount": "No account needed",
-        "instant": "Instant results"
+        "instant": "Instant results",
+        "noCreditCard": "No credit card required",
+        "unlimitedScans": "Unlimited scans for 7 days"
       }
     },
     "howItWorks": {
