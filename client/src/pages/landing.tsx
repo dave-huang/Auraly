@@ -87,7 +87,7 @@ export default function Landing() {
                   </Button>
                 </Link>
               ) : (
-                <div className="space-y-3">
+                <div className="space-y-3 flex flex-col items-start">
                   {/* Primary CTA */}
                   <Button
                     size="lg"
@@ -99,8 +99,8 @@ export default function Landing() {
                     {t('landing.hero.ctaTrial')}
                   </Button>
                   
-                  {/* Trust signal */}
-                  <p className="text-sm text-muted-foreground">
+                  {/* Trust signal - centered under button */}
+                  <p className="text-sm text-muted-foreground text-center w-full" style={{ maxWidth: '220px' }}>
                     {t('landing.hero.trust.noCreditCard')}
                   </p>
                 </div>
