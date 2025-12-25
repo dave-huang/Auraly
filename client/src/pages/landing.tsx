@@ -87,23 +87,15 @@ export default function Landing() {
                   </Button>
                 </Link>
               ) : (
-                <div className="space-y-3 flex flex-col items-start">
-                  {/* Primary CTA */}
-                  <Button
-                    size="lg"
-                    className="rounded-full px-10 py-6 text-base font-medium shadow-md hover:shadow-lg transition-all duration-300 gap-3"
-                    onClick={() => window.location.href = "/api/login"}
-                    data-testid="button-start-trial"
-                  >
-                    <Camera className="w-4 h-4" />
-                    {t('landing.hero.ctaTrial')}
-                  </Button>
-                  
-                  {/* Trust signal - centered under button */}
-                  <p className="text-sm text-muted-foreground text-center w-full" style={{ maxWidth: '220px' }}>
-                    {t('landing.hero.trust.noCreditCard')}
-                  </p>
-                </div>
+                <Button
+                  size="lg"
+                  className="rounded-full px-10 py-6 text-base font-medium shadow-md hover:shadow-lg transition-all duration-300 gap-3"
+                  onClick={() => window.location.href = "/api/login"}
+                  data-testid="button-start-trial"
+                >
+                  <Camera className="w-4 h-4" />
+                  {t('landing.hero.ctaTrial')}
+                </Button>
               )}
             </div>
 
