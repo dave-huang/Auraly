@@ -77,14 +77,6 @@ export default function Landing() {
                 </Link>
               ) : (
                 <div className="space-y-4">
-                  {/* Trial Badge */}
-                  <div className="flex items-center gap-2">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
-                      <Sparkles className="w-3.5 h-3.5" />
-                      {t('landing.hero.trialBadge')}
-                    </span>
-                  </div>
-                  
                   {/* Primary CTA */}
                   <Button
                     size="lg"
@@ -96,17 +88,10 @@ export default function Landing() {
                     {t('landing.hero.ctaTrial')}
                   </Button>
                   
-                  {/* Trust signals */}
-                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
-                    <span className="flex items-center gap-1.5">
-                      <Check className="w-4 h-4 text-primary" />
-                      {t('landing.hero.trust.noCreditCard')}
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <Check className="w-4 h-4 text-primary" />
-                      {t('landing.hero.trust.unlimitedScans')}
-                    </span>
-                  </div>
+                  {/* Trust signal */}
+                  <p className="text-sm text-muted-foreground">
+                    {t('landing.hero.trust.noCreditCard')}
+                  </p>
                   
                   {/* Secondary sign in link */}
                   <button
@@ -332,7 +317,7 @@ export default function Landing() {
               </Button>
             </Link>
           ) : (
-            <div className="space-y-4 inline-flex flex-col items-center">
+            <div className="space-y-3 inline-flex flex-col items-center">
               <Button
                 size="lg"
                 className="rounded-full px-10 py-6 text-base font-medium shadow-md gap-3"
@@ -343,17 +328,10 @@ export default function Landing() {
                 {t('landing.hero.ctaTrial')}
               </Button>
               
-              {/* Trust signals */}
-              <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
-                <span className="flex items-center gap-1.5">
-                  <Check className="w-4 h-4 text-primary" />
-                  {t('landing.hero.trust.noCreditCard')}
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <Check className="w-4 h-4 text-primary" />
-                  {t('landing.hero.trust.unlimitedScans')}
-                </span>
-              </div>
+              {/* Trust signal */}
+              <p className="text-sm text-muted-foreground">
+                {t('landing.hero.trust.noCreditCard')}
+              </p>
             </div>
           )}
         </div>
