@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
+import { WelcomeModal } from "@/components/welcome-modal";
 import Landing from "@/pages/landing";
 import UploadPage from "@/pages/upload";
 import ResultsPage from "@/pages/results";
@@ -20,6 +21,7 @@ import NotFound from "@/pages/not-found";
 import "./i18n/config";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import type { User } from "@shared/schema";
 
 function ProtectedPage({ component: Component }: { component: any }) {
   const { isAuthenticated, isLoading } = useAuth();
@@ -88,12 +90,25 @@ function Router() {
   );
 }
 
+function AppContent() {
+  const { user, isAuthenticated } = useAuth();
+
+  return (
+    <>
+      <Router />
+      {isAuthenticated && user && (
+        <WelcomeModal user={user as User} />
+      )}
+    </>
+  );
+}
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
-        <Router />
+        <AppContent />
       </TooltipProvider>
     </QueryClientProvider>
   );

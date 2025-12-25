@@ -420,5 +420,15 @@
     "historyDescription": "Actualiza a Auraly+ para acceder a tu historial completo de escaneos, revisar análisis anteriores y seguir productos a lo largo del tiempo.",
     "settingsTitle": "La Personalización es una Función Premium",
     "settingsDescription": "Actualiza a Auraly+ para personalizar tu sensibilidad al riesgo y alertas de alérgenos, obteniendo análisis adaptados a ti."
+  },
+  "welcome": {
+    "title": "Bienvenido a Auraly+",
+    "trialDescription": "Tu prueba gratuita de 7 días ha comenzado. Sin tarjeta de crédito — simplemente comienza a explorar qué hay en tus productos.",
+    "benefit1": "Escaneos ilimitados durante tu prueba",
+    "benefit2": "Configuración personalizada de sensibilidad a ingredientes",
+    "benefit3": "Historial completo de escaneos e información",
+    "afterTrial": "Después de tu prueba, continuarás automáticamente con Auraly Basic — completamente gratis con 5 escaneos por mes. Sin sorpresas, sin cargos ocultos.",
+    "continueMessage": "¿Te encanta? Continúa protegiendo tu bienestar por menos que un café al mes.",
+    "startScanning": "Comenzar a Escanear"
   }
 }

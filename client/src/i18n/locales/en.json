@@ -420,5 +420,15 @@
     "historyDescription": "Upgrade to Auraly+ to access your complete scan history, review past analyses, and track products over time.",
     "settingsTitle": "Personalization is a Premium Feature",
     "settingsDescription": "Upgrade to Auraly+ to customize your risk sensitivity and allergen alerts, getting analysis results tailored just for you."
+  },
+  "welcome": {
+    "title": "Welcome to Auraly+",
+    "trialDescription": "Your 7-day free trial has begun. No credit card needed — just start exploring what's in your products.",
+    "benefit1": "Unlimited scans during your trial",
+    "benefit2": "Personalized ingredient sensitivity settings",
+    "benefit3": "Full scan history and insights",
+    "afterTrial": "After your trial, you'll automatically continue on Auraly Basic — completely free with 5 scans per month. No surprises, no hidden charges.",
+    "continueMessage": "Love it? Continue protecting your wellness for less than a coffee a month.",
+    "startScanning": "Start Scanning"
   }
 }
