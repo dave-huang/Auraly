@@ -20,11 +20,20 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       {/* Header */}
-      <div className="fixed top-6 right-6 z-50 flex items-center gap-2">
+      <div className="fixed top-6 right-6 z-50 flex items-center gap-3">
         {isAuthenticated ? (
           <NavigationMenu />
         ) : (
-          <LanguageSwitcher />
+          <>
+            <button
+              onClick={() => window.location.href = "/api/login"}
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              data-testid="link-signin"
+            >
+              {t('auth.signIn')}
+            </button>
+            <LanguageSwitcher />
+          </>
         )}
       </div>
 
@@ -76,7 +85,7 @@ export default function Landing() {
                   </Button>
                 </Link>
               ) : (
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {/* Primary CTA */}
                   <Button
                     size="lg"
@@ -92,15 +101,6 @@ export default function Landing() {
                   <p className="text-sm text-muted-foreground">
                     {t('landing.hero.trust.noCreditCard')}
                   </p>
-                  
-                  {/* Secondary sign in link */}
-                  <button
-                    onClick={() => window.location.href = "/api/login"}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors underline-offset-4 hover:underline"
-                    data-testid="link-signin"
-                  >
-                    {t('landing.hero.ctaSignIn')}
-                  </button>
                 </div>
               )}
             </div>
