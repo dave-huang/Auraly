@@ -423,12 +423,11 @@
   },
   "welcome": {
     "title": "欢迎来到 Auraly+",
-    "trialDescription": "您的 7 天免费试用已开始。无需信用卡 — 现在就开始探索您的产品成分。",
-    "benefit1": "试用期内无限扫描",
-    "benefit2": "个性化成分敏感度设置",
-    "benefit3": "完整扫描历史和分析",
-    "afterTrial": "试用结束后，您将自动转为 Auraly 基础版 — 每月 5 次免费扫描，完全免费。无隐藏费用，无意外收费。",
-    "continueMessage": "喜欢吗？每月只需一杯咖啡的价格，继续守护您的健康。",
+    "trialDescription": "您的 7 天免费试用已开始！",
+    "benefit1": "无限扫描",
+    "benefit2": "个性化设置",
+    "benefit3": "完整历史记录",
+    "afterTrial": "试用结束后，您可免费继续使用 Auraly 基础版。",
     "startScanning": "开始扫描"
   }
 }

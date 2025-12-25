@@ -423,12 +423,11 @@
   },
   "welcome": {
     "title": "Welcome to Auraly+",
-    "trialDescription": "Your 7-day free trial has begun. No credit card needed — just start exploring what's in your products.",
-    "benefit1": "Unlimited scans during your trial",
-    "benefit2": "Personalized ingredient sensitivity settings",
-    "benefit3": "Full scan history and insights",
-    "afterTrial": "After your trial, you'll automatically continue on Auraly Basic — completely free with 5 scans per month. No surprises, no hidden charges.",
-    "continueMessage": "Love it? Continue protecting your wellness for less than a coffee a month.",
+    "trialDescription": "Your 7-day free trial has begun!",
+    "benefit1": "Unlimited scans",
+    "benefit2": "Personalized settings",
+    "benefit3": "Full scan history",
+    "afterTrial": "After your trial, you'll continue on Auraly Basic for free.",
     "startScanning": "Start Scanning"
   }
 }

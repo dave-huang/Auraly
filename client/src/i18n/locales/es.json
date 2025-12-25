@@ -423,12 +423,11 @@
   },
   "welcome": {
     "title": "Bienvenido a Auraly+",
-    "trialDescription": "Tu prueba gratuita de 7 días ha comenzado. Sin tarjeta de crédito — simplemente comienza a explorar qué hay en tus productos.",
-    "benefit1": "Escaneos ilimitados durante tu prueba",
-    "benefit2": "Configuración personalizada de sensibilidad a ingredientes",
-    "benefit3": "Historial completo de escaneos e información",
-    "afterTrial": "Después de tu prueba, continuarás automáticamente con Auraly Basic — completamente gratis con 5 escaneos por mes. Sin sorpresas, sin cargos ocultos.",
-    "continueMessage": "¿Te encanta? Continúa protegiendo tu bienestar por menos que un café al mes.",
+    "trialDescription": "¡Tu prueba gratuita de 7 días ha comenzado!",
+    "benefit1": "Escaneos ilimitados",
+    "benefit2": "Configuración personalizada",
+    "benefit3": "Historial completo",
+    "afterTrial": "Después de tu prueba, continuarás con Auraly Basic gratis.",
     "startScanning": "Comenzar a Escanear"
   }
 }
