@@ -76,7 +76,7 @@ export default function Landing() {
                   </Button>
                 </Link>
               ) : (
-                <div className="space-y-4">
+                <div className="space-y-5">
                   {/* Primary CTA */}
                   <Button
                     size="lg"
@@ -93,14 +93,16 @@ export default function Landing() {
                     {t('landing.hero.trust.noCreditCard')}
                   </p>
                   
-                  {/* Secondary sign in link */}
-                  <button
+                  {/* Secondary sign in button */}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="rounded-full border border-primary/30 text-primary hover:bg-primary/5 hover:text-primary"
                     onClick={() => window.location.href = "/api/login"}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors underline-offset-4 hover:underline"
                     data-testid="link-signin"
                   >
-                    {t('landing.hero.ctaSignIn')}
-                  </button>
+                    {t('auth.signIn')}
+                  </Button>
                 </div>
               )}
             </div>
