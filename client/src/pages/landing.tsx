@@ -25,13 +25,15 @@ export default function Landing() {
           <NavigationMenu />
         ) : (
           <>
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => window.location.href = "/api/login"}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="text-muted-foreground hover:text-foreground rounded-full px-4"
               data-testid="link-signin"
             >
-              {t('auth.signIn')}
-            </button>
+              {t('auth.signInShort')}
+            </Button>
             <LanguageSwitcher />
           </>
         )}
