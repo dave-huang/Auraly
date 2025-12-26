@@ -423,11 +423,12 @@
   },
   "welcome": {
     "title": "欢迎来到 Auraly+",
-    "trialDescription": "您的 7 天免费试用已开始！",
+    "trialDescription": "您的 7 天免费试用已开始！开始探索您产品中的成分。",
+    "benefitsHeading": "Auraly+ 提供",
     "benefit1": "无限扫描",
-    "benefit2": "个性化设置",
-    "benefit3": "完整历史记录",
-    "afterTrial": "试用结束后，您可免费继续使用 Auraly 基础版。",
+    "benefit2": "个性化成分敏感度设置",
+    "benefit3": "完整扫描历史和分析",
+    "afterTrial": "试用结束后，选择权在您。升级到 Auraly+ 每月 $4.99，或继续使用 Auraly 基础版，每月享受 5 次免费扫描。无隐藏费用，无意外收费。",
     "startScanning": "开始扫描",
     "getStarted": "开始设置"
   }

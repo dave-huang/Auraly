@@ -65,21 +65,26 @@ export function WelcomeModal({ user }: WelcomeModalProps) {
             {t('welcome.trialDescription')}
           </p>
 
-          <div className="grid gap-3">
-            {benefits.map((benefit, index) => (
-              <div 
-                key={index}
-                className="flex items-center gap-4 p-3 rounded-xl bg-card/60 border border-border/30"
-              >
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <benefit.icon className="w-5 h-5 text-primary" />
+          <div className="space-y-3">
+            <p className="text-sm font-medium text-foreground">
+              {t('welcome.benefitsHeading')}
+            </p>
+            <div className="grid gap-2">
+              {benefits.map((benefit, index) => (
+                <div 
+                  key={index}
+                  className="flex items-center gap-3 p-3 rounded-xl bg-card/60 border border-border/30"
+                >
+                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <benefit.icon className="w-4 h-4 text-primary" />
+                  </div>
+                  <p className="text-sm text-foreground">{benefit.text}</p>
                 </div>
-                <p className="text-sm text-foreground font-medium">{benefit.text}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
-          <p className="text-center text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground leading-relaxed">
             {t('welcome.afterTrial')}
           </p>
         </div>
