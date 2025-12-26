@@ -26,10 +26,10 @@ export default function Landing() {
         ) : (
           <>
             <Button
-              variant="ghost"
+              variant="outline"
               size="sm"
               onClick={() => window.location.href = "/api/login"}
-              className="text-muted-foreground hover:text-foreground rounded-full px-4"
+              className="rounded-full px-5 border-primary/40 text-primary hover:bg-primary/5 hover:border-primary/60"
               data-testid="link-signin"
             >
               {t('auth.signInShort')}
