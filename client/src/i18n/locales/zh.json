@@ -430,9 +430,7 @@
     "benefit1": "无限扫描",
     "benefit2": "个性化成分敏感度设置",
     "benefit3": "完整扫描历史和分析",
-    "afterTrialLine1": "试用结束后，选择权在您：",
-    "afterTrialLine2": "升级到 Auraly+ 每月 $4.99，或继续使用 Auraly 基础版，每月享受 5 次免费扫描。",
-    "afterTrialLine3": "无隐藏费用，无意外收费。",
+    "afterTrial": "试用结束后，选择权在您 - 升级到 Auraly+ 每月 $4.99，或继续使用 Auraly 基础版，每月享受 5 次免费扫描。",
     "startMyTrial": "开始我的试用",
     "startScanning": "开始扫描",
     "getStarted": "开始设置"

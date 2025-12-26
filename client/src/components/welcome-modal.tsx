@@ -61,14 +61,9 @@ export function WelcomeModal({ user }: WelcomeModalProps) {
         </DialogHeader>
 
         <div className="space-y-4 py-1">
-          <div className="text-center space-y-2">
-            <p className="text-sm text-foreground leading-relaxed">
-              {t('welcome.welcomeIntro')}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              {t('welcome.trialDescription')}
-            </p>
-          </div>
+          <p className="text-center text-sm text-foreground leading-relaxed">
+            {t('welcome.welcomeIntro')}
+          </p>
 
           <div className="rounded-xl bg-primary/5 border border-primary/10 p-4 shadow-sm">
             <div className="flex items-center gap-1.5 mb-3">
@@ -89,11 +84,9 @@ export function WelcomeModal({ user }: WelcomeModalProps) {
             </div>
           </div>
 
-          <div className="text-sm text-muted-foreground space-y-1 leading-relaxed">
-            <p>{t('welcome.afterTrialLine1')}</p>
-            <p>{t('welcome.afterTrialLine2')}</p>
-            <p className="italic text-xs">{t('welcome.afterTrialLine3')}</p>
-          </div>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {t('welcome.afterTrial')}
+          </p>
         </div>
 
         <div className="pt-2 space-y-2">
