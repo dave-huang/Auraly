@@ -480,8 +480,8 @@
     "createdAt": 1766263571682
   },
   "titanium dioxide (color)__food__en": {
-    "analysis": "{\"name\":\"Titanium Dioxide (color)\",\"riskLevel\":\"moderate\",\"summary\":\"Titanium dioxide is an inorganic white pigment used to whiten and brighten foods such as candies, baked goods, and supplements. Some safety concerns exist about its potential to cause DNA damage at high or chronic exposures, leading several regions (like the EU) to restrict or ban its use in foods.\",\"details\":\"Regulatory agencies such as the FDA have historically considered titanium dioxide generally recognized as safe (GRAS) at low levels, but newer studies on nanoparticles raise questions about possible genotoxicity and long‑term intestinal effects. In food, it usually represents a small portion of the product, yet frequent intake from multiple sources can increase cumulative exposure. Because of these uncertainties and differing regulatory positions across countries, many manufacturers are phasing it out in favor of alternative colorants.\",\"category\":\"Color additive\"}",
-    "lastUpdated": 1766263571691,
+    "analysis": "{\"name\":\"Titanium Dioxide (color)\",\"riskLevel\":\"moderate\",\"summary\":\"Titanium dioxide is a white color additive used to brighten or whiten foods and supplements. Its use in foods is controversial due to concerns about potential genotoxicity from particle exposure.\",\"details\":\"Titanium dioxide is a pigment that can include very small particles, and some scientific reviews have raised concerns that it cannot be ruled out as genotoxic when ingested, which is why some regions have restricted its use in foods. Other regulators have allowed it under specified conditions, but consumer concern remains. If you are trying to minimize exposure to synthetic color additives or are pregnant, consider choosing products without titanium dioxide.\",\"category\":\"Color additive\"}",
+    "lastUpdated": 1766722701124,
     "createdAt": 1766263571691
   },
   "monocalcium phosphate__food__en": {
@@ -575,8 +575,8 @@
     "createdAt": 1766263572751
   },
   "sorbic acid and potassium sorbate__food__en": {
-    "analysis": "{\"name\":\"Sorbic Acid And Potassium Sorbate\",\"riskLevel\":\"low\",\"summary\":\"Sorbic acid and potassium sorbate are food preservatives used to prevent mold and extend shelf life. They are generally recognized as safe at typical food-use levels.\",\"details\":\"These preservatives inhibit the growth of molds, yeasts, and some bacteria, helping to retain freshness in many processed foods and beverages. Regulatory authorities such as the FDA and EFSA consider them safe within established limits, though a small number of people may experience mild intolerance or sensitivity, usually as skin or mucosal irritation. For most healthy consumers, intake at normal dietary levels does not pose significant health concerns.\",\"category\":\"Preservative\"}",
-    "lastUpdated": 1766263572920,
+    "analysis": "{\"name\":\"Sorbic Acid And Potassium Sorbate\",\"riskLevel\":\"low\",\"summary\":\"Sorbic acid and potassium sorbate are common food preservatives used to inhibit mold, yeast, and some bacteria to help retain freshness. They are generally considered safe at typical food-use levels.\",\"details\":\"These preservatives work by slowing microbial growth, which can extend shelf life in foods and beverages. Some sensitive individuals may experience mild irritation or rare allergic-type reactions, but this is uncommon. Risk can increase mainly with excessive intake across many processed foods, though regulatory limits are designed to keep exposure within safe ranges.\",\"category\":\"Preservative\"}",
+    "lastUpdated": 1766722700506,
     "createdAt": 1766263572920
   },
   "agave syrup__food__en": {
