@@ -84,7 +84,7 @@ export function WelcomeModal({ user }: WelcomeModalProps) {
             </div>
           </div>
 
-          <p className="text-sm text-muted-foreground leading-relaxed">
+          <p className="text-xs text-muted-foreground leading-relaxed">
             {t('welcome.afterTrial')}
           </p>
         </div>
