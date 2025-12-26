@@ -423,12 +423,17 @@
   },
   "welcome": {
     "title": "Welcome to Auraly+",
-    "trialDescription": "Your 7-day free trial has begun! Start exploring what's in your products.",
+    "welcomeIntro": "Welcome to Auraly! As a first-time member, you're getting a 7-day complimentary upgrade to Auraly+ with full access to all features.",
+    "trialDescription": "Your 7-day free trial has begun. Take a moment to explore what's in your products.",
+    "includedWith": "Included with Auraly+",
     "benefitsHeading": "Auraly+ offers",
     "benefit1": "Unlimited scans",
     "benefit2": "Personalized ingredient sensitivity settings",
     "benefit3": "Full scan history and insights",
-    "afterTrial": "After your trial, the choice is yours. Upgrade to Auraly+ for $4.99 per month, or continue with Auraly Basic and enjoy 5 free scans each month. No surprises, no hidden charges.",
+    "afterTrialLine1": "After your trial, the choice is yours:",
+    "afterTrialLine2": "Upgrade to Auraly+ for $4.99 per month, or continue with Auraly Basic and enjoy 5 free scans each month.",
+    "afterTrialLine3": "No surprises, no hidden charges.",
+    "startMyTrial": "Start My Trial",
     "startScanning": "Start Scanning",
     "getStarted": "Get Started"
   }

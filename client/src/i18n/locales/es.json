@@ -423,12 +423,17 @@
   },
   "welcome": {
     "title": "Bienvenido a Auraly+",
-    "trialDescription": "¡Tu prueba gratuita de 7 días ha comenzado! Empieza a explorar lo que contienen tus productos.",
+    "welcomeIntro": "¡Bienvenido a Auraly! Como nuevo miembro, recibes una mejora gratuita de 7 días a Auraly+ con acceso completo a todas las funciones.",
+    "trialDescription": "Tu prueba gratuita de 7 días ha comenzado. Tómate un momento para explorar lo que contienen tus productos.",
+    "includedWith": "Incluido con Auraly+",
     "benefitsHeading": "Auraly+ ofrece",
     "benefit1": "Escaneos ilimitados",
     "benefit2": "Configuración personalizada de sensibilidad a ingredientes",
     "benefit3": "Historial completo de escaneos e información",
-    "afterTrial": "Después de tu prueba, la elección es tuya. Actualiza a Auraly+ por $4.99 al mes, o continúa con Auraly Basic y disfruta de 5 escaneos gratis cada mes. Sin sorpresas, sin cargos ocultos.",
+    "afterTrialLine1": "Después de tu prueba, la elección es tuya:",
+    "afterTrialLine2": "Actualiza a Auraly+ por $4.99 al mes, o continúa con Auraly Basic y disfruta de 5 escaneos gratis cada mes.",
+    "afterTrialLine3": "Sin sorpresas, sin cargos ocultos.",
+    "startMyTrial": "Comenzar Mi Prueba",
     "startScanning": "Comenzar a Escanear",
     "getStarted": "Comenzar"
   }

@@ -1,0 +1,117 @@
+Goal:
+Improve the visual hierarchy, clarity, and engagement of the existing first-time welcome modal while preserving its calm, trustworthy tone. Lead with new welcome copy and enhance layout to better highlight value, reduce anxiety, and encourage users to proceed.
+
+⸻
+
+1. Replace Intro Copy
+
+Update the top copy of the modal to:
+
+Welcome to Auraly! As a first-time member, you’re getting a 7-day complimentary upgrade to Auraly+ with full access to all features.
+
+Follow this with a secondary line:
+
+Your 7-day free trial has begun. Take a moment to explore what’s in your products.
+
+Ensure:
+	•	The welcome line is visually emphasized (slightly larger font than body text but smaller than the main title).
+	•	The secondary line is lighter and supportive.
+
+⸻
+
+2. Improve Visual Hierarchy
+
+Adjust layout so that content flows clearly in this order:
+	1.	Icon / Brand marker
+	2.	Title: “Welcome to Auraly+”
+	3.	New welcome copy (primary emotional message)
+	4.	Secondary trial message
+	5.	Feature list card (Auraly+ benefits)
+	6.	Pricing / reassurance text
+	7.	Primary CTA
+	8.	“No credit card required” reassurance
+
+Ensure spacing visually separates these sections.
+
+⸻
+
+3. Enhance Feature List Presentation
+
+Convert the “Auraly+ offers” section into a visually distinct card:
+	•	Slightly tinted background (subtle green/neutral)
+	•	Soft rounded corners
+	•	Light shadow or border
+
+Inside the card:
+	•	Replace plain checkmarks with meaningful icons:
+	•	📷 Unlimited scans
+	•	⚙️ Personalized ingredient sensitivity settings
+	•	🕓 Full scan history and insights
+
+Add a subtle label above the card:
+
+✨ Included with Auraly+
+
+⸻
+
+4. Refine Pricing Copy Formatting
+
+Keep existing pricing text, but reformat it for readability:
+
+Text:
+
+After your trial, the choice is yours:
+Upgrade to Auraly+ for $4.99 per month, or continue with Auraly Basic and enjoy 5 free scans each month.
+No surprises, no hidden charges.
+
+Formatting:
+	•	Break into multiple lines
+	•	Italicize or soften the “No surprises…” line
+	•	Reduce visual weight slightly compared to the feature card
+
+⸻
+
+5. Update Primary CTA
+
+Change the main button text to:
+
+Start My Trial →
+
+Button should:
+	•	Be visually prominent
+	•	Use brand accent color
+	•	Have subtle hover / tap feedback
+
+⸻
+
+6. Emphasize “No Credit Card” Reassurance
+
+Move “No credit card required” directly beneath the CTA.
+	•	Smaller font
+	•	Muted color
+	•	Optional lock/shield icon:
+🔒 No credit card required
+
+⸻
+
+7. Add Subtle Engagement Nudges
+
+Optionally:
+	•	Add a small badge near the feature card: “Recommended for new users”
+	•	Add a gentle fade/slide-in animation on modal load (very subtle)
+
+⸻
+
+8. Constraints
+	•	Do not add aggressive sales language.
+	•	Keep tone calm, respectful, and transparent.
+	•	Preserve existing functionality — only update layout, copy, and visual hierarchy.
+	•	Do not introduce additional steps or friction.
+
+⸻
+
+Success Criteria:
+	•	Users immediately understand they are receiving a free premium experience.
+	•	Value of Auraly+ is visually clear within 3 seconds.
+	•	Pricing feels transparent and non-threatening.
+	•	CTA feels safe and inviting to click.
