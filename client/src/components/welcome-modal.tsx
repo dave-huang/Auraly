@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Sparkles, ScanLine, Sliders, History, ArrowRight } from "lucide-react";
+import { Sparkles, Check, ArrowRight } from "lucide-react";
 import { Link } from "wouter";
 import type { User } from "@shared/schema";
 
@@ -40,17 +40,17 @@ export function WelcomeModal({ user }: WelcomeModalProps) {
   };
 
   const benefits = [
-    { icon: ScanLine, text: t('welcome.benefit1') },
-    { icon: Sliders, text: t('welcome.benefit2') },
-    { icon: History, text: t('welcome.benefit3') },
+    t('welcome.benefit1'),
+    t('welcome.benefit2'),
+    t('welcome.benefit3'),
   ];
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
       <DialogContent className="sm:max-w-md border-border/50 bg-background">
-        <DialogHeader className="text-center pb-2">
-          <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-4 ring-4 ring-primary/10">
-            <Sparkles className="w-8 h-8 text-primary" />
+        <DialogHeader className="text-center pb-1">
+          <div className="mx-auto w-14 h-14 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-3 ring-4 ring-primary/10">
+            <Sparkles className="w-7 h-7 text-primary" />
           </div>
           <DialogTitle className="font-display text-2xl text-center">
             {t('welcome.title')}
@@ -60,25 +60,20 @@ export function WelcomeModal({ user }: WelcomeModalProps) {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-5 py-2">
+        <div className="space-y-4 py-1">
           <p className="text-center text-muted-foreground">
             {t('welcome.trialDescription')}
           </p>
 
-          <div className="space-y-3">
-            <p className="text-sm font-medium text-foreground">
+          <div className="rounded-xl bg-card/40 border border-border/30 p-4">
+            <p className="text-sm font-medium text-foreground mb-3">
               {t('welcome.benefitsHeading')}
             </p>
-            <div className="grid gap-2">
+            <div className="space-y-2">
               {benefits.map((benefit, index) => (
-                <div 
-                  key={index}
-                  className="flex items-center gap-3 p-3 rounded-xl bg-card/60 border border-border/30"
-                >
-                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <benefit.icon className="w-4 h-4 text-primary" />
-                  </div>
-                  <p className="text-sm text-foreground">{benefit.text}</p>
+                <div key={index} className="flex items-center gap-2">
+                  <Check className="w-4 h-4 text-primary flex-shrink-0" />
+                  <p className="text-sm text-muted-foreground">{benefit}</p>
                 </div>
               ))}
             </div>
@@ -89,7 +84,7 @@ export function WelcomeModal({ user }: WelcomeModalProps) {
           </p>
         </div>
 
-        <div className="pt-2 space-y-3">
+        <div className="pt-1 space-y-2">
           <Link href="/onboarding" onClick={handleStartScanning}>
             <Button className="w-full rounded-full gap-2" size="lg" data-testid="button-welcome-start">
               {t('welcome.getStarted')}
