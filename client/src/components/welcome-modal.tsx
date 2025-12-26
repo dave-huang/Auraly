@@ -85,9 +85,9 @@ export function WelcomeModal({ user }: WelcomeModalProps) {
         </div>
 
         <div className="pt-2 space-y-3">
-          <Link href="/upload" onClick={handleStartScanning}>
+          <Link href="/onboarding" onClick={handleStartScanning}>
             <Button className="w-full rounded-full gap-2" size="lg" data-testid="button-welcome-start">
-              {t('welcome.startScanning')}
+              {t('welcome.getStarted')}
               <ArrowRight className="w-4 h-4" />
             </Button>
           </Link>
