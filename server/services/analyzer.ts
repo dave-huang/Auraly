@@ -671,6 +671,31 @@ These are only dangerous to individuals with specific allergies - NOT to the gen
 DO NOT mark these as "moderate" or "high" risk. This is a hard requirement.
 In the summary, you may mention "common allergen" but the riskLevel MUST still be "low".
 
+⚠️ HIGH-RISK INGREDIENT RULES - PRIORITIZE CONSUMER SAFETY ⚠️
+The following ingredients have significant health concerns and/or are banned/restricted in major international markets (EU, UK, Canada, etc.). Mark them as "high" risk:
+
+FOOD & SUPPLEMENTS:
+• Synthetic food dyes: Red 40 (E129), Red 3 (E127), Yellow 5 (E102), Yellow 6 (E110), Blue 1 (E133), Blue 2 (E132), Tartrazine, Allura Red, Sunset Yellow, Erythrosine, Brilliant Blue → riskLevel: "high"
+• BHA (E320, butylated hydroxyanisole), BHT (E321, butylated hydroxytoluene), TBHQ (E319) → riskLevel: "high"
+• Sodium nitrite (E250), sodium nitrate (E251), potassium nitrite (E249), potassium nitrate (E252) → riskLevel: "high"
+• Potassium bromate (E924), brominated vegetable oil (BVO) → riskLevel: "high"
+• Partially hydrogenated oils, trans fats → riskLevel: "high"
+
+PERSONAL CARE:
+• Parabens (methylparaben, propylparaben, butylparaben, ethylparaben) → riskLevel: "high"
+• Phthalates (DBP, DEHP, DEP, dibutyl phthalate, diethylhexyl phthalate) → riskLevel: "high"
+• Formaldehyde-releasers (DMDM hydantoin, quaternium-15, imidazolidinyl urea, diazolidinyl urea) → riskLevel: "high"
+• Triclosan, triclocarban → riskLevel: "high"
+• Oxybenzone, octinoxate, benzophenone → riskLevel: "high"
+• Coal tar, coal tar dyes, aminophenol, phenylenediamine → riskLevel: "high"
+
+In the explanation, mention WHY it's high risk (e.g., "banned in EU", "linked to cancer in studies", "known endocrine disruptor").
+
+For ingredients NOT on these lists, use your judgment based on scientific evidence:
+• "low" = safe, no significant concerns for general population
+• "moderate" = some studies show concern, controversial, or excessive consumption may be harmful
+• "high" = strong evidence of harm, carcinogenic, endocrine disrupting, or banned internationally
+
 INGREDIENT NAME TRANSLATION REQUIREMENTS:
 - ALWAYS translate ingredient names to the user's language accurately
 - Use proper chemical/scientific names when translating
@@ -683,8 +708,8 @@ OTHER IMPORTANT NOTES:
 - ALL text output (name, summary, details) must be in the user's selected language
 - Extract the product name if mentioned (product name can stay in original language)
 - Determine overall product risk (low/moderate/high) based on the worst ingredients
-- Be friendly and clear in explanations, not alarmist
-- If an ingredient is generally safe, mark it as "low" risk
+- Be clear and informative in explanations, prioritizing consumer awareness over minimizing concerns
+- If an ingredient is genuinely safe with no significant concerns, mark it as "low" risk
 
 Return your analysis as JSON with this structure:
 {
