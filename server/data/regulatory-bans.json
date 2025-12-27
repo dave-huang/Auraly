@@ -301,6 +301,38 @@
       "risk": "high",
       "regulation": "IARC Group 1 carcinogen. Banned globally. Contaminant risk in talc products.",
       "source": "IARC Monographs, EPA"
+    },
+    {
+      "id": "benzophenone",
+      "names": ["benzophenone", "benzophenone-1", "benzophenone-2", "benzophenone-4", "diphenyl ketone"],
+      "category": "uv_filter",
+      "risk": "high",
+      "regulation": "IARC Group 2B (possibly carcinogenic). Endocrine disruptor. Restricted in EU cosmetics.",
+      "source": "IARC Monographs, EU Cosmetics Regulation Annex III"
+    },
+    {
+      "id": "aminophenol",
+      "names": ["aminophenol", "p-aminophenol", "4-aminophenol", "para-aminophenol", "o-aminophenol", "2-aminophenol", "m-aminophenol", "3-aminophenol"],
+      "category": "hair_dye",
+      "risk": "high",
+      "regulation": "Sensitizer and potential mutagen. Restricted in EU cosmetics. Must not contact skin directly.",
+      "source": "EU Cosmetics Regulation Annex III, SCCS opinions"
+    },
+    {
+      "id": "phenylenediamine",
+      "names": ["phenylenediamine", "p-phenylenediamine", "ppd", "1,4-phenylenediamine", "para-phenylenediamine", "o-phenylenediamine", "m-phenylenediamine"],
+      "category": "hair_dye",
+      "risk": "high",
+      "regulation": "Strong allergen and sensitizer. IARC Group 3. Banned in direct skin contact products in EU. Max 2% in hair dyes.",
+      "source": "EU Cosmetics Regulation Annex III, IARC Monographs"
+    },
+    {
+      "id": "ethylparaben",
+      "names": ["ethylparaben", "ethyl paraben", "ethyl 4-hydroxybenzoate"],
+      "category": "paraben",
+      "risk": "high",
+      "regulation": "Endocrine disruptor concerns. Restricted concentration in EU cosmetics.",
+      "source": "EU Cosmetics Regulation Annex V, SCCS opinions"
     }
   ]
 }

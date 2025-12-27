@@ -96,69 +96,115 @@ function normalizeIngredientCapitalization(name: string, language: string = 'en'
     .replace(/^./, (char: string) => char.toUpperCase()); // Ensure first letter is always capitalized
 }
 
-// HIGH-RISK INGREDIENT PATTERNS - enforced via post-processing regardless of AI response
-// These patterns catch known dangerous ingredients that should ALWAYS be marked high risk
-const HIGH_RISK_PATTERNS = [
-  // Synthetic food dyes (including Lake variants, E-numbers, and common names)
-  /\b(red\s*40|red\s*3|yellow\s*5|yellow\s*6|blue\s*1|blue\s*2)\b/i,
-  /\blake\b.*\b(red|yellow|blue|allura|tartrazine|sunset)/i,
-  /\b(red|yellow|blue|allura|tartrazine|sunset).*\blake\b/i,
-  /\b(e129|e127|e102|e110|e133|e132)\b/i,
-  /\b(tartrazine|allura\s*red|sunset\s*yellow|erythrosine|brilliant\s*blue)\b/i,
-  /\b(fd&?c|d&?c)\s*(red|yellow|blue|green)\s*\d+/i,
-  /\bartificial\s*colou?r/i, // Artificial color/colour (generic term for dyes)
-  
-  // Preservatives with health concerns
-  /\b(bha|bht|tbhq)\b/i,
-  /\b(butylated\s*hydroxy(anisole|toluene))\b/i,
-  /\b(e320|e321|e319)\b/i,
-  
-  // Nitrates/Nitrites
-  /\b(sodium|potassium)\s*(nitrite|nitrate)\b/i,
-  /\b(e249|e250|e251|e252)\b/i,
-  
-  // Bromated compounds
-  /\bpotassium\s*bromate\b/i,
-  /\bbrominated\s*vegetable\s*oil\b/i,
-  /\b(e924|bvo)\b/i,
-  
-  // Trans fats
-  /\bpartially\s*hydrogenated/i,
-  /\btrans\s*fat/i,
-  
-  // Personal care - Parabens
-  /\b(methyl|propyl|butyl|ethyl)paraben\b/i,
-  
-  // Personal care - Phthalates
-  /\b(dbp|dehp|dep|phthalate)\b/i,
-  /\bdibutyl\s*phthalate\b/i,
-  /\bdiethylhexyl\s*phthalate\b/i,
-  
-  // Personal care - Formaldehyde releasers
-  /\b(dmdm\s*hydantoin|quaternium.?15|imidazolidinyl\s*urea|diazolidinyl\s*urea)\b/i,
-  
-  // Personal care - Other concerning ingredients
-  /\b(triclosan|triclocarban)\b/i,
-  /\b(oxybenzone|octinoxate|benzophenone)\b/i,
-  /\bcoal\s*tar\b/i,
-];
+// REGULATORY DATABASE - structured ingredient bans from authoritative sources
+// Loaded from server/data/regulatory-bans.json
+interface RegulatoryEntry {
+  id: string;
+  names: string[];
+  category: string;
+  risk: 'high' | 'moderate' | 'low';
+  regulation: string;
+  source: string;
+}
 
-// Enforce high-risk status for known dangerous ingredients
-// This overrides AI judgment when ingredients match known dangerous patterns
-function enforceHighRiskStatus(ingredient: Ingredient): Ingredient {
-  const nameLower = ingredient.name.toLowerCase();
-  
-  for (const pattern of HIGH_RISK_PATTERNS) {
-    if (pattern.test(nameLower)) {
-      if (ingredient.riskLevel !== 'high') {
-        console.log(`[HIGH-RISK-OVERRIDE] Upgrading "${ingredient.name}" from ${ingredient.riskLevel} to high (matched pattern)`);
-        return {
-          ...ingredient,
-          riskLevel: 'high'
-        };
+interface RegulatoryDatabase {
+  _metadata: {
+    version: string;
+    lastUpdated: string;
+    description: string;
+    sources: string[];
+  };
+  ingredients: RegulatoryEntry[];
+}
+
+// Load regulatory database
+let regulatoryDb: RegulatoryDatabase | null = null;
+let regulatoryLookup: Map<string, RegulatoryEntry> = new Map();
+
+function loadRegulatoryDatabase(): void {
+  try {
+    const dbPath = path.join(process.cwd(), 'server/data/regulatory-bans.json');
+    if (fs.existsSync(dbPath)) {
+      const data = fs.readFileSync(dbPath, 'utf-8');
+      regulatoryDb = JSON.parse(data) as RegulatoryDatabase;
+      
+      // Build lookup map for fast matching (lowercase names -> entry)
+      regulatoryLookup.clear();
+      for (const entry of regulatoryDb.ingredients) {
+        for (const name of entry.names) {
+          regulatoryLookup.set(name.toLowerCase().trim(), entry);
+        }
       }
-      break;
+      
+      console.log(`[REGULATORY-DB] Loaded ${regulatoryDb.ingredients.length} regulated ingredients (${regulatoryLookup.size} name variants)`);
+      console.log(`[REGULATORY-DB] Version: ${regulatoryDb._metadata.version}, Last updated: ${regulatoryDb._metadata.lastUpdated}`);
+    } else {
+      console.warn(`[REGULATORY-DB] Database file not found at ${dbPath}`);
     }
+  } catch (error) {
+    console.error('[REGULATORY-DB] Error loading database:', error);
+  }
+}
+
+// Initialize on module load
+loadRegulatoryDatabase();
+
+// Find regulatory entry for an ingredient name
+function findRegulatoryEntry(ingredientName: string): RegulatoryEntry | null {
+  const nameLower = ingredientName.toLowerCase().trim();
+  
+  // Direct lookup first
+  if (regulatoryLookup.has(nameLower)) {
+    return regulatoryLookup.get(nameLower)!;
+  }
+  
+  // Fuzzy matching: check if ingredient name contains any regulated term
+  const entries = Array.from(regulatoryLookup.entries());
+  for (let i = 0; i < entries.length; i++) {
+    const [term, entry] = entries[i];
+    // Match if the regulated term appears as a word boundary in the ingredient name
+    const regex = new RegExp(`\\b${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+    if (regex.test(nameLower)) {
+      return entry;
+    }
+  }
+  
+  // Special patterns for complex names (FD&C variations, Lake variants, etc.)
+  const specialPatterns = [
+    { pattern: /\b(fd&?c|d&?c)\s*(red|yellow|blue|green)\s*(no\.?\s*)?\d+/i, category: 'synthetic_dye' },
+    { pattern: /\bartificial\s*colou?r/i, category: 'synthetic_dye' },
+    { pattern: /\blake\b/i, category: 'synthetic_dye' }, // Any "Lake" dye variant
+  ];
+  
+  for (const { pattern, category } of specialPatterns) {
+    if (pattern.test(nameLower)) {
+      // Return a synthetic entry for pattern matches
+      return {
+        id: 'pattern_match',
+        names: [nameLower],
+        category,
+        risk: 'high',
+        regulation: 'Synthetic colorant - requires warning labels in EU, linked to hyperactivity in children',
+        source: 'EU Regulation (EC) No 1333/2008'
+      };
+    }
+  }
+  
+  return null;
+}
+
+// Enforce regulatory-based risk status for ingredients
+// This overrides AI judgment when ingredients match regulated entries
+function enforceHighRiskStatus(ingredient: Ingredient): Ingredient {
+  const entry = findRegulatoryEntry(ingredient.name);
+  
+  if (entry && entry.risk === 'high' && ingredient.riskLevel !== 'high') {
+    console.log(`[REGULATORY-OVERRIDE] Upgrading "${ingredient.name}" from ${ingredient.riskLevel} to high`);
+    console.log(`  → Matched: ${entry.id} | Source: ${entry.source}`);
+    return {
+      ...ingredient,
+      riskLevel: 'high'
+    };
   }
   
   return ingredient;
@@ -826,28 +872,25 @@ These are only dangerous to individuals with specific allergies - NOT to the gen
 DO NOT mark these as "moderate" or "high" risk. This is a hard requirement.
 In the summary, you may mention "common allergen" but the riskLevel MUST still be "low".
 
-⚠️ HIGH-RISK INGREDIENT RULES - PRIORITIZE CONSUMER SAFETY ⚠️
-The following ingredients have significant health concerns and/or are banned/restricted in major international markets (EU, UK, Canada, etc.). Mark them as "high" risk:
+⚠️ RISK ASSESSMENT GUIDELINES - PRIORITIZE CONSUMER SAFETY ⚠️
+Use regulatory status as your primary guide for risk assessment:
 
-FOOD & SUPPLEMENTS:
-• Synthetic food dyes (including "Lake" variants): Red 40, Red 40 Lake, Red 3, Red 3 Lake (E129, E127), Yellow 5, Yellow 5 Lake, Yellow 6, Yellow 6 Lake (E102, E110), Blue 1, Blue 1 Lake, Blue 2, Blue 2 Lake (E133, E132), Tartrazine, Allura Red, Allura Red AC Lake, Sunset Yellow, Erythrosine, Brilliant Blue FCF → riskLevel: "high"
-  - NOTE: "Lake" dyes are insoluble versions of the same synthetic colorants - equally concerning
-• BHA (E320, butylated hydroxyanisole), BHT (E321, butylated hydroxytoluene), TBHQ (E319) → riskLevel: "high"
-• Sodium nitrite (E250), sodium nitrate (E251), potassium nitrite (E249), potassium nitrate (E252) → riskLevel: "high"
-• Potassium bromate (E924), brominated vegetable oil (BVO) → riskLevel: "high"
-• Partially hydrogenated oils, trans fats → riskLevel: "high"
+REGULATORY-BASED RISK CRITERIA:
+• "high" risk = Banned or restricted in EU, UK, Canada, or on California Prop 65. Examples include:
+  - Synthetic food dyes (Red 40, Yellow 5, Blue 1, etc. including "Lake" variants)
+  - Preservatives with IARC carcinogen classification (BHA, nitrites forming nitrosamines)
+  - Trans fats and partially hydrogenated oils (banned by FDA, EU, WHO)
+  - Parabens, phthalates, formaldehyde-releasers in personal care
+  - UV filters banned for reef damage (oxybenzone, octinoxate)
 
-PERSONAL CARE:
-• Parabens (methylparaben, propylparaben, butylparaben, ethylparaben) → riskLevel: "high"
-• Phthalates (DBP, DEHP, DEP, dibutyl phthalate, diethylhexyl phthalate) → riskLevel: "high"
-• Formaldehyde-releasers (DMDM hydantoin, quaternium-15, imidazolidinyl urea, diazolidinyl urea) → riskLevel: "high"
-• Triclosan, triclocarban → riskLevel: "high"
-• Oxybenzone, octinoxate, benzophenone → riskLevel: "high"
-• Coal tar, coal tar dyes, aminophenol, phenylenediamine → riskLevel: "high"
+• "moderate" risk = Some scientific concern but not banned. Limited/conflicting evidence, or only harmful at high doses
 
-In the explanation, mention WHY it's high risk (e.g., "banned in EU", "linked to cancer in studies", "known endocrine disruptor").
+• "low" risk = Generally recognized as safe, no significant regulatory concerns
 
-For ingredients NOT on these lists, use your judgment based on scientific evidence:
+When explaining high-risk ingredients, cite the regulatory basis (e.g., "banned in EU", "IARC Group 2B carcinogen", "requires warning label in EU").
+When explaining low/moderate ingredients, be factual about their purpose and any precautionary notes.
+
+For ingredients where you're uncertain:
 • "low" = safe, no significant concerns for general population
 • "moderate" = some studies show concern, controversial, or excessive consumption may be harmful
 • "high" = strong evidence of harm, carcinogenic, endocrine disrupting, or banned internationally
