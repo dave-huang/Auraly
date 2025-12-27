@@ -96,6 +96,74 @@ function normalizeIngredientCapitalization(name: string, language: string = 'en'
     .replace(/^./, (char: string) => char.toUpperCase()); // Ensure first letter is always capitalized
 }
 
+// HIGH-RISK INGREDIENT PATTERNS - enforced via post-processing regardless of AI response
+// These patterns catch known dangerous ingredients that should ALWAYS be marked high risk
+const HIGH_RISK_PATTERNS = [
+  // Synthetic food dyes (including Lake variants, E-numbers, and common names)
+  /\b(red\s*40|red\s*3|yellow\s*5|yellow\s*6|blue\s*1|blue\s*2)\b/i,
+  /\blake\b.*\b(red|yellow|blue|allura|tartrazine|sunset)/i,
+  /\b(red|yellow|blue|allura|tartrazine|sunset).*\blake\b/i,
+  /\b(e129|e127|e102|e110|e133|e132)\b/i,
+  /\b(tartrazine|allura\s*red|sunset\s*yellow|erythrosine|brilliant\s*blue)\b/i,
+  /\b(fd&?c|d&?c)\s*(red|yellow|blue|green)\s*\d+/i,
+  /\bartificial\s*colou?r/i, // Artificial color/colour (generic term for dyes)
+  
+  // Preservatives with health concerns
+  /\b(bha|bht|tbhq)\b/i,
+  /\b(butylated\s*hydroxy(anisole|toluene))\b/i,
+  /\b(e320|e321|e319)\b/i,
+  
+  // Nitrates/Nitrites
+  /\b(sodium|potassium)\s*(nitrite|nitrate)\b/i,
+  /\b(e249|e250|e251|e252)\b/i,
+  
+  // Bromated compounds
+  /\bpotassium\s*bromate\b/i,
+  /\bbrominated\s*vegetable\s*oil\b/i,
+  /\b(e924|bvo)\b/i,
+  
+  // Trans fats
+  /\bpartially\s*hydrogenated/i,
+  /\btrans\s*fat/i,
+  
+  // Personal care - Parabens
+  /\b(methyl|propyl|butyl|ethyl)paraben\b/i,
+  
+  // Personal care - Phthalates
+  /\b(dbp|dehp|dep|phthalate)\b/i,
+  /\bdibutyl\s*phthalate\b/i,
+  /\bdiethylhexyl\s*phthalate\b/i,
+  
+  // Personal care - Formaldehyde releasers
+  /\b(dmdm\s*hydantoin|quaternium.?15|imidazolidinyl\s*urea|diazolidinyl\s*urea)\b/i,
+  
+  // Personal care - Other concerning ingredients
+  /\b(triclosan|triclocarban)\b/i,
+  /\b(oxybenzone|octinoxate|benzophenone)\b/i,
+  /\bcoal\s*tar\b/i,
+];
+
+// Enforce high-risk status for known dangerous ingredients
+// This overrides AI judgment when ingredients match known dangerous patterns
+function enforceHighRiskStatus(ingredient: Ingredient): Ingredient {
+  const nameLower = ingredient.name.toLowerCase();
+  
+  for (const pattern of HIGH_RISK_PATTERNS) {
+    if (pattern.test(nameLower)) {
+      if (ingredient.riskLevel !== 'high') {
+        console.log(`[HIGH-RISK-OVERRIDE] Upgrading "${ingredient.name}" from ${ingredient.riskLevel} to high (matched pattern)`);
+        return {
+          ...ingredient,
+          riskLevel: 'high'
+        };
+      }
+      break;
+    }
+  }
+  
+  return ingredient;
+}
+
 // Helper function to join wrapped lines (language-agnostic)
 // Intelligently joins incomplete words/modifiers with next line
 function joinWrappedLines(text: string): string {
@@ -1399,6 +1467,9 @@ IMPORTANT: Return ONLY this JSON array, nothing else:
           };
         });
         
+        // Apply high-risk enforcement BEFORE caching (so corrected risk is cached)
+        freshResults = freshResults.map(enforceHighRiskStatus);
+        
         // Cache fresh results with language tag
         for (const result of freshResults) {
           setCachedIngredientAnalysis(result.name, productType, JSON.stringify(result), userLanguage);
@@ -1507,13 +1578,13 @@ IMPORTANT: Return ONLY this JSON array:
               normalizedRiskLevel = 'moderate';
             }
             
-            const normalized = {
+            const normalized = enforceHighRiskStatus({
               ...singleResult,
               riskLevel: normalizedRiskLevel as 'low' | 'moderate' | 'high',
               name: normalizeIngredientCapitalization(singleResult.name, userLanguage)
-            };
+            });
             
-            // Cache it
+            // Cache it (with enforced risk level)
             setCachedIngredientAnalysis(normalized.name, productType, JSON.stringify(normalized), userLanguage);
             individualResults.push(normalized);
             console.log(`[PARALLEL-BATCH-${batchIdx}] Individual analysis succeeded: ${singleIngredient} → ${normalized.name}`);
@@ -1542,7 +1613,8 @@ IMPORTANT: Return ONLY this JSON array:
   
   // Wait for all batches to complete in parallel
   const allBatchResults = await Promise.all(batchPromises);
-  const allIngredients = allBatchResults.flat();
+  // Apply high-risk enforcement as final safety net (catches any cached items from before enforcement was added)
+  const allIngredients = allBatchResults.flat().map(enforceHighRiskStatus);
   
   console.log(`[PARALLEL-ANALYZER] Merged ${allIngredients.length} total ingredients from ${batches.length} batches`);
   
