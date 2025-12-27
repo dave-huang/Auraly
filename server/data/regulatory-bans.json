@@ -1,0 +1,306 @@
+{
+  "_metadata": {
+    "version": "1.0.0",
+    "lastUpdated": "2025-01-01",
+    "description": "Structured regulatory database for ingredient risk assessment. Risk levels are determined by regulatory status, not opinion.",
+    "sources": [
+      "EU Food Additives Regulation (EC) No 1333/2008",
+      "EU Cosmetics Regulation (EC) No 1223/2009",
+      "California Proposition 65",
+      "Canada Cosmetic Ingredient Hotlist",
+      "FDA Color Additive Status List",
+      "IARC Monographs on Carcinogenic Risks",
+      "EFSA Scientific Opinions"
+    ]
+  },
+  "ingredients": [
+    {
+      "id": "red_40",
+      "names": ["red 40", "allura red", "allura red ac", "fd&c red no. 40", "fd&c red 40", "fdc red 40", "e129", "ci 16035", "red 40 lake", "allura red ac lake"],
+      "category": "synthetic_dye",
+      "risk": "high",
+      "regulation": "Requires warning label in EU ('may have adverse effect on activity and attention in children'). Banned in some EU products for children.",
+      "source": "EU Regulation (EC) No 1333/2008"
+    },
+    {
+      "id": "red_3",
+      "names": ["red 3", "erythrosine", "fd&c red no. 3", "fd&c red 3", "fdc red 3", "e127", "ci 45430", "red 3 lake"],
+      "category": "synthetic_dye",
+      "risk": "high",
+      "regulation": "Banned in cosmetics and external drugs by FDA. IARC Group 3 carcinogen. Thyroid tumor concerns in animal studies.",
+      "source": "FDA, IARC Monographs"
+    },
+    {
+      "id": "yellow_5",
+      "names": ["yellow 5", "tartrazine", "fd&c yellow no. 5", "fd&c yellow 5", "fdc yellow 5", "e102", "ci 19140", "yellow 5 lake"],
+      "category": "synthetic_dye",
+      "risk": "high",
+      "regulation": "Requires warning label in EU. Linked to hyperactivity in children. Banned in Norway and Austria.",
+      "source": "EU Regulation (EC) No 1333/2008, Southampton Study"
+    },
+    {
+      "id": "yellow_6",
+      "names": ["yellow 6", "sunset yellow", "sunset yellow fcf", "fd&c yellow no. 6", "fd&c yellow 6", "fdc yellow 6", "e110", "ci 15985", "yellow 6 lake"],
+      "category": "synthetic_dye",
+      "risk": "high",
+      "regulation": "Requires warning label in EU. Banned in Norway and Finland. Linked to hyperactivity in children.",
+      "source": "EU Regulation (EC) No 1333/2008"
+    },
+    {
+      "id": "blue_1",
+      "names": ["blue 1", "brilliant blue fcf", "fd&c blue no. 1", "fd&c blue 1", "fdc blue 1", "e133", "ci 42090", "blue 1 lake"],
+      "category": "synthetic_dye",
+      "risk": "high",
+      "regulation": "Banned in several EU countries. Some studies suggest potential for chromosomal damage.",
+      "source": "EFSA Scientific Opinions"
+    },
+    {
+      "id": "blue_2",
+      "names": ["blue 2", "indigotine", "indigo carmine", "fd&c blue no. 2", "fd&c blue 2", "fdc blue 2", "e132", "ci 73015", "blue 2 lake"],
+      "category": "synthetic_dye",
+      "risk": "high",
+      "regulation": "Restricted in Norway. Brain tumor concerns in animal studies.",
+      "source": "EFSA Scientific Opinions"
+    },
+    {
+      "id": "bha",
+      "names": ["bha", "butylated hydroxyanisole", "e320"],
+      "category": "preservative",
+      "risk": "high",
+      "regulation": "IARC Group 2B (possibly carcinogenic to humans). Banned in Japan. Restricted in EU cosmetics.",
+      "source": "IARC Monographs, EU Cosmetics Regulation Annex III"
+    },
+    {
+      "id": "bht",
+      "names": ["bht", "butylated hydroxytoluene", "e321"],
+      "category": "preservative",
+      "risk": "high",
+      "regulation": "Banned in Japan, Australia, and some EU countries for food. Potential endocrine disruptor.",
+      "source": "EFSA, Japan Food Sanitation Act"
+    },
+    {
+      "id": "tbhq",
+      "names": ["tbhq", "tert-butylhydroquinone", "tertiary butylhydroquinone", "e319"],
+      "category": "preservative",
+      "risk": "high",
+      "regulation": "Restricted to 0.02% in EU. Linked to vision disturbances and liver effects at high doses.",
+      "source": "EFSA Scientific Opinion, FDA limits"
+    },
+    {
+      "id": "sodium_nitrite",
+      "names": ["sodium nitrite", "e250"],
+      "category": "preservative",
+      "risk": "high",
+      "regulation": "Forms nitrosamines (IARC Group 1 carcinogens) when heated with amino acids. Restricted concentrations in EU.",
+      "source": "IARC Monographs, EU Regulation"
+    },
+    {
+      "id": "sodium_nitrate",
+      "names": ["sodium nitrate", "e251"],
+      "category": "preservative",
+      "risk": "high",
+      "regulation": "Converts to nitrite in body. Associated with colorectal cancer risk. Restricted in EU baby foods.",
+      "source": "EFSA, WHO/IARC"
+    },
+    {
+      "id": "potassium_nitrite",
+      "names": ["potassium nitrite", "e249"],
+      "category": "preservative",
+      "risk": "high",
+      "regulation": "Same concerns as sodium nitrite. Restricted concentrations in EU.",
+      "source": "EU Regulation (EC) No 1333/2008"
+    },
+    {
+      "id": "potassium_nitrate",
+      "names": ["potassium nitrate", "e252"],
+      "category": "preservative",
+      "risk": "high",
+      "regulation": "Converts to nitrite. Restricted in EU, especially for infant foods.",
+      "source": "EU Regulation (EC) No 1333/2008"
+    },
+    {
+      "id": "potassium_bromate",
+      "names": ["potassium bromate", "e924"],
+      "category": "flour_treatment",
+      "risk": "high",
+      "regulation": "IARC Group 2B carcinogen. Banned in EU, UK, Canada, Brazil, China. Still allowed in US.",
+      "source": "IARC Monographs, EU/UK/Canada regulations"
+    },
+    {
+      "id": "bvo",
+      "names": ["brominated vegetable oil", "bvo"],
+      "category": "emulsifier",
+      "risk": "high",
+      "regulation": "Banned in EU, Japan, India. FDA revoked GRAS status in 2024. Bioaccumulates in tissue.",
+      "source": "FDA 2024 ruling, EU regulations"
+    },
+    {
+      "id": "partially_hydrogenated_oils",
+      "names": ["partially hydrogenated", "partially hydrogenated oil", "partially hydrogenated vegetable oil", "trans fat", "trans fats"],
+      "category": "fat",
+      "risk": "high",
+      "regulation": "Banned by FDA (2018). Banned in EU, Canada. WHO goal to eliminate by 2023. Major cardiovascular risk.",
+      "source": "FDA, WHO REPLACE initiative"
+    },
+    {
+      "id": "methylparaben",
+      "names": ["methylparaben", "methyl paraben", "methyl 4-hydroxybenzoate", "e218"],
+      "category": "paraben",
+      "risk": "high",
+      "regulation": "Restricted concentration in EU cosmetics. Endocrine disruptor concerns. Banned in Denmark for children's products.",
+      "source": "EU Cosmetics Regulation Annex V, Denmark"
+    },
+    {
+      "id": "propylparaben",
+      "names": ["propylparaben", "propyl paraben", "propyl 4-hydroxybenzoate", "e216"],
+      "category": "paraben",
+      "risk": "high",
+      "regulation": "Banned in EU cosmetics for children under 3 (leave-on products). Endocrine disruptor.",
+      "source": "EU Cosmetics Regulation, SCCS opinions"
+    },
+    {
+      "id": "butylparaben",
+      "names": ["butylparaben", "butyl paraben", "butyl 4-hydroxybenzoate"],
+      "category": "paraben",
+      "risk": "high",
+      "regulation": "Banned in EU cosmetics. Strongest estrogenic activity among parabens.",
+      "source": "EU Cosmetics Regulation Annex II"
+    },
+    {
+      "id": "isobutylparaben",
+      "names": ["isobutylparaben", "isobutyl paraben"],
+      "category": "paraben",
+      "risk": "high",
+      "regulation": "Banned in EU cosmetics due to insufficient safety data.",
+      "source": "EU Cosmetics Regulation Annex II"
+    },
+    {
+      "id": "triclosan",
+      "names": ["triclosan", "irgasan", "5-chloro-2-(2,4-dichlorophenoxy)phenol"],
+      "category": "antimicrobial",
+      "risk": "high",
+      "regulation": "Banned by FDA in consumer antiseptic washes. Banned in EU cosmetics (most uses). Endocrine disruptor.",
+      "source": "FDA 2016 ruling, EU Cosmetics Regulation"
+    },
+    {
+      "id": "triclocarban",
+      "names": ["triclocarban", "tcc", "3,4,4'-trichlorocarbanilide"],
+      "category": "antimicrobial",
+      "risk": "high",
+      "regulation": "Banned by FDA in consumer antiseptic washes. Environmental persistence concerns.",
+      "source": "FDA 2016 ruling"
+    },
+    {
+      "id": "formaldehyde",
+      "names": ["formaldehyde", "formalin", "methanal"],
+      "category": "preservative",
+      "risk": "high",
+      "regulation": "IARC Group 1 carcinogen. Severely restricted in EU cosmetics. Banned in Japan cosmetics.",
+      "source": "IARC Monographs, EU Cosmetics Regulation"
+    },
+    {
+      "id": "dmdm_hydantoin",
+      "names": ["dmdm hydantoin", "1,3-dimethylol-5,5-dimethylhydantoin"],
+      "category": "formaldehyde_releaser",
+      "risk": "high",
+      "regulation": "Releases formaldehyde. Restricted in EU. Banned in Japan and Sweden.",
+      "source": "EU Cosmetics Regulation Annex V"
+    },
+    {
+      "id": "quaternium_15",
+      "names": ["quaternium-15", "quaternium 15", "dowicil 200"],
+      "category": "formaldehyde_releaser",
+      "risk": "high",
+      "regulation": "Releases formaldehyde. Restricted in EU. Banned in Japan.",
+      "source": "EU Cosmetics Regulation, CIR"
+    },
+    {
+      "id": "imidazolidinyl_urea",
+      "names": ["imidazolidinyl urea", "germall 115"],
+      "category": "formaldehyde_releaser",
+      "risk": "high",
+      "regulation": "Releases formaldehyde. Restricted concentration in EU.",
+      "source": "EU Cosmetics Regulation Annex V"
+    },
+    {
+      "id": "diazolidinyl_urea",
+      "names": ["diazolidinyl urea", "germall ii"],
+      "category": "formaldehyde_releaser",
+      "risk": "high",
+      "regulation": "Releases formaldehyde. Restricted concentration in EU.",
+      "source": "EU Cosmetics Regulation Annex V"
+    },
+    {
+      "id": "oxybenzone",
+      "names": ["oxybenzone", "benzophenone-3", "bp-3", "2-hydroxy-4-methoxybenzophenone"],
+      "category": "uv_filter",
+      "risk": "high",
+      "regulation": "Banned in Hawaii, Key West, Palau, US Virgin Islands (coral reef damage). Endocrine disruptor. Restricted in EU.",
+      "source": "Hawaii Act 104, EU Cosmetics Regulation"
+    },
+    {
+      "id": "octinoxate",
+      "names": ["octinoxate", "octyl methoxycinnamate", "ethylhexyl methoxycinnamate", "uvinul mc80"],
+      "category": "uv_filter",
+      "risk": "high",
+      "regulation": "Banned in Hawaii and Palau. Endocrine disruptor. Coral reef toxicity.",
+      "source": "Hawaii Act 104"
+    },
+    {
+      "id": "coal_tar",
+      "names": ["coal tar", "coal tar solution", "coal tar dye", "pix carbonis"],
+      "category": "dye",
+      "risk": "high",
+      "regulation": "IARC Group 1 carcinogen. Restricted in EU cosmetics. Banned in EU food.",
+      "source": "IARC Monographs, EU regulations"
+    },
+    {
+      "id": "lead_acetate",
+      "names": ["lead acetate", "lead(ii) acetate", "sugar of lead"],
+      "category": "heavy_metal",
+      "risk": "high",
+      "regulation": "Banned by FDA in cosmetics (2022). Neurotoxin. Banned in EU cosmetics.",
+      "source": "FDA 2022 ruling, EU Cosmetics Regulation Annex II"
+    },
+    {
+      "id": "phthalates_dbp",
+      "names": ["dibutyl phthalate", "dbp", "di-n-butyl phthalate"],
+      "category": "phthalate",
+      "risk": "high",
+      "regulation": "Banned in EU cosmetics. California Prop 65 listed. Reproductive toxicant.",
+      "source": "EU Cosmetics Regulation Annex II, Prop 65"
+    },
+    {
+      "id": "phthalates_dehp",
+      "names": ["dehp", "bis(2-ethylhexyl) phthalate", "diethylhexyl phthalate", "di-2-ethylhexyl phthalate"],
+      "category": "phthalate",
+      "risk": "high",
+      "regulation": "ECHA SVHC. Banned in EU cosmetics. Reproductive toxicant.",
+      "source": "EU REACH, EU Cosmetics Regulation Annex II"
+    },
+    {
+      "id": "phthalates_dep",
+      "names": ["diethyl phthalate", "dep"],
+      "category": "phthalate",
+      "risk": "high",
+      "regulation": "Under review by ECHA. Endocrine disruptor concerns. Often hidden under 'fragrance'.",
+      "source": "ECHA, EWG research"
+    },
+    {
+      "id": "hydroquinone",
+      "names": ["hydroquinone", "1,4-benzenediol", "quinol"],
+      "category": "skin_bleaching",
+      "risk": "high",
+      "regulation": "Banned in EU, Japan, Australia OTC cosmetics. FDA proposed ban. Carcinogen concerns.",
+      "source": "EU Cosmetics Regulation Annex II, FDA"
+    },
+    {
+      "id": "asbestos",
+      "names": ["asbestos", "chrysotile", "tremolite", "actinolite"],
+      "category": "contaminant",
+      "risk": "high",
+      "regulation": "IARC Group 1 carcinogen. Banned globally. Contaminant risk in talc products.",
+      "source": "IARC Monographs, EPA"
+    }
+  ]
+}
