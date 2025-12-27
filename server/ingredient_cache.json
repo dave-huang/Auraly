@@ -1,0 +1,767 @@
+{
+  "vitamin d3 (cholecalciferol)__food__en": {
+    "analysis": "{\"name\":\"Vitamin D3 (cholecalciferol)\",\"riskLevel\":\"moderate\",\"summary\":\"Vitamin D3 is a fat-soluble vitamin commonly added to foods and supplements to support calcium absorption and bone health. It is generally safe, but excessive intake can lead to toxicity.\",\"details\":\"Because it is fat-soluble, Vitamin D3 can accumulate in the body, and very high supplemental doses over time may cause hypercalcemia (too much calcium in the blood), leading to nausea, kidney stones, or kidney damage. Risk depends heavily on dose and total intake from all sources (supplements plus fortified foods); staying within established upper intake limits reduces concern. Some Vitamin D3 is sourced from lanolin (sheep wool) or fish oil, which may matter for dietary preferences, but this is not a general safety risk.\",\"category\":\"Vitamin (fat-soluble)\"}",
+    "lastUpdated": 1766867054497,
+    "createdAt": 1766867054497
+  },
+  "vitamin b12 (cobalamin)__food__en": {
+    "analysis": "{\"name\":\"Vitamin B12 (cobalamin)\",\"riskLevel\":\"low\",\"summary\":\"Vitamin B12 is a water-soluble vitamin used in fortified foods and supplements to support red blood cell formation and nervous system function. It is generally considered safe at typical and even relatively high supplemental amounts.\",\"details\":\"As a water-soluble vitamin, excess B12 is usually excreted in urine, and toxicity is rare for most people. Some individuals may experience mild side effects (such as acne-like skin reactions or gastrointestinal discomfort) at higher doses, but serious adverse effects are uncommon. Absorption can be reduced in people with certain conditions or medications (for example, metformin or acid-reducing drugs), which is more relevant to effectiveness than safety.\",\"category\":\"Vitamin (water-soluble)\"}",
+    "lastUpdated": 1766867054498,
+    "createdAt": 1766867054498
+  },
+  "yellow 6 (sunset yellow fcf)__food__en": {
+    "analysis": "{\"name\":\"Yellow 6 (sunset Yellow Fcf)\",\"riskLevel\":\"high\",\"summary\":\"Yellow 6 is a synthetic food dye used to add orange-yellow color to foods and supplements. Most people tolerate it, but it can be a concern for those sensitive to certain artificial colors.\",\"details\":\"Yellow 6 is approved for use in many countries, but some individuals report sensitivity reactions such as hives or worsened hyperactivity-like symptoms in susceptible children. It provides no nutritional benefit and is mainly used for appearance, so reducing intake may be preferable if you are sensitive to artificial dyes.\",\"category\":\"Artificial color (synthetic dye)\"}",
+    "lastUpdated": 1766867055484,
+    "createdAt": 1766867055484
+  },
+  "blue 1 (brilliant blue fcf)__food__en": {
+    "analysis": "{\"name\":\"Blue 1 (brilliant Blue Fcf)\",\"riskLevel\":\"high\",\"summary\":\"Blue 1 is a synthetic food dye used to create blue or green shades in foods and supplements. It is generally considered safe at regulated levels but may bother dye-sensitive individuals.\",\"details\":\"Blue 1 is widely permitted and typically used in small amounts, yet some people may experience intolerance-type reactions (for example, skin symptoms) or prefer to avoid it due to being an artificial color. It does not add nutritional value and is included primarily for visual appeal.\",\"category\":\"Artificial color (synthetic dye)\"}",
+    "lastUpdated": 1766867055484,
+    "createdAt": 1766867055484
+  },
+  "turmeric oleoresin (color)__food__en": {
+    "analysis": "{\"name\":\"Turmeric Oleoresin (color)\",\"riskLevel\":\"low\",\"summary\":\"Turmeric oleoresin is a natural coloring derived from turmeric that provides a yellow-orange hue. It is generally well tolerated in food and supplement products.\",\"details\":\"This color extract contains curcuminoids and related compounds that give turmeric its characteristic color, and it is commonly used as a natural alternative to synthetic dyes. In higher supplemental amounts turmeric extracts can cause mild digestive upset in some people, but the amounts used for coloring are typically small.\",\"category\":\"Natural color (plant extract)\"}",
+    "lastUpdated": 1766867055484,
+    "createdAt": 1766867055484
+  },
+  "thiamin mononitrate (vitamin b1)__food__en": {
+    "analysis": "{\"name\":\"Thiamin Mononitrate (vitamin B1)\",\"riskLevel\":\"low\",\"summary\":\"Thiamin mononitrate is a stable form of vitamin B1 used to fortify foods and supplements. It is generally safe at typical dietary and supplement amounts.\",\"details\":\"Vitamin B1 supports energy metabolism and normal nerve function, and deficiency is more common than toxicity. Adverse effects are rare because thiamin is water-soluble and excess is typically excreted, though very high supplemental doses may cause mild gastrointestinal upset in some people. People with certain medical conditions or on specific medications should follow clinician guidance for high-dose use.\",\"category\":\"Vitamin / Fortificant\"}",
+    "lastUpdated": 1766867056509,
+    "createdAt": 1766867056509
+  },
+  "riboflavin (vitamin b2)__food__en": {
+    "analysis": "{\"name\":\"Riboflavin (vitamin B2)\",\"riskLevel\":\"low\",\"summary\":\"Riboflavin is an essential B vitamin added to foods and supplements to support normal energy metabolism. It is generally safe at typical dietary and supplement amounts.\",\"details\":\"Riboflavin helps the body convert carbohydrates, fats, and proteins into energy and supports skin, eye, and nervous system health. Excess riboflavin is water-soluble and is typically excreted in urine, which can cause harmless bright-yellow urine. Very high supplemental doses may occasionally cause mild stomach upset, but serious toxicity is rare.\",\"category\":\"Vitamin\"}",
+    "lastUpdated": 1766867606980,
+    "createdAt": 1766867056510
+  },
+  "folic acid__food__en": {
+    "analysis": "{\"name\":\"Folic Acid\",\"riskLevel\":\"moderate\",\"summary\":\"Folic acid is the synthetic form of folate (vitamin B9) used in fortified foods and supplements. It is beneficial for preventing neural tube defects, but excessive intake can be a concern for some people.\",\"details\":\"High supplemental intake may mask vitamin B12 deficiency by correcting anemia while neurological damage progresses, which is why some populations should avoid chronically high doses unless medically supervised. People with certain genetic variants (such as MTHFR) may prefer natural folate forms (e.g., 5-MTHF), though folic acid remains effective for most individuals. Staying within recommended daily amounts from supplements and fortified foods helps minimize risk.\",\"category\":\"Vitamin / Fortificant\"}",
+    "lastUpdated": 1766867056511,
+    "createdAt": 1766867056511
+  },
+  "rice__food__en": {
+    "analysis": "{\"name\":\"Rice\",\"riskLevel\":\"low\",\"summary\":\"Rice is a common grain used as a carbohydrate base in many foods. It is generally safe for most people when consumed as part of a balanced diet.\",\"details\":\"Rice provides mostly starch with small amounts of protein and minimal fat. Brown rice offers more fiber and micronutrients than white rice, but both can fit into a healthy diet. Rice products can contribute to higher glycemic impact, especially when refined, and trace arsenic can be a consideration with frequent high intake, particularly in rice-based foods.\",\"category\":\"Grain / Carbohydrate\"}",
+    "lastUpdated": 1766867056913,
+    "createdAt": 1766867056913
+  },
+  "sugar__food__en": {
+    "analysis": "{\"name\":\"Sugar\",\"riskLevel\":\"moderate\",\"summary\":\"Sugar adds sweetness but increases added-sugar intake, which can negatively affect metabolic and dental health when consumed in excess. Occasional intake is generally fine, but frequent high consumption is a concern.\",\"details\":\"High added-sugar diets are associated with weight gain, higher triglycerides, increased risk of insulin resistance, and dental cavities. Sugar provides calories without meaningful vitamins, minerals, or fiber, making it easy to overconsume. If sugar is listed near the beginning of the ingredient list or appears in multiple forms, the product may be relatively high in added sugars.\",\"category\":\"Added Sweetener\"}",
+    "lastUpdated": 1766867056914,
+    "createdAt": 1766867056914
+  },
+  "canola and/or soybean oil__food__en": {
+    "analysis": "{\"name\":\"Canola And/or Soybean Oil\",\"riskLevel\":\"low\",\"summary\":\"Canola and soybean oils are common vegetable oils used for cooking and food processing. They are generally considered safe for the general population; soybean is a common allergen but still low risk for most people.\",\"details\":\"These oils are typically high in unsaturated fats and are widely used in packaged foods for texture and shelf stability. Highly refined soybean oil contains little to no soy protein, which reduces allergen exposure for many people with soy allergy, though sensitive individuals should still use caution. As with any added fat, overall quantity matters, and frequent intake of ultra-processed foods using refined oils can displace more nutrient-dense foods.\",\"category\":\"Vegetable Oil / Fat\"}",
+    "lastUpdated": 1766867056914,
+    "createdAt": 1766867056914
+  },
+  "salt__food__en": {
+    "analysis": "{\"name\":\"Salt\",\"riskLevel\":\"moderate\",\"summary\":\"Salt is a common seasoning and preservative, but it can significantly increase a product's sodium content. Excess sodium intake is linked to higher blood pressure in many people.\",\"details\":\"Salt provides sodium, which is essential for fluid balance and nerve function, but most diets already contain more than recommended. Regularly consuming high-sodium foods can increase the risk of hypertension and cardiovascular disease, especially in salt-sensitive individuals. People with high blood pressure, kidney disease, or heart failure are often advised to limit sodium.\",\"category\":\"Seasoning / Sodium source\"}",
+    "lastUpdated": 1766867057148,
+    "createdAt": 1766867057148
+  },
+  "red 40__food__en": {
+    "analysis": "{\"name\":\"Red 40\",\"riskLevel\":\"high\",\"summary\":\"Red 40 is a synthetic food dye used to add red color to foods and beverages. Some people may be sensitive to it, with potential behavioral or allergy-like reactions.\",\"details\":\"Red 40 (Allura Red AC) is approved for use in many countries, but it is sometimes associated with increased hyperactivity symptoms in susceptible children and with intolerance reactions in a small subset of individuals. Rarely, it may trigger hives or other pseudoallergic responses, particularly in people with sensitivities to food dyes. It adds no nutritional value and is mainly included for appearance.\",\"category\":\"Artificial colorant\"}",
+    "lastUpdated": 1766867057148,
+    "createdAt": 1766867057148
+  },
+  "yellow 5__food__en": {
+    "analysis": "{\"name\":\"Yellow 5\",\"riskLevel\":\"high\",\"summary\":\"Yellow 5 is a synthetic dye used to create yellow coloring in foods and supplements. It can cause sensitivity reactions in a small number of people.\",\"details\":\"Yellow 5 (Tartrazine) is a widely used artificial colorant and must be declared on labels in some regions due to sensitivity concerns. A small subset of individuals may experience hives, asthma-like symptoms, or other intolerance reactions, and it has also been studied in relation to hyperactivity in susceptible children. Like other artificial colors, it provides no nutritional benefit and is primarily cosmetic.\",\"category\":\"Artificial colorant\"}",
+    "lastUpdated": 1766867057148,
+    "createdAt": 1766867057148
+  },
+  "zinc oxide__food__en": {
+    "analysis": "{\"name\":\"Zinc Oxide\",\"riskLevel\":\"moderate\",\"summary\":\"Zinc oxide is a mineral form of zinc used to fortify foods and supplements. It can help meet zinc needs, but excessive intake may cause adverse effects and this form may be less well absorbed than some other zinc salts.\",\"details\":\"Zinc supports immune function, wound healing, and normal taste and smell, and zinc oxide is sometimes used because it is stable. Compared with forms like zinc citrate or zinc gluconate, zinc oxide can be less bioavailable, so some products use higher amounts to compensate. High total zinc intake (especially from multiple supplements) can cause nausea and, over time, contribute to copper deficiency and immune or lipid changes.\",\"category\":\"Mineral (Zinc Source)\"}",
+    "lastUpdated": 1766867058184,
+    "createdAt": 1766867058184
+  },
+  "vitamin a palmitate__food__en": {
+    "analysis": "{\"name\":\"Vitamin a Palmitate\",\"riskLevel\":\"moderate\",\"summary\":\"Vitamin A palmitate is a fat-soluble form of vitamin A used in fortified foods and supplements. It is beneficial at appropriate doses but has a higher toxicity risk than water-soluble vitamins if overconsumed.\",\"details\":\"Vitamin A is important for vision, immune function, and skin and mucosal health, and palmitate is a common, stable supplemental form. Because it is fat-soluble, it can accumulate in the body, so combining multiple products containing preformed vitamin A can increase the risk of excess. High intakes over time may lead to liver strain and other symptoms, and pregnancy requires particular caution with high supplemental preformed vitamin A.\",\"category\":\"Vitamin (Fat-Soluble)\"}",
+    "lastUpdated": 1766867058184,
+    "createdAt": 1766867058184
+  },
+  "pyridoxine hydrochloride (vitamin b6)__food__en": {
+    "analysis": "{\"name\":\"Pyridoxine Hydrochloride (vitamin B6)\",\"riskLevel\":\"low\",\"summary\":\"Pyridoxine hydrochloride is a common supplemental form of vitamin B6 used to support normal metabolism and nervous system function. It is generally safe at typical fortification and supplement levels.\",\"details\":\"Vitamin B6 plays a role in amino acid metabolism, neurotransmitter synthesis, and red blood cell function, and pyridoxine HCl is widely used due to stability. Most people tolerate it well, especially at amounts near daily needs. Very high long-term supplemental doses can cause sensory nerve symptoms, so total intake matters if multiple B6-containing supplements are used.\",\"category\":\"Vitamin (Water-Soluble)\"}",
+    "lastUpdated": 1766867058184,
+    "createdAt": 1766867058184
+  },
+  "bht (butylated hydroxytoluene) sodium ascorbate ascorbic acid (vitamin c)__food__en": {
+    "analysis": "{\"name\":\"Bht (butylated Hydroxytoluene); Sodium Ascorbate; Ascorbic Acid (vitamin C)\",\"riskLevel\":\"high\",\"summary\":\"This line includes a synthetic preservative (BHT) plus Vitamin C forms used for antioxidant support and to help prevent oxidation in the product. For most people, Vitamin C ingredients are low concern, while BHT is the main potential issue.\",\"details\":\"BHT is an antioxidant preservative used to slow rancidity and maintain freshness, but it is a more controversial additive and some people prefer to limit it due to mixed evidence and sensitivity concerns. Sodium ascorbate and ascorbic acid are common Vitamin C forms that also act as antioxidants in foods; typical amounts are generally well tolerated. Very high Vitamin C intake can cause stomach upset or diarrhea in some individuals, especially when combined with other Vitamin C sources.\",\"category\":\"Preservative and vitamins/antioxidants\"}",
+    "lastUpdated": 1766867070151,
+    "createdAt": 1766867070151
+  },
+  "niacinamide (vitamin b3)__food__en": {
+    "analysis": "{\"name\":\"Niacinamide (vitamin B3)\",\"riskLevel\":\"low\",\"summary\":\"Niacinamide is a common form of Vitamin B3 used to support normal energy metabolism and overall nutrient status. It is generally well tolerated at typical food and supplement levels.\",\"details\":\"Niacinamide is less likely to cause the flushing associated with nicotinic acid (another form of B3). At very high supplemental doses, it may cause nausea, headaches, or liver-related concerns, but these effects are uncommon at standard fortification or multivitamin amounts. People with liver disease or who take high-dose B3 supplements should be more cautious about total daily intake.\",\"category\":\"Vitamin\"}",
+    "lastUpdated": 1766867070152,
+    "createdAt": 1766867070152
+  },
+  "reduced iron__food__en": {
+    "analysis": "{\"name\":\"Reduced Iron\",\"riskLevel\":\"moderate\",\"summary\":\"Reduced iron is an iron fortificant used to help prevent iron deficiency. It can be beneficial for people with low iron intake, but excess iron may be a concern for some individuals.\",\"details\":\"Reduced iron is commonly added to cereals and other fortified foods; its absorption can be lower than some other iron forms, but it still contributes to total iron intake. Too much iron can cause gastrointestinal upset (constipation, nausea) and may be harmful for people with iron overload conditions (such as hemochromatosis) or for young children if accidentally overconsumed. If you already take iron supplements or have high iron stores, monitoring total intake from all sources is advisable.\",\"category\":\"Mineral (iron fortification)\"}",
+    "lastUpdated": 1766867070152,
+    "createdAt": 1766867070152
+  },
+  "monosodium glutamate (msg)__food__en": {
+    "analysis": "{\"name\":\"Monosodium Glutamate (msg)\",\"riskLevel\":\"moderate\",\"summary\":\"MSG is a flavor enhancer that adds savory (umami) taste and is generally considered safe at typical dietary amounts. Some people report sensitivity symptoms after large amounts, but evidence is inconsistent.\",\"details\":\"MSG is the sodium salt of glutamic acid, an amino acid naturally present in many foods, and it is used to boost flavor. In sensitive individuals, high intakes may be associated with short-lived symptoms such as headache or flushing, though controlled studies do not consistently confirm a cause-and-effect relationship. It also contributes sodium, which can matter for people limiting sodium intake.\",\"category\":\"Flavor enhancer / Food additive\"}",
+    "lastUpdated": 1766867352083,
+    "createdAt": 1766867352083
+  },
+  "artificial and natural flavors__food__en": {
+    "analysis": "{\"name\":\"Artificial And Natural Flavors\",\"riskLevel\":\"moderate\",\"summary\":\"Artificial and natural flavors are mixtures used to create or enhance taste, but their exact components are often not disclosed on labels. They are generally used in small amounts, yet can be problematic for people sensitive to certain flavor chemicals or carriers.\",\"details\":\"These flavor blends may include solvents, carriers, and numerous aroma compounds; “natural” refers to the source, not necessarily a health advantage. Because formulas are proprietary, it can be hard to identify specific triggers for those with sensitivities (for example, certain aroma chemicals) or dietary restrictions. Occasionally, flavor systems may be derived from allergenic sources, but labeling rules vary and cross-contact is possible.\",\"category\":\"Flavoring / Food additive\"}",
+    "lastUpdated": 1766867352083,
+    "createdAt": 1766867352083
+  },
+  "maltodextrin__food__en": {
+    "analysis": "{\"name\":\"Maltodextrin\",\"riskLevel\":\"moderate\",\"summary\":\"Maltodextrin is a processed carbohydrate used as a filler, thickener, or to improve texture. It is generally safe, but it can rapidly raise blood sugar in some people.\",\"details\":\"Maltodextrin has a high glycemic index, so it may be a concern for people with diabetes, insulin resistance, or those aiming to limit blood-sugar spikes. In large amounts it can contribute extra calories with little nutritional value and may cause digestive discomfort (gas or bloating) in sensitive individuals. It is often made from corn, rice, potato, or wheat; highly refined forms typically contain minimal protein, but those with severe allergies should still use caution.\",\"category\":\"Carbohydrate additive (filler/thickener)\"}",
+    "lastUpdated": 1766867352325,
+    "createdAt": 1766867352325
+  },
+  "citric acid__food__en": {
+    "analysis": "{\"name\":\"Citric Acid\",\"riskLevel\":\"low\",\"summary\":\"Citric acid is a common acidulant used to add tartness and help preserve freshness. It is widely considered safe at typical food and beverage levels.\",\"details\":\"It helps control pH, enhance flavor, and can improve stability of products, especially drinks and gummies. In some people, frequent exposure in acidic foods may irritate the mouth or stomach, and regular intake of very acidic products can contribute to dental enamel erosion. Citric acid is often produced by fermentation (commonly using Aspergillus niger), but reactions are uncommon.\",\"category\":\"Acidulant (preservative/flavoring)\"}",
+    "lastUpdated": 1766867352325,
+    "createdAt": 1766867352325
+  },
+  "potato__food__en": {
+    "analysis": "{\"name\":\"Potato\",\"riskLevel\":\"low\",\"summary\":\"Potato is a whole-food starch that provides carbohydrates and some potassium and vitamin C. Health impact depends largely on processing method and portion size.\",\"details\":\"Potatoes are naturally low in fat and contain fiber, but frying or heavy salting can reduce their overall nutritional quality. For people managing blood sugar, potato-based products can raise blood glucose quickly due to a relatively high glycemic impact.\",\"category\":\"Vegetable / Starch\"}",
+    "lastUpdated": 1766867353854,
+    "createdAt": 1766867353854
+  },
+  "vegetable oil (palm and/or soybean and/or canola oil)__food__en": {
+    "analysis": "{\"name\":\"Vegetable Oil (palm And/or Soybean And/or Canola Oil)\",\"riskLevel\":\"moderate\",\"summary\":\"This is a blend of refined cooking oils used for frying and texture. Palm oil is higher in saturated fat, while soybean and canola oils are higher in unsaturated fats.\",\"details\":\"Refined oils can contribute significant calories and may be repeatedly heated in snack processing, which can increase oxidation byproducts. Palm oil’s higher saturated fat content may be a concern for frequent, high intake, while soybean oil is a common allergen source but is generally safe for the population at large.\",\"category\":\"Added Fat / Cooking Oil\"}",
+    "lastUpdated": 1766867353854,
+    "createdAt": 1766867353854
+  },
+  "seasoning__food__en": {
+    "analysis": "{\"name\":\"Seasoning\",\"riskLevel\":\"moderate\",\"summary\":\"Seasoning is a catch-all term that can include salt, spices, flavorings, and additives. The main general concern is often high sodium and potential flavor enhancers.\",\"details\":\"Without specifics, seasoning may contain ingredients like monosodium glutamate (MSG), yeast extract, artificial flavors, sugar, or anti-caking agents. If the product is a salty snack, seasoning can meaningfully increase sodium intake, which may be a concern for people monitoring blood pressure.\",\"category\":\"Flavoring / Additive Mix\"}",
+    "lastUpdated": 1766867353854,
+    "createdAt": 1766867353854
+  },
+  "hydrolyzed soybean protein__food__en": {
+    "analysis": "{\"name\":\"Hydrolyzed Soybean Protein\",\"riskLevel\":\"low\",\"summary\":\"A soy-derived protein broken into smaller peptides to improve solubility and taste. It is a common allergen (soy), but for the general population it is considered low risk.\",\"details\":\"Hydrolyzed soybean protein is used to boost protein content and can also enhance savory flavor due to naturally occurring free amino acids. It may contain small amounts of naturally occurring glutamates from protein breakdown, which is not the same as added MSG. People with soy allergy should avoid it, but it is generally safe in typical food amounts.\",\"category\":\"Protein ingredient\"}",
+    "lastUpdated": 1766867354549,
+    "createdAt": 1766867354549
+  },
+  "chili pepper extract__food__en": {
+    "analysis": "{\"name\":\"Chili Pepper Extract\",\"riskLevel\":\"moderate\",\"summary\":\"A concentrated extract used for heat and flavor, typically containing capsaicinoids. It can irritate the digestive tract in sensitive individuals, especially at higher doses.\",\"details\":\"Chili pepper extract may trigger heartburn, stomach upset, or diarrhea in people prone to reflux or gastrointestinal sensitivity. Concentrated extracts can also cause a burning sensation in the mouth and throat, and may worsen symptoms of gastritis or ulcers. In normal culinary amounts it is usually well tolerated, but sensitivity varies widely.\",\"category\":\"Flavoring extract\"}",
+    "lastUpdated": 1766867354549,
+    "createdAt": 1766867354549
+  },
+  "soybean oil__food__en": {
+    "analysis": "{\"name\":\"Soybean Oil\",\"riskLevel\":\"low\",\"summary\":\"A common vegetable oil used for cooking and texture. It is a common allergen source (soy), but for the general population it is considered low risk.\",\"details\":\"Soybean oil is primarily a source of fats, including polyunsaturated omega-6 fatty acids, and it is commonly used in processed foods. Highly refined soybean oil typically contains very little soy protein, which is the main allergen, though extremely sensitive individuals may still react. From a wellness perspective, overall dietary balance matters more than small amounts in a single product.\",\"category\":\"Edible oil\"}",
+    "lastUpdated": 1766867354549,
+    "createdAt": 1766867354549
+  },
+  "disodium inosinate__food__en": {
+    "analysis": "{\"name\":\"Disodium Inosinate\",\"riskLevel\":\"moderate\",\"summary\":\"Disodium inosinate is a flavor enhancer that boosts savory (umami) taste, often used alongside MSG. It is generally considered safe at typical food-use levels but may be a concern for certain sensitive individuals.\",\"details\":\"It is a sodium salt of inosinate (a nucleotide) used to intensify flavor, especially in snacks, soups, and seasoning blends. People with gout or high uric acid may choose to limit large intakes of purine-related compounds, and those sensitive to flavor enhancers sometimes report symptoms. It also adds a small amount of sodium, which can matter in very salty foods.\",\"category\":\"Flavor enhancer\"}",
+    "lastUpdated": 1766867355069,
+    "createdAt": 1766867355069
+  },
+  "disodium guanylate__food__en": {
+    "analysis": "{\"name\":\"Disodium Guanylate\",\"riskLevel\":\"moderate\",\"summary\":\"Disodium guanylate is a flavor enhancer that increases umami intensity, commonly paired with disodium inosinate and/or MSG. It is generally safe in normal amounts but may not be ideal for everyone.\",\"details\":\"This additive is a sodium salt of guanylate (a nucleotide) used to make foods taste richer without adding much protein or fat. Individuals managing gout or elevated uric acid sometimes limit high overall purine sources, and some people report sensitivity to flavor enhancers. Like other disodium additives, it can contribute a small amount of sodium to the product.\",\"category\":\"Flavor enhancer\"}",
+    "lastUpdated": 1766867355069,
+    "createdAt": 1766867355069
+  },
+  "tbhq (preservative)__food__en": {
+    "analysis": "{\"name\":\"Tbhq (preservative)\",\"riskLevel\":\"high\",\"summary\":\"TBHQ (tert-butylhydroquinone) is an antioxidant preservative used to prevent fats and oils from going rancid. It is approved for use in many countries within strict limits, but some consumers prefer to avoid it.\",\"details\":\"TBHQ helps extend shelf life in processed foods by slowing oxidation, especially in products containing vegetable oils. At regulated levels it is generally considered safe, though high exposures in studies have raised concerns and a small number of people may experience sensitivity-like reactions. Its presence often indicates a highly processed food with added fats/oils.\",\"category\":\"Preservative (antioxidant)\"}",
+    "lastUpdated": 1766867355069,
+    "createdAt": 1766867355069
+  },
+  "onion powder__food__en": {
+    "analysis": "{\"name\":\"Onion Powder\",\"riskLevel\":\"low\",\"summary\":\"Onion powder is a dehydrated onion seasoning used for flavor. It is generally safe for most people when consumed in typical food amounts.\",\"details\":\"It adds onion flavor without adding much fat and only small amounts of sugars and sodium unless part of a salty blend. Some people with sensitive digestion (e.g., IBS) may experience gas or bloating because onions are high in fructans. It can also cause irritation for individuals with an onion intolerance, but this is not a common population-wide safety concern.\",\"category\":\"Spice / Flavoring\"}",
+    "lastUpdated": 1766867355913,
+    "createdAt": 1766867355913
+  },
+  "sodium bicarbonate__food__en": {
+    "analysis": "{\"name\":\"Sodium Bicarbonate\",\"riskLevel\":\"low\",\"summary\":\"Sodium bicarbonate (baking soda) is used as a leavening agent and acidity regulator. It is generally safe in foods at regulated, typical use levels.\",\"details\":\"It contributes sodium, which can matter for people limiting sodium intake for blood pressure or kidney-related reasons, especially if many sodium-containing additives are present. In larger supplemental doses it can cause gastrointestinal upset and affect acid-base balance, but food-level amounts are usually small. If the product tastes noticeably salty or is a high-serving-size supplement, the total sodium per serving is worth checking.\",\"category\":\"Leavening Agent / Acidity Regulator\"}",
+    "lastUpdated": 1766867355913,
+    "createdAt": 1766867355913
+  },
+  "red 40 lake__food__en": {
+    "analysis": "{\"name\":\"Red 40 Lake\",\"riskLevel\":\"high\",\"summary\":\"Red 40 Lake is a synthetic food colorant (a lake form of Allura Red) used to color foods and supplements. It is approved for use, but some people prefer to limit artificial colors.\",\"details\":\"A small subset of individuals may experience sensitivity reactions (e.g., hives or worsening of symptoms in those with dye sensitivities). Some research and consumer concern links certain artificial colors to behavior changes in susceptible children, though evidence is mixed and effects are not universal. The “lake” form is designed to be more stable in dry or fatty products, and it does not provide nutritional benefit.\",\"category\":\"Artificial Colorant\"}",
+    "lastUpdated": 1766867355913,
+    "createdAt": 1766867355913
+  },
+  "xylitol__food__en": {
+    "analysis": "{\"name\":\"Xylitol\",\"riskLevel\":\"moderate\",\"summary\":\"Xylitol is a sugar alcohol used as a low-calorie sweetener and is generally safe for most people. It can cause digestive upset in some individuals, especially at higher intakes.\",\"details\":\"Because it is only partially absorbed, xylitol can draw water into the intestine and be fermented by gut bacteria, leading to gas, bloating, or diarrhea (dose-dependent). It does not raise blood sugar as much as sugar and may help reduce dental cavities. It is extremely toxic to dogs, so caution is needed in households with pets, though this is not a human toxicity concern.\",\"category\":\"Sugar alcohol sweetener\"}",
+    "lastUpdated": 1766867499955,
+    "createdAt": 1766867499955
+  },
+  "ceramide np__food__en": {
+    "analysis": "{\"name\":\"Ceramide Np\",\"riskLevel\":\"low\",\"summary\":\"Ceramide NP is a lipid (fat-like molecule) that supports skin barrier function and is sometimes added to supplements or functional foods. It is generally considered low risk at typical use levels.\",\"details\":\"Dietary ceramides are often sourced from plants (such as wheat, rice, or konjac) or produced via fermentation, and amounts in products are usually small. Human data suggest it may help with skin hydration and barrier integrity, though results vary by dose and formulation. People with specific ingredient sensitivities should check the source material, but for the general population it is considered low concern.\",\"category\":\"Skin-support lipid (ceramide)\"}",
+    "lastUpdated": 1766867499955,
+    "createdAt": 1766867499955
+  },
+  "water__food__en": {
+    "analysis": "{\"name\":\"Water\",\"riskLevel\":\"low\",\"summary\":\"Water is a common base ingredient in foods and beverages and is generally safe. It is used to dissolve, dilute, or carry other ingredients.\",\"details\":\"In most products, water functions as the main solvent and helps with texture and consistency. Safety concerns are mainly related to overall product hygiene and quality control rather than water itself. It does not add calories, sugar, or sodium on its own.\",\"category\":\"Solvent / Base\"}",
+    "lastUpdated": 1766867500830,
+    "createdAt": 1766867500830
+  },
+  "glycerin__food__en": {
+    "analysis": "{\"name\":\"Glycerin\",\"riskLevel\":\"low\",\"summary\":\"Glycerin (glycerol) is commonly used in foods and supplements as a humectant and sweet-tasting texture agent. It is generally considered safe at typical amounts found in products.\",\"details\":\"It helps retain moisture, prevents drying, and can improve mouthfeel in items like gummies, syrups, and chewables. Glycerin provides calories and has a mild sweet taste, but it does not behave like added sugar in the same way. Large amounts may cause digestive discomfort (such as bloating or diarrhea), especially in sensitive individuals.\",\"category\":\"Humectant / Sweetener / Texture agent\"}",
+    "lastUpdated": 1766867500830,
+    "createdAt": 1766867500830
+  },
+  "olive fruit oil__food__en": {
+    "analysis": "{\"name\":\"Olive Fruit Oil\",\"riskLevel\":\"low\",\"summary\":\"Olive fruit oil is an edible plant oil rich in monounsaturated fats and is widely used in foods. It is generally considered a health-supportive fat when used in place of saturated fats.\",\"details\":\"It can provide flavor and contribute to texture, and it contains antioxidant compounds (polyphenols) depending on processing and quality. Like all oils, it is calorie-dense, so overall intake matters for weight and calorie goals. Quality can vary, but typical food-grade olive oil is safe for the general population.\",\"category\":\"Edible oil / Fat source\"}",
+    "lastUpdated": 1766867500830,
+    "createdAt": 1766867500830
+  },
+  "betaine__food__en": {
+    "analysis": "{\"name\":\"Betaine\",\"riskLevel\":\"low\",\"summary\":\"Betaine is a naturally occurring compound found in foods like beets and whole grains and is often used in supplements for methylation and homocysteine support. It is generally considered low risk at typical food and supplement amounts.\",\"details\":\"In foods, betaine contributes to normal cellular hydration and acts as a methyl donor in metabolism. Supplemental doses can sometimes cause mild gastrointestinal upset or a fishy body odor in sensitive individuals. Very high supplemental intakes may raise LDL cholesterol in some people, so those with lipid concerns should use higher-dose products cautiously.\",\"category\":\"Nutrient / Supplement ingredient\"}",
+    "lastUpdated": 1766867501458,
+    "createdAt": 1766867501458
+  },
+  "allantoin__food__en": {
+    "analysis": "{\"name\":\"Allantoin\",\"riskLevel\":\"low\",\"summary\":\"Allantoin is a compound commonly used in cosmetics for soothing effects and may appear in some ingestible products in small amounts. For most people, it is low risk at typical additive levels.\",\"details\":\"Food exposure is generally limited and amounts, when present, are typically low. Safety concerns are uncommon, but as with many additives, very sensitive individuals could experience mild intolerance. If present in a supplement, it is usually not a primary active ingredient and does not provide major nutritional value.\",\"category\":\"Food additive / Processing aid\"}",
+    "lastUpdated": 1766867501458,
+    "createdAt": 1766867501458
+  },
+  "trehalose__food__en": {
+    "analysis": "{\"name\":\"Trehalose\",\"riskLevel\":\"low\",\"summary\":\"Trehalose is a naturally occurring sugar used as a stabilizer and humectant in foods and supplements. It is generally low risk for the general population.\",\"details\":\"Trehalose provides calories and can contribute to total sugar intake, which may matter for people managing blood glucose or limiting added sugars. It is digested by the enzyme trehalase; rare individuals with trehalase deficiency may experience gastrointestinal symptoms if they consume larger amounts. In many products it is used to help protect flavors, proteins, or probiotics from moisture and processing stress.\",\"category\":\"Sweetener / Stabilizer\"}",
+    "lastUpdated": 1766867501458,
+    "createdAt": 1766867501458
+  },
+  "cetearyl alcohol__food__en": {
+    "analysis": "{\"name\":\"Cetearyl Alcohol\",\"riskLevel\":\"low\",\"summary\":\"Cetearyl alcohol is a fatty alcohol used mainly to stabilize mixtures and improve texture. It is generally considered low risk at typical food/supplement exposure levels.\",\"details\":\"Despite the word \\\"alcohol,\\\" it is not the same as ethanol and does not have intoxicating effects. In products it functions as an emulsifier/thickener and can help keep oil and water components blended. For most people it is well tolerated, though it could cause mild digestive discomfort if consumed in unusually large amounts.\",\"category\":\"Emulsifier / Texture agent\"}",
+    "lastUpdated": 1766867501784,
+    "createdAt": 1766867501784
+  },
+  "beeswax__food__en": {
+    "analysis": "{\"name\":\"Beeswax\",\"riskLevel\":\"low\",\"summary\":\"Beeswax is a natural wax used as a glazing or coating agent and sometimes as a stabilizer. It is generally low risk for the general population.\",\"details\":\"In foods and supplements it is commonly used to provide shine, reduce sticking, or act as a protective coating (for example on candies or tablets). It is largely indigestible and typically passes through the body without significant absorption. People with sensitivity to bee-related products may rarely react, but typical use levels are considered safe.\",\"category\":\"Glazing agent / Coating\"}",
+    "lastUpdated": 1766867501785,
+    "createdAt": 1766867501785
+  },
+  "cetyl ethylhexanoate__food__en": {
+    "analysis": "{\"name\":\"Cetyl Ethylhexanoate\",\"riskLevel\":\"low\",\"summary\":\"Cetyl ethylhexanoate is a fatty ester primarily used to improve smoothness and mouthfeel in formulations. It is generally considered low risk at the small amounts likely present in ingestible products.\",\"details\":\"It functions as an emollient-like texture modifier and can help dissolve or disperse fat-soluble ingredients. In the body, fatty esters are typically broken down into fatty alcohols/acids similar to dietary fats, though data for high-dose intake is limited. Most concerns are about formulation quality and sourcing rather than inherent toxicity at low exposure.\",\"category\":\"Texture agent / Lipid carrier\"}",
+    "lastUpdated": 1766867501785,
+    "createdAt": 1766867501785
+  },
+  "cyclohexasiloxane__food__en": {
+    "analysis": "{\"name\":\"Cyclohexasiloxane\",\"riskLevel\":\"high\",\"summary\":\"Cyclohexasiloxane is a silicone fluid primarily used in cosmetics and industrial applications, not typical for foods. Its presence in a food or supplement product would be unusual and raises safety and quality concerns.\",\"details\":\"Cyclohexasiloxane (often called D6) is a volatile siloxane used as a carrier or slip agent in personal care products; it is not a standard approved food additive in many regions. Because it is not commonly intended for ingestion, it may indicate contamination, packaging migration, or mislabeling. If listed on a food or supplement label, it warrants verification with the manufacturer and checking regulatory compliance for your country.\",\"category\":\"Silicone compound / Processing contaminant concern\"}",
+    "lastUpdated": 1766867501997,
+    "createdAt": 1766867501997
+  },
+  "polysorbate 60__food__en": {
+    "analysis": "{\"name\":\"Polysorbate 60\",\"riskLevel\":\"moderate\",\"summary\":\"Polysorbate 60 is an emulsifier used to keep ingredients mixed and improve texture. It is generally permitted in foods within regulated limits, but some people prefer to limit emulsifiers in heavily processed products.\",\"details\":\"It helps stabilize mixtures of oil and water in items like baked goods, dessert toppings, and drink mixes, and is typically used at low levels. Some research suggests certain emulsifiers may affect gut barrier function or microbiome in susceptible individuals, though evidence in humans is not definitive and depends on dose and overall diet. If you experience digestive sensitivity, minimizing frequent intake of emulsifier-heavy ultra-processed foods may be reasonable.\",\"category\":\"Emulsifier / Stabilizer\"}",
+    "lastUpdated": 1766867501997,
+    "createdAt": 1766867501997
+  },
+  "stearic acid__food__en": {
+    "analysis": "{\"name\":\"Stearic Acid\",\"riskLevel\":\"low\",\"summary\":\"Stearic acid is a common fatty acid found naturally in foods and also used as a processing aid. In supplements, it is often used as a lubricant to help manufacturing.\",\"details\":\"It occurs naturally in animal fats and cocoa butter and is widely used in foods and dietary supplements in small amounts. In tablet and capsule production, it helps prevent ingredients from sticking to equipment and can improve consistency. For most people, typical dietary and supplemental exposures are considered safe.\",\"category\":\"Fatty acid / Processing aid\"}",
+    "lastUpdated": 1766867501997,
+    "createdAt": 1766867501997
+  },
+  "butylene glycol__food__en": {
+    "analysis": "{\"name\":\"Butylene Glycol\",\"riskLevel\":\"moderate\",\"summary\":\"Butylene glycol is a synthetic humectant and solvent commonly used in cosmetics and sometimes present in flavored supplements or liquid products as a carrier. In foods it is uncommon, and its presence may indicate a non-traditional additive use.\",\"details\":\"When used topically it is generally considered low concern, but ingestion use is less typical, so product labeling and regulatory compliance matter. Sensitive individuals may experience mild gastrointestinal upset at higher intakes, though typical exposures (if present) are usually small. If this appears in a food or supplement, it may function as a solvent for flavors or botanical extracts.\",\"category\":\"Humectant / Solvent\"}",
+    "lastUpdated": 1766867502624,
+    "createdAt": 1766867502624
+  },
+  "macadamia ternifolia seed oil__food__en": {
+    "analysis": "{\"name\":\"Macadamia Ternifolia Seed Oil\",\"riskLevel\":\"low\",\"summary\":\"Macadamia seed oil is a plant-derived oil used for texture and as a fat source. It is a tree nut–derived ingredient and therefore a common allergen, but it is considered low risk for the general population.\",\"details\":\"Nutritionally, it is mostly monounsaturated fat and can contribute calories and mouthfeel in foods or supplements. The main concern is for individuals with macadamia (tree nut) allergy, who could react even to small amounts. For most people it is generally well tolerated when consumed in normal dietary amounts.\",\"category\":\"Plant Oil (Tree Nut Oil)\"}",
+    "lastUpdated": 1766867502624,
+    "createdAt": 1766867502624
+  },
+  "cyclopentasiloxane__food__en": {
+    "analysis": "{\"name\":\"Cyclopentasiloxane\",\"riskLevel\":\"high\",\"summary\":\"Cyclopentasiloxane is a volatile silicone mainly used in personal-care products to improve spreadability. It is not a typical food or supplement ingredient, so its presence in an ingestible product would be a significant concern.\",\"details\":\"This compound is generally intended for external use and evaporates after application; ingestion is not a common or expected route of exposure. If listed on a food or supplement label, it may indicate contamination, mislabeling, or a non-food-grade processing aid. Because it is not generally recognized as a standard food additive, it warrants verification with the manufacturer and avoidance until clarified.\",\"category\":\"Silicone (Non-food typical additive)\"}",
+    "lastUpdated": 1766867502624,
+    "createdAt": 1766867502624
+  },
+  "chamomile (matricaria chamomilla) flower extract__food__en": {
+    "analysis": "{\"name\":\"Chamomile (matricaria Chamomilla) Flower Extract\",\"riskLevel\":\"low\",\"summary\":\"A botanical extract commonly used in foods and supplements for calming and digestive support. It is generally well tolerated for most people.\",\"details\":\"Chamomile contains compounds such as apigenin that may support relaxation and soothe mild gastrointestinal discomfort. People with allergies to plants in the Asteraceae family (for example, ragweed) may be more likely to experience sensitivity. It may have mild blood-thinning effects, so extra caution is reasonable for those using anticoagulant or antiplatelet medications.\",\"category\":\"Herbal extract\"}",
+    "lastUpdated": 1766867502649,
+    "createdAt": 1766867502649
+  },
+  "baikal skullcap (scutellaria baicalensis) root extract__food__en": {
+    "analysis": "{\"name\":\"Baikal Skullcap (scutellaria Baicalensis) Root Extract\",\"riskLevel\":\"moderate\",\"summary\":\"A traditional herbal extract used for antioxidant and anti-inflammatory purposes. The main concern is variable supplement quality and potential interactions with medications.\",\"details\":\"It contains flavones such as baicalin and baicalein that can affect inflammation pathways and may influence liver enzyme activity involved in drug metabolism. Rare liver-related adverse events have been reported with skullcap products, sometimes linked to misidentification or contamination, so reputable sourcing and third-party testing matter. Use added caution if pregnant, breastfeeding, or taking medications metabolized by the liver or with sedative effects.\",\"category\":\"Herbal extract\"}",
+    "lastUpdated": 1766867502649,
+    "createdAt": 1766867502649
+  },
+  "japanese knotweed (polygonum cuspidatum) root extract__food__en": {
+    "analysis": "{\"name\":\"Japanese Knotweed (polygonum Cuspidatum) Root Extract\",\"riskLevel\":\"moderate\",\"summary\":\"A plant extract commonly used as a natural source of resveratrol. It is generally safe for many users but can cause gastrointestinal upset and may interact with blood-thinning or antiplatelet drugs.\",\"details\":\"Polygonum cuspidatum extracts are often standardized for resveratrol and related polyphenols, which provide antioxidant activity. Side effects can include stomach discomfort, diarrhea, or nausea, especially at higher doses. Because resveratrol may affect platelet aggregation and drug-metabolizing enzymes, caution is advised for people on anticoagulants/antiplatelets, before surgery, or when using multiple medications.\",\"category\":\"Herbal extract\"}",
+    "lastUpdated": 1766867502649,
+    "createdAt": 1766867502649
+  },
+  "shea butter__food__en": {
+    "analysis": "{\"name\":\"Shea Butter\",\"riskLevel\":\"low\",\"summary\":\"Shea butter is a natural fat from the shea nut used mainly for texture and mouthfeel. It is generally safe in foods when used in small amounts.\",\"details\":\"In food products, shea-derived fats can function similarly to other plant butters, helping with creaminess and stability. It contains mostly saturated and monounsaturated fats, so frequent high intake could add to overall saturated fat intake. People with specific sensitivities to shea should use caution, but it is not a common major food allergen.\",\"category\":\"Plant fat / texture agent\"}",
+    "lastUpdated": 1766867502786,
+    "createdAt": 1766867502786
+  },
+  "star anise fruit extract__food__en": {
+    "analysis": "{\"name\":\"Star Anise Fruit Extract\",\"riskLevel\":\"moderate\",\"summary\":\"Star anise extract is a flavoring derived from the fruit of Illicium verum. It is typically safe as a culinary flavor, but quality and source purity matter.\",\"details\":\"Culinary star anise (Illicium verum) is widely used; however, contamination or misidentification with toxic Japanese star anise (Illicium anisatum) has been reported historically, which can cause serious adverse effects. Reputable sourcing and manufacturing controls reduce this risk. If concentrated, it may also cause stomach upset in sensitive individuals.\",\"category\":\"Botanical extract / flavoring\"}",
+    "lastUpdated": 1766867502786,
+    "createdAt": 1766867502786
+  },
+  "disodium edta__food__en": {
+    "analysis": "{\"name\":\"Disodium Edta\",\"riskLevel\":\"low\",\"summary\":\"Disodium EDTA is a chelating agent used to bind metals and help preserve flavor, color, and stability. It is considered safe at regulated levels in foods.\",\"details\":\"By binding trace metals like iron and copper, it can slow oxidation and extend shelf life in certain products. At typical food-use levels it is not expected to cause harm, but excessive intake could theoretically affect mineral availability due to its metal-binding action. It is a common additive in processed foods and beverages in small amounts.\",\"category\":\"Food additive / chelating agent (stabilizer)\"}",
+    "lastUpdated": 1766867502786,
+    "createdAt": 1766867502786
+  },
+  "polyglyceryl-3 methylglucose distearate__food__en": {
+    "analysis": "{\"name\":\"Polyglyceryl-3 Methylglucose Distearate\",\"riskLevel\":\"low\",\"summary\":\"A fat-derived emulsifier used to help oil and water mix and improve texture. It is generally considered low risk at typical food-use levels.\",\"details\":\"This ingredient functions mainly as an emulsifier and stabilizer, helping prevent separation and providing a smoother mouthfeel in formulated products. It is typically used in small amounts and is not a vitamin, stimulant, or preservative of concern. People with very sensitive digestion may notice mild gastrointestinal discomfort from some emulsifiers, but this is not common at normal intakes.\",\"category\":\"Emulsifier\"}",
+    "lastUpdated": 1766867502950,
+    "createdAt": 1766867502950
+  },
+  "isopropyl myristate__food__en": {
+    "analysis": "{\"name\":\"Isopropyl Myristate\",\"riskLevel\":\"high\",\"summary\":\"A fatty acid ester most commonly used in cosmetics and pharmaceuticals rather than foods. Its presence in a food or supplement product is unusual and may warrant clarification from the manufacturer.\",\"details\":\"Isopropyl myristate is primarily used as a solvent, texture modifier, or carrier in topical products, and it is not a typical dietary ingredient. If ingested in meaningful amounts, fatty acid esters and related solvents can cause gastrointestinal upset, and the main concern is inappropriate use or contamination/mislabeling in a food context. If this appears on a food or supplement label, it is reasonable to verify regulatory compliance and intended use with the brand.\",\"category\":\"Solvent / Carrier (atypical for foods)\"}",
+    "lastUpdated": 1766867502950,
+    "createdAt": 1766867502950
+  },
+  "peg-100 stearate__food__en": {
+    "analysis": "{\"name\":\"Peg-100 Stearate\",\"riskLevel\":\"moderate\",\"summary\":\"A polyethylene glycol (PEG)-based emulsifier used to improve mixing and texture. It is generally low concern in small amounts, but PEG ingredients can raise moderate concerns related to manufacturing impurities.\",\"details\":\"PEG-100 stearate helps stabilize formulations by keeping fats and water evenly dispersed, which can improve consistency in certain products. The primary consideration with PEG-based ingredients is potential trace impurities (such as ethylene oxide or 1,4-dioxane) if not well-controlled, so quality sourcing matters. For most people, typical dietary exposure from small amounts is unlikely to cause issues, but it is less preferred in “clean label” formulations.\",\"category\":\"Emulsifier / Surfactant\"}",
+    "lastUpdated": 1766867502950,
+    "createdAt": 1766867502950
+  },
+  "glyceryl stearate__food__en": {
+    "analysis": "{\"name\":\"Glyceryl Stearate\",\"riskLevel\":\"low\",\"summary\":\"Glyceryl stearate is an emulsifier that helps oil and water mix and improves texture. It is generally considered low risk in foods and supplements at typical use levels.\",\"details\":\"In food products it can function as an emulsifier or stabilizer, helping prevent separation and providing a smoother mouthfeel. It is typically made from glycerin and stearic acid, which can be derived from plant oils or animal fats; this is more of a dietary preference issue (vegetarian/vegan) than a safety concern. Gastrointestinal upset is uncommon but could occur in sensitive individuals if consumed in large amounts.\",\"category\":\"Emulsifier / Stabilizer\"}",
+    "lastUpdated": 1766867504180,
+    "createdAt": 1766867504180
+  },
+  "hamamelis virginiana (witch hazel) extract__food__en": {
+    "analysis": "{\"name\":\"Hamamelis Virginiana (witch Hazel) Extract\",\"riskLevel\":\"moderate\",\"summary\":\"Witch hazel extract is a botanical ingredient more common in topical products, and its oral use in foods or supplements can raise tolerability concerns. The main considerations are tannins and other plant compounds that may irritate the stomach in some people.\",\"details\":\"Witch hazel contains tannins and related polyphenols that can be astringent and may cause nausea or stomach upset, especially at higher doses. Product-to-product variability is possible because plant extracts differ in concentration and may include added solvents depending on how they are made. People who are pregnant, breastfeeding, have liver disease, or take multiple medications should use extra caution with concentrated botanical extracts and consider medical advice.\",\"category\":\"Botanical Extract\"}",
+    "lastUpdated": 1766867504180,
+    "createdAt": 1766867504180
+  },
+  "dimethiconol__food__en": {
+    "analysis": "{\"name\":\"Dimethiconol\",\"riskLevel\":\"moderate\",\"summary\":\"Dimethiconol is a silicone-based polymer mainly used in cosmetics and as a processing aid, and it is not a common food ingredient. Its presence in a food or supplement product may indicate use as a processing aid or contamination from packaging or manufacturing.\",\"details\":\"Silicone polymers are generally poorly absorbed and tend to pass through the digestive tract, but they are not widely used as intentional ingredients in foods compared with approved anti-foaming silicones (such as certain dimethylpolysiloxanes). If intentionally added, regulatory status and acceptable use levels should be confirmed for the specific region and product type. In sensitive individuals, large amounts of inert polymers could potentially contribute to mild gastrointestinal discomfort.\",\"category\":\"Processing Aid / Silicone Polymer\"}",
+    "lastUpdated": 1766867504180,
+    "createdAt": 1766867504180
+  },
+  "camellia sinensis leaf extract (green tea leaf extract)__food__en": {
+    "analysis": "{\"name\":\"Camellia Sinensis Leaf Extract (green Tea Leaf Extract)\",\"riskLevel\":\"moderate\",\"summary\":\"Green tea leaf extract provides polyphenols (such as EGCG) and may provide caffeine, depending on how it is made. It is generally safe at typical food and beverage amounts but can be more risky in concentrated supplement doses.\",\"details\":\"Moderate risk is mainly due to potential stimulant effects (caffeine-related jitteriness, insomnia, faster heart rate) and rare reports of liver injury associated with high-dose, concentrated green tea extract, especially when taken on an empty stomach. People who are pregnant, sensitive to caffeine, or who have liver disease should be cautious with high-potency extracts. It can also affect absorption of non-heme iron when consumed frequently with meals.\",\"category\":\"Botanical extract / Source of polyphenols (and sometimes caffeine)\"}",
+    "lastUpdated": 1766867504490,
+    "createdAt": 1766867504490
+  },
+  "rosmarinus officinalis (rosemary) leaf extract__food__en": {
+    "analysis": "{\"name\":\"Rosmarinus Officinalis (rosemary) Leaf Extract\",\"riskLevel\":\"low\",\"summary\":\"Rosemary leaf extract is a botanical ingredient often used for flavor and as a natural antioxidant. It is generally considered safe in foods at typical use levels.\",\"details\":\"In food products it is commonly used to help protect fats and flavors from oxidation, which can improve shelf life. Adverse effects are uncommon at dietary amounts, though very high supplemental intakes could cause stomach upset in sensitive individuals. People with known sensitivity to rosemary or related herbs may experience mild reactions, but this is not common.\",\"category\":\"Botanical extract / Natural antioxidant\"}",
+    "lastUpdated": 1766867504490,
+    "createdAt": 1766867504490
+  },
+  "centella asiatica extract (gotu kola extract)__food__en": {
+    "analysis": "{\"name\":\"Centella Asiatica Extract (gotu Kola Extract)\",\"riskLevel\":\"moderate\",\"summary\":\"Centella asiatica (gotu kola) extract is a botanical used in supplements for skin and connective tissue support. It is usually well tolerated, but concentrated extracts can pose added risk compared with whole-food use.\",\"details\":\"Moderate risk is due to occasional reports of liver-related adverse effects and potential drowsiness or sedation in some individuals, particularly with higher-dose supplements. Product quality varies, and botanical extracts can sometimes be contaminated or adulterated, making reputable sourcing important. It may not be appropriate for pregnancy, or for people with liver disease or those using medications that affect the liver without medical guidance.\",\"category\":\"Botanical extract / Herbal supplement\"}",
+    "lastUpdated": 1766867504490,
+    "createdAt": 1766867504490
+  },
+  "polysorbate 20__food__en": {
+    "analysis": "{\"name\":\"Polysorbate 20\",\"riskLevel\":\"moderate\",\"summary\":\"Polysorbate 20 is a synthetic emulsifier used to help ingredients mix and stay stable. It is generally permitted in foods but is sometimes avoided by people who prefer fewer processed additives.\",\"details\":\"At typical food-use levels, it is considered safe by major regulators, but some people report digestive discomfort or sensitivity to emulsifiers. Emerging research suggests some emulsifiers may affect gut barrier function or microbiome in susceptible individuals, though evidence in humans at real-world doses is limited. People with gastrointestinal conditions may choose to limit frequent intake.\",\"category\":\"Emulsifier / Stabilizer\"}",
+    "lastUpdated": 1766867504598,
+    "createdAt": 1766867504598
+  },
+  "polyglutamic acid__food__en": {
+    "analysis": "{\"name\":\"Polyglutamic Acid\",\"riskLevel\":\"low\",\"summary\":\"Polyglutamic acid is a polymer of glutamic acid often produced by fermentation and used as a binder or texture/moisture enhancer. It is generally regarded as low concern in foods and supplements.\",\"details\":\"It can help improve mouthfeel, stabilize formulations, or retain moisture in gummies, powders, and drinks. It is typically well tolerated, and the body can break it down into amino-acid components. Adverse effects are uncommon, though very sensitive individuals could experience mild digestive upset with high amounts.\",\"category\":\"Fermentation-derived polymer / Texture agent\"}",
+    "lastUpdated": 1766867504598,
+    "createdAt": 1766867504598
+  },
+  "glycyrrhiza glabra (licorice) root extract__food__en": {
+    "analysis": "{\"name\":\"Glycyrrhiza Glabra (licorice) Root Extract\",\"riskLevel\":\"moderate\",\"summary\":\"Licorice root extract can provide flavor and bioactive compounds, but some forms can raise blood pressure and lower potassium if consumed regularly in meaningful amounts. Risk depends strongly on the extract type and dose.\",\"details\":\"Extracts containing glycyrrhizin can cause sodium retention, hypokalemia, and increased blood pressure, especially with frequent use or in high doses. People who are pregnant, have hypertension, kidney disease, heart conditions, or take diuretics, corticosteroids, or blood pressure medications should be cautious. Deglycyrrhizinated licorice (DGL) has lower glycyrrhizin content and generally carries less of this specific risk, but labeling is not always clear.\",\"category\":\"Botanical extract / Flavoring\"}",
+    "lastUpdated": 1766867504598,
+    "createdAt": 1766867504598
+  },
+  "sodium polyacrylate__food__en": {
+    "analysis": "{\"name\":\"Sodium Polyacrylate\",\"riskLevel\":\"moderate\",\"summary\":\"Sodium polyacrylate is a superabsorbent polymer mainly used as a thickener or moisture-binding agent. In foods and supplements it is uncommon, so its presence may warrant extra scrutiny of product quality and intended use.\",\"details\":\"This ingredient is widely used in industrial applications for water absorption and gel formation, but it is not a standard food additive in many regions. If used in an ingestible product, it is typically intended to modify texture or stability, yet regulatory acceptance and typical exposure levels can vary by country. Potential concerns are primarily about appropriateness for ingestion and gastrointestinal discomfort if consumed in notable amounts rather than acute toxicity at trace levels.\",\"category\":\"Texturizer / Superabsorbent polymer\"}",
+    "lastUpdated": 1766867504898,
+    "createdAt": 1766867504898
+  },
+  "2-hexanediol__food__en": {
+    "analysis": "{\"name\":\"2-hexanediol\",\"riskLevel\":\"moderate\",\"summary\":\"2-Hexanediol is a solvent and humectant more commonly found in cosmetics than in foods. Its use in ingestible products is not typical, which can raise questions about regulatory status and formulation intent.\",\"details\":\"As a diol, it can act as a solvent or moisture-retaining agent and may also support preservation by reducing microbial growth, but it is not a mainstream food ingredient. Risk depends heavily on dose and regulatory allowances, and higher exposures could potentially cause gastrointestinal irritation. If listed in a supplement or beverage, consumers may want to confirm that it is permitted for ingestion in their region and that the product comes from a reputable manufacturer.\",\"category\":\"Solvent / Humectant\"}",
+    "lastUpdated": 1766867504898,
+    "createdAt": 1766867504898
+  },
+  "caprylyl glycol__food__en": {
+    "analysis": "{\"name\":\"Caprylyl Glycol\",\"riskLevel\":\"moderate\",\"summary\":\"Caprylyl glycol is a humectant and preservative booster commonly used in personal care products. In foods and supplements it is relatively uncommon, so its inclusion may indicate a formulation or regulatory edge case.\",\"details\":\"It helps retain moisture and can enhance preservation by inhibiting microbial growth, often used alongside other preservatives. Ingestible use is less standard than cosmetic use, so safety assessment should focus on permitted use, expected intake, and overall product quality controls. At higher amounts, humectants can sometimes contribute to digestive upset, though risk at low levels is generally tied to exposure and compliance with food regulations.\",\"category\":\"Humectant / Preservative booster\"}",
+    "lastUpdated": 1766867504899,
+    "createdAt": 1766867504899
+  },
+  "water__personal_care__en": {
+    "analysis": "{\"name\":\"Water\",\"riskLevel\":\"low\",\"summary\":\"Water is the main solvent used to dissolve and distribute other ingredients in personal care products. It is generally well tolerated and low risk.\",\"details\":\"In skincare and haircare formulas, water helps create the product’s texture and enables even application. Safety concerns are minimal in finished products; overall product safety depends more on the other ingredients and preservative system than on water itself.\",\"category\":\"Solvent\"}",
+    "lastUpdated": 1766867540506,
+    "createdAt": 1766867540506
+  },
+  "glycerin__personal_care__en": {
+    "analysis": "{\"name\":\"Glycerin\",\"riskLevel\":\"low\",\"summary\":\"Glycerin is a humectant that helps attract and hold water in the skin and hair. It is widely considered safe and effective at typical cosmetic concentrations.\",\"details\":\"It supports skin barrier hydration and can reduce dryness and flaking. Very high levels or use in extremely dry environments can sometimes feel sticky or, rarely, contribute to dryness if not balanced with occlusive ingredients, but it is still considered low risk overall.\",\"category\":\"Humectant\"}",
+    "lastUpdated": 1766867540506,
+    "createdAt": 1766867540506
+  },
+  "olive (olea europaea) fruit oil__personal_care__en": {
+    "analysis": "{\"name\":\"Olive (olea Europaea) Fruit Oil\",\"riskLevel\":\"low\",\"summary\":\"Olive fruit oil is an emollient oil that helps soften skin and reduce moisture loss. It is generally low risk for the general population.\",\"details\":\"It provides fatty acids and antioxidant components that can improve the feel of creams, lotions, and soaps. Some people with sensitive or acne-prone skin may find it feels heavy or may contribute to clogged pores, and a small number may experience irritation, but it is not a high-concern ingredient in the categories listed (e.g., parabens, phthalates, formaldehyde releasers).\",\"category\":\"Emollient\"}",
+    "lastUpdated": 1766867540506,
+    "createdAt": 1766867540506
+  },
+  "cetearyl alcohol__personal_care__en": {
+    "analysis": "{\"name\":\"Cetearyl Alcohol\",\"riskLevel\":\"low\",\"summary\":\"Cetearyl alcohol is a fatty alcohol used to thicken and soften personal care products. It is generally well tolerated and is not the same as drying alcohols like ethanol.\",\"details\":\"It acts as an emollient and emulsifier, helping oil and water mix while giving creams a smoother texture. Most people tolerate it well, though very sensitive or eczema-prone skin may rarely experience irritation or contact allergy. It is not a paraben, sulfate, phthalate, or formaldehyde-releasing preservative.\",\"category\":\"Fatty alcohol / Emollient / Emulsifier\"}",
+    "lastUpdated": 1766867540878,
+    "createdAt": 1766867540878
+  },
+  "beeswax__personal_care__en": {
+    "analysis": "{\"name\":\"Beeswax\",\"riskLevel\":\"low\",\"summary\":\"Beeswax is a natural wax that helps form a protective barrier and thickens balms and creams. It is generally considered low risk for most users.\",\"details\":\"It works as an occlusive and texture agent, reducing moisture loss and improving product stability. Rarely, it can trigger irritation or allergy in people sensitive to bee products, propolis, or certain pollen residues. It is not associated with concerns like parabens, sulfates, phthalates, or formaldehyde-releasing preservatives.\",\"category\":\"Wax / Occlusive / Thickener\"}",
+    "lastUpdated": 1766867540878,
+    "createdAt": 1766867540878
+  },
+  "cetyl ethylhexanoate__personal_care__en": {
+    "analysis": "{\"name\":\"Cetyl Ethylhexanoate\",\"riskLevel\":\"low\",\"summary\":\"Cetyl ethylhexanoate is a lightweight ester that provides slip and a silky feel in skincare and cosmetics. It is typically low risk and non-drying.\",\"details\":\"It functions as an emollient to improve spreadability and reduce greasiness, often used in lotions, sunscreens, and makeup. Some acne-prone individuals may find certain esters feel heavy or contribute to breakouts, though this varies by person and formula. It is not a fragrance, paraben, sulfate, phthalate, or formaldehyde-releasing preservative.\",\"category\":\"Ester / Emollient\"}",
+    "lastUpdated": 1766867540878,
+    "createdAt": 1766867540878
+  },
+  "betaine__personal_care__en": {
+    "analysis": "{\"name\":\"Betaine\",\"riskLevel\":\"low\",\"summary\":\"Betaine is a hydrating ingredient that helps skin and hair retain moisture and feel smoother. It is generally well tolerated in personal care products.\",\"details\":\"Most commonly derived from sugar beet, betaine acts as a humectant and osmoprotectant, helping reduce dryness and improve softness. It is not a paraben, sulfate, phthalate, or formaldehyde-releasing preservative, and it is not the same as synthetic fragrance. Rare irritation can occur in very sensitive individuals, but overall safety concern is low.\",\"category\":\"Humectant / Skin-conditioning agent\"}",
+    "lastUpdated": 1766867541119,
+    "createdAt": 1766867541119
+  },
+  "allantoin__personal_care__en": {
+    "analysis": "{\"name\":\"Allantoin\",\"riskLevel\":\"low\",\"summary\":\"Allantoin is a soothing skin protectant that supports comfort in irritated or dry skin. It is widely used and considered low risk in cosmetics.\",\"details\":\"Allantoin helps calm the skin, supports gentle exfoliation of rough patches, and can improve the feel of dryness or mild irritation. It is not associated with key concern groups like parabens, sulfates, phthalates, triclosan, or formaldehyde-releasing preservatives. Sensitization is uncommon, making it a low-risk ingredient for most users.\",\"category\":\"Soothing agent / Skin protectant\"}",
+    "lastUpdated": 1766867541119,
+    "createdAt": 1766867541119
+  },
+  "trehalose__personal_care__en": {
+    "analysis": "{\"name\":\"Trehalose\",\"riskLevel\":\"low\",\"summary\":\"Trehalose is a sugar-based humectant that helps boost hydration and reduce the look and feel of dryness. It is generally considered low risk in personal care formulas.\",\"details\":\"Trehalose helps bind water and can improve skin barrier comfort by reducing dehydration stress, making it common in moisturizers and serums. It is not a fragrance ingredient and is not part of high-concern preservative classes like formaldehyde releasers, nor is it a paraben or phthalate. Adverse reactions are rare, so overall concern is low.\",\"category\":\"Humectant / Moisturizer\"}",
+    "lastUpdated": 1766867541119,
+    "createdAt": 1766867541119
+  },
+  "sodium polyacrylate__personal_care__en": {
+    "analysis": "{\"name\":\"Sodium Polyacrylate\",\"riskLevel\":\"low\",\"summary\":\"Sodium polyacrylate is a synthetic polymer used to thicken and stabilize personal care formulas. It is generally considered low risk in topical products.\",\"details\":\"It functions mainly as a thickener, absorbent, and texture enhancer in creams, gels, and lotions. It is not a paraben, sulfate, phthalate, or formaldehyde-releasing preservative, and it is typically not a significant skin sensitizer. Mild irritation is possible for very sensitive skin, but this is uncommon at typical use levels.\",\"category\":\"Thickener / Absorbent Polymer\"}",
+    "lastUpdated": 1766867541141,
+    "createdAt": 1766867541141
+  },
+  "2-hexanediol__personal_care__en": {
+    "analysis": "{\"name\":\"2-hexanediol\",\"riskLevel\":\"moderate\",\"summary\":\"2-Hexanediol is a solvent and preservative booster that helps keep products stable and microbe-resistant. It is usually well tolerated but can be irritating for some people, especially in leave-on products.\",\"details\":\"As a diol, it can increase skin penetration and enhance preservative performance, which supports product safety but may raise irritation potential in sensitive skin. It is not a paraben, sulfate, phthalate, or formaldehyde-releasing preservative. People prone to dermatitis may experience stinging or redness, particularly at higher concentrations.\",\"category\":\"Solvent / Preservative Booster\"}",
+    "lastUpdated": 1766867541141,
+    "createdAt": 1766867541141
+  },
+  "caprylyl glycol__personal_care__en": {
+    "analysis": "{\"name\":\"Caprylyl Glycol\",\"riskLevel\":\"moderate\",\"summary\":\"Caprylyl glycol is a humectant and preservative booster that helps moisturize and support antimicrobial preservation. It is generally safe but may cause irritation or sensitization in some individuals.\",\"details\":\"It is commonly used to improve skin feel and to enhance the effectiveness of the preservative system, reducing the need for stronger preservatives. It is not a paraben, sulfate, phthalate, or formaldehyde-releasing preservative, and it is not a fragrance ingredient. Sensitive skin may react with mild burning, itching, or redness, especially with frequent use or higher levels.\",\"category\":\"Humectant / Preservative Booster\"}",
+    "lastUpdated": 1766867541141,
+    "createdAt": 1766867541141
+  },
+  "shea butter (butyrospermum parkii butter)__personal_care__en": {
+    "analysis": "{\"name\":\"Shea Butter (butyrospermum Parkii Butter)\",\"riskLevel\":\"low\",\"summary\":\"A plant-derived emollient that moisturizes and helps support the skin barrier. It is generally well tolerated in personal care products.\",\"details\":\"Shea butter is rich in fatty acids that soften skin and reduce moisture loss, making it common in creams, lotions, and lip products. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, or synthetic fragrance ingredient. Rarely, it may feel heavy or contribute to clogged pores for some people depending on skin type and formula.\",\"category\":\"Emollient / Skin-conditioning agent\"}",
+    "lastUpdated": 1766867541185,
+    "createdAt": 1766867541185
+  },
+  "anise fruit extract (illicium verum fruit extract)__personal_care__en": {
+    "analysis": "{\"name\":\"Anise Fruit Extract (illicium Verum Fruit Extract)\",\"riskLevel\":\"moderate\",\"summary\":\"A botanical extract often used for fragrance and antioxidant/soothing claims. It can be a potential sensitizer for people with fragrance sensitivity.\",\"details\":\"Anise extract contains aromatic compounds that provide scent and may offer some antioxidant activity, but plant extracts can trigger irritation or allergic contact dermatitis in sensitive individuals. This is not a paraben, sulfate, phthalate, or formaldehyde-releasing preservative, but it functions similarly to fragrance-type ingredients in terms of sensitization potential. Patch testing is advisable if you react to essential oils or fragranced skincare.\",\"category\":\"Botanical extract / Fragrance component\"}",
+    "lastUpdated": 1766867541185,
+    "createdAt": 1766867541185
+  },
+  "disodium edta__personal_care__en": {
+    "analysis": "{\"name\":\"Disodium Edta\",\"riskLevel\":\"low\",\"summary\":\"A chelating agent that improves product stability by binding metal ions. It is widely used and generally considered low risk in cosmetics at typical concentrations.\",\"details\":\"Disodium EDTA helps prevent discoloration, rancidity, and reduced preservative effectiveness caused by trace metals in water or raw materials. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, or fragrance ingredient. Mild irritation is uncommon but possible, especially on very compromised or highly sensitive skin.\",\"category\":\"Chelating agent / Stabilizer\"}",
+    "lastUpdated": 1766867541185,
+    "createdAt": 1766867541185
+  },
+  "polysorbate 20__personal_care__en": {
+    "analysis": "{\"name\":\"Polysorbate 20\",\"riskLevel\":\"low\",\"summary\":\"Polysorbate 20 is a non-ionic surfactant and solubilizer commonly used to help mix oil- and water-based ingredients. It is generally considered low risk at typical cosmetic use levels.\",\"details\":\"It helps disperse fragrances, essential oils, and other oily ingredients evenly in formulas such as cleansers, toners, and sprays. Some people with very sensitive or compromised skin may experience mild irritation, especially in leave-on products, but it is not a paraben, sulfate, phthalate, or formaldehyde-releasing preservative.\",\"category\":\"Surfactant / Solubilizer / Emulsifier\"}",
+    "lastUpdated": 1766867541318,
+    "createdAt": 1766867541318
+  },
+  "polyglutamic acid__personal_care__en": {
+    "analysis": "{\"name\":\"Polyglutamic Acid\",\"riskLevel\":\"low\",\"summary\":\"Polyglutamic acid is a humectant polymer that supports hydration by helping the skin retain water. It is generally well tolerated and considered low risk in personal care products.\",\"details\":\"It is often produced via fermentation and is used in serums and moisturizers to improve skin softness and reduce the look of dryness. Adverse effects are uncommon, but very sensitive skin may rarely experience mild stinging or irritation, especially when layered with strong acids or retinoids.\",\"category\":\"Humectant / Skin-conditioning agent\"}",
+    "lastUpdated": 1766867541319,
+    "createdAt": 1766867541319
+  },
+  "glycyrrhiza glabra (licorice) root extract__personal_care__en": {
+    "analysis": "{\"name\":\"Glycyrrhiza Glabra (licorice) Root Extract\",\"riskLevel\":\"low\",\"summary\":\"Licorice root extract is a botanical ingredient used to help soothe skin and improve the look of uneven tone. It is generally low risk for most users.\",\"details\":\"It contains compounds such as glabridin and glycyrrhizin that can support calming and brightening effects in skincare. Botanical extracts can occasionally trigger irritation or allergic-type reactions in sensitive individuals, but this ingredient is not part of key concern groups like parabens, phthalates, formaldehyde releasers, or synthetic fragrance compounds.\",\"category\":\"Botanical extract / Skin-soothing agent / Brightening agent\"}",
+    "lastUpdated": 1766867541319,
+    "createdAt": 1766867541319
+  },
+  "cyclohexasiloxane__personal_care__en": {
+    "analysis": "{\"name\":\"Cyclohexasiloxane\",\"riskLevel\":\"moderate\",\"summary\":\"Cyclohexasiloxane is a volatile silicone used to give products a silky feel and improve spreadability. It is generally low concern for irritation but has environmental persistence concerns.\",\"details\":\"In personal care products, it helps create a smooth, lightweight texture and can reduce tackiness in leave-on formulas. Human health risk from topical use is typically considered low, but it can be mildly irritating for a small number of sensitive users. Some regulators focus on its persistence and potential bioaccumulation in the environment, which is why it is often flagged as a moderate concern overall.\",\"category\":\"Silicone (volatile emollient/texture enhancer)\"}",
+    "lastUpdated": 1766867541957,
+    "createdAt": 1766867541957
+  },
+  "polysorbate 60__personal_care__en": {
+    "analysis": "{\"name\":\"Polysorbate 60\",\"riskLevel\":\"low\",\"summary\":\"Polysorbate 60 is an emulsifier that helps oil and water mix and improves product stability. It is generally considered low risk at typical cosmetic use levels.\",\"details\":\"It is commonly used in creams and lotions to prevent separation and to improve texture. Some people with very sensitive skin may experience mild irritation, especially in leave-on products, but this is not common. Overall, it is not a paraben, sulfate, phthalate, or formaldehyde-releasing preservative and is typically viewed as low concern.\",\"category\":\"Emulsifier / Surfactant\"}",
+    "lastUpdated": 1766867541957,
+    "createdAt": 1766867541957
+  },
+  "stearic acid__personal_care__en": {
+    "analysis": "{\"name\":\"Stearic Acid\",\"riskLevel\":\"low\",\"summary\":\"Stearic acid is a fatty acid used as an emollient, thickener, and cleanser aid in many personal care products. It is generally low risk and well tolerated.\",\"details\":\"It helps stabilize emulsions and gives creams and soaps a richer, more solid texture. It is usually non-irritating, though very acne-prone individuals may find heavier fatty-acid-rich formulas contribute to clogged pores depending on the overall formulation. It can be derived from plant or animal sources, which may matter for personal preferences but does not typically change safety.\",\"category\":\"Fatty acid (emollient/thickener)\"}",
+    "lastUpdated": 1766867541957,
+    "createdAt": 1766867541957
+  },
+  "glyceryl stearate__personal_care__en": {
+    "analysis": "{\"name\":\"Glyceryl Stearate\",\"riskLevel\":\"low\",\"summary\":\"Glyceryl stearate is a common emulsifier and skin-conditioning agent that helps blend oil and water in creams and lotions. It is generally well tolerated in personal care products.\",\"details\":\"It improves texture, spreadability, and can support the skin barrier by reducing moisture loss. Adverse reactions are uncommon, but very acne-prone or sensitive individuals may find richer formulations containing it feel heavy or potentially clogging depending on the full formula. It is not a paraben, sulfate, phthalate, or formaldehyde-releasing preservative.\",\"category\":\"Emulsifier / Emollient\"}",
+    "lastUpdated": 1766867541983,
+    "createdAt": 1766867541983
+  },
+  "hamamelis virginiana (witch hazel) extract__personal_care__en": {
+    "analysis": "{\"name\":\"Hamamelis Virginiana (witch Hazel) Extract\",\"riskLevel\":\"moderate\",\"summary\":\"Witch hazel extract is an astringent botanical often used to help reduce the feeling of oiliness and temporarily tighten the look of pores. It can be irritating or drying for some sensitive or compromised skin types.\",\"details\":\"Witch hazel naturally contains tannins, which can have soothing and antioxidant benefits but may also increase dryness, stinging, or redness in reactive skin (especially with frequent use). Many witch hazel ingredients are supplied in alcohol-based solutions, which can further increase dryness depending on the product’s full ingredient list. Patch testing is advisable for sensitive skin, rosacea-prone skin, or after procedures.\",\"category\":\"Botanical extract / Astringent\"}",
+    "lastUpdated": 1766867541983,
+    "createdAt": 1766867541983
+  },
+  "dimethiconol__personal_care__en": {
+    "analysis": "{\"name\":\"Dimethiconol\",\"riskLevel\":\"low\",\"summary\":\"Dimethiconol is a silicone polymer used to smooth skin and hair and improve slip, shine, and a soft feel. It is generally considered low risk for irritation.\",\"details\":\"It forms a lightweight protective film that can reduce moisture loss and improve the appearance of frizz or rough texture. While not typically irritating, some people prefer to limit silicones due to potential buildup in hair products (usually manageable with effective cleansing). It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, or fragrance ingredient by itself.\",\"category\":\"Silicone / Conditioning agent\"}",
+    "lastUpdated": 1766867541984,
+    "createdAt": 1766867541984
+  },
+  "camellia sinensis leaf extract (green tea extract)__personal_care__en": {
+    "analysis": "{\"name\":\"Camellia Sinensis Leaf Extract (green Tea Extract)\",\"riskLevel\":\"low\",\"summary\":\"Green tea leaf extract is a plant-derived antioxidant commonly used to help soothe and protect skin. It is generally considered low risk in personal care products.\",\"details\":\"It contains polyphenols (such as EGCG) that can help reduce oxidative stress and support a calmer-looking complexion. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, or synthetic fragrance ingredient. Rarely, very sensitive individuals may experience irritation depending on concentration and the overall formula.\",\"category\":\"Botanical extract / Antioxidant / Soothing agent\"}",
+    "lastUpdated": 1766867542429,
+    "createdAt": 1766867542429
+  },
+  "rosmarinus officinalis (rosemary) leaf extract__personal_care__en": {
+    "analysis": "{\"name\":\"Rosmarinus Officinalis (rosemary) Leaf Extract\",\"riskLevel\":\"moderate\",\"summary\":\"Rosemary leaf extract is a botanical antioxidant and antimicrobial-support ingredient used in skincare and haircare. It is usually well tolerated but can be more irritating or sensitizing for some people.\",\"details\":\"Because rosemary naturally contains aromatic compounds, it may trigger irritation or allergic contact dermatitis in fragrance-sensitive individuals, especially in leave-on products or at higher levels. It is not the same as added “fragrance,” but it can contribute fragrance-like components to a formula. It is not a paraben, sulfate, phthalate, or formaldehyde-releasing preservative.\",\"category\":\"Botanical extract / Antioxidant / Fragrance-associated plant extract\"}",
+    "lastUpdated": 1766867542429,
+    "createdAt": 1766867542429
+  },
+  "centella asiatica extract__personal_care__en": {
+    "analysis": "{\"name\":\"Centella Asiatica Extract\",\"riskLevel\":\"low\",\"summary\":\"Centella asiatica extract is a soothing botanical commonly used to support the skin barrier and reduce the look of redness. It is generally low risk for most users.\",\"details\":\"Key constituents (such as asiaticoside and madecassoside) are widely used in products aimed at calming and hydrating the skin. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, or synthetic fragrance ingredient. Occasional sensitivity can occur with any plant extract, but it is uncommon.\",\"category\":\"Botanical extract / Soothing agent / Skin-repair support\"}",
+    "lastUpdated": 1766867542429,
+    "createdAt": 1766867542429
+  },
+  "polyglyceryl-3 methylglucose distearate__personal_care__en": {
+    "analysis": "{\"name\":\"Polyglyceryl-3 Methylglucose Distearate\",\"riskLevel\":\"low\",\"summary\":\"A mild emulsifier that helps oil and water mix and gives creams a smooth, stable texture. It is generally considered low concern for most people.\",\"details\":\"This ingredient is commonly used in lotions and creams to improve spreadability and prevent separation. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, or fragrance ingredient. Rare skin irritation can occur, especially on very sensitive or compromised skin, but it is uncommon.\",\"category\":\"Emulsifier\"}",
+    "lastUpdated": 1766867542643,
+    "createdAt": 1766867542643
+  },
+  "isopropyl myristate__personal_care__en": {
+    "analysis": "{\"name\":\"Isopropyl Myristate\",\"riskLevel\":\"moderate\",\"summary\":\"An emollient that makes products feel silky and improves slip, but it can be comedogenic for some users. People prone to acne may experience clogged pores or breakouts.\",\"details\":\"Isopropyl Myristate is widely used to soften skin and enhance the feel and spread of cosmetics, and it can also increase penetration of other ingredients. It is not a paraben, sulfate, phthalate, or formaldehyde-releasing preservative. The main concern is pore-clogging potential and occasional irritation in oily or acne-prone skin types, especially in leave-on facial products.\",\"category\":\"Emollient\"}",
+    "lastUpdated": 1766867542643,
+    "createdAt": 1766867542643
+  },
+  "peg-100 stearate__personal_care__en": {
+    "analysis": "{\"name\":\"Peg-100 Stearate\",\"riskLevel\":\"moderate\",\"summary\":\"A common emulsifier and surfactant that helps stabilize creams and lotions. It is generally safe, but PEG ingredients can be a moderate concern depending on manufacturing purity.\",\"details\":\"PEG-100 Stearate improves texture and keeps oil and water mixed, and it is not a paraben, sulfate, phthalate, or formaldehyde-releasing preservative. Some PEGs may carry trace impurities (such as ethylene oxide or 1,4-dioxane) if not well purified, which is why the risk is sometimes rated higher than very simple emulsifiers. It can also be mildly irritating for a small number of people with very sensitive skin.\",\"category\":\"Emulsifier\"}",
+    "lastUpdated": 1766867542643,
+    "createdAt": 1766867542643
+  },
+  "butylene glycol__personal_care__en": {
+    "analysis": "{\"name\":\"Butylene Glycol\",\"riskLevel\":\"low\",\"summary\":\"Butylene Glycol is a common humectant and solvent that helps products feel smooth and prevents them from drying out. It is generally considered low risk for most people.\",\"details\":\"It improves spreadability and can enhance penetration of other ingredients, which may increase the chance of irritation if the overall formula is harsh. A small number of people with very sensitive or compromised skin may experience stinging or irritation, especially at higher concentrations. It is not a paraben, sulfate, phthalate, or formaldehyde-releasing preservative.\",\"category\":\"Humectant / Solvent\"}",
+    "lastUpdated": 1766867543524,
+    "createdAt": 1766867543524
+  },
+  "macadamia ternifolia seed oil__personal_care__en": {
+    "analysis": "{\"name\":\"Macadamia Ternifolia Seed Oil\",\"riskLevel\":\"low\",\"summary\":\"Macadamia Ternifolia Seed Oil is an emollient plant oil used to soften skin and reduce moisture loss. It is generally low risk for the general population.\",\"details\":\"As a tree-nut-derived oil, it can be a concern for individuals with specific nut allergies, but it is considered safe for most users and should still be rated low risk for the general population. It is rich in fatty acids and can help improve skin feel and barrier support. In acne-prone individuals, heavier oils may contribute to clogged pores depending on the overall formulation and personal skin type.\",\"category\":\"Emollient / Plant Oil\"}",
+    "lastUpdated": 1766867543524,
+    "createdAt": 1766867543524
+  },
+  "cyclopentasiloxane__personal_care__en": {
+    "analysis": "{\"name\":\"Cyclopentasiloxane\",\"riskLevel\":\"low\",\"summary\":\"Cyclopentasiloxane is a volatile silicone that gives products a silky, slip-like feel and helps them spread easily. It is generally low risk for skin and hair in typical cosmetic use.\",\"details\":\"It evaporates after application, leaving a smooth finish and reducing tackiness, and is commonly used in hair serums, primers, and moisturizers. Some people prefer to avoid silicones due to potential buildup or feel on hair, but this is typically a performance concern rather than a safety issue. Environmental persistence and aquatic toxicity concerns have led to restrictions in some regions for wash-off products, though this does not usually indicate high human health risk in personal care use.\",\"category\":\"Silicone (Volatile Emollient)\"}",
+    "lastUpdated": 1766867543524,
+    "createdAt": 1766867543524
+  },
+  "chamomile (matricaria recutita) flower extract__personal_care__en": {
+    "analysis": "{\"name\":\"Chamomile (matricaria Recutita) Flower Extract\",\"riskLevel\":\"moderate\",\"summary\":\"Chamomile flower extract is a soothing botanical commonly used to calm redness and support sensitive skin. The main concern is possible irritation or allergic reaction in people sensitive to chamomile or related plants.\",\"details\":\"It contains compounds such as bisabolol and flavonoids that can provide anti-inflammatory and antioxidant benefits in personal care products. However, it may trigger contact dermatitis in individuals allergic to Asteraceae (ragweed/mugwort) family plants or to botanical extracts in general. It is not a paraben, sulfate, phthalate, formaldehyde-releaser, or synthetic fragrance compound.\",\"category\":\"Botanical extract / Skin-soothing agent\"}",
+    "lastUpdated": 1766867543646,
+    "createdAt": 1766867543646
+  },
+  "baikal skullcap (scutellaria baicalensis) root extract__personal_care__en": {
+    "analysis": "{\"name\":\"Baikal Skullcap (scutellaria Baicalensis) Root Extract\",\"riskLevel\":\"low\",\"summary\":\"Baikal skullcap root extract is an antioxidant botanical used to help soothe skin and reduce the look of irritation. It is generally considered low risk in topical personal care use.\",\"details\":\"It is rich in flavonoids such as baicalin and baicalein, which can support antioxidant and calming effects in skincare. Sensitization is possible with any plant extract, but it is not a common allergen and is typically well tolerated at cosmetic concentrations. It does not fall into key concern groups like parabens, sulfates, phthalates, or formaldehyde-releasing preservatives.\",\"category\":\"Botanical extract / Antioxidant\"}",
+    "lastUpdated": 1766867543646,
+    "createdAt": 1766867543646
+  },
+  "japanese knotweed (polygonum cuspidatum) root extract__personal_care__en": {
+    "analysis": "{\"name\":\"Japanese Knotweed (polygonum Cuspidatum) Root Extract\",\"riskLevel\":\"low\",\"summary\":\"Japanese knotweed root extract is primarily used as an antioxidant ingredient and a natural source of resveratrol. It is generally low risk for most users when used topically.\",\"details\":\"Its polyphenols (including resveratrol) can help defend against oxidative stress and may support a more even-looking complexion. As with many botanical extracts, mild irritation or sensitivity can occur in reactive skin, especially in leave-on products or higher concentrations. It is not associated with major personal-care red flags such as parabens, sulfates, phthalates, triclosan, or formaldehyde releasers.\",\"category\":\"Botanical extract / Antioxidant\"}",
+    "lastUpdated": 1766867543646,
+    "createdAt": 1766867543646
+  },
+  "xylitol__personal_care__en": {
+    "analysis": "{\"name\":\"Xylitol\",\"riskLevel\":\"low\",\"summary\":\"Xylitol is a sugar alcohol used as a humectant and sweetener, especially common in oral care products. It is generally considered low risk for topical and oral use in typical cosmetic concentrations.\",\"details\":\"In personal care, xylitol helps attract and retain water, supporting hydration and a smoother feel on skin or lips, and it can help reduce cavity-causing bacteria in toothpaste and mouthwash. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, or fragrance ingredient. Some people may experience mild irritation or gastrointestinal upset if swallowed in large amounts, but this is uncommon at normal product use levels.\",\"category\":\"Humectant / Sweetener\"}",
+    "lastUpdated": 1766867544605,
+    "createdAt": 1766867544605
+  },
+  "ceramide np__personal_care__en": {
+    "analysis": "{\"name\":\"Ceramide Np\",\"riskLevel\":\"low\",\"summary\":\"Ceramide NP is a skin-identical lipid that supports the skin barrier and helps reduce moisture loss. It is widely regarded as low risk and well tolerated in skincare.\",\"details\":\"Ceramides are naturally present in the outer layer of skin, and adding Ceramide NP can help improve dryness, sensitivity, and barrier function. It is not associated with common personal-care red flags such as parabens, sulfates, phthalates, formaldehyde releasers, or synthetic fragrance compounds. Irritation is rare, but very sensitive individuals could react to the overall formula rather than the ceramide itself.\",\"category\":\"Skin barrier lipid / Emollient\"}",
+    "lastUpdated": 1766867544605,
+    "createdAt": 1766867544605
+  },
+  "citric acid__personal_care__en": {
+    "analysis": "{\"name\":\"Citric Acid\",\"riskLevel\":\"moderate\",\"summary\":\"Citric acid is commonly used to adjust pH and can also provide mild exfoliation in some formulas. It is generally safe, but it can sting or irritate sensitive or compromised skin at higher concentrations or lower pH.\",\"details\":\"As an alpha hydroxy acid (AHA), citric acid may increase the chance of irritation when used in leave-on products, especially around the eyes or on broken skin. It is not a paraben, sulfate, phthalate, formaldehyde-releasing preservative, or fragrance ingredient. If the product is strongly acidic or used frequently, it may contribute to dryness, redness, or increased sun sensitivity, so patch testing and daytime sunscreen are prudent for leave-on acids.\",\"category\":\"pH adjuster / AHA\"}",
+    "lastUpdated": 1766867544605,
+    "createdAt": 1766867544605
+  },
+  "bleached wheat flour__food__en": {
+    "analysis": "{\"name\":\"Bleached Wheat Flour\",\"riskLevel\":\"low\",\"summary\":\"Refined wheat flour that has been chemically or naturally bleached to improve color and baking performance. It is a common gluten-containing ingredient.\",\"details\":\"Bleaching can speed flour aging and produce a whiter, finer flour that yields softer baked goods. As a refined grain, it is typically lower in fiber and some micronutrients than whole-wheat flour (though many products use enriched flour to replace some nutrients). People with wheat allergy or celiac disease should avoid it, but for the general population it is considered low risk.\",\"category\":\"Refined grain flour\"}",
+    "lastUpdated": 1766867608787,
+    "createdAt": 1766867608787
+  },
+  "malted barley flour__food__en": {
+    "analysis": "{\"name\":\"Malted Barley Flour\",\"riskLevel\":\"low\",\"summary\":\"Flour made from malted barley, often used to add enzymes, flavor, and browning to baked goods. It is a common gluten-containing ingredient.\",\"details\":\"Malting activates natural enzymes (such as amylases) that can help break down starches and support fermentation, texture, and crust color. It can also add a mild sweetness and malty flavor. Those with celiac disease or barley allergy should avoid it, but it is generally low risk for most people.\",\"category\":\"Malted grain flour\"}",
+    "lastUpdated": 1766867608787,
+    "createdAt": 1766867608787
+  },
+  "egg__food__en": {
+    "analysis": "{\"name\":\"Egg\",\"riskLevel\":\"low\",\"summary\":\"Egg is a nutrient-dense whole food and a common allergen, but it is generally safe for the general population.\",\"details\":\"Eggs provide high-quality protein and nutrients such as choline, selenium, and B vitamins. People with egg allergy should avoid it, and those with specific medical advice about dietary cholesterol should follow their clinician’s guidance.\",\"category\":\"Animal-derived protein (common allergen)\"}",
+    "lastUpdated": 1766867609711,
+    "createdAt": 1766867609711
+  },
+  "sorbic acid and potassium sorbate__food__en": {
+    "analysis": "{\"name\":\"Sorbic Acid And Potassium Sorbate\",\"riskLevel\":\"low\",\"summary\":\"Sorbic acid and potassium sorbate are preservatives used to inhibit mold and yeast growth and help retain freshness.\",\"details\":\"These preservatives are widely used in foods and are generally recognized as safe at typical use levels. A small number of people may experience irritation or sensitivity symptoms, but serious reactions are uncommon.\",\"category\":\"Preservative\"}",
+    "lastUpdated": 1766867609711,
+    "createdAt": 1766867609711
+  },
+  "agave syrup__food__en": {
+    "analysis": "{\"name\":\"Agave Syrup\",\"riskLevel\":\"moderate\",\"summary\":\"Agave syrup is a sweetener that is often high in fructose, which can be a concern when consumed frequently or in large amounts.\",\"details\":\"Like other added sugars, agave syrup can contribute to excess calorie intake and dental caries. Its higher fructose content may be less favorable for triglycerides and liver fat when overconsumed, so moderation is advisable, especially for people with insulin resistance or fatty liver concerns.\",\"category\":\"Added sweetener\"}",
+    "lastUpdated": 1766867609711,
+    "createdAt": 1766867609711
+  },
+  "sodium stearoyl lactylate__food__en": {
+    "analysis": "{\"name\":\"Sodium Stearoyl Lactylate\",\"riskLevel\":\"low\",\"summary\":\"Sodium stearoyl lactylate is a common food additive used as an emulsifier and dough conditioner. It is generally considered safe at typical food-use levels.\",\"details\":\"It helps oil and water mix and can improve texture, volume, and shelf life in baked goods and processed foods. Despite the name, it is not a meaningful source of sodium and typically does not significantly impact overall sodium intake. People who are highly sensitive to certain emulsifiers may prefer to limit intake, but it is not considered a major concern for the general population.\",\"category\":\"Emulsifier / Dough conditioner\"}",
+    "lastUpdated": 1766867610101,
+    "createdAt": 1766867610101
+  },
+  "cottonseed oil__food__en": {
+    "analysis": "{\"name\":\"Cottonseed Oil\",\"riskLevel\":\"moderate\",\"summary\":\"Cottonseed oil is a vegetable oil used for frying and in processed foods. It is calorie-dense and relatively higher in omega-6 polyunsaturated fats, which can be a concern if it crowds out healthier fats in the diet.\",\"details\":\"Refined cottonseed oil is typically processed to remove naturally occurring compounds such as gossypol, but the oil may still be highly refined and sometimes deodorized. Like many refined seed oils, frequent high intake can contribute to an overall dietary fat pattern that is less favorable than using more monounsaturated-rich oils (for example, olive or canola). The main concern is overall dietary pattern and amount rather than acute toxicity at normal food levels.\",\"category\":\"Refined vegetable oil\"}",
+    "lastUpdated": 1766867610101,
+    "createdAt": 1766867610101
+  },
+  "cocoa processed with alkali (dutch-processed cocoa)__food__en": {
+    "analysis": "{\"name\":\"Cocoa Processed With Alkali (dutch-processed Cocoa)\",\"riskLevel\":\"low\",\"summary\":\"Cocoa processed with alkali is cocoa treated to reduce acidity and create a smoother, darker flavor. It is generally considered low risk in typical food amounts.\",\"details\":\"Alkalization changes cocoa’s pH, improving color and taste and making it dissolve more easily in beverages. This process can reduce some natural cocoa flavanols (beneficial plant compounds), but it does not typically introduce major safety concerns. People sensitive to caffeine-like compounds may still notice mild stimulant effects from cocoa, depending on serving size.\",\"category\":\"Cocoa ingredient (processed flavor/color component)\"}",
+    "lastUpdated": 1766867610184,
+    "createdAt": 1766867610184
+  },
+  "modified food starch__food__en": {
+    "analysis": "{\"name\":\"Modified Food Starch\",\"riskLevel\":\"low\",\"summary\":\"Modified food starch is a processed starch used to thicken, stabilize, or improve texture. It is generally considered low risk for the general population.\",\"details\":\"“Modified” refers to physical, enzymatic, or chemical processing that helps the starch perform better under heat, acidity, or freezing. It usually contributes minimal nutrition and is used mainly for consistency in sauces, drinks, and processed foods. People with specific dietary needs may want to know the source (e.g., corn, potato, tapioca), but the ingredient itself is widely regarded as safe at typical intake levels.\",\"category\":\"Thickener/stabilizer (food additive)\"}",
+    "lastUpdated": 1766867610184,
+    "createdAt": 1766867610184
+  },
+  "inulin__food__en": {
+    "analysis": "{\"name\":\"Inulin\",\"riskLevel\":\"low\",\"summary\":\"Inulin is a soluble prebiotic fiber often added to foods to increase fiber content and support gut bacteria. It is generally safe for most people.\",\"details\":\"Because it is a fermentable fiber, inulin can cause gas, bloating, or diarrhea in sensitive individuals, especially at higher doses. People with irritable bowel syndrome (IBS) or sensitivity to FODMAPs may be more likely to experience digestive discomfort. It may also slightly affect blood sugar response by adding fiber and reducing net carbohydrate impact.\",\"category\":\"Prebiotic fiber\"}",
+    "lastUpdated": 1766867610405,
+    "createdAt": 1766867610405
+  },
+  "egg whites__food__en": {
+    "analysis": "{\"name\":\"Egg Whites\",\"riskLevel\":\"low\",\"summary\":\"Egg whites are a high-quality protein source commonly used in foods and supplements. Eggs are a common allergen, but they are considered low risk for the general population.\",\"details\":\"Egg whites provide protein with minimal fat and are widely used in protein powders and baked goods. People with egg allergy should avoid them, as reactions can be significant for allergic individuals. When properly pasteurized/cooked in commercial products, food safety concerns are generally low.\",\"category\":\"Protein (egg-derived)\"}",
+    "lastUpdated": 1766867610405,
+    "createdAt": 1766867610405
+  },
+  "dextrose__food__en": {
+    "analysis": "{\"name\":\"Dextrose\",\"riskLevel\":\"moderate\",\"summary\":\"Dextrose is a simple sugar (glucose) used as a sweetener, bulking agent, or to support quick energy. It can contribute to added sugar intake.\",\"details\":\"Because it is rapidly absorbed, dextrose can raise blood glucose and insulin quickly, which may be a concern for people managing diabetes or insulin resistance. Frequent or high intake can add empty calories and may contribute to dental cavities and unwanted weight gain. In sports nutrition it is sometimes used intentionally for rapid carbohydrate replenishment.\",\"category\":\"Added sugar (simple carbohydrate)\"}",
+    "lastUpdated": 1766867610405,
+    "createdAt": 1766867610405
+  },
+  "cocoa__food__en": {
+    "analysis": "{\"name\":\"Cocoa\",\"riskLevel\":\"low\",\"summary\":\"Cocoa is a natural ingredient used for chocolate flavor and provides polyphenol antioxidants. For most people it is safe when consumed in typical food amounts.\",\"details\":\"Cocoa contains methylxanthines (caffeine and theobromine), which can cause jitteriness, reflux, or sleep disruption in sensitive individuals if intake is high. Cocoa products can also contain small amounts of heavy metals (notably cadmium and lead) depending on sourcing, so frequent large servings may increase exposure. Choose reputable brands and moderate intake if pregnant, sensitive to stimulants, or consuming cocoa daily in large quantities.\",\"category\":\"Cocoa / Flavoring ingredient\"}",
+    "lastUpdated": 1766867610769,
+    "createdAt": 1766867610769
+  },
+  "tallow__food__en": {
+    "analysis": "{\"name\":\"Tallow\",\"riskLevel\":\"moderate\",\"summary\":\"Tallow is rendered animal fat (often beef or mutton) used as a cooking fat or ingredient for texture and flavor. It is generally safe but can contribute significant saturated fat.\",\"details\":\"Tallow is high in saturated fat, and frequent high intake may raise LDL cholesterol in some people, which can increase cardiovascular risk depending on overall diet and health status. As an animal-derived ingredient, it is not suitable for vegetarians/vegans and may conflict with certain religious dietary practices; quality varies by processing and sourcing. Using it occasionally is typically fine, but balancing with unsaturated fats (e.g., olive oil, nuts, fish) supports heart health.\",\"category\":\"Animal fat\"}",
+    "lastUpdated": 1766867610769,
+    "createdAt": 1766867610769
+  },
+  "niacin (vitamin b3)__food__en": {
+    "analysis": "{\"name\":\"Niacin (vitamin B3)\",\"riskLevel\":\"low\",\"summary\":\"Niacin is a B vitamin added to foods and supplements to support energy metabolism and overall nutrition. At typical fortification doses it is generally safe for most people.\",\"details\":\"Niacin helps convert food into energy and supports nervous system and skin health. Very high supplemental doses can cause flushing, gastrointestinal upset, and, rarely, liver stress, but these effects are unlikely from standard food amounts. People with liver disease, gout, or who take high-dose niacin supplements should be cautious about total intake.\",\"category\":\"Vitamin (B Vitamin)\"}",
+    "lastUpdated": 1766867611215,
+    "createdAt": 1766867611215
+  },
+  "reduced iron or ferrous sulfate__food__en": {
+    "analysis": "{\"name\":\"Reduced Iron or Ferrous Sulfate\",\"riskLevel\":\"moderate\",\"summary\":\"These are common iron sources used to fortify foods and prevent iron deficiency. The main concerns are stomach upset and excessive intake for people who do not need extra iron.\",\"details\":\"Ferrous sulfate is generally well absorbed but can cause nausea, constipation, abdominal discomfort, and dark stools in some individuals; reduced iron may be gentler but can be less bioavailable depending on the food matrix. Excess iron can be harmful for people with hemochromatosis or other iron-overload conditions, and iron is a poisoning risk for children if large amounts are ingested. For most healthy adults consuming fortified foods as directed, iron fortification is typically safe.\",\"category\":\"Mineral (Iron Fortificant)\"}",
+    "lastUpdated": 1766867611215,
+    "createdAt": 1766867611215
+  },
+  "thiamine mononitrate (vitamin b1)__food__en": {
+    "analysis": "{\"name\":\"Thiamine Mononitrate (vitamin B1)\",\"riskLevel\":\"low\",\"summary\":\"Thiamine mononitrate is a stable form of vitamin B1 commonly used to enrich foods and supplements. It is generally considered safe at typical dietary and fortification levels.\",\"details\":\"Vitamin B1 supports carbohydrate metabolism and normal nerve and heart function. Thiamine has a wide safety margin, and toxicity from food sources is rare because excess is usually excreted in urine. Adverse reactions are uncommon and are more associated with very high-dose injections rather than typical oral intake.\",\"category\":\"Vitamin (B Vitamin)\"}",
+    "lastUpdated": 1766867611215,
+    "createdAt": 1766867611215
+  },
+  "corn starch__food__en": {
+    "analysis": "{\"name\":\"Corn Starch\",\"riskLevel\":\"low\",\"summary\":\"Corn starch is a refined carbohydrate used to thicken, bind, or provide texture in foods. It is generally considered safe for most people when consumed in typical amounts.\",\"details\":\"Corn starch is mostly pure starch and provides calories with little to no fiber, protein, or micronutrients. Large amounts can contribute to a higher glycemic load, which may be a concern for people managing blood sugar. It is naturally gluten-free, but cross-contamination can occur if processed in facilities that handle wheat.\",\"category\":\"Thickener / Starch\"}",
+    "lastUpdated": 1766867611301,
+    "createdAt": 1766867611301
+  },
+  "baking soda__food__en": {
+    "analysis": "{\"name\":\"Baking Soda\",\"riskLevel\":\"low\",\"summary\":\"Baking soda (sodium bicarbonate) is a leavening agent that helps baked goods rise and can adjust acidity. It is generally safe in food at the small amounts used in recipes.\",\"details\":\"Because it contains sodium, frequent intake of foods high in baking soda (or additional sodium sources) may contribute to higher overall sodium intake, which can matter for blood pressure in sodium-sensitive individuals. In larger-than-food amounts it can cause gastrointestinal upset and alter acid-base balance, but this is uncommon from normal food use. It may interact with certain medications that are affected by stomach pH or sodium load.\",\"category\":\"Leavening Agent / Acidity Regulator\"}",
+    "lastUpdated": 1766867611301,
+    "createdAt": 1766867611301
+  },
+  "high fructose corn syrup__food__en": {
+    "analysis": "{\"name\":\"High Fructose Corn Syrup\",\"riskLevel\":\"high\",\"summary\":\"High fructose corn syrup is a concentrated added sugar used to sweeten processed foods and beverages. Frequent intake is associated with higher risk of excess calorie intake and metabolic health issues.\",\"details\":\"It can increase total added sugar consumption, which is linked to weight gain, insulin resistance, and elevated triglycerides when consumed in excess. It also contributes to dental cavities and may make it easier to exceed recommended added sugar limits because it is common in ultra-processed foods.\",\"category\":\"Added sweetener\"}",
+    "lastUpdated": 1766867611574,
+    "createdAt": 1766867611574
+  },
+  "palm oil__food__en": {
+    "analysis": "{\"name\":\"Palm Oil\",\"riskLevel\":\"moderate\",\"summary\":\"Palm oil is a vegetable oil that is often used for texture and shelf stability. It is relatively high in saturated fat, which can be a concern if overall saturated fat intake is high.\",\"details\":\"Compared with oils higher in unsaturated fats (such as olive or canola oil), palm oil can raise LDL cholesterol in some people when it replaces unsaturated fats in the diet. Health impact depends on the amount used and the overall dietary pattern; it is generally more concerning in diets already high in saturated fat and ultra-processed foods.\",\"category\":\"Edible oil/fat\"}",
+    "lastUpdated": 1766867611574,
+    "createdAt": 1766867611574
+  },
+  "corn syrup__food__en": {
+    "analysis": "{\"name\":\"Corn Syrup\",\"riskLevel\":\"high\",\"summary\":\"Corn syrup is an added sugar syrup used as a sweetener and to improve texture and shelf life. High intake of added sugars is associated with poorer metabolic and dental health outcomes.\",\"details\":\"It can contribute to excess calories without providing meaningful micronutrients, increasing the likelihood of weight gain when consumed regularly. Like other added sugars, it can increase risk of tooth decay and makes it easier to exceed guidelines for added sugar intake.\",\"category\":\"Added sweetener\"}",
+    "lastUpdated": 1766867611574,
+    "createdAt": 1766867611574
+  },
+  "dipotassium phosphate__food__en": {
+    "analysis": "{\"name\":\"Dipotassium Phosphate\",\"riskLevel\":\"moderate\",\"summary\":\"Dipotassium phosphate is a food additive used as a buffering agent and emulsifier to control acidity and improve texture. It is generally considered safe, but high intakes of phosphate additives may be a concern for some people.\",\"details\":\"This ingredient helps stabilize pH and can improve consistency in products like beverages, dairy substitutes, and processed foods. For most healthy adults it is safe at typical food levels, but frequent consumption of foods with added phosphates can increase overall phosphorus intake. People with kidney disease or those advised to limit phosphorus may need to avoid phosphate additives.\",\"category\":\"Food additive (buffering agent/emulsifier)\"}",
+    "lastUpdated": 1766867611637,
+    "createdAt": 1766867611637
+  },
+  "chocolate liquor__food__en": {
+    "analysis": "{\"name\":\"Chocolate Liquor\",\"riskLevel\":\"low\",\"summary\":\"Chocolate liquor is ground cocoa mass (cocoa solids plus cocoa butter) that provides chocolate flavor. It is a minimally processed cocoa ingredient and is generally safe in normal serving sizes.\",\"details\":\"It naturally contains cocoa polyphenols and small amounts of caffeine and theobromine, which can be stimulating for sensitive individuals. The main health impact depends on the overall product formulation, especially added sugar and total calories. Cocoa products can contain trace heavy metals like cadmium or lead, but risk varies by sourcing and is typically managed through quality controls.\",\"category\":\"Cocoa ingredient\"}",
+    "lastUpdated": 1766867611638,
+    "createdAt": 1766867611638
+  },
+  "defatted soy flour__food__en": {
+    "analysis": "{\"name\":\"Defatted Soy Flour\",\"riskLevel\":\"low\",\"summary\":\"Defatted soy flour is soy flour with most of the oil removed, commonly used to add protein and improve texture. Soy is a common allergen, but for the general population it is considered low risk.\",\"details\":\"It increases protein content and can help with structure and moisture retention in bars, baked goods, and meal replacement products. Soy also contains isoflavones; for most people these are not harmful at typical dietary amounts. Individuals with soy allergy should avoid it, and those with specific medical guidance (e.g., thyroid medication timing) may need to discuss soy intake with a clinician.\",\"category\":\"Plant protein ingredient\"}",
+    "lastUpdated": 1766867611638,
+    "createdAt": 1766867611638
+  },
+  "hydrogenated tallow__food__en": {
+    "analysis": "{\"name\":\"Hydrogenated Tallow\",\"riskLevel\":\"high\",\"summary\":\"Hydrogenated tallow is animal fat that has been chemically hardened to improve texture and shelf life. It can increase intake of trans fats and saturated fat, which is a cardiovascular concern.\",\"details\":\"Hydrogenation can create industrial trans fatty acids depending on how fully the fat is hydrogenated, and trans fat intake is strongly associated with increased LDL cholesterol and higher heart disease risk. Even when fully hydrogenated (very low trans fat), it remains high in saturated fat, which may negatively affect cholesterol levels when consumed frequently. It is generally best limited, especially in people with elevated cholesterol or heart disease risk.\",\"category\":\"Hydrogenated fat\"}",
+    "lastUpdated": 1766867612005,
+    "createdAt": 1766867612005
+  },
+  "sodium acid pyrophosphate__food__en": {
+    "analysis": "{\"name\":\"Sodium Acid Pyrophosphate\",\"riskLevel\":\"moderate\",\"summary\":\"Sodium acid pyrophosphate is a food additive used as a leavening agent and acidity regulator. It is generally considered safe in typical amounts but adds sodium and phosphate to the diet.\",\"details\":\"This additive helps control dough rise and texture in baked goods and processed foods. For most people, typical dietary exposure is not a major concern, but frequent intake from highly processed foods can contribute to higher sodium intake. People with chronic kidney disease may need to watch added phosphate sources because phosphate balance can be harder to regulate.\",\"category\":\"Leavening agent and acidity regulator\"}",
+    "lastUpdated": 1766867612005,
+    "createdAt": 1766867612005
+  },
+  "mono and diglycerides__food__en": {
+    "analysis": "{\"name\":\"Mono And Diglycerides\",\"riskLevel\":\"moderate\",\"summary\":\"Mono and diglycerides are emulsifiers that help blend oils and water and improve texture in processed foods. They are usually safe, but they can be derived from hydrogenated oils and may contain small amounts of trans fats.\",\"details\":\"These ingredients are fats (glycerides) used to stabilize products like baked goods, spreads, and ice cream. Their health impact depends on the source fats and processing; when sourced from partially hydrogenated oils, trace trans fats may be present even if labels show 0 g due to rounding. They also indicate a more highly processed product, which some people may prefer to limit for overall dietary quality.\",\"category\":\"Emulsifier\"}",
+    "lastUpdated": 1766867612005,
+    "createdAt": 1766867612005
+  },
+  "whey__food__en": {
+    "analysis": "{\"name\":\"Whey\",\"riskLevel\":\"low\",\"summary\":\"Whey is a milk-derived protein commonly used to boost protein content. It is a common allergen (milk) but is generally safe for the general population.\",\"details\":\"Whey provides high-quality protein and is widely used in protein powders, bars, and fortified foods. People with milk allergy should avoid it, and those with lactose intolerance may experience digestive discomfort depending on how processed it is (e.g., concentrate vs. isolate). Overall, it is not considered a health risk for most people when consumed in typical food amounts.\",\"category\":\"Dairy protein\"}",
+    "lastUpdated": 1766867612086,
+    "createdAt": 1766867612086
+  },
+  "corn syrup solids__food__en": {
+    "analysis": "{\"name\":\"Corn Syrup Solids\",\"riskLevel\":\"moderate\",\"summary\":\"Corn syrup solids are dried glucose syrups used as sweeteners and bulking agents. They can increase added sugar intake, which is a moderate concern for overall metabolic health when consumed frequently.\",\"details\":\"Corn syrup solids are mostly glucose-based carbohydrates and are commonly added for sweetness, texture, and shelf stability. Regular high intake of added sugars can contribute to excess calorie consumption, blood sugar spikes, dental cavities, and increased cardiometabolic risk. The ingredient itself is not inherently toxic, but overall exposure is important, especially for people with diabetes or those limiting added sugars.\",\"category\":\"Added sweetener / carbohydrate\"}",
+    "lastUpdated": 1766867612086,
+    "createdAt": 1766867612086
+  },
+  "calcium sulfate__food__en": {
+    "analysis": "{\"name\":\"Calcium Sulfate\",\"riskLevel\":\"low\",\"summary\":\"Calcium sulfate is a mineral ingredient used as a firming agent or calcium source. It is generally recognized as safe at typical food-use levels.\",\"details\":\"In foods, calcium sulfate can help with texture (e.g., in tofu) and can contribute small amounts of dietary calcium. It is usually well tolerated, and adverse effects are uncommon at normal dietary exposures. Very high total calcium intake from multiple sources could be an issue for some individuals, but calcium sulfate in foods is typically not a major contributor.\",\"category\":\"Mineral / firming agent\"}",
+    "lastUpdated": 1766867612086,
+    "createdAt": 1766867612086
+  },
+  "soy lecithin__food__en": {
+    "analysis": "{\"name\":\"Soy Lecithin\",\"riskLevel\":\"low\",\"summary\":\"Soy lecithin is a common emulsifier that helps ingredients like oils and water mix smoothly. It is derived from soy, a common allergen, but is generally safe for the general population.\",\"details\":\"It is widely used in foods such as chocolate, baked goods, and supplements to improve texture and stability. Soy lecithin typically contains only small amounts of soy protein, so many (but not all) soy-allergic individuals may tolerate it; those with soy allergy should still use caution. For most people, it is well tolerated at typical food-use levels.\",\"category\":\"Emulsifier\"}",
+    "lastUpdated": 1766867612446,
+    "createdAt": 1766867612446
+  },
+  "xanthan gum__food__en": {
+    "analysis": "{\"name\":\"Xanthan Gum\",\"riskLevel\":\"low\",\"summary\":\"Xanthan gum is a thickener and stabilizer used to improve texture and prevent separation in foods. It is generally considered safe for most people.\",\"details\":\"It is a fermented polysaccharide commonly used in sauces, dressings, gluten-free baking, and some supplement powders. In larger amounts it may cause gas, bloating, or a laxative effect in sensitive individuals due to its fiber-like properties. Typical serving levels in foods are usually well tolerated.\",\"category\":\"Thickener and Stabilizer\"}",
+    "lastUpdated": 1766867612446,
+    "createdAt": 1766867612446
+  },
+  "agar__food__en": {
+    "analysis": "{\"name\":\"Agar\",\"riskLevel\":\"low\",\"summary\":\"Agar is a seaweed-derived gelling agent used to thicken or set foods. It is generally safe for the general population.\",\"details\":\"It is commonly used in jellies, desserts, vegan alternatives to gelatin, and some supplement gummies or capsules. Because it behaves like dietary fiber, higher intakes can cause digestive discomfort in some people. It should be taken with adequate fluid when used in concentrated forms to reduce risk of gastrointestinal blockage.\",\"category\":\"Gelling Agent\"}",
+    "lastUpdated": 1766867612446,
+    "createdAt": 1766867612446
+  },
+  "monocalcium phosphate__food__en": {
+    "analysis": "{\"name\":\"Monocalcium Phosphate\",\"riskLevel\":\"low\",\"summary\":\"Monocalcium phosphate is a calcium and phosphorus salt commonly used in foods as a leavening acid and mineral source. It is generally considered safe at typical dietary levels.\",\"details\":\"In baking mixes and processed foods, it helps baking soda release carbon dioxide for rising and can also act as an acidity regulator. Excess intake of phosphate from many processed foods may be a concern for people with chronic kidney disease or those advised to limit phosphorus, but amounts from a single product are usually modest. Some people may experience mild stomach upset if consuming large amounts.\",\"category\":\"Leavening agent / mineral salt\"}",
+    "lastUpdated": 1766867612740,
+    "createdAt": 1766867612740
+  },
+  "enzymes__food__en": {
+    "analysis": "{\"name\":\"Enzymes\",\"riskLevel\":\"low\",\"summary\":\"Food enzymes are proteins used to improve processing, texture, flavor development, or digestibility. They are typically present in very small amounts and are generally safe for most people.\",\"details\":\"Common examples include amylase, protease, lactase, and lipase, which may come from microbial fermentation, plants, or animal sources. Most enzymes are inactivated by heat or stomach acid, reducing the likelihood of systemic effects. Rarely, sensitive individuals may react to enzyme residues (more common as an occupational inhalation issue than from eating), and source details matter for strict dietary preferences (e.g., vegan, kosher, halal).\",\"category\":\"Processing aid\"}",
+    "lastUpdated": 1766867612740,
+    "createdAt": 1766867612740
+  },
+  "locust bean gum__food__en": {
+    "analysis": "{\"name\":\"Locust Bean Gum\",\"riskLevel\":\"low\",\"summary\":\"Locust bean gum (carob gum) is a plant-derived thickener and stabilizer used to improve texture in foods. It is generally well tolerated at typical use levels.\",\"details\":\"It is a soluble fiber that can increase viscosity in products like dairy alternatives, sauces, and desserts, and may help prevent separation. In larger amounts, it can cause gastrointestinal discomfort such as gas, bloating, or diarrhea, especially in people sensitive to added fibers. Allergic reactions are uncommon, but can occur rarely in individuals sensitive to carob-related ingredients.\",\"category\":\"Thickener / stabilizer (soluble fiber)\"}",
+    "lastUpdated": 1766867612740,
+    "createdAt": 1766867612740
+  },
+  "cellulose gum__food__en": {
+    "analysis": "{\"name\":\"Cellulose Gum\",\"riskLevel\":\"low\",\"summary\":\"Cellulose gum is a plant-derived thickener and stabilizer used to improve texture and prevent separation. It is generally considered safe for most people at typical food-use levels.\",\"details\":\"It is a modified form of cellulose (dietary fiber) that adds viscosity to products like sauces, beverages, and some supplements. Some people may experience mild digestive effects (gas, bloating, looser stools) when consuming larger amounts, especially if sensitive to added fibers. It does not provide significant nutrition but helps with product consistency.\",\"category\":\"Thickener / Stabilizer / Fiber additive\"}",
+    "lastUpdated": 1766867614063,
+    "createdAt": 1766867614063
+  },
+  "natural and artificial flavors__food__en": {
+    "analysis": "{\"name\":\"Natural And Artificial Flavors\",\"riskLevel\":\"moderate\",\"summary\":\"Natural and artificial flavors are mixtures added to enhance taste or aroma, but the specific chemicals are often not disclosed on labels. The main concern is transparency and individual sensitivity rather than broad safety issues at normal intake levels.\",\"details\":\"These flavor blends can include many compounds, solvents, and carriers, and regulations generally allow them to be listed collectively without itemizing each component. Most people tolerate them well, but some may react with headaches, nausea, or irritation depending on the specific flavoring agents used. If you are sensitive or want to minimize ultra-processed additives, choosing products with clearly named flavor sources can help.\",\"category\":\"Flavor additive\"}",
+    "lastUpdated": 1766867614063,
+    "createdAt": 1766867614063
+  },
+  "titanium dioxide (color)__food__en": {
+    "analysis": "{\"name\":\"Titanium Dioxide (color)\",\"riskLevel\":\"high\",\"summary\":\"Titanium dioxide is a whitening/brightening colorant used to make products look more opaque or vivid. It has raised safety concerns related to particle (including nanoparticle) exposure and is restricted or not permitted in some regions for food use.\",\"details\":\"While it has historically been used in foods, some authorities have cited uncertainty about potential genotoxicity and the difficulty of ruling out DNA damage risk from small particles. It provides no nutritional benefit and is primarily cosmetic, so it is often considered a colorant to avoid when alternatives exist. If you are trying to reduce additive-related uncertainty, choosing products without titanium dioxide is a practical precaution.\",\"category\":\"Colorant / Whitening agent\"}",
+    "lastUpdated": 1766867614063,
+    "createdAt": 1766867614063
+  }
+}
