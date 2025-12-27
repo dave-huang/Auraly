@@ -762,7 +762,8 @@ In the summary, you may mention "common allergen" but the riskLevel MUST still b
 The following ingredients have significant health concerns and/or are banned/restricted in major international markets (EU, UK, Canada, etc.). Mark them as "high" risk:
 
 FOOD & SUPPLEMENTS:
-• Synthetic food dyes: Red 40 (E129), Red 3 (E127), Yellow 5 (E102), Yellow 6 (E110), Blue 1 (E133), Blue 2 (E132), Tartrazine, Allura Red, Sunset Yellow, Erythrosine, Brilliant Blue → riskLevel: "high"
+• Synthetic food dyes (including "Lake" variants): Red 40, Red 40 Lake, Red 3, Red 3 Lake (E129, E127), Yellow 5, Yellow 5 Lake, Yellow 6, Yellow 6 Lake (E102, E110), Blue 1, Blue 1 Lake, Blue 2, Blue 2 Lake (E133, E132), Tartrazine, Allura Red, Allura Red AC Lake, Sunset Yellow, Erythrosine, Brilliant Blue FCF → riskLevel: "high"
+  - NOTE: "Lake" dyes are insoluble versions of the same synthetic colorants - equally concerning
 • BHA (E320, butylated hydroxyanisole), BHT (E321, butylated hydroxytoluene), TBHQ (E319) → riskLevel: "high"
 • Sodium nitrite (E250), sodium nitrate (E251), potassium nitrite (E249), potassium nitrate (E252) → riskLevel: "high"
 • Potassium bromate (E924), brominated vegetable oil (BVO) → riskLevel: "high"
