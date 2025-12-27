@@ -216,8 +216,12 @@ function isNonIngredientText(text: string): boolean {
 export function extractIngredientsFromText(ingredientsText: string): { ingredients: string[]; processedText: string; count: number } {
   console.log(`[EXTRACT] Starting language-agnostic ingredient extraction`);
   
-  // Expand parenthetical ingredients
-  const expandedText = expandParentheticalIngredients(ingredientsText);
+  // First expand square bracket ingredients (e.g., "SEASONING [SALT, RED 40, ...]")
+  const bracketExpandedText = expandSquareBracketIngredients(ingredientsText);
+  console.log(`[EXTRACT] After square bracket expansion: ${bracketExpandedText.length} chars`);
+  
+  // Then expand parenthetical ingredients
+  const expandedText = expandParentheticalIngredients(bracketExpandedText);
   console.log(`[EXTRACT] After parenthetical expansion: ${expandedText.length} chars`);
   
   // Extract ingredients section
@@ -274,12 +278,9 @@ export function extractIngredientsFromText(ingredientsText: string): { ingredien
   cleanedText = cleanedText.replace(/\.\s*含\s*[:：]\s*[^,;，；\n]+/, '');
   cleanedText = cleanedText.replace(/\.\s*CONTIENE\s*:\s*[^,;，；\n]+/gi, '');
   
-  // CRITICAL FIX: Remove bracket specifiers that shouldn't create separate ingredients
-  // Keep only the base ingredient name before brackets (e.g., "SOY SAUCE [SOYBEAN, WHEAT]" → "SOY SAUCE")
-  // Also handle unclosed brackets: "SOY SAUCE [SOYBEAN, WHEAT" → "SOY SAUCE"
-  // Only remove [...] patterns on single lines, don't remove entire sections
-  cleanedText = cleanedText.replace(/\s*\[.*?\]/g, '');  // Remove complete [...] on same line
-  cleanedText = cleanedText.replace(/\s*\[.*?$/gm, '');  // Remove unclosed [...text to line end 
+  // NOTE: Square bracket content is now EXPANDED by expandSquareBracketIngredients() 
+  // rather than removed. This ensures nested ingredients like "SEASONING [SALT, RED 40 LAKE, ...]"
+  // are properly extracted and analyzed.
   
   // Handle Chinese "other trace ingredients" section marker - insert newline before it
   // so it acts as a separator without removing those trace ingredients
@@ -419,6 +420,92 @@ function getCachedAnalysis(cacheKey: string, ingredientsText?: string, productTy
 function cacheAnalysis(cacheKey: string, result: AnalysisResult, ocrText: string): void {
   // NO-OP: Caching disabled due to stale data issues with overallRisk calculation
   console.log(`[CACHE] Skipping full-result cache (using ingredient-level cache only)`);
+}
+
+/**
+ * Expands square bracket ingredient groups into individual ingredients
+ * Handles nested ingredients like "SEASONING [SALT, MALTODEXTRIN, RED 40 LAKE, ...]"
+ * 
+ * Examples:
+ * - "SEASONING [SALT, SUGAR, RED 40]" → "SEASONING, SALT, SUGAR, RED 40"
+ * - "SOY SAUCE [WATER, SOYBEAN]" → "SOY SAUCE, WATER, SOYBEAN"
+ */
+function expandSquareBracketIngredients(text: string): string {
+  try {
+    console.log('[BRACKET-EXPANDER] Starting square bracket expansion');
+    console.log(`[BRACKET-EXPANDER] Input text length: ${text.length} chars`);
+    
+    if (!text || text.length === 0) {
+      console.log('[BRACKET-EXPANDER] Empty input, returning as-is');
+      return text;
+    }
+    
+    let result = '';
+    let stack: string[] = [];
+    let expansionCount = 0;
+    
+    for (let i = 0; i < text.length; i++) {
+      const char = text[i];
+      
+      if (char === '[') {
+        // Push current content onto stack and start collecting inner content
+        stack.push(result);
+        result = '';
+      } else if (char === ']') {
+        if (stack.length === 0) {
+          // Unmatched closing bracket - just include it
+          result += char;
+          continue;
+        }
+        
+        // Pop from stack and merge - ALWAYS expand square bracket contents
+        const innerContent = result.trim();
+        const beforeBracket = stack.pop()!;
+        
+        if (innerContent.length > 0) {
+          // Check if inner content has multiple items (commas/separators)
+          const hasMultipleItems = /[,，、;；]/.test(innerContent);
+          
+          if (hasMultipleItems) {
+            expansionCount++;
+            // Keep the parent ingredient AND expand the inner contents
+            // "SEASONING [SALT, SUGAR, RED 40]" → "SEASONING, SALT, SUGAR, RED 40"
+            const trimmedBefore = beforeBracket.trimEnd();
+            result = trimmedBefore + (trimmedBefore.length > 0 && !trimmedBefore.endsWith(',') && !trimmedBefore.endsWith('，') ? ', ' : '') + innerContent;
+            console.log(`[BRACKET-EXPANDER #${expansionCount}] Expanded: [...] → "${innerContent.substring(0, 50)}..."`);
+          } else {
+            // Single item in brackets - just add it alongside parent
+            // "TBHQ [PRESERVATIVE]" → "TBHQ, PRESERVATIVE" or keep as-is
+            result = beforeBracket + '(' + innerContent + ')';  // Convert to parenthetical format
+          }
+        } else {
+          // Empty brackets - just keep what was before
+          result = beforeBracket;
+        }
+      } else {
+        result += char;
+      }
+    }
+    
+    // If stack is not empty, we have unmatched opening brackets
+    if (stack.length > 0) {
+      console.log(`[BRACKET-EXPANDER] Warning: ${stack.length} unmatched opening brackets found`);
+      // Reconstruct by popping everything
+      while (stack.length > 0) {
+        result = stack.pop()! + '[' + result;
+      }
+    }
+    
+    console.log(`[BRACKET-EXPANDER] Completed: expanded ${expansionCount} bracket groups`);
+    console.log(`[BRACKET-EXPANDER] Output text length: ${result.length} chars`);
+    console.log(`[BRACKET-EXPANDER] First 300 chars: ${result.substring(0, 300).replace(/\n/g, ' ')}...`);
+    
+    return result;
+  } catch (error) {
+    console.error('[BRACKET-EXPANDER] Error during expansion:', error);
+    console.error('[BRACKET-EXPANDER] Returning original text due to error');
+    return text;
+  }
 }
 
 /**
