@@ -1,0 +1,132 @@
+{
+  "vitamin d3__food__en": {
+    "analysis": "{\"name\":\"Vitamin D3\",\"riskLevel\":\"moderate\",\"summary\":\"Vitamin D3 is a fat-soluble vitamin commonly added to supplements and fortified foods to support bone health and immune function. Risk is moderate mainly due to potential toxicity if taken in excessive doses over time.\",\"details\":\"Vitamin D3 helps the body absorb calcium and maintain normal bone and muscle function. Because it is fat-soluble, it can accumulate, and very high long-term intake may cause hypercalcemia (elevated calcium), which can lead to nausea, weakness, and kidney issues. People with kidney disease, hyperparathyroidism, or those using high-dose vitamin D should use extra caution and follow label directions.\",\"category\":\"Vitamin (fat-soluble)\"}",
+    "lastUpdated": 1766812217456,
+    "createdAt": 1766812217456
+  },
+  "vitamin b12__food__en": {
+    "analysis": "{\"name\":\"Vitamin B12\",\"riskLevel\":\"low\",\"summary\":\"Vitamin B12 is a water-soluble vitamin used in foods and supplements to support red blood cell formation and nervous system function. It is generally considered low risk at typical supplemental amounts.\",\"details\":\"Vitamin B12 (commonly as cyanocobalamin or methylcobalamin) is essential for DNA synthesis and energy metabolism, and deficiency risk is higher in older adults, vegans, and people with malabsorption. Excess B12 is usually excreted in urine, so toxicity is uncommon. Rarely, high-dose supplementation may cause mild side effects in some individuals (such as acne-like rash) or interact with certain medications, so following label guidance is recommended.\",\"category\":\"Vitamin (water-soluble)\"}",
+    "lastUpdated": 1766812217456,
+    "createdAt": 1766812217456
+  },
+  "turmeric oleoresin (color)__food__en": {
+    "analysis": "{\"name\":\"Turmeric Oleoresin (color)\",\"riskLevel\":\"low\",\"summary\":\"A natural colorant extracted from turmeric that gives foods a yellow-orange hue. Generally considered safe at typical food-use levels.\",\"details\":\"Turmeric oleoresin contains curcuminoids and related compounds that provide color and may contribute minor antioxidant activity. At high supplemental doses it can sometimes cause gastrointestinal upset and may interact with blood-thinning medications, but the small amounts used for coloring in foods are usually not a concern.\",\"category\":\"Natural colorant\"}",
+    "lastUpdated": 1766812217956,
+    "createdAt": 1766812217956
+  },
+  "bht (butylated hydroxytoluene)__food__en": {
+    "analysis": "{\"name\":\"Bht (butylated Hydroxytoluene)\",\"riskLevel\":\"moderate\",\"summary\":\"A synthetic antioxidant used to prevent fats and oils from going rancid. Safety evaluations allow its use at regulated levels, but it remains a debated additive.\",\"details\":\"BHT can help extend shelf life by slowing oxidation in processed foods and supplements containing oils. While approved within specific limits, some consumers prefer to limit intake due to mixed findings from animal studies and potential sensitivity reactions in a small number of people.\",\"category\":\"Preservative / antioxidant\"}",
+    "lastUpdated": 1766812217956,
+    "createdAt": 1766812217956
+  },
+  "sodium ascorbate__food__en": {
+    "analysis": "{\"name\":\"Sodium Ascorbate\",\"riskLevel\":\"low\",\"summary\":\"A form of vitamin C (sodium salt of ascorbic acid) used as an antioxidant and nutrient. Generally safe and well tolerated in foods and supplements.\",\"details\":\"Sodium ascorbate helps prevent oxidation and can support vitamin C content without being as acidic as ascorbic acid. Very high intakes of vitamin C can cause digestive upset (such as diarrhea) in some people, and this form also contributes a small amount of sodium, which may matter for those on strict sodium restriction.\",\"category\":\"Vitamin / antioxidant\"}",
+    "lastUpdated": 1766812217956,
+    "createdAt": 1766812217956
+  },
+  "salt__food__en": {
+    "analysis": "{\"name\":\"Salt\",\"riskLevel\":\"moderate\",\"summary\":\"Salt is a common seasoning and preservative, but excessive intake can contribute to high sodium consumption. High sodium diets are associated with increased blood pressure in many people.\",\"details\":\"Salt provides sodium, an essential electrolyte, but most diets already contain plenty from processed foods. Regularly consuming high-sodium products can raise blood pressure and increase cardiovascular risk, especially for salt-sensitive individuals. People with hypertension, kidney disease, or heart failure are often advised to limit sodium.\",\"category\":\"Seasoning / Mineral\"}",
+    "lastUpdated": 1766812219795,
+    "createdAt": 1766812219795
+  },
+  "natural and artificial flavor__food__en": {
+    "analysis": "{\"name\":\"Natural And Artificial Flavor\",\"riskLevel\":\"moderate\",\"summary\":\"Natural and artificial flavors are used to enhance taste, but the specific chemicals are often not disclosed on labels. Most are considered safe at typical food-use levels, though sensitivities can occur.\",\"details\":\"This umbrella term can include many compounds, carriers, and processing aids, which makes it difficult to evaluate for people with specific sensitivities. Some flavor systems may contain allergens or solvents in trace amounts, but these are generally regulated and present at low levels. If you react to certain foods or additives, products with unspecified flavors can be harder to troubleshoot.\",\"category\":\"Flavoring / Additive\"}",
+    "lastUpdated": 1766812219795,
+    "createdAt": 1766812219795
+  },
+  "red 40__food__en": {
+    "analysis": "{\"name\":\"Red 40\",\"riskLevel\":\"moderate\",\"summary\":\"Red 40 is a synthetic food dye used to add red color to foods and beverages. Some people may experience sensitivity reactions, and it is often avoided by those who prefer to limit artificial colors.\",\"details\":\"Evidence suggests a subset of children may show increased hyperactivity-like behaviors when consuming certain artificial colors, including Red 40, though effects are not universal. Rarely, it can trigger intolerance-type symptoms such as hives in sensitive individuals. It does not provide nutritional value and is mainly a cosmetic additive.\",\"category\":\"Artificial Color / Food Dye\"}",
+    "lastUpdated": 1766812219795,
+    "createdAt": 1766812219795
+  },
+  "rice__food__en": {
+    "analysis": "{\"name\":\"Rice\",\"riskLevel\":\"low\",\"summary\":\"Rice is a common grain that mainly provides carbohydrates and is generally safe for most people. Whole-grain forms offer more fiber and micronutrients than refined rice.\",\"details\":\"Refined rice (like white rice flour) can raise blood sugar more quickly than whole-grain rice. Rice products can contain small amounts of arsenic depending on growing conditions, so varying grains (e.g., oats, quinoa) can help reduce long-term exposure.\",\"category\":\"Grain / Carbohydrate\"}",
+    "lastUpdated": 1766812220183,
+    "createdAt": 1766812220183
+  },
+  "sugar__food__en": {
+    "analysis": "{\"name\":\"Sugar\",\"riskLevel\":\"moderate\",\"summary\":\"Sugar adds sweetness but contributes calories with little nutritional value. Frequent high intake is linked to dental cavities and poorer metabolic health.\",\"details\":\"Regularly consuming added sugar can promote weight gain and increase risk of insulin resistance, especially in sugary drinks and snacks. For many people, keeping added sugars low supports steadier energy and better overall diet quality.\",\"category\":\"Added Sweetener\"}",
+    "lastUpdated": 1766812220183,
+    "createdAt": 1766812220183
+  },
+  "canola and/or soybean oil__food__en": {
+    "analysis": "{\"name\":\"Canola And/or Soybean Oil\",\"riskLevel\":\"low\",\"summary\":\"Canola and soybean oils are common vegetable oils used for cooking and food texture. Soybean oil is derived from soy, a common allergen, but it is generally safe for the general population.\",\"details\":\"These oils are mostly unsaturated fats; canola is relatively higher in monounsaturated fat, while soybean oil provides more omega-6 polyunsaturated fat. Health impact depends on overall diet pattern and processing method (e.g., repeatedly heated oils in fried foods can form oxidation byproducts).\",\"category\":\"Vegetable Oil / Added Fat\"}",
+    "lastUpdated": 1766812220183,
+    "createdAt": 1766812220183
+  },
+  "yellow 5 (tartrazine)__food__en": {
+    "analysis": "{\"name\":\"Yellow 5 (tartrazine)\",\"riskLevel\":\"moderate\",\"summary\":\"Yellow 5 is a synthetic food dye used to give products a bright yellow color. It is generally permitted in many countries but can cause sensitivity reactions in a small subset of people.\",\"details\":\"Some individuals may experience hives, itching, or asthma-like symptoms after consuming tartrazine, particularly those with dye sensitivities. There have also been concerns about behavioral effects in some children when consumed along with other artificial colors, though effects vary and are not universal. If you notice symptoms or are trying to reduce artificial additives, limiting products with Yellow 5 can be helpful.\",\"category\":\"Artificial color (synthetic dye)\"}",
+    "lastUpdated": 1766812220416,
+    "createdAt": 1766812220416
+  },
+  "yellow 6 (sunset yellow fcf)__food__en": {
+    "analysis": "{\"name\":\"Yellow 6 (sunset Yellow Fcf)\",\"riskLevel\":\"moderate\",\"summary\":\"Yellow 6 is a synthetic orange-yellow food dye used to enhance or standardize color in foods and beverages. It is widely approved but may trigger sensitivity in some people.\",\"details\":\"A small number of people report allergic-type reactions such as hives or nasal congestion after consuming Sunset Yellow. As with several artificial colors, some research has examined potential links to increased hyperactivity in susceptible children, especially when multiple dyes are consumed together. Choosing naturally colored options can reduce exposure if you are sensitive or aiming to avoid artificial dyes.\",\"category\":\"Artificial color (synthetic dye)\"}",
+    "lastUpdated": 1766812220416,
+    "createdAt": 1766812220416
+  },
+  "blue 1 (brilliant blue fcf)__food__en": {
+    "analysis": "{\"name\":\"Blue 1 (brilliant Blue Fcf)\",\"riskLevel\":\"moderate\",\"summary\":\"Blue 1 is a synthetic food dye used to create bright blue or green shades in foods, drinks, and supplements. It is generally considered safe at regulated intake levels but can cause reactions in sensitive individuals.\",\"details\":\"Occasional sensitivity reactions such as hives, itching, or gastrointestinal discomfort have been reported, though they appear uncommon. Like other artificial dyes, Blue 1 is often included in discussions about reducing ultra-processed additive exposure, particularly for children. If dye-related symptoms occur, avoiding products with Blue 1 and tracking triggers may help.\",\"category\":\"Artificial color (synthetic dye)\"}",
+    "lastUpdated": 1766812220416,
+    "createdAt": 1766812220416
+  },
+  "ascorbic acid (vitamin c)__food__en": {
+    "analysis": "{\"name\":\"Ascorbic Acid (vitamin C)\",\"riskLevel\":\"low\",\"summary\":\"Ascorbic acid is Vitamin C, a common nutrient added to foods and supplements for antioxidant support. It is generally safe at typical dietary and supplement amounts.\",\"details\":\"Vitamin C supports collagen formation, immune function, and helps improve absorption of non-heme iron from plant foods. Very high supplemental doses can cause gastrointestinal upset (such as diarrhea or cramps) and may increase kidney stone risk in susceptible individuals. In foods, it is also used to help protect flavor and color by reducing oxidation.\",\"category\":\"Vitamin / Antioxidant\"}",
+    "lastUpdated": 1766812220814,
+    "createdAt": 1766812220814
+  },
+  "niacinamide (vitamin b3)__food__en": {
+    "analysis": "{\"name\":\"Niacinamide (vitamin B3)\",\"riskLevel\":\"low\",\"summary\":\"Niacinamide is a form of Vitamin B3 used to support energy metabolism and overall nutrition. It is generally well tolerated in foods and standard supplement doses.\",\"details\":\"Niacinamide helps the body make NAD/NADP, which are essential for cellular energy production and many metabolic reactions. Unlike niacin (nicotinic acid), it typically does not cause skin flushing at normal doses. Very high intakes from supplements may cause nausea or, rarely, liver-related effects, but this is uncommon at typical fortification levels.\",\"category\":\"Vitamin\"}",
+    "lastUpdated": 1766812220814,
+    "createdAt": 1766812220814
+  },
+  "reduced iron__food__en": {
+    "analysis": "{\"name\":\"Reduced Iron\",\"riskLevel\":\"moderate\",\"summary\":\"Reduced iron is a form of iron used to fortify foods and supplements to help prevent iron deficiency. It is usually safe for most adults but can pose issues if taken in excess or by people who should avoid extra iron.\",\"details\":\"Iron is essential for hemoglobin and oxygen transport, and fortification can be beneficial for individuals with low iron intake. However, supplemental or highly fortified iron can cause gastrointestinal side effects (constipation, nausea, dark stools) and may worsen iron overload in conditions like hereditary hemochromatosis. Iron-containing products should be kept away from children because accidental overdose can be dangerous.\",\"category\":\"Mineral\"}",
+    "lastUpdated": 1766812220814,
+    "createdAt": 1766812220814
+  },
+  "thiamin mononitrate (vitamin b1)__food__en": {
+    "analysis": "{\"name\":\"Thiamin Mononitrate (vitamin B1)\",\"riskLevel\":\"low\",\"summary\":\"Thiamin mononitrate is a stable form of vitamin B1 commonly added to fortified foods and supplements. It supports energy metabolism and normal nerve function.\",\"details\":\"It is generally safe at typical fortification and supplement doses, and excess amounts are usually excreted because it is water-soluble. Adverse effects are uncommon, but very high supplemental intakes may cause mild digestive upset in sensitive individuals.\",\"category\":\"Vitamin / Fortificant\"}",
+    "lastUpdated": 1766812220905,
+    "createdAt": 1766812220905
+  },
+  "riboflavin (vitamin b2)__food__en": {
+    "analysis": "{\"name\":\"Riboflavin (vitamin B2)\",\"riskLevel\":\"low\",\"summary\":\"Riboflavin is vitamin B2, frequently used in supplements and food fortification to support energy production and cellular function. It is considered safe for most people at common doses.\",\"details\":\"Because it is water-soluble, the body excretes excess amounts, often causing harmless bright-yellow urine. Side effects are rare, though some people may experience mild gastrointestinal discomfort at high supplemental doses.\",\"category\":\"Vitamin / Fortificant\"}",
+    "lastUpdated": 1766812220905,
+    "createdAt": 1766812220905
+  },
+  "folic acid__food__en": {
+    "analysis": "{\"name\":\"Folic Acid\",\"riskLevel\":\"moderate\",\"summary\":\"Folic acid is a synthetic form of folate (vitamin B9) used in fortified foods and supplements to support DNA synthesis and healthy red blood cell formation. It is beneficial for many people, especially in pregnancy, but can pose concerns at high intakes.\",\"details\":\"High total intake from supplements plus fortified foods can mask vitamin B12 deficiency by correcting anemia while allowing nerve damage to progress, which is a key safety consideration. Some individuals have genetic variants affecting folate metabolism and may prefer other forms (such as 5-MTHF), though folic acid remains widely used and effective at recommended levels.\",\"category\":\"Vitamin / Fortificant\"}",
+    "lastUpdated": 1766812220906,
+    "createdAt": 1766812220906
+  },
+  "zinc oxide__food__en": {
+    "analysis": "{\"name\":\"Zinc Oxide\",\"riskLevel\":\"moderate\",\"summary\":\"Zinc oxide is an inorganic form of zinc used to provide dietary zinc in supplements and fortified foods. It is generally safe, but excessive total zinc intake can cause side effects.\",\"details\":\"Zinc is an essential mineral for immune function, wound healing, and normal taste and smell, and zinc oxide is a common, stable source. Compared with some other zinc forms, it may be less bioavailable, so higher doses are sometimes used. High zinc intake from supplements (especially long term) can cause nausea and can contribute to copper deficiency and altered immune function.\",\"category\":\"Mineral (zinc source)\"}",
+    "lastUpdated": 1766812222804,
+    "createdAt": 1766812222804
+  },
+  "vitamin a palmitate__food__en": {
+    "analysis": "{\"name\":\"Vitamin a Palmitate\",\"riskLevel\":\"moderate\",\"summary\":\"Vitamin A palmitate is a fat-soluble form of vitamin A used in supplements and fortification. It can be beneficial at appropriate doses but carries a higher overdose risk than water-soluble vitamins.\",\"details\":\"Vitamin A supports vision, immune function, and skin health, and palmitate is a common storage form used in products. Because vitamin A is fat-soluble, it can accumulate in the body, and excessive intake may cause toxicity (e.g., liver strain, headaches, and bone effects). High preformed vitamin A intake is of particular concern during pregnancy due to teratogenic risk, so total intake from all sources should be considered.\",\"category\":\"Vitamin (fat-soluble)\"}",
+    "lastUpdated": 1766812222805,
+    "createdAt": 1766812222805
+  },
+  "pyridoxine hydrochloride (vitamin b6)__food__en": {
+    "analysis": "{\"name\":\"Pyridoxine Hydrochloride (vitamin B6)\",\"riskLevel\":\"moderate\",\"summary\":\"Pyridoxine hydrochloride is a common supplemental form of vitamin B6 used to support metabolism and nervous system function. It is generally safe, but very high supplemental doses over time can cause nerve-related side effects.\",\"details\":\"Vitamin B6 is involved in amino acid metabolism, neurotransmitter synthesis, and red blood cell formation, and pyridoxine HCl is widely used due to stability and cost. While typical dietary and standard supplement amounts are safe, chronic high-dose supplementation has been linked to sensory neuropathy (tingling, numbness, balance issues). Risk depends on total daily dose and duration, especially when multiple fortified foods and supplements are used together.\",\"category\":\"Vitamin (water-soluble)\"}",
+    "lastUpdated": 1766812222805,
+    "createdAt": 1766812222805
+  },
+  "potato__food__en": {
+    "analysis": "{\"name\":\"Potato\",\"riskLevel\":\"low\",\"summary\":\"Potato is a whole food ingredient that mainly provides carbohydrates and some potassium and vitamin C. Health impact depends largely on preparation method and portion size.\",\"details\":\"Potatoes are naturally low in fat and contain fiber, but when fried or heavily processed they can become calorie-dense and may contribute to high glycemic load. For most people, potatoes are safe; those managing blood sugar may benefit from moderating portions or pairing with protein and fiber.\",\"category\":\"Vegetable / Starch\"}",
+    "lastUpdated": 1766812304547,
+    "createdAt": 1766812304547
+  },
+  "vegetable oil (palm and/or soybean and/or canola oil)__food__en": {
+    "analysis": "{\"name\":\"Vegetable Oil (palm And/or Soybean And/or Canola Oil)\",\"riskLevel\":\"moderate\",\"summary\":\"This is a blend of refined oils used for frying or texture, and the nutrition profile varies by which oil is used. Overall risk is moderate due to potential high saturated fat (palm) and typical use in fried/ultra-processed foods.\",\"details\":\"Palm oil is higher in saturated fat, which can raise LDL cholesterol when consumed frequently, while canola oil is higher in monounsaturated fat and is generally considered a better option. Soybean oil is high in polyunsaturated omega-6 fats; in excess and in the context of a low-omega-3 diet it may be less ideal, though it is safe for the general population (soy is a common allergen but low risk for most people). The biggest health concern is often overall intake of fried foods and calories rather than the oil alone.\",\"category\":\"Added Fat / Cooking Oil\"}",
+    "lastUpdated": 1766812304547,
+    "createdAt": 1766812304547
+  },
+  "seasoning__food__en": {
+    "analysis": "{\"name\":\"Seasoning\",\"riskLevel\":\"moderate\",\"summary\":\"Seasoning is a broad term that can include salt, spices, flavor enhancers, and additives. Risk is moderate because it often contributes significant sodium and may contain ingredients like MSG or artificial flavors depending on the product.\",\"details\":\"Without a full breakdown, seasoning commonly includes salt (which can meaningfully raise sodium per serving) and may include maltodextrin, yeast extract, MSG, or disodium inosinate/guanylate for flavor. People with hypertension or those limiting sodium may want to check the Nutrition Facts and full ingredient list for sodium content and specific additives.\",\"category\":\"Flavoring / Spice Blend\"}",
+    "lastUpdated": 1766812304547,
+    "createdAt": 1766812304547
+  }
+}
