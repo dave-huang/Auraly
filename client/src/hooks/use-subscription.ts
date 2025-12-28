@@ -47,19 +47,28 @@ export function useCreateCheckout() {
   return useMutation({
     mutationFn: async (params: { priceId: string; mode: 'subscription' }) => {
       console.log('[Checkout] Creating checkout session with params:', params);
-      const response = await apiRequest('POST', '/api/subscription/checkout', params);
-      const data = await response.json();
-      console.log('[Checkout] Response:', data);
-      return data;
+      try {
+        const response = await apiRequest('POST', '/api/subscription/checkout', params);
+        const data = await response.json();
+        console.log('[Checkout] Response:', data);
+        return data;
+      } catch (error: any) {
+        console.error('[Checkout] API request failed:', error.message || error);
+        throw error;
+      }
     },
     onSuccess: (data) => {
       console.log('[Checkout] Success, redirecting to:', data.url);
       if (data.url) {
         window.location.href = data.url;
+      } else {
+        console.error('[Checkout] No URL in response:', data);
+        alert('Unable to start checkout. Please try again.');
       }
     },
-    onError: (error) => {
+    onError: (error: any) => {
       console.error('[Checkout] Error creating checkout session:', error);
+      alert(`Checkout failed: ${error.message || 'Unknown error'}. Please try again.`);
     },
   });
 }
