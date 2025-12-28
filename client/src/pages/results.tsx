@@ -16,6 +16,7 @@ import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useTranslation } from "react-i18next";
 import { applyRiskPreferences, hasActivePreferences } from "@/lib/riskAdjustment";
 import { useSubscriptionStatus } from "@/hooks/use-subscription";
+import { trackScan } from "@/lib/analytics";
 
 // Helper function for direct polling fallback
 const directPoll = async (requestId: string, resolve: any, reject: any, onOcrComplete?: () => void) => {
@@ -199,6 +200,9 @@ export default function ResultsPage() {
       currentRequestIdRef.current = null;
       resolveRef.current = null;
       rejectRef.current = null;
+      
+      // Track successful scan in Google Analytics
+      trackScan(data.productType || 'unknown', true);
       
       // Clear pending analysis first
       sessionStorage.removeItem('pendingAnalysis');

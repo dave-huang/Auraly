@@ -11,6 +11,7 @@ import { apiRequest, queryClient } from "@/lib/queryClient";
 import type { RiskPreferences, AllergenPreferences, PreferenceCategory, AllergenCategory, RiskTolerance } from "@shared/schema";
 import { defaultRiskPreferences, defaultAllergenPreferences, preferenceCategories, allergenCategories } from "@shared/schema";
 import { cn } from "@/lib/utils";
+import { trackOnboardingComplete } from "@/lib/analytics";
 
 interface CategoryInfo {
   key: PreferenceCategory;
@@ -456,11 +457,13 @@ export default function OnboardingPage() {
   const handleComplete = async () => {
     await completeOnboarding.mutateAsync(preferences);
     await completeAllergenOnboarding.mutateAsync(allergenPreferences);
+    trackOnboardingComplete();
   };
 
   const handleSkip = async () => {
     await completeOnboarding.mutateAsync(defaultRiskPreferences);
     await completeAllergenOnboarding.mutateAsync(defaultAllergenPreferences);
+    trackOnboardingComplete();
   };
 
   const updatePreference = (category: PreferenceCategory, value: RiskTolerance) => {

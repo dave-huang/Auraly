@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Crown, Sparkles, Loader2, Leaf, Zap } from 'lucide-react';
 import { useStripeProducts, useCreateCheckout, useLogPaywallView, useSubscriptionStatus } from '@/hooks/use-subscription';
 import { Badge } from '@/components/ui/badge';
+import { trackPaywallView, trackUpgradeClick } from '@/lib/analytics';
 
 interface PaywallModalProps {
   open: boolean;
@@ -23,6 +24,7 @@ export function PaywallModal({ open, onClose, source = 'unknown', reason = 'volu
   useEffect(() => {
     if (open) {
       logPaywallView.mutate(source);
+      trackPaywallView(source);
     }
   }, [open, source]);
 
@@ -39,6 +41,7 @@ export function PaywallModal({ open, onClose, source = 'unknown', reason = 'volu
       return;
     }
     console.log('[PaywallModal] Calling createCheckout.mutate with priceId:', price.id);
+    trackUpgradeClick('auraly_plus');
     createCheckout.mutate({ priceId: price.id, mode: 'subscription' });
   };
 

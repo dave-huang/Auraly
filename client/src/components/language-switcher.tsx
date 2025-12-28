@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Globe } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { trackLanguageChange } from "@/lib/analytics";
 
 export function LanguageSwitcher() {
   const { i18n } = useTranslation();
@@ -14,6 +15,7 @@ export function LanguageSwitcher() {
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
     localStorage.setItem('language', lng);
+    trackLanguageChange(lng);
   };
 
   return (
