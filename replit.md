@@ -34,6 +34,10 @@ Auraly is a mobile-friendly web application designed to help users understand th
     - `PATCH /api/user/allergen-preferences` - Update preferences
     - `POST /api/user/allergen-onboarding` - Complete allergen onboarding
     - `POST /api/admin/clear-cache` - **ADMIN ONLY** - Clears ingredient cache (use when AI prompts change)
+    - `GET /api/admin/dashboard` - Admin dashboard stats with test user filtering
+    - `GET /api/admin/daily-usage` - Last 30 days of login and scan activity
+    - `GET /api/admin/subscription-funnel` - Subscription status distribution and conversion rates
+    - `GET /api/admin/ingredient-cache` - Browse cached ingredient analyses (limited to 500 entries)
     - `GET /api/account/subscription` - Returns subscription details, billing info, payment method
     - `POST /api/account/billing-portal` - Creates Stripe Customer Portal session for payment management
 - **Services**: `services/cache.ts`, `services/ocr.ts`, `services/geminiOcr.ts`, `services/googleVisionOcr.ts`, `services/analyzer.ts`, `gemini.ts`, `openai.ts`.
