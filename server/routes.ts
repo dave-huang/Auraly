@@ -3,13 +3,13 @@ import { createServer, type Server } from "http";
 import multer from "multer";
 import z from "zod";
 import crypto from "crypto";
-import { eq } from "drizzle-orm";
+import { eq, sql, gte, and, count, desc } from "drizzle-orm";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { storage } from "./storage";
 import { db } from "./db";
 import { extractTextFromImage } from "./services/ocr";
 import { analyzeIngredients, analyzeIngredientsParallel, extractIngredientsFromText } from "./services/analyzer";
-import { batchAnalyzeIngredientsWithCache, getCacheStats, clearAllCache } from "./services/cache";
+import { batchAnalyzeIngredientsWithCache, getCacheStats, clearAllCache, getAllCacheEntries } from "./services/cache";
 import { subscriptionService } from "./services/subscription";
 import { 
   ocrRequestSchema, 
@@ -17,6 +17,9 @@ import {
   riskPreferencesSchema,
   allergenPreferencesSchema,
   users,
+  scanHistory,
+  scanUsageLogs,
+  sessions,
   type ProductType,
   type AnalysisResult,
   type InsertScanHistory,
@@ -1143,46 +1146,246 @@ Sent from Auraly Feedback System
     next();
   };
 
+  // Check if a user is a test account based on email patterns
+  function isTestUser(email: string | null | undefined): boolean {
+    if (!email) return false;
+    const lowerEmail = email.toLowerCase();
+    
+    // Replit internal domains
+    if (lowerEmail.endsWith('@replit.com') || lowerEmail.endsWith('@repl.it')) {
+      return true;
+    }
+    
+    // Emails starting with test/testing (anchored to start)
+    if (lowerEmail.startsWith('test@') || lowerEmail.startsWith('testing@')) {
+      return true;
+    }
+    
+    // Gmail-style +test aliases
+    if (lowerEmail.includes('+test@') || lowerEmail.includes('+testing@')) {
+      return true;
+    }
+    
+    return false;
+  }
+
   app.get('/api/admin/dashboard', isAuthenticated, isAdmin, async (req: any, res) => {
     try {
       const allUsers = await db.select().from(users);
       
-      const totalUsers = allUsers.length;
-      const premiumUsers = allUsers.filter(u => u.subscriptionStatus === 'active').length;
-      const freeUsers = totalUsers - premiumUsers;
+      // Filter out test users for display
+      const realUsers = allUsers.filter(u => !isTestUser(u.email));
       
-      const totalScansThisMonth = allUsers.reduce((sum, u) => sum + (u.monthlyFreeScansUsed || 0), 0);
+      const totalUsers = realUsers.length;
+      const premiumUsers = realUsers.filter(u => u.subscriptionStatus === 'active').length;
+      const trialUsers = realUsers.filter(u => u.subscriptionStatus === 'trial').length;
+      const freeUsers = realUsers.filter(u => u.subscriptionStatus === 'free' || !u.subscriptionStatus).length;
+      
+      // Get scan history for time-based stats
+      const now = new Date();
+      const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const startOfWeek = new Date(startOfToday);
+      startOfWeek.setDate(startOfWeek.getDate() - 7);
+      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+      
+      // Query scans from scanHistory table
+      const allScans = await db.select().from(scanHistory);
+      const scansToday = allScans.filter(s => s.createdAt && new Date(s.createdAt) >= startOfToday).length;
+      const scansThisWeek = allScans.filter(s => s.createdAt && new Date(s.createdAt) >= startOfWeek).length;
+      const scansThisMonth = allScans.filter(s => s.createdAt && new Date(s.createdAt) >= startOfMonth).length;
+      
+      // Build per-user scan counts
+      const userScanCounts = new Map<string, { today: number; week: number; month: number; total: number }>();
+      for (const scan of allScans) {
+        const userId = scan.userId;
+        const counts = userScanCounts.get(userId) || { today: 0, week: 0, month: 0, total: 0 };
+        counts.total++;
+        if (scan.createdAt) {
+          const scanDate = new Date(scan.createdAt);
+          if (scanDate >= startOfToday) counts.today++;
+          if (scanDate >= startOfWeek) counts.week++;
+          if (scanDate >= startOfMonth) counts.month++;
+        }
+        userScanCounts.set(userId, counts);
+      }
 
-      const recentUsers = allUsers
+      const recentUsers = realUsers
         .sort((a, b) => {
           const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
           const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
           return dateB - dateA;
         })
-        .slice(0, 50)
-        .map(u => ({
-          id: u.id,
-          replitId: u.id,
-          email: u.email || '',
-          name: `${u.firstName || ''} ${u.lastName || ''}`.trim() || 'Unknown',
-          subscriptionStatus: u.subscriptionStatus,
-          scanPackBalance: u.scanPackBalance || 0,
-          monthlyFreeScansUsed: u.monthlyFreeScansUsed || 0,
-          createdAt: u.createdAt?.toString() || '',
-        }));
+        .slice(0, 100)
+        .map(u => {
+          const scanCounts = userScanCounts.get(u.id) || { today: 0, week: 0, month: 0, total: 0 };
+          return {
+            id: u.id,
+            replitId: u.id,
+            email: u.email || '',
+            name: `${u.firstName || ''} ${u.lastName || ''}`.trim() || 'Unknown',
+            subscriptionStatus: u.subscriptionStatus,
+            scanPackBalance: u.scanPackBalance || 0,
+            monthlyFreeScansUsed: u.monthlyFreeScansUsed || 0,
+            createdAt: u.createdAt?.toString() || '',
+            scansToday: scanCounts.today,
+            scansThisWeek: scanCounts.week,
+            scansThisMonth: scanCounts.month,
+            totalScans: scanCounts.total,
+          };
+        });
 
       res.json({
         stats: {
           totalUsers,
           premiumUsers,
+          trialUsers,
           freeUsers,
-          totalScansThisMonth,
+          totalScansToday: scansToday,
+          totalScansThisWeek: scansThisWeek,
+          totalScansThisMonth: scansThisMonth,
         },
         recentUsers,
       });
     } catch (error: any) {
       console.error('Admin dashboard error:', error);
       res.status(500).json({ error: 'Failed to load dashboard' });
+    }
+  });
+  
+  // Daily usage stats (logins and scans by day)
+  app.get('/api/admin/daily-usage', isAuthenticated, isAdmin, async (req: any, res) => {
+    try {
+      const days = parseInt(req.query.days as string) || 30;
+      const now = new Date();
+      const startDate = new Date(now);
+      startDate.setDate(startDate.getDate() - days);
+      
+      // Get all scans in the period
+      const scans = await db.select().from(scanHistory).where(gte(scanHistory.createdAt, startDate));
+      
+      // Get all sessions for login data
+      const allSessions = await db.select().from(sessions);
+      
+      // Build daily stats
+      const dailyStats: Record<string, { date: string; scans: number; logins: number }> = {};
+      
+      // Initialize all days
+      for (let i = 0; i <= days; i++) {
+        const date = new Date(now);
+        date.setDate(date.getDate() - i);
+        const dateStr = date.toISOString().split('T')[0];
+        dailyStats[dateStr] = { date: dateStr, scans: 0, logins: 0 };
+      }
+      
+      // Count scans by day
+      for (const scan of scans) {
+        if (scan.createdAt) {
+          const dateStr = new Date(scan.createdAt).toISOString().split('T')[0];
+          if (dailyStats[dateStr]) {
+            dailyStats[dateStr].scans++;
+          }
+        }
+      }
+      
+      // Count unique logins by day (from session expires)
+      // Sessions expire in the future, so we estimate login date
+      for (const session of allSessions) {
+        if (session.expire) {
+          // Session typically expires 24h after login, so subtract 24h
+          const loginDate = new Date(session.expire);
+          loginDate.setHours(loginDate.getHours() - 24);
+          const dateStr = loginDate.toISOString().split('T')[0];
+          if (dailyStats[dateStr]) {
+            dailyStats[dateStr].logins++;
+          }
+        }
+      }
+      
+      // Convert to array sorted by date
+      const result = Object.values(dailyStats).sort((a, b) => a.date.localeCompare(b.date));
+      
+      res.json({ dailyStats: result });
+    } catch (error: any) {
+      console.error('Daily usage error:', error);
+      res.status(500).json({ error: 'Failed to load daily usage' });
+    }
+  });
+  
+  // Subscription funnel stats
+  app.get('/api/admin/subscription-funnel', isAuthenticated, isAdmin, async (req: any, res) => {
+    try {
+      const allUsers = await db.select().from(users);
+      const realUsers = allUsers.filter(u => !isTestUser(u.email));
+      
+      // Count by subscription status
+      const statusCounts = {
+        free: 0,
+        trial: 0,
+        active: 0,
+        cancelled: 0,
+        past_due: 0,
+      };
+      
+      // Trial status breakdown
+      let trialActive = 0;
+      let trialExpired = 0;
+      
+      for (const user of realUsers) {
+        const status = user.subscriptionStatus || 'free';
+        if (status in statusCounts) {
+          statusCounts[status as keyof typeof statusCounts]++;
+        }
+        
+        // Check trial expiration
+        if (status === 'trial') {
+          if (user.trialEndsAt && new Date(user.trialEndsAt) > new Date()) {
+            trialActive++;
+          } else {
+            trialExpired++;
+          }
+        }
+      }
+      
+      // Calculate conversion rates
+      const totalUsers = realUsers.length;
+      const conversionToTrial = totalUsers > 0 ? ((statusCounts.trial + statusCounts.active) / totalUsers * 100).toFixed(1) : '0';
+      const conversionToPaid = (statusCounts.trial + statusCounts.free) > 0 
+        ? (statusCounts.active / (statusCounts.trial + statusCounts.free + statusCounts.active) * 100).toFixed(1) 
+        : '0';
+      
+      res.json({
+        statusCounts,
+        trialBreakdown: {
+          active: trialActive,
+          expired: trialExpired,
+        },
+        conversionRates: {
+          toTrial: conversionToTrial + '%',
+          toPaid: conversionToPaid + '%',
+        },
+        totalUsers,
+      });
+    } catch (error: any) {
+      console.error('Subscription funnel error:', error);
+      res.status(500).json({ error: 'Failed to load subscription funnel' });
+    }
+  });
+  
+  // Ingredient cache viewer
+  app.get('/api/admin/ingredient-cache', isAuthenticated, isAdmin, async (req: any, res) => {
+    try {
+      const entries = getAllCacheEntries();
+      
+      // Sort by most recently updated
+      entries.sort((a, b) => b.lastUpdated - a.lastUpdated);
+      
+      res.json({
+        totalEntries: entries.length,
+        entries: entries.slice(0, 500), // Limit to 500 entries for performance
+      });
+    } catch (error: any) {
+      console.error('Ingredient cache error:', error);
+      res.status(500).json({ error: 'Failed to load ingredient cache' });
     }
   });
 

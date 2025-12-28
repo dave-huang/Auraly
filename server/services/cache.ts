@@ -240,3 +240,32 @@ export function clearAllCache(): number {
   console.log(`[CACHE-ADMIN] Cleared all ${count} cache entries`);
   return count;
 }
+
+// Get all cache entries for admin viewing
+export function getAllCacheEntries(): Array<{
+  key: string;
+  ingredient: string;
+  category: string;
+  language: string;
+  analysis: string;
+  createdAt: number;
+  lastUpdated: number;
+}> {
+  return Object.entries(cacheData).map(([key, entry]) => {
+    // Parse key format: ingredient__category__language
+    const parts = key.split('__');
+    const ingredient = parts[0] || key;
+    const category = parts[1] || 'unknown';
+    const language = parts[2] || 'en';
+    
+    return {
+      key,
+      ingredient,
+      category,
+      language,
+      analysis: entry.analysis,
+      createdAt: entry.createdAt,
+      lastUpdated: entry.lastUpdated
+    };
+  });
+}
