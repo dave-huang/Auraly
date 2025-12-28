@@ -46,13 +46,20 @@ export function useStripeProducts() {
 export function useCreateCheckout() {
   return useMutation({
     mutationFn: async (params: { priceId: string; mode: 'subscription' }) => {
+      console.log('[Checkout] Creating checkout session with params:', params);
       const response = await apiRequest('POST', '/api/subscription/checkout', params);
-      return response.json();
+      const data = await response.json();
+      console.log('[Checkout] Response:', data);
+      return data;
     },
     onSuccess: (data) => {
+      console.log('[Checkout] Success, redirecting to:', data.url);
       if (data.url) {
         window.location.href = data.url;
       }
+    },
+    onError: (error) => {
+      console.error('[Checkout] Error creating checkout session:', error);
     },
   });
 }

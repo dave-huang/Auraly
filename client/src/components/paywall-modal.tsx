@@ -30,8 +30,15 @@ export function PaywallModal({ open, onClose, source = 'unknown', reason = 'volu
   const subscriptionProduct = products.find(p => p.metadata?.type === 'subscription');
 
   const handleSubscribe = () => {
+    console.log('[PaywallModal] handleSubscribe called');
+    console.log('[PaywallModal] subscriptionProduct:', subscriptionProduct);
     const price = subscriptionProduct?.prices[0];
-    if (!price) return;
+    console.log('[PaywallModal] price:', price);
+    if (!price) {
+      console.error('[PaywallModal] No price found, aborting');
+      return;
+    }
+    console.log('[PaywallModal] Calling createCheckout.mutate with priceId:', price.id);
     createCheckout.mutate({ priceId: price.id, mode: 'subscription' });
   };
 
