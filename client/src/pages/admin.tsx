@@ -11,8 +11,16 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { 
   ArrowLeft, Users, Crown, Zap, TrendingUp, Search, 
   Loader2, AlertTriangle, Gift, Ban, RefreshCw, Trash2, Database,
-  BarChart3, FlaskConical, Calendar, Beaker, Eye, EyeOff
+  BarChart3, FlaskConical, Calendar, Beaker, Eye, EyeOff, ArrowUpDown, ArrowUp, ArrowDown
 } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Switch } from "@/components/ui/switch";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import { apiRequest, queryClient } from "@/lib/queryClient";
@@ -118,6 +126,8 @@ export default function AdminPage() {
   const [grantUserId, setGrantUserId] = useState("");
   const [grantScans, setGrantScans] = useState("10");
   const [showTestUsers, setShowTestUsers] = useState(false);
+  const [sortField, setSortField] = useState<keyof UserRecord>("createdAt");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
 
   const typedUser = user as AuthUser | null;
   const isAdmin = typedUser?.id === ADMIN_USER_ID;
@@ -233,11 +243,45 @@ export default function AdminPage() {
     );
   }
 
-  const filteredUsers = adminData?.recentUsers?.filter(u => 
+  const filteredUsers = (adminData?.recentUsers?.filter(u => 
     u.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     u.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     u.replitId?.includes(searchQuery)
-  ) || [];
+  ) || []).sort((a, b) => {
+    const aVal = a[sortField];
+    const bVal = b[sortField];
+    
+    if (aVal === null || aVal === undefined) return sortDirection === "asc" ? -1 : 1;
+    if (bVal === null || bVal === undefined) return sortDirection === "asc" ? 1 : -1;
+    
+    if (typeof aVal === "string" && typeof bVal === "string") {
+      return sortDirection === "asc" 
+        ? aVal.localeCompare(bVal) 
+        : bVal.localeCompare(aVal);
+    }
+    
+    if (typeof aVal === "number" && typeof bVal === "number") {
+      return sortDirection === "asc" ? aVal - bVal : bVal - aVal;
+    }
+    
+    return 0;
+  });
+
+  const handleSort = (field: keyof UserRecord) => {
+    if (sortField === field) {
+      setSortDirection(prev => prev === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortDirection("desc");
+    }
+  };
+
+  const SortIcon = ({ field }: { field: keyof UserRecord }) => {
+    if (sortField !== field) return <ArrowUpDown className="w-3 h-3 ml-1 opacity-50" />;
+    return sortDirection === "asc" 
+      ? <ArrowUp className="w-3 h-3 ml-1" /> 
+      : <ArrowDown className="w-3 h-3 ml-1" />;
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -407,79 +451,173 @@ export default function AdminPage() {
                   <div className="flex justify-center py-8">
                     <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
                   </div>
+                ) : filteredUsers.length === 0 ? (
+                  <p className="text-center text-muted-foreground py-8">No users found</p>
                 ) : (
-                  <div className="space-y-2">
-                    {filteredUsers.length === 0 ? (
-                      <p className="text-center text-muted-foreground py-8">No users found</p>
-                    ) : (
-                      filteredUsers.map((u) => (
-                        <div key={u.id} className="flex items-center justify-between p-3 rounded-lg border bg-card/50" data-testid={`user-row-${u.replitId}`}>
-                          <div className="flex-1 min-w-0">
-                            <p className="font-medium truncate">{u.name || u.email || 'Unknown'}</p>
-                            <p className="text-sm text-muted-foreground truncate">{u.email}</p>
-                            <div className="flex items-center gap-2 mt-1 flex-wrap">
-                              <Badge variant="outline" className="text-xs">ID: {u.replitId}</Badge>
-                              {u.isTestUser && (
-                                <Badge className="bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs gap-1">
-                                  <FlaskConical className="w-2.5 h-2.5" />
-                                  Test
-                                </Badge>
-                              )}
-                              {u.subscriptionStatus === 'active' && (
-                                <Badge className="bg-primary/10 text-primary text-xs gap-1">
-                                  <Crown className="w-2.5 h-2.5" />
-                                  Premium
-                                </Badge>
-                              )}
-                              {u.subscriptionStatus === 'trial' && (
-                                <Badge className="bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 text-xs gap-1">
-                                  <Calendar className="w-2.5 h-2.5" />
-                                  Trial
-                                </Badge>
-                              )}
-                              {u.scanPackBalance > 0 && (
-                                <Badge variant="secondary" className="text-xs gap-1">
-                                  <Zap className="w-2.5 h-2.5" />
-                                  {u.scanPackBalance} packs
-                                </Badge>
-                              )}
+                  <div className="rounded-md border overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead 
+                            className="cursor-pointer hover:bg-muted/50 whitespace-nowrap"
+                            onClick={() => handleSort("name")}
+                            data-testid="sort-name"
+                          >
+                            <div className="flex items-center">
+                              Name
+                              <SortIcon field="name" />
                             </div>
-                            <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
-                              <span>Today: <strong className="text-foreground">{u.scansToday}</strong></span>
-                              <span>Week: <strong className="text-foreground">{u.scansThisWeek}</strong></span>
-                              <span>Month: <strong className="text-foreground">{u.scansThisMonth}</strong></span>
-                              <span>Total: <strong className="text-foreground">{u.totalScans}</strong></span>
+                          </TableHead>
+                          <TableHead 
+                            className="cursor-pointer hover:bg-muted/50 whitespace-nowrap"
+                            onClick={() => handleSort("email")}
+                            data-testid="sort-email"
+                          >
+                            <div className="flex items-center">
+                              Email
+                              <SortIcon field="email" />
                             </div>
-                          </div>
-                          <div className="flex items-center gap-2 ml-4">
-                            {u.subscriptionStatus === 'active' ? (
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                className="text-destructive"
-                                onClick={() => revokeSubscriptionMutation.mutate(u.replitId)}
-                                disabled={revokeSubscriptionMutation.isPending}
-                                data-testid={`button-revoke-${u.replitId}`}
-                              >
-                                <Ban className="w-3 h-3 mr-1" />
-                                Revoke
-                              </Button>
-                            ) : (
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={() => grantSubscriptionMutation.mutate(u.replitId)}
-                                disabled={grantSubscriptionMutation.isPending}
-                                data-testid={`button-grant-sub-${u.replitId}`}
-                              >
-                                <Crown className="w-3 h-3 mr-1" />
-                                Grant Premium
-                              </Button>
-                            )}
-                          </div>
-                        </div>
-                      ))
-                    )}
+                          </TableHead>
+                          <TableHead 
+                            className="cursor-pointer hover:bg-muted/50 whitespace-nowrap"
+                            onClick={() => handleSort("subscriptionStatus")}
+                            data-testid="sort-status"
+                          >
+                            <div className="flex items-center">
+                              Status
+                              <SortIcon field="subscriptionStatus" />
+                            </div>
+                          </TableHead>
+                          <TableHead 
+                            className="cursor-pointer hover:bg-muted/50 whitespace-nowrap text-right"
+                            onClick={() => handleSort("scansToday")}
+                            data-testid="sort-today"
+                          >
+                            <div className="flex items-center justify-end">
+                              Today
+                              <SortIcon field="scansToday" />
+                            </div>
+                          </TableHead>
+                          <TableHead 
+                            className="cursor-pointer hover:bg-muted/50 whitespace-nowrap text-right"
+                            onClick={() => handleSort("scansThisWeek")}
+                            data-testid="sort-week"
+                          >
+                            <div className="flex items-center justify-end">
+                              Week
+                              <SortIcon field="scansThisWeek" />
+                            </div>
+                          </TableHead>
+                          <TableHead 
+                            className="cursor-pointer hover:bg-muted/50 whitespace-nowrap text-right"
+                            onClick={() => handleSort("scansThisMonth")}
+                            data-testid="sort-month"
+                          >
+                            <div className="flex items-center justify-end">
+                              Month
+                              <SortIcon field="scansThisMonth" />
+                            </div>
+                          </TableHead>
+                          <TableHead 
+                            className="cursor-pointer hover:bg-muted/50 whitespace-nowrap text-right"
+                            onClick={() => handleSort("totalScans")}
+                            data-testid="sort-total"
+                          >
+                            <div className="flex items-center justify-end">
+                              Total
+                              <SortIcon field="totalScans" />
+                            </div>
+                          </TableHead>
+                          <TableHead 
+                            className="cursor-pointer hover:bg-muted/50 whitespace-nowrap"
+                            onClick={() => handleSort("createdAt")}
+                            data-testid="sort-signup"
+                          >
+                            <div className="flex items-center">
+                              Signup
+                              <SortIcon field="createdAt" />
+                            </div>
+                          </TableHead>
+                          <TableHead className="text-right">Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {filteredUsers.map((u) => (
+                          <TableRow key={u.id} data-testid={`user-row-${u.replitId}`}>
+                            <TableCell className="font-medium">
+                              <div className="flex items-center gap-2">
+                                <span className="truncate max-w-[150px]">{u.name || 'Unknown'}</span>
+                                {u.isTestUser && (
+                                  <Badge className="bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs shrink-0">
+                                    <FlaskConical className="w-2.5 h-2.5" />
+                                  </Badge>
+                                )}
+                              </div>
+                            </TableCell>
+                            <TableCell className="text-muted-foreground">
+                              <span className="truncate max-w-[180px] block">{u.email}</span>
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center gap-1 flex-wrap">
+                                {u.subscriptionStatus === 'active' && (
+                                  <Badge className="bg-primary/10 text-primary text-xs gap-1">
+                                    <Crown className="w-2.5 h-2.5" />
+                                    Premium
+                                  </Badge>
+                                )}
+                                {u.subscriptionStatus === 'trial' && (
+                                  <Badge className="bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 text-xs gap-1">
+                                    <Calendar className="w-2.5 h-2.5" />
+                                    Trial
+                                  </Badge>
+                                )}
+                                {(!u.subscriptionStatus || u.subscriptionStatus === 'free') && (
+                                  <Badge variant="secondary" className="text-xs">Free</Badge>
+                                )}
+                                {u.scanPackBalance > 0 && (
+                                  <Badge variant="outline" className="text-xs gap-1">
+                                    <Zap className="w-2.5 h-2.5" />
+                                    {u.scanPackBalance}
+                                  </Badge>
+                                )}
+                              </div>
+                            </TableCell>
+                            <TableCell className="text-right tabular-nums">{u.scansToday}</TableCell>
+                            <TableCell className="text-right tabular-nums">{u.scansThisWeek}</TableCell>
+                            <TableCell className="text-right tabular-nums">{u.scansThisMonth}</TableCell>
+                            <TableCell className="text-right tabular-nums font-medium">{u.totalScans}</TableCell>
+                            <TableCell className="text-muted-foreground whitespace-nowrap">
+                              {u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '-'}
+                            </TableCell>
+                            <TableCell className="text-right">
+                              {u.subscriptionStatus === 'active' ? (
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="text-destructive h-7 px-2"
+                                  onClick={() => revokeSubscriptionMutation.mutate(u.replitId)}
+                                  disabled={revokeSubscriptionMutation.isPending}
+                                  data-testid={`button-revoke-${u.replitId}`}
+                                >
+                                  <Ban className="w-3 h-3" />
+                                </Button>
+                              ) : (
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="h-7 px-2"
+                                  onClick={() => grantSubscriptionMutation.mutate(u.replitId)}
+                                  disabled={grantSubscriptionMutation.isPending}
+                                  data-testid={`button-grant-sub-${u.replitId}`}
+                                >
+                                  <Crown className="w-3 h-3" />
+                                </Button>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
                   </div>
                 )}
               </CardContent>
