@@ -17,26 +17,22 @@ export function WelcomeModal({ user }: WelcomeModalProps) {
   useEffect(() => {
     if (!user?.id) return;
 
-    const storageKey = `auraly_welcome_seen_${user.id}`;
-    const hasSeenWelcome = localStorage.getItem(storageKey);
-
-    if (!hasSeenWelcome && user.subscriptionStatus === "trial") {
+    // Show welcome modal if user is on trial and hasn't completed onboarding
+    // Uses database state instead of localStorage so deleting a user fully resets them
+    if (user.subscriptionStatus === "trial" && user.onboardingCompleted === false) {
       const timer = setTimeout(() => {
         setIsOpen(true);
       }, 500);
       return () => clearTimeout(timer);
     }
-  }, [user?.id, user?.subscriptionStatus]);
+  }, [user?.id, user?.subscriptionStatus, user?.onboardingCompleted]);
 
   const handleClose = () => {
-    if (user?.id) {
-      localStorage.setItem(`auraly_welcome_seen_${user.id}`, "true");
-    }
     setIsOpen(false);
   };
 
   const handleStartScanning = () => {
-    handleClose();
+    setIsOpen(false);
   };
 
   const benefits = [
