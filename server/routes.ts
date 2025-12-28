@@ -1151,6 +1151,11 @@ Sent from Auraly Feedback System
     if (!email) return false;
     const lowerEmail = email.toLowerCase();
     
+    // Fake/placeholder email domains (from automated testing)
+    if (lowerEmail.endsWith('@example.com') || lowerEmail.endsWith('@test.com')) {
+      return true;
+    }
+    
     // Replit internal domains
     if (lowerEmail.endsWith('@replit.com') || lowerEmail.endsWith('@repl.it')) {
       return true;
@@ -1171,9 +1176,11 @@ Sent from Auraly Feedback System
 
   app.get('/api/admin/dashboard', isAuthenticated, isAdmin, async (req: any, res) => {
     try {
+      const showTestUsers = req.query.showTestUsers === 'true';
       const allUsers = await db.select().from(users);
       
-      // Filter out test users for display
+      // Filter out test users unless toggle is on
+      const displayUsers = showTestUsers ? allUsers : allUsers.filter(u => !isTestUser(u.email));
       const realUsers = allUsers.filter(u => !isTestUser(u.email));
       
       const totalUsers = realUsers.length;
@@ -1209,7 +1216,8 @@ Sent from Auraly Feedback System
         userScanCounts.set(userId, counts);
       }
 
-      const recentUsers = realUsers
+      // Use displayUsers for the user list (respects toggle), stats always use realUsers
+      const recentUsers = displayUsers
         .sort((a, b) => {
           const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
           const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
@@ -1231,6 +1239,7 @@ Sent from Auraly Feedback System
             scansThisWeek: scanCounts.week,
             scansThisMonth: scanCounts.month,
             totalScans: scanCounts.total,
+            isTestUser: isTestUser(u.email),
           };
         });
 

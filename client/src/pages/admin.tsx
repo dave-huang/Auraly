@@ -11,8 +11,9 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { 
   ArrowLeft, Users, Crown, Zap, TrendingUp, Search, 
   Loader2, AlertTriangle, Gift, Ban, RefreshCw, Trash2, Database,
-  BarChart3, FlaskConical, Calendar, Beaker
+  BarChart3, FlaskConical, Calendar, Beaker, Eye, EyeOff
 } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -50,6 +51,7 @@ interface UserRecord {
   scansThisWeek: number;
   scansThisMonth: number;
   totalScans: number;
+  isTestUser?: boolean;
 }
 
 interface AdminData {
@@ -115,12 +117,18 @@ export default function AdminPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [grantUserId, setGrantUserId] = useState("");
   const [grantScans, setGrantScans] = useState("10");
+  const [showTestUsers, setShowTestUsers] = useState(false);
 
   const typedUser = user as AuthUser | null;
   const isAdmin = typedUser?.id === ADMIN_USER_ID;
 
   const { data: adminData, isLoading, error, refetch } = useQuery<AdminData>({
-    queryKey: ['/api/admin/dashboard'],
+    queryKey: ['/api/admin/dashboard', { showTestUsers }],
+    queryFn: async () => {
+      const res = await fetch(`/api/admin/dashboard?showTestUsers=${showTestUsers}`);
+      if (!res.ok) throw new Error('Failed to fetch dashboard');
+      return res.json();
+    },
     enabled: isAdmin,
   });
 
@@ -361,11 +369,27 @@ export default function AdminPage() {
           <TabsContent value="users" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Users className="w-5 h-5" />
-                  User Management
-                </CardTitle>
-                <CardDescription>View and manage user subscriptions</CardDescription>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="flex items-center gap-2">
+                      <Users className="w-5 h-5" />
+                      User Management
+                    </CardTitle>
+                    <CardDescription>View and manage user subscriptions</CardDescription>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Label htmlFor="show-test-users" className="text-sm text-muted-foreground flex items-center gap-1.5">
+                      {showTestUsers ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+                      Test accounts
+                    </Label>
+                    <Switch
+                      id="show-test-users"
+                      checked={showTestUsers}
+                      onCheckedChange={setShowTestUsers}
+                      data-testid="toggle-test-users"
+                    />
+                  </div>
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="relative mb-4">
@@ -395,6 +419,12 @@ export default function AdminPage() {
                             <p className="text-sm text-muted-foreground truncate">{u.email}</p>
                             <div className="flex items-center gap-2 mt-1 flex-wrap">
                               <Badge variant="outline" className="text-xs">ID: {u.replitId}</Badge>
+                              {u.isTestUser && (
+                                <Badge className="bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs gap-1">
+                                  <FlaskConical className="w-2.5 h-2.5" />
+                                  Test
+                                </Badge>
+                              )}
                               {u.subscriptionStatus === 'active' && (
                                 <Badge className="bg-primary/10 text-primary text-xs gap-1">
                                   <Crown className="w-2.5 h-2.5" />
