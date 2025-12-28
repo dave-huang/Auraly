@@ -1048,6 +1048,25 @@ Sent from Auraly Feedback System
       }
 
       let customerId = user.stripeCustomerId;
+      
+      // Verify customer exists in Stripe, clear stale ID if not
+      if (customerId) {
+        try {
+          await stripe.customers.retrieve(customerId);
+        } catch (err: any) {
+          if (err.code === 'resource_missing') {
+            console.log(`[CHECKOUT] Stale customer ID ${customerId} detected, clearing and creating new customer`);
+            await db.update(users)
+              .set({ stripeCustomerId: null, updatedAt: new Date() })
+              .where(eq(users.id, userId));
+            customerId = null;
+          } else {
+            throw err;
+          }
+        }
+      }
+      
+      // Create new customer if needed
       if (!customerId) {
         const customer = await stripe.customers.create({
           email: user.email || undefined,
@@ -1057,6 +1076,7 @@ Sent from Auraly Feedback System
           .set({ stripeCustomerId: customer.id, updatedAt: new Date() })
           .where(eq(users.id, userId));
         customerId = customer.id;
+        console.log(`[CHECKOUT] Created new Stripe customer ${customerId} for user ${userId}`);
       }
 
       // Redirect to /results after successful payment - this resumes pending analysis from sessionStorage
