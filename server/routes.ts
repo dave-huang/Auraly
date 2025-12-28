@@ -984,6 +984,9 @@ Sent from Auraly Feedback System
 
   app.get('/api/subscription/products', async (_req, res) => {
     try {
+      // Filter by livemode to ensure production uses live Stripe products and dev uses test products
+      const isProduction = process.env.REPLIT_DEPLOYMENT === '1';
+      
       const result = await db.execute(
         sqlDrizzle`
           SELECT 
@@ -997,8 +1000,8 @@ Sent from Auraly Feedback System
             pr.recurring,
             pr.metadata as price_metadata
           FROM stripe.products p
-          LEFT JOIN stripe.prices pr ON pr.product = p.id AND pr.active = true
-          WHERE p.active = true
+          LEFT JOIN stripe.prices pr ON pr.product = p.id AND pr.active = true AND pr.livemode = ${isProduction}
+          WHERE p.active = true AND p.livemode = ${isProduction}
           ORDER BY p.name, pr.unit_amount
         `
       );
