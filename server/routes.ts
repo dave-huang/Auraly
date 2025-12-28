@@ -1047,36 +1047,40 @@ Sent from Auraly Feedback System
         return res.status(404).json({ error: 'User not found' });
       }
 
-      let customerId = user.stripeCustomerId;
+      // ALWAYS search Stripe directly for a valid customer by userId metadata
+      // This bypasses any stale cached data in users.stripeCustomerId or stripe.customers table
+      let customerId: string | null = null;
       
-      // Verify customer exists in Stripe, clear stale ID if not
-      if (customerId) {
-        try {
-          await stripe.customers.retrieve(customerId);
-        } catch (err: any) {
-          if (err.code === 'resource_missing') {
-            console.log(`[CHECKOUT] Stale customer ID ${customerId} detected, clearing and creating new customer`);
-            await db.update(users)
-              .set({ stripeCustomerId: null, updatedAt: new Date() })
-              .where(eq(users.id, userId));
-            customerId = null;
-          } else {
-            throw err;
-          }
+      // Search for existing customer in Stripe by userId metadata
+      const existingCustomers = await stripe.customers.search({
+        query: `metadata['userId']:'${userId}'`,
+        limit: 10,
+      });
+      
+      // Find a non-deleted customer
+      for (const customer of existingCustomers.data) {
+        if (!customer.deleted) {
+          customerId = customer.id;
+          console.log(`[CHECKOUT] Found existing Stripe customer ${customerId} for user ${userId}`);
+          break;
         }
       }
       
-      // Create new customer if needed
+      // Create new customer if none found
       if (!customerId) {
         const customer = await stripe.customers.create({
           email: user.email || undefined,
           metadata: { userId },
         });
-        await db.update(users)
-          .set({ stripeCustomerId: customer.id, updatedAt: new Date() })
-          .where(eq(users.id, userId));
         customerId = customer.id;
         console.log(`[CHECKOUT] Created new Stripe customer ${customerId} for user ${userId}`);
+      }
+      
+      // Update users table with the valid customer ID
+      if (user.stripeCustomerId !== customerId) {
+        await db.update(users)
+          .set({ stripeCustomerId: customerId, updatedAt: new Date() })
+          .where(eq(users.id, userId));
       }
 
       // Redirect to /results after successful payment - this resumes pending analysis from sessionStorage
