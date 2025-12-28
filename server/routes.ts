@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import multer from "multer";
 import z from "zod";
 import crypto from "crypto";
-import { eq, sql, gte, and, count, desc } from "drizzle-orm";
+import { eq, sql, gte, and, count, desc, inArray } from "drizzle-orm";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { storage } from "./storage";
 import { db } from "./db";
@@ -1502,6 +1502,56 @@ Sent from Auraly Feedback System
     } catch (error: any) {
       console.error('Clear cache error:', error);
       res.status(500).json({ error: 'Failed to clear cache' });
+    }
+  });
+
+  // Admin endpoint to clean up stale Stripe customers that no longer exist in Stripe
+  app.post('/api/admin/cleanup-stripe-customers', isAuthenticated, isAdmin, async (req: any, res) => {
+    try {
+      const stripe = await getUncachableStripeClient();
+      
+      // Get all customers from our stripe.customers table
+      const localCustomers = await db.execute(sql`SELECT id, email, metadata FROM stripe.customers`);
+      
+      const results: { id: string; status: string; email?: string }[] = [];
+      const staleCustomerIds: string[] = [];
+      
+      for (const customer of localCustomers.rows as any[]) {
+        try {
+          const stripeCustomer = await stripe.customers.retrieve(customer.id);
+          if ((stripeCustomer as any).deleted) {
+            results.push({ id: customer.id, status: 'deleted_in_stripe', email: customer.email });
+            staleCustomerIds.push(customer.id);
+          } else {
+            results.push({ id: customer.id, status: 'active', email: customer.email });
+          }
+        } catch (err: any) {
+          if (err.code === 'resource_missing') {
+            results.push({ id: customer.id, status: 'not_found_in_stripe', email: customer.email });
+            staleCustomerIds.push(customer.id);
+          } else {
+            results.push({ id: customer.id, status: `error: ${err.message}`, email: customer.email });
+          }
+        }
+      }
+      
+      // Clear stale customer IDs from users table
+      if (staleCustomerIds.length > 0) {
+        await db.update(users)
+          .set({ stripeCustomerId: null, updatedAt: new Date() })
+          .where(inArray(users.stripeCustomerId, staleCustomerIds));
+      }
+      
+      console.log(`[ADMIN] Stripe customer cleanup by ${req.user.claims.sub}:`, results);
+      res.json({ 
+        success: true, 
+        results,
+        staleCustomersCleared: staleCustomerIds.length,
+        message: `Found ${staleCustomerIds.length} stale customers. Cleared from users table. Note: stripe.customers table is read-only and managed by stripe-replit-sync.`
+      });
+    } catch (error: any) {
+      console.error('Stripe customer cleanup error:', error);
+      res.status(500).json({ error: 'Failed to cleanup Stripe customers: ' + error.message });
     }
   });
 

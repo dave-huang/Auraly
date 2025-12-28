@@ -76,3 +76,18 @@ Auraly is a mobile-friendly web application designed to help users understand th
     - **Google Cloud Vision API** - Optional OCR fallback.
 - **Internationalization**: i18next, react-i18next.
 - **Deployment**: Replit (hosting platform).
+
+## Known Issues & Workarounds
+
+### Stripe Customer Sync Errors
+**Issue**: The `stripe-replit-sync` package maintains a read-only `stripe.customers` table that may contain stale customer IDs (customers deleted from Stripe but still in the local table). This causes "No such customer" errors during sync.
+
+**Workaround Implemented**: The `/api/subscription/checkout` endpoint bypasses all cached customer data by:
+1. Searching Stripe directly using userId metadata
+2. Creating a new customer if none found
+3. Updating the users table with the valid customer ID
+
+**Impact**: Sync errors appear in logs but don't affect checkout functionality.
+
+**Admin Tools**:
+- `POST /api/admin/cleanup-stripe-customers` - Identifies stale customers and clears them from users table
