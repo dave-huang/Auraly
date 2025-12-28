@@ -22,6 +22,8 @@ import "./i18n/config";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import type { User } from "@shared/schema";
+import { initGA } from "./lib/analytics";
+import { useAnalytics } from "./hooks/use-analytics";
 
 function ProtectedPage({ component: Component }: { component: any }) {
   const { isAuthenticated, isLoading } = useAuth();
@@ -57,6 +59,8 @@ function ProtectedPage({ component: Component }: { component: any }) {
 }
 
 function Router() {
+  useAnalytics();
+  
   return (
     <Switch>
       <Route path="/" component={Landing} />
@@ -104,6 +108,14 @@ function AppContent() {
 }
 
 function App() {
+  useEffect(() => {
+    if (!import.meta.env.VITE_GA_MEASUREMENT_ID) {
+      console.warn('Missing Google Analytics Measurement ID');
+    } else {
+      initGA();
+    }
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
