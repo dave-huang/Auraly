@@ -75,7 +75,28 @@ Auraly is a mobile-friendly web application designed to help users understand th
     - **OpenAI GPT-5.2** (via direct OpenAI API) - Primary ingredient analysis with consumer-protective risk thresholds.
     - **Google Cloud Vision API** - Optional OCR fallback.
 - **Internationalization**: i18next, react-i18next.
+- **Analytics**: Google Analytics 4 (GA4) via gtag.js with custom event tracking.
 - **Deployment**: Replit (hosting platform).
+
+## Analytics Tracking (GA4)
+
+### Setup
+- Measurement ID stored in secret `VITE_GA_MEASUREMENT_ID`
+- Auto-initializes on app load via `usePageTracking` hook in `App.tsx`
+- Tracks page views automatically via `history.pushState` listener
+
+### Custom Events Tracked
+| Event Name | Trigger Location | Parameters |
+|------------|------------------|------------|
+| `scan_product` | Results page (scan success) | `product_type`, `success` |
+| `paywall_view` | Paywall modal opens | - |
+| `upgrade_click` | Upgrade button clicked | `plan_type` |
+| `language_change` | Language switcher | `from_language`, `to_language` |
+| `onboarding_complete` | Onboarding finish/skip | - |
+
+### Files
+- `client/src/lib/analytics.ts` - Core gtag wrapper and event functions
+- `client/src/hooks/use-analytics.tsx` - Page view tracking hook
 
 ## Known Issues & Workarounds
 
