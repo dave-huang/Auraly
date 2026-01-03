@@ -34,7 +34,7 @@ Auraly is a mobile-friendly web application designed to help users understand th
     - `PATCH /api/user/allergen-preferences` - Update preferences
     - `POST /api/user/allergen-onboarding` - Complete allergen onboarding
     - `POST /api/admin/clear-cache` - **ADMIN ONLY** - Clears ingredient cache (use when AI prompts change)
-    - `GET /api/admin/dashboard` - Admin dashboard stats with test user filtering
+    - `GET /api/admin/dashboard` - Admin dashboard stats with test user filtering, includes `trialEndsAt` and `subscriptionEndsAt` for each user
     - `GET /api/admin/daily-usage` - Last 30 days of login and scan activity
     - `GET /api/admin/subscription-funnel` - Subscription status distribution and conversion rates
     - `GET /api/admin/ingredient-cache` - Browse cached ingredient analyses (limited to 500 entries)
@@ -106,8 +106,10 @@ Auraly is a mobile-friendly web application designed to help users understand th
 
 **Workaround Implemented**: The `/api/subscription/checkout` endpoint bypasses all cached customer data by:
 1. Searching Stripe directly using userId metadata
-2. Creating a new customer if none found
-3. Updating the users table with the valid customer ID
+2. Fallback search by email if no customer found by userId
+3. Updating legacy customers with userId metadata if found by email
+4. Creating a new customer with idempotency key (`customer-create-${userId}`) if none found
+5. Updating the users table with the valid customer ID
 
 **Impact**: Sync errors appear in logs but don't affect checkout functionality.
 
