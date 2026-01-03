@@ -93,8 +93,8 @@ export default function AccountPage() {
       return res.json();
     },
     onSuccess: (data: { url: string }) => {
-      window.open(data.url, '_blank');
-      setTimeout(() => refetch(), 2000);
+      // Use direct navigation instead of window.open to avoid mobile popup blockers
+      window.location.href = data.url;
     },
     onError: (error: any) => {
       toast({
