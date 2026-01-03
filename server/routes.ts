@@ -581,9 +581,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Cache statistics endpoint (optional)
-  app.get("/api/cache-stats", (req, res) => {
+  app.get("/api/cache-stats", async (req, res) => {
     try {
-      const stats = getCacheStats();
+      const stats = await getCacheStats();
       res.json(stats);
     } catch (error: any) {
       res.status(500).json({ error: error.message });
@@ -1492,7 +1492,7 @@ Sent from Auraly Feedback System
   // Ingredient cache viewer
   app.get('/api/admin/ingredient-cache', isAuthenticated, isAdmin, async (req: any, res) => {
     try {
-      const entries = getAllCacheEntries();
+      const entries = await getAllCacheEntries();
       
       // Sort by most recently updated
       entries.sort((a, b) => b.lastUpdated - a.lastUpdated);
@@ -1624,7 +1624,7 @@ Sent from Auraly Feedback System
   // Clear ingredient cache (admin only - use when AI prompts change)
   app.post('/api/admin/clear-cache', isAuthenticated, isAdmin, async (req: any, res) => {
     try {
-      const clearedCount = clearAllCache();
+      const clearedCount = await clearAllCache();
       console.log(`[ADMIN] Cache cleared by user ${req.user.claims.sub}: ${clearedCount} entries removed`);
       res.json({ success: true, clearedCount, message: `Cleared ${clearedCount} cached ingredient analyses` });
     } catch (error: any) {

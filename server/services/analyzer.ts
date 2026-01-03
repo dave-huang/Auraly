@@ -1366,7 +1366,7 @@ export async function analyzeIngredientsParallel(
     const missingIngredients: string[] = [];
     
     for (const ingredient of batch) {
-      const cached = getCachedIngredientAnalysis(ingredient, productType, userLanguage);
+      const cached = await getCachedIngredientAnalysis(ingredient, productType, userLanguage);
       if (cached) {
         cachedResults.push({
           name: ingredient,
@@ -1515,7 +1515,7 @@ IMPORTANT: Return ONLY this JSON array, nothing else:
         
         // Cache fresh results with language tag
         for (const result of freshResults) {
-          setCachedIngredientAnalysis(result.name, productType, JSON.stringify(result), userLanguage);
+          await setCachedIngredientAnalysis(result.name, productType, JSON.stringify(result), userLanguage);
           console.log(`[PARALLEL-BATCH-${batchIdx}] Cached: ${result.name} (${userLanguage})`);
         }
         
@@ -1628,7 +1628,7 @@ IMPORTANT: Return ONLY this JSON array:
             });
             
             // Cache it (with enforced risk level)
-            setCachedIngredientAnalysis(normalized.name, productType, JSON.stringify(normalized), userLanguage);
+            await setCachedIngredientAnalysis(normalized.name, productType, JSON.stringify(normalized), userLanguage);
             individualResults.push(normalized);
             console.log(`[PARALLEL-BATCH-${batchIdx}] Individual analysis succeeded: ${singleIngredient} → ${normalized.name}`);
             singleSuccess = true;

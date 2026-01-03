@@ -58,7 +58,7 @@ Auraly is a mobile-friendly web application designed to help users understand th
     - **Personalized Risk Settings**: Users can configure tolerance levels ("Avoid", "Caution", "No Preference") for 11 ingredient categories.
     - **Simplified Two-Category System**: Streamlined product categories to "Food & Supplements" and "Personal Care" for improved analysis context and filtering.
     - **Mobile Background Resilience**: Automatically resumes polling and re-acquires Wake Lock when the app returns from the background.
-    - **Backend Ingredient Caching**: `/api/analyze-ingredients` endpoint with intelligent, category-specific caching and 30-day auto-refresh.
+    - **Backend Ingredient Caching**: `/api/analyze-ingredients` endpoint with intelligent, category-specific caching (stored in PostgreSQL `ingredient_cache` table for persistence across deployments) and 12-month auto-refresh.
     - **Performance & Reliability Overhaul**: Simplified OCR to Gemini 2.5 Flash, combined pipeline, and use of GPT-5.1 via direct OpenAI API for faster and more reliable processing.
     - **Account Management**: Account page (`/account`) showing subscription status, billing info, and payment methods. Integrates Stripe Customer Portal for secure payment management.
 
@@ -66,8 +66,7 @@ Auraly is a mobile-friendly web application designed to help users understand th
 - **Frontend**: React, TypeScript, Tailwind CSS, shadcn/ui, TanStack Query, Wouter
 - **Backend**: Node.js, Express, TypeScript
 - **Storage**:
-    - **PostgreSQL Database**: User profiles with risk preferences (`riskPreferences` JSONB, `onboardingCompleted` boolean), `allergenPreferences` JSONB.
-    - Ingredient cache: In-memory + JSON file persistence (ingredient_cache.json).
+    - **PostgreSQL Database**: User profiles with risk preferences (`riskPreferences` JSONB, `onboardingCompleted` boolean), `allergenPreferences` JSONB. Also stores the ingredient analysis cache in `ingredient_cache` table for persistence across deployments.
     - Client-side: localStorage for scan history and language preference.
 
 ## External Dependencies

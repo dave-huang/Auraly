@@ -892,3 +892,26 @@ export const scanHistoryItemSchema = z.object({
 });
 
 export type ScanHistoryItem = z.infer<typeof scanHistoryItemSchema>;
+
+// ==========================================
+// INGREDIENT CACHE TABLE (persistent across deployments)
+// ==========================================
+
+export const ingredientCache = pgTable(
+  "ingredient_cache",
+  {
+    id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+    ingredient: varchar("ingredient").notNull(),
+    category: varchar("category").notNull(),
+    language: varchar("language").notNull().default("en"),
+    analysis: text("analysis").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    lastUpdated: timestamp("last_updated").defaultNow().notNull(),
+  },
+  (table) => [
+    index("IDX_ingredient_cache_lookup").on(table.ingredient, table.category, table.language),
+  ]
+);
+
+export type IngredientCacheEntry = typeof ingredientCache.$inferSelect;
+export type InsertIngredientCacheEntry = typeof ingredientCache.$inferInsert;

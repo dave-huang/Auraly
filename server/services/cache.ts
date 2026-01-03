@@ -1,54 +1,10 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { db } from '../db';
+import { ingredientCache } from '@shared/schema';
+import { eq, and, sql } from 'drizzle-orm';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const cacheDbPath = path.join(__dirname, '..', 'ingredient_cache.json');
-
-// In-memory cache with file-based persistence
-interface CacheEntry {
-  analysis: string;
-  lastUpdated: number;
-  createdAt: number;
-}
-
-interface CacheData {
-  [key: string]: CacheEntry;
-}
-
-let cacheData: CacheData = {};
-
-// Runtime hit/miss counters (reset on server restart)
 let cacheHitCount = 0;
 let cacheMissCount = 0;
 
-// Load cache from disk on startup
-function loadCache(): void {
-  try {
-    if (fs.existsSync(cacheDbPath)) {
-      const data = fs.readFileSync(cacheDbPath, 'utf-8');
-      cacheData = JSON.parse(data);
-      console.log(`[CACHE] Loaded ${Object.keys(cacheData).length} entries from disk`);
-    }
-  } catch (error) {
-    console.error('[CACHE] Error loading cache from disk:', error);
-    cacheData = {};
-  }
-}
-
-// Save cache to disk
-function saveCache(): void {
-  try {
-    fs.writeFileSync(cacheDbPath, JSON.stringify(cacheData, null, 2), 'utf-8');
-  } catch (error) {
-    console.error('[CACHE] Error saving cache to disk:', error);
-  }
-}
-
-// Initialize cache
-loadCache();
-
-// Normalize ingredient name for cache keys
 function normalizeIngredient(ingredient: string): string {
   return ingredient
     .toLowerCase()
@@ -57,86 +13,113 @@ function normalizeIngredient(ingredient: string): string {
     .replace(/\s+/g, ' ');
 }
 
-// Generate cache key including language for language-specific caching
-function getCacheKey(ingredient: string, category: string, language: string = 'en'): string {
-  return `${normalizeIngredient(ingredient)}__${category}__${language}`;
-}
-
-// Check if cache entry needs refresh (older than 12 months)
-function shouldRefreshCache(lastUpdatedTimestamp: number): boolean {
+function shouldRefreshCache(lastUpdated: Date | string): boolean {
   const now = Date.now();
   const twelveMonthsMs = 365 * 24 * 60 * 60 * 1000;
-  return (now - lastUpdatedTimestamp) > twelveMonthsMs;
+  const timestamp = lastUpdated instanceof Date ? lastUpdated.getTime() : new Date(lastUpdated).getTime();
+  return (now - timestamp) > twelveMonthsMs;
 }
 
-// Get cached ingredient analysis with language support
-export function getCachedIngredientAnalysis(
+export async function getCachedIngredientAnalysis(
   ingredient: string,
   category: string,
   language: string = 'en'
-): { analysis: string; fromCache: boolean } | null {
-  const key = getCacheKey(ingredient, category, language);
-  const entry = cacheData[key];
+): Promise<{ analysis: string; fromCache: boolean } | null> {
+  const normalizedIngredient = normalizeIngredient(ingredient);
   
-  if (!entry) {
-    console.log(`[CACHE] Miss: ${key}`);
+  try {
+    const result = await db.select()
+      .from(ingredientCache)
+      .where(and(
+        eq(ingredientCache.ingredient, normalizedIngredient),
+        eq(ingredientCache.category, category),
+        eq(ingredientCache.language, language)
+      ))
+      .limit(1);
+    
+    if (result.length === 0) {
+      console.log(`[CACHE] Miss: ${normalizedIngredient}__${category}__${language}`);
+      cacheMissCount++;
+      return null;
+    }
+    
+    const entry = result[0];
+    
+    if (shouldRefreshCache(entry.lastUpdated)) {
+      console.log(`[CACHE] Stale (12+ months): ${normalizedIngredient}__${category}__${language}`);
+      cacheMissCount++;
+      return null;
+    }
+    
+    console.log(`[CACHE] Hit: ${normalizedIngredient}__${category}__${language}`);
+    cacheHitCount++;
+    return {
+      analysis: entry.analysis,
+      fromCache: true
+    };
+  } catch (error) {
+    console.error('[CACHE] Error reading from database:', error);
     cacheMissCount++;
     return null;
   }
-  
-  // Check if cache is stale
-  if (shouldRefreshCache(entry.lastUpdated)) {
-    console.log(`[CACHE] Stale (12+ months): ${key}`);
-    cacheMissCount++;
-    return null;
-  }
-  
-  console.log(`[CACHE] Hit: ${key}`);
-  cacheHitCount++;
-  return {
-    analysis: entry.analysis,
-    fromCache: true
-  };
 }
 
-// Set/update cached ingredient analysis with language support
-export function setCachedIngredientAnalysis(
+export async function setCachedIngredientAnalysis(
   ingredient: string,
   category: string,
   analysis: string,
   language: string = 'en'
-): void {
-  const key = getCacheKey(ingredient, category, language);
-  const now = Date.now();
+): Promise<void> {
+  const normalizedIngredient = normalizeIngredient(ingredient);
+  const now = new Date();
   
-  cacheData[key] = {
-    analysis,
-    lastUpdated: now,
-    createdAt: cacheData[key]?.createdAt || now
-  };
-  
-  // Persist to disk asynchronously
-  setImmediate(() => saveCache());
-  console.log(`[CACHE] Stored: ${key}`);
+  try {
+    const existing = await db.select({ id: ingredientCache.id })
+      .from(ingredientCache)
+      .where(and(
+        eq(ingredientCache.ingredient, normalizedIngredient),
+        eq(ingredientCache.category, category),
+        eq(ingredientCache.language, language)
+      ))
+      .limit(1);
+    
+    if (existing.length > 0) {
+      await db.update(ingredientCache)
+        .set({ 
+          analysis,
+          lastUpdated: now
+        })
+        .where(eq(ingredientCache.id, existing[0].id));
+    } else {
+      await db.insert(ingredientCache).values({
+        ingredient: normalizedIngredient,
+        category,
+        language,
+        analysis,
+        createdAt: now,
+        lastUpdated: now
+      });
+    }
+    
+    console.log(`[CACHE] Stored: ${normalizedIngredient}__${category}__${language}`);
+  } catch (error) {
+    console.error('[CACHE] Error writing to database:', error);
+  }
 }
 
-// Batch get/set with caching logic
 export async function batchAnalyzeIngredientsWithCache(
   ingredients: string[],
   category: string,
   analyzeFunction: (ingredient: string) => Promise<string>
 ): Promise<Array<{ ingredient: string; analysis: string; fromCache: boolean }>> {
-  // Deduplicate and normalize ingredients
   const uniqueIngredients = Array.from(new Set(ingredients.map(normalizeIngredient)));
   
   console.log(`[CACHE-BATCH] Processing ${uniqueIngredients.length} unique ingredients for category: ${category}`);
   
-  // Process all ingredients in parallel
   const results = await Promise.all(
     uniqueIngredients.map(async (ingredient) => {
       try {
-        // Check cache first
-        const cached = getCachedIngredientAnalysis(ingredient, category);
+        const cached = await getCachedIngredientAnalysis(ingredient, category);
         if (cached) {
           return {
             ingredient,
@@ -145,12 +128,10 @@ export async function batchAnalyzeIngredientsWithCache(
           };
         }
         
-        // Not cached or stale - analyze with AI
         console.log(`[CACHE-BATCH] Analyzing: ${ingredient}`);
         const analysis = await analyzeFunction(ingredient);
         
-        // Store in cache for future use
-        setCachedIngredientAnalysis(ingredient, category, analysis);
+        await setCachedIngredientAnalysis(ingredient, category, analysis);
         
         return {
           ingredient,
@@ -167,82 +148,97 @@ export async function batchAnalyzeIngredientsWithCache(
   return results;
 }
 
-// Clear expired cache entries
-export function clearExpiredCache(): number {
+export async function clearExpiredCache(): Promise<number> {
   const twelveMonthsMs = 365 * 24 * 60 * 60 * 1000;
-  const cutoffTime = Date.now() - twelveMonthsMs;
+  const cutoffTime = new Date(Date.now() - twelveMonthsMs);
   
-  let deletedCount = 0;
-  for (const [key, entry] of Object.entries(cacheData)) {
-    if (entry.lastUpdated < cutoffTime) {
-      delete cacheData[key];
-      deletedCount++;
+  try {
+    const result = await db.delete(ingredientCache)
+      .where(sql`${ingredientCache.lastUpdated} < ${cutoffTime}`)
+      .returning({ id: ingredientCache.id });
+    
+    const deletedCount = result.length;
+    if (deletedCount > 0) {
+      console.log(`[CACHE-MAINTENANCE] Cleared ${deletedCount} expired entries`);
     }
+    return deletedCount;
+  } catch (error) {
+    console.error('[CACHE] Error clearing expired entries:', error);
+    return 0;
   }
-  
-  if (deletedCount > 0) {
-    saveCache();
-    console.log(`[CACHE-MAINTENANCE] Cleared ${deletedCount} expired entries`);
-  }
-  
-  return deletedCount;
 }
 
-// Get cache statistics (matching frontend CacheStats interface)
-export function getCacheStats(): { 
+export async function getCacheStats(): Promise<{ 
   totalEntries: number; 
   hitCount: number; 
   missCount: number; 
   hitRate: string;
-} {
-  const totalEntries = Object.keys(cacheData).length;
-  const totalLookups = cacheHitCount + cacheMissCount;
-  const hitRate = totalLookups > 0 
-    ? ((cacheHitCount / totalLookups) * 100).toFixed(2) + '%' 
-    : '100.00%';
-  
-  return {
-    totalEntries,
-    hitCount: cacheHitCount,
-    missCount: cacheMissCount,
-    hitRate
-  };
-}
-
-// Get detailed cache statistics (legacy)
-export function getDetailedCacheStats(): { total: number; fresh: number; stale: number } {
-  const twelveMonthsMs = 365 * 24 * 60 * 60 * 1000;
-  const cutoffTime = Date.now() - twelveMonthsMs;
-  
-  let fresh = 0;
-  let stale = 0;
-  
-  for (const entry of Object.values(cacheData)) {
-    if (entry.lastUpdated > cutoffTime) {
-      fresh++;
-    } else {
-      stale++;
-    }
+}> {
+  try {
+    const result = await db.select({ count: sql<number>`count(*)` })
+      .from(ingredientCache);
+    
+    const totalEntries = result[0]?.count ?? 0;
+    const totalLookups = cacheHitCount + cacheMissCount;
+    const hitRate = totalLookups > 0 
+      ? ((cacheHitCount / totalLookups) * 100).toFixed(2) + '%' 
+      : '100.00%';
+    
+    return {
+      totalEntries,
+      hitCount: cacheHitCount,
+      missCount: cacheMissCount,
+      hitRate
+    };
+  } catch (error) {
+    console.error('[CACHE] Error getting stats:', error);
+    return {
+      totalEntries: 0,
+      hitCount: cacheHitCount,
+      missCount: cacheMissCount,
+      hitRate: '0.00%'
+    };
   }
+}
+
+export async function getDetailedCacheStats(): Promise<{ total: number; fresh: number; stale: number }> {
+  const twelveMonthsMs = 365 * 24 * 60 * 60 * 1000;
+  const cutoffTime = new Date(Date.now() - twelveMonthsMs);
   
-  return {
-    total: Object.keys(cacheData).length,
-    fresh,
-    stale
-  };
+  try {
+    const [totalResult, freshResult] = await Promise.all([
+      db.select({ count: sql<number>`count(*)` }).from(ingredientCache),
+      db.select({ count: sql<number>`count(*)` })
+        .from(ingredientCache)
+        .where(sql`${ingredientCache.lastUpdated} >= ${cutoffTime}`)
+    ]);
+    
+    const total = totalResult[0]?.count ?? 0;
+    const fresh = freshResult[0]?.count ?? 0;
+    const stale = total - fresh;
+    
+    return { total, fresh, stale };
+  } catch (error) {
+    console.error('[CACHE] Error getting detailed stats:', error);
+    return { total: 0, fresh: 0, stale: 0 };
+  }
 }
 
-// Clear ALL cache entries (for admin use when prompts change)
-export function clearAllCache(): number {
-  const count = Object.keys(cacheData).length;
-  cacheData = {};
-  saveCache();
-  console.log(`[CACHE-ADMIN] Cleared all ${count} cache entries`);
-  return count;
+export async function clearAllCache(): Promise<number> {
+  try {
+    const result = await db.delete(ingredientCache)
+      .returning({ id: ingredientCache.id });
+    
+    const count = result.length;
+    console.log(`[CACHE-ADMIN] Cleared all ${count} cache entries`);
+    return count;
+  } catch (error) {
+    console.error('[CACHE] Error clearing all cache:', error);
+    return 0;
+  }
 }
 
-// Get all cache entries for admin viewing
-export function getAllCacheEntries(): Array<{
+export async function getAllCacheEntries(): Promise<Array<{
   key: string;
   ingredient: string;
   category: string;
@@ -250,22 +246,32 @@ export function getAllCacheEntries(): Array<{
   analysis: string;
   createdAt: number;
   lastUpdated: number;
-}> {
-  return Object.entries(cacheData).map(([key, entry]) => {
-    // Parse key format: ingredient__category__language
-    const parts = key.split('__');
-    const ingredient = parts[0] || key;
-    const category = parts[1] || 'unknown';
-    const language = parts[2] || 'en';
+}>> {
+  try {
+    const entries = await db.select().from(ingredientCache);
     
-    return {
-      key,
-      ingredient,
-      category,
-      language,
+    return entries.map(entry => ({
+      key: `${entry.ingredient}__${entry.category}__${entry.language}`,
+      ingredient: entry.ingredient,
+      category: entry.category,
+      language: entry.language,
       analysis: entry.analysis,
-      createdAt: entry.createdAt,
-      lastUpdated: entry.lastUpdated
-    };
-  });
+      createdAt: entry.createdAt.getTime(),
+      lastUpdated: entry.lastUpdated.getTime()
+    }));
+  } catch (error) {
+    console.error('[CACHE] Error getting all entries:', error);
+    return [];
+  }
+}
+
+export async function getCacheEntryCount(): Promise<number> {
+  try {
+    const result = await db.select({ count: sql<number>`count(*)` })
+      .from(ingredientCache);
+    return result[0]?.count ?? 0;
+  } catch (error) {
+    console.error('[CACHE] Error getting entry count:', error);
+    return 0;
+  }
 }
