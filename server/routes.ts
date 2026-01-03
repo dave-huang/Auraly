@@ -1501,10 +1501,16 @@ Sent from Auraly Feedback System
     try {
       const { userId, trialEndsAt } = req.body;
       if (!userId || !trialEndsAt) {
-        return res.status(400).json({ error: 'User ID and trial end date required' });
+        return res.status(400).json({ error: 'User ID or email and trial end date required' });
       }
 
-      const user = await storage.getUser(userId);
+      // Support both user ID and email lookup
+      let user = await storage.getUser(userId);
+      if (!user && userId.includes('@')) {
+        // Try looking up by email
+        const userByEmail = await db.select().from(users).where(eq(users.email, userId)).limit(1);
+        user = userByEmail[0] || null;
+      }
       if (!user) {
         return res.status(404).json({ error: 'User not found' });
       }
@@ -1523,9 +1529,9 @@ Sent from Auraly Feedback System
           subscriptionStatus: 'trial',
           trialEndsAt: trialEndDate,
         })
-        .where(eq(users.id, userId));
+        .where(eq(users.id, user.id));
 
-      console.log(`[ADMIN] Trial granted to user ${userId} until ${trialEndDate.toISOString()}`);
+      console.log(`[ADMIN] Trial granted to user ${user.id} (${user.email}) until ${trialEndDate.toISOString()}`);
       res.json({ success: true, trialEndsAt: trialEndDate.toISOString() });
     } catch (error: any) {
       console.error('Grant trial error:', error);

@@ -840,10 +840,10 @@ export default function AdminPage() {
               <CardContent className="space-y-6">
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="grant-user-id">Replit User ID</Label>
+                    <Label htmlFor="grant-user-id">User ID or Email</Label>
                     <Input
                       id="grant-user-id"
-                      placeholder="Enter Replit user ID..."
+                      placeholder="Enter user ID or email address..."
                       value={grantUserId}
                       onChange={(e) => setGrantUserId(e.target.value)}
                       data-testid="input-grant-user-id"
