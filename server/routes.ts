@@ -1342,6 +1342,8 @@ Sent from Auraly Feedback System
             scanPackBalance: u.scanPackBalance || 0,
             monthlyFreeScansUsed: u.monthlyFreeScansUsed || 0,
             createdAt: u.createdAt?.toString() || '',
+            trialEndsAt: u.trialEndsAt?.toString() || null,
+            subscriptionEndsAt: u.subscriptionEndsAt?.toString() || null,
             scansToday: scanCounts.today,
             scansThisWeek: scanCounts.week,
             scansThisMonth: scanCounts.month,

@@ -8,9 +8,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { 
   ArrowLeft, Users, Crown, Zap, TrendingUp, Search, 
-  Loader2, AlertTriangle, Gift, Ban, RefreshCw, Trash2, Database,
+  Loader2, AlertTriangle, Ban, RefreshCw, Trash2, Database,
   BarChart3, FlaskConical, Calendar, Beaker, Eye, EyeOff, ArrowUpDown, ArrowUp, ArrowDown
 } from "lucide-react";
 import {
@@ -55,6 +56,8 @@ interface UserRecord {
   scanPackBalance: number;
   monthlyFreeScansUsed: number;
   createdAt: string;
+  trialEndsAt: string | null;
+  subscriptionEndsAt: string | null;
   scansToday: number;
   scansThisWeek: number;
   scansThisMonth: number;
@@ -123,8 +126,6 @@ export default function AdminPage() {
   const { user, isLoading: authLoading } = useAuth();
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
-  const [grantUserId, setGrantUserId] = useState("");
-  const [grantScans, setGrantScans] = useState("10");
   const [showTestUsers, setShowTestUsers] = useState(false);
   const [sortField, setSortField] = useState<keyof UserRecord>("createdAt");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
@@ -171,7 +172,6 @@ export default function AdminPage() {
     onSuccess: () => {
       toast({ title: "Subscription granted successfully" });
       queryClient.invalidateQueries({ queryKey: ['/api/admin/dashboard'] });
-      setGrantUserId("");
     },
     onError: (error: any) => {
       toast({ title: "Failed to grant subscription", description: error.message, variant: "destructive" });
@@ -195,28 +195,26 @@ export default function AdminPage() {
     mutationFn: async ({ userId, amount }: { userId: string; amount: number }) => {
       return apiRequest('POST', '/api/admin/grant-scans', { userId, amount });
     },
-    onSuccess: () => {
-      toast({ title: `${grantScans} scans granted successfully` });
+    onSuccess: (_, variables) => {
+      toast({ title: `${variables.amount} scans granted successfully` });
       queryClient.invalidateQueries({ queryKey: ['/api/admin/dashboard'] });
-      setGrantUserId("");
-      setGrantScans("10");
     },
     onError: (error: any) => {
       toast({ title: "Failed to grant scans", description: error.message, variant: "destructive" });
     }
   });
 
-  const [trialEndDate, setTrialEndDate] = useState("");
+  const [inlineTrialUserId, setInlineTrialUserId] = useState<string | null>(null);
+  const [inlineTrialDate, setInlineTrialDate] = useState("");
   
   const grantTrialMutation = useMutation({
     mutationFn: async ({ userId, trialEndsAt }: { userId: string; trialEndsAt: string }) => {
       return apiRequest('POST', '/api/admin/grant-trial', { userId, trialEndsAt });
     },
-    onSuccess: () => {
-      toast({ title: "Trial granted successfully", description: `Trial extended until ${new Date(trialEndDate).toLocaleDateString()}` });
+    onSuccess: (_, variables) => {
+      toast({ title: "Trial granted successfully", description: `Trial extended until ${new Date(variables.trialEndsAt).toLocaleDateString()}` });
       queryClient.invalidateQueries({ queryKey: ['/api/admin/dashboard'] });
-      setGrantUserId("");
-      setTrialEndDate("");
+      setInlineTrialDate("");
     },
     onError: (error: any) => {
       toast({ title: "Failed to grant trial", description: error.message, variant: "destructive" });
@@ -423,7 +421,6 @@ export default function AdminPage() {
             <TabsTrigger value="analytics" data-testid="tab-analytics">Analytics</TabsTrigger>
             <TabsTrigger value="funnel" data-testid="tab-funnel">Funnel</TabsTrigger>
             <TabsTrigger value="cache" data-testid="tab-cache">Ingredients</TabsTrigger>
-            <TabsTrigger value="grants" data-testid="tab-grants">Grant Access</TabsTrigger>
             <TabsTrigger value="system" data-testid="tab-system">System</TabsTrigger>
           </TabsList>
 
@@ -504,6 +501,9 @@ export default function AdminPage() {
                               Status
                               <SortIcon field="subscriptionStatus" />
                             </div>
+                          </TableHead>
+                          <TableHead className="whitespace-nowrap">
+                            Trial/Sub Ends
                           </TableHead>
                           <TableHead 
                             className="cursor-pointer hover:bg-muted/50 whitespace-nowrap text-right"
@@ -599,6 +599,17 @@ export default function AdminPage() {
                                 )}
                               </div>
                             </TableCell>
+                            <TableCell className="text-muted-foreground whitespace-nowrap">
+                              {u.subscriptionStatus === 'trial' && u.trialEndsAt ? (
+                                <span className={new Date(u.trialEndsAt) < new Date() ? "text-destructive" : ""}>
+                                  {new Date(u.trialEndsAt).toLocaleDateString()}
+                                </span>
+                              ) : u.subscriptionStatus === 'active' && u.subscriptionEndsAt ? (
+                                <span>{new Date(u.subscriptionEndsAt).toLocaleDateString()}</span>
+                              ) : (
+                                <span className="text-muted-foreground/50">-</span>
+                              )}
+                            </TableCell>
                             <TableCell className="text-right tabular-nums">{u.scansToday}</TableCell>
                             <TableCell className="text-right tabular-nums">{u.scansThisWeek}</TableCell>
                             <TableCell className="text-right tabular-nums">{u.scansThisMonth}</TableCell>
@@ -607,29 +618,115 @@ export default function AdminPage() {
                               {u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '-'}
                             </TableCell>
                             <TableCell className="text-right">
-                              {u.subscriptionStatus === 'active' ? (
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  className="text-destructive h-7 px-2"
-                                  onClick={() => revokeSubscriptionMutation.mutate(u.replitId)}
-                                  disabled={revokeSubscriptionMutation.isPending}
-                                  data-testid={`button-revoke-${u.replitId}`}
+                              <div className="flex items-center justify-end gap-1">
+                                <Popover 
+                                  open={inlineTrialUserId === u.replitId}
+                                  onOpenChange={(open) => {
+                                    if (open) {
+                                      setInlineTrialUserId(u.replitId);
+                                      setInlineTrialDate(u.trialEndsAt ? new Date(u.trialEndsAt).toISOString().split('T')[0] : "");
+                                    } else {
+                                      setInlineTrialUserId(null);
+                                      setInlineTrialDate("");
+                                    }
+                                  }}
                                 >
-                                  <Ban className="w-3 h-3" />
-                                </Button>
-                              ) : (
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  className="h-7 px-2"
-                                  onClick={() => grantSubscriptionMutation.mutate(u.replitId)}
-                                  disabled={grantSubscriptionMutation.isPending}
-                                  data-testid={`button-grant-sub-${u.replitId}`}
-                                >
-                                  <Crown className="w-3 h-3" />
-                                </Button>
-                              )}
+                                  <PopoverTrigger asChild>
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      className="h-7 px-2"
+                                      data-testid={`button-grant-trial-${u.replitId}`}
+                                    >
+                                      <Calendar className="w-3 h-3" />
+                                    </Button>
+                                  </PopoverTrigger>
+                                  <PopoverContent className="w-64 p-3" align="end">
+                                    <div className="space-y-3">
+                                      <div className="text-sm font-medium">Grant/Extend Trial</div>
+                                      <div>
+                                        <Label htmlFor={`trial-date-${u.replitId}`} className="text-xs">Trial End Date</Label>
+                                        <Input
+                                          id={`trial-date-${u.replitId}`}
+                                          type="date"
+                                          value={inlineTrialDate}
+                                          onChange={(e) => setInlineTrialDate(e.target.value)}
+                                          min={new Date(Date.now() + 86400000).toISOString().split('T')[0]}
+                                          className="h-8 mt-1"
+                                          data-testid={`input-trial-date-${u.replitId}`}
+                                        />
+                                      </div>
+                                      <div className="flex gap-2">
+                                        <Button
+                                          size="sm"
+                                          variant="outline"
+                                          className="flex-1 h-7 text-xs"
+                                          onClick={() => {
+                                            const date = new Date();
+                                            date.setDate(date.getDate() + 7);
+                                            setInlineTrialDate(date.toISOString().split('T')[0]);
+                                          }}
+                                          data-testid={`button-trial-7days-${u.replitId}`}
+                                        >
+                                          +7 days
+                                        </Button>
+                                        <Button
+                                          size="sm"
+                                          variant="outline"
+                                          className="flex-1 h-7 text-xs"
+                                          onClick={() => {
+                                            const date = new Date();
+                                            date.setDate(date.getDate() + 30);
+                                            setInlineTrialDate(date.toISOString().split('T')[0]);
+                                          }}
+                                          data-testid={`button-trial-30days-${u.replitId}`}
+                                        >
+                                          +30 days
+                                        </Button>
+                                      </div>
+                                      <Button
+                                        size="sm"
+                                        className="w-full h-8"
+                                        disabled={!inlineTrialDate || grantTrialMutation.isPending}
+                                        onClick={() => {
+                                          grantTrialMutation.mutate({ userId: u.replitId, trialEndsAt: inlineTrialDate });
+                                          setInlineTrialUserId(null);
+                                        }}
+                                        data-testid={`button-confirm-trial-${u.replitId}`}
+                                      >
+                                        {grantTrialMutation.isPending ? (
+                                          <Loader2 className="w-3 h-3 animate-spin" />
+                                        ) : (
+                                          "Grant Trial"
+                                        )}
+                                      </Button>
+                                    </div>
+                                  </PopoverContent>
+                                </Popover>
+                                {u.subscriptionStatus === 'active' ? (
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    className="text-destructive h-7 px-2"
+                                    onClick={() => revokeSubscriptionMutation.mutate(u.replitId)}
+                                    disabled={revokeSubscriptionMutation.isPending}
+                                    data-testid={`button-revoke-${u.replitId}`}
+                                  >
+                                    <Ban className="w-3 h-3" />
+                                  </Button>
+                                ) : (
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    className="h-7 px-2"
+                                    onClick={() => grantSubscriptionMutation.mutate(u.replitId)}
+                                    disabled={grantSubscriptionMutation.isPending}
+                                    data-testid={`button-grant-sub-${u.replitId}`}
+                                  >
+                                    <Crown className="w-3 h-3" />
+                                  </Button>
+                                )}
+                              </div>
                             </TableCell>
                           </TableRow>
                         ))}
@@ -824,113 +921,6 @@ export default function AdminPage() {
                     <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
                   </div>
                 )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="grants" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Gift className="w-5 h-5" />
-                  Grant Access
-                </CardTitle>
-                <CardDescription>Grant subscription or scan packs to users by Replit ID</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="grant-user-id">User ID or Email</Label>
-                    <Input
-                      id="grant-user-id"
-                      placeholder="Enter user ID or email address..."
-                      value={grantUserId}
-                      onChange={(e) => setGrantUserId(e.target.value)}
-                      data-testid="input-grant-user-id"
-                    />
-                  </div>
-                  
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <div className="flex-1">
-                      <Button
-                        className="w-full gap-2"
-                        onClick={() => grantSubscriptionMutation.mutate(grantUserId)}
-                        disabled={!grantUserId || grantSubscriptionMutation.isPending}
-                        data-testid="button-grant-subscription"
-                      >
-                        {grantSubscriptionMutation.isPending ? (
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                        ) : (
-                          <Crown className="w-4 h-4" />
-                        )}
-                        Grant Premium Subscription
-                      </Button>
-                    </div>
-                  </div>
-
-                  <div className="border-t pt-4">
-                    <div className="flex items-end gap-4">
-                      <div className="flex-1">
-                        <Label htmlFor="grant-scans">Scan Pack Amount</Label>
-                        <Input
-                          id="grant-scans"
-                          type="number"
-                          min="1"
-                          value={grantScans}
-                          onChange={(e) => setGrantScans(e.target.value)}
-                          data-testid="input-grant-scans"
-                        />
-                      </div>
-                      <Button
-                        variant="outline"
-                        className="gap-2"
-                        onClick={() => grantScansMutation.mutate({ userId: grantUserId, amount: parseInt(grantScans) })}
-                        disabled={!grantUserId || !grantScans || grantScansMutation.isPending}
-                        data-testid="button-grant-scans"
-                      >
-                        {grantScansMutation.isPending ? (
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                        ) : (
-                          <Zap className="w-4 h-4" />
-                        )}
-                        Grant Scans
-                      </Button>
-                    </div>
-                  </div>
-
-                  <div className="border-t pt-4">
-                    <div className="flex items-end gap-4">
-                      <div className="flex-1">
-                        <Label htmlFor="trial-end-date">Trial End Date</Label>
-                        <Input
-                          id="trial-end-date"
-                          type="date"
-                          value={trialEndDate}
-                          onChange={(e) => setTrialEndDate(e.target.value)}
-                          min={new Date(Date.now() + 86400000).toISOString().split('T')[0]}
-                          data-testid="input-trial-end-date"
-                        />
-                      </div>
-                      <Button
-                        variant="outline"
-                        className="gap-2"
-                        onClick={() => grantTrialMutation.mutate({ userId: grantUserId, trialEndsAt: trialEndDate })}
-                        disabled={!grantUserId || !trialEndDate || grantTrialMutation.isPending}
-                        data-testid="button-grant-trial"
-                      >
-                        {grantTrialMutation.isPending ? (
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                        ) : (
-                          <Calendar className="w-4 h-4" />
-                        )}
-                        Grant/Extend Trial
-                      </Button>
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-2">
-                      Sets the user's subscription status to "trial" with unlimited scans until the specified date.
-                    </p>
-                  </div>
-                </div>
               </CardContent>
             </Card>
           </TabsContent>
