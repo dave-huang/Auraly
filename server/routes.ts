@@ -1099,31 +1099,62 @@ Sent from Auraly Feedback System
         return res.status(404).json({ error: 'User not found' });
       }
 
-      // ALWAYS search Stripe directly for a valid customer by userId metadata
+      // ALWAYS search Stripe directly for a valid customer
       // This bypasses any stale cached data in users.stripeCustomerId or stripe.customers table
       let customerId: string | null = null;
+      let needsMetadataUpdate = false;
       
-      // Search for existing customer in Stripe by userId metadata
-      const existingCustomers = await stripe.customers.search({
+      // Step 1: Search for existing customer by userId metadata
+      const existingByUserId = await stripe.customers.search({
         query: `metadata['userId']:'${userId}'`,
         limit: 10,
       });
       
       // Find a non-deleted customer
-      for (const customer of existingCustomers.data) {
+      for (const customer of existingByUserId.data) {
         if (!customer.deleted) {
           customerId = customer.id;
-          console.log(`[CHECKOUT] Found existing Stripe customer ${customerId} for user ${userId}`);
+          console.log(`[CHECKOUT] Found existing Stripe customer ${customerId} for user ${userId} (by userId metadata)`);
           break;
         }
       }
       
-      // Create new customer if none found
-      if (!customerId) {
-        const customer = await stripe.customers.create({
-          email: user.email || undefined,
-          metadata: { userId },
+      // Step 2: If not found by userId, search by email as fallback
+      if (!customerId && user.email) {
+        const existingByEmail = await stripe.customers.search({
+          query: `email:'${user.email}'`,
+          limit: 10,
         });
+        
+        for (const customer of existingByEmail.data) {
+          if (!customer.deleted) {
+            customerId = customer.id;
+            needsMetadataUpdate = true; // Add userId metadata to this customer
+            console.log(`[CHECKOUT] Found existing Stripe customer ${customerId} for user ${userId} (by email fallback)`);
+            break;
+          }
+        }
+        
+        // Update customer with userId metadata if found by email
+        if (customerId && needsMetadataUpdate) {
+          await stripe.customers.update(customerId, {
+            metadata: { userId },
+          });
+          console.log(`[CHECKOUT] Updated customer ${customerId} with userId metadata`);
+        }
+      }
+      
+      // Step 3: Create new customer only if none found, with idempotency key
+      if (!customerId) {
+        const customer = await stripe.customers.create(
+          {
+            email: user.email || undefined,
+            metadata: { userId },
+          },
+          {
+            idempotencyKey: `customer-create-${userId}`,
+          }
+        );
         customerId = customer.id;
         console.log(`[CHECKOUT] Created new Stripe customer ${customerId} for user ${userId}`);
       }
