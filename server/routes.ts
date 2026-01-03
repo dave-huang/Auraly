@@ -400,21 +400,70 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "User not found" });
       }
 
-      if (!user.stripeCustomerId) {
-        return res.status(400).json({ message: "No billing account found" });
+      const stripe = await getUncachableStripeClient();
+      let customerId = user.stripeCustomerId;
+      
+      // If no customer ID stored, try to find one by userId metadata
+      if (!customerId) {
+        const existingCustomers = await stripe.customers.search({
+          query: `metadata['userId']:'${userId}'`,
+        });
+        if (existingCustomers.data.length > 0) {
+          customerId = existingCustomers.data[0].id;
+          // Update user record with found customer ID
+          await db.update(users)
+            .set({ stripeCustomerId: customerId })
+            .where(eq(users.id, userId));
+        }
+      }
+      
+      if (!customerId) {
+        return res.status(400).json({ message: "No billing account found. You may need to subscribe first." });
       }
 
-      const stripe = await getUncachableStripeClient();
-      
       // Determine return URL
       const returnUrl = req.body.returnUrl || `${req.protocol}://${req.get('host')}/account`;
       
-      const session = await stripe.billingPortal.sessions.create({
-        customer: user.stripeCustomerId,
-        return_url: returnUrl,
-      });
-
-      res.json({ url: session.url });
+      try {
+        const session = await stripe.billingPortal.sessions.create({
+          customer: customerId,
+          return_url: returnUrl,
+        });
+        res.json({ url: session.url });
+      } catch (stripeError: any) {
+        // Handle stale/deleted customer ID
+        if (stripeError.code === 'resource_missing') {
+          console.log(`[BILLING] Stale customer ID ${customerId} - searching for valid customer`);
+          
+          // Try to find customer by userId metadata
+          const searchResults = await stripe.customers.search({
+            query: `metadata['userId']:'${userId}'`,
+          });
+          
+          if (searchResults.data.length > 0) {
+            const validCustomer = searchResults.data[0];
+            // Update user with valid customer ID
+            await db.update(users)
+              .set({ stripeCustomerId: validCustomer.id })
+              .where(eq(users.id, userId));
+            
+            // Retry portal creation with valid customer
+            const session = await stripe.billingPortal.sessions.create({
+              customer: validCustomer.id,
+              return_url: returnUrl,
+            });
+            return res.json({ url: session.url });
+          }
+          
+          // No valid customer found - clear the stale ID
+          await db.update(users)
+            .set({ stripeCustomerId: null })
+            .where(eq(users.id, userId));
+          
+          return res.status(400).json({ message: "Billing account not found. Please contact support." });
+        }
+        throw stripeError;
+      }
     } catch (error: any) {
       console.error("Error creating billing portal session:", error);
       res.status(500).json({ message: "Failed to create billing portal session" });
