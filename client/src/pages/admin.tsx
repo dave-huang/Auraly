@@ -206,6 +206,23 @@ export default function AdminPage() {
     }
   });
 
+  const [trialEndDate, setTrialEndDate] = useState("");
+  
+  const grantTrialMutation = useMutation({
+    mutationFn: async ({ userId, trialEndsAt }: { userId: string; trialEndsAt: string }) => {
+      return apiRequest('POST', '/api/admin/grant-trial', { userId, trialEndsAt });
+    },
+    onSuccess: () => {
+      toast({ title: "Trial granted successfully", description: `Trial extended until ${new Date(trialEndDate).toLocaleDateString()}` });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/dashboard'] });
+      setGrantUserId("");
+      setTrialEndDate("");
+    },
+    onError: (error: any) => {
+      toast({ title: "Failed to grant trial", description: error.message, variant: "destructive" });
+    }
+  });
+
   const clearCacheMutation = useMutation({
     mutationFn: async () => {
       return apiRequest('POST', '/api/admin/clear-cache', {});
@@ -879,6 +896,39 @@ export default function AdminPage() {
                         Grant Scans
                       </Button>
                     </div>
+                  </div>
+
+                  <div className="border-t pt-4">
+                    <div className="flex items-end gap-4">
+                      <div className="flex-1">
+                        <Label htmlFor="trial-end-date">Trial End Date</Label>
+                        <Input
+                          id="trial-end-date"
+                          type="date"
+                          value={trialEndDate}
+                          onChange={(e) => setTrialEndDate(e.target.value)}
+                          min={new Date(Date.now() + 86400000).toISOString().split('T')[0]}
+                          data-testid="input-trial-end-date"
+                        />
+                      </div>
+                      <Button
+                        variant="outline"
+                        className="gap-2"
+                        onClick={() => grantTrialMutation.mutate({ userId: grantUserId, trialEndsAt: trialEndDate })}
+                        disabled={!grantUserId || !trialEndDate || grantTrialMutation.isPending}
+                        data-testid="button-grant-trial"
+                      >
+                        {grantTrialMutation.isPending ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <Calendar className="w-4 h-4" />
+                        )}
+                        Grant/Extend Trial
+                      </Button>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Sets the user's subscription status to "trial" with unlimited scans until the specified date.
+                    </p>
                   </div>
                 </div>
               </CardContent>

@@ -1496,6 +1496,43 @@ Sent from Auraly Feedback System
     }
   });
 
+  // Grant or extend trial period (admin only)
+  app.post('/api/admin/grant-trial', isAuthenticated, isAdmin, async (req: any, res) => {
+    try {
+      const { userId, trialEndsAt } = req.body;
+      if (!userId || !trialEndsAt) {
+        return res.status(400).json({ error: 'User ID and trial end date required' });
+      }
+
+      const user = await storage.getUser(userId);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      const trialEndDate = new Date(trialEndsAt);
+      if (isNaN(trialEndDate.getTime())) {
+        return res.status(400).json({ error: 'Invalid date format' });
+      }
+
+      if (trialEndDate <= new Date()) {
+        return res.status(400).json({ error: 'Trial end date must be in the future' });
+      }
+
+      await db.update(users)
+        .set({ 
+          subscriptionStatus: 'trial',
+          trialEndsAt: trialEndDate,
+        })
+        .where(eq(users.id, userId));
+
+      console.log(`[ADMIN] Trial granted to user ${userId} until ${trialEndDate.toISOString()}`);
+      res.json({ success: true, trialEndsAt: trialEndDate.toISOString() });
+    } catch (error: any) {
+      console.error('Grant trial error:', error);
+      res.status(500).json({ error: 'Failed to grant trial' });
+    }
+  });
+
   // Clear ingredient cache (admin only - use when AI prompts change)
   app.post('/api/admin/clear-cache', isAuthenticated, isAdmin, async (req: any, res) => {
     try {
