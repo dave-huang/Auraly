@@ -11,6 +11,7 @@ import { extractTextFromImage } from "./services/ocr";
 import { analyzeIngredients, analyzeIngredientsParallel, extractIngredientsFromText } from "./services/analyzer";
 import { batchAnalyzeIngredientsWithCache, getCacheStats, clearAllCache, getAllCacheEntries } from "./services/cache";
 import { subscriptionService } from "./services/subscription";
+import { getLLMProvider, getModelName } from "./services/llmProvider";
 import { 
   ocrRequestSchema, 
   analysisRequestSchema,
@@ -588,6 +589,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
+  });
+
+  // LLM provider status endpoint (for testing provider switching)
+  app.get("/api/llm-status", (req, res) => {
+    res.json({
+      provider: getLLMProvider(),
+      model: getModelName(),
+      envVar: process.env.LLM_PROVIDER || 'openai (default)'
+    });
   });
 
   // Check analysis status (for polling from mobile when tab is backgrounded) (protected)

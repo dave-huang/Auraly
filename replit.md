@@ -28,6 +28,7 @@ Auraly is a mobile-friendly web application designed to help users understand th
     - `POST /api/scan-and-analyze`: **PRIMARY ENDPOINT** - Combined OCR + Analysis for maximum speed.
     - `POST /api/analyze-ingredients`: Batch ingredient analysis with category-specific caching.
     - `GET /api/cache-stats`: Cache performance metrics.
+    - `GET /api/llm-status`: Current LLM provider and model info.
     - `POST /api/ocr`: Extracts text using Gemini Flash.
     - `POST /api/analyze`: Analyzes ingredients with OpenAI GPT-5.1.
     - `GET /api/user/allergen-preferences` - Fetch current preferences
@@ -41,12 +42,12 @@ Auraly is a mobile-friendly web application designed to help users understand th
     - `POST /api/admin/grant-trial` - Grant or extend free trial period for a user until a specified date
     - `GET /api/account/subscription` - Returns subscription details, billing info, payment method
     - `POST /api/account/billing-portal` - Creates Stripe Customer Portal session for payment management
-- **Services**: `services/cache.ts`, `services/ocr.ts`, `services/geminiOcr.ts`, `services/googleVisionOcr.ts`, `services/analyzer.ts`, `gemini.ts`, `openai.ts`.
+- **Services**: `services/cache.ts`, `services/ocr.ts`, `services/geminiOcr.ts`, `services/googleVisionOcr.ts`, `services/analyzer.ts`, `services/llmProvider.ts` (LLM abstraction layer), `gemini.ts`, `openai.ts`.
 - **Feature Specifications**:
     - **Fast OCR with Fallback**: Gemini 2.5 Flash (primary, 2-5s) with Google Cloud Vision API as fallback.
     - **Combined Scan & Analyze Pipeline**: `/api/scan-and-analyze` endpoint for sequential OCR and AI analysis in a single request.
     - **Automatic Retry System**: Frontend auto-retries failed requests with exponential backoff and OCR text caching.
-    - **AI-Powered Analysis**: Utilizes GPT-5.2 for accurate ingredient analysis, risk assessments, and explanations in the user's chosen language. Includes parenthetical expansion, deduplication, and dynamic token allocation.
+    - **AI-Powered Analysis**: Configurable LLM provider (GPT-5.2 or Gemini 3 Flash) for ingredient analysis, risk assessments, and explanations in the user's chosen language. Includes parenthetical expansion, deduplication, and dynamic token allocation. Toggle via `LLM_PROVIDER` env var (`openai` or `gemini`).
     - **Allergen Risk Rules**: Common food allergens (soy, peanuts, tree nuts, dairy, eggs, wheat, fish, shellfish, sesame, coconut) are marked as "low" risk by default since they're only dangerous to individuals with allergies, not the general population. The AI prompt explicitly enforces this rule.
     - **High-Risk Ingredient Rules**: Consumer-protective hardcoded rules for ingredients with significant health concerns or international bans. Includes synthetic food dyes (Red 40, Yellow 5, etc. with E-number aliases), BHA/BHT/TBHQ, nitrates/nitrites, potassium bromate, parabens, phthalates, formaldehyde-releasers, triclosan, and oxybenzone. These are always marked as "high" risk with explanations of why.
     - **Intelligent Completeness Validation**: Schema-level validation and smart section boundary detection for ingredient lists.
@@ -72,7 +73,7 @@ Auraly is a mobile-friendly web application designed to help users understand th
 ## External Dependencies
 - **AI/ML**:
     - **Gemini 2.5 Flash** (via Replit AI Integrations) - Primary OCR.
-    - **OpenAI GPT-5.2** (via direct OpenAI API) - Primary ingredient analysis with consumer-protective risk thresholds.
+    - **OpenAI GPT-5.2** (default, via direct OpenAI API) or **Gemini 3 Flash** (via Replit AI Integrations) - Configurable ingredient analysis with consumer-protective risk thresholds. Toggle via `LLM_PROVIDER` env var.
     - **Google Cloud Vision API** - Optional OCR fallback.
 - **Internationalization**: i18next, react-i18next.
 - **Analytics**: Google Analytics 4 (GA4) via gtag.js with custom event tracking.
