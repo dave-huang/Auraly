@@ -12,7 +12,7 @@ export function getLLMProvider(): LLMProvider {
 export function getModelName(): string {
   const provider = getLLMProvider();
   if (provider === 'gemini') {
-    return 'gemini-3-flash-preview';
+    return 'gemini-2.5-flash';
   }
   return 'gpt-5.2';
 }
@@ -93,7 +93,7 @@ async function createGeminiCompletion(
     : userContent;
   
   const response = await gemini.models.generateContent({
-    model: 'gemini-3-flash-preview',
+    model: 'gemini-2.5-flash',
     contents: [{
       role: 'user',
       parts: [{ text: fullPrompt }]
