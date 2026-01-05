@@ -1765,6 +1765,7 @@ Ingredients: ${batch.join(', ')}`;
 
           let success = false;
           let retries = 0;
+          let lastError = '';
           const maxRetries = 1; // Reduced retries for benchmark speed
           
           while (!success && retries <= maxRetries) {
@@ -1776,15 +1777,26 @@ Ingredients: ${batch.join(', ')}`;
               
               if (response.content && response.content.trim().length > 0) {
                 // Try to parse to verify it's valid JSON
-                JSON.parse(response.content);
-                success = true;
-                results.successCount++;
-                results.ingredientsProcessed += batch.length;
+                try {
+                  JSON.parse(response.content);
+                  success = true;
+                  results.successCount++;
+                  results.ingredientsProcessed += batch.length;
+                } catch (parseErr: any) {
+                  lastError = `JSON parse error: ${parseErr.message}. Response preview: ${response.content.substring(0, 200)}...`;
+                  console.log(`[BENCHMARK] ${provider} batch ${batchIdx} JSON parse failed: ${response.content.substring(0, 100)}...`);
+                  retries++;
+                  results.retryCount++;
+                }
               } else {
+                lastError = `Empty response from ${provider}`;
+                console.log(`[BENCHMARK] ${provider} batch ${batchIdx} returned empty response`);
                 retries++;
                 results.retryCount++;
               }
-            } catch (err) {
+            } catch (err: any) {
+              lastError = `API error: ${err.message || err}`;
+              console.log(`[BENCHMARK] ${provider} batch ${batchIdx} API error: ${err.message || err}`);
               retries++;
               if (retries <= maxRetries) {
                 results.retryCount++;
@@ -1795,6 +1807,7 @@ Ingredients: ${batch.join(', ')}`;
           
           if (!success) {
             results.failureCount++;
+            console.log(`[BENCHMARK] ${provider} batch ${batchIdx} FAILED after ${retries} retries. Last error: ${lastError}`);
           }
           
           const batchTime = Date.now() - batchStart;
