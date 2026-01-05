@@ -44,4 +44,3 @@ integrations = ["javascript_openai_ai_integrations:1.0.0", "javascript_gemini_ai
 [userenv]
 
 [userenv.shared]
-LLM_PROVIDER = "openai"
