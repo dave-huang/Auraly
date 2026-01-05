@@ -11,7 +11,6 @@ import { extractTextFromImage } from "./services/ocr";
 import { analyzeIngredients, analyzeIngredientsParallel, extractIngredientsFromText } from "./services/analyzer";
 import { batchAnalyzeIngredientsWithCache, getCacheStats, clearAllCache, getAllCacheEntries } from "./services/cache";
 import { subscriptionService } from "./services/subscription";
-import { getLLMProvider, getModelName } from "./services/llmProvider";
 import { 
   ocrRequestSchema, 
   analysisRequestSchema,
@@ -21,7 +20,6 @@ import {
   scanHistory,
   scanUsageLogs,
   sessions,
-  ingredientCache,
   type ProductType,
   type AnalysisResult,
   type InsertScanHistory,
@@ -590,15 +588,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
-  });
-
-  // LLM provider status endpoint (for testing provider switching)
-  app.get("/api/llm-status", (req, res) => {
-    res.json({
-      provider: getLLMProvider(),
-      model: getModelName(),
-      envVar: process.env.LLM_PROVIDER || 'openai (default)'
-    });
   });
 
   // Check analysis status (for polling from mobile when tab is backgrounded) (protected)
@@ -1691,177 +1680,6 @@ Sent from Auraly Feedback System
     } catch (error: any) {
       console.error('Stripe customer cleanup error:', error);
       res.status(500).json({ error: 'Failed to cleanup Stripe customers: ' + error.message });
-    }
-  });
-
-  // LLM Benchmark endpoint - compare Gemini 3 Pro vs GPT-5.2 performance
-  app.post('/api/admin/benchmark-llm', isAuthenticated, isAdmin, async (req: any, res) => {
-    // Save original provider to restore after benchmark
-    const originalProvider = process.env.LLM_PROVIDER;
-    
-    try {
-      // Validate and clamp inputs
-      let { batchSize = 3, maxIngredients = 50 } = req.body;
-      batchSize = Math.max(1, Math.min(10, parseInt(batchSize) || 3));
-      maxIngredients = Math.max(10, Math.min(200, parseInt(maxIngredients) || 50));
-      
-      // Fetch cached ingredients to use as benchmark dataset
-      const cachedIngredients = await db.select({
-        ingredient: ingredientCache.ingredient,
-        category: ingredientCache.category,
-      }).from(ingredientCache).limit(maxIngredients);
-      
-      if (cachedIngredients.length === 0) {
-        return res.status(400).json({ error: 'No cached ingredients available for benchmarking' });
-      }
-      
-      const ingredientNames = cachedIngredients.map(c => c.ingredient.toUpperCase());
-      
-      console.log(`[BENCHMARK] Starting LLM benchmark with ${ingredientNames.length} ingredients`);
-      
-      // Create batches - limit to max 30 batches to prevent excessive runtime
-      const batches: string[][] = [];
-      for (let i = 0; i < ingredientNames.length && batches.length < 30; i += batchSize) {
-        batches.push(ingredientNames.slice(i, i + batchSize));
-      }
-      
-      // Import the LLM provider functions
-      const { createChatCompletion } = await import('./services/llmProvider');
-      
-      // Benchmark function for a single model
-      const runBenchmark = async (provider: 'openai' | 'gemini') => {
-        // Set the provider for this benchmark run
-        process.env.LLM_PROVIDER = provider;
-        
-        const results = {
-          provider,
-          model: provider === 'gemini' ? 'gemini-3-pro-preview' : 'gpt-5.2',
-          totalTime: 0,
-          batchTimes: [] as number[],
-          successCount: 0,
-          failureCount: 0,
-          retryCount: 0,
-          ingredientsProcessed: 0,
-        };
-        
-        const startTime = Date.now();
-        const MAX_BENCHMARK_TIME = 120000; // 2 minute timeout per provider
-        
-        for (let batchIdx = 0; batchIdx < batches.length; batchIdx++) {
-          // Check timeout
-          if (Date.now() - startTime > MAX_BENCHMARK_TIME) {
-            console.log(`[BENCHMARK] ${provider} timed out after ${batchIdx} batches`);
-            break;
-          }
-          
-          const batch = batches[batchIdx];
-          const batchStart = Date.now();
-          
-          const prompt = `Analyze these food ingredients and return a JSON array with risk assessments.
-For each ingredient provide: name, riskLevel (low/moderate/high), summary (1-2 sentences), details (2-3 sentences).
-Return ONLY valid JSON array, no markdown.
-
-Ingredients: ${batch.join(', ')}`;
-
-          let success = false;
-          let retries = 0;
-          let lastError = '';
-          const maxRetries = 1; // Reduced retries for benchmark speed
-          
-          while (!success && retries <= maxRetries) {
-            try {
-              const response = await createChatCompletion([
-                { role: "system", content: "You are a food safety expert. Respond only with valid JSON." },
-                { role: "user", content: prompt }
-              ], { maxTokens: 2000, jsonMode: true });
-              
-              if (response.content && response.content.trim().length > 0) {
-                // Try to parse to verify it's valid JSON
-                try {
-                  JSON.parse(response.content);
-                  success = true;
-                  results.successCount++;
-                  results.ingredientsProcessed += batch.length;
-                } catch (parseErr: any) {
-                  lastError = `JSON parse error: ${parseErr.message}. Response preview: ${response.content.substring(0, 200)}...`;
-                  console.log(`[BENCHMARK] ${provider} batch ${batchIdx} JSON parse failed: ${response.content.substring(0, 100)}...`);
-                  retries++;
-                  results.retryCount++;
-                }
-              } else {
-                lastError = `Empty response from ${provider}`;
-                console.log(`[BENCHMARK] ${provider} batch ${batchIdx} returned empty response`);
-                retries++;
-                results.retryCount++;
-              }
-            } catch (err: any) {
-              lastError = `API error: ${err.message || err}`;
-              console.log(`[BENCHMARK] ${provider} batch ${batchIdx} API error: ${err.message || err}`);
-              retries++;
-              if (retries <= maxRetries) {
-                results.retryCount++;
-                await new Promise(resolve => setTimeout(resolve, 300));
-              }
-            }
-          }
-          
-          if (!success) {
-            results.failureCount++;
-            console.log(`[BENCHMARK] ${provider} batch ${batchIdx} FAILED after ${retries} retries. Last error: ${lastError}`);
-          }
-          
-          const batchTime = Date.now() - batchStart;
-          results.batchTimes.push(batchTime);
-        }
-        
-        results.totalTime = Date.now() - startTime;
-        return results;
-      };
-      
-      // Run benchmarks sequentially (not parallel to avoid contention)
-      console.log(`[BENCHMARK] Running Gemini 3 Pro benchmark...`);
-      const geminiResults = await runBenchmark('gemini');
-      console.log(`[BENCHMARK] Gemini completed in ${geminiResults.totalTime}ms`);
-      
-      console.log(`[BENCHMARK] Running GPT-5.2 benchmark...`);
-      const openaiResults = await runBenchmark('openai');
-      console.log(`[BENCHMARK] GPT-5.2 completed in ${openaiResults.totalTime}ms`);
-      
-      // Calculate averages
-      const calcAvg = (times: number[]) => times.length > 0 ? Math.round(times.reduce((a, b) => a + b, 0) / times.length) : 0;
-      
-      const comparison = {
-        ingredientCount: ingredientNames.length,
-        batchCount: batches.length,
-        batchSize,
-        gemini: {
-          ...geminiResults,
-          avgBatchTime: calcAvg(geminiResults.batchTimes),
-          successRate: Math.round((geminiResults.successCount / batches.length) * 100),
-        },
-        openai: {
-          ...openaiResults,
-          avgBatchTime: calcAvg(openaiResults.batchTimes),
-          successRate: Math.round((openaiResults.successCount / batches.length) * 100),
-        },
-        winner: geminiResults.totalTime < openaiResults.totalTime ? 'gemini' : 'openai',
-        timeDifference: Math.abs(geminiResults.totalTime - openaiResults.totalTime),
-      };
-      
-      console.log(`[BENCHMARK] Complete. Winner: ${comparison.winner} (${comparison.timeDifference}ms faster)`);
-      
-      res.json(comparison);
-    } catch (error: any) {
-      console.error('Benchmark error:', error);
-      res.status(500).json({ error: 'Benchmark failed: ' + error.message });
-    } finally {
-      // Always restore the original provider
-      if (originalProvider) {
-        process.env.LLM_PROVIDER = originalProvider;
-      } else {
-        delete process.env.LLM_PROVIDER;
-      }
-      console.log(`[BENCHMARK] Restored LLM_PROVIDER to: ${originalProvider || 'default'}`);
     }
   });
 

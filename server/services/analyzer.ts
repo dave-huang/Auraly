@@ -2,9 +2,12 @@ import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { openai } from '../openai';
 import { analysisResultSchema, type ProductType, type AnalysisResult, type RiskLevel, type Ingredient } from '@shared/schema';
 import { getCachedIngredientAnalysis, setCachedIngredientAnalysis } from './cache';
-import { createChatCompletion, getLLMProvider, getModelName } from './llmProvider';
+
+// OpenAI model for ingredient analysis
+const ANALYSIS_MODEL = "gpt-5.2";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // Store cache in the project root for better persistence
@@ -933,9 +936,7 @@ Return your analysis as JSON with this structure:
         console.log(`[ANALYZER] Retry attempt ${attempt}/${maxRetries} due to: ${lastError?.message || 'unknown error'}`);
       }
       
-      const llmProvider = getLLMProvider();
-      const modelName = getModelName();
-      console.log(`[TIMING] Sending request to ${llmProvider} (${modelName})...`);
+      console.log('[TIMING] Sending request to OpenAI (Replit AI Integrations)...');
       const aiStartTime = Date.now();
       
       const systemMessages = {
@@ -945,29 +946,46 @@ Return your analysis as JSON with this structure:
       };
       const systemMessage = systemMessages[userLanguage as keyof typeof systemMessages] || systemMessages['en'];
       
+      // Adjust max_tokens based on estimated ingredient count and language
+      // Use moderate limits for speed while ensuring completeness
+      // Each ingredient needs ~120-150 tokens (name, risk, concise summary/details) in English/Spanish
+      // Chinese needs ~100-120 tokens per ingredient due to higher token density
       const tokensPerIngredient = userLanguage === 'zh' ? 110 : 140;
       const baseTokens = userLanguage === 'zh' ? 600 : 800;
-      const maxCap = userLanguage === 'zh' ? 4500 : 6000;
+      const maxCap = userLanguage === 'zh' ? 4500 : 6000; // Lower cap for Chinese to improve speed
       
       const estimatedTokensNeeded = Math.min(estimatedIngredientCount * tokensPerIngredient + baseTokens, maxCap);
       const maxTokens = Math.max(2500, estimatedTokensNeeded);
       
       console.log(`[ANALYZER] Using max_tokens: ${maxTokens} for language: ${userLanguage} (estimated ${estimatedIngredientCount} ingredients)`);
-      console.log(`[ANALYZER] Calling ${modelName} for fast analysis`);
+      console.log(`[ANALYZER] Calling ${ANALYSIS_MODEL} for fast analysis`);
       
-      const response = await createChatCompletion([
-        { role: "system", content: systemMessage },
-        { role: "user", content: prompt }
-      ], { maxTokens, jsonMode: true });
-      
-      console.log(`[ANALYZER] ${modelName} analysis succeeded`);
+      // Use configured model with no reasoning effort for fastest analysis
+      const response = await openai.chat.completions.create({
+        model: ANALYSIS_MODEL,
+        messages: [
+          {
+            role: "system",
+            content: systemMessage
+          },
+          {
+            role: "user",
+            content: prompt
+          }
+        ],
+        response_format: { type: "json_object" },
+        max_completion_tokens: maxTokens,
+        reasoning_effort: "none"
+      } as any);
+      console.log(`[ANALYZER] ${ANALYSIS_MODEL} Instant mode succeeded`);
 
       const aiDuration = ((Date.now() - aiStartTime) / 1000).toFixed(2);
       const tokensUsed = response.usage?.total_tokens || 0;
       const completionTokens = response.usage?.completion_tokens || 0;
-      console.log(`[TIMING] ${llmProvider} API call completed in ${aiDuration}s (${tokensUsed} tokens, ${completionTokens} completion)`);
+      console.log(`[TIMING] OpenAI API call completed in ${aiDuration}s (${tokensUsed} tokens, ${completionTokens} completion)`);
+      console.log('OpenAI response received:', JSON.stringify(response, null, 2));
       
-      const content = response.content;
+      const content = response.choices?.[0]?.message?.content;
       if (!content) {
         console.error('Empty AI response. Full response:', JSON.stringify(response));
         throw new Error('No response from AI');
@@ -1152,12 +1170,23 @@ ${ingredientsList}
 Return ONLY a JSON array with translated names in the same order, nothing else:
 ["English name 1", "English name 2", ...]`;
 
-    const response = await createChatCompletion([
-      { role: "system", content: "You are a translator specializing in food and cosmetic ingredient names. Translate ingredient names accurately to English." },
-      { role: "user", content: prompt }
-    ], { maxTokens: Math.min(1500, ingredients.length * 50) });
+    const response = await openai.chat.completions.create({
+      model: ANALYSIS_MODEL,
+      messages: [
+        {
+          role: "system",
+          content: "You are a translator specializing in food and cosmetic ingredient names. Translate ingredient names accurately to English."
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      max_completion_tokens: Math.min(1500, ingredients.length * 50),
+      reasoning_effort: "none"
+    } as any);
 
-    const content = response.content;
+    const content = response.choices?.[0]?.message?.content;
     if (!content) {
       console.log(`[TRANSLATOR] Empty translation response, using originals`);
       return ingredients;
@@ -1417,14 +1446,18 @@ IMPORTANT: Return ONLY this JSON array, nothing else:
         // Allocate more tokens for non-English languages (need more space for detailed analysis)
         const tokensPerIngredient = (userLanguage === 'zh' || userLanguage === 'es') ? 350 : 200;
         const maxTokens = Math.min(3000, missingIngredients.length * tokensPerIngredient);
-        console.log(`[PARALLEL-BATCH-${batchIdx}] Token allocation: ${maxTokens} tokens for ${missingIngredients.length} ingredients`);
         
-        const response = await createChatCompletion([
-          { role: "system", content: systemMessage },
-          { role: "user", content: batchPrompt }
-        ], { maxTokens, jsonMode: true });
+        const response = await openai.chat.completions.create({
+          model: ANALYSIS_MODEL,
+          messages: [
+            { role: "system", content: systemMessage },
+            { role: "user", content: batchPrompt }
+          ],
+          max_completion_tokens: maxTokens,
+          reasoning_effort: "none"
+        } as any);
         
-        const content = response.content;
+        const content = response.choices?.[0]?.message?.content;
         if (!content || content.trim().length === 0) {
           lastError = new Error('Empty GPT response');
           if (retryAttempt < MAX_RETRIES - 1) {
@@ -1542,12 +1575,17 @@ IMPORTANT: Return ONLY this JSON array:
       let singleSuccess = false;
       for (let individualRetry = 0; individualRetry < MAX_RETRIES; individualRetry++) {
         try {
-          const response = await createChatCompletion([
-            { role: "system", content: systemMessage },
-            { role: "user", content: singlePrompt }
-          ], { maxTokens: 500, jsonMode: true });
+          const response = await openai.chat.completions.create({
+            model: ANALYSIS_MODEL,
+            messages: [
+              { role: "system", content: systemMessage },
+              { role: "user", content: singlePrompt }
+            ],
+            max_completion_tokens: 500,
+            reasoning_effort: "none"
+          } as any);
           
-          const content = response.content;
+          const content = response.choices?.[0]?.message?.content;
           if (!content || content.trim().length === 0) {
             if (individualRetry < MAX_RETRIES - 1) {
               console.log(`[PARALLEL-BATCH-${batchIdx}] Individual retry ${individualRetry + 1}/${MAX_RETRIES} for ${singleIngredient}`);

@@ -121,29 +121,6 @@ interface IngredientCacheData {
   entries: CacheEntry[];
 }
 
-interface BenchmarkModelResult {
-  provider: string;
-  model: string;
-  totalTime: number;
-  batchTimes: number[];
-  successCount: number;
-  failureCount: number;
-  retryCount: number;
-  ingredientsProcessed: number;
-  avgBatchTime: number;
-  successRate: number;
-}
-
-interface BenchmarkResult {
-  ingredientCount: number;
-  batchCount: number;
-  batchSize: number;
-  gemini: BenchmarkModelResult;
-  openai: BenchmarkModelResult;
-  winner: 'gemini' | 'openai';
-  timeDifference: number;
-}
-
 export default function AdminPage() {
   const [, navigate] = useLocation();
   const { user, isLoading: authLoading } = useAuth();
@@ -257,29 +234,6 @@ export default function AdminPage() {
     },
     onError: (error: any) => {
       toast({ title: "Failed to clear cache", description: error.message, variant: "destructive" });
-    }
-  });
-
-  const [benchmarkResult, setBenchmarkResult] = useState<BenchmarkResult | null>(null);
-  const [benchmarkMaxIngredients, setBenchmarkMaxIngredients] = useState("50");
-  
-  const runBenchmarkMutation = useMutation({
-    mutationFn: async ({ maxIngredients }: { maxIngredients: number }) => {
-      const response = await apiRequest('POST', '/api/admin/benchmark-llm', { 
-        maxIngredients,
-        batchSize: 3 
-      });
-      return response.json() as Promise<BenchmarkResult>;
-    },
-    onSuccess: (data) => {
-      setBenchmarkResult(data);
-      toast({ 
-        title: "Benchmark complete", 
-        description: `Winner: ${data.winner === 'gemini' ? 'Gemini 3 Pro' : 'GPT-5.2'} (${(data.timeDifference / 1000).toFixed(1)}s faster)` 
-      });
-    },
-    onError: (error: any) => {
-      toast({ title: "Benchmark failed", description: error.message, variant: "destructive" });
     }
   });
 
@@ -467,7 +421,6 @@ export default function AdminPage() {
             <TabsTrigger value="analytics" data-testid="tab-analytics">Analytics</TabsTrigger>
             <TabsTrigger value="funnel" data-testid="tab-funnel">Funnel</TabsTrigger>
             <TabsTrigger value="cache" data-testid="tab-cache">Ingredients</TabsTrigger>
-            <TabsTrigger value="benchmark" data-testid="tab-benchmark">Benchmark</TabsTrigger>
             <TabsTrigger value="system" data-testid="tab-system">System</TabsTrigger>
           </TabsList>
 
@@ -966,146 +919,6 @@ export default function AdminPage() {
                 ) : (
                   <div className="flex justify-center py-8">
                     <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="benchmark" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Zap className="w-5 h-5" />
-                  LLM Performance Benchmark
-                </CardTitle>
-                <CardDescription>
-                  Compare Gemini 3 Pro vs GPT-5.2 performance using cached ingredients as test data.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2">
-                    <Label htmlFor="benchmark-ingredients">Ingredients to test:</Label>
-                    <Input
-                      id="benchmark-ingredients"
-                      type="number"
-                      value={benchmarkMaxIngredients}
-                      onChange={(e) => setBenchmarkMaxIngredients(e.target.value)}
-                      className="w-24"
-                      min="10"
-                      max="200"
-                      data-testid="input-benchmark-ingredients"
-                    />
-                  </div>
-                  <Button
-                    onClick={() => {
-                      const parsed = parseInt(benchmarkMaxIngredients);
-                      const clamped = Math.max(10, Math.min(200, isNaN(parsed) ? 50 : parsed));
-                      setBenchmarkMaxIngredients(String(clamped));
-                      runBenchmarkMutation.mutate({ maxIngredients: clamped });
-                    }}
-                    disabled={runBenchmarkMutation.isPending}
-                    data-testid="button-run-benchmark"
-                  >
-                    {runBenchmarkMutation.isPending ? (
-                      <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Running Benchmark...
-                      </>
-                    ) : (
-                      <>
-                        <FlaskConical className="w-4 h-4 mr-2" />
-                        Run Benchmark
-                      </>
-                    )}
-                  </Button>
-                </div>
-
-                {runBenchmarkMutation.isPending && (
-                  <div className="p-4 rounded-lg border bg-muted/50">
-                    <p className="text-sm text-muted-foreground">
-                      Running benchmark... This may take 1-3 minutes as we test both models sequentially.
-                    </p>
-                  </div>
-                )}
-
-                {benchmarkResult && (
-                  <div className="space-y-4">
-                    <div className="p-4 rounded-lg border bg-primary/10">
-                      <div className="flex items-center gap-2">
-                        <Crown className="w-5 h-5 text-primary" />
-                        <span className="font-semibold">
-                          Winner: {benchmarkResult.winner === 'gemini' ? 'Gemini 3 Pro' : 'GPT-5.2'}
-                        </span>
-                        <Badge variant="secondary">
-                          {(benchmarkResult.timeDifference / 1000).toFixed(1)}s faster
-                        </Badge>
-                      </div>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        Tested {benchmarkResult.ingredientCount} ingredients in {benchmarkResult.batchCount} batches
-                      </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <Card className={benchmarkResult.winner === 'gemini' ? 'ring-2 ring-primary' : ''}>
-                        <CardHeader className="pb-2">
-                          <CardTitle className="text-lg flex items-center gap-2">
-                            Gemini 3 Pro
-                            {benchmarkResult.winner === 'gemini' && <Crown className="w-4 h-4 text-primary" />}
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-2">
-                          <div className="grid grid-cols-2 gap-2 text-sm">
-                            <div className="p-2 rounded bg-muted/50">
-                              <p className="text-muted-foreground">Total Time</p>
-                              <p className="font-semibold">{(benchmarkResult.gemini.totalTime / 1000).toFixed(1)}s</p>
-                            </div>
-                            <div className="p-2 rounded bg-muted/50">
-                              <p className="text-muted-foreground">Avg per Batch</p>
-                              <p className="font-semibold">{(benchmarkResult.gemini.avgBatchTime / 1000).toFixed(2)}s</p>
-                            </div>
-                            <div className="p-2 rounded bg-muted/50">
-                              <p className="text-muted-foreground">Success Rate</p>
-                              <p className="font-semibold">{benchmarkResult.gemini.successRate}%</p>
-                            </div>
-                            <div className="p-2 rounded bg-muted/50">
-                              <p className="text-muted-foreground">Retries</p>
-                              <p className="font-semibold">{benchmarkResult.gemini.retryCount}</p>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-
-                      <Card className={benchmarkResult.winner === 'openai' ? 'ring-2 ring-primary' : ''}>
-                        <CardHeader className="pb-2">
-                          <CardTitle className="text-lg flex items-center gap-2">
-                            GPT-5.2
-                            {benchmarkResult.winner === 'openai' && <Crown className="w-4 h-4 text-primary" />}
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-2">
-                          <div className="grid grid-cols-2 gap-2 text-sm">
-                            <div className="p-2 rounded bg-muted/50">
-                              <p className="text-muted-foreground">Total Time</p>
-                              <p className="font-semibold">{(benchmarkResult.openai.totalTime / 1000).toFixed(1)}s</p>
-                            </div>
-                            <div className="p-2 rounded bg-muted/50">
-                              <p className="text-muted-foreground">Avg per Batch</p>
-                              <p className="font-semibold">{(benchmarkResult.openai.avgBatchTime / 1000).toFixed(2)}s</p>
-                            </div>
-                            <div className="p-2 rounded bg-muted/50">
-                              <p className="text-muted-foreground">Success Rate</p>
-                              <p className="font-semibold">{benchmarkResult.openai.successRate}%</p>
-                            </div>
-                            <div className="p-2 rounded bg-muted/50">
-                              <p className="text-muted-foreground">Retries</p>
-                              <p className="font-semibold">{benchmarkResult.openai.retryCount}</p>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </div>
                   </div>
                 )}
               </CardContent>
