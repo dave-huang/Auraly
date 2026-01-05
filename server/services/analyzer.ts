@@ -1415,9 +1415,9 @@ IMPORTANT: Return ONLY this JSON array, nothing else:
     for (let retryAttempt = 0; retryAttempt < MAX_RETRIES; retryAttempt++) {
       try {
         // Allocate sufficient tokens per ingredient to avoid truncation
-        // Each ingredient needs ~300 tokens for complete JSON (name, riskLevel, summary, details, category)
-        const tokensPerIngredient = (userLanguage === 'zh' || userLanguage === 'es') ? 500 : 400;
-        const maxTokens = Math.min(4000, Math.max(1200, missingIngredients.length * tokensPerIngredient));
+        // Gemini 3 Pro needs more tokens than other models - increased for reliability
+        const tokensPerIngredient = (userLanguage === 'zh' || userLanguage === 'es') ? 600 : 500;
+        const maxTokens = Math.min(8192, Math.max(2000, missingIngredients.length * tokensPerIngredient));
         console.log(`[PARALLEL-BATCH-${batchIdx}] Token allocation: ${maxTokens} tokens for ${missingIngredients.length} ingredients`);
         
         const response = await createChatCompletion([
@@ -1546,7 +1546,7 @@ IMPORTANT: Return ONLY this JSON array:
           const response = await createChatCompletion([
             { role: "system", content: systemMessage },
             { role: "user", content: singlePrompt }
-          ], { maxTokens: 800, jsonMode: true });
+          ], { maxTokens: 1500, jsonMode: true });
           
           const content = response.content;
           if (!content || content.trim().length === 0) {
