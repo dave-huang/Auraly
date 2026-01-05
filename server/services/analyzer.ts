@@ -872,28 +872,49 @@ These are only dangerous to individuals with specific allergies - NOT to the gen
 DO NOT mark these as "moderate" or "high" risk. This is a hard requirement.
 In the summary, you may mention "common allergen" but the riskLevel MUST still be "low".
 
-⚠️ RISK ASSESSMENT GUIDELINES - PRIORITIZE CONSUMER SAFETY ⚠️
-Use regulatory status as your primary guide for risk assessment:
+⚠️ RISK ASSESSMENT GUIDELINES - CONSUMER-PROTECTIVE APPROACH ⚠️
+Apply a CONSERVATIVE, consumer-protective bias. When evidence is mixed or uncertain, DEFAULT TO THE HIGHER RISK CATEGORY.
 
-REGULATORY-BASED RISK CRITERIA:
-• "high" risk = Banned or restricted in EU, UK, Canada, or on California Prop 65. Examples include:
-  - Synthetic food dyes (Red 40, Yellow 5, Blue 1, etc. including "Lake" variants)
-  - Preservatives with IARC carcinogen classification (BHA, nitrites forming nitrosamines)
-  - Trans fats and partially hydrogenated oils (banned by FDA, EU, WHO)
-  - Parabens, phthalates, formaldehyde-releasers in personal care
-  - UV filters banned for reef damage (oxybenzone, octinoxate)
+RISK CRITERIA (ERR ON THE SIDE OF CAUTION):
+• "high" risk = Any of the following:
+  - Banned or restricted in EU, UK, Canada, Australia, or on California Prop 65
+  - Flagged in peer-reviewed studies for carcinogenic, mutagenic, or endocrine-disrupting effects
+  - Subject to regulatory warnings, required labeling, or consumption limits in any major market
+  - Synthetic food dyes (Red 40, Yellow 5, Yellow 6, Blue 1, Blue 2, Green 3, etc. including "Lake" variants and E-numbers)
+  - Preservatives linked to health concerns (BHA, BHT, TBHQ, sodium nitrite, potassium bromate)
+  - Trans fats and partially hydrogenated oils
+  - Parabens, phthalates, formaldehyde-releasers, triclosan in personal care
+  - UV filters with environmental/health concerns (oxybenzone, octinoxate, octocrylene)
 
-• "moderate" risk = Some scientific concern but not banned. Limited/conflicting evidence, or only harmful at high doses
+• "moderate" risk = Any of the following:
+  - ANY scientific studies showing potential concern, even if not conclusive
+  - Controversial ingredients with ongoing debate in scientific literature
+  - Artificial or synthetic versions of natural compounds
+  - Ingredients with consumption limits or "acceptable daily intake" restrictions
+  - Highly processed additives with limited long-term safety data
 
-• "low" risk = Generally recognized as safe, no significant regulatory concerns
+• "low" risk = ONLY when ALL of the following are true:
+  - Generally recognized as safe (GRAS) with broad scientific consensus
+  - No significant regulatory concerns in any major market
+  - Natural or minimally processed with long history of safe use
+  - No credible studies suggesting health concerns
 
-When explaining high-risk ingredients, cite the regulatory basis (e.g., "banned in EU", "IARC Group 2B carcinogen", "requires warning label in EU").
+⚠️ HIGH-RISK INGREDIENT DESCRIPTION REQUIREMENTS ⚠️
+For ALL high-risk ingredients, your summary and details MUST include:
+1. SPECIFIC regulatory status (e.g., "banned in EU since 2010", "requires warning label in California", "restricted in UK foods")
+2. SCIENTIFIC basis for concern (e.g., "linked to hyperactivity in children", "classified as IARC Group 2B possible carcinogen", "shown to disrupt thyroid function in animal studies")
+3. CLEAR health implications written for consumers (e.g., "may increase cancer risk with regular consumption", "associated with behavioral issues in sensitive individuals")
+4. Credibility-building language that helps consumers understand WHY this ingredient is flagged
+
+Example high-risk summary: "Red 40 is a synthetic petroleum-based dye banned in several European countries. Studies link it to hyperactivity in children, and the EU requires warning labels on products containing it. Regular consumption may pose health risks."
+
 When explaining low/moderate ingredients, be factual about their purpose and any precautionary notes.
 
-For ingredients where you're uncertain:
-• "low" = safe, no significant concerns for general population
-• "moderate" = some studies show concern, controversial, or excessive consumption may be harmful
-• "high" = strong evidence of harm, carcinogenic, endocrine disrupting, or banned internationally
+WHEN UNCERTAIN - DEFAULT TO HIGHER RISK:
+• If you're unsure between "low" and "moderate" → choose "moderate"
+• If you're unsure between "moderate" and "high" → choose "high"
+• If an ingredient has ANY credible study showing concern → minimum "moderate"
+• If an ingredient is synthetic/artificial with limited safety data → minimum "moderate"
 
 INGREDIENT NAME TRANSLATION REQUIREMENTS:
 - ALWAYS translate ingredient names to the user's language accurately
@@ -908,7 +929,8 @@ OTHER IMPORTANT NOTES:
 - Extract the product name if mentioned (product name can stay in original language)
 - Determine overall product risk (low/moderate/high) based on the worst ingredients
 - Be clear and informative in explanations, prioritizing consumer awareness over minimizing concerns
-- If an ingredient is genuinely safe with no significant concerns, mark it as "low" risk
+- Your role is to PROTECT consumers - when in doubt, flag it
+- Write descriptions that help consumers make informed decisions, not to reassure them
 
 Return your analysis as JSON with this structure:
 {
