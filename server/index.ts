@@ -41,16 +41,26 @@ async function initStripe() {
 
     const stripeSync = await getStripeSync();
 
-    console.log('Setting up managed webhook...');
-    const webhookBaseUrl = `https://${process.env.REPLIT_DOMAINS?.split(',')[0]}`;
-    const { webhook, uuid } = await stripeSync.findOrCreateManagedWebhook(
-      `${webhookBaseUrl}/api/stripe/webhook`,
-      {
-        enabled_events: ['*'],
-        description: 'Auraly managed webhook for Stripe sync',
+    // Check if REPLIT_DOMAINS is available before setting up webhook
+    const replitDomains = process.env.REPLIT_DOMAINS;
+    if (!replitDomains) {
+      console.log('REPLIT_DOMAINS not found, skipping webhook configuration (will be set up on next deployment)');
+    } else {
+      try {
+        console.log('Setting up managed webhook...');
+        const webhookBaseUrl = `https://${replitDomains.split(',')[0]}`;
+        const { webhook, uuid } = await stripeSync.findOrCreateManagedWebhook(
+          `${webhookBaseUrl}/api/stripe/webhook`,
+          {
+            enabled_events: ['*'],
+            description: 'Auraly managed webhook for Stripe sync',
+          }
+        );
+        console.log(`Webhook configured: ${webhook.url} (UUID: ${uuid})`);
+      } catch (webhookError) {
+        console.error('Failed to configure webhook (non-fatal):', webhookError);
       }
-    );
-    console.log(`Webhook configured: ${webhook.url} (UUID: ${uuid})`);
+    }
 
     console.log('Syncing Stripe data...');
     stripeSync.syncBackfill()
