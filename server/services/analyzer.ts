@@ -1414,10 +1414,9 @@ IMPORTANT: Return ONLY this JSON array, nothing else:
     
     for (let retryAttempt = 0; retryAttempt < MAX_RETRIES; retryAttempt++) {
       try {
-        // Allocate sufficient tokens per ingredient to avoid truncation
-        // GPT-5.2 and Gemini 3 Pro both need generous token allocation for reliable JSON output
-        const tokensPerIngredient = (userLanguage === 'zh' || userLanguage === 'es') ? 800 : 700;
-        const maxTokens = Math.min(8192, Math.max(3500, missingIngredients.length * tokensPerIngredient));
+        // Allocate more tokens for non-English languages (need more space for detailed analysis)
+        const tokensPerIngredient = (userLanguage === 'zh' || userLanguage === 'es') ? 350 : 200;
+        const maxTokens = Math.min(3000, missingIngredients.length * tokensPerIngredient);
         console.log(`[PARALLEL-BATCH-${batchIdx}] Token allocation: ${maxTokens} tokens for ${missingIngredients.length} ingredients`);
         
         const response = await createChatCompletion([
@@ -1546,7 +1545,7 @@ IMPORTANT: Return ONLY this JSON array:
           const response = await createChatCompletion([
             { role: "system", content: systemMessage },
             { role: "user", content: singlePrompt }
-          ], { maxTokens: 2000, jsonMode: true });
+          ], { maxTokens: 500, jsonMode: true });
           
           const content = response.content;
           if (!content || content.trim().length === 0) {
