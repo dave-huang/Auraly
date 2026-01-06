@@ -241,26 +241,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const now = new Date();
       const nextRefreshDate = new Date(now.getFullYear(), now.getMonth() + 1, 1);
 
+      // Check if trial has expired - if so, treat as free user
+      let effectiveStatus = user.subscriptionStatus;
+      if (user.subscriptionStatus === 'trial' && user.trialEndsAt) {
+        const trialEnd = new Date(user.trialEndsAt);
+        if (trialEnd <= now) {
+          effectiveStatus = 'free';
+        }
+      }
+
       // Base response with user info
       const response: any = {
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
-        subscriptionStatus: user.subscriptionStatus,
+        subscriptionStatus: effectiveStatus,
         monthlyFreeScansUsed: user.monthlyFreeScansUsed || 0,
         scanPackBalance: user.scanPackBalance || 0,
         nextFreeScansRefresh: nextRefreshDate.toISOString(),
         createdAt: user.createdAt,
       };
 
-      // Add trial info if on trial
-      if (user.subscriptionStatus === 'trial') {
+      // Add trial info only if trial is still active
+      if (effectiveStatus === 'trial' && user.trialEndsAt) {
         response.trialEndsAt = user.trialEndsAt;
-        if (user.trialEndsAt) {
-          const trialEnd = new Date(user.trialEndsAt);
-          const daysRemaining = Math.max(0, Math.ceil((trialEnd.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)));
-          response.trialDaysRemaining = daysRemaining;
-        }
+        const trialEnd = new Date(user.trialEndsAt);
+        const daysRemaining = Math.max(0, Math.ceil((trialEnd.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)));
+        response.trialDaysRemaining = daysRemaining;
       }
 
       // Check if admin-granted premium
