@@ -896,3 +896,48 @@ export const ingredientCache = pgTable(
 
 export type IngredientCacheEntry = typeof ingredientCache.$inferSelect;
 export type InsertIngredientCacheEntry = typeof ingredientCache.$inferInsert;
+
+export const promoCodes = pgTable(
+  "promo_codes",
+  {
+    id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+    code: varchar("code").notNull().unique(),
+    scansGranted: integer("scans_granted").notNull().default(10),
+    maxRedemptions: integer("max_redemptions").notNull().default(100),
+    totalRedemptions: integer("total_redemptions").notNull().default(0),
+    expiresAt: timestamp("expires_at").notNull(),
+    isActive: boolean("is_active").notNull().default(true),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    index("IDX_promo_code").on(table.code),
+  ]
+);
+
+export type PromoCode = typeof promoCodes.$inferSelect;
+export type InsertPromoCode = typeof promoCodes.$inferInsert;
+
+export const insertPromoCodeSchema = z.object({
+  code: z.string().min(3).max(30).transform(v => v.toUpperCase().trim()),
+  scansGranted: z.number().int().min(1).max(100).default(10),
+  maxRedemptions: z.number().int().min(1).max(100000).default(100),
+  expiresAt: z.string().or(z.date()),
+});
+
+export type InsertPromoCodeInput = z.infer<typeof insertPromoCodeSchema>;
+
+export const promoRedemptions = pgTable(
+  "promo_redemptions",
+  {
+    id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+    promoCodeId: varchar("promo_code_id").notNull().references(() => promoCodes.id, { onDelete: "cascade" }),
+    userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+    redeemedAt: timestamp("redeemed_at").defaultNow().notNull(),
+  },
+  (table) => [
+    index("IDX_promo_redemption_user").on(table.userId),
+    index("IDX_promo_redemption_code").on(table.promoCodeId),
+  ]
+);
+
+export type PromoRedemption = typeof promoRedemptions.$inferSelect;

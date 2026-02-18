@@ -385,6 +385,15 @@
     "buyNow": "Comprar Ahora",
     "notNow": "Ahora No"
   },
+  "promo": {
+    "label": "¿Tienes un código promocional?",
+    "placeholder": "Ingresa el código",
+    "redeem": "Canjear",
+    "successTitle": "¡Código canjeado!",
+    "successDesc": "Se han añadido {{count}} escaneos a tu saldo.",
+    "errorTitle": "Código inválido",
+    "errorGeneric": "No se pudo canjear el código promocional"
+  },
   "welcome": {
     "title": "Bienvenido a Auraly",
     "welcomeIntro": "¡Bienvenido a Auraly! Escanea cualquier etiqueta de producto para entender qué contienen realmente tus alimentos y productos de cuidado personal.",

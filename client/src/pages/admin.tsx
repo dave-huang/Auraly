@@ -11,7 +11,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { 
   ArrowLeft, Users, Crown, Zap, TrendingUp, Search, 
   Loader2, AlertTriangle, RefreshCw, Trash2, Database,
-  BarChart3, FlaskConical, Beaker, Eye, EyeOff, ArrowUpDown, ArrowUp, ArrowDown
+  BarChart3, FlaskConical, Beaker, Eye, EyeOff, ArrowUpDown, ArrowUp, ArrowDown,
+  Tag, Plus, Power
 } from "lucide-react";
 import {
   Table,
@@ -96,6 +97,17 @@ interface IngredientCacheData {
   entries: CacheEntry[];
 }
 
+interface PromoCode {
+  id: string;
+  code: string;
+  scansGranted: number;
+  maxRedemptions: number;
+  totalRedemptions: number;
+  expiresAt: string;
+  isActive: boolean;
+  createdAt: string;
+}
+
 export default function AdminPage() {
   const [, navigate] = useLocation();
   const { user, isLoading: authLoading } = useAuth();
@@ -134,6 +146,58 @@ export default function AdminPage() {
   });
 
   const [cacheSearchQuery, setCacheSearchQuery] = useState("");
+  const [promoCode, setPromoCode] = useState("");
+  const [promoScans, setPromoScans] = useState(10);
+  const [promoMaxRedemptions, setPromoMaxRedemptions] = useState(100);
+  const [promoExpires, setPromoExpires] = useState("");
+
+  const { data: promoCodesData, isLoading: promoLoading } = useQuery<PromoCode[]>({
+    queryKey: ['/api/admin/promo-codes'],
+    enabled: isAdmin,
+  });
+
+  const createPromoMutation = useMutation({
+    mutationFn: async (data: { code: string; scansGranted: number; maxRedemptions: number; expiresAt: string }) => {
+      return apiRequest('POST', '/api/admin/promo-codes', data);
+    },
+    onSuccess: () => {
+      toast({ title: "Promo code created" });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/promo-codes'] });
+      setPromoCode("");
+      setPromoScans(10);
+      setPromoMaxRedemptions(100);
+      setPromoExpires("");
+    },
+    onError: (error: any) => {
+      toast({ title: "Failed to create promo code", description: error.message, variant: "destructive" });
+    }
+  });
+
+  const togglePromoMutation = useMutation({
+    mutationFn: async ({ id, isActive }: { id: string; isActive: boolean }) => {
+      return apiRequest('PATCH', `/api/admin/promo-codes/${id}`, { isActive });
+    },
+    onSuccess: () => {
+      toast({ title: "Promo code updated" });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/promo-codes'] });
+    },
+    onError: (error: any) => {
+      toast({ title: "Failed to update promo code", description: error.message, variant: "destructive" });
+    }
+  });
+
+  const deletePromoMutation = useMutation({
+    mutationFn: async (id: string) => {
+      return apiRequest('DELETE', `/api/admin/promo-codes/${id}`);
+    },
+    onSuccess: () => {
+      toast({ title: "Promo code deleted" });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/promo-codes'] });
+    },
+    onError: (error: any) => {
+      toast({ title: "Failed to delete promo code", description: error.message, variant: "destructive" });
+    }
+  });
 
   const grantScansMutation = useMutation({
     mutationFn: async ({ userId, amount }: { userId: string; amount: number }) => {
@@ -334,6 +398,7 @@ export default function AdminPage() {
             <TabsTrigger value="analytics" data-testid="tab-analytics">Analytics</TabsTrigger>
             <TabsTrigger value="cache" data-testid="tab-cache">Ingredients</TabsTrigger>
             <TabsTrigger value="system" data-testid="tab-system">System</TabsTrigger>
+            <TabsTrigger value="promo" data-testid="tab-promo">Promo Codes</TabsTrigger>
           </TabsList>
 
           <TabsContent value="users" className="space-y-4">
@@ -728,6 +793,182 @@ export default function AdminPage() {
                     Clear Cache
                   </Button>
                 </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="promo" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Tag className="w-5 h-5" />
+                  Create Promo Code
+                </CardTitle>
+                <CardDescription>Create a new promotional code for users</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+                  <div className="space-y-2">
+                    <Label htmlFor="promo-code">Code</Label>
+                    <Input
+                      id="promo-code"
+                      placeholder="e.g. WELCOME50"
+                      value={promoCode}
+                      onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                      data-testid="input-promo-code"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="promo-scans">Scans Granted</Label>
+                    <Input
+                      id="promo-scans"
+                      type="number"
+                      min={1}
+                      value={promoScans}
+                      onChange={(e) => setPromoScans(Number(e.target.value))}
+                      data-testid="input-promo-scans"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="promo-max-redemptions">Max Redemptions</Label>
+                    <Input
+                      id="promo-max-redemptions"
+                      type="number"
+                      min={1}
+                      value={promoMaxRedemptions}
+                      onChange={(e) => setPromoMaxRedemptions(Number(e.target.value))}
+                      data-testid="input-promo-max-redemptions"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="promo-expires">Expires</Label>
+                    <Input
+                      id="promo-expires"
+                      type="date"
+                      value={promoExpires}
+                      onChange={(e) => setPromoExpires(e.target.value)}
+                      data-testid="input-promo-expires"
+                    />
+                  </div>
+                  <Button
+                    className="gap-2"
+                    onClick={() => {
+                      if (!promoCode || !promoExpires) {
+                        toast({ title: "Please fill in code and expiration date", variant: "destructive" });
+                        return;
+                      }
+                      createPromoMutation.mutate({
+                        code: promoCode,
+                        scansGranted: promoScans,
+                        maxRedemptions: promoMaxRedemptions,
+                        expiresAt: promoExpires,
+                      });
+                    }}
+                    disabled={createPromoMutation.isPending}
+                    data-testid="button-create-promo"
+                  >
+                    {createPromoMutation.isPending ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Plus className="w-4 h-4" />
+                    )}
+                    Create
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Tag className="w-5 h-5" />
+                  Promo Codes
+                </CardTitle>
+                <CardDescription>
+                  Manage existing promo codes ({promoCodesData?.length ?? 0} total)
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {promoLoading ? (
+                  <div className="flex justify-center py-8">
+                    <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+                  </div>
+                ) : !promoCodesData || promoCodesData.length === 0 ? (
+                  <p className="text-center text-muted-foreground py-8" data-testid="text-no-promo-codes">No promo codes yet</p>
+                ) : (
+                  <div className="rounded-md border overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Code</TableHead>
+                          <TableHead className="text-right">Scans</TableHead>
+                          <TableHead className="text-right">Redeemed</TableHead>
+                          <TableHead>Expires</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead className="text-right">Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {promoCodesData.map((pc) => {
+                          const isExpired = new Date(pc.expiresAt) < new Date();
+                          const status = isExpired ? "expired" : pc.isActive ? "active" : "inactive";
+                          return (
+                            <TableRow key={pc.id} data-testid={`promo-row-${pc.id}`}>
+                              <TableCell className="font-mono font-medium" data-testid={`promo-code-${pc.id}`}>
+                                {pc.code}
+                              </TableCell>
+                              <TableCell className="text-right tabular-nums" data-testid={`promo-scans-${pc.id}`}>
+                                {pc.scansGranted}
+                              </TableCell>
+                              <TableCell className="text-right tabular-nums" data-testid={`promo-redeemed-${pc.id}`}>
+                                {pc.totalRedemptions}/{pc.maxRedemptions}
+                              </TableCell>
+                              <TableCell className="whitespace-nowrap text-muted-foreground" data-testid={`promo-expires-${pc.id}`}>
+                                {new Date(pc.expiresAt).toLocaleDateString()}
+                              </TableCell>
+                              <TableCell data-testid={`promo-status-${pc.id}`}>
+                                <Badge
+                                  variant={status === "active" ? "default" : "secondary"}
+                                  className={
+                                    status === "expired"
+                                      ? "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400"
+                                      : status === "inactive"
+                                      ? "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
+                                      : ""
+                                  }
+                                >
+                                  {status}
+                                </Badge>
+                              </TableCell>
+                              <TableCell className="text-right">
+                                <div className="flex items-center justify-end gap-1">
+                                  <Button
+                                    size="icon"
+                                    variant="ghost"
+                                    onClick={() => togglePromoMutation.mutate({ id: pc.id, isActive: !pc.isActive })}
+                                    disabled={togglePromoMutation.isPending}
+                                    data-testid={`button-toggle-promo-${pc.id}`}
+                                  >
+                                    <Power className={`w-4 h-4 ${pc.isActive ? 'text-green-600' : 'text-muted-foreground'}`} />
+                                  </Button>
+                                  <Button
+                                    size="icon"
+                                    variant="ghost"
+                                    onClick={() => deletePromoMutation.mutate(pc.id)}
+                                    disabled={deletePromoMutation.isPending}
+                                    data-testid={`button-delete-promo-${pc.id}`}
+                                  >
+                                    <Trash2 className="w-4 h-4 text-destructive" />
+                                  </Button>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                      </TableBody>
+                    </Table>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>

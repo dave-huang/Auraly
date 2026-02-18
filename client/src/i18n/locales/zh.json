@@ -385,6 +385,15 @@
     "buyNow": "立即购买",
     "notNow": "暂时不用"
   },
+  "promo": {
+    "label": "有促销码？",
+    "placeholder": "输入促销码",
+    "redeem": "兑换",
+    "successTitle": "促销码已兑换！",
+    "successDesc": "已添加 {{count}} 次扫描到您的余额。",
+    "errorTitle": "无效促销码",
+    "errorGeneric": "兑换促销码失败"
+  },
   "welcome": {
     "title": "欢迎来到 Auraly",
     "welcomeIntro": "欢迎来到 Auraly！扫描任何产品标签，了解您食品和个人护理产品中的真实成分。",

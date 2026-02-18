@@ -1,10 +1,14 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Loader2, Zap, Package } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Loader2, Zap, Package, Tag, Check } from 'lucide-react';
 import { usePurchaseScans, useLogPurchasePromptView } from '@/hooks/use-subscription';
 import { trackPurchasePromptView, trackPurchaseClick } from '@/lib/analytics';
+import { useMutation } from '@tanstack/react-query';
+import { apiRequest, queryClient } from '@/lib/queryClient';
+import { useToast } from '@/hooks/use-toast';
 
 interface ScanPurchaseModalProps {
   open: boolean;
@@ -14,19 +18,62 @@ interface ScanPurchaseModalProps {
 
 export function ScanPurchaseModal({ open, onClose, source = 'unknown' }: ScanPurchaseModalProps) {
   const { t } = useTranslation();
+  const { toast } = useToast();
   const purchaseScans = usePurchaseScans();
   const logPurchasePromptView = useLogPurchasePromptView();
+  const [promoCode, setPromoCode] = useState('');
+  const [promoSuccess, setPromoSuccess] = useState(false);
 
   useEffect(() => {
     if (open) {
       logPurchasePromptView.mutate(source);
       trackPurchasePromptView(source);
+      setPromoCode('');
+      setPromoSuccess(false);
     }
   }, [open, source]);
+
+  const redeemPromo = useMutation({
+    mutationFn: async (code: string) => {
+      const res = await apiRequest('POST', '/api/scan/redeem', { code });
+      return res.json();
+    },
+    onSuccess: (data) => {
+      setPromoSuccess(true);
+      queryClient.invalidateQueries({ queryKey: ['/api/scan/quota'] });
+      toast({
+        title: t('promo.successTitle', 'Promo Code Redeemed!'),
+        description: t('promo.successDesc', '{{count}} scans have been added to your balance.', { count: data.scansGranted }),
+      });
+      setTimeout(() => onClose(), 1500);
+    },
+    onError: async (error: any) => {
+      let message = t('promo.errorGeneric', 'Failed to redeem promo code');
+      try {
+        const raw = error?.message || '';
+        const jsonPart = raw.substring(raw.indexOf('{'));
+        if (jsonPart) {
+          const parsed = JSON.parse(jsonPart);
+          if (parsed.error) message = parsed.error;
+        }
+      } catch {}
+      toast({
+        title: t('promo.errorTitle', 'Invalid Code'),
+        description: message,
+        variant: 'destructive',
+      });
+    },
+  });
 
   const handleBuyNow = () => {
     trackPurchaseClick('scan_bundle_10');
     purchaseScans.mutate();
+  };
+
+  const handleRedeemPromo = () => {
+    if (promoCode.trim()) {
+      redeemPromo.mutate(promoCode.trim());
+    }
   };
 
   return (
@@ -88,6 +135,40 @@ export function ScanPurchaseModal({ open, onClose, source = 'unknown' }: ScanPur
             >
               {t('scanPurchase.notNow', 'Not Now')}
             </Button>
+          </div>
+
+          <div className="mt-4 pt-4 border-t border-border/40">
+            <div className="flex items-center gap-2 mb-2">
+              <Tag className="w-3.5 h-3.5 text-muted-foreground" />
+              <span className="text-xs font-medium text-muted-foreground">
+                {t('promo.label', 'Have a promo code?')}
+              </span>
+            </div>
+            <div className="flex gap-2">
+              <Input
+                value={promoCode}
+                onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                placeholder={t('promo.placeholder', 'Enter code')}
+                className="flex-1 uppercase"
+                disabled={redeemPromo.isPending || promoSuccess}
+                onKeyDown={(e) => e.key === 'Enter' && handleRedeemPromo()}
+                data-testid="input-promo-code"
+              />
+              <Button
+                variant="outline"
+                onClick={handleRedeemPromo}
+                disabled={!promoCode.trim() || redeemPromo.isPending || promoSuccess}
+                data-testid="button-redeem-promo"
+              >
+                {redeemPromo.isPending ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : promoSuccess ? (
+                  <Check className="w-4 h-4 text-green-500" />
+                ) : (
+                  t('promo.redeem', 'Redeem')
+                )}
+              </Button>
+            </div>
           </div>
         </div>
       </DialogContent>

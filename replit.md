@@ -46,6 +46,11 @@ Auraly is a mobile-friendly web application designed to help users understand th
     - `GET /api/admin/daily-usage` - Last 30 days of login and scan activity
     - `GET /api/admin/ingredient-cache` - Browse cached ingredient analyses (limited to 500 entries)
     - `POST /api/admin/grant-scans` - Grant purchased scans to a user
+    - `POST /api/scan/redeem` - Redeem a promo code for free scans
+    - `GET /api/admin/promo-codes` - List all promo codes
+    - `POST /api/admin/promo-codes` - Create a new promo code
+    - `PATCH /api/admin/promo-codes/:id` - Update promo code (isActive, maxRedemptions, expiresAt)
+    - `DELETE /api/admin/promo-codes/:id` - Delete a promo code
 - **Services**: `services/cache.ts`, `services/ocr.ts`, `services/geminiOcr.ts`, `services/googleVisionOcr.ts`, `services/analyzer.ts`, `services/subscription.ts`, `gemini.ts`, `openai.ts`.
 - **Feature Specifications**:
     - **Fast OCR with Fallback**: Gemini 2.5 Flash (primary, 2-5s) with Google Cloud Vision API as fallback.
@@ -67,6 +72,7 @@ Auraly is a mobile-friendly web application designed to help users understand th
     - **Performance & Reliability Overhaul**: Simplified OCR to Gemini 2.5 Flash, combined pipeline, and use of GPT-5.1 via direct OpenAI API for faster and more reliable processing.
     - **Account Management**: Account page (`/account`) showing scan balance, daily free scans, and purchased scan balance.
     - **Scan Quota System**: Daily free scan reset at midnight UTC, purchased scans never expire, free scans consumed first.
+    - **Promo Code System**: Admin-managed promotional codes that grant free scans. Codes normalized to uppercase, one redemption per user per code, atomic transaction for redemption (validates active/not expired/capacity/no prior redemption). Admin dashboard tab for creating/managing codes with expiration dates and max redemption limits. Users redeem codes in the Scan Purchase modal.
 
 ### Tech Stack
 - **Frontend**: React, TypeScript, Tailwind CSS, shadcn/ui, TanStack Query, Wouter

@@ -385,6 +385,15 @@
     "buyNow": "Buy Now",
     "notNow": "Not Now"
   },
+  "promo": {
+    "label": "Have a promo code?",
+    "placeholder": "Enter code",
+    "redeem": "Redeem",
+    "successTitle": "Promo Code Redeemed!",
+    "successDesc": "{{count}} scans have been added to your balance.",
+    "errorTitle": "Invalid Code",
+    "errorGeneric": "Failed to redeem promo code"
+  },
   "welcome": {
     "title": "Welcome to Auraly",
     "welcomeIntro": "Welcome to Auraly! Scan any product label to understand what's really in your food and personal care products.",
