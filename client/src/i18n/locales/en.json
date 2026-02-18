@@ -27,15 +27,15 @@
       "title": "Clarity for what you eat and use, every day.",
       "subtitle": "Auraly helps you understand ingredients in your food, skincare, and personal care products with AI-powered analysis in any language.",
       "cta": "Start Scanning",
-      "ctaTrial": "Try For Free",
+      "ctaFree": "Try For Free",
       "ctaSignIn": "Already have an account? Sign in",
       "guardian": "Your ingredient guardian",
-      "trialBadge": "7-Day Free Trial",
+      "trialBadge": "2 Free Scans Daily",
       "trust": {
         "noAccount": "No account needed",
         "instant": "Instant results",
         "noCreditCard": "No credit card required",
-        "unlimitedScans": "Unlimited scans for 7 days"
+        "freeDaily": "2 free scans every day"
       }
     },
     "howItWorks": {
@@ -361,77 +361,40 @@
     "email": "Email",
     "name": "Name",
     "memberSince": "Member since",
-    "subscription": "Subscription",
-    "subscriptionDescription": "Manage your plan and billing",
-    "trialEnds": "Trial ends",
-    "daysLeft": "days left",
-    "trialDescription": "Your trial includes unlimited scans. Subscribe to keep your premium access after the trial ends.",
-    "upgradeToPremium": "Upgrade to Auraly+",
-    "nextBilling": "Next billing date",
-    "accessUntil": "Access until",
-    "billingAmount": "Billing amount",
-    "paymentMethod": "Payment method",
-    "manageBilling": "Manage Billing",
-    "resubscribe": "Resubscribe",
-    "cancelled": "Cancelled",
-    "cancelledDescription": "Your subscription has been cancelled. You'll retain full access until the end of your billing period.",
-    "billingPortalError": "Could not open billing portal",
-    "freeScansUsed": "Free scans used",
-    "scansRefresh": "Scans refresh on",
-    "scanPackBalance": "Scan pack balance",
-    "adminGrantedDescription": "Your premium access has been granted by an administrator."
+    "scanBalance": "Scan Balance",
+    "scanBalanceDescription": "Your available scans and daily limits",
+    "dailyFreeScans": "Daily Free Scans",
+    "nextReset": "Free Scans Reset",
+    "resetTomorrow": "Tomorrow at midnight",
+    "purchasedScans": "Purchased Scans",
+    "totalAvailable": "Total Available",
+    "scans": "scans",
+    "buyMoreScans": "Buy More Scans"
   },
   "subscription": {
     "scanLeft": "scan left",
     "scansLeft": "scans left",
-    "premium": "Auraly+ Member",
-    "trialDays": "Trial: {{days}} days left",
-    "trialRemaining": "Premium Trial: {{days}} days remaining",
-    "freeScansRemaining": "free scans remaining",
-    "upgradeCta": "Upgrade to Auraly+"
+    "freeScansRemaining": "free scans remaining"
   },
-  "paywall": {
-    "titleOutOfScans": "You've used all your free scans",
-    "titleUpgrade": "Upgrade to Auraly+",
-    "descriptionOutOfScans": "Upgrade now to continue scanning or wait for your monthly refresh",
-    "description": "Choose the plan that works best for you",
-    "recommended": "Recommended",
-    "perMonth": "/month",
-    "plusName": "Auraly+",
-    "basicName": "Auraly Basic",
-    "free": "Free",
-    "plus": {
-      "scans": "Unlimited scans",
-      "personalization": "Personalized allergen and ingredient alerts",
-      "history": "Full scan history access",
-      "earlyAccess": "Early access to new features"
-    },
-    "unavailable": "Subscription unavailable",
-    "subscribe": "Upgrade to Auraly+",
-    "basic": {
-      "scans": "5 scans per month",
-      "analysis": "Basic ingredient analysis"
-    },
-    "stayBasic": "Stay on Basic",
-    "cancelAnytime": "Cancel anytime. No commitment required."
-  },
-  "premium": {
-    "historyTitle": "Scan History is a Premium Feature",
-    "historyDescription": "Upgrade to Auraly+ to access your complete scan history, review past analyses, and track products over time.",
-    "settingsTitle": "Personalization is a Premium Feature",
-    "settingsDescription": "Upgrade to Auraly+ to customize your risk sensitivity and allergen alerts, getting analysis results tailored just for you."
+  "scanPurchase": {
+    "title": "Out of Scans",
+    "description": "You get 2 free scans every day. Need more right now?",
+    "bundleName": "10 Scan Bundle",
+    "bundlePrice": "$2.99",
+    "neverExpire": "Purchased scans never expire",
+    "buyNow": "Buy Now",
+    "notNow": "Not Now"
   },
   "welcome": {
-    "title": "Welcome to Auraly+",
-    "welcomeIntro": "Welcome to Auraly! As a first-time member, you're getting a 7-day complimentary upgrade to Auraly+ with full access to all features.",
-    "trialDescription": "Your 7-day free trial has begun. Take a moment to explore what's in your products.",
-    "includedWith": "Included with Auraly+",
-    "benefitsHeading": "Auraly+ offers",
-    "benefit1": "Unlimited scans",
+    "title": "Welcome to Auraly",
+    "welcomeIntro": "Welcome to Auraly! Scan any product label to understand what's really in your food and personal care products.",
+    "trialDescription": "You get 2 free scans every day. Need more? Grab a 10-scan bundle anytime.",
+    "includedWith": "What you get",
+    "benefitsHeading": "Auraly includes",
+    "benefit1": "2 free scans daily",
     "benefit2": "Personalized sensitivity settings",
     "benefit3": "Full scan history and insights",
-    "afterTrial": "After your trial, the choice is yours: stay on Auraly+ for $4.99 per month, or continue with Auraly Basic and enjoy 5 free scans each month.",
-    "startMyTrial": "Start My Trial",
+    "moreScans": "Need more scans? Get a 10-scan bundle for just $2.99. Purchased scans never expire.",
     "startScanning": "Start Scanning",
     "getStarted": "Get Started"
   }

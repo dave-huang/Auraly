@@ -3,22 +3,18 @@ import { db } from "./db";
 import { eq, desc, and, sql } from "drizzle-orm";
 
 export interface IStorage {
-  // User operations
   getUser(id: string): Promise<User | undefined>;
   upsertUser(user: UpsertUser): Promise<User>;
   
-  // Risk preference operations
   getUserPreferences(userId: string): Promise<RiskPreferences>;
   updateUserPreferences(userId: string, preferences: Partial<RiskPreferences>): Promise<User | undefined>;
   completeOnboarding(userId: string, preferences: RiskPreferences): Promise<User | undefined>;
   isOnboardingCompleted(userId: string): Promise<boolean>;
   
-  // Allergen preference operations
   getUserAllergenPreferences(userId: string): Promise<AllergenPreferences>;
   updateUserAllergenPreferences(userId: string, preferences: Partial<AllergenPreferences>): Promise<User | undefined>;
   completeAllergenOnboarding(userId: string, allergenPreferences: AllergenPreferences): Promise<User | undefined>;
   
-  // Scan history operations
   createScanHistory(scan: InsertScanHistory): Promise<ScanHistory>;
   getScanHistory(userId: string, limit?: number, offset?: number): Promise<ScanHistory[]>;
   getScanHistoryCount(userId: string): Promise<number>;
@@ -35,11 +31,9 @@ export class DatabaseStorage implements IStorage {
   }
 
   async upsertUser(userData: UpsertUser): Promise<User> {
-    // Check if user exists
     const existingUser = await this.getUser(userData.id!);
     
     if (existingUser) {
-      // Update existing user (don't change trial/subscription info)
       const [user] = await db
         .update(users)
         .set({
@@ -54,24 +48,13 @@ export class DatabaseStorage implements IStorage {
       return user;
     }
     
-    // New user - set up 7-day trial
-    const trialStartedAt = new Date();
-    const trialEndsAt = new Date(trialStartedAt);
-    trialEndsAt.setDate(trialEndsAt.getDate() + 7);
-    
     const [user] = await db
       .insert(users)
-      .values({
-        ...userData,
-        subscriptionStatus: "trial",
-        trialStartedAt,
-        trialEndsAt,
-      })
+      .values(userData)
       .returning();
     return user;
   }
 
-  // Risk preference operations
   async getUserPreferences(userId: string): Promise<RiskPreferences> {
     const user = await this.getUser(userId);
     return (user?.riskPreferences as RiskPreferences) || defaultRiskPreferences;
@@ -113,7 +96,6 @@ export class DatabaseStorage implements IStorage {
     return user?.onboardingCompleted ?? false;
   }
 
-  // Allergen preference operations
   async getUserAllergenPreferences(userId: string): Promise<AllergenPreferences> {
     const user = await this.getUser(userId);
     return (user?.allergenPreferences as AllergenPreferences) || defaultAllergenPreferences;
@@ -149,7 +131,6 @@ export class DatabaseStorage implements IStorage {
     return user;
   }
 
-  // Scan history operations
   async createScanHistory(scanData: InsertScanHistory): Promise<ScanHistory> {
     const [scan] = await db
       .insert(scanHistory)

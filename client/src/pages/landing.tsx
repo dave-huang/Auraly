@@ -94,7 +94,7 @@ export default function Landing() {
                   data-testid="button-start-trial"
                 >
                   <Camera className="w-4 h-4" />
-                  {t('landing.hero.ctaTrial')}
+                  {t('landing.hero.ctaFree')}
                 </Button>
               )}
             </div>
@@ -207,7 +207,7 @@ export default function Landing() {
                     onClick={() => window.location.href = "/api/login"}
                     data-testid="button-try-free-how"
                   >
-                    {t('landing.hero.ctaTrial')}
+                    {t('landing.hero.ctaFree')}
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                 )}
@@ -319,7 +319,7 @@ export default function Landing() {
                 data-testid="button-start-trial-footer"
               >
                 <Camera className="w-4 h-4" />
-                {t('landing.hero.ctaTrial')}
+                {t('landing.hero.ctaFree')}
               </Button>
               
               {/* Trust signal */}

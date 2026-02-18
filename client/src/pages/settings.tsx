@@ -6,10 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Check, Settings, RefreshCw, Shield, AlertTriangle, UtensilsCrossed, Flower2, FlaskConical, Leaf, Crown, Lock, Loader2, Sliders } from "lucide-react";
+import { ArrowLeft, Check, Settings, RefreshCw, Shield, AlertTriangle, UtensilsCrossed, Flower2, FlaskConical, Leaf, Sliders } from "lucide-react";
 import { NavigationMenu } from "@/components/navigation-menu";
 import { apiRequest, queryClient } from "@/lib/queryClient";
-import { useSubscriptionStatus, useLogGatedContentTap, useCreateCheckout, useStripeProducts } from "@/hooks/use-subscription";
+
 import type { RiskPreferences, AllergenPreferences, PreferenceCategory, AllergenCategory, RiskTolerance } from "@shared/schema";
 import { defaultRiskPreferences, defaultAllergenPreferences, preferenceCategories, allergenCategories } from "@shared/schema";
 import { cn } from "@/lib/utils";
@@ -125,23 +125,6 @@ export default function SettingsPage() {
   const [hasAllergenChanges, setHasAllergenChanges] = useState(false);
   const [activeTab, setActiveTab] = useState<string>("risk");
 
-  const { data: subscriptionStatus, isLoading: loadingSubscription } = useSubscriptionStatus();
-  const logGatedContent = useLogGatedContentTap();
-  const createCheckout = useCreateCheckout();
-  const { data: productsData } = useStripeProducts();
-  const isPremium = subscriptionStatus?.isPremium || subscriptionStatus?.isTrialActive || false;
-
-  const handleUpgrade = () => {
-    logGatedContent.mutate('settings');
-    const subscriptionProduct = productsData?.products?.find((p: any) => p.metadata?.type === 'subscription');
-    const price = subscriptionProduct?.prices[0];
-    if (price) {
-      createCheckout.mutate({ priceId: price.id, mode: 'subscription' });
-    } else {
-      navigate('/upgrade');
-    }
-  };
-
   const { data: riskPrefsData, isLoading: isLoadingRisk } = useQuery<{ preferences: RiskPreferences; onboardingCompleted: boolean }>({
     queryKey: ['/api/user/preferences'],
     staleTime: 0,
@@ -241,102 +224,12 @@ export default function SettingsPage() {
     setHasAllergenChanges(true);
   };
 
-  const isLoading = isLoadingRisk || isLoadingAllergen || loadingSubscription;
+  const isLoading = isLoadingRisk || isLoadingAllergen;
 
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
-  if (!isPremium) {
-    return (
-      <div className="min-h-screen bg-background">
-        <header className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 z-50">
-          <div className="max-w-2xl mx-auto px-6 h-16 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Link href="/upload">
-                <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground" data-testid="button-back">
-                  <ArrowLeft className="w-4 h-4" />
-                  <span className="font-light hidden sm:inline">{t('common.back')}</span>
-                </Button>
-              </Link>
-            </div>
-            <div className="flex items-center gap-3">
-              <NavigationMenu showHomeLink />
-            </div>
-          </div>
-        </header>
-
-        <main className="max-w-2xl mx-auto px-6 py-8">
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/95 to-transparent z-10 pointer-events-none" style={{ top: '220px' }} />
-            
-            <div className="relative z-20 text-center py-16">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
-                <Lock className="w-8 h-8 text-primary" />
-              </div>
-              <h2 className="font-display text-2xl md:text-3xl mb-3">
-                {t('premium.settingsTitle', 'Personalization is a Premium Feature')}
-              </h2>
-              <p className="text-muted-foreground max-w-md mx-auto mb-8">
-                {t('premium.settingsDescription', 'Upgrade to Auraly+ to customize your risk sensitivity and allergen alerts, getting analysis results tailored just for you.')}
-              </p>
-              <Button 
-                size="lg" 
-                onClick={handleUpgrade}
-                disabled={createCheckout.isPending}
-                data-testid="button-upgrade-settings"
-                className="gap-2"
-              >
-                {createCheckout.isPending ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <Crown className="w-4 h-4" />
-                )}
-                {t('subscription.upgradeCta', 'Upgrade to Auraly+')}
-              </Button>
-            </div>
-
-            <div className="opacity-30 blur-sm pointer-events-none" aria-hidden="true">
-              <div className="space-y-4">
-                <Card className="p-4">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
-                      <Sliders className="w-5 h-5 text-muted-foreground" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="h-4 w-40 bg-muted rounded mb-2" />
-                      <div className="h-3 w-28 bg-muted/50 rounded" />
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <div className="h-8 w-20 bg-muted rounded-lg" />
-                    <div className="h-8 w-20 bg-amber-100 rounded-lg" />
-                    <div className="h-8 w-20 bg-rose-100 rounded-lg" />
-                  </div>
-                </Card>
-                <Card className="p-4">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
-                      <AlertTriangle className="w-5 h-5 text-muted-foreground" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="h-4 w-36 bg-muted rounded mb-2" />
-                      <div className="h-3 w-24 bg-muted/50 rounded" />
-                    </div>
-                  </div>
-                  <div className="flex gap-4">
-                    <div className="h-6 w-16 bg-emerald-100 rounded-full" />
-                    <div className="h-6 w-16 bg-muted rounded-full" />
-                  </div>
-                </Card>
-              </div>
-            </div>
-          </div>
-        </main>
       </div>
     );
   }

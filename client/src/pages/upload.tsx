@@ -7,7 +7,7 @@ import { ImageUploader } from "@/components/image-uploader";
 import { NavigationMenu } from "@/components/navigation-menu";
 import { PaywallModal } from "@/components/paywall-modal";
 import { ScanCounter } from "@/components/scan-counter";
-import { useSubscriptionStatus, getRemainingScans } from "@/hooks/use-subscription";
+import { useSubscriptionStatus } from "@/hooks/use-subscription";
 import type { ProductType } from "@shared/schema";
 import { useTranslation } from "react-i18next";
 
@@ -48,10 +48,9 @@ export default function UploadPage() {
       console.error('[UploadPage] Error saving pending analysis:', error);
     }
     
-    const remaining = getRemainingScans(subscriptionStatus);
-    if (remaining <= 0 && !subscriptionStatus?.isPremium) {
+    if (subscriptionStatus?.canScan === false) {
       setShowPaywall(true);
-      setUploaderKey(prev => prev + 1); // Reset ImageUploader to allow re-capture
+      setUploaderKey(prev => prev + 1);
       return;
     }
     
@@ -99,8 +98,7 @@ export default function UploadPage() {
       <PaywallModal 
         open={showPaywall} 
         onClose={() => setShowPaywall(false)} 
-        source="upload_page"
-        reason="out_of_scans"
+        source="upload"
       />
 
       {/* Main Content - Generous spacing */}

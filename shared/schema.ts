@@ -153,10 +153,6 @@ export const defaultRiskPreferences: RiskPreferences = {
   silicones: "no_preference",
 };
 
-// Subscription status enum
-export const subscriptionStatuses = ["free", "trial", "active", "cancelled", "past_due"] as const;
-export type SubscriptionStatus = typeof subscriptionStatuses[number];
-
 // Users table (REQUIRED for Replit Auth)
 export const users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
@@ -168,30 +164,15 @@ export const users = pgTable("users", {
   allergenPreferences: jsonb("allergen_preferences").$type<AllergenPreferences>().default(defaultAllergenPreferences),
   onboardingCompleted: boolean("onboarding_completed").default(false),
   
-  // Subscription fields
-  subscriptionStatus: varchar("subscription_status").$type<SubscriptionStatus>().default("trial"),
+  // Stripe customer ID (for scan bundle purchases)
   stripeCustomerId: varchar("stripe_customer_id"),
-  stripeSubscriptionId: varchar("stripe_subscription_id"),
-  subscriptionStartedAt: timestamp("subscription_started_at"),
-  subscriptionEndsAt: timestamp("subscription_ends_at"),
   
-  // Trial tracking
-  trialStartedAt: timestamp("trial_started_at"),
-  trialEndsAt: timestamp("trial_ends_at"),
+  // Daily free scan tracking (2 free scans per day, reset every 24h)
+  dailyFreeScansUsed: integer("daily_free_scans_used").default(0),
+  lastDailyReset: timestamp("last_daily_reset").defaultNow(),
   
-  // Admin-granted premium
-  isAdminGrantedPremium: boolean("is_admin_granted_premium").default(false),
-  adminGrantedBy: varchar("admin_granted_by"),
-  adminGrantedAt: timestamp("admin_granted_at"),
-  
-  // Scan quota tracking
-  monthlyFreeScansUsed: integer("monthly_free_scans_used").default(0),
-  lastFreeResetAt: timestamp("last_free_reset_at").defaultNow(),
-  scanPackBalance: integer("scan_pack_balance").default(0),
-  
-  // Rate limiting (hourly for premium users)
-  hourlyScansCount: integer("hourly_scans_count").default(0),
-  hourlyScansResetAt: timestamp("hourly_scans_reset_at").defaultNow(),
+  // Purchased scan balance (never expires)
+  purchasedScanBalance: integer("purchased_scan_balance").default(0),
   
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
@@ -200,30 +181,30 @@ export const users = pgTable("users", {
 export type User = typeof users.$inferSelect;
 export type UpsertUser = typeof users.$inferInsert;
 
-// Helper to check if trial is currently active
-export function isTrialActive(user: User | null | undefined): boolean {
-  if (!user) return false;
-  if (user.subscriptionStatus !== "trial") return false;
-  if (!user.trialEndsAt) return false;
-  return new Date() < new Date(user.trialEndsAt);
+const DAILY_FREE_SCANS = 2;
+
+export function getDailyFreeScansLimit(): number {
+  return DAILY_FREE_SCANS;
 }
 
-// Helper to get trial days remaining
-export function getTrialDaysRemaining(user: User | null | undefined): number {
-  if (!user || !user.trialEndsAt) return 0;
+export function needsDailyReset(user: User): boolean {
+  if (!user.lastDailyReset) return true;
+  const lastReset = new Date(user.lastDailyReset);
   const now = new Date();
-  const endsAt = new Date(user.trialEndsAt);
-  const diffMs = endsAt.getTime() - now.getTime();
-  return Math.max(0, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
+  return lastReset.toDateString() !== now.toDateString();
 }
 
-// Helper to check if user has premium access (subscription, admin-granted, or active trial)
-export function hasPremiumAccess(user: User | null | undefined): boolean {
-  if (!user) return false;
-  if (user.subscriptionStatus === "active") return true;
-  if (user.isAdminGrantedPremium === true) return true;
-  if (isTrialActive(user)) return true;
-  return false;
+export function getDailyFreeScansRemaining(user: User): number {
+  if (needsDailyReset(user)) return DAILY_FREE_SCANS;
+  return Math.max(0, DAILY_FREE_SCANS - (user.dailyFreeScansUsed || 0));
+}
+
+export function getTotalScansAvailable(user: User): number {
+  return getDailyFreeScansRemaining(user) + (user.purchasedScanBalance || 0);
+}
+
+export function canUserScan(user: User): boolean {
+  return getTotalScansAvailable(user) > 0;
 }
 
 // Scan usage logs table (for analytics)
@@ -233,7 +214,7 @@ export const scanUsageLogs = pgTable(
     id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
     userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
     action: varchar("action").notNull(), // 'scan_attempt', 'scan_success', 'scan_blocked', 'scan_error'
-    scanSource: varchar("scan_source"), // 'free', 'pack', 'premium'
+    scanSource: varchar("scan_source"), // 'free', 'purchased'
     productType: varchar("product_type"),
     metadata: jsonb("metadata"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -252,7 +233,7 @@ export const purchaseLogs = pgTable(
   {
     id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
     userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
-    purchaseType: varchar("purchase_type").notNull(), // 'subscription', 'scan_pack'
+    purchaseType: varchar("purchase_type").notNull(), // 'scan_bundle'
     amount: integer("amount").notNull(), // in cents
     currency: varchar("currency").default("usd"),
     scansAdded: integer("scans_added"), // for scan packs

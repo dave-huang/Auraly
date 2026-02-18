@@ -58,13 +58,17 @@ export const trackScan = (productType: string, success: boolean) => {
   trackEvent('scan_product', 'engagement', productType, success ? 1 : 0);
 };
 
-export const trackPaywallView = (source: string) => {
-  trackEvent('paywall_view', 'monetization', source);
+export const trackPurchasePromptView = (source: string) => {
+  trackEvent('purchase_prompt_view', 'monetization', source);
 };
 
-export const trackUpgradeClick = (plan: string) => {
-  trackEvent('upgrade_click', 'monetization', plan);
+export const trackPaywallView = trackPurchasePromptView;
+
+export const trackPurchaseClick = (plan: string) => {
+  trackEvent('purchase_click', 'monetization', plan);
 };
+
+export const trackUpgradeClick = trackPurchaseClick;
 
 export const trackLanguageChange = (language: string) => {
   trackEvent('language_change', 'settings', language);

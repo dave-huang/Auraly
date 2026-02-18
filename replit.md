@@ -3,6 +3,12 @@
 ## Overview
 Auraly is a mobile-friendly web application designed to help users understand the ingredients in their food, skincare, and personal care products. It allows users to scan or upload product labels in any language, using AI to extract and analyze ingredients, highlighting potential health risks with clear, user-friendly explanations. The project's vision is to empower users with knowledge about product compositions, fostering informed choices for better health and wellness.
 
+## Monetization Model
+- **Free tier**: 2 free scans per day (reset at midnight UTC) for all users
+- **Paid**: One-time purchase of 10-scan bundles for $2.99 via Stripe (scans never expire)
+- **Scan priority**: Free daily scans used first, then purchased scans
+- **All features available**: Multi-language support, personalized risk assessments, scan history, settings - only scan volume is limited
+
 ## User Preferences
 - Privacy-focused: Images not stored on server
 - Mobile-friendly: Optimized for on-the-go scanning
@@ -14,7 +20,7 @@ Auraly is a mobile-friendly web application designed to help users understand th
 
 ### Frontend (React + TypeScript)
 - **Pages**: Landing (`/`), Onboarding (`/onboarding`), Settings (`/settings`), Upload (`/upload`), Results (`/results`), History (`/history`), Account (`/account`). All fully internationalized.
-- **Components**: `ProductTypeSelector`, `ImageUploader` (mobile-first design with camera as primary CTA), `IngredientCard`, `RiskSummary`, `LanguageSwitcher`.
+- **Components**: `ProductTypeSelector`, `ImageUploader` (mobile-first design with camera as primary CTA), `IngredientCard`, `RiskSummary`, `LanguageSwitcher`, `ScanCounter`, `ScanPurchaseModal`.
 - **Internationalization**: i18next configured with `en`, `es`, `zh` locales. Language preference stored in localStorage.
 - **State Management**: TanStack Query for API calls (with 5-minute timeout), sessionStorage for pending analysis, localStorage for scan history and language preference.
 - **UI/UX Decisions**:
@@ -30,18 +36,17 @@ Auraly is a mobile-friendly web application designed to help users understand th
     - `GET /api/cache-stats`: Cache performance metrics.
     - `POST /api/ocr`: Extracts text using Gemini Flash.
     - `POST /api/analyze`: Analyzes ingredients with OpenAI GPT-5.1.
+    - `GET /api/scan/quota` - Returns current scan quota (dailyFreeScansUsed, purchasedScanBalance, totalScansAvailable)
+    - `POST /api/scan/purchase` - Creates Stripe checkout session for 10-scan bundle ($2.99)
     - `GET /api/user/allergen-preferences` - Fetch current preferences
     - `PATCH /api/user/allergen-preferences` - Update preferences
     - `POST /api/user/allergen-onboarding` - Complete allergen onboarding
     - `POST /api/admin/clear-cache` - **ADMIN ONLY** - Clears ingredient cache (use when AI prompts change)
-    - `GET /api/admin/dashboard` - Admin dashboard stats with test user filtering, includes `trialEndsAt` and `subscriptionEndsAt` for each user
+    - `GET /api/admin/dashboard` - Admin dashboard stats with test user filtering
     - `GET /api/admin/daily-usage` - Last 30 days of login and scan activity
-    - `GET /api/admin/subscription-funnel` - Subscription status distribution and conversion rates
     - `GET /api/admin/ingredient-cache` - Browse cached ingredient analyses (limited to 500 entries)
-    - `POST /api/admin/grant-trial` - Grant or extend free trial period for a user until a specified date
-    - `GET /api/account/subscription` - Returns subscription details, billing info, payment method
-    - `POST /api/account/billing-portal` - Creates Stripe Customer Portal session for payment management
-- **Services**: `services/cache.ts`, `services/ocr.ts`, `services/geminiOcr.ts`, `services/googleVisionOcr.ts`, `services/analyzer.ts`, `gemini.ts`, `openai.ts`.
+    - `POST /api/admin/grant-scans` - Grant purchased scans to a user
+- **Services**: `services/cache.ts`, `services/ocr.ts`, `services/geminiOcr.ts`, `services/googleVisionOcr.ts`, `services/analyzer.ts`, `services/subscription.ts`, `gemini.ts`, `openai.ts`.
 - **Feature Specifications**:
     - **Fast OCR with Fallback**: Gemini 2.5 Flash (primary, 2-5s) with Google Cloud Vision API as fallback.
     - **Combined Scan & Analyze Pipeline**: `/api/scan-and-analyze` endpoint for sequential OCR and AI analysis in a single request.
@@ -60,13 +65,14 @@ Auraly is a mobile-friendly web application designed to help users understand th
     - **Mobile Background Resilience**: Automatically resumes polling and re-acquires Wake Lock when the app returns from the background.
     - **Backend Ingredient Caching**: `/api/analyze-ingredients` endpoint with intelligent, category-specific caching (stored in PostgreSQL `ingredient_cache` table for persistence across deployments) and 12-month auto-refresh.
     - **Performance & Reliability Overhaul**: Simplified OCR to Gemini 2.5 Flash, combined pipeline, and use of GPT-5.1 via direct OpenAI API for faster and more reliable processing.
-    - **Account Management**: Account page (`/account`) showing subscription status, billing info, and payment methods. Integrates Stripe Customer Portal for secure payment management.
+    - **Account Management**: Account page (`/account`) showing scan balance, daily free scans, and purchased scan balance.
+    - **Scan Quota System**: Daily free scan reset at midnight UTC, purchased scans never expire, free scans consumed first.
 
 ### Tech Stack
 - **Frontend**: React, TypeScript, Tailwind CSS, shadcn/ui, TanStack Query, Wouter
 - **Backend**: Node.js, Express, TypeScript
 - **Storage**:
-    - **PostgreSQL Database**: User profiles with risk preferences (`riskPreferences` JSONB, `onboardingCompleted` boolean), `allergenPreferences` JSONB. Also stores the ingredient analysis cache in `ingredient_cache` table for persistence across deployments.
+    - **PostgreSQL Database**: User profiles with `dailyFreeScansUsed`, `lastDailyReset`, `purchasedScanBalance` fields for scan quota tracking. Also `riskPreferences` JSONB, `onboardingCompleted` boolean, `allergenPreferences` JSONB. Ingredient analysis cache in `ingredient_cache` table.
     - Client-side: localStorage for scan history and language preference.
 
 ## External Dependencies
@@ -74,6 +80,7 @@ Auraly is a mobile-friendly web application designed to help users understand th
     - **Gemini 2.5 Flash** (via Replit AI Integrations) - Primary OCR.
     - **OpenAI GPT-5.2** (via direct OpenAI API) - Primary ingredient analysis with consumer-protective risk thresholds.
     - **Google Cloud Vision API** - Optional OCR fallback.
+- **Payments**: Stripe (one-time payments for scan bundles)
 - **Internationalization**: i18next, react-i18next.
 - **Analytics**: Google Analytics 4 (GA4) via gtag.js with custom event tracking.
 - **Deployment**: Replit (hosting platform).
@@ -89,8 +96,7 @@ Auraly is a mobile-friendly web application designed to help users understand th
 | Event Name | Trigger Location | Parameters |
 |------------|------------------|------------|
 | `scan_product` | Results page (scan success) | `product_type`, `success` |
-| `paywall_view` | Paywall modal opens | - |
-| `upgrade_click` | Upgrade button clicked | `plan_type` |
+| `scan_purchase` | Scan purchase modal | `bundle_size` |
 | `language_change` | Language switcher | `from_language`, `to_language` |
 | `onboarding_complete` | Onboarding finish/skip | - |
 
@@ -103,7 +109,7 @@ Auraly is a mobile-friendly web application designed to help users understand th
 ### Stripe Customer Sync Errors
 **Issue**: The `stripe-replit-sync` package maintains a read-only `stripe.customers` table that may contain stale customer IDs (customers deleted from Stripe but still in the local table). This causes "No such customer" errors during sync.
 
-**Workaround Implemented**: The `/api/subscription/checkout` endpoint bypasses all cached customer data by:
+**Workaround Implemented**: The `/api/scan/purchase` endpoint bypasses all cached customer data by:
 1. Searching Stripe directly using userId metadata
 2. Fallback search by email if no customer found by userId
 3. Updating legacy customers with userId metadata if found by email

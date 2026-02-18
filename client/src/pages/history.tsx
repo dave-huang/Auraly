@@ -15,7 +15,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { ArrowLeft, Trash2, Clock, AlertTriangle, Loader2, Package, UtensilsCrossed, Sparkles, Settings, Leaf, Search, X, Crown, Lock, History } from "lucide-react";
+import { ArrowLeft, Trash2, Clock, AlertTriangle, Loader2, Package, UtensilsCrossed, Sparkles, Settings, Leaf, Search, X, History } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { NavigationMenu } from "@/components/navigation-menu";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -23,7 +23,6 @@ import { apiRequest } from "@/lib/queryClient";
 import { useTranslation } from "react-i18next";
 import { useToast } from "@/hooks/use-toast";
 import { applyRiskPreferencesToIngredients, hasActivePreferences } from "@/lib/riskAdjustment";
-import { useSubscriptionStatus, useLogGatedContentTap, useCreateCheckout, useStripeProducts } from "@/hooks/use-subscription";
 import type { ScanHistory, Ingredient, RiskLevel, RiskPreferences, User } from "@shared/schema";
 
 const riskConfig = {
@@ -78,27 +77,9 @@ export default function HistoryPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const limit = 20;
 
-  const { data: subscriptionStatus, isLoading: loadingSubscription } = useSubscriptionStatus();
-  const logGatedContent = useLogGatedContentTap();
-  const createCheckout = useCreateCheckout();
-  const { data: productsData } = useStripeProducts();
-  // Premium access includes both active subscriptions and active trials
-  const isPremium = (subscriptionStatus?.isPremium || subscriptionStatus?.isTrialActive) ?? false;
-
   const { data: user } = useQuery<User>({
     queryKey: ['/api/auth/user'],
   });
-
-  const handleUpgrade = () => {
-    logGatedContent.mutate('history');
-    const subscriptionProduct = productsData?.products?.find(p => p.metadata?.type === 'subscription');
-    const price = subscriptionProduct?.prices[0];
-    if (price) {
-      createCheckout.mutate({ priceId: price.id, mode: 'subscription' });
-    } else {
-      setLocation('/upgrade');
-    }
-  };
 
   const userPreferences = user?.riskPreferences as RiskPreferences | undefined;
   const showPersonalizedBanner = userPreferences && hasActivePreferences(userPreferences);
@@ -242,82 +223,6 @@ export default function HistoryPage() {
             <p className="text-muted-foreground">{t('errors.generic')}</p>
           </Card>
         </div>
-      </div>
-    );
-  }
-
-  if (!loadingSubscription && !isPremium) {
-    return (
-      <div className="min-h-screen bg-background">
-        <header className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 z-50">
-          <div className="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Link href="/">
-                <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground" data-testid="button-back">
-                  <ArrowLeft className="w-4 h-4" />
-                  <span className="font-light hidden sm:inline">{t('common.back')}</span>
-                </Button>
-              </Link>
-            </div>
-            <div className="flex items-center gap-3">
-              <NavigationMenu showHomeLink />
-            </div>
-          </div>
-        </header>
-
-        <main className="max-w-3xl mx-auto px-6 py-8">
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/95 to-transparent z-10 pointer-events-none" style={{ top: '200px' }} />
-            
-            <div className="relative z-20 text-center py-16">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
-                <Lock className="w-8 h-8 text-primary" />
-              </div>
-              <h2 className="font-display text-2xl md:text-3xl mb-3">{t('premium.historyTitle', 'Scan History is a Premium Feature')}</h2>
-              <p className="text-muted-foreground max-w-md mx-auto mb-8">
-                {t('premium.historyDescription', 'Upgrade to Auraly+ to access your complete scan history, review past analyses, and track products over time.')}
-              </p>
-              <Button 
-                size="lg" 
-                onClick={handleUpgrade}
-                disabled={createCheckout.isPending}
-                data-testid="button-upgrade-history"
-                className="gap-2"
-              >
-                {createCheckout.isPending ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <Crown className="w-4 h-4" />
-                )}
-                {t('subscription.upgradeCta', 'Upgrade to Auraly+')}
-              </Button>
-            </div>
-
-            <div className="opacity-30 blur-sm pointer-events-none" aria-hidden="true">
-              <div className="space-y-3">
-                {[1, 2, 3].map((i) => (
-                  <Card key={i} className="p-4">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-lg bg-muted" />
-                      <div className="flex-1">
-                        <div className="h-4 w-32 bg-muted rounded mb-2" />
-                        <div className="h-3 w-24 bg-muted/50 rounded mb-3" />
-                        <div className="flex gap-2">
-                          <div className="h-5 w-16 bg-emerald-100 rounded" />
-                          <div className="h-5 w-16 bg-amber-100 rounded" />
-                        </div>
-                      </div>
-                      <Badge variant="secondary" className="bg-muted">
-                        <History className="w-3 h-3 mr-1" />
-                        <span>2 days ago</span>
-                      </Badge>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </div>
-        </main>
       </div>
     );
   }

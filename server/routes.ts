@@ -20,12 +20,17 @@ import {
   scanHistory,
   scanUsageLogs,
   sessions,
+  purchaseLogs,
   type ProductType,
   type AnalysisResult,
   type InsertScanHistory,
   type Ingredient,
   productTypes,
-  productCategories
+  productCategories,
+  getDailyFreeScansRemaining,
+  getTotalScansAvailable,
+  canUserScan,
+  getDailyFreeScansLimit,
 } from "@shared/schema";
 import { getUncachableStripeClient } from "./stripeClient";
 
@@ -227,8 +232,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // ACCOUNT MANAGEMENT ENDPOINTS
   // ==========================================
 
-  // GET /api/account/subscription - Get full subscription details
-  app.get('/api/account/subscription', isAuthenticated, async (req: any, res) => {
+  // GET /api/account/scan-balance - Get scan balance and account details
+  app.get('/api/account/scan-balance', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
       const user = await storage.getUser(userId);
@@ -237,243 +242,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "User not found" });
       }
 
-      // Calculate next free scan refresh date (1st of next month)
-      const now = new Date();
-      const nextRefreshDate = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+      const quota = await subscriptionService.getUserQuotaStatus(userId);
 
-      // Check if trial has expired - if so, treat as free user
-      let effectiveStatus = user.subscriptionStatus;
-      if (user.subscriptionStatus === 'trial' && user.trialEndsAt) {
-        const trialEnd = new Date(user.trialEndsAt);
-        if (trialEnd <= now) {
-          effectiveStatus = 'free';
-        }
-      }
-
-      // Base response with user info
-      const response: any = {
+      res.json({
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
-        subscriptionStatus: effectiveStatus,
-        monthlyFreeScansUsed: user.monthlyFreeScansUsed || 0,
-        scanPackBalance: user.scanPackBalance || 0,
-        nextFreeScansRefresh: nextRefreshDate.toISOString(),
         createdAt: user.createdAt,
-      };
-
-      // Add trial info only if trial is still active
-      if (effectiveStatus === 'trial' && user.trialEndsAt) {
-        response.trialEndsAt = user.trialEndsAt;
-        const trialEnd = new Date(user.trialEndsAt);
-        const daysRemaining = Math.max(0, Math.ceil((trialEnd.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)));
-        response.trialDaysRemaining = daysRemaining;
-      }
-
-      // Check if admin-granted premium
-      if (user.isAdminGrantedPremium) {
-        response.isAdminGrantedPremium = true;
-      }
-
-      // Fetch Stripe billing info if customer exists (regardless of subscription status)
-      if (user.stripeCustomerId) {
-        response.subscriptionEndsAt = user.subscriptionEndsAt;
-        
-        try {
-          const stripe = await getUncachableStripeClient();
-          
-          // Get payment methods for the customer
-          const paymentMethods = await stripe.paymentMethods.list({
-            customer: user.stripeCustomerId,
-            type: 'card',
-            limit: 1,
-          });
-          
-          if (paymentMethods.data && paymentMethods.data.length > 0) {
-            const pm = paymentMethods.data[0];
-            if (pm.card) {
-              response.paymentMethod = {
-                brand: pm.card.brand || 'card',
-                last4: pm.card.last4 || '****',
-                expMonth: pm.card.exp_month,
-                expYear: pm.card.exp_year,
-              };
-            }
-          }
-
-          // Get subscription details for next billing date (only for paying subscribers, not admin-granted)
-          if (!user.isAdminGrantedPremium && user.subscriptionStatus === 'active') {
-            // Fetch subscription directly by ID for freshest data (avoid list caching)
-            let subscription: any = null;
-            
-            if (user.stripeSubscriptionId) {
-              try {
-                subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId);
-                console.log(`[BILLING] Retrieved subscription ${user.stripeSubscriptionId} directly, status: ${subscription.status}, cancel_at_period_end: ${subscription.cancel_at_period_end}`);
-              } catch (e: any) {
-                console.log(`[BILLING] Could not retrieve subscription ${user.stripeSubscriptionId}: ${e.message}`);
-              }
-            }
-            
-            // Fallback to list if direct retrieval fails
-            if (!subscription) {
-              const subscriptions = await stripe.subscriptions.list({
-                customer: user.stripeCustomerId,
-                status: 'active',
-                limit: 1,
-              });
-              console.log(`[BILLING] Fallback: Found ${subscriptions.data.length} active subscriptions for customer ${user.stripeCustomerId}`);
-              subscription = subscriptions.data[0];
-            }
-            
-            if (subscription) {
-              console.log(`[BILLING] Full subscription data: id=${subscription.id}, status=${subscription.status}, cancel_at_period_end=${subscription.cancel_at_period_end}, canceled_at=${subscription.canceled_at}, cancel_at=${subscription.cancel_at}`);
-              
-              // Check if subscription is cancelled but still active until period end
-              // In newer Stripe API versions, cancel_at (timestamp) is set instead of cancel_at_period_end=true
-              const isScheduledToCancel = subscription.cancel_at_period_end || subscription.cancel_at;
-              if (isScheduledToCancel) {
-                response.cancelAtPeriodEnd = true;
-                response.canceledAt = subscription.canceled_at ? new Date(subscription.canceled_at * 1000).toISOString() : null;
-              }
-              
-              // Calculate next billing date (or access end date if cancelled) from billing_cycle_anchor
-              // The billing_cycle_anchor is the date of the first payment
-              if (subscription.billing_cycle_anchor) {
-                const anchorTimestamp = subscription.billing_cycle_anchor;
-                const anchorDate = new Date(anchorTimestamp * 1000);
-                const now = new Date();
-                
-                // Get the interval from price data
-                const priceData = subscription.items?.data?.[0]?.price;
-                const interval = priceData?.recurring?.interval || 'month';
-                
-                // Calculate next billing date by adding intervals until we're past now
-                let nextBillingDate = new Date(anchorDate);
-                while (nextBillingDate <= now) {
-                  if (interval === 'year') {
-                    nextBillingDate.setFullYear(nextBillingDate.getFullYear() + 1);
-                  } else {
-                    nextBillingDate.setMonth(nextBillingDate.getMonth() + 1);
-                  }
-                }
-                
-                // If cancelled, this becomes the access end date rather than next billing date
-                if (isScheduledToCancel) {
-                  // Use cancel_at timestamp if available (more accurate), otherwise use calculated date
-                  if (subscription.cancel_at) {
-                    response.accessUntil = new Date(subscription.cancel_at * 1000).toISOString();
-                  } else {
-                    response.accessUntil = nextBillingDate.toISOString();
-                  }
-                  console.log(`[BILLING] Subscription cancelled - access until: ${response.accessUntil}`);
-                } else {
-                  response.nextBillingDate = nextBillingDate.toISOString();
-                  console.log(`[BILLING] Calculated next billing date: ${response.nextBillingDate}`);
-                }
-                
-                // Set price info
-                if (priceData) {
-                  response.billingAmount = priceData.unit_amount || null;
-                  response.billingCurrency = priceData.currency || 'usd';
-                  response.billingInterval = interval;
-                }
-              }
-              
-              console.log(`[BILLING] Response: nextBillingDate=${response.nextBillingDate}, accessUntil=${response.accessUntil}, cancelAtPeriodEnd=${response.cancelAtPeriodEnd}`);
-            } else {
-              console.log(`[BILLING] No active subscriptions found for customer ${user.stripeCustomerId}`);
-            }
-          }
-        } catch (stripeError: any) {
-          console.error('Error fetching Stripe details:', stripeError);
-        }
-      }
-
-      res.json(response);
+        dailyFreeScansUsed: quota.dailyFreeScansUsed,
+        dailyFreeScansLimit: quota.dailyFreeScansLimit,
+        dailyFreeScansRemaining: quota.dailyFreeScansRemaining,
+        purchasedScanBalance: quota.purchasedScanBalance,
+        totalScansAvailable: quota.totalScansAvailable,
+        nextDailyReset: quota.nextDailyReset,
+      });
     } catch (error: any) {
-      console.error("Error fetching subscription:", error);
-      res.status(500).json({ message: "Failed to fetch subscription details" });
-    }
-  });
-
-  // POST /api/account/billing-portal - Create Stripe Customer Portal session
-  app.post('/api/account/billing-portal', isAuthenticated, async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
-      
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
-      }
-
-      const stripe = await getUncachableStripeClient();
-      let customerId = user.stripeCustomerId;
-      
-      // If no customer ID stored, try to find one by userId metadata
-      if (!customerId) {
-        const existingCustomers = await stripe.customers.search({
-          query: `metadata['userId']:'${userId}'`,
-        });
-        if (existingCustomers.data.length > 0) {
-          customerId = existingCustomers.data[0].id;
-          // Update user record with found customer ID
-          await db.update(users)
-            .set({ stripeCustomerId: customerId })
-            .where(eq(users.id, userId));
-        }
-      }
-      
-      if (!customerId) {
-        return res.status(400).json({ message: "No billing account found. You may need to subscribe first." });
-      }
-
-      // Determine return URL
-      const returnUrl = req.body.returnUrl || `${req.protocol}://${req.get('host')}/account`;
-      
-      try {
-        const session = await stripe.billingPortal.sessions.create({
-          customer: customerId,
-          return_url: returnUrl,
-        });
-        res.json({ url: session.url });
-      } catch (stripeError: any) {
-        // Handle stale/deleted customer ID
-        if (stripeError.code === 'resource_missing') {
-          console.log(`[BILLING] Stale customer ID ${customerId} - searching for valid customer`);
-          
-          // Try to find customer by userId metadata
-          const searchResults = await stripe.customers.search({
-            query: `metadata['userId']:'${userId}'`,
-          });
-          
-          if (searchResults.data.length > 0) {
-            const validCustomer = searchResults.data[0];
-            // Update user with valid customer ID
-            await db.update(users)
-              .set({ stripeCustomerId: validCustomer.id })
-              .where(eq(users.id, userId));
-            
-            // Retry portal creation with valid customer
-            const session = await stripe.billingPortal.sessions.create({
-              customer: validCustomer.id,
-              return_url: returnUrl,
-            });
-            return res.json({ url: session.url });
-          }
-          
-          // No valid customer found - clear the stale ID
-          await db.update(users)
-            .set({ stripeCustomerId: null })
-            .where(eq(users.id, userId));
-          
-          return res.status(400).json({ message: "Billing account not found. Please contact support." });
-        }
-        throw stripeError;
-      }
-    } catch (error: any) {
-      console.error("Error creating billing portal session:", error);
-      res.status(500).json({ message: "Failed to create billing portal session" });
+      console.error("Error fetching scan balance:", error);
+      res.status(500).json({ message: "Failed to fetch scan balance" });
     }
   });
 
@@ -1010,16 +795,15 @@ Sent from Auraly Feedback System
   });
 
   // ==========================================
-  // SUBSCRIPTION & BILLING ENDPOINTS
+  // SCAN PURCHASE & BILLING ENDPOINTS
   // ==========================================
-
-  const { subscriptionService } = await import('./services/subscription');
-  const { getUncachableStripeClient, getStripePublishableKey } = await import('./stripeClient');
-  const { sql: sqlDrizzle } = await import('drizzle-orm');
 
   app.get('/api/stripe/publishable-key', async (_req, res) => {
     try {
-      const publishableKey = await getStripePublishableKey();
+      const publishableKey = process.env.STRIPE_LIVE_PUBLISHABLE_KEY || process.env.STRIPE_PUBLISHABLE_KEY;
+      if (!publishableKey) {
+        return res.status(500).json({ error: 'Stripe publishable key not configured' });
+      }
       res.json({ publishableKey });
     } catch (error: any) {
       console.error('Error getting publishable key:', error);
@@ -1027,78 +811,20 @@ Sent from Auraly Feedback System
     }
   });
 
-  app.get('/api/subscription/status', isAuthenticated, async (req: any, res) => {
+  app.get('/api/scan/quota', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
       const status = await subscriptionService.getUserQuotaStatus(userId);
       res.json(status);
     } catch (error: any) {
-      console.error('Error fetching subscription status:', error);
-      res.status(500).json({ error: 'Failed to fetch subscription status' });
+      console.error('Error fetching scan quota:', error);
+      res.status(500).json({ error: 'Failed to fetch scan quota' });
     }
   });
 
-  app.get('/api/subscription/products', async (_req, res) => {
-    try {
-      // Filter by livemode to ensure production uses live Stripe products and dev uses test products
-      const isProduction = process.env.REPLIT_DEPLOYMENT === '1';
-      
-      const result = await db.execute(
-        sqlDrizzle`
-          SELECT 
-            p.id as product_id,
-            p.name as product_name,
-            p.description as product_description,
-            p.metadata as product_metadata,
-            pr.id as price_id,
-            pr.unit_amount,
-            pr.currency,
-            pr.recurring,
-            pr.metadata as price_metadata
-          FROM stripe.products p
-          LEFT JOIN stripe.prices pr ON pr.product = p.id AND pr.active = true AND pr.livemode = ${isProduction}
-          WHERE p.active = true AND p.livemode = ${isProduction}
-          ORDER BY p.name, pr.unit_amount
-        `
-      );
-
-      const productsMap = new Map();
-      for (const row of result.rows as any[]) {
-        if (!productsMap.has(row.product_id)) {
-          productsMap.set(row.product_id, {
-            id: row.product_id,
-            name: row.product_name,
-            description: row.product_description,
-            metadata: row.product_metadata,
-            prices: []
-          });
-        }
-        if (row.price_id) {
-          productsMap.get(row.product_id).prices.push({
-            id: row.price_id,
-            unitAmount: row.unit_amount,
-            currency: row.currency,
-            recurring: row.recurring,
-            metadata: row.price_metadata,
-          });
-        }
-      }
-
-      res.json({ products: Array.from(productsMap.values()) });
-    } catch (error: any) {
-      console.error('Error fetching products:', error);
-      res.status(500).json({ error: 'Failed to fetch products' });
-    }
-  });
-
-  app.post('/api/subscription/checkout', isAuthenticated, async (req: any, res) => {
+  app.post('/api/scan/purchase', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
-      const { priceId, mode } = req.body;
-
-      if (!priceId) {
-        return res.status(400).json({ error: 'priceId is required' });
-      }
 
       const stripe = await getUncachableStripeClient();
       const user = await storage.getUser(userId);
@@ -1106,18 +832,14 @@ Sent from Auraly Feedback System
         return res.status(404).json({ error: 'User not found' });
       }
 
-      // ALWAYS search Stripe directly for a valid customer
-      // This bypasses any stale cached data in users.stripeCustomerId or stripe.customers table
       let customerId: string | null = null;
       let needsMetadataUpdate = false;
       
-      // Step 1: Search for existing customer by userId metadata
       const existingByUserId = await stripe.customers.search({
         query: `metadata['userId']:'${userId}'`,
         limit: 10,
       });
       
-      // Find a non-deleted customer
       for (const customer of existingByUserId.data) {
         if (!customer.deleted) {
           customerId = customer.id;
@@ -1126,7 +848,6 @@ Sent from Auraly Feedback System
         }
       }
       
-      // Step 2: If not found by userId, search by email as fallback
       if (!customerId && user.email) {
         const existingByEmail = await stripe.customers.search({
           query: `email:'${user.email}'`,
@@ -1136,13 +857,12 @@ Sent from Auraly Feedback System
         for (const customer of existingByEmail.data) {
           if (!customer.deleted) {
             customerId = customer.id;
-            needsMetadataUpdate = true; // Add userId metadata to this customer
+            needsMetadataUpdate = true;
             console.log(`[CHECKOUT] Found existing Stripe customer ${customerId} for user ${userId} (by email fallback)`);
             break;
           }
         }
         
-        // Update customer with userId metadata if found by email
         if (customerId && needsMetadataUpdate) {
           await stripe.customers.update(customerId, {
             metadata: { userId },
@@ -1151,7 +871,6 @@ Sent from Auraly Feedback System
         }
       }
       
-      // Step 3: Create new customer only if none found, with idempotency key
       if (!customerId) {
         const customer = await stripe.customers.create(
           {
@@ -1166,29 +885,38 @@ Sent from Auraly Feedback System
         console.log(`[CHECKOUT] Created new Stripe customer ${customerId} for user ${userId}`);
       }
       
-      // Update users table with the valid customer ID
       if (user.stripeCustomerId !== customerId) {
         await db.update(users)
           .set({ stripeCustomerId: customerId, updatedAt: new Date() })
           .where(eq(users.id, userId));
       }
 
-      // Redirect to /results after successful payment - this resumes pending analysis from sessionStorage
-      const successUrl = `${req.protocol}://${req.get('host')}/results?payment=success`;
+      const successUrl = `${req.protocol}://${req.get('host')}/upload?payment=success`;
       const cancelUrl = `${req.protocol}://${req.get('host')}/upload`;
 
-      const sessionConfig: any = {
+      const session = await stripe.checkout.sessions.create({
         customer: customerId,
         payment_method_types: ['card'],
-        line_items: [{ price: priceId, quantity: 1 }],
-        mode: mode || 'subscription',
+        line_items: [{
+          price_data: {
+            unit_amount: 299,
+            currency: 'usd',
+            product_data: {
+              name: '10 Scan Bundle',
+            },
+          },
+          quantity: 1,
+        }],
+        mode: 'payment',
         success_url: successUrl,
         cancel_url: cancelUrl,
-      };
+        metadata: {
+          userId,
+          scansToAdd: '10',
+        },
+      });
 
-      const session = await stripe.checkout.sessions.create(sessionConfig);
-
-      await subscriptionService.logUpgradeClick(userId, 'auraly_plus');
+      await subscriptionService.logPurchaseClick(userId, 'scan_bundle_10');
 
       res.json({ url: session.url });
     } catch (error: any) {
@@ -1197,50 +925,14 @@ Sent from Auraly Feedback System
     }
   });
 
-  app.post('/api/subscription/portal', isAuthenticated, async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
-
-      if (!user?.stripeCustomerId) {
-        return res.status(400).json({ error: 'No active subscription' });
-      }
-
-      const stripe = await getUncachableStripeClient();
-      const returnUrl = `${req.protocol}://${req.get('host')}/settings`;
-
-      const session = await stripe.billingPortal.sessions.create({
-        customer: user.stripeCustomerId,
-        return_url: returnUrl,
-      });
-
-      res.json({ url: session.url });
-    } catch (error: any) {
-      console.error('Error creating portal session:', error);
-      res.status(500).json({ error: 'Failed to create portal session' });
-    }
-  });
-
-  app.post('/api/analytics/paywall-view', async (req: any, res) => {
+  app.post('/api/analytics/purchase-prompt-view', async (req: any, res) => {
     try {
       const userId = req.user?.claims?.sub || null;
       const { source } = req.body;
-      await subscriptionService.logPaywallView(userId, source || 'unknown');
+      await subscriptionService.logPurchasePromptView(userId, source || 'unknown');
       res.json({ success: true });
     } catch (error: any) {
-      console.error('Error logging paywall view:', error);
-      res.status(500).json({ error: 'Failed to log event' });
-    }
-  });
-
-  app.post('/api/analytics/gated-content', isAuthenticated, async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-      const { contentType } = req.body;
-      await subscriptionService.logGatedContentTap(userId, contentType || 'unknown');
-      res.json({ success: true });
-    } catch (error: any) {
-      console.error('Error logging gated content tap:', error);
+      console.error('Error logging purchase prompt view:', error);
       res.status(500).json({ error: 'Failed to log event' });
     }
   });
@@ -1298,9 +990,7 @@ Sent from Auraly Feedback System
       const realUsers = allUsers.filter(u => !isTestUser(u.email));
       
       const totalUsers = realUsers.length;
-      const premiumUsers = realUsers.filter(u => u.subscriptionStatus === 'active').length;
-      const trialUsers = realUsers.filter(u => u.subscriptionStatus === 'trial').length;
-      const freeUsers = realUsers.filter(u => u.subscriptionStatus === 'free' || !u.subscriptionStatus).length;
+      const totalPurchasedScansBalance = realUsers.reduce((sum, u) => sum + (u.purchasedScanBalance || 0), 0);
       
       // Get scan history for time-based stats
       const now = new Date();
@@ -1345,12 +1035,9 @@ Sent from Auraly Feedback System
             replitId: u.id,
             email: u.email || '',
             name: `${u.firstName || ''} ${u.lastName || ''}`.trim() || 'Unknown',
-            subscriptionStatus: u.subscriptionStatus,
-            scanPackBalance: u.scanPackBalance || 0,
-            monthlyFreeScansUsed: u.monthlyFreeScansUsed || 0,
+            dailyFreeScansUsed: u.dailyFreeScansUsed || 0,
+            purchasedScanBalance: u.purchasedScanBalance || 0,
             createdAt: u.createdAt?.toString() || '',
-            trialEndsAt: u.trialEndsAt?.toString() || null,
-            subscriptionEndsAt: u.subscriptionEndsAt?.toString() || null,
             scansToday: scanCounts.today,
             scansThisWeek: scanCounts.week,
             scansThisMonth: scanCounts.month,
@@ -1362,9 +1049,7 @@ Sent from Auraly Feedback System
       res.json({
         stats: {
           totalUsers,
-          premiumUsers,
-          trialUsers,
-          freeUsers,
+          totalPurchasedScansBalance,
           totalScansToday: scansToday,
           totalScansThisWeek: scansThisWeek,
           totalScansThisMonth: scansThisMonth,
@@ -1436,66 +1121,6 @@ Sent from Auraly Feedback System
     }
   });
   
-  // Subscription funnel stats
-  app.get('/api/admin/subscription-funnel', isAuthenticated, isAdmin, async (req: any, res) => {
-    try {
-      const allUsers = await db.select().from(users);
-      const realUsers = allUsers.filter(u => !isTestUser(u.email));
-      
-      // Count by subscription status
-      const statusCounts = {
-        free: 0,
-        trial: 0,
-        active: 0,
-        cancelled: 0,
-        past_due: 0,
-      };
-      
-      // Trial status breakdown
-      let trialActive = 0;
-      let trialExpired = 0;
-      
-      for (const user of realUsers) {
-        const status = user.subscriptionStatus || 'free';
-        if (status in statusCounts) {
-          statusCounts[status as keyof typeof statusCounts]++;
-        }
-        
-        // Check trial expiration
-        if (status === 'trial') {
-          if (user.trialEndsAt && new Date(user.trialEndsAt) > new Date()) {
-            trialActive++;
-          } else {
-            trialExpired++;
-          }
-        }
-      }
-      
-      // Calculate conversion rates
-      const totalUsers = realUsers.length;
-      const conversionToTrial = totalUsers > 0 ? ((statusCounts.trial + statusCounts.active) / totalUsers * 100).toFixed(1) : '0';
-      const conversionToPaid = (statusCounts.trial + statusCounts.free) > 0 
-        ? (statusCounts.active / (statusCounts.trial + statusCounts.free + statusCounts.active) * 100).toFixed(1) 
-        : '0';
-      
-      res.json({
-        statusCounts,
-        trialBreakdown: {
-          active: trialActive,
-          expired: trialExpired,
-        },
-        conversionRates: {
-          toTrial: conversionToTrial + '%',
-          toPaid: conversionToPaid + '%',
-        },
-        totalUsers,
-      });
-    } catch (error: any) {
-      console.error('Subscription funnel error:', error);
-      res.status(500).json({ error: 'Failed to load subscription funnel' });
-    }
-  });
-  
   // Ingredient cache viewer
   app.get('/api/admin/ingredient-cache', isAuthenticated, isAdmin, async (req: any, res) => {
     try {
@@ -1514,53 +1139,6 @@ Sent from Auraly Feedback System
     }
   });
 
-  app.post('/api/admin/grant-subscription', isAuthenticated, isAdmin, async (req: any, res) => {
-    try {
-      const { userId } = req.body;
-      if (!userId) {
-        return res.status(400).json({ error: 'User ID required' });
-      }
-
-      const user = await storage.getUser(userId);
-      if (!user) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-
-      await db.update(users)
-        .set({ 
-          subscriptionStatus: 'active',
-          subscriptionStartedAt: new Date(),
-        })
-        .where(eq(users.id, userId));
-
-      res.json({ success: true });
-    } catch (error: any) {
-      console.error('Grant subscription error:', error);
-      res.status(500).json({ error: 'Failed to grant subscription' });
-    }
-  });
-
-  app.post('/api/admin/revoke-subscription', isAuthenticated, isAdmin, async (req: any, res) => {
-    try {
-      const { userId } = req.body;
-      if (!userId) {
-        return res.status(400).json({ error: 'User ID required' });
-      }
-
-      await db.update(users)
-        .set({ 
-          subscriptionStatus: 'free',
-          subscriptionEndsAt: new Date(),
-        })
-        .where(eq(users.id, userId));
-
-      res.json({ success: true });
-    } catch (error: any) {
-      console.error('Revoke subscription error:', error);
-      res.status(500).json({ error: 'Failed to revoke subscription' });
-    }
-  });
-
   app.post('/api/admin/grant-scans', isAuthenticated, isAdmin, async (req: any, res) => {
     try {
       const { userId, amount } = req.body;
@@ -1573,58 +1151,15 @@ Sent from Auraly Feedback System
         return res.status(404).json({ error: 'User not found' });
       }
 
-      const newBalance = (user.scanPackBalance || 0) + amount;
+      const newBalance = (user.purchasedScanBalance || 0) + amount;
       await db.update(users)
-        .set({ scanPackBalance: newBalance })
+        .set({ purchasedScanBalance: newBalance })
         .where(eq(users.id, userId));
 
       res.json({ success: true, newBalance });
     } catch (error: any) {
       console.error('Grant scans error:', error);
       res.status(500).json({ error: 'Failed to grant scans' });
-    }
-  });
-
-  // Grant or extend trial period (admin only)
-  app.post('/api/admin/grant-trial', isAuthenticated, isAdmin, async (req: any, res) => {
-    try {
-      const { userId, trialEndsAt } = req.body;
-      if (!userId || !trialEndsAt) {
-        return res.status(400).json({ error: 'User ID or email and trial end date required' });
-      }
-
-      // Support both user ID and email lookup
-      let user = await storage.getUser(userId);
-      if (!user && userId.includes('@')) {
-        // Try looking up by email
-        const userByEmail = await db.select().from(users).where(eq(users.email, userId)).limit(1);
-        user = userByEmail[0] || null;
-      }
-      if (!user) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-
-      const trialEndDate = new Date(trialEndsAt);
-      if (isNaN(trialEndDate.getTime())) {
-        return res.status(400).json({ error: 'Invalid date format' });
-      }
-
-      if (trialEndDate <= new Date()) {
-        return res.status(400).json({ error: 'Trial end date must be in the future' });
-      }
-
-      await db.update(users)
-        .set({ 
-          subscriptionStatus: 'trial',
-          trialEndsAt: trialEndDate,
-        })
-        .where(eq(users.id, user.id));
-
-      console.log(`[ADMIN] Trial granted to user ${user.id} (${user.email}) until ${trialEndDate.toISOString()}`);
-      res.json({ success: true, trialEndsAt: trialEndDate.toISOString() });
-    } catch (error: any) {
-      console.error('Grant trial error:', error);
-      res.status(500).json({ error: 'Failed to grant trial' });
     }
   });
 

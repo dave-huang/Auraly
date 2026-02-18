@@ -15,7 +15,6 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useTranslation } from "react-i18next";
 import { applyRiskPreferences, hasActivePreferences } from "@/lib/riskAdjustment";
-import { useSubscriptionStatus } from "@/hooks/use-subscription";
 import { trackScan } from "@/lib/analytics";
 
 // Helper function for direct polling fallback
@@ -85,9 +84,6 @@ export default function ResultsPage() {
     staleTime: 60000
   });
 
-  const { data: subscriptionStatus } = useSubscriptionStatus();
-  const hasPremiumAccess = subscriptionStatus?.isPremium || subscriptionStatus?.isTrialActive || false;
-
   const userLanguage = useMemo(() => {
     if (i18n.language.startsWith('zh')) return 'zh';
     if (i18n.language.startsWith('es')) return 'es';
@@ -97,18 +93,13 @@ export default function ResultsPage() {
   const displayResult = useMemo(() => {
     if (!analysisResult) return null;
     
-    // Only apply personalization for Premium/Trial users
-    if (!hasPremiumAccess) {
-      return analysisResult;
-    }
-    
     const preferences = preferencesQuery.data?.preferences;
     if (!preferences || !hasActivePreferences(preferences)) {
       return analysisResult;
     }
     
     return applyRiskPreferences(analysisResult, preferences, userLanguage);
-  }, [analysisResult, preferencesQuery.data, userLanguage, hasPremiumAccess]);
+  }, [analysisResult, preferencesQuery.data, userLanguage]);
 
   // Auto-retry mutation with Service Worker polling for mobile background support
   const analyzeMutation = useMutation({
@@ -224,7 +215,7 @@ export default function ResultsPage() {
             setSavedScanId(result.scanId);
             console.log('[HISTORY] Scan saved to history with ID:', result.scanId);
             // Invalidate subscription status to refresh scan counter immediately
-            queryClient.invalidateQueries({ queryKey: ['/api/subscription/status'] });
+            queryClient.invalidateQueries({ queryKey: ['/api/scan/quota'] });
           }
         } catch (error) {
           console.error('[HISTORY] Failed to save scan to history:', error);
@@ -415,9 +406,7 @@ export default function ResultsPage() {
     high: displayResult?.ingredients.filter(i => i.riskLevel === "high").length || 0,
   };
   
-  // Only show personalization features for Premium/Trial users
-  const hasPreferences = hasPremiumAccess && 
-    preferencesQuery.data?.preferences && 
+  const hasPreferences = preferencesQuery.data?.preferences && 
     hasActivePreferences(preferencesQuery.data.preferences);
 
   if (analyzeMutation.isPending) {
@@ -611,8 +600,8 @@ export default function ResultsPage() {
           totalIngredients={displayResult.ingredients.length}
         />
 
-        {/* Allergen Flags - Premium/Trial only */}
-        {hasPremiumAccess && <AllergenFlags ingredients={displayResult.ingredients} />}
+        {/* Allergen Flags */}
+        <AllergenFlags ingredients={displayResult.ingredients} />
 
         {/* Search Bar */}
         <div className="relative mb-6">

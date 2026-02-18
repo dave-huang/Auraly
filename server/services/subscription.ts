@@ -1,21 +1,18 @@
 import { db } from '../db';
-import { users, scanUsageLogs, analyticsEvents, hasPremiumAccess, isTrialActive, getTrialDaysRemaining, type User } from '@shared/schema';
+import { users, scanUsageLogs, analyticsEvents, getDailyFreeScansLimit, needsDailyReset, getDailyFreeScansRemaining, type User } from '@shared/schema';
 import { eq, sql } from 'drizzle-orm';
 
-const FREE_SCANS_PER_MONTH = 5;
-const PREMIUM_HOURLY_RATE_LIMIT = 20;
+const DAILY_FREE_SCANS = getDailyFreeScansLimit();
 
 export interface ScanQuotaStatus {
   canScan: boolean;
-  reason?: 'no_scans' | 'rate_limited' | 'not_authenticated' | 'trial_expired';
-  isPremium: boolean;
-  isTrialActive: boolean;
-  trialDaysRemaining: number;
-  freeScansUsed: number;
-  freeScansLimit: number;
-  nextResetDate?: Date;
-  hourlyScansRemaining?: number;
-  subscriptionStatus: string;
+  reason?: 'no_scans' | 'not_authenticated';
+  dailyFreeScansUsed: number;
+  dailyFreeScansLimit: number;
+  dailyFreeScansRemaining: number;
+  purchasedScanBalance: number;
+  totalScansAvailable: number;
+  nextDailyReset: string;
 }
 
 export class SubscriptionService {
@@ -26,120 +23,54 @@ export class SubscriptionService {
       return {
         canScan: false,
         reason: 'not_authenticated',
-        isPremium: false,
-        isTrialActive: false,
-        trialDaysRemaining: 0,
-        freeScansUsed: 0,
-        freeScansLimit: FREE_SCANS_PER_MONTH,
-        subscriptionStatus: 'free',
+        dailyFreeScansUsed: 0,
+        dailyFreeScansLimit: DAILY_FREE_SCANS,
+        dailyFreeScansRemaining: DAILY_FREE_SCANS,
+        purchasedScanBalance: 0,
+        totalScansAvailable: 0,
+        nextDailyReset: this.getNextDailyReset(),
       };
     }
 
-    // Check and handle expired trial
-    await this.maybeExpireTrial(user);
-    await this.maybeResetMonthlyScans(user);
-    await this.maybeResetHourlyRate(user);
-
+    await this.maybeResetDailyScans(user);
     const [refreshedUser] = await db.select().from(users).where(eq(users.id, userId));
-    const isPremium = hasPremiumAccess(refreshedUser);
-    const trialActive = isTrialActive(refreshedUser);
-    const trialDaysRemaining = getTrialDaysRemaining(refreshedUser);
 
-    if (isPremium) {
-      const hourlyScansRemaining = PREMIUM_HOURLY_RATE_LIMIT - (refreshedUser.hourlyScansCount || 0);
-      return {
-        canScan: hourlyScansRemaining > 0,
-        reason: hourlyScansRemaining <= 0 ? 'rate_limited' : undefined,
-        isPremium: true,
-        isTrialActive: trialActive,
-        trialDaysRemaining,
-        freeScansUsed: 0,
-        freeScansLimit: 0,
-        hourlyScansRemaining,
-        subscriptionStatus: refreshedUser.subscriptionStatus || 'free',
-      };
-    }
-
-    // Free user (trial expired or never had one)
-    const freeScansUsed = refreshedUser.monthlyFreeScansUsed || 0;
-    const hasFreeScansRemaining = freeScansUsed < FREE_SCANS_PER_MONTH;
-
-    const nextMonth = new Date();
-    nextMonth.setMonth(nextMonth.getMonth() + 1);
-    nextMonth.setDate(1);
-    nextMonth.setHours(0, 0, 0, 0);
+    const dailyFreeRemaining = getDailyFreeScansRemaining(refreshedUser);
+    const purchasedBalance = refreshedUser.purchasedScanBalance || 0;
+    const totalAvailable = dailyFreeRemaining + purchasedBalance;
 
     return {
-      canScan: hasFreeScansRemaining,
-      reason: !hasFreeScansRemaining ? 'no_scans' : undefined,
-      isPremium: false,
-      isTrialActive: false,
-      trialDaysRemaining: 0,
-      freeScansUsed,
-      freeScansLimit: FREE_SCANS_PER_MONTH,
-      nextResetDate: nextMonth,
-      subscriptionStatus: refreshedUser.subscriptionStatus || 'free',
+      canScan: totalAvailable > 0,
+      reason: totalAvailable <= 0 ? 'no_scans' : undefined,
+      dailyFreeScansUsed: refreshedUser.dailyFreeScansUsed || 0,
+      dailyFreeScansLimit: DAILY_FREE_SCANS,
+      dailyFreeScansRemaining: dailyFreeRemaining,
+      purchasedScanBalance: purchasedBalance,
+      totalScansAvailable: totalAvailable,
+      nextDailyReset: this.getNextDailyReset(),
     };
   }
 
-  private async maybeExpireTrial(user: User): Promise<void> {
-    if (user.subscriptionStatus !== 'trial') return;
-    if (!user.trialEndsAt) return;
-    
-    const now = new Date();
-    const trialEndsAt = new Date(user.trialEndsAt);
-    
-    if (now >= trialEndsAt) {
-      await db.update(users)
-        .set({
-          subscriptionStatus: 'free',
-          updatedAt: now,
-        })
-        .where(eq(users.id, user.id));
-      
-      await db.insert(analyticsEvents).values({
-        userId: user.id,
-        eventType: 'trial_expired',
-        eventData: { trialEndedAt: trialEndsAt.toISOString() },
-      });
-    }
+  private getNextDailyReset(): string {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+    return tomorrow.toISOString();
   }
 
-  private async maybeResetMonthlyScans(user: User): Promise<void> {
-    const lastReset = user.lastFreeResetAt || new Date(0);
-    const now = new Date();
-    
-    const lastResetMonth = lastReset.getMonth() + lastReset.getFullYear() * 12;
-    const currentMonth = now.getMonth() + now.getFullYear() * 12;
-    
-    if (currentMonth > lastResetMonth) {
+  private async maybeResetDailyScans(user: User): Promise<void> {
+    if (needsDailyReset(user)) {
       await db.update(users)
         .set({
-          monthlyFreeScansUsed: 0,
-          lastFreeResetAt: now,
-          updatedAt: now,
+          dailyFreeScansUsed: 0,
+          lastDailyReset: new Date(),
+          updatedAt: new Date(),
         })
         .where(eq(users.id, user.id));
     }
   }
 
-  private async maybeResetHourlyRate(user: User): Promise<void> {
-    const lastReset = user.hourlyScansResetAt || new Date(0);
-    const now = new Date();
-    const hourAgo = new Date(now.getTime() - 60 * 60 * 1000);
-    
-    if (lastReset < hourAgo) {
-      await db.update(users)
-        .set({
-          hourlyScansCount: 0,
-          hourlyScansResetAt: now,
-          updatedAt: now,
-        })
-        .where(eq(users.id, user.id));
-    }
-  }
-
-  async consumeScan(userId: string, productType?: string): Promise<{ success: boolean; source: 'free' | 'premium' }> {
+  async consumeScan(userId: string, productType?: string): Promise<{ success: boolean; source: 'free' | 'purchased' }> {
     const quotaStatus = await this.getUserQuotaStatus(userId);
     
     if (!quotaStatus.canScan) {
@@ -152,24 +83,24 @@ export class SubscriptionService {
       throw new Error(quotaStatus.reason || 'Cannot scan');
     }
 
-    let source: 'free' | 'premium' = 'free';
+    let source: 'free' | 'purchased' = 'free';
 
-    if (quotaStatus.isPremium) {
+    if (quotaStatus.dailyFreeScansRemaining > 0) {
       await db.update(users)
         .set({
-          hourlyScansCount: sql`${users.hourlyScansCount} + 1`,
-          updatedAt: new Date(),
-        })
-        .where(eq(users.id, userId));
-      source = 'premium';
-    } else {
-      await db.update(users)
-        .set({
-          monthlyFreeScansUsed: sql`${users.monthlyFreeScansUsed} + 1`,
+          dailyFreeScansUsed: sql`${users.dailyFreeScansUsed} + 1`,
           updatedAt: new Date(),
         })
         .where(eq(users.id, userId));
       source = 'free';
+    } else {
+      await db.update(users)
+        .set({
+          purchasedScanBalance: sql`${users.purchasedScanBalance} - 1`,
+          updatedAt: new Date(),
+        })
+        .where(eq(users.id, userId));
+      source = 'purchased';
     }
 
     await db.insert(scanUsageLogs).values({
@@ -183,35 +114,19 @@ export class SubscriptionService {
     return { success: true, source };
   }
 
-  async logPaywallView(userId: string | null, source: string): Promise<void> {
+  async logPurchasePromptView(userId: string | null, source: string): Promise<void> {
     await db.insert(analyticsEvents).values({
       userId,
-      eventType: 'paywall_view',
+      eventType: 'purchase_prompt_view',
       eventData: { source },
     });
   }
 
-  async logUpgradeClick(userId: string | null, option: string): Promise<void> {
+  async logPurchaseClick(userId: string | null, option: string): Promise<void> {
     await db.insert(analyticsEvents).values({
       userId,
-      eventType: 'upgrade_click',
+      eventType: 'purchase_click',
       eventData: { option },
-    });
-  }
-
-  async logGatedContentTap(userId: string, contentType: string): Promise<void> {
-    await db.insert(analyticsEvents).values({
-      userId,
-      eventType: 'gated_content_tap',
-      eventData: { contentType },
-    });
-  }
-
-  async logTrialStarted(userId: string): Promise<void> {
-    await db.insert(analyticsEvents).values({
-      userId,
-      eventType: 'trial_started',
-      eventData: {},
     });
   }
 }

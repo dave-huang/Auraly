@@ -27,15 +27,15 @@
       "title": "了解您每天吃的和用的产品成分",
       "subtitle": "Auraly 帮助您通过AI智能分析，理解食品、护肤品和个人护理产品中的成分，支持任何语言。",
       "cta": "开始扫描",
-      "ctaTrial": "免费试用",
+      "ctaFree": "免费开始",
       "ctaSignIn": "已有账户？立即登录",
       "guardian": "您的成分守护者",
-      "trialBadge": "7天免费试用",
+      "trialBadge": "每日2次免费扫描",
       "trust": {
         "noAccount": "无需账户",
         "instant": "即时结果",
         "noCreditCard": "无需信用卡",
-        "unlimitedScans": "7天内无限扫描"
+        "freeDaily": "每天2次免费扫描"
       }
     },
     "howItWorks": {
@@ -361,77 +361,40 @@
     "email": "邮箱",
     "name": "姓名",
     "memberSince": "注册时间",
-    "subscription": "订阅",
-    "subscriptionDescription": "管理您的计划和账单",
-    "trialEnds": "试用期结束",
-    "daysLeft": "天剩余",
-    "trialDescription": "试用期内可无限扫描。订阅以在试用期结束后继续使用高级功能。",
-    "upgradeToPremium": "升级到 Auraly+",
-    "nextBilling": "下次扣款日期",
-    "accessUntil": "访问有效期至",
-    "billingAmount": "扣款金额",
-    "paymentMethod": "付款方式",
-    "manageBilling": "管理账单",
-    "resubscribe": "重新订阅",
-    "cancelled": "已取消",
-    "cancelledDescription": "您的订阅已取消。在当前计费周期结束前，您仍可继续使用全部功能。",
-    "billingPortalError": "无法打开账单门户",
-    "freeScansUsed": "已用免费扫描次数",
-    "scansRefresh": "扫描次数刷新日期",
-    "scanPackBalance": "扫描包余额",
-    "adminGrantedDescription": "您的高级会员权限由管理员授予。"
+    "scanBalance": "扫描余额",
+    "scanBalanceDescription": "您的可用扫描次数和每日限额",
+    "dailyFreeScans": "每日免费扫描",
+    "nextReset": "免费扫描重置",
+    "resetTomorrow": "明天午夜重置",
+    "purchasedScans": "已购扫描",
+    "totalAvailable": "总可用",
+    "scans": "次扫描",
+    "buyMoreScans": "购买更多扫描"
   },
   "subscription": {
     "scanLeft": "次扫描剩余",
     "scansLeft": "次扫描剩余",
-    "premium": "Auraly+ 会员",
-    "trialDays": "试用期：剩余 {{days}} 天",
-    "trialRemaining": "高级试用：剩余 {{days}} 天",
-    "freeScansRemaining": "次免费扫描剩余",
-    "upgradeCta": "升级到 Auraly+"
+    "freeScansRemaining": "次免费扫描剩余"
   },
-  "paywall": {
-    "titleOutOfScans": "您已用完所有免费扫描次数",
-    "titleUpgrade": "升级到 Auraly+",
-    "descriptionOutOfScans": "立即升级以继续扫描，或等待每月额度刷新",
-    "description": "选择最适合您的计划",
-    "recommended": "推荐",
-    "perMonth": "/月",
-    "plusName": "Auraly+",
-    "basicName": "Auraly 基础版",
-    "free": "免费",
-    "plus": {
-      "scans": "无限扫描",
-      "personalization": "个性化过敏原和成分提醒",
-      "history": "完整扫描历史访问",
-      "earlyAccess": "抢先体验新功能"
-    },
-    "unavailable": "订阅暂不可用",
-    "subscribe": "升级到 Auraly+",
-    "basic": {
-      "scans": "每月 5 次扫描",
-      "analysis": "基础成分分析"
-    },
-    "stayBasic": "继续使用基础版",
-    "cancelAnytime": "随时取消，无需承诺。"
-  },
-  "premium": {
-    "historyTitle": "扫描历史是高级功能",
-    "historyDescription": "升级到 Auraly+ 以访问完整扫描历史、查看过往分析并追踪产品。",
-    "settingsTitle": "个性化设置是高级功能",
-    "settingsDescription": "升级到 Auraly+ 以自定义您的风险敏感度和过敏原警报，获得专属于您的分析结果。"
+  "scanPurchase": {
+    "title": "扫描次数已用完",
+    "description": "您每天可获得 2 次免费扫描。现在需要更多吗？",
+    "bundleName": "10 次扫描包",
+    "bundlePrice": "$2.99",
+    "neverExpire": "购买的扫描次数永不过期",
+    "buyNow": "立即购买",
+    "notNow": "暂时不用"
   },
   "welcome": {
-    "title": "欢迎来到 Auraly+",
-    "welcomeIntro": "欢迎来到 Auraly！作为新会员，您将免费获得 7 天 Auraly+ 升级，完整体验所有功能。",
-    "trialDescription": "您的 7 天免费试用已开始。花点时间探索您产品中的成分吧。",
-    "includedWith": "Auraly+ 包含",
-    "benefitsHeading": "Auraly+ 提供",
-    "benefit1": "无限扫描",
+    "title": "欢迎来到 Auraly",
+    "welcomeIntro": "欢迎来到 Auraly！扫描任何产品标签，了解您食品和个人护理产品中的真实成分。",
+    "trialDescription": "您每天可获得 2 次免费扫描。需要更多？随时购买 10 次扫描包。",
+    "includedWith": "您将获得",
+    "benefitsHeading": "Auraly 包含",
+    "benefit1": "每日 2 次免费扫描",
     "benefit2": "个性化敏感度设置",
     "benefit3": "完整扫描历史",
-    "afterTrial": "试用结束后，选择权在您：继续使用 Auraly+ 每月 $4.99，或切换到基础版，每月享受 5 次免费扫描。",
-    "startMyTrial": "开始我的试用",
+    "moreScans": "需要更多扫描次数？只需 $2.99 即可获得 10 次扫描包。购买的扫描次数永不过期。",
     "startScanning": "开始扫描",
     "getStarted": "开始设置"
   }

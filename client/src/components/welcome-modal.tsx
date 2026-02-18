@@ -17,15 +17,13 @@ export function WelcomeModal({ user }: WelcomeModalProps) {
   useEffect(() => {
     if (!user?.id) return;
 
-    // Show welcome modal if user is on trial and hasn't completed onboarding
-    // Uses database state instead of localStorage so deleting a user fully resets them
-    if (user.subscriptionStatus === "trial" && user.onboardingCompleted === false) {
+    if (user.onboardingCompleted === false) {
       const timer = setTimeout(() => {
         setIsOpen(true);
       }, 500);
       return () => clearTimeout(timer);
     }
-  }, [user?.id, user?.subscriptionStatus, user?.onboardingCompleted]);
+  }, [user?.id, user?.onboardingCompleted]);
 
   const handleClose = () => {
     setIsOpen(false);
@@ -81,14 +79,14 @@ export function WelcomeModal({ user }: WelcomeModalProps) {
           </div>
 
           <p className="text-xs text-muted-foreground leading-relaxed">
-            {t('welcome.afterTrial')}
+            {t('welcome.moreScans')}
           </p>
         </div>
 
         <div className="pt-2 space-y-2">
           <Link href="/onboarding" onClick={handleStartScanning}>
             <Button className="w-full rounded-full gap-2" size="lg" data-testid="button-welcome-start">
-              {t('welcome.startMyTrial')}
+              {t('welcome.getStarted')}
               <ArrowRight className="w-4 h-4" />
             </Button>
           </Link>

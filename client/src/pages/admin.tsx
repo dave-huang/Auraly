@@ -8,11 +8,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { 
   ArrowLeft, Users, Crown, Zap, TrendingUp, Search, 
-  Loader2, AlertTriangle, Ban, RefreshCw, Trash2, Database,
-  BarChart3, FlaskConical, Calendar, Beaker, Eye, EyeOff, ArrowUpDown, ArrowUp, ArrowDown
+  Loader2, AlertTriangle, RefreshCw, Trash2, Database,
+  BarChart3, FlaskConical, Beaker, Eye, EyeOff, ArrowUpDown, ArrowUp, ArrowDown
 } from "lucide-react";
 import {
   Table,
@@ -39,9 +38,7 @@ interface AuthUser {
 
 interface UserStats {
   totalUsers: number;
-  premiumUsers: number;
-  trialUsers: number;
-  freeUsers: number;
+  totalPurchasedScansBalance: number;
   totalScansToday: number;
   totalScansThisWeek: number;
   totalScansThisMonth: number;
@@ -52,12 +49,9 @@ interface UserRecord {
   replitId: string;
   email: string;
   name: string;
-  subscriptionStatus: string | null;
-  scanPackBalance: number;
-  monthlyFreeScansUsed: number;
+  dailyFreeScansUsed: number;
+  purchasedScanBalance: number;
   createdAt: string;
-  trialEndsAt: string | null;
-  subscriptionEndsAt: string | null;
   scansToday: number;
   scansThisWeek: number;
   scansThisMonth: number;
@@ -85,25 +79,6 @@ interface DailyStats {
 
 interface DailyUsageData {
   dailyStats: DailyStats[];
-}
-
-interface SubscriptionFunnelData {
-  statusCounts: {
-    free: number;
-    trial: number;
-    active: number;
-    cancelled: number;
-    past_due: number;
-  };
-  trialBreakdown: {
-    active: number;
-    expired: number;
-  };
-  conversionRates: {
-    toTrial: string;
-    toPaid: string;
-  };
-  totalUsers: number;
 }
 
 interface CacheEntry {
@@ -153,11 +128,6 @@ export default function AdminPage() {
     enabled: isAdmin,
   });
 
-  const { data: subscriptionFunnel } = useQuery<SubscriptionFunnelData>({
-    queryKey: ['/api/admin/subscription-funnel'],
-    enabled: isAdmin,
-  });
-
   const { data: ingredientCache, refetch: refetchIngredientCache } = useQuery<IngredientCacheData>({
     queryKey: ['/api/admin/ingredient-cache'],
     enabled: isAdmin,
@@ -165,59 +135,16 @@ export default function AdminPage() {
 
   const [cacheSearchQuery, setCacheSearchQuery] = useState("");
 
-  const grantSubscriptionMutation = useMutation({
-    mutationFn: async (userId: string) => {
-      return apiRequest('POST', '/api/admin/grant-subscription', { userId });
-    },
-    onSuccess: () => {
-      toast({ title: "Subscription granted successfully" });
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/dashboard'] });
-    },
-    onError: (error: any) => {
-      toast({ title: "Failed to grant subscription", description: error.message, variant: "destructive" });
-    }
-  });
-
-  const revokeSubscriptionMutation = useMutation({
-    mutationFn: async (userId: string) => {
-      return apiRequest('POST', '/api/admin/revoke-subscription', { userId });
-    },
-    onSuccess: () => {
-      toast({ title: "Subscription revoked" });
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/dashboard'] });
-    },
-    onError: (error: any) => {
-      toast({ title: "Failed to revoke subscription", description: error.message, variant: "destructive" });
-    }
-  });
-
   const grantScansMutation = useMutation({
     mutationFn: async ({ userId, amount }: { userId: string; amount: number }) => {
       return apiRequest('POST', '/api/admin/grant-scans', { userId, amount });
     },
     onSuccess: (_, variables) => {
-      toast({ title: `${variables.amount} scans granted successfully` });
+      toast({ title: `${variables.amount} scans granted to purchasedScanBalance` });
       queryClient.invalidateQueries({ queryKey: ['/api/admin/dashboard'] });
     },
     onError: (error: any) => {
       toast({ title: "Failed to grant scans", description: error.message, variant: "destructive" });
-    }
-  });
-
-  const [inlineTrialUserId, setInlineTrialUserId] = useState<string | null>(null);
-  const [inlineTrialDate, setInlineTrialDate] = useState("");
-  
-  const grantTrialMutation = useMutation({
-    mutationFn: async ({ userId, trialEndsAt }: { userId: string; trialEndsAt: string }) => {
-      return apiRequest('POST', '/api/admin/grant-trial', { userId, trialEndsAt });
-    },
-    onSuccess: (_, variables) => {
-      toast({ title: "Trial granted successfully", description: `Trial extended until ${new Date(variables.trialEndsAt).toLocaleDateString()}` });
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/dashboard'] });
-      setInlineTrialDate("");
-    },
-    onError: (error: any) => {
-      toast({ title: "Failed to grant trial", description: error.message, variant: "destructive" });
     }
   });
 
@@ -329,7 +256,7 @@ export default function AdminPage() {
           </Card>
         )}
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
           <Card className="p-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
@@ -343,30 +270,16 @@ export default function AdminPage() {
               </div>
             </div>
           </Card>
-          
-          <Card className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
-                <Crown className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Premium</p>
-                <p className="text-xl font-semibold" data-testid="stat-premium-users">
-                  {adminData?.stats?.premiumUsers ?? '-'}
-                </p>
-              </div>
-            </div>
-          </Card>
 
           <Card className="p-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-cyan-100 dark:bg-cyan-900/30 flex items-center justify-center">
-                <Calendar className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
+              <div className="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+                <Zap className="w-5 h-5 text-amber-600 dark:text-amber-400" />
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">Trial</p>
-                <p className="text-xl font-semibold" data-testid="stat-trial-users">
-                  {adminData?.stats?.trialUsers ?? '-'}
+                <p className="text-xs text-muted-foreground">Purchased Scans Balance</p>
+                <p className="text-xl font-semibold" data-testid="stat-purchased-scans">
+                  {adminData?.stats?.totalPurchasedScansBalance ?? '-'}
                 </p>
               </div>
             </div>
@@ -419,7 +332,6 @@ export default function AdminPage() {
           <TabsList className="flex-wrap">
             <TabsTrigger value="users" data-testid="tab-users">Users</TabsTrigger>
             <TabsTrigger value="analytics" data-testid="tab-analytics">Analytics</TabsTrigger>
-            <TabsTrigger value="funnel" data-testid="tab-funnel">Funnel</TabsTrigger>
             <TabsTrigger value="cache" data-testid="tab-cache">Ingredients</TabsTrigger>
             <TabsTrigger value="system" data-testid="tab-system">System</TabsTrigger>
           </TabsList>
@@ -433,7 +345,7 @@ export default function AdminPage() {
                       <Users className="w-5 h-5" />
                       User Management
                     </CardTitle>
-                    <CardDescription>View and manage user subscriptions</CardDescription>
+                    <CardDescription>View and manage users</CardDescription>
                   </div>
                   <div className="flex items-center gap-2">
                     <Label htmlFor="show-test-users" className="text-sm text-muted-foreground flex items-center gap-1.5">
@@ -493,17 +405,24 @@ export default function AdminPage() {
                             </div>
                           </TableHead>
                           <TableHead 
-                            className="cursor-pointer hover:bg-muted/50 whitespace-nowrap"
-                            onClick={() => handleSort("subscriptionStatus")}
-                            data-testid="sort-status"
+                            className="cursor-pointer hover:bg-muted/50 whitespace-nowrap text-right"
+                            onClick={() => handleSort("dailyFreeScansUsed")}
+                            data-testid="sort-daily-scans"
                           >
-                            <div className="flex items-center">
-                              Status
-                              <SortIcon field="subscriptionStatus" />
+                            <div className="flex items-center justify-end">
+                              Daily Scans
+                              <SortIcon field="dailyFreeScansUsed" />
                             </div>
                           </TableHead>
-                          <TableHead className="whitespace-nowrap">
-                            Trial/Sub Ends
+                          <TableHead 
+                            className="cursor-pointer hover:bg-muted/50 whitespace-nowrap text-right"
+                            onClick={() => handleSort("purchasedScanBalance")}
+                            data-testid="sort-purchased-balance"
+                          >
+                            <div className="flex items-center justify-end">
+                              Purchased Balance
+                              <SortIcon field="purchasedScanBalance" />
+                            </div>
                           </TableHead>
                           <TableHead 
                             className="cursor-pointer hover:bg-muted/50 whitespace-nowrap text-right"
@@ -574,40 +493,15 @@ export default function AdminPage() {
                             <TableCell className="text-muted-foreground">
                               <span className="truncate max-w-[180px] block">{u.email}</span>
                             </TableCell>
-                            <TableCell>
-                              <div className="flex items-center gap-1 flex-wrap">
-                                {u.subscriptionStatus === 'active' && (
-                                  <Badge className="bg-primary/10 text-primary text-xs gap-1">
-                                    <Crown className="w-2.5 h-2.5" />
-                                    Premium
-                                  </Badge>
-                                )}
-                                {u.subscriptionStatus === 'trial' && (
-                                  <Badge className="bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 text-xs gap-1">
-                                    <Calendar className="w-2.5 h-2.5" />
-                                    Trial
-                                  </Badge>
-                                )}
-                                {(!u.subscriptionStatus || u.subscriptionStatus === 'free') && (
-                                  <Badge variant="secondary" className="text-xs">Free</Badge>
-                                )}
-                                {u.scanPackBalance > 0 && (
-                                  <Badge variant="outline" className="text-xs gap-1">
-                                    <Zap className="w-2.5 h-2.5" />
-                                    {u.scanPackBalance}
-                                  </Badge>
-                                )}
-                              </div>
-                            </TableCell>
-                            <TableCell className="text-muted-foreground whitespace-nowrap">
-                              {u.subscriptionStatus === 'trial' && u.trialEndsAt ? (
-                                <span className={new Date(u.trialEndsAt) < new Date() ? "text-destructive" : ""}>
-                                  {new Date(u.trialEndsAt).toLocaleDateString()}
-                                </span>
-                              ) : u.subscriptionStatus === 'active' && u.subscriptionEndsAt ? (
-                                <span>{new Date(u.subscriptionEndsAt).toLocaleDateString()}</span>
+                            <TableCell className="text-right tabular-nums">{u.dailyFreeScansUsed}/2</TableCell>
+                            <TableCell className="text-right tabular-nums">
+                              {u.purchasedScanBalance > 0 ? (
+                                <Badge variant="outline" className="text-xs gap-1">
+                                  <Zap className="w-2.5 h-2.5" />
+                                  {u.purchasedScanBalance}
+                                </Badge>
                               ) : (
-                                <span className="text-muted-foreground/50">-</span>
+                                <span className="text-muted-foreground/50">0</span>
                               )}
                             </TableCell>
                             <TableCell className="text-right tabular-nums">{u.scansToday}</TableCell>
@@ -619,113 +513,21 @@ export default function AdminPage() {
                             </TableCell>
                             <TableCell className="text-right">
                               <div className="flex items-center justify-end gap-1">
-                                <Popover 
-                                  open={inlineTrialUserId === u.replitId}
-                                  onOpenChange={(open) => {
-                                    if (open) {
-                                      setInlineTrialUserId(u.replitId);
-                                      setInlineTrialDate(u.trialEndsAt ? new Date(u.trialEndsAt).toISOString().split('T')[0] : "");
-                                    } else {
-                                      setInlineTrialUserId(null);
-                                      setInlineTrialDate("");
-                                    }
-                                  }}
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="gap-1"
+                                  onClick={() => grantScansMutation.mutate({ userId: u.replitId, amount: 10 })}
+                                  disabled={grantScansMutation.isPending}
+                                  data-testid={`button-grant-scans-${u.replitId}`}
                                 >
-                                  <PopoverTrigger asChild>
-                                    <Button
-                                      size="sm"
-                                      variant="outline"
-                                      className="h-7 px-2"
-                                      data-testid={`button-grant-trial-${u.replitId}`}
-                                    >
-                                      <Calendar className="w-3 h-3" />
-                                    </Button>
-                                  </PopoverTrigger>
-                                  <PopoverContent className="w-64 p-3" align="end">
-                                    <div className="space-y-3">
-                                      <div className="text-sm font-medium">Grant/Extend Trial</div>
-                                      <div>
-                                        <Label htmlFor={`trial-date-${u.replitId}`} className="text-xs">Trial End Date</Label>
-                                        <Input
-                                          id={`trial-date-${u.replitId}`}
-                                          type="date"
-                                          value={inlineTrialDate}
-                                          onChange={(e) => setInlineTrialDate(e.target.value)}
-                                          min={new Date(Date.now() + 86400000).toISOString().split('T')[0]}
-                                          className="h-8 mt-1"
-                                          data-testid={`input-trial-date-${u.replitId}`}
-                                        />
-                                      </div>
-                                      <div className="flex gap-2">
-                                        <Button
-                                          size="sm"
-                                          variant="outline"
-                                          className="flex-1 h-7 text-xs"
-                                          onClick={() => {
-                                            const date = new Date();
-                                            date.setDate(date.getDate() + 7);
-                                            setInlineTrialDate(date.toISOString().split('T')[0]);
-                                          }}
-                                          data-testid={`button-trial-7days-${u.replitId}`}
-                                        >
-                                          +7 days
-                                        </Button>
-                                        <Button
-                                          size="sm"
-                                          variant="outline"
-                                          className="flex-1 h-7 text-xs"
-                                          onClick={() => {
-                                            const date = new Date();
-                                            date.setDate(date.getDate() + 30);
-                                            setInlineTrialDate(date.toISOString().split('T')[0]);
-                                          }}
-                                          data-testid={`button-trial-30days-${u.replitId}`}
-                                        >
-                                          +30 days
-                                        </Button>
-                                      </div>
-                                      <Button
-                                        size="sm"
-                                        className="w-full h-8"
-                                        disabled={!inlineTrialDate || grantTrialMutation.isPending}
-                                        onClick={() => {
-                                          grantTrialMutation.mutate({ userId: u.replitId, trialEndsAt: inlineTrialDate });
-                                          setInlineTrialUserId(null);
-                                        }}
-                                        data-testid={`button-confirm-trial-${u.replitId}`}
-                                      >
-                                        {grantTrialMutation.isPending ? (
-                                          <Loader2 className="w-3 h-3 animate-spin" />
-                                        ) : (
-                                          "Grant Trial"
-                                        )}
-                                      </Button>
-                                    </div>
-                                  </PopoverContent>
-                                </Popover>
-                                {u.subscriptionStatus === 'active' ? (
-                                  <Button
-                                    size="sm"
-                                    variant="outline"
-                                    className="text-destructive h-7 px-2"
-                                    onClick={() => revokeSubscriptionMutation.mutate(u.replitId)}
-                                    disabled={revokeSubscriptionMutation.isPending}
-                                    data-testid={`button-revoke-${u.replitId}`}
-                                  >
-                                    <Ban className="w-3 h-3" />
-                                  </Button>
-                                ) : (
-                                  <Button
-                                    size="sm"
-                                    variant="outline"
-                                    className="h-7 px-2"
-                                    onClick={() => grantSubscriptionMutation.mutate(u.replitId)}
-                                    disabled={grantSubscriptionMutation.isPending}
-                                    data-testid={`button-grant-sub-${u.replitId}`}
-                                  >
-                                    <Crown className="w-3 h-3" />
-                                  </Button>
-                                )}
+                                  {grantScansMutation.isPending ? (
+                                    <Loader2 className="w-3 h-3 animate-spin" />
+                                  ) : (
+                                    <Zap className="w-3 h-3" />
+                                  )}
+                                  +10
+                                </Button>
                               </div>
                             </TableCell>
                           </TableRow>
@@ -793,66 +595,6 @@ export default function AdminPage() {
                 ) : (
                   <div className="flex justify-center py-8 text-muted-foreground">
                     No usage data available yet
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="funnel" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5" />
-                  Subscription Funnel
-                </CardTitle>
-                <CardDescription>User distribution and conversion rates</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {subscriptionFunnel ? (
-                  <div className="space-y-6">
-                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                      <div className="p-4 rounded-lg bg-muted/50 text-center">
-                        <p className="text-2xl font-bold text-foreground">{subscriptionFunnel.statusCounts.free}</p>
-                        <p className="text-sm text-muted-foreground">Free</p>
-                      </div>
-                      <div className="p-4 rounded-lg bg-cyan-100 dark:bg-cyan-900/30 text-center">
-                        <p className="text-2xl font-bold text-cyan-700 dark:text-cyan-300">{subscriptionFunnel.statusCounts.trial}</p>
-                        <p className="text-sm text-muted-foreground">Trial</p>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          ({subscriptionFunnel.trialBreakdown.active} active, {subscriptionFunnel.trialBreakdown.expired} expired)
-                        </p>
-                      </div>
-                      <div className="p-4 rounded-lg bg-amber-100 dark:bg-amber-900/30 text-center">
-                        <p className="text-2xl font-bold text-amber-700 dark:text-amber-300">{subscriptionFunnel.statusCounts.active}</p>
-                        <p className="text-sm text-muted-foreground">Premium</p>
-                      </div>
-                      <div className="p-4 rounded-lg bg-red-100 dark:bg-red-900/30 text-center">
-                        <p className="text-2xl font-bold text-red-700 dark:text-red-300">{subscriptionFunnel.statusCounts.cancelled}</p>
-                        <p className="text-sm text-muted-foreground">Cancelled</p>
-                      </div>
-                      <div className="p-4 rounded-lg bg-orange-100 dark:bg-orange-900/30 text-center">
-                        <p className="text-2xl font-bold text-orange-700 dark:text-orange-300">{subscriptionFunnel.statusCounts.past_due}</p>
-                        <p className="text-sm text-muted-foreground">Past Due</p>
-                      </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="p-4 rounded-lg border">
-                        <p className="text-sm text-muted-foreground mb-1">Trial Conversion Rate</p>
-                        <p className="text-3xl font-bold text-foreground">{subscriptionFunnel.conversionRates.toTrial}</p>
-                        <p className="text-xs text-muted-foreground mt-1">Users who started trial or subscribed</p>
-                      </div>
-                      <div className="p-4 rounded-lg border">
-                        <p className="text-sm text-muted-foreground mb-1">Paid Conversion Rate</p>
-                        <p className="text-3xl font-bold text-foreground">{subscriptionFunnel.conversionRates.toPaid}</p>
-                        <p className="text-xs text-muted-foreground mt-1">Of all users who converted to paid</p>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex justify-center py-8">
-                    <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
                   </div>
                 )}
               </CardContent>
