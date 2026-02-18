@@ -79,7 +79,7 @@ export function ScanPurchaseModal({ open, onClose, source = 'unknown' }: ScanPur
 
   return (
     <Dialog open={open} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-sm p-0 gap-0 overflow-visible border-border/50 rounded-2xl" data-testid="paywall-modal">
+      <DialogContent className="max-w-sm p-0 gap-0 overflow-visible border-border/50 rounded-2xl [&>button]:z-50 [&>button]:bg-background/50 [&>button]:backdrop-blur-sm [&>button]:rounded-full [&>button]:p-1" data-testid="paywall-modal">
         <VisuallyHidden>
           <DialogTitle>{t('scanPurchase.title', 'Get More Scans')}</DialogTitle>
           <DialogDescription>{t('scanPurchase.description', 'Add scans to your balance.')}</DialogDescription>
