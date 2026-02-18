@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Loader2, Leaf, Sparkles, Tag, Check, Infinity } from 'lucide-react';
@@ -9,6 +9,7 @@ import { trackPurchasePromptView, trackPurchaseClick } from '@/lib/analytics';
 import { useMutation } from '@tanstack/react-query';
 import { apiRequest, queryClient } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
 interface ScanPurchaseModalProps {
   open: boolean;
@@ -77,8 +78,13 @@ export function ScanPurchaseModal({ open, onClose, source = 'unknown' }: ScanPur
   };
 
   return (
-    <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
+    <Dialog open={open} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-w-sm p-0 gap-0 overflow-visible border-border/50 rounded-2xl" data-testid="paywall-modal">
+        <VisuallyHidden>
+          <DialogTitle>{t('scanPurchase.title', 'Get More Scans')}</DialogTitle>
+          <DialogDescription>{t('scanPurchase.description', 'Add scans to your balance.')}</DialogDescription>
+        </VisuallyHidden>
+        
         <div className="relative overflow-hidden rounded-2xl">
           <div className="absolute top-0 right-0 w-40 h-40 bg-primary/5 rounded-full blur-3xl translate-x-1/3 -translate-y-1/4" />
           <div className="absolute bottom-0 left-0 w-32 h-32 bg-accent/20 rounded-full blur-3xl -translate-x-1/3 translate-y-1/4" />
