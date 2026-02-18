@@ -377,8 +377,8 @@
     "freeScansRemaining": "escaneos gratuitos restantes"
   },
   "scanPurchase": {
-    "title": "Sin Escaneos",
-    "description": "Obtienes 2 escaneos gratuitos cada día. ¿Necesitas más ahora?",
+    "title": "Obtener Más Escaneos",
+    "description": "Añade escaneos a tu saldo. También obtienes 2 escaneos gratuitos cada día.",
     "bundleName": "Paquete de 10 Escaneos",
     "bundlePrice": "$2.99",
     "neverExpire": "Los escaneos comprados nunca expiran",

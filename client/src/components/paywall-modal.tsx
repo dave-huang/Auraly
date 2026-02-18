@@ -84,10 +84,10 @@ export function ScanPurchaseModal({ open, onClose, source = 'unknown' }: ScanPur
             <Zap className="w-6 h-6 text-amber-500" />
           </div>
           <DialogTitle className="text-xl font-display" data-testid="text-purchase-title">
-            {t('scanPurchase.title', 'Out of scans')}
+            {t('scanPurchase.title', 'Get More Scans')}
           </DialogTitle>
           <DialogDescription className="text-sm mt-2">
-            {t('scanPurchase.description', 'You get 2 free scans every day. Want more?')}
+            {t('scanPurchase.description', 'Add scans to your balance. You also get 2 free scans every day.')}
           </DialogDescription>
         </DialogHeader>
 

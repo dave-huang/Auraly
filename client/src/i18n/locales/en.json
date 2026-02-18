@@ -377,8 +377,8 @@
     "freeScansRemaining": "free scans remaining"
   },
   "scanPurchase": {
-    "title": "Out of Scans",
-    "description": "You get 2 free scans every day. Need more right now?",
+    "title": "Get More Scans",
+    "description": "Add scans to your balance. You also get 2 free scans every day.",
     "bundleName": "10 Scan Bundle",
     "bundlePrice": "$2.99",
     "neverExpire": "Purchased scans never expire",

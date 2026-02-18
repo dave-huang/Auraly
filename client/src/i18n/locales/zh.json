@@ -377,8 +377,8 @@
     "freeScansRemaining": "次免费扫描剩余"
   },
   "scanPurchase": {
-    "title": "扫描次数已用完",
-    "description": "您每天可获得 2 次免费扫描。现在需要更多吗？",
+    "title": "获取更多扫描",
+    "description": "为您的余额添加扫描次数。您每天还可获得 2 次免费扫描。",
     "bundleName": "10 次扫描包",
     "bundlePrice": "$2.99",
     "neverExpire": "购买的扫描次数永不过期",
