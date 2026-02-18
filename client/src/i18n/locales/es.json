@@ -371,6 +371,14 @@
     "scans": "escaneos",
     "buyMoreScans": "Comprar Más Escaneos"
   },
+  "referral": {
+    "title": "Invita Amigos",
+    "description": "¡Comparte tu enlace y tanto tú como tu amigo reciben {{count}} escaneos gratis!",
+    "successfulReferrals": "Referidos Exitosos",
+    "yourLink": "Tu Enlace de Referido",
+    "copied": "¡Enlace copiado!",
+    "copiedDescription": "Compártelo con amigos para ganar escaneos gratis."
+  },
   "subscription": {
     "scanLeft": "escaneo restante",
     "scansLeft": "escaneos restantes",

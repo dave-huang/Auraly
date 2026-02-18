@@ -51,6 +51,8 @@ Auraly is a mobile-friendly web application designed to help users understand th
     - `POST /api/admin/promo-codes` - Create a new promo code
     - `PATCH /api/admin/promo-codes/:id` - Update promo code (isActive, maxRedemptions, expiresAt)
     - `DELETE /api/admin/promo-codes/:id` - Delete a promo code
+    - `GET /api/referral` - Get user's referral code, successful referral count, and reward amount
+    - `POST /api/referral/process` - Process a referral (grants both parties 10 scans)
 - **Services**: `services/cache.ts`, `services/ocr.ts`, `services/geminiOcr.ts`, `services/googleVisionOcr.ts`, `services/analyzer.ts`, `services/subscription.ts`, `gemini.ts`, `openai.ts`.
 - **Feature Specifications**:
     - **Fast OCR with Fallback**: Gemini 2.5 Flash (primary, 2-5s) with Google Cloud Vision API as fallback.
@@ -73,6 +75,7 @@ Auraly is a mobile-friendly web application designed to help users understand th
     - **Account Management**: Account page (`/account`) showing scan balance, daily free scans, and purchased scan balance.
     - **Scan Quota System**: Daily free scan reset at midnight UTC, purchased scans never expire, free scans consumed first.
     - **Promo Code System**: Admin-managed promotional codes that grant free scans. Codes normalized to uppercase, one redemption per user per code, atomic transaction for redemption (validates active/not expired/capacity/no prior redemption). Admin dashboard tab for creating/managing codes with expiration dates and max redemption limits. Users redeem codes in the Scan Purchase modal.
+    - **Referral System**: Each user gets a unique referral code (auto-generated 8-char hex). Share via `?ref=CODE` URL. When a new user signs up through a referral link, both referrer and referee get 10 free scans. One referral per user, unlimited referrals for referrers. Referral section on Account page shows code, shareable link with copy button, and successful referral count.
 
 ### Tech Stack
 - **Frontend**: React, TypeScript, Tailwind CSS, shadcn/ui, TanStack Query, Wouter

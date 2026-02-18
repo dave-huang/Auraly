@@ -174,6 +174,9 @@ export const users = pgTable("users", {
   // Purchased scan balance (never expires)
   purchasedScanBalance: integer("purchased_scan_balance").default(0),
   
+  // Referral code (unique per user, auto-generated)
+  referralCode: varchar("referral_code").unique(),
+  
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -941,3 +944,26 @@ export const promoRedemptions = pgTable(
 );
 
 export type PromoRedemption = typeof promoRedemptions.$inferSelect;
+
+// ==========================================
+// REFERRALS
+// ==========================================
+
+export const referrals = pgTable(
+  "referrals",
+  {
+    id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+    referrerId: varchar("referrer_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+    referredId: varchar("referred_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+    rewardGranted: boolean("reward_granted").notNull().default(false),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    index("IDX_referral_referrer").on(table.referrerId),
+    index("IDX_referral_referred").on(table.referredId),
+  ]
+);
+
+export type Referral = typeof referrals.$inferSelect;
+
+export const REFERRAL_REWARD_SCANS = 10;

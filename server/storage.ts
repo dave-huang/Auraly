@@ -1,6 +1,20 @@
-import { users, scanHistory, type User, type UpsertUser, type ScanHistory, type InsertScanHistory, type RiskPreferences, type AllergenPreferences, defaultRiskPreferences, defaultAllergenPreferences } from "@shared/schema";
+import { users, scanHistory, referrals, type User, type UpsertUser, type ScanHistory, type InsertScanHistory, type RiskPreferences, type AllergenPreferences, defaultRiskPreferences, defaultAllergenPreferences, REFERRAL_REWARD_SCANS } from "@shared/schema";
 import { db } from "./db";
-import { eq, desc, and, sql } from "drizzle-orm";
+import { eq, desc, and, sql, count } from "drizzle-orm";
+import crypto from "crypto";
+
+function generateReferralCode(): string {
+  return crypto.randomBytes(4).toString('hex').toUpperCase();
+}
+
+async function generateUniqueReferralCode(): Promise<string> {
+  for (let i = 0; i < 5; i++) {
+    const code = generateReferralCode();
+    const [existing] = await db.select().from(users).where(eq(users.referralCode, code));
+    if (!existing) return code;
+  }
+  return crypto.randomBytes(6).toString('hex').toUpperCase();
+}
 
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
@@ -34,15 +48,19 @@ export class DatabaseStorage implements IStorage {
     const existingUser = await this.getUser(userData.id!);
     
     if (existingUser) {
+      const updates: Record<string, any> = {
+        email: userData.email,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        profileImageUrl: userData.profileImageUrl,
+        updatedAt: new Date(),
+      };
+      if (!existingUser.referralCode) {
+        updates.referralCode = await generateUniqueReferralCode();
+      }
       const [user] = await db
         .update(users)
-        .set({
-          email: userData.email,
-          firstName: userData.firstName,
-          lastName: userData.lastName,
-          profileImageUrl: userData.profileImageUrl,
-          updatedAt: new Date(),
-        })
+        .set(updates)
         .where(eq(users.id, userData.id!))
         .returning();
       return user;
@@ -50,7 +68,10 @@ export class DatabaseStorage implements IStorage {
     
     const [user] = await db
       .insert(users)
-      .values(userData)
+      .values({
+        ...userData,
+        referralCode: await generateUniqueReferralCode(),
+      })
       .returning();
     return user;
   }

@@ -24,6 +24,7 @@ import { useTranslation } from "react-i18next";
 import type { User } from "@shared/schema";
 import { initGA } from "./lib/analytics";
 import { useAnalytics } from "./hooks/use-analytics";
+import { captureReferralCode, useReferralProcessor } from "./hooks/useReferral";
 
 function ProtectedPage({ component: Component }: { component: any }) {
   const { isAuthenticated, isLoading } = useAuth();
@@ -96,6 +97,7 @@ function Router() {
 
 function AppContent() {
   const { user, isAuthenticated } = useAuth();
+  useReferralProcessor();
 
   return (
     <>
@@ -109,6 +111,7 @@ function AppContent() {
 
 function App() {
   useEffect(() => {
+    captureReferralCode();
     if (!import.meta.env.VITE_GA_MEASUREMENT_ID) {
       console.warn('Missing Google Analytics Measurement ID');
     } else {

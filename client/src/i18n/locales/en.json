@@ -371,6 +371,14 @@
     "scans": "scans",
     "buyMoreScans": "Buy More Scans"
   },
+  "referral": {
+    "title": "Refer Friends",
+    "description": "Share your link and both you and your friend get {{count}} free scans!",
+    "successfulReferrals": "Successful Referrals",
+    "yourLink": "Your Referral Link",
+    "copied": "Link copied!",
+    "copiedDescription": "Share it with friends to earn free scans."
+  },
   "subscription": {
     "scanLeft": "scan left",
     "scansLeft": "scans left",
