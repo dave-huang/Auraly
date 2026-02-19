@@ -373,7 +373,7 @@
   },
   "referral": {
     "title": "邀请好友",
-    "description": "分享你的链接，你和好友都能获得 {{count}} 次免费扫描！",
+    "description": "分享你的链接，当好友注册时，你和好友都能获得 {{count}} 次免费扫描！",
     "successfulReferrals": "成功推荐",
     "yourLink": "你的推荐链接",
     "copied": "链接已复制！",

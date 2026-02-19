@@ -373,7 +373,7 @@
   },
   "referral": {
     "title": "Invita Amigos",
-    "description": "¡Comparte tu enlace y tanto tú como tu amigo reciben {{count}} escaneos gratis!",
+    "description": "¡Comparte tu enlace y tanto tú como tu amigo reciben {{count}} escaneos gratis cuando se registren!",
     "successfulReferrals": "Referidos Exitosos",
     "yourLink": "Tu Enlace de Referido",
     "copied": "¡Enlace copiado!",
