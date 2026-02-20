@@ -6,12 +6,11 @@ import { LanguageSwitcher } from "@/components/language-switcher";
 import { NavigationMenu } from "@/components/navigation-menu";
 import { useAuth } from "@/hooks/useAuth";
 
-import phoneScanImage from "@assets/Gemini_Generated_Image_jemw1wjemw1wjemw_1765241060713.png";
-import skincareImage from "@assets/stock_images/natural_skincare_pro_821a26b5.jpg";
-import organicFoodImage from "@assets/stock_images/healthy_organic_food_ca6a79e0.jpg";
-import womanReadingLabel from "@assets/stock_images/woman_reading_produc_8340e9f2.jpg";
-import heroSkincareImage from "@assets/image_1765003551521.png";
-import featureMultilangImage from "@assets/image_1765003664657.png";
+import phoneScanImage from "@assets/phone_scan.webp";
+import skincareImage from "@assets/stock_images/natural_skincare.webp";
+import womanReadingLabel from "@assets/stock_images/woman_reading.webp";
+import heroSkincareImage from "@assets/hero_skincare.webp";
+import featureMultilangImage from "@assets/feature_multilang.webp";
 
 export default function Landing() {
   const { t } = useTranslation();
@@ -50,6 +49,8 @@ export default function Landing() {
               src={womanReadingLabel} 
               alt="Mindful ingredient awareness" 
               className="w-full h-full object-cover object-center opacity-40"
+              width={853}
+              height={1280}
             />
           </div>
           <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl translate-x-1/3 -translate-y-1/4" />
@@ -108,6 +109,8 @@ export default function Landing() {
                   src={heroSkincareImage} 
                   alt="Natural skincare products" 
                   className="w-full h-full object-cover"
+                  width={1024}
+                  height={765}
                 />
               </div>
               
@@ -117,6 +120,8 @@ export default function Landing() {
                   src={skincareImage} 
                   alt="Natural skincare products" 
                   className="w-full h-full object-cover"
+                  width={1280}
+                  height={853}
                 />
               </div>
               
@@ -140,6 +145,9 @@ export default function Landing() {
                     src={phoneScanImage} 
                     alt="Scanning product ingredients with phone" 
                     className="w-full h-auto object-cover"
+                    width={1696}
+                    height={2528}
+                    loading="lazy"
                   />
                 </div>
                 
@@ -233,6 +241,9 @@ export default function Landing() {
                   src={featureMultilangImage} 
                   alt="Global ingredients" 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  width={1024}
+                  height={765}
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
               </div>
@@ -252,6 +263,9 @@ export default function Landing() {
                   src={skincareImage} 
                   alt="Smart ingredient analysis" 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  width={1280}
+                  height={853}
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
               </div>
@@ -271,6 +285,9 @@ export default function Landing() {
                   src={womanReadingLabel} 
                   alt="Health risk awareness" 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  width={853}
+                  height={1280}
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
               </div>
@@ -291,8 +308,12 @@ export default function Landing() {
         <div className="absolute inset-0">
           <img 
             src={skincareImage} 
-            alt="Natural wellness products" 
+            alt="" 
             className="w-full h-full object-cover opacity-20"
+            width={1280}
+            height={853}
+            loading="lazy"
+            aria-hidden="true"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 to-background" />
         </div>
