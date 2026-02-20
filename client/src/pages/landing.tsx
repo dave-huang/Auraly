@@ -20,7 +20,7 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       {/* Header */}
-      <div className="fixed top-6 right-6 z-50 flex items-center gap-3">
+      <nav className="fixed top-6 right-6 z-50 flex items-center gap-3" aria-label="Main navigation">
         {isAuthenticated ? (
           <NavigationMenu />
         ) : (
@@ -37,8 +37,9 @@ export default function Landing() {
             <LanguageSwitcher />
           </>
         )}
-      </div>
+      </nav>
 
+      <main>
       {/* Hero Section - Visual-first with layered imagery */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
         {/* Background imagery layer */}
@@ -330,6 +331,7 @@ export default function Landing() {
           )}
         </div>
       </section>
+      </main>
 
       {/* Footer */}
       <footer className="py-16 text-center border-t border-border/30">
