@@ -1,4 +1,5 @@
 import express, { type Request, Response, NextFunction } from "express";
+import cors from "cors";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { runMigrations } from 'stripe-replit-sync';
@@ -23,6 +24,23 @@ declare module 'http' {
     rawBody: unknown
   }
 }
+
+const NATIVE_ORIGINS = [
+  "capacitor://localhost",
+  "ionic://localhost",
+  "http://localhost",
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (NATIVE_ORIGINS.includes(origin)) return callback(null, true);
+      return callback(null, true);
+    },
+    credentials: true,
+  })
+);
 
 async function initStripe() {
   const databaseUrl = process.env.DATABASE_URL;

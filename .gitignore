@@ -4,3 +4,12 @@ dist
 server/public
 vite.config.ts.*
 *.tar.gz
+
+# iOS / Capacitor build artifacts
+ios/App/Pods
+ios/App/Podfile.lock
+ios/App/App/public
+ios/DerivedData
+ios/build
+*.xcuserstate
+xcuserdata/
