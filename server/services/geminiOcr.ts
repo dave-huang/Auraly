@@ -6,7 +6,7 @@ export interface GeminiOCRResult {
 }
 
 /**
- * Extract text from image using Gemini 2.5 Flash vision capabilities
+ * Extract text from image using Gemini 3 Flash Preview vision capabilities
  * Much faster than Google Vision API (2-5s vs 10-20s)
  */
 export async function extractTextWithGemini(imageData: string): Promise<GeminiOCRResult> {
@@ -23,11 +23,11 @@ export async function extractTextWithGemini(imageData: string): Promise<GeminiOC
       mimeType = dataUrlMatch[1];
     }
     
-    console.log('[GEMINI-OCR] Starting OCR with Gemini 2.5 Flash...');
+    console.log('[GEMINI-OCR] Starting OCR with Gemini 3 Flash Preview...');
     
-    // Use Gemini 2.5 Flash for fast vision-based OCR
+    // Use Gemini 3 Flash Preview for fast vision-based OCR
     const response = await gemini.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-3-flash-preview",
       contents: [{
         role: "user",
         parts: [
