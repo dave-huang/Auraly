@@ -27,32 +27,31 @@ function validateImageData(imageData: string): void {
 }
 
 /**
- * Extract text from image using Gemini Flash (primary) with Google Vision fallback
- * Fast and reliable: 2-5s with Gemini, falls back to Google Vision only on failure
+ * Extract text from image using Google Cloud Vision (primary) with Gemini fallback
  */
 export async function extractTextFromImage(imageData: string): Promise<OCRResult> {
   validateImageData(imageData);
-  
+
+  if (process.env.GOOGLE_CLOUD_VISION_API_KEY) {
+    try {
+      console.log('[OCR] Using Google Cloud Vision (primary)');
+      const result = await extractTextWithGoogleVision(imageData);
+      console.log(`[OCR] Google Cloud Vision succeeded: ${result.text.length} chars extracted`);
+      return result;
+    } catch (visionError: any) {
+      console.warn('[OCR] Google Cloud Vision failed:', visionError.message);
+      console.log('[OCR] Falling back to Gemini Flash');
+    }
+  } else {
+    console.log('[OCR] GOOGLE_CLOUD_VISION_API_KEY not set, using Gemini Flash');
+  }
+
   try {
-    console.log('[OCR] Using Gemini Flash (primary, 2-5s)');
     const result = await extractTextWithGemini(imageData);
     console.log(`[OCR] Gemini Flash succeeded: ${result.text.length} chars extracted`);
     return result;
   } catch (geminiError: any) {
-    console.warn('[OCR] Gemini Flash failed:', geminiError.message);
-    
-    if (process.env.GOOGLE_CLOUD_VISION_API_KEY) {
-      try {
-        console.log('[OCR] Falling back to Google Vision');
-        const result = await extractTextWithGoogleVision(imageData);
-        console.log(`[OCR] Google Vision succeeded: ${result.text.length} chars extracted`);
-        return result;
-      } catch (visionError: any) {
-        console.error('[OCR] Google Vision also failed:', visionError.message);
-        throw new Error('Failed to extract text from image. Please try with a clearer photo of the ingredient list.');
-      }
-    } else {
-      throw new Error('OCR failed. Please try with a clearer photo of the ingredient list.');
-    }
+    console.error('[OCR] Gemini Flash also failed:', geminiError.message);
+    throw new Error('Failed to extract text from image. Please try with a clearer photo of the ingredient list.');
   }
 }
