@@ -7,7 +7,7 @@ import { analysisResultSchema, type ProductType, type AnalysisResult, type RiskL
 import { getCachedIngredientAnalysis, setCachedIngredientAnalysis } from './cache';
 
 // OpenAI model for ingredient analysis
-const ANALYSIS_MODEL = "gpt-5.4-mini";
+const ANALYSIS_MODEL = "gpt-5.6-luna";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // Store cache in the project root for better persistence
