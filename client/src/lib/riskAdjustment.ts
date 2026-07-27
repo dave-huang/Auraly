@@ -51,10 +51,10 @@ function getCategoryDisplayName(category: PreferenceCategory, language: string =
       es: 'Disruptores Endocrinos',
       zh: '内分泌干扰物'
     },
-    allergens: {
-      en: 'Allergens',
-      es: 'Alérgenos',
-      zh: '过敏原'
+    contact_sensitizers: {
+      en: 'Contact Sensitizers',
+      es: 'Sensibilizantes de Contacto',
+      zh: '接触性致敏物'
     },
     alcohols: {
       en: 'Drying Alcohols',
