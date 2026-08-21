@@ -1,0 +1,390 @@
+import fs from 'fs';
+import path from 'path';
+
+/**
+ * Substance identity — the layer every other join depends on.
+ *
+ * Authoritative sources key on CAS numbers, EC numbers, E-numbers and INCI
+ * names. Labels print marketing names. "Red 40" and "Allura Red AC" and "E129"
+ * and "CI 16035" are one substance, and a system that cannot see that will
+ * report "no hazards found" for an ingredient that is listed under a name it
+ * failed to match. A silent false negative in a safety app is the worst class
+ * of bug we can ship, so this module is deliberately pessimistic:
+ *
+ *  - an alias match must be EXACT after normalization, or
+ *  - a match must clear an explicit, per-alias confidence bar,
+ *  - and anything else resolves to null, which the policy engine reads as
+ *    "unknown" rather than "nothing found".
+ *
+ * The retired regulatory-bans.json did the opposite. It substring-matched every
+ * regulated term against the ingredient name with a word-boundary regex, so
+ * "lake salt" matched the "lake" dye pattern and "formaldehyde-free" matched
+ * "formaldehyde" — both classified high. Confident wrong answers are worse than
+ * admitted ignorance, and this module will not produce them.
+ */
+
+/** How an alias came to be attached to a substance. */
+export type AliasSource =
+  | 'curated' // a human wrote it down
+  | 'cosing' // EU Cosmetic Ingredient database (INCI ↔ CAS)
+  | 'pubchem' // PubChem synonym list
+  | 'eu_additives' // E-number ↔ name from the EU additive annexes
+  | 'prop65' // OEHHA chemical name
+  | 'iarc'; // IARC agent name
+
+export interface SubstanceAlias {
+  /** The printable form, as written by the source. */
+  name: string;
+  source: AliasSource;
+  /**
+   * 1.0 means "this string denotes exactly this substance". Lower values are
+   * for aliases that are real but ambiguous in isolation — a bare colour name,
+   * a truncated trade name. `MIN_ALIAS_CONFIDENCE` is the bar to match on.
+   */
+  confidence: number;
+}
+
+export interface Substance {
+  /** Stable internal id. Never a CAS number — those change hands and get retired. */
+  id: string;
+  /** Preferred display name. */
+  name: string;
+  /** CAS registry number, when a source has given us one. Never invented. */
+  cas?: string | null;
+  /** EC / EINECS number. */
+  ec?: string | null;
+  /** EU food-additive E-number, e.g. "E129". */
+  eNumber?: string | null;
+  /** INCI name, for personal-care matching. */
+  inci?: string | null;
+  /**
+   * Functional grouping (synthetic_dye, paraben, phthalate...). Descriptive
+   * only — the policy engine must never infer a hazard from a category, because
+   * "is a paraben" is not evidence about a specific paraben.
+   */
+  category?: string | null;
+  aliases: SubstanceAlias[];
+}
+
+export interface SubstanceRegistryFile {
+  _metadata: {
+    version: string;
+    updatedAt: string;
+    description: string;
+  };
+  substances: Substance[];
+}
+
+/** Aliases below this confidence never produce a match on their own. */
+export const MIN_ALIAS_CONFIDENCE = 0.9;
+
+/**
+ * Normalize a label string for comparison.
+ *
+ * Deliberately conservative: it folds case, punctuation and whitespace, and
+ * nothing else. It does NOT strip parentheticals or qualifiers, because
+ * "sodium benzoate" and "sodium benzoate-free" must not normalize alike.
+ */
+export function normalizeSubstanceName(raw: string): string {
+  return raw
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[̀-ͯ]/g, '') // strip combining accents
+    .replace(/[&]/g, ' and ')
+    .replace(/[^\p{L}\p{N}]+/gu, ' ')
+    .trim()
+    .replace(/\s+/g, ' ');
+}
+
+/** Normalize a CAS number to its canonical hyphenated form, or null. */
+export function normalizeCas(raw: string | null | undefined): string | null {
+  if (!raw) return null;
+  const digits = raw.replace(/[^\d]/g, '');
+  // CAS is 2–7 digits, then 2, then a single check digit.
+  if (digits.length < 5 || digits.length > 10) return null;
+  const check = digits.slice(-1);
+  const middle = digits.slice(-3, -1);
+  const first = digits.slice(0, -3);
+  const cas = `${first}-${middle}-${check}`;
+  return isValidCas(cas) ? cas : null;
+}
+
+/**
+ * CAS check-digit validation.
+ *
+ * Worth doing: a mistyped or OCR-mangled CAS that still parses would join
+ * evidence onto the wrong substance, which is exactly the failure this whole
+ * layer exists to prevent.
+ */
+export function isValidCas(cas: string): boolean {
+  const match = cas.match(/^(\d{2,7})-(\d{2})-(\d)$/);
+  if (!match) return false;
+  const digits = (match[1] + match[2]).split('').reverse();
+  const sum = digits.reduce((acc, d, i) => acc + Number(d) * (i + 1), 0);
+  return sum % 10 === Number(match[3]);
+}
+
+export interface ResolvedSubstance {
+  substance: Substance;
+  /** The alias that matched. */
+  via: SubstanceAlias;
+  /** 'exact' on a normalized alias hit; 'identifier' on CAS/EC/E-number. */
+  how: 'exact' | 'identifier';
+}
+
+/**
+ * The physical form a substance entry is about, when the entry says so.
+ *
+ * Only forms that carry their own regulatory treatment. Two entries agreeing
+ * here means neither is talking about a form the other excludes; it is not an
+ * attempt to model particle size.
+ */
+function formOf(substance: Substance): string {
+  const text = `${substance.name} ${substance.inci ?? ''}`.toLowerCase();
+  const forms: string[] = [];
+  if (/\bnano\b|\(nano\)|nanomaterial/.test(text)) forms.push('nano');
+  if (/\bfibrous\b/.test(text)) forms.push('fibrous');
+  if (/\bpowder form\b|\bin powder\b/.test(text)) forms.push('powder');
+  if (/\bspray\b|\baerosol\b/.test(text)) forms.push('spray');
+  return forms.sort().join('+');
+}
+
+export class SubstanceRegistry {
+  private byId = new Map<string, Substance>();
+  private byAlias = new Map<string, { substance: Substance; alias: SubstanceAlias }>();
+  private byCas = new Map<string, Substance>();
+  private byENumber = new Map<string, Substance>();
+  private ambiguous = new Set<string>();
+  /**
+   * Substance ids that denote the same chemical, grouped by CAS number.
+   *
+   * The annexes file one substance under several names — Annex III lists
+   * "Talc: hydrated magnesium silicate", another list has plain "Talc" — and
+   * each becomes its own entry with its own id. Both then claim the alias
+   * "talc", the registry saw two claimants of equal confidence, and correctly
+   * refusing to guess it dropped the alias: talc resolved to nothing at all.
+   * The same went for hydrogen peroxide, resorcinol, benzyl alcohol, coumarin,
+   * eugenol, benzoyl peroxide, kojic acid and carbon black — none of them
+   * exotic, all of them silent on a scan.
+   *
+   * A shared CAS number settles it without guessing. CAS identifies the
+   * chemical, so two entries carrying the same one are not rival claimants,
+   * they are one substance recorded twice, and the honest response is to treat
+   * them as one rather than to throw the name away. Their evidence is unioned,
+   * so nothing a source said is lost to the merge.
+   */
+  private idsByCas = new Map<string, string[]>();
+
+  readonly version: string;
+
+  constructor(file: SubstanceRegistryFile) {
+    this.version = file._metadata.version;
+
+    // Two passes: identity first, then aliases. Alias arbitration has to know
+    // whether two claimants share a CAS, which is not knowable until every
+    // substance has been seen.
+    for (const substance of file.substances) {
+      this.register(substance);
+    }
+    for (const substance of file.substances) {
+      this.indexAliases(substance);
+    }
+
+    // Aliases that point at more than one substance are dropped rather than
+    // arbitrated. If "red 40" ever denoted two substances, guessing between
+    // them is worse than admitting we cannot tell.
+    for (const key of this.ambiguous) {
+      this.byAlias.delete(key);
+    }
+  }
+
+  private register(substance: Substance): void {
+    if (this.byId.has(substance.id)) {
+      throw new Error(`Duplicate substance id: ${substance.id}`);
+    }
+    this.byId.set(substance.id, substance);
+
+    const cas = normalizeCas(substance.cas);
+    if (cas) {
+      if (!this.byCas.has(cas)) this.byCas.set(cas, substance);
+      this.idsByCas.set(cas, [...(this.idsByCas.get(cas) ?? []), substance.id]);
+    }
+    if (substance.eNumber) {
+      this.byENumber.set(normalizeSubstanceName(substance.eNumber), substance);
+    }
+  }
+
+  /** Every id that denotes the same chemical as `id`, including `id` itself. */
+  sameSubstanceIds(id: string): string[] {
+    const substance = this.byId.get(id);
+    const cas = normalizeCas(substance?.cas);
+    if (!substance || !cas) return [id];
+    const group = this.idsByCas.get(cas);
+    if (!group || group.length <= 1) return [id];
+    // Same CAS is where the group comes from; `isSameSubstance` is what decides
+    // membership, so the nano entry does not sweep the bulk one in with it.
+    return group.filter((other) => {
+      if (other === id) return true;
+      const candidate = this.byId.get(other);
+      return !!candidate && this.isSameSubstance(substance, candidate);
+    });
+  }
+
+  private isSameSubstance(a: Substance, b: Substance): boolean {
+    const casA = normalizeCas(a.cas);
+    const casB = normalizeCas(b.cas);
+    if (!casA || casA !== casB) return false;
+    // A shared CAS is necessary but not sufficient. Regulators treat the
+    // physical form as a separate entity with its own entry and its own
+    // limits: titanium dioxide and titanium dioxide (nano) share CAS
+    // 13463-67-7, carbon black and carbon black (nano) share 1333-86-4, and
+    // talc is restricted in fibrous form specifically. Merging on CAS alone
+    // would push the nano entry's restrictions onto the bulk substance —
+    // trading one wrong answer for another, in the direction that cries wolf.
+    return formOf(a) === formOf(b);
+  }
+
+  private indexAliases(substance: Substance): void {
+
+    const aliases: SubstanceAlias[] = [
+      { name: substance.name, source: 'curated', confidence: 1 },
+      ...substance.aliases,
+      ...(substance.inci ? [{ name: substance.inci, source: 'cosing' as AliasSource, confidence: 1 }] : []),
+    ];
+
+    for (const alias of aliases) {
+      if (alias.confidence < MIN_ALIAS_CONFIDENCE) continue;
+      const key = normalizeSubstanceName(alias.name);
+      if (!key) continue;
+      const existing = this.byAlias.get(key);
+      if (existing && existing.substance.id !== substance.id) {
+        // Same chemical filed twice, not two chemicals with one name. Keep the
+        // entry already indexed and move on: `sameSubstanceIds` unions their
+        // evidence, so which of the two wins the name changes nothing about
+        // what is known, and dropping the name over it would lose the
+        // ingredient entirely.
+        if (this.isSameSubstance(existing.substance, substance)) {
+          this.ambiguous.delete(key);
+          continue;
+        }
+
+        // Two substances want the same name. A more confident claim wins; two
+        // equally confident claims are genuinely ambiguous and get dropped.
+        //
+        // This is not arbitration between rival substances — it is preferring a
+        // source that names the substance exactly over one that mentions it as
+        // a member of a family. A published list may cover a substance both on
+        // its own and inside a mixture; the standalone entry is the better
+        // identity, and dropping both leaves a common ingredient unresolvable.
+        if (alias.confidence > existing.alias.confidence) {
+          this.ambiguous.delete(key);
+          this.byAlias.set(key, { substance, alias });
+        } else if (alias.confidence < existing.alias.confidence) {
+          // Keep the stronger claim already indexed.
+        } else {
+          this.ambiguous.add(key);
+        }
+        continue;
+      }
+      this.byAlias.set(key, { substance, alias });
+    }
+  }
+
+  get size(): number {
+    return this.byId.size;
+  }
+
+  get aliasCount(): number {
+    return this.byAlias.size;
+  }
+
+  getById(id: string): Substance | undefined {
+    return this.byId.get(id);
+  }
+
+  /**
+   * Resolve a label string to a substance, or null when we cannot be sure.
+   *
+   * Null is a legitimate, expected answer — the caller must treat it as
+   * "unknown", never as "no hazards".
+   */
+  resolve(rawName: string): ResolvedSubstance | null {
+    const trimmed = rawName?.trim();
+    if (!trimmed) return null;
+
+    // An explicit identifier in the text is the strongest signal available.
+    const cas = extractCas(trimmed);
+    if (cas) {
+      const substance = this.byCas.get(cas);
+      if (substance) {
+        return {
+          substance,
+          via: { name: cas, source: 'curated', confidence: 1 },
+          how: 'identifier',
+        };
+      }
+    }
+
+    const key = normalizeSubstanceName(trimmed);
+    if (!key) return null;
+
+    const hit = this.byAlias.get(key);
+    if (hit) {
+      return { substance: hit.substance, via: hit.alias, how: 'exact' };
+    }
+
+    // Bare E-number, e.g. a label that just prints "E129".
+    const eHit = this.byENumber.get(key);
+    if (eHit) {
+      return {
+        substance: eHit,
+        via: { name: trimmed, source: 'eu_additives', confidence: 1 },
+        how: 'identifier',
+      };
+    }
+
+    return null;
+  }
+}
+
+/** Pull a CAS number out of free text, e.g. "Allura Red AC (CAS 25956-17-6)". */
+export function extractCas(text: string): string | null {
+  const match = text.match(/\b(\d{2,7}-\d{2}-\d)\b/);
+  if (!match) return null;
+  return isValidCas(match[1]) ? match[1] : null;
+}
+
+const REGISTRY_PATH = path.join(process.cwd(), 'server/data/substances/substances.json');
+
+let registry: SubstanceRegistry | null = null;
+
+export function loadSubstanceRegistry(filePath: string = REGISTRY_PATH): SubstanceRegistry {
+  const raw = fs.readFileSync(filePath, 'utf-8');
+  return new SubstanceRegistry(JSON.parse(raw) as SubstanceRegistryFile);
+}
+
+/** Process-wide registry, loaded once. */
+export function getSubstanceRegistry(): SubstanceRegistry {
+  if (!registry) {
+    try {
+      registry = loadSubstanceRegistry();
+      console.log(
+        `[SUBSTANCES] Registry v${registry.version}: ${registry.size} substances, ${registry.aliasCount} unique aliases`,
+      );
+    } catch (error: any) {
+      // An empty registry resolves everything to unknown, which is the safe
+      // failure: the app says "we don't know" rather than "this is fine".
+      console.error(`[SUBSTANCES] Could not load registry, resolving everything to unknown: ${error.message}`);
+      registry = new SubstanceRegistry({
+        _metadata: { version: '0-unavailable', updatedAt: '', description: 'load failed' },
+        substances: [],
+      });
+    }
+  }
+  return registry;
+}
+
+/** Test seam. */
+export function __setSubstanceRegistry(next: SubstanceRegistry | null): void {
+  registry = next;
+}

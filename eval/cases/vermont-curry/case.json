@@ -1,0 +1,28 @@
+{
+  "image": "attached_assets/IMG_5285_1762817906660.jpeg",
+  "description": "House Vermont Curry box — very dense nested list, label sideways, milk/wheat/soy allergens",
+  "productType": "food",
+  "language": "en",
+  "verified": false,
+  "crossCheckedAgainstPhoto": "2026-08-12",
+  "notes": "Cross-check 2026-08-12 added 'Sugar and Milk Powder Mixture', a compound the label names before listing its four components. The seed transcription kept the components but dropped the compound name, inconsistently with the other compounds it does keep (Curry Powder, Cheese Product, Brown Roux, Fruit Paste, Onion Seasoning). Label declares CONTAINS: SOYBEANS, WHEAT, AND MILK. Note 'Garlic' and 'Dried Garlic' both normalize to 'garlic', so this case effectively scores 63 distinct ingredients, not 64.",
+  "truth": {
+    "ingredients": [
+      "Vegetable Oil", "Palm Oil", "Canola Oil", "Soy Lecithin", "Wheat Flour", "Sugar",
+      "Salt", "Corn Starch", "Curry Powder", "Spices", "Garlic",
+      "Sugar and Milk Powder Mixture", "Whole Milk Powder",
+      "Skim Milk Powder", "Caramel Color", "Monosodium Glutamate", "Defatted Soybean",
+      "Yeast Extract", "Natural and Artificial Flavors", "Honey", "Cheese Product",
+      "Dextrin", "Enzyme Modified Cheese", "Cheese", "Pasteurized Milk", "Cheese Cultures",
+      "Enzymes", "Roasted Onion Powder", "Onion Flake", "Natural Flavor", "Onion Seasoning",
+      "Onion Extract", "Soy Sauce", "Soybean", "Wheat", "Garlic Extract", "Tomato Powder",
+      "Onion Powder", "Dried Onion", "Glucose", "Sucrose Fatty Acid Esters", "Brown Roux",
+      "Fruit Paste", "Banana", "Processed Honey", "Tomato Paste", "Fermented Milk",
+      "Citric Acid", "Mono- and Diglycerides", "Cocoa Powder", "Tomato Seasoning",
+      "Tomato Extract", "Protein Hydrolysate", "Soy Protein Hydrolysate", "Apple Paste",
+      "Apple Puree", "Garlic Powder", "Dried Garlic", "Maltose", "Whey Powder",
+      "Roasted Garlic Powder", "Garlic Flake", "Disodium Inosinate", "Paprika Color"
+    ],
+    "majorAllergens": ["milk", "wheat", "soy"]
+  }
+}

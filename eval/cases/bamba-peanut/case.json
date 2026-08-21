@@ -1,0 +1,21 @@
+{
+  "image": "attached_assets/IMG_5373_1766260273885.jpeg",
+  "description": "Osem Bamba peanut snack — short list, crinkled bag, sideways, partially occluded; peanut allergen",
+  "productType": "food",
+  "language": "en",
+  "verified": false,
+  "truth": {
+    "ingredients": [
+      "Peanut Butter",
+      "Ground Peanuts",
+      "Corn Grits",
+      "Sunflower Oil",
+      "Salt"
+    ],
+    "majorAllergens": [
+      "peanut"
+    ]
+  },
+  "crossCheckedAgainstPhoto": "2026-08-12",
+  "notes": "Cross-check 2026-08-12: label transcribed exactly, all 5 ingredients confirmed ('Peanut Butter (Ground Peanuts), Corn Grits, Sunflower Oil, Salt'). Declares 'Contains: Peanuts' and separately 'May contain: Soy' — soy is a may-contain and must NOT appear in detected allergens, which makes this the set's cleanest may-contain discipline test."
+}

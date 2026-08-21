@@ -51,10 +51,13 @@ function getCategoryDisplayName(category: PreferenceCategory, language: string =
       es: 'Disruptores Endocrinos',
       zh: '内分泌干扰物'
     },
-    allergens: {
-      en: 'Allergens',
-      es: 'Alérgenos',
-      zh: '过敏原'
+    // Replaces a stale `allergens` key — see the server copy in
+    // server/services/riskAdjustment.ts for the full story. Allergens live in
+    // the profile layer, and the dead key was masking this category's absence.
+    contact_sensitizers: {
+      en: 'Contact Sensitizers',
+      es: 'Sensibilizantes de Contacto',
+      zh: '接触致敏物'
     },
     alcohols: {
       en: 'Drying Alcohols',

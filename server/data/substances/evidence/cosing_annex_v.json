@@ -1,0 +1,1106 @@
+{
+  "_metadata": {
+    "version": "cosing_annex_v-2026-07-30",
+    "updatedAt": "2026-08-14",
+    "description": "EU CosIng Annex V (allowed preservatives) snapshot 2026-07-30, ingested 2026-08-14."
+  },
+  "records": [
+    {
+      "substanceId": "salts_of_benzoic_acid_other_than_that_listed_under_reference",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.5,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 1a), up to 0.5% (acid).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "benzoic_acid_and_its_sodium_salt",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 2.5,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 1), up to a) 2.5% (acid) b) 1.7% (acid) c) 0.5% (acid).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "propionic_acid_and_its_salts",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 2,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 2), up to 2% (acid).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "salicylic_acid_and_its_salts",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.5,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 3), up to Salicylic acid: 0,5 % (acid) Salicylic acid salts: 0,5 % (acid). Salicylic acid:\r\n\r\nNot to be used in products for children under 3 years of age.\r\nNot to be used in oral products.\r\nNot to be used in applications that may lead to exposure of the end-user’s lungs by inhalation.\r\n\r\n\r\nSalicylic acid salts:\r\n\r\nNot to be used in products for children under 3 years of age, except for shampoos.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "hexa_2_4_dienoic_acid_and_its_salts",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.6,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 4), up to 0.6% (acid).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "moved_or_deleted",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 6).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "biphenyl_2_ol_2_phenylphenol_2_hydroxybiphenyl_sodium_2_biph",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.2,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 7), up to (a) 0,2 % (as phenol (b) 0,15 % (as phenol). When o-Phenylphenol and Sodium o-Phenylphenate are used together, the combined concentration (as phenol) shall not exceed 0,2 % in rinse-off and 0,15 % in leave-on products.\nNot to be used in applications that may lead to exposure of the end-user’s lungs by inhalation. Not to be used in oral products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "inorganic_sulphites_and_hydrogensulphites_5",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.2,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 9), up to 0.2% (as free SO2).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "moved_or_deleted",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 10).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "chlorobutanol",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.5,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 11), up to 0.5%. Not to be used in aerosol dispensers (sprays)",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "butyl_4_hydroxy_benzoate_and_its_salts_propyl_4_hydroxy_benz",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.14,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 12 a), up to - 0,14% (as acid) for the sum of the individual concentrations - 0,8% (as acid) for mixtures of substances mentioned in entry 12 and 12a, here the sum of the individual concentrations of butyl and propylparaben and their salts does not exceed 0,14%. Not to be used in leave-on products designed for application on the nappy area of children under three years of age.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "4_hydroxybenzoic_acid_and_its_methyl_and_ethyl_esters_and_th",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.4,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 12), up to 0,4% (as acid) for single ester 0,8% (as acid) for mixtures of esters.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "3_acetyl_6_methylpyran_2_4_3h_dione_and_its_salts",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.6,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 13), up to 0.6% (as acid). Not to be used in aerosol dispensers (sprays)",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "formic_acid_and_its_sodium_salt",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.5,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 14), up to 0.5% (as acid).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "3_3_dibromo_4_4_hexamethylenedioxydibenzamidine_and_its_salt",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.1,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 15), up to 0.1%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "thiomersal",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.007,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "useRestriction": "Eye products",
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 16), up to 0.007% (of Hg) If mixed with other mercurial compounds authorized by this Regulation, the maximum concentration of Hg remains fixed at 0.007%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "phenylmercuric_salts_including_borate",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.007,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "useRestriction": "Eye products",
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 17), up to 0.007% (of Hg) If mixed with other mercurial compounds authorized by this Directive, the maximum concentration of Hg remains fixed at 0.007%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "undec_10_enoic_acid_and_its_salts",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.2,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 18), up to 0.2% (as acid).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "5_pyrimidinamine_1_3_bis_2_ethylhexyl_hexahydro_5_methyl",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.1,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 19), up to 0.1%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "5_bromo_5_nitro_1_3_dioxane",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.1,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 20), up to 0.1%. Avoid formation of nitrosamines",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "bronopol",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.1,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 21), up to 0.1%. Avoid formation of nitrosamines",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "2_4_dichlorobenzyl_alcohol",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.15,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 22), up to 0.15%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "1_4_chlorophenyl_3_3_4_dichlorophenyl_urea",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.2,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "useRestriction": "All cosmetic products, with the exception of mouthwash.",
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 23), up to 0,2 %. Purity criteria:\n3,3',4,4'-Tetrachloroazobenzene ≤ 1 ppm\n3,3',4,4'-Tetrachloroazoxybenzene ≤ 1 ppm\n\nNot to be used in toothpaste intended for children under 6 years of age.\n\nCosmetic products containing that substance that do not comply with the conditions may, provided that they comply with the conditions applicable on 23 April 2024, be placed on the Union market until 31 December 2024 and, if they have already been placed on the market before that date, continue to be made available on the Union market until 31 October 2025.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "chlorocresol",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.2,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "useRestriction": "Not to be used in products applied on mucous membranes",
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 24), up to 0.2%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "5_chloro_2_2_4_dichlorophenoxy_phenol",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.3,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "useRestriction": "Toothpastes; Hand soaps; Body soaps/Shower gels; Deodorants (non-spray); Face powders and blemish concealers; Nail products for cleaning the fingernails and toenails before the application of artificial nail systems;",
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 25), up to 0.3%. Not to be used in toothpaste intended for children under 3 years of age.\n\nCosmetic products containing that substance that do not comply with the conditions may, provided that they comply with the conditions applicable on 23 April 2024, be placed on the Union market until 31 December 2024 and, if they have already been placed on the market before that date, continue to be made available on the Union market until 31 October 2025.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "chloroxylenol",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.5,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 26), up to 0.5%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "n_n_methylenebis_n_3_hydroxymethyl_2_5_dioxoimidazolidin_4_y",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.6,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 27), up to 0.6%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "polyhexamethylene_biguanide_hydrochloride",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.1,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 28), up to 0.1%. Not to be used in applications that may lead to exposure of the end-user's lungs by inhalation",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "2_phenoxyethanol",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 1,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 29), up to 1.0%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "methenamine",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.15,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 30), up to 0.15%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "1_4_chlorophenoxy_1_imidazol_1_yl_3_3_dimethylbutan_2_one",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.2,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 32), up to (a) 0,2 % (b) 0,2 % (c) 0,2 % (d) 0,5 %.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "1_3_bis_hydroxymethyl_5_5_dimethylimidazolidine_2_4_dione",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.6,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 33), up to 0.6%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "benzyl_alcohol_7",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 1,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 34), up to 1.0%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "1_hydroxy_4_methyl_6_2_4_4_trimethylpentyl_2_pyridon_and_its",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 1,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 35), up to a) 1.0% b) 0.5%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "moved_or_deleted",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 36).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "2_2_methylenebis_6_bromo_4_chlorophenol",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.1,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 37), up to 0.1%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "4_isopropyl_m_cresol",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.1,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 38), up to 0.1%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "mixture_of_5_chloro_2_methyl_isothiazol_3_2h_one_and_2_methy",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.0015,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "useRestriction": "Rinse-off",
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 39), up to 0.0015% (of a mixture in the ratio 3:1 of 5-Chloro-2-methyl-isothiazol-3(2H)-one and 2-Methylisothiazol-3(2H)-one.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "n_n_bis_4_chlorophenyl_3_12_diimino_2_4_11_13_tetraazatetrad",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.3,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 42), up to 0.3% (as chlorhexidine).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "1_phenoxypropan_2_ol_8",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 1,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "useRestriction": "Only for rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 43), up to 1.0%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "alkyl_c12_c22_trimethyl_ammonium_bromide_and_chloride",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.1,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 44), up to 0.1%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "4_4_dimethyl_1_3_oxazolidine",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.1,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 45), up to 0.1%. pH > 6",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "n_hydroxymethyl_n_dihydroxymethyl_1_3_dioxo_2_5_imidazolidin",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.5,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 46), up to 0.5%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "benzenecarboximidamide_4_4_1_6_hexanediylbis_oxy_bis_and_its",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.1,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 47), up to 0.1%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "glutaraldehyde_pentane_1_5_dial",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.1,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 48), up to 0.1%. Not to be used in aerosols (sprays)",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "5_ethyl_3_7_dioxa_1_azabicyclo_3_3_0_octane",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.3,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 49), up to 0.3%. Not to be used in oral products and in products applied on mucous membranes",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "3_p_chlorophenoxy_propane_1_2_diol",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.3,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 50), up to 0.3%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "sodium_hydroxymethylamino_acetate",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.5,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 51), up to 0.5%. Not to be used if the maximum theoretical concentration of releasable formaldehyde, irrespective of the source, if the mixture as placed on the market is ≥ 0,1 % w/w",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "silver_chloride_deposited_on_titanium_dioxide",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.004,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 52), up to 0.004% (as AgCl). 20% AgCl (w/w) on TiO2.\r\nNot to be used in products for children under 3 years of age, in oral products and in eye and lip products",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "benzenemethanaminium_n_n_dimethyl_n_2_2_4_1_1_3_3_tetramethy",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.1,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 53), up to 0.1%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "benzalkonium_chloride_bromide_and_saccharinate_10",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.1,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 54), up to 0.1% (as benzalkonium chloride).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "methanol_phenylmethoxy",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.15,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 55), up to 0.15%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "3_iodo_2_propynylbutylcarbamate",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.02,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 56), up to a) 0.02% b) 0.01% c) 0.0075%. Not to be used in oral and lip products\r\na) Not to be used in products for children under 3 years of age, except in bath products / shower gels and shampoos\r\nb) Not to be used in body lotion and body cream (13)\r\nb) and c) Not to be used in products for children under 3 years of age",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "2_methyl_2h_isothiazol_3_one",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.0015,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 57), up to 0,0015 % Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "ethyl_n_alpha_dodecanoyl_l_arginate_hydrochloride",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.15,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 58), up to (a) 0,15 % (b) 0,4 %. (a) Not to be used in preparations for children under 10 years of age\r\n\r\n(b) Not to be used in lip products, oral products (other than mouthwashes), and spray products",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "1_2_3_propanetricarboxylic_acid_2_hydroxy_monohydrate_and_1_",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.2,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 59), up to 0,2% corresponding to 0,0024% of silver. Not to be used in oral producrs and eye products",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "4_3_ethoxy_4_hy_droxyphenyl_bu_tan_2_one",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.7,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 60), up to 0.7 %.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    },
+    {
+      "substanceId": "silver_zinc_zeolite",
+      "source": "cosing_annex_v",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 1,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex V, entry 61), up to (a) and (b) 1 %. For (a) and (b) the silver content in Ammonium Silver Zinc Aluminium Silicate must not exceed 2,5 %.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex V"
+      }
+    }
+  ]
+}

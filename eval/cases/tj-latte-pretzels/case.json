@@ -1,0 +1,20 @@
+{
+  "image": "attached_assets/IMG_5349_1765338925113.jpeg",
+  "description": "Trader Joe's latte pretzels — wrinkled bag, sideways, nested brackets; milk/wheat/soy allergens",
+  "productType": "food",
+  "language": "en",
+  "verified": false,
+  "crossCheckedAgainstPhoto": "2026-08-12",
+  "truth": {
+    "ingredients": [
+      "White Candy Coating", "Sugar", "Palm Kernel Oil", "Nonfat Milk Powder",
+      "Whole Milk Powder", "Whey Powder", "Palm Oil", "Soy Lecithin",
+      "Natural Vanilla Flavor", "Pretzels", "Unbleached Enriched Flour", "Wheat Flour",
+      "Niacin", "Reduced Iron", "Thiamine Mononitrate", "Riboflavin", "Folic Acid",
+      "Malted Barley Flour", "Salt", "Soybean Oil", "Dark Chocolatey Drizzle",
+      "Cocoa Powder", "Cocoa Powder Processed With Alkali", "Ground Coffee Beans"
+    ],
+    "majorAllergens": ["milk", "wheat", "soy"]
+  },
+  "notes": "Cross-check 2026-08-12 added 'Cocoa Powder Processed With Alkali', which the label lists as a distinct ingredient immediately after plain 'Cocoa Powder' and the seed transcription had collapsed into it. Label declares CONTAINS MILK, SOY, WHEAT. 'MAY CONTAIN EGG, PEANUT, ALMOND, CASHEW, COCONUT, PECAN' is a may-contain line — none of those six may appear in detected allergens. Malted Barley Flour makes this gluten-containing beyond wheat, but barley is not a US major allergen and is correctly absent from majorAllergens."
+}

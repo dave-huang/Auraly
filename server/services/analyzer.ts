@@ -5,6 +5,13 @@ import { fileURLToPath } from 'url';
 import { openai } from '../openai';
 import { analysisResultSchema, type ProductType, type AnalysisResult, type RiskLevel, type Ingredient } from '@shared/schema';
 import { getCachedIngredientAnalysis, setCachedIngredientAnalysis } from './cache';
+import {
+  applyPopulationRisk,
+  domainForProductType,
+  warmSubstanceCorpus,
+} from './substances/classify';
+import { getEvidenceStore } from './substances/evidence';
+import { POLICY_VERSION } from './substances/policy';
 
 // OpenAI model for ingredient analysis
 const ANALYSIS_MODEL = "gpt-5.6-luna";
@@ -96,119 +103,27 @@ function normalizeIngredientCapitalization(name: string, language: string = 'en'
     .replace(/^./, (char: string) => char.toUpperCase()); // Ensure first letter is always capitalized
 }
 
-// REGULATORY DATABASE - structured ingredient bans from authoritative sources
-// Loaded from server/data/regulatory-bans.json
-interface RegulatoryEntry {
-  id: string;
-  names: string[];
-  category: string;
-  risk: 'high' | 'moderate' | 'low';
-  regulation: string;
-  source: string;
-}
+// POPULATION-LEVEL RISK CLASSIFICATION
+//
+// Replaces the retired regulatory-bans.json override. That file stored a
+// verdict (`risk: "high"`) beside a prose regulation string and upgraded the
+// model's answer when an ingredient name matched — which meant every new
+// substance needed a human to reach a conclusion before it could be added, and
+// the list stalled at 40 rows.
+//
+// Risk is now decided in exactly one place, from evidence, by versioned rules:
+// see services/substances/policy.ts. Nothing overrides anything.
+//
+// The old matcher also substring-matched regulated terms with a word-boundary
+// regex, so "lake salt" hit its "lake" dye pattern and "formaldehyde-free" hit
+// "formaldehyde" — both classified high. The identity resolver replaces that
+// with exact alias and identifier matching, and returns unknown rather than
+// guessing.
 
-interface RegulatoryDatabase {
-  _metadata: {
-    version: string;
-    lastUpdated: string;
-    description: string;
-    sources: string[];
-  };
-  ingredients: RegulatoryEntry[];
-}
+// Load the corpus at boot, as the retired database did, so its size shows up in
+// the startup log and a broken corpus fails at deploy rather than mid-scan.
+warmSubstanceCorpus();
 
-// Load regulatory database
-let regulatoryDb: RegulatoryDatabase | null = null;
-let regulatoryLookup: Map<string, RegulatoryEntry> = new Map();
-
-function loadRegulatoryDatabase(): void {
-  try {
-    const dbPath = path.join(process.cwd(), 'server/data/regulatory-bans.json');
-    if (fs.existsSync(dbPath)) {
-      const data = fs.readFileSync(dbPath, 'utf-8');
-      regulatoryDb = JSON.parse(data) as RegulatoryDatabase;
-      
-      // Build lookup map for fast matching (lowercase names -> entry)
-      regulatoryLookup.clear();
-      for (const entry of regulatoryDb.ingredients) {
-        for (const name of entry.names) {
-          regulatoryLookup.set(name.toLowerCase().trim(), entry);
-        }
-      }
-      
-      console.log(`[REGULATORY-DB] Loaded ${regulatoryDb.ingredients.length} regulated ingredients (${regulatoryLookup.size} name variants)`);
-      console.log(`[REGULATORY-DB] Version: ${regulatoryDb._metadata.version}, Last updated: ${regulatoryDb._metadata.lastUpdated}`);
-    } else {
-      console.warn(`[REGULATORY-DB] Database file not found at ${dbPath}`);
-    }
-  } catch (error) {
-    console.error('[REGULATORY-DB] Error loading database:', error);
-  }
-}
-
-// Initialize on module load
-loadRegulatoryDatabase();
-
-// Find regulatory entry for an ingredient name
-function findRegulatoryEntry(ingredientName: string): RegulatoryEntry | null {
-  const nameLower = ingredientName.toLowerCase().trim();
-  
-  // Direct lookup first
-  if (regulatoryLookup.has(nameLower)) {
-    return regulatoryLookup.get(nameLower)!;
-  }
-  
-  // Fuzzy matching: check if ingredient name contains any regulated term
-  const entries = Array.from(regulatoryLookup.entries());
-  for (let i = 0; i < entries.length; i++) {
-    const [term, entry] = entries[i];
-    // Match if the regulated term appears as a word boundary in the ingredient name
-    const regex = new RegExp(`\\b${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
-    if (regex.test(nameLower)) {
-      return entry;
-    }
-  }
-  
-  // Special patterns for complex names (FD&C variations, Lake variants, etc.)
-  const specialPatterns = [
-    { pattern: /\b(fd&?c|d&?c)\s*(red|yellow|blue|green)\s*(no\.?\s*)?\d+/i, category: 'synthetic_dye' },
-    { pattern: /\bartificial\s*colou?r/i, category: 'synthetic_dye' },
-    { pattern: /\blake\b/i, category: 'synthetic_dye' }, // Any "Lake" dye variant
-  ];
-  
-  for (const { pattern, category } of specialPatterns) {
-    if (pattern.test(nameLower)) {
-      // Return a synthetic entry for pattern matches
-      return {
-        id: 'pattern_match',
-        names: [nameLower],
-        category,
-        risk: 'high',
-        regulation: 'Synthetic colorant - requires warning labels in EU, linked to hyperactivity in children',
-        source: 'EU Regulation (EC) No 1333/2008'
-      };
-    }
-  }
-  
-  return null;
-}
-
-// Enforce regulatory-based risk status for ingredients
-// This overrides AI judgment when ingredients match regulated entries
-function enforceHighRiskStatus(ingredient: Ingredient): Ingredient {
-  const entry = findRegulatoryEntry(ingredient.name);
-  
-  if (entry && entry.risk === 'high' && ingredient.riskLevel !== 'high') {
-    console.log(`[REGULATORY-OVERRIDE] Upgrading "${ingredient.name}" from ${ingredient.riskLevel} to high`);
-    console.log(`  → Matched: ${entry.id} | Source: ${entry.source}`);
-    return {
-      ...ingredient,
-      riskLevel: 'high'
-    };
-  }
-  
-  return ingredient;
-}
 
 // Helper function to join wrapped lines (language-agnostic)
 // Intelligently joins incomplete words/modifiers with next line
@@ -470,8 +385,14 @@ function calculateSimilarity(str1: string, str2: string): number {
 // Generate cache key from ingredient text, product type, and language
 function getCacheKey(ingredientsText: string, productType: string, userLanguage: string): string {
   const normalizedText = normalizeTextForCaching(ingredientsText);
+  // Both the rules AND the evidence they read are part of the key. A cached
+  // verdict is only valid for the policy that decided it and the corpus it was
+  // decided from — so a rule change or a source ingestion retires the old
+  // answers instead of shipping to new scans only, which would leave two users
+  // seeing different results for the same product.
+  const corpusVersion = getEvidenceStore().version || 'empty';
   const hash = crypto.createHash('sha256')
-    .update(`${normalizedText}__${productType}__${userLanguage}`)
+    .update(`${normalizedText}__${productType}__${userLanguage}__${POLICY_VERSION}__${corpusVersion}`)
     .digest('hex');
   return hash;
 }
@@ -908,6 +829,23 @@ For ALL high-risk ingredients, your summary and details MUST include:
 
 Example high-risk summary: "Red 40 is a synthetic petroleum-based dye banned in several European countries. Studies link it to hyperactivity in children, and the EU requires warning labels on products containing it. Regular consumption may pose health risks."
 
+⚠️ DO NOT INVENT REGULATORY SPECIFICS ⚠️
+Your risk level and your reasoning are YOUR assessment, and they are shown to the
+user as such. Regulatory facts are different: they are checkable, and a wrong one
+is a false statement about a real company's product.
+
+• If you are sure of a specific fact, state it: "banned in the EU".
+• If you are NOT sure of the exact year, law, annex or regulation number, DO NOT
+  GUESS ONE. Write "restricted in some markets" instead of inventing
+  "banned in the EU since 2008 under Annex II". A vaguer true sentence is
+  always better than a precise invented one.
+• Never invent a study, an author, a journal, or a citation.
+• Never state a numeric limit (mg/kg, ppm, % of energy) unless you are certain.
+
+Where the app holds a published record for an ingredient, it quotes that record
+verbatim beside your summary. Your prose does not need to carry the citation —
+it needs to be true.
+
 When explaining low/moderate ingredients, be factual about their purpose and any precautionary notes.
 
 WHEN UNCERTAIN - DEFAULT TO HIGHER RISK:
@@ -1048,9 +986,20 @@ Return your analysis as JSON with this structure:
       // TODO: Re-enable with smarter estimation that accounts for parenthetical groups
       console.log(`[ANALYZER] Completeness check DISABLED. Detected: ${detectedCount}, Estimated: ${estimatedIngredientCount}`);
       
+      // Give every ingredient its universal level before caching. This path
+      // (the text-only analysis endpoint) used to skip the record layer
+      // completely, so the same ingredient could come back with a stored
+      // regulator's level via the scan route and the model's raw level here.
+      const withUniversal = {
+        ...validatedResult.data,
+        ingredients: validatedResult.data.ingredients.map((r) =>
+          applyPopulationRisk(r, domainForProductType(productType)),
+        ),
+      };
+
       // Cache the result before returning (pass original OCR text for fuzzy matching)
-      cacheAnalysis(cacheKey, validatedResult.data, ingredientsText);
-      return validatedResult.data;
+      cacheAnalysis(cacheKey, withUniversal, ingredientsText);
+      return withUniversal;
       
     } catch (error: any) {
       lastError = error;
@@ -1532,8 +1481,10 @@ IMPORTANT: Return ONLY this JSON array, nothing else:
           };
         });
         
-        // Apply high-risk enforcement BEFORE caching (so corrected risk is cached)
-        freshResults = freshResults.map(enforceHighRiskStatus);
+        // Classify before caching, so the cached row carries the policy's level
+        // rather than the model's. The cache key includes POLICY_VERSION, so a
+        // rule change retires these entries rather than serving stale verdicts.
+        freshResults = freshResults.map((r) => applyPopulationRisk(r, domainForProductType(productType)));
         
         // Cache fresh results with language tag
         for (const result of freshResults) {
@@ -1643,13 +1594,16 @@ IMPORTANT: Return ONLY this JSON array:
               normalizedRiskLevel = 'moderate';
             }
             
-            const normalized = enforceHighRiskStatus({
-              ...singleResult,
-              riskLevel: normalizedRiskLevel as 'low' | 'moderate' | 'high',
-              name: normalizeIngredientCapitalization(singleResult.name, userLanguage)
-            });
-            
-            // Cache it (with enforced risk level)
+            const normalized = applyPopulationRisk(
+              {
+                ...singleResult,
+                riskLevel: normalizedRiskLevel as 'low' | 'moderate' | 'high',
+                name: normalizeIngredientCapitalization(singleResult.name, userLanguage)
+              },
+              domainForProductType(productType),
+            );
+
+            // Cache it (with the policy's risk level, not the model's)
             await setCachedIngredientAnalysis(normalized.name, productType, JSON.stringify(normalized), userLanguage);
             individualResults.push(normalized);
             console.log(`[PARALLEL-BATCH-${batchIdx}] Individual analysis succeeded: ${singleIngredient} → ${normalized.name}`);
@@ -1678,8 +1632,11 @@ IMPORTANT: Return ONLY this JSON array:
   
   // Wait for all batches to complete in parallel
   const allBatchResults = await Promise.all(batchPromises);
-  // Apply high-risk enforcement as final safety net (catches any cached items from before enforcement was added)
-  const allIngredients = allBatchResults.flat().map(enforceHighRiskStatus);
+  // Re-classify everything after the merge, which also covers rows that came
+  // back from the ingredient cache under an older policy version.
+  const allIngredients = allBatchResults
+    .flat()
+    .map((r) => applyPopulationRisk(r, domainForProductType(productType)));
   
   console.log(`[PARALLEL-ANALYZER] Merged ${allIngredients.length} total ingredients from ${batches.length} batches`);
   

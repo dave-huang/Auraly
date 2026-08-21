@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { sql } from 'drizzle-orm';
-import { boolean, index, integer, jsonb, pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
+import { boolean, index, integer, jsonb, pgTable, text, timestamp, uniqueIndex, varchar } from "drizzle-orm/pg-core";
 
 // Sessions table (REQUIRED for Replit Auth)
 export const sessions = pgTable(
@@ -304,6 +304,153 @@ export const scanHistory = pgTable(
 export type ScanHistory = typeof scanHistory.$inferSelect;
 export type InsertScanHistory = typeof scanHistory.$inferInsert;
 
+// ==========================================
+// PERSONAL PROFILES (multi-profile per user, e.g. family members)
+// ==========================================
+
+// Severity of a profile allergen entry — drives how hard a match is flagged.
+export const allergenSeverities = [
+  "anaphylaxis",  // life-threatening — always flag as high risk
+  "allergy",      // diagnosed allergy — always flag as high risk
+  "intolerance",  // e.g. lactose intolerance — flag as moderate+
+  "avoid",        // personal avoidance preference — flag as moderate
+] as const;
+export type AllergenSeverity = typeof allergenSeverities[number];
+
+export const profileAllergenSchema = z.object({
+  // Canonical name: a big-9 allergen ("peanut", "milk", "sesame", ...) or any
+  // custom ingredient/term ("red 40", "carrageenan")
+  allergen: z.string().min(1),
+  severity: z.enum(allergenSeverities).default("allergy"),
+  // Extra match terms beyond the built-in keyword list for this allergen
+  keywords: z.array(z.string()).optional(),
+});
+export type ProfileAllergen = z.infer<typeof profileAllergenSchema>;
+
+export const dietaryRuleTypes = [
+  "vegan", "vegetarian", "gluten_free", "halal", "kosher",
+] as const;
+export type DietaryRule = typeof dietaryRuleTypes[number];
+
+// Conditions that change what is safe for THIS person, independent of what any
+// regulator has done about an ingredient. Aspartame is approved in every market
+// on earth and causes irreversible harm to someone with PKU; a scale built only
+// on enforcement action cannot see that, which is why this list exists and why
+// an advisory here is allowed to reach `high`.
+//
+// Each entry must be backed by a sourced advisory in
+// server/services/conditionAdvisories.ts — adding a member here without one
+// makes the condition selectable in the UI and silently inert.
+export const profileConditionTypes = [
+  "pregnancy", "breastfeeding", "celiac", "eczema",
+  "pku", "g6pd_deficiency", "hypertension", "diabetes", "kidney_disease",
+] as const;
+export type ProfileCondition = typeof profileConditionTypes[number];
+
+export const profiles = pgTable(
+  "profiles",
+  {
+    id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+    userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+    name: varchar("name").notNull(),
+    isDefault: boolean("is_default").notNull().default(false),
+    allergens: jsonb("allergens").$type<ProfileAllergen[]>().notNull().default([]),
+    dietaryRules: jsonb("dietary_rules").$type<DietaryRule[]>().notNull().default([]),
+    conditions: jsonb("conditions").$type<ProfileCondition[]>().notNull().default([]),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (table) => [
+    index("IDX_profiles_user_id").on(table.userId),
+  ]
+);
+
+export type Profile = typeof profiles.$inferSelect;
+export type InsertProfile = typeof profiles.$inferInsert;
+
+// Ingredients we could not classify, ranked by how often real scans hit them.
+//
+// This is the curation queue for the substance corpus: rather than guessing
+// which corner of the additive index to fill in next, you work down this table.
+// No user id — the interesting unit is the ingredient string, and keeping this
+// unattributed means it survives account deletion without any special handling.
+export const substanceCoverageMisses = pgTable(
+  "substance_coverage_misses",
+  {
+    id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+    /** The name exactly as the label printed it, for curation. */
+    inputName: text("input_name").notNull(),
+    /** Lowercased/trimmed form that the upsert key is built on. */
+    normalizedName: text("normalized_name").notNull(),
+    domain: varchar("domain").notNull(), // 'food' | 'cosmetic'
+    reason: varchar("reason").notNull(), // 'unresolved' | 'no_evidence'
+    /** Set when identity resolved but we hold no evidence for the substance. */
+    substanceId: varchar("substance_id"),
+    seenCount: integer("seen_count").notNull().default(1),
+    firstSeenAt: timestamp("first_seen_at").defaultNow().notNull(),
+    lastSeenAt: timestamp("last_seen_at").defaultNow().notNull(),
+  },
+  (table) => [
+    uniqueIndex("UQ_coverage_miss").on(table.normalizedName, table.domain, table.reason),
+    index("IDX_coverage_seen_count").on(table.seenCount),
+  ]
+);
+
+export type SubstanceCoverageMiss = typeof substanceCoverageMisses.$inferSelect;
+
+export const upsertProfileSchema = z.object({
+  name: z.string().min(1).max(60),
+  isDefault: z.boolean().optional(),
+  allergens: z.array(profileAllergenSchema).max(50).default([]),
+  dietaryRules: z.array(z.enum(dietaryRuleTypes)).default([]),
+  conditions: z.array(z.enum(profileConditionTypes)).default([]),
+});
+export type UpsertProfileInput = z.infer<typeof upsertProfileSchema>;
+
+// A cited claim from the knowledge base attached to an ingredient or flag
+export const citationSchema = z.object({
+  entryId: z.string(),
+  statement: z.string(),
+  riskContext: z.string(),
+  sources: z.array(z.object({
+    org: z.string(),
+    title: z.string(),
+    year: z.number().optional(),
+    url: z.string().optional(),
+  })),
+  reviewStatus: z.enum(["ai_seeded", "human_reviewed"]),
+});
+export type Citation = z.infer<typeof citationSchema>;
+
+// A personal flag attached to an analysis result for one profile match.
+export const personalFlagSchema = z.object({
+  ingredientName: z.string(),
+  type: z.enum(["allergen", "dietary", "condition"]),
+  match: z.string(),           // what matched: "peanut", "vegan", "pregnancy"
+  severity: z.enum(allergenSeverities).optional(), // for allergen flags
+  // How sure we are the ingredient violates the rule. "verify" means it
+  // depends on sourcing (e.g. sugar may be bone-char filtered) — the UI
+  // should present these more quietly than definite violations.
+  certainty: z.enum(["definite", "verify"]).default("definite"),
+  // English fallback text. Prefer reasonKey/reasonParams when present: the
+  // client renders flags in the user's language, and a server-built English
+  // sentence would sit untranslated inside a localized results screen.
+  reason: z.string(),
+  reasonKey: z.string().optional(),
+  reasonParams: z.record(z.string(), z.union([z.string(), z.number()])).optional(),
+  citations: z.array(citationSchema).optional(), // condition-specific KB evidence
+
+  // How much this matters to THIS person. Allergen flags derive it from the
+  // profile's own severity; condition flags carry it from the advisory that
+  // fired. A condition is allowed to be "avoid" — someone with PKU reading a
+  // can of diet soda is not being cautioned, they are being warned.
+  impact: z.enum(["avoid", "caution"]).optional(),
+  // Stable id of the advisory behind a condition flag, so the drill-down can
+  // show who says so and the check script can assert every one is reachable.
+  advisoryId: z.string().optional(),
+});
+export type PersonalFlag = z.infer<typeof personalFlagSchema>;
+
 // Product types that can be analyzed (simplified to 2 categories)
 export const productTypes = [
   "food",           // Food & Supplements
@@ -326,6 +473,51 @@ export const ingredientSchema = z.object({
   category: z.string().nullish(),
   preferenceCategories: z.array(z.enum(preferenceCategories)).optional(), // Which preference categories this ingredient belongs to
   riskAdjustmentReason: z.string().optional(), // Why risk was adjusted (e.g., "User avoids parabens")
+  citations: z.array(citationSchema).optional(), // Knowledge-base evidence, attached post-analysis
+
+  // ---- population-level classification provenance ----
+  // Whether the substance corpus could speak to this ingredient at all.
+  // "unknown" means we did not resolve its identity, or resolved it and hold no
+  // evidence — which the UI must present as "we have nothing on this" rather
+  // than as a clean bill of health. The displayed riskLevel in that case is the
+  // model's reading, not a verdict from evidence.
+  // ---- the two levels ----
+  //
+  // Every ingredient has a UNIVERSAL level — the risk to most people, with no
+  // allergies or conditions — and may also have a PERSONAL one, when something
+  // about this user makes it worse for them. `riskLevel` above is whichever
+  // applies, so existing readers keep working; these two say which is which.
+  //
+  // An earlier design had no universal level for anything we lacked a
+  // regulatory record on, which meant most of a normal grocery label came back
+  // as "unknown". The model now rates everything, and a stored record overrides
+  // it where we hold one.
+
+  /** The model's own rating. Set once at analysis, never recomputed — it is the
+   *  input to everything below, so re-deriving must be idempotent. */
+  modelRiskLevel: z.enum(riskLevels).optional(),
+  /** Risk to most people: the record's level where we hold one, else the model's. */
+  universalRiskLevel: z.enum(riskLevels).optional(),
+  /** Set ONLY when a profile factor raises the level above universal. Personal
+   *  risk never lowers it — a peanut allergy makes peanuts worse for you, it
+   *  cannot make trans fat better. */
+  personalRiskLevel: z.enum(riskLevels).optional(),
+  /** Where the universal level came from. `record` means a published document
+   *  decided it and can be quoted; `model` means it is our assessment. */
+  riskSource: z.enum(["model", "record"]).optional(),
+
+  // Which policy rules fired, worst-first. The first one decided the level.
+  policyRuleIds: z.array(z.string()).optional(),
+  // Resolved substance id, for looking up the evidence behind the level.
+  substanceId: z.string().optional(),
+
+  // ---- label-derived, not evidence ----
+  // Position in the ingredient list. Ingredient lists are a legal declaration
+  // in descending order of weight, so rank is a real statement about how much
+  // of a product an ingredient is — the one dose signal available without a
+  // nutrition panel. Derived per label, so it is NEVER an evidence record and
+  // NEVER feeds the policy level; it qualifies a level the policy already set.
+  labelRank: z.object({ rank: z.number().int().min(1), total: z.number().int().min(1) }).optional(),
 });
 
 export type Ingredient = z.infer<typeof ingredientSchema>;
@@ -846,6 +1038,71 @@ export const analysisResultSchema = z.object({
   analyzedAt: z.string(),
   originalText: z.string().optional(),
   translatedText: z.string().optional(),
+  // Present only when a personal profile was applied (post-cache, per-request)
+  personalFlags: z.array(personalFlagSchema).optional(),
+  appliedProfile: z.object({ id: z.string(), name: z.string() }).optional(),
+  // The label's own allergen statement, when the reader captured one.
+  declaredAllergens: z.object({
+    contains: z.array(z.string()).default([]),
+    mayContain: z.array(z.string()).default([]),
+  }).optional(),
+  // Canonical ENGLISH ingredient names from the label reader, kept alongside
+  // the (possibly localized) display names in `ingredients`. Allergen
+  // matching runs against these: keyword lists are English, so matching a
+  // Chinese or Spanish display name would silently find nothing.
+  canonicalIngredients: z.array(z.string()).optional(),
+  // Ingredient names exactly as printed on the label, in its own language.
+  // Kept alongside the English canonical names so the verdict card can show
+  // the original beside the translation — the bilingual pair is the app's
+  // trust-builder, so the source text must survive translation, not be
+  // discarded after it.
+  originalIngredients: z.array(z.string()).optional(),
+  /** BCP-47-ish language of the label itself, e.g. "zh", "pt". */
+  sourceLanguage: z.string().optional(),
+  /** How completely the label was read; drives the uncertain state. */
+  readConfidence: z.enum(["high", "medium", "low"]).optional(),
+  /**
+   * The reader's own count of printed lines in the ingredient block, and how
+   * many it transcribed with full confidence. Self-reported by the vision
+   * model — the only available source — so it is presented as the reader
+   * describing its own work ("22 of 22 lines"), never as a measured fact.
+   */
+  lineCount: z.object({
+    read: z.number(),
+    total: z.number(),
+  }).optional(),
+  /**
+   * What the profile was actually checked against, and whether each was
+   * found. A Safe verdict is only trustworthy if it can say what it looked
+   * for; without this the card asserts an absence it never demonstrates.
+   */
+  checked: z.array(z.object({
+    term: z.string(),
+    type: z.enum(["allergen", "dietary", "condition"]),
+    found: z.boolean(),
+  })).optional(),
+  /**
+   * The nearest miss: an ingredient that hit an allergen keyword and was then
+   * ruled out by an exclusion rule. Real matcher output, not a heuristic —
+   * "Peanut Butter" genuinely trips the milk keyword "butter" before the
+   * plant-butter exclusion vetoes it. Showing the near miss is what makes a
+   * clean verdict credible rather than lucky.
+   */
+  closestCall: z.object({
+    ingredientName: z.string(),
+    term: z.string(),
+    keyword: z.string(),
+  }).optional(),
+  /**
+   * What would resolve a hedged verdict, plus the ingredient it concerns.
+   * Only present when the doubt is actually resolvable — a Caution with no
+   * settling action gets no block rather than an empty gesture.
+   */
+  settle: z.object({
+    reasonKey: z.string(),
+    ingredientName: z.string().optional(),
+    params: z.record(z.string(), z.string()).optional(),
+  }).optional(),
 });
 
 export type AnalysisResult = z.infer<typeof analysisResultSchema>;

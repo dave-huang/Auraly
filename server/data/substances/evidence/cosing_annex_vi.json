@@ -1,0 +1,651 @@
+{
+  "_metadata": {
+    "version": "cosing_annex_vi-2026-07-30",
+    "updatedAt": "2026-08-14",
+    "description": "EU CosIng Annex VI (allowed UV filters) snapshot 2026-07-30, ingested 2026-08-14."
+  },
+  "records": [
+    {
+      "substanceId": "n_n_n_trimethyl_4_2_oxoborn_3_ylidenemethyl_anilinium_methyl",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 6,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 2), up to 6%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "benzoic_acid_2_hydroxy_3_3_5_trimethylcyclohexyl_ester_homos",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 7.34,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "useRestriction": "Face products with the exception of propellent spray products",
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 3), up to 7,34 %. From 1 January 2025 cosmetic products containing that substance and not complying with the conditions shall not be placed on the Union market. From 1 July 2025 cosmetic products containing that substance and not complying with the conditions shall not be made available on the Union market.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "2_hydroxy_4_methoxybenzophenone_oxybenzone",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 6,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 4), up to a) 6% b) 2,2% c) 0,5% Footnote 1: However, cosmetic products containing '2-Hydroxy-4-methoxy-benzophenone/Oxybenzone' and complying with the restrictions set out in Regulation (EC) No 1223/2009 as applicable on 27 July 2022 may be placed on the Union market until 28 January 2023 and be made available on the Union market until 28 July 2023.. a) If used at 0,5 % to protect product formulation, the levels used as UV filter must not exceed 5,5 %.\r\nb) If used at 0,5 % to protect product formulation, the levels used as UV filter must not exceed 1,7 %.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "moved_or_deleted",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 5).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "2_phenylbenzimidazole_5_sulphonic_acid_and_its_potassium_sod",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 8,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 6), up to 8%(as acid).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "3_3_1_4_phenylenedimethylene_bis_7_7_dimethyl_2_oxobicyclo_2",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 10,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 7), up to 10%(as acid).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "1_4_tert_butylphenyl_3_4_methoxyphenyl_propane_1_3_dione_avo",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 5,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 8), up to 5%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "alpha_2_oxoborn_3_ylidene_toluene_4_sulphonic_acid_and_its_s",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 6,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 9), up to 6%(as acid).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "2_cyano_3_3_diphenyl_acrylic_acid_2_ethylhexyl_ester_octocri",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 9,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 10), up to a) 9% b) 10% Footnote (*3): Benzophenone as an impurity and/or degradation product of Octocrylene shall be kept at trace level..",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "polymer_of_n_2_and_4_2_oxoborn_3_ylidene_methyl_benzyl_acryl",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 6,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 11), up to 6%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "2_ethylhexyl_4_methoxycinnamate_octinoxate",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 10,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 12), up to 10%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "ethoxylated_ethyl_4_aminobenzoate",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 10,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 13), up to 10%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "isopentyl_4_methoxycinnamate_amiloxate",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 10,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 14), up to 10%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "2_4_6_trianilino_p_carbo_2_ethylhexyl_1_oxy_1_3_5_triazine",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 5,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 15), up to 5%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "phenol_2_2h_benzotriazol_2_yl_4_methyl_6_2_methyl_3_1_3_3_3_",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 15,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 16), up to 15%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "benzoic_acid_4_4_6_1_1_dimethylethyl_amino_carbonyl_phenyl_a",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 10,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 17), up to 10%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "2_ethylhexyl_salicylate_octisalate",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 5,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 20), up to 5%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "2_ethylhexyl_4_dimethylamino_benzoate_padimate_o_usan_ban",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 8,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 21), up to 8%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "2_hydroxy_4_methoxybenzophenone_5_sulfonic_acid_benzophenone",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 5,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 22), up to 5%(as acid).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "methylene_bis_benzotriazolyl_tetramethylbutylphenol_nano",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 10,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 23a), up to 10 %(*) (*) In case of combined use of Methylene Bis-Benzotriazolyl Tetramethylbutylphenol and Methylene Bis-Benzotriazolyl Tetramethylbutylphenol (nano), the sum shall not exceed the limit given in column g.’.. Not to be used in applications that may lead to exposure of the end user's lungs by inhalation. \r\nOnly nanomaterials having the following characteristics are allowed: \r\n— Purity ≥ 98,5 %, with 2,2′-methylene-bis- (6(2H-benzotriazol-2-yl)-4-(isooctyl)phenol) isomer fraction not exceeding 1,5 %;\r\n— Solubility < 5 ng/L in water at 25 °C; — Partition coefficient (Log Pow): 12,7 at 25 °C; \r\n— Uncoated;\r\n — Median particle size D50 (50 % of the number below this diameter): ≥ 120 nm of mass distribution and/or ≥ 60 nm of number size distribution.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "2_2_methylene_bis_6_2h_benzotriazol_2_yl_4_1_1_3_3_tetrameth",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 10,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 23), up to 10%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "sodium_salt_of_2_2_bis_1_4_phenylene_1h_benzimidazole_4_6_di",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 10,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 24), up to 10%(as acid).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "2_2_6_4_methoxyphenyl_1_3_5_triazine_2_4_diyl_bis_5_2_ethylh",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 10,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 25), up to 10%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "dimethicodiethylbenzalmalonate",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 10,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 26), up to 10%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "titanium_dioxide_nano",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 25,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 27a), up to 25% - In case of combined use of Titanium Dioxide and Titanium Dioxide (nano), the sum shall not exceed the limit of 25%..",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "titanium_dioxide",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 25,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 27), up to 25%* *: In case of combined use of Titanium Dioxide and Titanium Dioxide (nano), the sum shall not exceed the limit given in column g (Maximum concen­tration in ready for use preparation). Titanium dioxide in powder form containing 1 % or more of particles with aerodynamic diameter ≤ 10 μm, to be used in compliance with Annex III, No 321. For the product types under letter (c) of column (f) in Annex III, No 321, the maximum concentration in ready for use preparation provided in column (g) of this entry applies.\r\n\r\n(For use as a colourant, see Annex IV, No 143)",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "benzoic_acid_2_4_diethylamino_2_hydroxybenzoyl_hexylester",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 10,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 28), up to 10%. Di-n-hexyl phthalate (DnHexP) as an unavoidable trace impurity in DHHB must not exceed 10 ppm.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "1_3_5_triazine_2_4_6_tris_1_1_biphenyl_4_yl_including_as_nan",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 10,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 29), up to 10%. Not to be used in sprays.\r\nOnly nanomaterials having the folloing characteristics are allowed:\r\n- Median primary particle size >80 nm;\r\n- Purity ≥ 98%; \r\n- Uncoated",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "zinc_oxide_nano",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 25,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 30a), up to 25% - In case of combined use of zinc oxide and zinc oxide (nano), the sum shall not exceed the limit of 25%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "zinc_oxide",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 25,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 30), up to - 25% - In case of combined use of zinc oxide and zinc oxide (nano), the sum shall not exceed the limit of 25%.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "3_3_1_4_phenylene_bis_5_6_diphenyl_1_2_4_triazine",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 5,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 31), up to 5%. Not to be used in applications that may lead to exposure of the end user's lungs by inhalation.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "2_ethoxyethyl_2z_2_cyano_2_3_3_methoxypropylamino_cyclohex_2",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 3,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 32), up to 3%. - Not to be used in applications that may lead to exposure of the end-user’s lungs by inhalation\r\n\r\n- Do not use with nitrosating agents\r\n\r\n- Maximum nitrosamine content: 50 μg/kg\r\n\r\n- Keep in nitrite-free containers",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "1_1_1_4_piperazinediyl_bis_1_2_4_diethylamino_2_hydroxybenzo",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 10,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 33), up to 10 % (In case of combined use of Bis-(Diethylaminohydroxybenzoyl Benzoyl) Piperazine and Bis-(Diethylaminohydroxybenzoyl Benzoyl) Piperazine (nano), the sum shall not exceed 10 %)..",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    },
+    {
+      "substanceId": "1_1_1_4_piperazinediyl_bis_1_2_4_diethylamino_2_hydroxybenzo",
+      "source": "cosing_annex_vi",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 10,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex VI, entry 34), up to 10 % (In case of combined use of Bis-(Diethylaminohydroxybenzoyl Benzoyl) Piperazine and Bis-(Diethylaminohydroxybenzoyl Benzoyl) Piperazine (nano), the sum shall not exceed 10 %).. Only nanomaterials having the following characteristics are allowed:\r\n— Purity ≥ 97 %\r\n—Median particle size D50 (50 % of the number below this diameter): ≥ 50 nm of number size distribution.\r\nNot to be used in applications that may lead to exposure of the end user’s lungs by inhalation.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex VI"
+      }
+    }
+  ]
+}

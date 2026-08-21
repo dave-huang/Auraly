@@ -1,0 +1,2229 @@
+{
+  "_metadata": {
+    "version": "cosing_annex_iv-2026-07-30",
+    "updatedAt": "2026-08-14",
+    "description": "EU CosIng Annex IV (allowed colourants) snapshot 2026-07-30, ingested 2026-08-14."
+  },
+  "records": [
+    {
+      "substanceId": "sodium_tris_1_2_naphthoquinone_1_oximato_o_o_ferrate_1",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off product",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 1), up to Rinse-off product.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "trisodium_tris_5_6_dihydro_5_hydroxyimino_6_oxonaphthalene_2",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Not to be used in products applied on mucous membranes",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 2), up to Not to be used in products applied on mucous membranes.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "disodium_5_7_dinitro_8_oxidonaphthalene_2_sulphonate_and_its",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Not to be used in eye products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 3), up to Not to be used in eye products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "2_4_methyl_2_nitrophenyl_azo_3_oxo_n_phenylbutyramide",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Not to be used in products applied on mucous membranes",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 4), up to Not to be used in products applied on mucous membranes.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "2_4_chloro_2_nitrophenyl_azo_n_2_chlorophenyl_3_oxobutyramid",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Not to be used in products applied on mucous membranes",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 5), up to Not to be used in products applied on mucous membranes.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "2_4_methoxy_2_nitrophenyl_azo_3_oxo_n_o_tolyl_butyramide",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 6), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "4_phenylazo_resorcinol",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 7).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "4_4_ethoxyphenyl_azo_naphthol",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Not to be used in products applied on mucous membranes",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 8), up to Not to be used in products applied on mucous membranes.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "1_2_chloro_4_nitrophenyl_azo_2_naphthol_and_its_insoluble_ba",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 9). 3%",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "1_4_methyl_2_nitrophenyl_azo_2_naphthol",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 10), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "3_hydroxy_n_o_tolyl_4_2_4_5_trichlorophenyl_azo_naphthalene_",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 11), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "n_4_chloro_2_methylphenyl_4_4_chloro_2_methylphenyl_azo_3_hy",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 12), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "4_2_5_dichlorophenyl_azo_n_2_5_dimethoxyphenyl_3_hydroxynaph",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 13), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "n_5_chloro_2_4_dimethoxyphenyl_4_5_diethylamino_sulphonyl_2_",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 14).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "2_4_dihydro_5_methyl_2_phenyl_4_phenylazo_3h_pyrazol_3_one",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 15), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "disodium_2_amino_5_4_sulphonatophenyl_azo_benzenesulphonate",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 16).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "sodium_4_2_4_dihydroxyphenylazo_benzenesulphonate",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 17).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "disodium_3_2_4_dimethyl_5_sulphonatophenyl_azo_4_hydroxynaph",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 18).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "disodium_4_hydroxy_3_4_sulphonatonaphthyl_azo_naphthalenesul",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 19).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "disodium_6_2_4_dimethyl_6_sulphonatophenyl_azo_5_hydroxynaph",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 20).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "sodium_4_2_hydroxy_1_naphthyl_azo_benzenesulphonate_and_its_",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Not to be used in eye products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 21), up to Not to be used in eye products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "calcium_disodium_bis_2_chloro_5_2_hydroxy_1_naphthyl_azo_4_s",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 22).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "barium_bis_4_2_hydroxy_1_naphthyl_azo_2_methylbenzenesulphon",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 23).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "sodium_4_2_hydroxy_1_naphthyl_azo_naphthalenesulphonate",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 24), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "sodium_2_2_hydroxynaphthyl_azo_naphthalenesulphonate_and_its",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 25). 3%",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "calcium_bis_3_hydroxy_4_phenylazo_2_naphthoate",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Not to be used in products applied on mucous membranes",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 26), up to Not to be used in products applied on mucous membranes.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "disodium_3_hydroxy_4_4_methyl_2_sulphonatophenyl_azo_2_napht",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 27).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "disodium_4_5_chloro_4_methyl_2_sulphonatophenyl_azo_3_hydrox",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 28).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "calcium_3_hydroxy_4_1_sulphonato_2_naphthyl_azo_2_naphthoate",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 29).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "disodium_6_hydroxy_5_3_sulphonatophenyl_azo_naphthalene_2_su",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 30).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "disodium_6_hydroxy_5_4_sulphonatophenyl_azo_naphthalene_2_su",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 31).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "disodium_6_hydroxy_5_2_methoxy_4_sulphonato_m_tolyl_azo_naph",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 32).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "trisodium_3_hydroxy_4_4_sulphonatonaphthylazo_naphthalene_2_",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 33).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "disodium_7_hydroxy_8_phenylazo_naphthalene_1_3_disulphonate",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Not to be used in products applied on mucous membranes",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 34), up to Not to be used in products applied on mucous membranes.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "trisodium_1_1_naphthylazo_2_hydroxynaphthalene_4_6_8_trisulp",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 35).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "tetrasodium_7_hydroxy_8_4_sulphonato_1_naphthyl_azo_naphthal",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 36).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "disodium_5_amino_4_hydroxy_3_phenylazo_naphthalene_2_7_disul",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 37).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "disodium_5_acetylamino_4_hydroxy_3_phenylazo_naphthalene_2_7",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Not to be used in products applied on mucous membranes",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 38), up to Not to be used in products applied on mucous membranes.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "2_7_naphthalenedisulfonic_acid_3_4_cyclohexyl_2_methylphenyl",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 39), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "hydrogen_bis_2_4_5_dihydro_3_methyl_5_oxo_1_phenyl_1h_pyrazo",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 40), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "disodium_hydrogen_bis_5_chloro_3_4_5_dihydro_3_methyl_5_oxo_",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 41), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "sodium_4_3_hydroxy_5_methyl_4_phenylazopyrazol_2_yl_benzenes",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 42), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "disodium_2_5_dichloro_4_5_hydroxy_3_methyl_4_sulphophenyl_az",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 43).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "trisodium_5_hydroxy_1_4_sulphophenyl_4_4_sulphophenyl_azo_py",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 44).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "n_n_3_3_dimethyl_1_1_biphenyl_4_4_diyl_bis_2_2_4_dichlorophe",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 45), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "sodium_4_amino_5_hydroxy_3_4_nitrophenyl_azo_6_phenylazo_nap",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 46), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "2_2_3_3_dichloro_1_1_biphenyl_4_4_diyl_bis_azo_bis_n_2_4_dim",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 47), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "2_2_3_3_dichloro_1_1_biphenyl_4_4_diyl_bis_azo_bis_n_4_chlor",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 48), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "2_2_cyclohexylidenebis_2_methyl_4_1_phenylene_azo_bis_4_cycl",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Not to be used in products applied on mucous membranes",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 49), up to Not to be used in products applied on mucous membranes.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "disodium_4_6_dihydroxy_3_4_1_4_1_hydroxy_7_phenylsulphonyl_o",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 50), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "1_4_phenylazo_phenylazo_2_naphthol",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Not to be used in products applied on mucous membranes",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 51), up to Not to be used in products applied on mucous membranes.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "tetrasodium_6_amino_4_hydroxy_3_7_sulphonato_4_4_sulphonatop",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 52).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "tetrasodium_1_acetamido_2_hydroxy_3_4_4_sulphonatophenylazo_",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 53).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "benzenesulfonic_acid_2_2_1_2_ethenediyl_bis_5_nitro_disodium",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 54), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "beta_carotene",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 55).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "8_apo_beta_caroten_8_al",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 56).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "ethyl_8_apo_beta_caroten_8_oate",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 57).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "canthaxanthin",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 58).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "ammonium_4_alpha_p_diethylamino_phenyl_2_4_disulfobenzyliden",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Not to be used in products applied on mucous membranes",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 59), up to Not to be used in products applied on mucous membranes.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "ethanaminium_n_4_4_diethylamino_phenyl_5_hydroxy_2_4_disulfo",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 60).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "benzene_methanaminium_n_ethyl_n_4_4_ethyl_3_sulfophenyl_meth",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 61).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "hydrogen_benzyl_4_4_benzylethylamino_phenyl_2_4_disulphonato",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 62), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "benzenemethanaminium_n_ethyl_n_4_4_ethyl_3_sulfophenyl_methy",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 63).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "hydrogen_4_2_chlorophenyl_4_ethyl_3_sulphonatobenzyl_amino_p",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 64), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "hydrogen_4_2_chlorophenyl_4_ethyl_3_sulphonatobenzyl_amino_o",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 65), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "4_4_aminophenyl_4_iminocyclohexa_2_5_dienylidene_methyl_2_me",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Not to be used in products applied on mucous membranes",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 66), up to Not to be used in products applied on mucous membranes.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "4_4_amino_m_tolyl_4_imino_3_methylcyclohexa_2_5_dien_1_ylide",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 67), up to Rinse-off products. 5 ppm",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "hydrogen_4_4_diethylamino_phenyl_4_ethyl_3_sulphonatobenzyl_",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Not to be used in products applied on mucous membranes",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 68), up to Not to be used in products applied on mucous membranes.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "4_4_anilino_1_naphthyl_4_dimethylamino_phenyl_methylene_cycl",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Not to be used in products applied on the mucous membranes",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 69), up to Not to be used in products applied on the mucous membranes.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "hydrogen_4_4_dimethylamino_alpha_2_hydroxy_3_6_disulphonato_",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 70).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "hydrogen_3_6_bis_diethylamino_9_2_4_disulphonatophenyl_xanth",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 71), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "hydrogen_9_2_carboxylatophenyl_3_2_methylanilino_6_2_methyl_",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 72), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "hydrogen_9_2_4_disulphonatophenyl_3_6_bis_ethylamino_2_7_dim",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 73), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "disodium_2_3_oxo_6_oxidoxanthen_9_yl_benzoate",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 74). 6%",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "4_5_dibromo_3_6_dihydroxyspiro_isobenzofuran_1_3h_9_9h_xanth",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 75).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "disodium_2_2_4_5_7_tetrabromo_6_oxido_3_oxoxanthen_9_yl_benz",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 76).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "3_6_dihydroxy_4_5_dinitrospiro_isobenzofuran_1_3h_9_9h_xanth",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 77). 1%, when used in lip products",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "dipotassium_3_6_dichloro_2_2_4_5_7_tetrabromo_6_oxido_3_oxox",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Not to be used in eye products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 78), up to Not to be used in eye products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "3_4_5_6_tetrachloro_2_1_4_5_8_tetrabromo_6_hydroxy_3_oxoxant",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 79).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "disodium_2_2_4_5_7_tetraiodo_6_oxido_3_oxoxanthen_9_yl_benzo",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 80).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "1_3_isobenzofurandione_reaction_products_with_methylquinolin",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Not to be used in products applied on mucous membranes",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 81), up to Not to be used in products applied on mucous membranes.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "1h_indene_1_3_2h_dione_2_2_quinolinyl_sulfonated_sodium_salt",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 82).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "hydrogen_9_3_methoxyphenyl_amino_7_phenyl_5_phenylamino_4_10",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 83), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "sulfonated_nigrosine_color",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Not to be used in products applied on the mucous membranes",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 84), up to Not to be used in products applied on the mucous membranes.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "8_18_dichloro_5_15_diethyl_5_15_dihydrodiindolo_3_2_b_3_2_m_",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 85), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "1_2_dihydroxyanthraquinone",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 86).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "trisodium_8_hydroxypyrene_1_3_6_trisulphonate",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Not to be used in products applied on the mucous membranes",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 87), up to Not to be used in products applied on the mucous membranes.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "1_anilino_4_hydroxyanthraquinone",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 88), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "1_hydroxy_4_p_toluidino_anthraquinone",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 89).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "sodium_4_9_10_dihydro_4_hydroxy_9_10_dioxo_1_anthryl_amino_t",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Not to be used in products applied on the mucous membranes",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 90), up to Not to be used in products applied on the mucous membranes.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "1_4_bis_p_tolylamino_anthraquinone",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 91).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "disodium_2_2_9_10_dioxoanthracene_1_4_diyldiimino_bis_5_meth",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 92).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "sodium_3_3_9_10_dioxoanthracene_1_4_diyldiimino_bis_2_4_6_tr",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 93), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "sodium_1_amino_4_cyclohexylamino_9_10_dihydro_9_10_dioxoanth",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 94), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "6_15_dihydroanthrazine_5_9_14_18_tetrone",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 95).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "7_16_dichloro_6_15_dihydroanthrazine_5_9_14_18_tetrone",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 96).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "bisbenzimidazo_2_1_b_2_1_i_benzo_lmn_3_8_phenanthroline_8_17",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Not to be used in products applied on mucous membranes",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 97), up to Not to be used in products applied on mucous membranes.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "2_1_3_dihydro_3_oxo_2h_indazol_2_ylidene_1_2_dihydro_3h_indo",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 98).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "disodium_5_5_2_1_3_dihydro_3_oxo_2h_indazol_2_ylidene_1_2_di",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 99).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "6_chloro_2_6_chloro_4_methyl_3_oxobenzo_b_thien_2_3h_ylidene",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 100).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "5_chloro_2_5_chloro_7_methyl_3_oxobenzo_b_thien_2_3h_ylidene",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 101).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "5_12_dihydroquino_2_3_b_acridine_7_14_dione",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 102), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "5_12_dihydro_2_9_dimethylquino_2_3_b_acridine_7_14_dione",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 103), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "29h_31h_phthalocyanine",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 104), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "29h_31h_phthalocyaninato_2_n29_n30_n31_n32_copper",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 105).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "disodium_29h_31h_phthalocyaninedisulphonato_4_n29_n30_n31_n3",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 106), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "polychloro_copper_phthalocyanine",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Not to be used in eye products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 107), up to Not to be used in eye products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "8_8_diapo_psi_psi_carotenedioic_acid",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 108).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "annatto",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 109).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "lycopene",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 110).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "ci_food_orange_5",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 111).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "3r_beta_4_caroten_3_ol",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 112).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "2_amino_1_7_dihydro_6h_purin_6_one",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 113).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "curcumins",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 114).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "carmines",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 115).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "trisodium_2s_trans_18_carboxy_20_carboxymethyl_13_ethyl_2_3_",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 116).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "aluminium",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 117).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "aluminium_hydroxide_sulphate",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 118).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "natural_hydrated_aluminium_silicate_al2o3_2sio2_2h2o_contain",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 119).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "lazurite",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 120).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "aluminum_silicate_coloured_with_ferric_oxide",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 121).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "barium_sulfate",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 122).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "bismuth_chloride_oxide",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 123).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "calcium_carbonate",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 124).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "calcium_sulfate",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 125).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "carbon_black_nano",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 126a). 10%",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "carbon_black",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 126).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "charcoal_bone_a_fine_black_powder_obtained_by_burning_animal",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 127).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "coke_black",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 128).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "chromium_iii_oxide",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 129).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "chromium_iii_hydroxide",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 130).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "cobalt_aluminum_oxide",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 131).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "copper",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 132).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "gold",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 133).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "iron_oxide",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 134).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "iron_oxide_red",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 135).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "iron_oxide_yellow",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 136).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "iron_oxide_black",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 137).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "ferric_ammonium_ferrocyanide",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 138).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "magnesium_carbonate",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 139).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "ammonium_manganese_3_diphosphate",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 140).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "trimanganese_bis_orthophosphate",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 141).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "silver_powder_100_nm_particle_diameter_1_mm",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "limit": {
+        "value": 0.2,
+        "unit": "%",
+        "basis": "ready for use preparation"
+      },
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 142), up to For (a) and (b): 0,2 %’.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "titanium_dioxide_ci_77891",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 143).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "zinc_oxide",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 144).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "riboflavin",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 145).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "caramel",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 146).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "paprika_extract_capsanthin_capsorubin",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 147).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "beetroot_red",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 148).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "anthocyanins_cyanidin_peonidin_malvidin_delphinidin_petunidi",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 149).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "aluminium_zinc_magnesium_and_calcium_stearates",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 150).",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "phenol_4_4_3h_2_1_benzoxathiol_3_ylidene_bis_2_bromo_3_methy",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 151), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "phenol_4_4_3h_2_1_benzoxathiol_3_ylidene_bis_2_6_dibromo_3_m",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Rinse-off products",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 152), up to Rinse-off products.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    },
+    {
+      "substanceId": "sodium_4_4_5_dihydro_3_methyl_5_oxo_1_phenyl_1h_pyrazol_4_yl",
+      "source": "cosing_annex_iv",
+      "kind": "permitted",
+      "jurisdiction": "EU",
+      "domain": "cosmetic",
+      "useRestriction": "Not to be used in products applied on mucous membranes",
+      "statement": "Authorised for use in EU cosmetics (Annex IV, entry 153), up to Not to be used in products applied on mucous membranes.",
+      "sourceVersion": "2026-07-30",
+      "fetchedAt": "2026-08-14",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1223/2009, Annex IV"
+      }
+    }
+  ]
+}

@@ -52,10 +52,16 @@ export function getCategoryDisplayName(category: PreferenceCategory, language: s
       es: 'Disruptores Endocrinos',
       zh: '内分泌干扰物'
     },
-    allergens: {
-      en: 'Allergens',
-      es: 'Alérgenos',
-      zh: '过敏原'
+    // Occupies the slot a stale `allergens` key held. Allergens are not a
+    // population-level preference category — they moved to the profile layer,
+    // where severity is per-person and matching is done by the deterministic
+    // allergen matcher. That dead key also masked this one's absence: TypeScript
+    // reported the excess property and stopped, so `contact_sensitizers` sat in
+    // preferenceCategories with no display name for as long as both were wrong.
+    contact_sensitizers: {
+      en: 'Contact Sensitizers',
+      es: 'Sensibilizantes de Contacto',
+      zh: '接触致敏物'
     },
     alcohols: {
       en: 'Drying Alcohols',

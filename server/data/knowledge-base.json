@@ -1,0 +1,599 @@
+{
+  "_metadata": {
+    "version": "0.1.0",
+    "lastUpdated": "2026-07-28",
+    "description": "Cited ingredient knowledge base. Each entry carries claims with named sources. Distinct from server/data/substances (regulatory evidence + policy), which decides risk levels; this file supplies the readable cited claims shown to users.",
+    "reviewPolicy": "Entries seeded by AI start as reviewStatus=ai_seeded and MUST be verified by a qualified human reviewer (statement wording + source attribution) before marketing claims cite them. Set reviewStatus=human_reviewed and fill reviewedBy/reviewedAt after verification.",
+    "riskContexts": [
+      "general",
+      "pregnancy",
+      "breastfeeding",
+      "children",
+      "celiac",
+      "eczema"
+    ]
+  },
+  "entries": [
+    {
+      "id": "retinoids_topical",
+      "names": [
+        "retinol",
+        "retinal",
+        "retinaldehyde",
+        "retinyl palmitate",
+        "retinyl acetate",
+        "retinyl retinoate",
+        "tretinoin",
+        "adapalene",
+        "tazarotene",
+        "hydroxypinacolone retinoate"
+      ],
+      "category": "retinoid",
+      "appliesTo": [
+        "personal_care"
+      ],
+      "claims": [
+        {
+          "statement": "Oral retinoids are established teratogens; major medical bodies advise avoiding topical retinoids during pregnancy as a precaution, even though absorbed doses are low.",
+          "riskContext": "pregnancy",
+          "sources": [
+            {
+              "org": "ACOG",
+              "title": "Skin Conditions During Pregnancy (patient guidance on retinoid avoidance)",
+              "year": 2022,
+              "url": "https://www.acog.org"
+            },
+            {
+              "org": "FDA",
+              "title": "Isotretinoin iPLEDGE REMS (teratogenicity of retinoids)",
+              "year": 2021,
+              "url": "https://www.fda.gov"
+            }
+          ]
+        }
+      ],
+      "reviewStatus": "ai_seeded",
+      "reviewedBy": null
+    },
+    {
+      "id": "hydroquinone",
+      "names": [
+        "hydroquinone"
+      ],
+      "category": "skin_lightener",
+      "appliesTo": [
+        "personal_care"
+      ],
+      "claims": [
+        {
+          "statement": "No longer generally recognized as safe and effective for OTC sale in the US (CARES Act, 2020); banned in cosmetics in the EU. Systemic absorption is comparatively high, so use in pregnancy is commonly advised against.",
+          "riskContext": "general",
+          "sources": [
+            {
+              "org": "FDA",
+              "title": "Hydroquinone in over-the-counter drug products — regulatory status after the CARES Act",
+              "year": 2022,
+              "url": "https://www.fda.gov"
+            },
+            {
+              "org": "EU",
+              "title": "Cosmetics Regulation (EC) No 1223/2009, Annex II (prohibited substances)",
+              "year": 2009,
+              "url": "https://eur-lex.europa.eu"
+            }
+          ]
+        }
+      ],
+      "reviewStatus": "ai_seeded",
+      "reviewedBy": null
+    },
+    {
+      "id": "formaldehyde_and_releasers",
+      "names": [
+        "formaldehyde",
+        "formalin",
+        "quaternium-15",
+        "dmdm hydantoin",
+        "imidazolidinyl urea",
+        "diazolidinyl urea",
+        "sodium hydroxymethylglycinate",
+        "bronopol",
+        "2-bromo-2-nitropropane-1,3-diol"
+      ],
+      "category": "preservative",
+      "appliesTo": [
+        "personal_care"
+      ],
+      "claims": [
+        {
+          "statement": "Formaldehyde is classified as carcinogenic to humans (IARC Group 1); the listed preservatives release small amounts of formaldehyde over time and are common contact-allergy triggers.",
+          "riskContext": "general",
+          "sources": [
+            {
+              "org": "IARC",
+              "title": "IARC Monographs Vol. 100F — Formaldehyde",
+              "year": 2012,
+              "url": "https://monographs.iarc.who.int"
+            },
+            {
+              "org": "American Contact Dermatitis Society",
+              "title": "Formaldehyde-releasing preservatives as contact allergens",
+              "year": 2015,
+              "url": "https://www.contactderm.org"
+            }
+          ]
+        }
+      ],
+      "reviewStatus": "ai_seeded",
+      "reviewedBy": null
+    },
+    {
+      "id": "isothiazolinones",
+      "names": [
+        "methylisothiazolinone",
+        "methylchloroisothiazolinone",
+        "benzisothiazolinone",
+        "mi",
+        "mci",
+        "kathon cg"
+      ],
+      "category": "preservative",
+      "appliesTo": [
+        "personal_care"
+      ],
+      "claims": [
+        {
+          "statement": "A leading cause of preservative contact allergy; the EU banned methylisothiazolinone in leave-on cosmetics (2017) and restricts it in rinse-off products.",
+          "riskContext": "general",
+          "sources": [
+            {
+              "org": "EU SCCS",
+              "title": "Opinions on methylisothiazolinone; Commission Regulation (EU) 2017/1224",
+              "year": 2017,
+              "url": "https://eur-lex.europa.eu"
+            },
+            {
+              "org": "American Contact Dermatitis Society",
+              "title": "Methylisothiazolinone — Allergen of the Year",
+              "year": 2013,
+              "url": "https://www.contactderm.org"
+            }
+          ]
+        }
+      ],
+      "reviewStatus": "ai_seeded",
+      "reviewedBy": null
+    },
+    {
+      "id": "red_3",
+      "names": [
+        "red 3",
+        "erythrosine",
+        "fd&c red no. 3",
+        "fd&c red 3",
+        "e127",
+        "ci 45430"
+      ],
+      "category": "synthetic_dye",
+      "appliesTo": [
+        "food",
+        "personal_care"
+      ],
+      "claims": [
+        {
+          "statement": "FDA revoked authorization for Red No. 3 in foods and ingested drugs (January 2025) based on carcinogenicity in male rats; long banned in US cosmetics.",
+          "riskContext": "general",
+          "sources": [
+            {
+              "org": "FDA",
+              "title": "FDA to Revoke Authorization for the Use of Red No. 3 in Food and Ingested Drugs",
+              "year": 2025,
+              "url": "https://www.fda.gov"
+            }
+          ]
+        }
+      ],
+      "reviewStatus": "ai_seeded",
+      "reviewedBy": null
+    },
+    {
+      "id": "southampton_dyes",
+      "names": [
+        "red 40",
+        "allura red",
+        "e129",
+        "yellow 5",
+        "tartrazine",
+        "e102",
+        "yellow 6",
+        "sunset yellow",
+        "e110",
+        "carmoisine",
+        "e122",
+        "ponceau 4r",
+        "e124"
+      ],
+      "category": "synthetic_dye",
+      "appliesTo": [
+        "food"
+      ],
+      "claims": [
+        {
+          "statement": "EU requires the warning 'may have an adverse effect on activity and attention in children' on foods containing these dyes, following the Southampton study; the US requires no such label.",
+          "riskContext": "children",
+          "sources": [
+            {
+              "org": "EU",
+              "title": "Regulation (EC) No 1333/2008 on food additives, Annex V",
+              "year": 2008,
+              "url": "https://eur-lex.europa.eu"
+            },
+            {
+              "org": "EFSA",
+              "title": "Scientific opinions re-evaluating Southampton-study food colours",
+              "year": 2009,
+              "url": "https://www.efsa.europa.eu"
+            }
+          ]
+        }
+      ],
+      "reviewStatus": "ai_seeded",
+      "reviewedBy": null
+    },
+    {
+      "id": "titanium_dioxide_food",
+      "names": [
+        "titanium dioxide",
+        "e171",
+        "ci 77891"
+      ],
+      "category": "colorant",
+      "appliesTo": [
+        "food"
+      ],
+      "claims": [
+        {
+          "statement": "EFSA concluded titanium dioxide can no longer be considered safe as a food additive (genotoxicity could not be ruled out); the EU banned E171 in food from 2022. It remains permitted in US food and in cosmetics.",
+          "riskContext": "general",
+          "sources": [
+            {
+              "org": "EFSA",
+              "title": "Safety assessment of titanium dioxide (E171) as a food additive",
+              "year": 2021,
+              "url": "https://www.efsa.europa.eu"
+            },
+            {
+              "org": "EU",
+              "title": "Commission Regulation (EU) 2022/63 banning E171 in food",
+              "year": 2022,
+              "url": "https://eur-lex.europa.eu"
+            }
+          ]
+        }
+      ],
+      "reviewStatus": "ai_seeded",
+      "reviewedBy": null
+    },
+    {
+      "id": "bha",
+      "names": [
+        "bha",
+        "butylated hydroxyanisole",
+        "e320"
+      ],
+      "category": "preservative",
+      "appliesTo": [
+        "food",
+        "personal_care"
+      ],
+      "claims": [
+        {
+          "statement": "Classified as possibly carcinogenic to humans (IARC Group 2B) and listed under California Proposition 65; permitted in the US and EU within limits.",
+          "riskContext": "general",
+          "sources": [
+            {
+              "org": "IARC",
+              "title": "IARC Monographs Vol. 40 — Butylated hydroxyanisole",
+              "year": 1986,
+              "url": "https://monographs.iarc.who.int"
+            },
+            {
+              "org": "California OEHHA",
+              "title": "Proposition 65 chemical list — BHA",
+              "year": 1990,
+              "url": "https://oehha.ca.gov"
+            }
+          ]
+        }
+      ],
+      "reviewStatus": "ai_seeded",
+      "reviewedBy": null
+    },
+    {
+      "id": "bht",
+      "names": [
+        "bht",
+        "butylated hydroxytoluene",
+        "e321"
+      ],
+      "category": "preservative",
+      "appliesTo": [
+        "food",
+        "personal_care"
+      ],
+      "claims": [
+        {
+          "statement": "Evidence is mixed: not classified as a human carcinogen; EFSA maintains an acceptable daily intake. Some consumers avoid it alongside BHA; EU permits within limits.",
+          "riskContext": "general",
+          "sources": [
+            {
+              "org": "EFSA",
+              "title": "Scientific Opinion on the re-evaluation of butylated hydroxytoluene (E321)",
+              "year": 2012,
+              "url": "https://www.efsa.europa.eu"
+            }
+          ]
+        }
+      ],
+      "reviewStatus": "ai_seeded",
+      "reviewedBy": null
+    },
+    {
+      "id": "long_chain_parabens",
+      "names": [
+        "propylparaben",
+        "butylparaben",
+        "isopropylparaben",
+        "isobutylparaben",
+        "pentylparaben",
+        "phenylparaben",
+        "benzylparaben"
+      ],
+      "category": "preservative",
+      "appliesTo": [
+        "personal_care",
+        "food"
+      ],
+      "claims": [
+        {
+          "statement": "The EU banned five parabens in cosmetics (2014) and restricts propyl-/butylparaben concentrations over endocrine-activity concerns; shorter-chain parabens (methyl-, ethyl-) are considered safe at permitted levels.",
+          "riskContext": "general",
+          "sources": [
+            {
+              "org": "EU",
+              "title": "Commission Regulation (EU) No 358/2014 and (EU) No 1004/2014 (parabens)",
+              "year": 2014,
+              "url": "https://eur-lex.europa.eu"
+            },
+            {
+              "org": "EU SCCS",
+              "title": "Opinion on parabens (SCCS/1514/13)",
+              "year": 2013,
+              "url": "https://health.ec.europa.eu"
+            }
+          ]
+        }
+      ],
+      "reviewStatus": "ai_seeded",
+      "reviewedBy": null
+    },
+    {
+      "id": "dibutyl_phthalate",
+      "names": [
+        "dibutyl phthalate",
+        "dbp",
+        "diethylhexyl phthalate",
+        "dehp",
+        "benzyl butyl phthalate",
+        "bbp"
+      ],
+      "category": "plasticizer",
+      "appliesTo": [
+        "personal_care"
+      ],
+      "claims": [
+        {
+          "statement": "Banned in cosmetics in the EU; classified as reproductive toxicants. Sometimes present undeclared in 'fragrance'. Particular caution advised in pregnancy.",
+          "riskContext": "pregnancy",
+          "sources": [
+            {
+              "org": "EU",
+              "title": "Cosmetics Regulation (EC) No 1223/2009, Annex II — phthalates",
+              "year": 2009,
+              "url": "https://eur-lex.europa.eu"
+            },
+            {
+              "org": "CDC",
+              "title": "Phthalates factsheet (National Biomonitoring Program)",
+              "year": 2021,
+              "url": "https://www.cdc.gov"
+            }
+          ]
+        }
+      ],
+      "reviewStatus": "ai_seeded",
+      "reviewedBy": null
+    },
+    {
+      "id": "aspartame",
+      "names": [
+        "aspartame",
+        "e951"
+      ],
+      "category": "sweetener",
+      "appliesTo": [
+        "food"
+      ],
+      "claims": [
+        {
+          "statement": "IARC classified aspartame as possibly carcinogenic (Group 2B, 2023) while JECFA reaffirmed the existing acceptable daily intake; people with phenylketonuria must avoid it (phenylalanine source).",
+          "riskContext": "general",
+          "sources": [
+            {
+              "org": "WHO/IARC",
+              "title": "Aspartame hazard and risk assessment results",
+              "year": 2023,
+              "url": "https://www.who.int"
+            },
+            {
+              "org": "FDA",
+              "title": "Aspartame and Other Sweeteners in Food",
+              "year": 2023,
+              "url": "https://www.fda.gov"
+            }
+          ]
+        }
+      ],
+      "reviewStatus": "ai_seeded",
+      "reviewedBy": null
+    },
+    {
+      "id": "talc",
+      "names": [
+        "talc",
+        "talcum",
+        "magnesium silicate talc"
+      ],
+      "category": "mineral",
+      "appliesTo": [
+        "personal_care"
+      ],
+      "claims": [
+        {
+          "statement": "IARC classifies talc as probably carcinogenic to humans (Group 2A, 2024 re-evaluation); historical concerns center on asbestos contamination and perineal use. FDA runs an annual asbestos-testing program for talc cosmetics.",
+          "riskContext": "general",
+          "sources": [
+            {
+              "org": "IARC",
+              "title": "IARC Monographs Vol. 136 — Talc",
+              "year": 2024,
+              "url": "https://monographs.iarc.who.int"
+            },
+            {
+              "org": "FDA",
+              "title": "Talc in cosmetics — testing for asbestos",
+              "year": 2023,
+              "url": "https://www.fda.gov"
+            }
+          ]
+        }
+      ],
+      "reviewStatus": "ai_seeded",
+      "reviewedBy": null
+    },
+    {
+      "id": "oxybenzone",
+      "names": [
+        "oxybenzone",
+        "benzophenone-3",
+        "bp-3"
+      ],
+      "category": "uv_filter",
+      "appliesTo": [
+        "personal_care"
+      ],
+      "claims": [
+        {
+          "statement": "FDA's proposed sunscreen rule (2019) found insufficient data to classify oxybenzone as generally recognized as safe and effective, citing systemic absorption; banned for reef protection in Hawaii.",
+          "riskContext": "general",
+          "sources": [
+            {
+              "org": "FDA",
+              "title": "Proposed rule: Sunscreen Drug Products for OTC Human Use",
+              "year": 2019,
+              "url": "https://www.fda.gov"
+            },
+            {
+              "org": "State of Hawaii",
+              "title": "Act 104 (SB 2571) — oxybenzone/octinoxate sunscreen ban",
+              "year": 2018,
+              "url": "https://www.capitol.hawaii.gov"
+            }
+          ]
+        }
+      ],
+      "reviewStatus": "ai_seeded",
+      "reviewedBy": null
+    },
+    {
+      "id": "gluten_grains",
+      "names": [
+        "wheat",
+        "wheat flour",
+        "barley",
+        "rye",
+        "malt",
+        "malted barley flour",
+        "spelt",
+        "semolina",
+        "durum",
+        "triticale",
+        "farro",
+        "seitan"
+      ],
+      "category": "grain",
+      "appliesTo": [
+        "food"
+      ],
+      "claims": [
+        {
+          "statement": "Gluten-containing grains must be strictly avoided in celiac disease; US 'gluten-free' labeling requires <20 ppm gluten.",
+          "riskContext": "celiac",
+          "sources": [
+            {
+              "org": "FDA",
+              "title": "Gluten-Free Labeling of Foods final rule (21 CFR 101.91)",
+              "year": 2013,
+              "url": "https://www.fda.gov"
+            },
+            {
+              "org": "NIDDK",
+              "title": "Celiac Disease — eating, diet, and nutrition",
+              "year": 2020,
+              "url": "https://www.niddk.nih.gov"
+            }
+          ]
+        }
+      ],
+      "reviewStatus": "ai_seeded",
+      "reviewedBy": null
+    },
+    {
+      "id": "alcohol_pregnancy",
+      "names": [
+        "alcohol",
+        "ethanol",
+        "ethyl alcohol",
+        "wine",
+        "beer",
+        "rum"
+      ],
+      "category": "alcohol",
+      "appliesTo": [
+        "food"
+      ],
+      "claims": [
+        {
+          "statement": "No amount of alcohol is known to be safe during pregnancy; prenatal alcohol exposure is a leading preventable cause of birth defects.",
+          "riskContext": "pregnancy",
+          "sources": [
+            {
+              "org": "CDC",
+              "title": "Alcohol Use During Pregnancy",
+              "year": 2022,
+              "url": "https://www.cdc.gov"
+            },
+            {
+              "org": "ACOG",
+              "title": "Committee Opinion: At-Risk Drinking and Alcohol Dependence",
+              "year": 2011,
+              "url": "https://www.acog.org"
+            }
+          ]
+        }
+      ],
+      "reviewStatus": "ai_seeded",
+      "reviewedBy": null
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "image": "eval/cases/spartak-dark-chocolate/IMG_0948.jpeg",
+  "description": "Spartak 90% dark chocolate (Belarus, sold in China) — DUAL-LANGUAGE Chinese + Russian on one crumpled glossy foil label. Tests: cross-language reading, dedupe across two ingredient lists for the same product, E-number expansion (E322), and may-contain discipline (milk/peanut/tree nuts are cross-contamination only and must NOT be reported as present).",
+  "productType": "food",
+  "language": "zh+ru",
+  "verified": false,
+  "truth": {
+    "ingredients": [
+      "Cocoa Mass",
+      "Cocoa Powder",
+      "Sugar",
+      "Cocoa Butter",
+      "Lecithin",
+      "Natural Vanilla Flavor"
+    ],
+    "majorAllergens": [
+      "soy"
+    ]
+  },
+  "notes": "Chinese allergen line 致敏提示:含有大豆制品 = 'contains soy products'; E322 is soy lecithin, so soy is PRESENT. The separate line 本生产线也生产含有乳制品，花生，坚果的产品 (production line also handles dairy/peanut/nuts) and Russian МОЖЕТ СОДЕРЖАТЬ are may-contain statements — milk, peanut and tree_nuts must not appear in detected allergens. Cross-check 2026-08-12: all 6 ingredients confirmed from BOTH lists (Chinese 配料:可可液块、可可粉、白砂糖、可可脂、磷脂、食用香料 and Russian СОСТАВ: КАКАО ТЕРТОЕ, КАКАО-ПОРОШОК, САХАРНАЯ ПУДРА, КАКАО-МАСЛО, ЭМУЛЬГАТОР (Е322), АРОМАТИЗАТОР НАТУРАЛЬНЫЙ «ВАНИЛЬ»). IMPORTANT: the two languages CONTRADICT each other on soy. Chinese 致敏提示:含有大豆制品 states soy IS present; the Russian lists СОЮ inside its МОЖЕТ СОДЕРЖАТЬ (may-contain) line. This case takes the Chinese affirmative as truth. Note also that the truth ingredient is bare 'Lecithin', not 'Soy Lecithin' — lecithin can be sunflower-derived, so the allergen matcher cannot and should not infer soy from it. Soy is therefore detectable ONLY by reading the Chinese declaration, which makes this the one case whose allergen result depends entirely on declaration parsing rather than ingredient names.",
+  "crossCheckedAgainstPhoto": "2026-08-12"
+}
