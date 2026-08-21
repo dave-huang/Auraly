@@ -1,0 +1,73 @@
+{
+  "expo": {
+    "name": "Revely",
+    "slug": "revely",
+    "owner": "dozy-labs",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "revely",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "icon": {
+        "light": "./assets/images/icon.png",
+        "dark": "./assets/images/icon-dark.png",
+        "tinted": "./assets/images/icon-tinted.png"
+      },
+      "bundleIdentifier": "life.revely.app",
+      "supportsTablet": false,
+      "usesAppleSignIn": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Revely uses the camera to read product ingredient labels.",
+        "NSPhotoLibraryUsageDescription": "Revely can read an ingredient label from a photo you choose.",
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "life.revely.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#16130F",
+        "foregroundImage": "./assets/images/icon-fg.png",
+        "monochromeImage": "./assets/images/icon-fg.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-apple-authentication",
+      "expo-secure-store",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#16130F",
+          "image": "./assets/images/splash-mark.png",
+          "imageWidth": 96,
+          "dark": {
+            "backgroundColor": "#16130F",
+            "image": "./assets/images/splash-mark.png",
+            "imageWidth": 96
+          }
+        }
+      ],
+      "@react-native-google-signin/google-signin",
+      "expo-localization",
+      "expo-font",
+      "expo-sharing",
+      "expo-image"
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "d6bfe56f-09a6-4bbf-a26f-a7198a47027d"
+      }
+    }
+  }
+}

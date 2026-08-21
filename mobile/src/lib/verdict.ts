@@ -1,0 +1,127 @@
+import { MIN_CONFIDENT_SEGMENTS, confidenceSegments } from '@/constants/design';
+import { TRANSLATED_KEYS, useTranslation, type TranslationKey } from '@/lib/i18n';
+import type { AnalysisResult, PersonalFlag, RiskLevel } from '@/lib/types';
+
+// Single source for the verdict word, the one-sentence why, and the seal
+// lines. The on-screen card and the exported share image MUST say exactly the
+// same thing — a shared image that disagrees with what the user saw would be
+// worse than not sharing at all.
+
+/** The verdict word for a level. Exported so the drill-down can name both the
+ *  universal and the personal level in the same words the card uses. */
+export const RISK_LABEL_KEYS: Record<RiskLevel, TranslationKey> = {
+  low: 'risk.low',
+  moderate: 'risk.moderate',
+  high: 'risk.high',
+};
+const RISK_KEYS = RISK_LABEL_KEYS;
+
+type T = (key: TranslationKey, params?: Record<string, string | number>) => string;
+
+function localizeTerm(t: T, prefix: 'allergen' | 'severity', value: string): string {
+  const key = `${prefix}.${value}` as TranslationKey;
+  return key in TRANSLATED_KEYS ? t(key) : value;
+}
+
+export function localizeAllergen(t: T, value: string): string {
+  const key = `allergen.${value.toLowerCase().replace(/ /g, '_')}` as TranslationKey;
+  return key in TRANSLATED_KEYS ? t(key) : value;
+}
+
+/**
+ * Localize a profile term by its kind.
+ *
+ * Dietary rules and conditions live under their own key prefixes, so looking
+ * every term up as `allergen.*` leaves them untranslated — which showed as a
+ * lowercase raw "vegan" sitting between a properly-cased "Peanut" and
+ * "Sesame".
+ */
+export function localizeProfileTerm(
+  t: T,
+  type: 'allergen' | 'dietary' | 'condition',
+  value: string,
+): string {
+  const key = `${type}.${value.toLowerCase().replace(/ /g, '_')}` as TranslationKey;
+  return key in TRANSLATED_KEYS ? t(key) : value;
+}
+
+/**
+ * Is a position on the ingredient list worth showing?
+ *
+ * Duplicated from server/services/labelRank.ts on purpose — the app cannot
+ * import server modules, and this is a display threshold rather than a
+ * derivation. Keep the two in step; the server owns the real definition.
+ *
+ * "11th of 14" is trivia. "2nd of 14" tells you what the product mostly is.
+ */
+export function isProminentRank(labelRank?: { rank: number; total: number }): boolean {
+  if (!labelRank) return false;
+  return labelRank.total >= 5 && labelRank.rank <= 3;
+}
+
+export function flagReason(t: T, flag: PersonalFlag): string {
+  if (!flag.reasonKey || !((flag.reasonKey as TranslationKey) in TRANSLATED_KEYS)) {
+    return flag.reason;
+  }
+  const params = { ...(flag.reasonParams ?? {}) };
+  if (typeof params.allergen === 'string') params.allergen = localizeTerm(t, 'allergen', params.allergen);
+  if (typeof params.severity === 'string') params.severity = localizeTerm(t, 'severity', params.severity);
+  return t(flag.reasonKey as TranslationKey, params);
+}
+
+export function flagTitle(t: T, flag: PersonalFlag): string {
+  if (flag.ingredientName === 'Label allergen statement') return t('flag.labelStatement');
+  const key = `allergen.${flag.ingredientName.toLowerCase().replace(/ /g, '_')}` as TranslationKey;
+  return key in TRANSLATED_KEYS ? t(key) : flag.ingredientName;
+}
+
+export interface VerdictCopy {
+  word: string;
+  why: string;
+  sealLines: [string, string];
+  uncertain: boolean;
+  /** null when the read confidence is unknown — hide the meter entirely. */
+  segments: number | null;
+  allergenFlags: PersonalFlag[];
+  otherFlags: PersonalFlag[];
+}
+
+export function useVerdictCopy(result: AnalysisResult, profileName?: string): VerdictCopy {
+  const { t } = useTranslation();
+
+  const flags = result.personalFlags ?? [];
+  const allergenFlags = flags.filter((f) => f.type === 'allergen' && f.certainty !== 'verify');
+  const otherFlags = flags.filter((f) => !allergenFlags.includes(f));
+
+  // Only an explicitly poor read produces the uncertain state; an unknown
+  // one (a scan replayed from history) keeps the verdict it was saved with.
+  const segments = confidenceSegments(result.readConfidence);
+  const uncertain = segments !== null && segments < MIN_CONFIDENT_SEGMENTS;
+
+  const word = uncertain ? t('verdict.uncertain') : t(RISK_KEYS[result.overallRisk]);
+
+  // One sentence naming the specific cause — never a restatement of the level.
+  const why = uncertain
+    ? t('verdict.uncertainWhy')
+    : allergenFlags.length > 0
+      ? flagReason(t, allergenFlags[0])
+      : otherFlags.length > 0
+        ? flagReason(t, otherFlags[0])
+        : (result.ingredients.find((i) => i.riskLevel === result.overallRisk)?.summary ?? '');
+
+  const name = profileName ?? result.appliedProfile?.name;
+
+  // The seal must never contradict the word beside it. "CLEARED" is only
+  // legal on a Safe verdict: stamping it on a Caution card — which the
+  // no-allergen-flag branch used to do — tells someone the opposite of the
+  // verdict they are looking at.
+  const sealLines: [string, string] = uncertain
+    ? [t('verdict.sealUnclear1'), t('verdict.sealUnclear2')]
+    : allergenFlags.length > 0
+      ? [localizeAllergen(t, allergenFlags[0].match), t('verdict.sealFound')]
+      : result.overallRisk === 'low'
+        ? [t('verdict.sealCleared'), name ?? '']
+        : [t('verdict.sealWatch'), name ?? ''];
+
+  return { word, why, sealLines, uncertain, segments, allergenFlags, otherFlags };
+}

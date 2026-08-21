@@ -1,0 +1,424 @@
+import { Redirect } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { Linking, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { ThemedText } from '@/components/themed-text';
+import {
+  Font,
+  Gutter,
+  RISK_TO_VERDICT,
+  Radius,
+  Space,
+  Type,
+  useSurface,
+  useVerdictColors,
+} from '@/constants/design';
+import { fetchAllergenAliases } from '@/lib/allergens';
+import { goBackOrHome } from '@/lib/navigation';
+import { useTranslation } from '@/lib/i18n';
+import { getFocusedIngredient } from '@/lib/ingredient-focus';
+import { fetchSubstanceEvidence, type Jurisdiction, type SubstanceEvidence } from '@/lib/substances';
+import { RISK_LABEL_KEYS, flagReason, isProminentRank, localizeAllergen } from '@/lib/verdict';
+import type { TranslationKey } from '@/lib/i18n';
+
+/**
+ * Jurisdiction codes as a reader would name them.
+ *
+ * "US-CA" is the register's shorthand, not a place anyone says out loud, and a
+ * screen that quotes a regulator should name the regulator's territory in the
+ * reader's language.
+ */
+const JURISDICTION_KEYS: Record<Jurisdiction, TranslationKey> = {
+  EU: 'jurisdiction.EU',
+  UK: 'jurisdiction.UK',
+  US: 'jurisdiction.US',
+  'US-CA': 'jurisdiction.US_CA',
+  CA: 'jurisdiction.CA',
+  AU: 'jurisdiction.AU',
+  INTL: 'jurisdiction.INTL',
+};
+
+function localizeJurisdiction(t: (key: TranslationKey) => string, code: Jurisdiction): string {
+  const key = JURISDICTION_KEYS[code];
+  return key ? t(key) : code;
+}
+
+// Screen 09 — Drill-down · Ingredient detail.
+//
+// One ingredient, and the four things someone actually wants after a verdict:
+// why it flagged, what the claim rests on, who says so, and what other names
+// it goes by. Everything here is quotation and citation — the screen makes no
+// claim of its own, which is why the verdict ink appears on a single edge and
+// nowhere else.
+
+export default function IngredientScreen() {
+  const { t } = useTranslation();
+  const surface = useSurface();
+  const verdictColors = useVerdictColors();
+
+  const focus = getFocusedIngredient();
+  const [aliases, setAliases] = useState<string[] | null>(null);
+  const [evidence, setEvidence] = useState<SubstanceEvidence | null>(null);
+  // Set only when the lookup actually failed, so "still loading" and "nothing
+  // to show" stay distinguishable without a flag the effect has to set
+  // synchronously on mount.
+  const [evidenceFailed, setEvidenceFailed] = useState(false);
+
+  const flag = focus?.flag;
+  const profileName = focus?.profileName;
+  const substanceId = focus?.ingredient.substanceId;
+  const evidenceDomain: 'food' | 'cosmetic' =
+    focus?.productType === 'personal_care' ? 'cosmetic' : 'food';
+
+  useEffect(() => {
+    // Only the corpus can answer this, and only for a resolved substance.
+    // A failure leaves `evidence` null, which renders as the "not checked"
+    // block — the same thing an empty corpus says, and equally true from the
+    // reader's side.
+    if (!substanceId) return;
+    let live = true;
+    fetchSubstanceEvidence(substanceId, evidenceDomain)
+      .then((data) => live && setEvidence(data))
+      .catch(() => live && setEvidenceFailed(true));
+    return () => {
+      live = false;
+    };
+  }, [substanceId, evidenceDomain]);
+
+  useEffect(() => {
+    // Aliases come from the server's matcher, not a copy in the app: a stale
+    // duplicate would explain a match using words that no longer match.
+    if (flag?.type !== 'allergen') return;
+    let live = true;
+    fetchAllergenAliases(flag.match)
+      .then((list) => live && setAliases(list))
+      .catch(() => live && setAliases([]));
+    return () => {
+      live = false;
+    };
+  }, [flag?.type, flag?.match]);
+
+  if (!focus) return <Redirect href="/" />;
+
+  const { ingredient, original } = focus;
+  const tone = flag
+    ? verdictColors[flag.type === 'allergen' && flag.certainty !== 'verify' ? 'avoid' : 'caution']
+    : ingredient.riskLevel === 'low'
+      ? null
+      : verdictColors[RISK_TO_VERDICT[ingredient.riskLevel]];
+
+  const citations = flag?.citations ?? ingredient.citations ?? [];
+
+  return (
+    <SafeAreaView style={[styles.container, { backgroundColor: surface.paper }]}>
+      <ScrollView contentContainerStyle={styles.content}>
+        <Pressable onPress={goBackOrHome} hitSlop={12}>
+          <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>
+            ‹ {t('common.back')}
+          </ThemedText>
+        </Pressable>
+
+        <View>
+          <ThemedText style={[Type.title, { color: surface.ink }]}>{ingredient.name}</ThemedText>
+          {original && original !== ingredient.name ? (
+            <ThemedText style={[styles.original, { color: surface.inkFaint }]}>
+              {original}
+            </ThemedText>
+          ) : null}
+        </View>
+
+        {/* The two levels, side by side.
+
+            Shown ONLY when they differ, which is the only time the comparison
+            says anything. This is where "the personal level overrides the
+            universal one" gets stated out loud instead of being implied by a
+            dot colour: most people can eat this, and here is the specific thing
+            about you that changes it. */}
+        {ingredient.personalRiskLevel &&
+        ingredient.universalRiskLevel &&
+        ingredient.personalRiskLevel !== ingredient.universalRiskLevel ? (
+          <View style={[styles.section, { borderTopColor: surface.rule }]}>
+            <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
+              {t('ingredient.twoLevels')}
+            </ThemedText>
+            <View style={styles.levelRow}>
+              <ThemedText style={[Type.body, styles.levelLabel, { color: surface.inkMuted }]}>
+                {t('ingredient.forMostPeople')}
+              </ThemedText>
+              <ThemedText style={[Type.label, { color: surface.inkMuted }]}>
+                {t(RISK_LABEL_KEYS[ingredient.universalRiskLevel])}
+              </ThemedText>
+            </View>
+            <View style={styles.levelRow}>
+              <ThemedText style={[Type.body, styles.levelLabel, { color: surface.ink }]}>
+                {profileName ? t('ingredient.forProfile', { profile: profileName }) : t('ingredient.forYou')}
+              </ThemedText>
+              <ThemedText
+                style={[
+                  Type.label,
+                  { color: verdictColors[RISK_TO_VERDICT[ingredient.personalRiskLevel]].ink },
+                ]}
+              >
+                {t(RISK_LABEL_KEYS[ingredient.personalRiskLevel])}
+              </ThemedText>
+            </View>
+          </View>
+        ) : null}
+
+        {/* Why it flagged. The only place on this screen carrying verdict ink,
+            and only as an edge. */}
+        {flag ? (
+          <View style={[styles.panel, { backgroundColor: surface.card, borderColor: surface.rule }]}>
+            {tone ? <View style={[styles.panelEdge, { backgroundColor: tone.ink }]} /> : null}
+            <View style={styles.panelBody}>
+              <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
+                {t('ingredient.whyFlagged')}
+              </ThemedText>
+              <ThemedText style={[Type.reason, { color: surface.ink }]}>
+                {flagReason(t, flag)}
+              </ThemedText>
+              {flag.certainty === 'verify' ? (
+                <ThemedText style={[Type.body, { color: surface.inkMuted }]}>
+                  {t('ingredient.verifyNote')}
+                </ThemedText>
+              ) : null}
+            </View>
+          </View>
+        ) : null}
+
+        {/* The regulatory record — why this ingredient carries the level it
+            does, in the words of the bodies that decided it.
+
+            Statements are shown verbatim and untranslated on purpose. They are
+            quotations from regulatory instruments; paraphrasing one into three
+            languages is how a citation stops being a citation. The headings
+            around them are localized, so the screen still reads as the user's
+            language with quoted material inside it. */}
+        {evidence && evidence.records.length > 0 ? (
+          <View style={[styles.section, { borderTopColor: surface.rule }]}>
+            <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
+              {t('ingredient.regulatoryRecord')}
+            </ThemedText>
+
+            {/* The divergence, when there is one. This is the sentence the whole
+                substance corpus exists to be able to say. */}
+            {evidence.divergence ? (
+              <View style={[styles.divergence, { borderColor: surface.rule }]}>
+                <ThemedText style={[Type.body, { color: surface.ink }]}>
+                  {t('ingredient.divergence', {
+                    permitted: evidence.divergence.permittedIn
+                      .map((j) => localizeJurisdiction(t, j))
+                      .join(', '),
+                    prohibited: evidence.divergence.prohibitedIn
+                      .map((j) => localizeJurisdiction(t, j))
+                      .join(', '),
+                  })}
+                </ThemedText>
+              </View>
+            ) : null}
+
+            {evidence.records.map((record, i) => (
+              <View key={`${record.org}-${i}`} style={styles.record}>
+                <ThemedText style={[Type.body, { color: surface.ink }]}>
+                  {record.statement}
+                </ThemedText>
+                <Pressable
+                  disabled={!record.url}
+                  onPress={() => record.url && void Linking.openURL(record.url)}
+                >
+                  <ThemedText style={[styles.source, { color: surface.inkMuted }]}>
+                    {record.org} · {localizeJurisdiction(t, record.jurisdiction)}
+                    {record.determinedOn ? ` · ${record.determinedOn}` : ''}
+                    {record.url ? ' ↗' : ''}
+                  </ThemedText>
+                </Pressable>
+              </View>
+            ))}
+
+            {/* Identifiers, when a source gave us one. Mono, because this is the
+                machine's handle on the substance rather than a claim about it —
+                and it is what makes an answer checkable against the register. */}
+            {evidence.cas || evidence.eNumber ? (
+              <ThemedText style={[styles.identifiers, { color: surface.inkFaint }]}>
+                {[evidence.cas ? `CAS ${evidence.cas}` : null, evidence.eNumber]
+                  .filter(Boolean)
+                  .join(' · ')}
+              </ThemedText>
+            ) : null}
+          </View>
+        ) : null}
+
+        {/* No published record behind this level — so the level is our reading,
+            and this is where that gets said.
+
+            This block is the honest half of letting the model rate everything.
+            The card no longer distinguishes a sourced level from an assessed
+            one, because on a list row that distinction is noise. Here, where
+            someone has tapped through to ask "says who?", it is the answer. */}
+        {ingredient.riskSource !== 'record' ||
+        !ingredient.substanceId ||
+        evidenceFailed ||
+        (evidence !== null && evidence.records.length === 0) ? (
+          <View style={[styles.section, { borderTopColor: surface.rule }]}>
+            <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
+              {t('ingredient.regulatoryRecord')}
+            </ThemedText>
+            <ThemedText style={[Type.body, { color: surface.inkMuted }]}>
+              {/* Two different admissions, and using the stronger one when it
+                  is false made this screen contradict itself: it announced
+                  that no published source covered the ingredient, directly
+                  above a Sources block listing published sources for it.
+
+                  The level and the context come from different places. A
+                  knowledge-base entry explains an ingredient; only a record in
+                  the substance corpus sets its level. When we hold the former
+                  but not the latter, the honest sentence is "we rated this,
+                  the sources below did not" — not "nothing is known". */}
+              {citations.length > 0
+                ? t('ingredient.ourAssessmentWithSources')
+                : t('ingredient.ourAssessment')}
+            </ThemedText>
+          </View>
+        ) : null}
+
+        {/* What it is. */}
+        <View style={[styles.section, { borderTopColor: surface.rule }]}>
+          <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
+            {t('ingredient.what')}
+          </ThemedText>
+          <ThemedText style={[Type.body, { color: surface.ink }]}>
+            {ingredient.details || ingredient.summary}
+          </ThemedText>
+          {ingredient.riskAdjustmentReason ? (
+            <ThemedText style={[Type.meta, { color: surface.inkMuted }]}>
+              {ingredient.riskAdjustmentReason}
+            </ThemedText>
+          ) : null}
+        </View>
+
+        {/* Position on the label — the one quantity available without a
+            nutrition panel, and the only thing on this screen derived from the
+            product rather than from a source. Shown only when it is high enough
+            to mean something: "11th of 14" is trivia. */}
+        {isProminentRank(ingredient.labelRank) ? (
+          <View style={[styles.section, { borderTopColor: surface.rule }]}>
+            <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
+              {t('verdict.rankEyebrow')}
+            </ThemedText>
+            <ThemedText style={[Type.body, { color: surface.ink }]}>
+              {t('verdict.rankBody', {
+                rank: ingredient.labelRank!.rank,
+                total: ingredient.labelRank!.total,
+              })}
+            </ThemedText>
+          </View>
+        ) : null}
+
+        {/* Sources. A review status is shown on every one: an AI-seeded entry
+            claiming the authority of a reviewed one is the failure mode this
+            whole knowledge base exists to avoid. */}
+        {citations.length > 0 ? (
+          <View style={[styles.section, { borderTopColor: surface.rule }]}>
+            <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
+              {t('ingredient.sources')}
+            </ThemedText>
+            {citations.map((citation) => (
+              <View key={citation.entryId} style={styles.citation}>
+                <ThemedText style={[Type.body, { color: surface.ink }]}>
+                  {citation.statement}
+                </ThemedText>
+                {citation.sources.map((source, i) => (
+                  <Pressable
+                    key={`${citation.entryId}-${i}`}
+                    disabled={!source.url}
+                    onPress={() => source.url && void Linking.openURL(source.url)}
+                  >
+                    <ThemedText style={[styles.source, { color: surface.inkMuted }]}>
+                      {source.org}
+                      {source.year ? ` · ${source.year}` : ''} — {source.title}
+                      {source.url ? ' ↗' : ''}
+                    </ThemedText>
+                  </Pressable>
+                ))}
+                <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
+                  {t(
+                    citation.reviewStatus === 'human_reviewed'
+                      ? 'ingredient.humanReviewed'
+                      : 'ingredient.aiSeeded',
+                  )}
+                </ThemedText>
+              </View>
+            ))}
+          </View>
+        ) : null}
+
+        {/* Aliases — the other names this hides under on a label. */}
+        {flag?.type === 'allergen' ? (
+          <View style={[styles.section, { borderTopColor: surface.rule }]}>
+            <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
+              {t('ingredient.aliases', { allergen: localizeAllergen(t, flag.match) })}
+            </ThemedText>
+            {aliases === null ? (
+              <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>…</ThemedText>
+            ) : aliases.length === 0 ? (
+              <ThemedText style={[Type.body, { color: surface.inkMuted }]}>
+                {t('ingredient.noAliases')}
+              </ThemedText>
+            ) : (
+              <View style={styles.aliasWrap}>
+                {aliases.map((alias) => (
+                  <View
+                    key={alias}
+                    style={[styles.alias, { borderColor: surface.rule, backgroundColor: surface.card }]}
+                  >
+                    <ThemedText style={[styles.aliasText, { color: surface.inkMuted }]}>
+                      {alias}
+                    </ThemedText>
+                  </View>
+                ))}
+              </View>
+            )}
+          </View>
+        ) : null}
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1 },
+  content: { padding: Gutter, gap: Space.xl, paddingBottom: Space.xxl },
+  original: { fontFamily: Font.mono, fontSize: 13, lineHeight: 18, marginTop: 2 },
+  panel: {
+    borderWidth: StyleSheet.hairlineWidth,
+    borderRadius: Radius.flat,
+    overflow: 'hidden',
+  },
+  panelEdge: { height: 6 },
+  panelBody: { padding: Space.lg, gap: Space.sm },
+  section: { borderTopWidth: StyleSheet.hairlineWidth, paddingTop: Space.lg, gap: Space.sm },
+  // Two levels read as a comparison only when they line up vertically, so the
+  // label takes the space and the level sits hard against the right edge.
+  levelRow: { flexDirection: 'row', alignItems: 'baseline', gap: Space.md },
+  levelLabel: { flex: 1 },
+  citation: { gap: Space.xs, paddingTop: Space.sm },
+  source: { fontFamily: Font.mono, fontSize: 11, lineHeight: 16 },
+  // The divergence sits in a bordered box rather than a coloured one: the three
+  // verdict inks mean a verdict, and this is a fact about two legal regimes.
+  divergence: {
+    borderWidth: StyleSheet.hairlineWidth,
+    borderRadius: Radius.flat,
+    padding: Space.md,
+    marginTop: Space.xs,
+  },
+  record: { gap: Space.xs, paddingTop: Space.sm },
+  identifiers: { fontFamily: Font.mono, fontSize: 11, lineHeight: 16, paddingTop: Space.sm },
+  aliasWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: Space.sm },
+  alias: {
+    borderWidth: StyleSheet.hairlineWidth,
+    paddingHorizontal: Space.md,
+    paddingVertical: 5,
+  },
+  aliasText: { fontFamily: Font.mono, fontSize: 11, lineHeight: 15 },
+});
