@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300..600&family=Instrument+Sans:wght@400..700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#E9E2D4;font-family:'Instrument Sans',system-ui,sans-serif;color:#16130F;-webkit-font-smoothing:antialiased}
+a{color:#A5291F;text-decoration:none}a:hover{color:#7d1f18}
+@keyframes drawin{0%{stroke-dashoffset:120;opacity:0}30%{opacity:1}100%{stroke-dashoffset:0;opacity:1}}
+@keyframes fadeup{0%{transform:translateY(12px);opacity:0}100%{transform:translateY(0);opacity:1}}
+@keyframes seal{0%{transform:scale(1.4) rotate(-12deg);opacity:0}70%{transform:scale(.96) rotate(-4deg);opacity:1}100%{transform:scale(1) rotate(-4deg);opacity:1}}
+</style></helmet>
+
+<div style="max-width:1680px;margin:0 auto;padding:0 0 120px">
+
+<header style="padding:72px 64px 52px;background:#F6F1E7;border-bottom:1px solid #16130F">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+    <span style="font:500 11px/1 'IBM Plex Mono';letter-spacing:.16em;text-transform:uppercase;color:#8A8175">Revely · Identity</span>
+    <span style="font:500 11px/1 'IBM Plex Mono';letter-spacing:.14em;text-transform:uppercase;color:#8A8175;border-left:1px solid #DDD4C2;padding-left:12px">App icon &amp; splash</span>
+  </div>
+  <h1 style="font:300 68px/0.98 Newsreader,serif;letter-spacing:-.025em;margin:0 0 20px;max-width:900px;text-wrap:balance">A mark that says <em style="font-style:italic">read</em>, not <em style="font-style:italic">healthy</em>.</h1>
+  <p style="font:400 18px/1.55 'Instrument Sans';color:#5C554A;margin:0;max-width:680px;text-wrap:pretty">The leaf went with the old name. Revely is about revealing what a label actually says, so the mark should come from the scanning system — the reticle, the seal, the bilingual rule — not from the wellness shelf. The mark below is built from shapes already in the design system.</p>
+  <div style="margin-top:34px;padding:18px 22px;background:#EDE6D8;border-left:3px solid #16130F;max-width:680px;font:400 14px/1.55 'Instrument Sans';color:#5C554A"><strong style="color:#16130F;font-weight:600">Decided: the Aperture.</strong> The export set is built and sitting in <span style="font-family:'IBM Plex Mono';font-size:13px">assets/revely/</span>.</div>
+</header>
+
+<!-- DIRECTIONS -->
+<section style="padding:64px;background:#E9E2D4;border-bottom:1px solid #16130F">
+  <div style="display:flex;align-items:baseline;gap:18px;margin-bottom:12px">
+    <span style="font:500 11px/1 'IBM Plex Mono';letter-spacing:.16em;color:#8A8175">01</span>
+    <h2 style="font:300 40px/1 Newsreader,serif;letter-spacing:-.02em;margin:0">The mark</h2>
+  </div>
+  <p style="font:400 15px/1.55 'Instrument Sans';color:#5C554A;margin:0 0 48px;max-width:660px">Shown large, then at 60px and 40px — the sizes that actually decide it. An icon that only works at 512 is not an icon.</p>
+
+  <div style="display:flex;gap:32px;flex-wrap:wrap">
+
+    <!-- B · THE APERTURE -->
+    <div id="b" style="flex:1;min-width:400px;background:#F6F1E7;border:1px solid #DDD4C2">
+      <div style="padding:24px 28px;border-bottom:1px solid #DDD4C2;display:flex;align-items:center;justify-content:space-between">
+        <div><div style="font:500 10px/1 'IBM Plex Mono';letter-spacing:.16em;text-transform:uppercase;color:#8A8175;margin-bottom:7px">App icon</div><div style="font:400 26px/1.1 Newsreader,serif">The Aperture</div></div>
+        <span style="font:500 11px/1 'IBM Plex Mono';background:#16130F;color:#F6F1E7;padding:6px 10px">FINAL</span>
+      </div>
+      <div style="padding:40px;display:flex;justify-content:center;background:#EDE6D8">
+        <div style="width:220px;height:220px;border-radius:48px;background:#16130F;display:flex;align-items:center;justify-content:center;box-shadow:0 16px 40px rgba(22,19,15,.28)">
+          <svg width="150" height="150" viewBox="0 0 100 100" fill="none" stroke="#F6F1E7" stroke-width="5" stroke-linecap="square">
+            <path d="M14 34 V14 H34"></path><path d="M66 14 H86 V34"></path>
+            <path d="M86 66 V86 H66"></path><path d="M34 86 H14 V66"></path>
+            <path d="M30 44 H70" stroke-width="6"></path><path d="M30 58 H56" stroke-width="6"></path>
+          </svg>
+        </div>
+      </div>
+      <div style="padding:26px 28px">
+        <div style="font:400 15px/1.6 'Instrument Sans';color:#5C554A;margin-bottom:22px">The scan reticle with two lines of text inside it — a label caught in the frame. It shows the camera, which is what the app is. Distinctive on a homescreen because almost nothing else is four detached brackets.</div>
+        <div style="display:flex;gap:22px;align-items:center;padding-top:20px;border-top:1px solid #DDD4C2">
+          <div style="text-align:center"><div style="width:60px;height:60px;border-radius:14px;background:#16130F;display:flex;align-items:center;justify-content:center;margin-bottom:8px"><svg width="42" height="42" viewBox="0 0 100 100" fill="none" stroke="#F6F1E7" stroke-width="7" stroke-linecap="square"><path d="M14 34 V14 H34"></path><path d="M66 14 H86 V34"></path><path d="M86 66 V86 H66"></path><path d="M34 86 H14 V66"></path><path d="M30 44 H70" stroke-width="8"></path><path d="M30 58 H56" stroke-width="8"></path></svg></div><div style="font:400 10px/1 'IBM Plex Mono';color:#8A8175">60px</div></div>
+          <div style="text-align:center"><div style="width:40px;height:40px;border-radius:9px;background:#16130F;display:flex;align-items:center;justify-content:center;margin-bottom:8px"><svg width="28" height="28" viewBox="0 0 100 100" fill="none" stroke="#F6F1E7" stroke-width="9" stroke-linecap="square"><path d="M16 36 V16 H36"></path><path d="M64 16 H84 V36"></path><path d="M84 64 V84 H64"></path><path d="M36 84 H16 V64"></path><path d="M32 50 H68" stroke-width="10"></path></svg></div><div style="font:400 10px/1 'IBM Plex Mono';color:#8A8175">40px</div></div>
+          <div style="text-align:center"><div style="width:60px;height:60px;border-radius:14px;background:#F6F1E7;border:1px solid #DDD4C2;display:flex;align-items:center;justify-content:center;margin-bottom:8px"><svg width="42" height="42" viewBox="0 0 100 100" fill="none" stroke="#16130F" stroke-width="7" stroke-linecap="square"><path d="M14 34 V14 H34"></path><path d="M66 14 H86 V34"></path><path d="M86 66 V86 H66"></path><path d="M34 86 H14 V66"></path><path d="M30 44 H70" stroke-width="8"></path><path d="M30 58 H56" stroke-width="8"></path></svg></div><div style="font:400 10px/1 'IBM Plex Mono';color:#8A8175">inverse</div></div>
+          <div style="flex:1;font:400 13px/1.5 'Instrument Sans';color:#8A8175">Second text line drops below 44px, leaving one bar centred.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:36px;padding:24px 28px;background:#F6F1E7;border-left:3px solid #16130F;max-width:900px">
+    <div style="font:500 10px/1 'IBM Plex Mono';letter-spacing:.16em;text-transform:uppercase;color:#8A8175;margin-bottom:12px">Why it works</div>
+    <div style="font:400 16px/1.6 'Instrument Sans';color:#16130F">The Aperture survives 40px, it isn't a lettermark competing with every other app on the screen, and it carries the camera-first promise.</div>
+  </div>
+</section>
+
+<!-- HOMESCREEN TEST -->
+<section style="padding:64px;background:#F6F1E7;border-bottom:1px solid #16130F">
+  <div style="display:flex;align-items:baseline;gap:18px;margin-bottom:12px">
+    <span style="font:500 11px/1 'IBM Plex Mono';letter-spacing:.16em;color:#8A8175">02</span>
+    <h2 style="font:300 40px/1 Newsreader,serif;letter-spacing:-.02em;margin:0">In situ</h2>
+  </div>
+  <p style="font:400 15px/1.55 'Instrument Sans';color:#5C554A;margin:0 0 40px;max-width:660px">An ink-ground icon among the pastel and gradient icons of the category is the whole argument. Dark and quiet reads as an instrument, not another wellness app.</p>
+  <div style="display:flex;gap:40px;flex-wrap:wrap">
+    <sc-for list="{{ homescreens }}" as="h" hint-placeholder-count="3">
+      <div style="flex:none">
+        <div style="font:500 10px/1 'IBM Plex Mono';letter-spacing:.14em;text-transform:uppercase;color:#8A8175;margin-bottom:12px">{{ h.title }}</div>
+        <div style="width:300px;padding:26px 22px;border-radius:34px;background:linear-gradient(165deg,#5b6a7a,#2f3944);box-shadow:0 18px 44px rgba(22,19,15,.2)">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px 14px">
+            <sc-for list="{{ h.apps }}" as="app" hint-placeholder-count="8">
+              <div style="text-align:center">
+                <div style="width:56px;height:56px;border-radius:13px;background:{{ app.bg }};margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font:600 20px/1 'Instrument Sans';color:{{ app.fg }};overflow:hidden">{{ app.glyph }}</div>
+                <div style="font:400 9px/1.2 'Instrument Sans';color:rgba(255,255,255,.9)">{{ app.name }}</div>
+              </div>
+            </sc-for>
+            <div style="text-align:center">
+              <div style="width:56px;height:56px;border-radius:13px;background:#16130F;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px rgba(246,241,231,.9)">{{ h.mark }}</div>
+              <div style="font:600 9px/1.2 'Instrument Sans';color:#fff">Revely</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</section>
+
+<!-- SPLASH -->
+<section style="padding:64px;background:#E9E2D4;border-bottom:1px solid #16130F">
+  <div style="display:flex;align-items:baseline;gap:18px;margin-bottom:12px">
+    <span style="font:500 11px/1 'IBM Plex Mono';letter-spacing:.16em;color:#8A8175">03</span>
+    <h2 style="font:300 40px/1 Newsreader,serif;letter-spacing:-.02em;margin:0">Splash</h2>
+  </div>
+  <p style="font:400 15px/1.55 'Instrument Sans';color:#5C554A;margin:0 0 12px;max-width:700px">Camera-first means the splash must not be a moment — it's a held frame while the camera warms, typically 200–600ms. So it is deliberately almost nothing: ground, mark, wordmark. No tagline, no illustration, no progress spinner.</p>
+  <p style="font:400 15px/1.55 'Instrument Sans';color:#5C554A;margin:0 0 44px;max-width:700px">It also does one clever thing: the splash ground is the same ink as the viewfinder's darkest corner, so the transition into the live camera reads as the room lighting up rather than a screen swap.</p>
+
+  <div style="display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start">
+    <div>
+      <div style="font:500 10px/1 'IBM Plex Mono';letter-spacing:.14em;text-transform:uppercase;color:#8A8175;margin-bottom:12px">Launch screen · lamplight (default)</div>
+      <div style="width:393px;height:852px;border-radius:46px;background:#0a0806;padding:11px;box-shadow:0 24px 60px rgba(22,19,15,.28)">
+        <div style="width:100%;height:100%;border-radius:36px;background:#16130F;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px">
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 42%,rgba(246,241,231,.07),transparent 62%)"></div>
+          <svg width="96" height="96" viewBox="0 0 100 100" fill="none" stroke="#F6F1E7" stroke-width="5" stroke-linecap="square" style="animation:drawin 1.1s ease-out both">
+            <path d="M14 34 V14 H34"></path><path d="M66 14 H86 V34"></path><path d="M86 66 V86 H66"></path><path d="M34 86 H14 V66"></path>
+            <path d="M30 44 H70" stroke-width="6"></path><path d="M30 58 H56" stroke-width="6"></path>
+          </svg>
+          <div style="font:600 30px/1 'Instrument Sans';letter-spacing:-.02em;color:#F6F1E7;animation:fadeup .5s ease-out .25s both">Revely</div>
+          <div style="position:absolute;bottom:44px;left:0;right:0;text-align:center;font:400 11px/1 'IBM Plex Mono';letter-spacing:.14em;color:rgba(246,241,231,.35)">READ THE LABEL</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="font:500 10px/1 'IBM Plex Mono';letter-spacing:.14em;text-transform:uppercase;color:#8A8175;margin-bottom:12px">Launch screen · paper (light-only devices)</div>
+      <div style="width:393px;height:852px;border-radius:46px;background:#16130F;padding:11px;box-shadow:0 24px 60px rgba(22,19,15,.28)">
+        <div style="width:100%;height:100%;border-radius:36px;background:#F6F1E7;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px">
+          <svg width="96" height="96" viewBox="0 0 100 100" fill="none" stroke="#16130F" stroke-width="5" stroke-linecap="square">
+            <path d="M14 34 V14 H34"></path><path d="M66 14 H86 V34"></path><path d="M86 66 V86 H66"></path><path d="M34 86 H14 V66"></path>
+            <path d="M30 44 H70" stroke-width="6"></path><path d="M30 58 H56" stroke-width="6"></path>
+          </svg>
+          <div style="font:600 30px/1 'Instrument Sans';letter-spacing:-.02em">Revely</div>
+          <div style="position:absolute;bottom:44px;left:0;right:0;text-align:center;font:400 11px/1 'IBM Plex Mono';letter-spacing:.14em;color:#8A8175">READ THE LABEL</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex:1;min-width:340px;display:flex;flex-direction:column;gap:14px">
+      <div style="border:1px solid #DDD4C2;background:#F6F1E7;padding:26px 28px">
+        <div style="font:500 10px/1 'IBM Plex Mono';letter-spacing:.14em;text-transform:uppercase;color:#8A8175;margin-bottom:16px">Splash rules</div>
+        <div style="display:flex;flex-direction:column;gap:12px;font:400 14px/1.5 'Instrument Sans';color:#5C554A">
+          <div style="display:flex;gap:12px"><span style="font:400 12px/1.6 'IBM Plex Mono';color:#8A8175;flex:none">01</span><span>Mark is <strong style="color:#16130F;font-weight:600">96px</strong>, optically centred — sits 6% above true centre so it doesn't look low.</span></div>
+          <div style="display:flex;gap:12px"><span style="font:400 12px/1.6 'IBM Plex Mono';color:#8A8175;flex:none">02</span><span>Never show a spinner. If the camera takes longer than 1.2s, fade in the mono line "warming the lens" at the bottom.</span></div>
+          <div style="display:flex;gap:12px"><span style="font:400 12px/1.6 'IBM Plex Mono';color:#8A8175;flex:none">03</span><span>Native launch screen must be <strong style="color:#16130F;font-weight:600">static</strong> — the bracket draw-on is a JS layer that only plays on cold start, and only if the camera isn't ready yet.</span></div>
+          <div style="display:flex;gap:12px"><span style="font:400 12px/1.6 'IBM Plex Mono';color:#8A8175;flex:none">04</span><span>Exit is a 220ms cross-fade to the live viewfinder. No zoom, no slide.</span></div>
+          <div style="display:flex;gap:12px"><span style="font:400 12px/1.6 'IBM Plex Mono';color:#8A8175;flex:none">05</span><span>No tagline in the centre stack. "READ THE LABEL" sits at the bottom edge as a mono footer and is optional.</span></div>
+        </div>
+      </div>
+      <div style="border:1px solid #DDD4C2;background:#F6F1E7;padding:26px 28px">
+        <div style="font:500 10px/1 'IBM Plex Mono';letter-spacing:.14em;text-transform:uppercase;color:#8A8175;margin-bottom:16px">Wordmark</div>
+        <div style="display:flex;flex-direction:column;gap:20px;padding-bottom:18px">
+          <div style="display:flex;align-items:center;gap:11px"><svg width="27" height="27" viewBox="0 0 100 100" fill="none" stroke="#16130F" stroke-width="7" stroke-linecap="square"><path d="M14 34 V14 H34"></path><path d="M66 14 H86 V34"></path><path d="M86 66 V86 H66"></path><path d="M34 86 H14 V66"></path><path d="M30 44 H70" stroke-width="8"></path><path d="M30 58 H56" stroke-width="8"></path></svg><span style="font:600 25px/1 'Instrument Sans';letter-spacing:-.02em">Revely</span></div>
+          <div style="font:600 25px/1 'Instrument Sans';letter-spacing:-.02em">Revely</div>
+        </div>
+        <div style="font:400 13px/1.5 'Instrument Sans';color:#8A8175;border-top:1px solid #DDD4C2;padding-top:16px">Instrument Sans 600, −0.02em. Lockup gap is 0.42× the cap height. The mark never appears inside the letterforms and the wordmark is never set in Newsreader — the serif belongs to verdicts alone.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPORT -->
+<section style="padding:64px;background:#16130F;color:#F6F1E7">
+  <div style="display:flex;align-items:baseline;gap:18px;margin-bottom:12px">
+    <span style="font:500 11px/1 'IBM Plex Mono';letter-spacing:.16em;color:#8A8175">04</span>
+    <h2 style="font:300 40px/1 Newsreader,serif;letter-spacing:-.02em;margin:0;color:#F6F1E7">Handoff</h2>
+  </div>
+  <p style="font:400 15px/1.55 'Instrument Sans';color:rgba(246,241,231,.62);margin:0 0 40px;max-width:700px">Ready to paste. The SVG is the source of truth — generate every raster from it rather than resizing PNGs.</p>
+
+  <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <pre style="margin:0;padding:28px 30px;background:#0E0C0A;border:1px solid #2b261f;overflow:auto;font:400 12.5px/1.7 'IBM Plex Mono';color:#d8d0c2">{{ svgSnippet }}</pre>
+      <pre style="margin:0;padding:28px 30px;background:#0E0C0A;border:1px solid #2b261f;overflow:auto;font:400 12.5px/1.7 'IBM Plex Mono';color:#9c9384">{{ configSnippet }}</pre>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="border:1px solid #2b261f;padding:24px 26px">
+        <div style="font:500 10px/1 'IBM Plex Mono';letter-spacing:.14em;text-transform:uppercase;color:#8A8175;margin-bottom:8px">Built · assets/revely/</div>
+        <div style="font:400 13px/1.5 'Instrument Sans';color:rgba(246,241,231,.55);margin-bottom:16px">These files exist in this project. Copy them into the app rather than regenerating.</div>
+        <div style="font:400 12.5px/1.95 'IBM Plex Mono';color:rgba(246,241,231,.75)">revely-mark.svg &nbsp;&nbsp;&nbsp;&nbsp;100 grid · source of truth<br>revely-mark-24.svg &nbsp;24 grid · inline UI use<br>revely-mark-small.svg 1 bar · below 44px<br>revely-lockup.svg &nbsp;&nbsp;&nbsp;mark + wordmark<br>icon.png &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1024² · paper on ink<br>icon-dark.png &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1024² · iOS dark<br>icon-tinted.png &nbsp;&nbsp;&nbsp;1024² · greyscale, iOS 18<br>icon-fg.png &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1024² · Android adaptive fg<br>splash-mark.png &nbsp;&nbsp;&nbsp;864² · paper, transparent<br>splash-mark-light.png 864² · ink, transparent<br>favicon.png &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;48² · single bar</div>
+      </div>
+      <div style="border:1px solid #2b261f;padding:24px 26px">
+        <div style="font:500 10px/1 'IBM Plex Mono';letter-spacing:.14em;text-transform:uppercase;color:#8A8175;margin-bottom:16px">Non-negotiables</div>
+        <div style="display:flex;flex-direction:column;gap:11px;font:400 14px/1.5 'Instrument Sans';color:rgba(246,241,231,.72)">
+          <div style="display:flex;gap:12px"><span style="font:400 12px/1.6 'IBM Plex Mono';color:#8A8175;flex:none">01</span><span>The icon is <strong style="color:#F6F1E7;font-weight:600">never</strong> green, amber or red. Those three inks mean a verdict and nothing else — an icon that's green implies every scan passed.</span></div>
+          <div style="display:flex;gap:12px"><span style="font:400 12px/1.6 'IBM Plex Mono';color:#8A8175;flex:none">02</span><span>No gradient, no gloss, no inner shadow on the ground. Flat ink.</span></div>
+          <div style="display:flex;gap:12px"><span style="font:400 12px/1.6 'IBM Plex Mono';color:#8A8175;flex:none">03</span><span>Android adaptive foreground gets the mark at 60% — the outer 40% is the platform's mask allowance and will be cropped by circular launchers.</span></div>
+          <div style="display:flex;gap:12px"><span style="font:400 12px/1.6 'IBM Plex Mono';color:#8A8175;flex:none">04</span><span>Rename the package, the deep-link scheme and <span style="font-family:'IBM Plex Mono';font-size:12px">Brand.name</span> in the same pass — a half-renamed app leaks "Auraly" into share sheets and permission dialogs.</span></div>
+          <div style="display:flex;gap:12px"><span style="font:400 12px/1.6 'IBM Plex Mono';color:#8A8175;flex:none">05</span><span><strong style="color:#F6F1E7;font-weight:600">Flatten alpha before submitting.</strong> The supplied PNGs are fully opaque but still carry an RGBA channel, which App Store validation rejects on the 1024² icon. Expo prebuild normally strips it; if you submit a bare archive, run <span style="font-family:'IBM Plex Mono';font-size:12px">pngcrush -c 2</span> on <span style="font-family:'IBM Plex Mono';font-size:12px">icon.png</span>, <span style="font-family:'IBM Plex Mono';font-size:12px">icon-dark.png</span> and <span style="font-family:'IBM Plex Mono';font-size:12px">icon-tinted.png</span> first. The transparent ones — <span style="font-family:'IBM Plex Mono';font-size:12px">icon-fg</span>, <span style="font-family:'IBM Plex Mono';font-size:12px">splash-mark</span> — must keep their alpha.</span></div>
+          <div style="display:flex;gap:12px"><span style="font:400 12px/1.6 'IBM Plex Mono';color:#8A8175;flex:none">06</span><span><span style="font-family:'IBM Plex Mono';font-size:12px">icon-dark.png</span> is intentionally identical to <span style="font-family:'IBM Plex Mono';font-size:12px">icon.png</span> — the icon is already ink-ground, so there is nothing for dark mode to change. It ships as a separate file only because iOS 18 expects the slot to be filled.</span></div>
+        </div>
+      </div>
+      <div style="border:1px solid #2b261f;padding:24px 26px">
+        <div style="font:500 10px/1 'IBM Plex Mono';letter-spacing:.14em;text-transform:uppercase;color:#8A8175;margin-bottom:12px">Rename checklist</div>
+        <div style="display:flex;flex-direction:column;gap:9px;font:400 13.5px/1.5 'Instrument Sans';color:rgba(246,241,231,.72)">
+          <div style="display:flex;gap:11px"><span style="font:400 12px/1.6 'IBM Plex Mono';color:#8A8175;flex:none">✓</span><span>Design system doc rebranded — the aperture replaces the leaf in all twelve places.</span></div>
+          <div style="display:flex;gap:11px"><span style="font:400 12px/1.6 'IBM Plex Mono';color:#8A8175;flex:none">01</span><span><span style="font-family:'IBM Plex Mono';font-size:12px">app.json</span> — name, slug, scheme, bundleIdentifier, package.</span></div>
+          <div style="display:flex;gap:11px"><span style="font:400 12px/1.6 'IBM Plex Mono';color:#8A8175;flex:none">02</span><span><span style="font-family:'IBM Plex Mono';font-size:12px">constants/brand.ts</span> — and delete the leaf import.</span></div>
+          <div style="display:flex;gap:11px"><span style="font:400 12px/1.6 'IBM Plex Mono';color:#8A8175;flex:none">03</span><span>iOS <span style="font-family:'IBM Plex Mono';font-size:12px">NS*UsageDescription</span> strings — these surface the old name in permission dialogs.</span></div>
+          <div style="display:flex;gap:11px"><span style="font:400 12px/1.6 'IBM Plex Mono';color:#8A8175;flex:none">04</span><span>Share-sheet title, verdict-card footer mark, and the export image wordmark.</span></div>
+          <div style="display:flex;gap:11px"><span style="font:400 12px/1.6 'IBM Plex Mono';color:#8A8175;flex:none">05</span><span>Server: any <span style="font-family:'IBM Plex Mono';font-size:12px">Auraly lexicon</span> source strings shown in the drill-down citations.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1680,&quot;height&quot;:1200}}">
+class Component extends DCLogic {
+  renderVals() {
+    const R = (props, kids) => React.createElement('svg', Object.assign({ viewBox: '0 0 100 100', fill: 'none' }, props), kids);
+    const brackets = (sw, tw) => [
+      React.createElement('path', { key: 1, d: 'M14 34 V14 H34' }),
+      React.createElement('path', { key: 2, d: 'M66 14 H86 V34' }),
+      React.createElement('path', { key: 3, d: 'M86 66 V86 H66' }),
+      React.createElement('path', { key: 4, d: 'M34 86 H14 V66' }),
+      React.createElement('path', { key: 5, d: 'M30 44 H70', strokeWidth: tw }),
+      React.createElement('path', { key: 6, d: 'M30 58 H56', strokeWidth: tw }),
+    ];
+    const markB = R({ width: 36, height: 36, stroke: '#F6F1E7', strokeWidth: 7, strokeLinecap: 'square' }, brackets(7, 8));
+
+    const neighbours = [
+      { name: 'Weather', bg: '#BFE3F2', fg: '#1c5878', glyph: '◠' },
+      { name: 'Notes', bg: '#FFD84D', fg: '#5c4a00', glyph: '▤' },
+      { name: 'Photos', bg: '#F4C7D9', fg: '#8a2f52', glyph: '❋' },
+      { name: 'Music', bg: '#C9E8CE', fg: '#2c6b3a', glyph: '♪' },
+      { name: 'Wallet', bg: '#FFFFFF', fg: '#5b6a7a', glyph: '▭' },
+      { name: 'Maps', bg: '#A8DCEE', fg: '#12607f', glyph: '◈' },
+      { name: 'Clock', bg: '#E4D9F2', fg: '#4a3a72', glyph: '◷' },
+    ];
+
+    const svgSnippet = [
+      '<!-- assets/revely-mark.svg — safe area is the',
+      '     inner 80%; icon grid is 100×100 -->',
+      '<svg view' + 'Box="0 0 100 100" fill="none"',
+      '     stroke="currentColor" stroke-width="5"',
+      '     stroke-linecap="square">',
+      '  <path d="M14 34 V14 H34"/>',
+      '  <path d="M66 14 H86 V34"/>',
+      '  <path d="M86 66 V86 H66"/>',
+      '  <path d="M34 86 H14 V66"/>',
+      '  <path d="M30 44 H70" stroke-width="6"/>',
+      '  <path d="M30 58 H56" stroke-width="6"/>',
+      '</svg>',
+    ].join('\n');
+
+    const configSnippet = [
+      '// app.json',
+      '"icon": "./assets/icon.png",           // 1024²',
+      '"splash": {',
+      '  "image": "./assets/splash-mark.png", // 288² @3x',
+      '  "resizeMode": "contain",',
+      '  "backgroundColor": "#16130F"',
+      '},',
+      '"android": {',
+      '  "adaptiveIcon": {',
+      '    "foregroundImage": "./assets/icon-fg.png",',
+      '    "backgroundColor": "#16130F"',
+      '  }',
+      '},',
+      '"ios": { "icon": {',
+      '  "dark":  "./assets/icon-dark.png",',
+      '  "tinted":"./assets/icon-tinted.png"',
+      '} }',
+    ].join('\n');
+
+    return {
+      svgSnippet, configSnippet,
+      homescreens: [
+        { title: 'The Aperture', mark: markB, apps: neighbours },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

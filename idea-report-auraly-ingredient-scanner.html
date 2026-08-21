@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Idea Report — Personalized cross-language ingredient scanner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#16202E;
+  --ink-2:#5A6472;
+  --ink-3:#8A94A3;
+  --line:#E8EAEE;
+  --line-2:#EEF0F4;
+  --surface:#FBFBFC;
+  --surface-2:#F5F6F8;
+  --bg:#FFFFFF;
+  --brand:#4F46E5;
+  --brand-soft:#EEF0FE;
+  --good:#1B8A4B;
+  --good-soft:#E7F6EC;
+  --mid:#9A6A12;
+  --mid-soft:#FBF1DC;
+  --low:#5A6472;
+  --low-soft:#EEF1F6;
+  --warn:#C2410C;
+  --radius:14px;
+  --radius-sm:10px;
+  --maxw:1080px;
+}
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-size:15px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;}
+
+/* ---------- Top bar ---------- */
+.topbar{border-bottom:1px solid var(--line);background:var(--bg);}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:16px;letter-spacing:-.01em;}
+.brand .mark{width:24px;height:24px;border-radius:50%;
+  background:conic-gradient(from 210deg,#6366F1,#22C55E,#F59E0B,#EC4899,#6366F1);}
+.topbar .meta{font-size:12.5px;color:var(--ink-3);}
+
+/* ---------- Hero ---------- */
+.hero{padding:46px 0 26px;}
+.crumb{font-size:12.5px;color:var(--ink-3);margin-bottom:18px;}
+.title{
+  font-family:"Fraunces",Georgia,serif;
+  font-weight:500;
+  font-size:42px;
+  line-height:1.08;
+  letter-spacing:-.015em;
+  margin:0 0 16px;
+}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+.tag{
+  font-size:12px;font-weight:500;padding:5px 11px;border-radius:999px;
+  background:var(--brand-soft);color:var(--brand);border:1px solid #E2E5FB;
+}
+.tag.amber{background:#FBF1DC;color:#9A6A12;border-color:#F2E2BD;}
+.tag.muted{background:var(--surface-2);color:var(--ink-2);border-color:var(--line);}
+.lede p{margin:0 0 16px;color:#2B3645;font-size:15.5px;max-width:760px;}
+.disclaimer{font-size:11.5px;color:var(--ink-3);font-style:italic;margin-top:6px;}
+
+/* ---------- Section scaffolding ---------- */
+.section{padding:30px 0;border-top:1px solid var(--line-2);}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:6px;}
+.eyebrow{font-size:11.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--brand);}
+.section h2{
+  font-family:"Fraunces",Georgia,serif;font-weight:500;font-size:26px;letter-spacing:-.01em;
+  margin:4px 0 4px;
+}
+.section .intro{color:var(--ink-2);max-width:760px;margin:0 0 22px;}
+
+/* ---------- Cards & grids ---------- */
+.grid{display:grid;gap:16px;}
+.grid-2{grid-template-columns:repeat(2,1fr);}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+.grid-4{grid-template-columns:repeat(4,1fr);}
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:20px 20px 22px;
+}
+.card.tight{padding:16px 18px;}
+.card h3{font-size:15.5px;font-weight:600;margin:0 0 12px;display:flex;align-items:center;gap:9px;letter-spacing:-.01em;}
+.card h3 .ico{font-size:17px;line-height:1;}
+.card .sub{font-weight:600;font-size:13px;margin:14px 0 3px;color:var(--ink);}
+.card .sub:first-of-type{margin-top:0;}
+.card p{margin:0 0 4px;color:var(--ink-2);font-size:13.5px;line-height:1.55;}
+.ref{color:var(--brand);font-weight:500;font-size:12px;text-decoration:none;}
+
+/* ---------- Score pills ---------- */
+.score{
+  display:inline-flex;align-items:baseline;gap:2px;font-weight:600;font-size:13px;
+  padding:3px 9px;border-radius:999px;white-space:nowrap;
+}
+.score .den{font-size:11px;font-weight:500;opacity:.7;}
+.score.high{background:var(--good-soft);color:var(--good);}
+.score.mid{background:var(--mid-soft);color:var(--mid);}
+.score.low{background:var(--low-soft);color:var(--low);}
+.card-score h3{justify-content:space-between;}
+
+/* ---------- Stat tiles (scores row) ---------- */
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);padding:16px;}
+.tile .k{font-size:12px;color:var(--ink-2);font-weight:500;}
+.tile .v{font-family:"Fraunces",serif;font-size:30px;font-weight:500;line-height:1;margin:8px 0 4px;}
+.tile .d{font-size:12px;font-weight:600;}
+.tile .bar{height:4px;border-radius:3px;background:var(--line);margin-top:10px;overflow:hidden;}
+.tile .bar span{display:block;height:100%;border-radius:3px;background:var(--brand);}
+
+/* ---------- Key-value rows ---------- */
+.kv{display:grid;grid-template-columns:1fr auto;gap:6px 14px;}
+.kv .key{color:var(--ink-2);font-size:13.5px;}
+.kv .val{font-weight:600;font-size:13.5px;text-align:right;}
+.fitlist{display:flex;flex-direction:column;gap:14px;}
+.fitrow{display:flex;align-items:flex-start;gap:11px;}
+.fitrow .ico{font-size:16px;margin-top:1px;}
+.fitrow .body{flex:1;}
+.fitrow .name{font-weight:600;font-size:13.5px;}
+.fitrow .desc{color:var(--ink-2);font-size:12.5px;}
+.fitrow .tagval{font-weight:600;font-size:13px;color:var(--brand);white-space:nowrap;}
+.fitrow .tagval.good{color:var(--good);}
+
+/* ---------- Value ladder ---------- */
+.ladder{display:flex;flex-direction:column;gap:12px;}
+.tier{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px 20px;position:relative;
+}
+.tier .label{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);}
+.tier .row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 8px;}
+.tier .name{font-weight:600;font-size:16px;letter-spacing:-.01em;}
+.tier .price{font-size:12.5px;font-weight:600;color:var(--brand);background:var(--brand-soft);padding:4px 10px;border-radius:999px;white-space:nowrap;}
+.tier .price.free{color:var(--good);background:var(--good-soft);}
+.tier .vg{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px;}
+.tier .vg .h{font-size:12px;font-weight:600;margin-bottom:2px;}
+.tier .vg p{margin:0;color:var(--ink-2);font-size:12.5px;}
+.tier .desc{color:var(--ink-2);font-size:13px;margin:0;}
+
+/* ---------- Execution plan ---------- */
+.part-label{font-size:11.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin:22px 0 10px;}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;}
+.steps li{display:flex;gap:11px;align-items:flex-start;font-size:13.5px;color:#2B3645;}
+.steps li .n{color:var(--brand);font-weight:700;flex:none;}
+.cols-3{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+
+/* ---------- Matrix ---------- */
+.matrix{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden;}
+.matrix .q{padding:14px;border:1px solid var(--line-2);}
+.matrix .q .qt{font-weight:600;font-size:12.5px;}
+.matrix .q .qd{font-size:11.5px;color:var(--ink-3);}
+.matrix .q.on{background:var(--brand-soft);}
+.acp{display:flex;flex-direction:column;gap:12px;}
+.acp .row .top{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px;}
+.acp .bar{height:6px;border-radius:4px;background:var(--line);overflow:hidden;}
+.acp .bar span{display:block;height:100%;background:var(--good);border-radius:4px;}
+.ring{width:88px;height:88px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;
+  background:conic-gradient(var(--brand) calc(var(--p)*1%),var(--line) 0);margin:0 auto;}
+.ring .inner{width:66px;height:66px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;}
+.ring .num{font-family:"Fraunces",serif;font-size:24px;font-weight:600;line-height:1;}
+.ring .lab{font-size:10px;color:var(--ink-3);}
+
+/* ---------- Signals / keywords ---------- */
+.signal{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line-2);}
+.signal:last-child{border-bottom:none;}
+.signal .l{display:flex;align-items:center;gap:10px;font-weight:600;font-size:13.5px;}
+.signal .l .ico{font-size:16px;}
+.signal .r{font-size:12.5px;color:var(--ink-2);}
+.kw{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line-2);}
+.kw:last-child{border-bottom:none;}
+.kw .t{font-size:13px;font-weight:500;}
+.kw .t small{display:block;color:var(--ink-3);font-weight:400;font-size:11px;}
+.kw .v{font-weight:600;font-size:12.5px;color:var(--brand);}
+.signal .l a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line);}
+.signal .l a:hover{color:var(--brand);border-color:var(--brand);}
+.kw .t a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line);}
+.kw .t a:hover{color:var(--brand);border-color:var(--brand);}
+
+/* ---------- Sources / footer ---------- */
+.sources{display:flex;flex-direction:column;gap:8px;}
+.sources a{font-size:12.5px;color:var(--brand);text-decoration:none;word-break:break-all;}
+.foot{border-top:1px solid var(--line);margin-top:30px;padding:26px 0 50px;color:var(--ink-3);font-size:12px;}
+.foot .big{display:flex;align-items:center;gap:9px;font-weight:600;color:var(--ink-2);font-size:14px;margin-bottom:8px;}
+
+/* ---------- Responsive ---------- */
+@media (max-width:820px){
+  .grid-2,.grid-3,.grid-4,.tiles,.cols-3,.tier .vg{grid-template-columns:1fr;}
+  .title{font-size:32px;}
+  .wrap{padding:0 18px;}
+}
+/* ---------- Print ---------- */
+@media print{
+  body{font-size:12px;}
+  .section,.hero{page-break-inside:avoid;}
+  .card,.tier{break-inside:avoid;}
+  a{color:var(--ink);}
+  .topbar{position:static;}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand"><span class="mark"></span> Idea Report</div>
+    <div class="meta">Validation &amp; execution analysis</div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="crumb">Idea Analysis</div>
+    <h1 class="title">Personalized AI ingredient scanner that reads any label, in any language</h1>
+    <div class="tags">
+      <span class="tag amber">🔥 Perfect Timing</span>
+      <span class="tag">📈 Proven Demand</span>
+      <span class="tag muted">+12 More</span>
+    </div>
+    <div class="lede">
+      <p>A convenience store in Taipei, a supermarket in Lisbon, or just aisle seven at home. You have a dairy allergy, a sesame sensitivity, or a kid who reacts to Red 40, and the ingredient list is either in a language you cannot read or in chemistry you cannot parse. More than 33 million Americans live with food allergies <a class="ref" href="#s1">[1]</a>, and for travelers the stakes sharpen: in one study, 14% of people with food allergies avoided travel entirely, half reported anxiety around eating abroad, and 30% experienced an allergic reaction while traveling <a class="ref" href="#s4">[4]</a>. Every one of those reactions started with a label somebody could not decode.</p>
+      <p>The product is a mobile app that reads the actual ingredient label, not a barcode. Point the camera at any package, in any language, and a multimodal AI model extracts the ingredients, translates them, and cross-references them against the user's personal health profile: allergies, sensitivities, dietary rules, pregnancy, conditions. The verdict is a clear flag plus plain-language reasons, personalized to that user rather than a one-size-fits-all score. A photo of the product itself, Cal AI style, resolves the item when no label is in reach.</p>
+      <p>The MVP is an iOS app with three components: a vision pipeline built on a frontier multimodal model that handles curved, glossy, and foreign-language packaging; a personal risk profile engine; and a human-reviewed ingredient knowledge base with cited sources. The one hard architecture decision is label-reading versus barcode lookup. Barcode databases are fast but fail on exactly the products that matter most, local and international items outside Western catalogs, so the label-native approach is the moat even though it costs more per scan and demands rigorous accuracy evaluation before any allergy claim ships.</p>
+      <p>Monetization is freemium: 5 free scans per month, with a premium tier at $4.99/month or $39.99/year unlocked through a 7-day no-credit-card trial. The distribution wedge is the allergy, celiac, and sensitivity communities plus travel content, where the pain is sharpest and word of mouth is proven to move this category, since Yuka reached roughly 80 million users with essentially zero paid marketing <a class="ref" href="#s2">[2]</a>. Expansion runs from food into personal care depth, household products, and family profiles.</p>
+      <p class="disclaimer">*Analysis, scores, and revenue estimates are educational and based on assumptions. Results vary by execution and market conditions.</p>
+    </div>
+  </section>
+
+  <!-- ============ SCORES ============ -->
+  <section class="section">
+    <div class="section-head"><div><span class="eyebrow">Scorecard</span><h2>Headline scores</h2></div></div>
+    <div class="tiles">
+      <div class="tile"><div class="k">Opportunity</div><div class="v">8</div><div class="d" style="color:var(--good)">Strong</div><div class="bar"><span style="width:80%"></span></div></div>
+      <div class="tile"><div class="k">Problem</div><div class="v">9</div><div class="d" style="color:var(--good)">Severe Pain</div><div class="bar"><span style="width:90%"></span></div></div>
+      <div class="tile"><div class="k">Feasibility</div><div class="v">7</div><div class="d" style="color:var(--good)">Buildable</div><div class="bar"><span style="width:70%"></span></div></div>
+      <div class="tile"><div class="k">Why Now</div><div class="v">9</div><div class="d" style="color:var(--good)">Prime Window</div><div class="bar"><span style="width:90%"></span></div></div>
+    </div>
+  </section>
+
+  <!-- ============ BUSINESS FIT + CATEGORIZATION ============ -->
+  <section class="section">
+    <div class="grid grid-2">
+      <div class="card">
+        <h3><span class="ico">🧭</span> Business Fit</h3>
+        <div class="fitlist">
+          <div class="fitrow"><span class="ico">💰</span><div class="body"><div class="name">Revenue Potential</div><div class="desc">$1M–$10M ARR from consumer subscriptions; Yuka proved the category monetizes at scale ($20M+ revenue in 2023)</div></div><span class="tagval good">$$</span></div>
+          <div class="fitrow"><span class="ico">🛠️</span><div class="body"><div class="name">Execution Difficulty</div><div class="desc">AI-native build is fast; the hard parts are accuracy evaluation and allergy-claim liability</div></div><span class="tagval">6/10</span></div>
+          <div class="fitrow"><span class="ico">🎯</span><div class="body"><div class="name">Go-To-Market</div><div class="desc">Crowded scanner shelf, but a sharp wedge into allergy and traveler communities with a proven word-of-mouth playbook</div></div><span class="tagval">7/10</span></div>
+          <div class="fitrow"><span class="ico">🧩</span><div class="body"><div class="name">Right for You?</div><div class="desc">AI-native product builders with consumer growth instincts and the patience to earn trust on safety claims</div></div><span class="tagval">Find Out →</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3><span class="ico">🗂️</span> Categorization</h3>
+        <div class="kv">
+          <div class="key">Type</div><div class="val">Consumer subscription app</div>
+          <div class="key">Market</div><div class="val">B2C</div>
+          <div class="key">Target</div><div class="val">Allergy &amp; sensitivity shoppers</div>
+          <div class="key">Main Competitor</div><div class="val">Yuka</div>
+        </div>
+        <div class="sub" style="margin-top:16px;font-weight:600;font-size:13px;">Trend Analysis</div>
+        <p style="margin-top:3px;color:var(--ink-2);font-size:13px;">Ingredient scrutiny has gone mainstream: nearly 3 in 4 consumers now reconsider purchases based on the ingredient list <a class="ref" href="#s7">[7]</a>, and US regulators are actively banning additives, keeping the topic in the news cycle <a class="ref" href="#s8">[8]</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHY NOW ============ -->
+  <section class="section">
+    <div class="section-head">
+      <div><span class="eyebrow">Timing</span><h2>Why Now</h2></div>
+      <span class="score high">9 <span class="den">/10</span></span>
+    </div>
+    <p class="intro">Two curves are crossing. Consumer attention on ingredient safety is at an all-time high, driven by the ultra-processed food backlash and US additive bans, while multimodal AI just made it possible to read a crumpled, glossy, foreign-language label straight from a phone camera. The incumbent that proved demand is architecturally bound to barcodes.</p>
+    <div class="grid grid-2">
+      <div class="card card-score"><h3><span><span class="ico">📈</span> Market Timing Factors</span><span class="score high">9<span class="den">/10</span></span></h3>
+        <div class="sub">The category is proven at massive scale</div><p>Yuka grew from a French side project to roughly 80 million users and the #1 health and fitness slot in the US App Store, adding about 25,000 US users per day entirely through word of mouth <a class="ref" href="#s2">[2]</a><a class="ref" href="#s3">[3]</a>.</p>
+        <div class="sub">Ingredient anxiety is mainstream</div><p>Nearly 3 in 4 consumers reconsider purchases based on ingredient lists, and 37% report checking labels more than they did a year ago <a class="ref" href="#s7">[7]</a>.</p>
+      </div>
+      <div class="card card-score"><h3><span><span class="ico">🔬</span> Technological Enablers</span><span class="score high">9<span class="den">/10</span></span></h3>
+        <div class="sub">Multimodal models unlocked label-native scanning</div><p>Frontier vision models now read curved, distorted, low-light packaging across dozens of languages with contextual reasoning, something classic OCR never handled. This is the capability shift that makes a barcode-free scanner viable for the first time.</p>
+        <div class="sub">Inference cost fits a $4.99 subscription</div><p>Per-scan costs on current model pricing sit comfortably inside a freemium envelope of 5 free scans per month, so unit economics work from day one.</p>
+      </div>
+      <div class="card card-score"><h3><span><span class="ico">🏛️</span> Regulatory &amp; Social Catalysts</span><span class="score high">8<span class="den">/10</span></span></h3>
+        <div class="sub">Additive policy is front-page news</div><p>The MAHA push to remove synthetic dyes and state laws like Texas's warning-label requirement for 40+ additives keep ingredient safety in the headlines and drive scanning behavior <a class="ref" href="#s8">[8]</a>.</p>
+        <div class="sub">Allergen labeling keeps expanding but stays fragmented</div><p>Sesame became the ninth US major allergen under the FASTER Act in 2023 <a class="ref" href="#s6">[6]</a>, yet labeling laws still vary country by country, leaving travelers exposed <a class="ref" href="#s5">[5]</a>.</p>
+      </div>
+      <div class="card card-score"><h3><span><span class="ico">🚀</span> Competitive Window</span><span class="score mid">7<span class="den">/10</span></span></h3>
+        <div class="sub">Incumbents are barcode-database bound</div><p>Yuka's model depends on a 6-million-product barcode catalog and a universal 0–100 score <a class="ref" href="#s2">[2]</a>. It cannot read an unlisted Taiwanese snack or tailor a verdict to one person's allergy profile, and retrofitting a database-first architecture takes time.</p>
+      </div>
+      <div class="card card-score"><h3><span><span class="ico">🛡️</span> Risk Reduction Factors</span><span class="score mid">7<span class="den">/10</span></span></h3>
+        <div class="sub">Willingness to pay is validated</div><p>Yuka monetizes purely through optional premium subscriptions with no ads or brand deals, reaching over $20M in annual revenue <a class="ref" href="#s2">[2]</a>, so the freemium-scan model is de-risked.</p>
+      </div>
+      <div class="card card-score"><h3><span><span class="ico">📊</span> Supporting Data Points</span><span class="score high">8<span class="den">/10</span></span></h3>
+        <div class="sub">The affected population is enormous</div><p>Food allergy alone affects 1 in 10 US adults and drives 3.4 million emergency visits per year, one every 10 seconds <a class="ref" href="#s1">[1]</a>, before counting intolerances, celiac disease, and sensitivity-driven shoppers.</p>
+      </div>
+      <div class="card card-score"><h3><span><span class="ico">⚠️</span> Timing Risks</span><span class="score mid">6<span class="den">/10</span></span></h3>
+        <div class="sub">Incumbent or platform response</div><p>Yuka can bolt on AI label reading, and Apple could ship native visual lookup for food. The defensible ground is the personalized profile and the trust layer, not the OCR itself.</p>
+        <div class="sub">Accuracy scrutiny is rising</div><p>Chemists and dietitians already criticize scanner apps for opaque methodology <a class="ref" href="#s9">[9]</a>; an AI entrant claiming allergy relevance will be held to a higher bar.</p>
+      </div>
+      <div class="card card-score"><h3><span><span class="ico">⏳</span> Why Wait = Why Fail</span><span class="score high">8<span class="den">/10</span></span></h3>
+        <div class="sub">Attention and data compound now</div><p>Category attention is peaking with the additive-ban news cycle, and every scan enriches a personal-profile dataset an incumbent cannot replicate quickly. Waiting hands the personalization gap to Yuka's roadmap.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROOF & SIGNALS ============ -->
+  <section class="section">
+    <div class="section-head">
+      <div><span class="eyebrow">Evidence</span><h2>Proof &amp; Signals</h2></div>
+      <span class="score high">8 <span class="den">/10</span></span>
+    </div>
+    <p class="intro">This is a felt problem with life-or-death edges. The evidence spans clinical literature on allergy travel anxiety, ER utilization data, the visible failure modes of the incumbent for allergy users, and one of the strongest organic word-of-mouth phenomena in consumer apps.</p>
+    <div class="grid grid-2">
+      <div class="card card-score"><h3><span><span class="ico">😣</span> Emotional Frustration Signals</span><span class="score high">9<span class="den">/10</span></span></h3>
+        <div class="sub">Documented fear around eating abroad</div><p>Among food-allergic travelers, 49% report anxiety and 46% report fear tied to food; 70% did not know which allergens the destination country even requires on labels <a class="ref" href="#s4">[4]</a>.</p>
+        <div class="sub">Allergy users are failed by universal scores</div><p>Dietitians warn that one-score apps mislead people with allergies and specialized diets because "health care has to be individualized" <a class="ref" href="#s3">[3]</a>, and Yuka reviewers with allergies say exactly this in public reviews.</p>
+      </div>
+      <div class="card card-score"><h3><span><span class="ico">⏰</span> Time-Sensitive Needs</span><span class="score high">8<span class="den">/10</span></span></h3>
+        <div class="sub">Reactions happen despite vigilance</div><p>30% of allergic travelers experienced a reaction abroad, most caused by allergens their home country already requires on labels <a class="ref" href="#s4">[4]</a>. The decision moment is the store aisle, seconds before purchase.</p>
+        <div class="sub">A US ER visit every 10 seconds</div><p>3.4 million food-allergy-related emergency visits occur per year in the US alone <a class="ref" href="#s1">[1]</a>.</p>
+      </div>
+      <div class="card card-score"><h3><span><span class="ico">❌</span> Systemic Barriers</span><span class="score high">8<span class="den">/10</span></span></h3>
+        <div class="sub">Labeling law is a patchwork</div><p>Allergen labeling requirements differ by country, and even well-regulated markets exempt loose and prepared foods, forcing consumers to self-verify <a class="ref" href="#s5">[5]</a><a class="ref" href="#s6">[6]</a>.</p>
+        <div class="sub">Barcode catalogs miss the long tail</div><p>Database-first scanners cover mainstream Western SKUs but fail on local, imported, and small-brand products, precisely where a traveler or immigrant shopper needs help most <a class="ref" href="#s2">[2]</a>.</p>
+      </div>
+      <div class="card card-score"><h3><span><span class="ico">💬</span> Community Demand &amp; Engagement</span><span class="score mid">7<span class="den">/10</span></span></h3>
+        <div class="sub">Large, organized communities</div><p>FARE alone represents the 33 million Americans with food allergy <a class="ref" href="#s1">[1]</a>, and active subreddits for food allergies and celiac disease trade label-reading and travel advice daily.</p>
+        <div class="sub">Scan-and-share is a native content format</div><p>Yuka's growth inflected when a TikTok creator filmed product scans; the behavior itself is inherently viral and repeatable for a differentiated scanner <a class="ref" href="#s2">[2]</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MARKET GAP ============ -->
+  <section class="section">
+    <div class="section-head">
+      <div><span class="eyebrow">Whitespace</span><h2>Market Gap Analysis</h2></div>
+      <span class="score high">8 <span class="den">/10</span></span>
+    </div>
+    <p class="intro">The scanner category looks crowded until you segment it. Every major player scores products universally from a barcode database. Nobody reads the raw label in any language and answers the only question an allergy or sensitivity user actually has: is this safe for me.</p>
+    <div class="grid grid-2">
+      <div class="card card-score"><h3><span><span class="ico">🚫</span> Underserved Customer Segments</span><span class="score high">9<span class="den">/10</span></span></h3>
+        <div class="sub">Allergy and sensitivity users get generic answers</div><p>A product can score 90/100 on Yuka and still hospitalize someone with a sesame allergy. Clinicians explicitly flag this gap for allergic and special-diet users <a class="ref" href="#s3">[3]</a>, who are the highest-stakes, highest-retention segment in the category.</p>
+      </div>
+      <div class="card card-score"><h3><span><span class="ico">🧱</span> Feature Gaps</span><span class="score high">9<span class="den">/10</span></span></h3>
+        <div class="sub">No cross-language, label-native scanning</div><p>No major scanner reads an arbitrary foreign-language label from a photo and reasons about it. Barcode lookups fail silently abroad, and travelers are told to carry paper translation cards as the state of the art <a class="ref" href="#s5">[5]</a>.</p>
+      </div>
+      <div class="card card-score"><h3><span><span class="ico">🌍</span> Geographic Opportunities</span><span class="score high">8<span class="den">/10</span></span></h3>
+        <div class="sub">Asia-Pacific and travel corridors</div><p>Western barcode databases are thinnest across Asian markets with dense packaged-food cultures. A label-native scanner works day one in Taipei, Tokyo, or Bangkok, serving both travelers and local health-conscious shoppers no incumbent reaches.</p>
+      </div>
+      <div class="card card-score"><h3><span><span class="ico">🔗</span> Integration Opportunities</span><span class="score mid">6<span class="den">/10</span></span></h3>
+        <div class="sub">Health and travel surfaces</div><p>Apple Health conditions, grocery list apps, and travel platforms are natural integration points, and a scan API is a future B2B surface for grocery e-commerce and insurers. Valuable, but sequenced after consumer traction.</p>
+      </div>
+      <div class="card card-score"><h3><span><span class="ico">💡</span> Differentiation Levers</span><span class="score high">8<span class="den">/10</span></span></h3>
+        <div class="sub">The personal profile is the moat</div><p>A user's allergy profile, sensitivity history, and scan log make every subsequent verdict smarter and switching costlier. Photo-of-product recognition without a visible label extends coverage to menus, bakeries, and bulk goods that no barcode system can touch.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VALUE LADDER ============ -->
+  <section class="section">
+    <div class="section-head"><div><span class="eyebrow">Monetization</span><h2>Value Ladder Strategy</h2></div></div>
+    <p class="intro">A freemium ladder that lets the free tier prove the magic moment, converts on volume and trust, and expands to households and, later, businesses.</p>
+    <div class="ladder">
+      <div class="tier">
+        <div class="label">Lead Magnet</div>
+        <div class="row"><div class="name">Free Tier — 5 Scans/Month</div><span class="price free">Free</span></div>
+        <div class="vg"><div><div class="h">Value Provided</div><p>Full personalized analysis on 5 scans a month plus a free allergen translation card generator for travelers, delivering the "it caught something" moment at zero cost.</p></div><div><div class="h">Goal</div><p>Acquire users, seed word of mouth, build the profile that makes upgrading obvious.</p></div></div>
+      </div>
+      <div class="tier">
+        <div class="label">Frontend Offer</div>
+        <div class="row"><div class="name">Premium Monthly</div><span class="price">$4.99/month</span></div>
+        <div class="vg"><div><div class="h">Value Provided</div><p>Unlimited scans, full ingredient deep-dives, multi-sensitivity profiles, and offline travel packs, unlocked via a 7-day no-credit-card trial.</p></div><div><div class="h">Goal</div><p>Convert heavy scanners and pre-trip travelers at a low-friction price point.</p></div></div>
+      </div>
+      <div class="tier">
+        <div class="label">Core Offer</div>
+        <div class="row"><div class="name">Premium Annual</div><span class="price">$39.99/year</span></div>
+        <div class="vg"><div><div class="h">Value Provided</div><p>Everything in monthly at a ~33% discount, positioned as the default at trial end.</p></div><div><div class="h">Goal</div><p>Lock in 12-month retention and stabilize revenue; annual mix is the core LTV driver.</p></div></div>
+      </div>
+      <div class="tier">
+        <div class="label">Continuity Program</div>
+        <div class="row"><div class="name">Family Plan</div><span class="price">$79.99/year</span></div>
+        <div class="vg"><div><div class="h">Value Provided</div><p>Up to 5 profiles per household, including child allergy profiles and shared safe-product lists for caregivers and grandparents.</p></div><div><div class="h">Goal</div><p>Raise ARPU and retention through the stickiest buyer in the category: parents of allergic kids.</p></div></div>
+      </div>
+      <div class="tier">
+        <div class="label">Backend Offer</div>
+        <div class="row"><div class="name">Scan API &amp; B2B Licensing</div><span class="price">$2,000+/month</span></div>
+        <div class="vg"><div><div class="h">Value Provided</div><p>Label-analysis API for grocery e-commerce, travel platforms, and insurers who want personalized ingredient screening inside their own products.</p></div><div><div class="h">Goal</div><p>Open a high-margin second revenue line once the consumer engine proves accuracy at scale.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EXECUTION PLAN ============ -->
+  <section class="section">
+    <div class="section-head"><div><span class="eyebrow">Roadmap</span><h2>Execution Plan</h2></div></div>
+    <div class="tags" style="margin-bottom:18px;">
+      <span class="tag muted">Type · B2C</span>
+      <span class="tag muted">Timeline · 6–8 weeks to MVP</span>
+      <span class="tag muted">Budget · $5–15K</span>
+    </div>
+
+    <div class="cols-3">
+      <div>
+        <div class="part-label">Part 1 · Business Classification</div>
+        <div class="card">
+          <div class="sub">Business Type</div><p>B2C freemium subscription app.</p>
+          <div class="sub">Market Position</div><p>Yuka and peers are barcode-database scorers with a universal rating. This product is label-native, language-agnostic, and personalized: the answer is about you, not the average shopper.</p>
+          <div class="sub">Buyer Personas</div><p>Adults with allergies or intolerances · Parents of allergic kids · Travelers and expats facing foreign labels · Clean-label and sensitivity-driven shoppers.</p>
+          <div class="sub">Key Pain Points</div><p>Unreadable foreign labels · Universal scores that ignore personal risk · Barcode databases that miss local and imported products.</p>
+        </div>
+
+        <div class="part-label">Part 2 · Phase 1 Roadmap (0–6 Months)</div>
+        <div class="card">
+          <div class="sub">MVP Approach</div><p>iOS app: camera → multimodal vision pipeline → personal profile check → flagged verdict with plain-language reasons. Food plus personal care at launch.</p>
+          <div class="sub">Initial Offer</div><p>Freemium — 5 free scans/month, $4.99/mo or $39.99/yr premium via 7-day no-card trial. Self-serve fulfillment.</p>
+          <div class="sub">Lead Generation</div><p>Free allergen translation card generator as the travel lead magnet (target 15% scan-to-signup). Scan-content on TikTok and Instagram replicating the proven format (target 3 creator collabs/mo). Reddit allergy and celiac communities plus SEO "is [ingredient] safe if you have [condition]" pages (target top-3 rankings on 20 long-tail terms).</p>
+        </div>
+      </div>
+      <div>
+        <div class="part-label">Part 3 · Phase 2 Roadmap (6–18 Months)</div>
+        <div class="card">
+          <div class="sub">Traction Milestones</div><p>10,000 MAU with 4% free-to-paid conversion by month 12; scan accuracy above 99% on the evaluation set for major allergens.</p>
+          <div class="sub">Expansion Plan</div><p>Android launch, family plans, deeper personal care and cosmetics coverage, supplement and medication interaction checks, and localized launches in label-dense Asian markets (Taiwan and Japan first) where barcode incumbents are weakest.</p>
+        </div>
+
+        <div class="part-label">Part 4 · Implementation Plan</div>
+        <div class="card">
+          <ol class="steps">
+            <li><span class="n">1</span> Build the ingredient risk knowledge base with human review and cited scientific sources</li>
+            <li><span class="n">2</span> Ship the vision pipeline on a frontier multimodal model tuned for curved, real-world packaging</li>
+            <li><span class="n">3</span> Run a closed beta with 50 allergy and celiac users across at least 5 label languages</li>
+            <li><span class="n">4</span> Stand up an accuracy evaluation harness and complete legal review of claims and disclaimers</li>
+            <li><span class="n">5</span> Launch the free translation-card lead magnet ahead of summer travel season</li>
+            <li><span class="n">6</span> App Store launch with creator seeding in allergy, celiac, and travel niches</li>
+            <li><span class="n">7</span> Iterate paywall placement and trial flow against conversion data</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-3" style="margin-top:18px;">
+      <div class="card tight">
+        <h3 style="font-size:14px;"><span class="ico">📐</span> Success Metrics</h3>
+        <div class="kv">
+          <div class="key">CAC (organic-led)</div><div class="val">&lt;$5</div>
+          <div class="key">Monthly churn</div><div class="val">&lt;7%</div>
+          <div class="key">Free → paid</div><div class="val">3–5%</div>
+        </div>
+      </div>
+      <div class="card tight">
+        <h3 style="font-size:14px;"><span class="ico">🧰</span> Resource Requirements</h3>
+        <div class="kv">
+          <div class="key">Budget</div><div class="val">$5–15K</div>
+          <div class="key">Team</div><div class="val">Solo + AI tools</div>
+          <div class="key">Timeline</div><div class="val">6–8 weeks</div>
+        </div>
+      </div>
+      <div class="card tight">
+        <h3 style="font-size:14px;"><span class="ico">🚩</span> Risk Assessment</h3>
+        <div class="sub">Accuracy &amp; liability on allergen calls</div><p>Flag conservatively, human-review the knowledge base, run a standing eval set, and keep clear medical disclaimers.</p>
+        <div class="sub">Incumbent adds AI scanning</div><p>Win on the personal profile, cross-language depth, and traveler wedge; move faster than a database-first roadmap can.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FRAMEWORK FIT ============ -->
+  <section class="section">
+    <div class="section-head"><div><span class="eyebrow">Frameworks</span><h2>Framework Fit</h2></div></div>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3><span class="ico">⚖️</span> The Value Equation</h3>
+        <div class="ring" style="--p:80"><div class="inner"><span class="num">8</span><span class="lab">Strong</span></div></div>
+        <p style="text-align:center;margin-top:12px;">Enormous dream outcome (never eat something that hurts you), near-instant results, and near-zero effort per scan. Tempered only by the trust the app must earn before users rely on it for safety.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico">🎯</span> Market Matrix</h3>
+        <div class="matrix">
+          <div class="q"><div class="qt">Tech Novelty</div><div class="qd">High uniqueness · lower value</div></div>
+          <div class="q on"><div class="qt">Category King</div><div class="qd">High uniqueness · high value</div></div>
+          <div class="q"><div class="qt">Low Impact</div><div class="qd">Low uniqueness · low value</div></div>
+          <div class="q"><div class="qt">Commodity Play</div><div class="qd">Low uniqueness · high value</div></div>
+        </div>
+        <p style="margin-top:12px;">Personalized, label-native, cross-language scanning is genuinely unique and the value is high stakes. The path to king status runs through the sub-category Yuka does not serve: "safe for me," not "healthy in general."</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico">📶</span> The A.C.P. Framework</h3>
+        <div class="acp">
+          <div class="row"><div class="top"><span>Audience</span><span>9/10</span></div><div class="bar"><span style="width:90%"></span></div></div>
+          <div class="row"><div class="top"><span>Community</span><span>8/10</span></div><div class="bar"><span style="width:80%"></span></div></div>
+          <div class="row"><div class="top"><span>Product</span><span>7/10</span></div><div class="bar"><span style="width:70%"></span></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3><span class="ico">🪜</span> The Value Ladder</h3>
+        <p>A clean five-rung ladder from 5 free scans a month to a $2,000+/month scan API, with $4.99/mo premium as the workhorse and family plans as the retention engine. See the Value Ladder Strategy section above for the full progression.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COMMUNITY + KEYWORDS ============ -->
+  <section class="section">
+    <div class="grid grid-2">
+      <div class="card">
+        <h3><span class="ico">📡</span> Community Signals</h3>
+        <div class="signal"><div class="l"><span class="ico">👽</span> <a href="https://www.reddit.com/r/FoodAllergies/" target="_blank" rel="noopener">r/FoodAllergies</a></div><div class="r">Label-reading &amp; travel Q&amp;A</div></div>
+        <div class="signal"><div class="l"><span class="ico">👽</span> <a href="https://www.reddit.com/r/Celiac/" target="_blank" rel="noopener">r/Celiac</a></div><div class="r">Hidden-gluten &amp; label threads</div></div>
+        <div class="signal"><div class="l"><span class="ico">🌐</span> <a href="https://www.foodallergy.org/" target="_blank" rel="noopener">FARE</a></div><div class="r">Advocacy for 33M Americans <a class="ref" href="#s1">[1]</a></div></div>
+        <div class="signal"><div class="l"><span class="ico">🌐</span> <a href="https://www.foodallergyawareness.org/living-with-food-allergies/traveling/traveling/" target="_blank" rel="noopener">FAACT — Traveling</a></div><div class="r">Allergy travel prep hub</div></div>
+        <div class="signal"><div class="l"><span class="ico">▶️</span> <a href="https://www.youtube.com/results?search_query=ingredient+scanner+app" target="_blank" rel="noopener">Scan-content creators</a></div><div class="r">Viral product-scan format</div></div>
+      </div>
+      <div class="card">
+        <h3><span class="ico">🔑</span> Top Keywords</h3>
+        <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin:2px 0 4px;">Fastest Growing</div>
+        <div class="kw"><div class="t"><a href="https://trends.google.com/trends/explore?q=ingredient%20scanner%20app" target="_blank" rel="noopener">ingredient scanner app</a><small>Search interest</small></div><div class="v">Rising ↑</div></div>
+        <div class="kw"><div class="t"><a href="https://trends.google.com/trends/explore?q=yuka%20app%20alternative" target="_blank" rel="noopener">yuka app alternative</a><small>Search interest</small></div><div class="v">Rising ↑</div></div>
+        <div class="kw"><div class="t"><a href="https://trends.google.com/trends/explore?q=food%20additives%20to%20avoid" target="_blank" rel="noopener">food additives to avoid</a><small>Search interest</small></div><div class="v">Rising ↑</div></div>
+        <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin:14px 0 4px;">Highest Volume</div>
+        <div class="kw"><div class="t"><a href="https://trends.google.com/trends/explore?q=yuka%20app" target="_blank" rel="noopener">yuka app</a><small>Search interest</small></div><div class="v">High</div></div>
+        <div class="kw"><div class="t"><a href="https://trends.google.com/trends/explore?q=food%20allergy%20translation%20card" target="_blank" rel="noopener">food allergy translation card</a><small>Search interest</small></div><div class="v">Steady</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SOURCES ============ -->
+  <section class="section">
+    <div class="section-head"><div><span class="eyebrow">References</span><h2>Citations &amp; Sources</h2></div></div>
+    <div class="card sources">
+      <a id="s1" href="https://www.foodallergy.org/resources/facts-and-statistics" target="_blank" rel="noopener">[1] FARE — Food allergy facts and statistics (33M Americans, 3.4M annual ER visits)</a>
+      <a id="s2" href="https://www.foodtimes.eu/consumers-and-health/yuka-app-nutrition-health-and-market-opportunities/" target="_blank" rel="noopener">[2] FoodTimes — Yuka: nutrition, health and market opportunities (user base, revenue, business model)</a>
+      <a id="s3" href="https://www.cbsnews.com/miami/news/yuka-app-scan-food-health-risks-nutrition-additives/" target="_blank" rel="noopener">[3] CBS News — Yuka US growth and dietitian concerns about individualized needs</a>
+      <a id="s4" href="https://www.medsciencegroup.us/Allergy/Allergy-1-109.php" target="_blank" rel="noopener">[4] Dano et al. — Impact of Food Allergies on Travel Decision, Trip Organization and Stay Abroad</a>
+      <a id="s5" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10169132/" target="_blank" rel="noopener">[5] PMC — Food Allergy Labeling Laws: International Guidelines for Residents and Travelers</a>
+      <a id="s6" href="https://www.nycfoodpolicy.org/food-policy-snapshot-sesame-major-food-allergen/" target="_blank" rel="noopener">[6] NYC Food Policy Center — Sesame becomes the ninth US major allergen (FASTER Act)</a>
+      <a id="s7" href="https://www.innovamarketinsights.com/trends/global-clean-label-trends/" target="_blank" rel="noopener">[7] Innova Market Insights — Global clean label trends (label-checking consumer behavior)</a>
+      <a id="s8" href="https://www.foodchainid.com/resources/clean-label-trends-a-global-perspective/" target="_blank" rel="noopener">[8] FoodChain ID — Clean label trends, MAHA initiative and state additive legislation</a>
+      <a id="s9" href="https://www.glossy.co/beauty/yuka-beauty-wellness-product-scanning-app/" target="_blank" rel="noopener">[9] Glossy — The rise of Yuka and its growing cohort of critics</a>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="foot">
+    <div class="big"><span class="mark" style="width:20px;height:20px;border-radius:50%;display:inline-block;background:conic-gradient(from 210deg,#6366F1,#22C55E,#F59E0B,#EC4899,#6366F1);"></span> Idea Report</div>
+    <p>This report shares research and education, not promises or advice. Revenue estimates, scores, and examples are illustrative only; results will vary. Always do your own due diligence.</p>
+  </footer>
+
+</main>
+</body>
+</html>
