@@ -1,10 +1,15 @@
 {
   "include": ["client/src/**/*", "shared/**/*", "server/**/*"],
-  "exclude": ["node_modules", "build", "dist", "**/*.test.ts"],
+  "exclude": ["node_modules", "build", "dist", "**/*.test.ts", "mobile"],
   "compilerOptions": {
     "incremental": true,
     "tsBuildInfoFile": "./node_modules/typescript/tsbuildinfo",
     "noEmit": true,
+    // Typecheck-only setting: `noEmit` is on and the build runs through esbuild
+    // (server) and vite (client), each with its own target. Without this, tsc
+    // defaults to ES5 and rejects Map/Set iteration and Unicode regex flags that
+    // the actual Node 20+ runtime supports fine.
+    "target": "ES2022",
     "module": "ESNext",
     "strict": true,
     "lib": ["esnext", "dom", "dom.iterable"],

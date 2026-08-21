@@ -1,0 +1,26 @@
+# The image is the API server only. Everything below is either the mobile app,
+# source material, or something that must never leave the machine.
+
+.git
+.gitignore
+node_modules
+dist
+
+# Secrets. .env is gitignored but Docker does not read .gitignore.
+.env
+.env.*
+!.env.example
+
+# The mobile app is 4.7GB of node_modules and Xcode build output, and the
+# server does not import a line of it.
+mobile
+
+# Label photos and design source — not read at runtime.
+attached_assets
+design_handoff_revely
+eval
+
+# Local scratch
+analysis_cache.json
+*.log
+.DS_Store

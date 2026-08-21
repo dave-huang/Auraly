@@ -1,0 +1,57 @@
+# What gets uploaded to EAS Build.
+#
+# IMPORTANT: this file REPLACES .gitignore for the build archive — it does not
+# add to it. Anything not listed here is uploaded, even if .gitignore excludes
+# it. That is why the secrets block below is duplicated from .gitignore rather
+# than assumed: dropping a line here uploads that file to Expo's servers.
+#
+# Before the first build the archive was 189 MB, because the git root is the
+# repo root and the whole monorepo came along. The iOS build only needs
+# mobile/, shared/ and the manifests.
+
+# --- Secrets: must stay in sync with .gitignore ---
+.env
+.env.local
+mobile/.env
+secrets.env.txt
+*.p8
+*.p12
+*.mobileprovision
+*.jks
+*.key
+*.pem
+
+# --- Never useful in a build ---
+node_modules
+.git
+.DS_Store
+*.tar.gz
+
+# --- Generated native projects (EAS runs prebuild itself) ---
+mobile/ios
+mobile/android
+ios
+dist
+server/public
+mobile/.expo
+
+# --- Server-side only: none of this reaches the app bundle ---
+server
+client
+eval
+drizzle.config.ts
+Dockerfile
+.dockerignore
+fly.toml
+vite.config.ts
+
+# --- Source material and docs (62 MB of the old archive) ---
+attached_assets
+design_handoff_revely
+*.md
+idea-report-auraly-ingredient-scanner.html
+
+# --- Xcode local state ---
+*.xcuserstate
+xcuserdata/
+.claude

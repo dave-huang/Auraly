@@ -13,3 +13,11 @@ ios/DerivedData
 ios/build
 *.xcuserstate
 xcuserdata/
+.env
+
+# Local secrets — never commit
+secrets.env.txt
+.env.local
+
+# Expo local env
+mobile/.env

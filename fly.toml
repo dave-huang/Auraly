@@ -1,0 +1,45 @@
+# Revely API. Deploy with `fly deploy`; set secrets with `fly secrets set` —
+# never put a key in this file, it is committed.
+
+app = "revely-api"
+# Chicago, because the Neon database is in AWS us-east-2 (Ohio). Every request
+# makes several database round trips; putting the app on the west coast would
+# add ~60ms to each one for no reason.
+primary_region = "ord"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  NODE_ENV = "production"
+  PORT = "8080"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "suspend"
+  auto_start_machines = true
+  # One machine always warm. A scan is a foreground action with a person
+  # holding a phone up to a label; a cold start on top of a vision-model call
+  # is the difference between "thinking" and "broken".
+  min_machines_running = 1
+
+  [[http_service.checks]]
+    # Boot loads the substance registry, evidence records and knowledge base
+    # from disk before the server listens; 20s was tight enough that a slow
+    # cold start could look like a failure.
+    grace_period = "60s"
+    interval = "30s"
+    method = "GET"
+    timeout = "10s"
+    # Liveness, not readiness — this stays 200 when Postgres is down, so a
+    # database problem does not present as "deploy timed out" and does not
+    # block deploying the fix. /api/readyz is the strict one.
+    path = "/api/healthz"
+
+[[vm]]
+  # Label reads hold base64 images in memory (the JSON body limit is 50MB) and
+  # the analyzer runs several model calls in parallel. 512MB is not enough.
+  memory = "1gb"
+  cpu_kind = "shared"
+  cpus = 1
