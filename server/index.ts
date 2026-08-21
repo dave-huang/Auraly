@@ -1,9 +1,14 @@
+// Loaded here for `npm run dev`. The production start script also passes
+// `--import dotenv/config`, because the bundler splits the output into chunks
+// and does not guarantee this module is evaluated before the one that reads
+// DATABASE_URL at import time.
+import "dotenv/config";
 import express, { type Request, Response, NextFunction } from "express";
 import cors from "cors";
 import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
+import { serveStatic, log } from "./static";
 import { runMigrations } from 'stripe-replit-sync';
-import { getStripeSync } from './stripeClient';
+import { getStripeSync, isStripeConfigured } from './stripeClient';
 import { WebhookHandlers } from './webhookHandlers';
 
 // Global error handlers to prevent server crashes
@@ -25,18 +30,45 @@ declare module 'http' {
   }
 }
 
-const NATIVE_ORIGINS = [
+// Origins allowed to make credentialed requests.
+//
+// The final `return callback(null, true)` that used to sit at the bottom of
+// this function made the allow-list above it dead code: every origin was
+// approved, with credentials: true. Combined with the production cookie's
+// sameSite: "none", that let any web page in the world issue authenticated
+// requests as a signed-in user AND read the responses — their scan history,
+// their profiles' allergens and medical conditions, or DELETE /api/account.
+//
+// Native apps are unaffected either way: they send a Bearer token, which no
+// browser attaches automatically, so CORS was never what protected them. This
+// list exists for the cookie-session web client.
+const ALLOWED_ORIGINS = [
   "capacitor://localhost",
   "ionic://localhost",
-  "http://localhost",
+];
+
+// Dev servers only. In production the web bundle is served same-origin, so it
+// sends no Origin header at all and never needs an entry here.
+const DEV_ORIGINS = [
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "http://localhost:8081",
 ];
 
 app.use(
   cors({
     origin: (origin, callback) => {
+      // No Origin header: same-origin requests, native fetch, curl, and the
+      // health checker. Not a cross-site browser request, so nothing to guard.
       if (!origin) return callback(null, true);
-      if (NATIVE_ORIGINS.includes(origin)) return callback(null, true);
-      return callback(null, true);
+      if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+      if (process.env.NODE_ENV !== "production" && DEV_ORIGINS.includes(origin)) {
+        return callback(null, true);
+      }
+      // Deny by omission rather than by error: no CORS headers come back, the
+      // browser blocks the read, and the caller gets a clean failure instead
+      // of a 500 in our logs.
+      return callback(null, false);
     },
     credentials: true,
   })
@@ -50,6 +82,11 @@ async function initStripe() {
     return;
   }
 
+  if (!isStripeConfigured()) {
+    console.log('STRIPE_SECRET_KEY not set, skipping Stripe initialization (billing disabled)');
+    return;
+  }
+
   try {
     console.log('Initializing Stripe schema...');
     await runMigrations({ 
@@ -59,19 +96,23 @@ async function initStripe() {
 
     const stripeSync = await getStripeSync();
 
-    // Check if REPLIT_DOMAINS is available before setting up webhook
-    const replitDomains = process.env.REPLIT_DOMAINS;
-    if (!replitDomains) {
-      console.log('REPLIT_DOMAINS not found, skipping webhook configuration (will be set up on next deployment)');
+    // Public base URL for Stripe webhooks. Set PUBLIC_BASE_URL when deployed
+    // (e.g. https://api.revely.app); unset locally, webhook setup is skipped
+    // (use `stripe listen --forward-to localhost:5000/api/stripe/webhook` instead).
+    const publicBaseUrl =
+      process.env.PUBLIC_BASE_URL ||
+      (process.env.REPLIT_DOMAINS ? `https://${process.env.REPLIT_DOMAINS.split(',')[0]}` : undefined);
+    if (!publicBaseUrl) {
+      console.log('PUBLIC_BASE_URL not set, skipping webhook configuration');
     } else {
       try {
         console.log('Setting up managed webhook...');
-        const webhookBaseUrl = `https://${replitDomains.split(',')[0]}`;
+        const webhookBaseUrl = publicBaseUrl;
         const { webhook, uuid } = await stripeSync.findOrCreateManagedWebhook(
           `${webhookBaseUrl}/api/stripe/webhook`,
           {
             enabled_events: ['*'],
-            description: 'Auraly managed webhook for Stripe sync',
+            description: 'Revely managed webhook for Stripe sync',
           }
         );
         console.log(`Webhook configured: ${webhook.url} (UUID: ${uuid})`);
@@ -178,20 +219,23 @@ app.use((req, res, next) => {
   // setting up all the other routes so the catch-all route
   // doesn't interfere with the other routes
   if (app.get("env") === "development") {
+    // Dynamic so the production bundle never carries `import "vite"`. Vite is
+    // a devDependency; a static import here would crash a production-only
+    // container before it served a single request.
+    const { setupVite } = await import("./vite");
     await setupVite(app, server);
   } else {
     serveStatic(app);
   }
 
-  // ALWAYS serve the app on the port specified in the environment variable PORT
-  // Other ports are firewalled. Default to 5000 if not specified.
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const port = parseInt(process.env.PORT || '5000', 10);
+  // Serves both the API and the client on PORT.
+  // Note: macOS AirPlay occupies port 5000, so local dev defaults to 3000.
+  // reusePort is unsupported on macOS (ENOTSUP) and only useful for
+  // multi-process deployments, so it is intentionally not set.
+  const port = parseInt(process.env.PORT || '3000', 10);
   server.listen({
     port,
     host: "0.0.0.0",
-    reusePort: true,
   }, () => {
     log(`serving on port ${port}`);
   });

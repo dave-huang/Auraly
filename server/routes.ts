@@ -4,12 +4,14 @@ import multer from "multer";
 import z from "zod";
 import crypto from "crypto";
 import { eq, sql, gte, and, count, desc, inArray } from "drizzle-orm";
-import { setupAuth, isAuthenticated } from "./replitAuth";
+import { setupAuth, isAuthenticated } from "./localAuth";
+import { rateLimit } from "./rateLimit";
 import { storage } from "./storage";
 import { db } from "./db";
 import { extractTextFromImage } from "./services/ocr";
+import { readLabelFromImage } from "./services/labelReader";
 import { analyzeIngredients, analyzeIngredientsParallel, extractIngredientsFromText } from "./services/analyzer";
-import { batchAnalyzeIngredientsWithCache, getCacheStats, clearAllCache, getAllCacheEntries } from "./services/cache";
+import { getCacheStats, clearAllCache, getAllCacheEntries } from "./services/cache";
 import { subscriptionService } from "./services/subscription";
 import { 
   ocrRequestSchema, 
@@ -25,6 +27,8 @@ import {
   type AnalysisResult,
   type InsertScanHistory,
   type Ingredient,
+  type Profile,
+  type RiskLevel,
   productTypes,
   productCategories,
   getDailyFreeScansRemaining,
@@ -36,16 +40,37 @@ import {
   insertPromoCodeSchema,
   referrals,
   REFERRAL_REWARD_SCANS,
+  upsertProfileSchema,
 } from "@shared/schema";
+import { applyProfileToAnalysis, annotateWithCitations, maxRisk } from "./services/personalRisk";
+import { withLabelRanks } from "./services/labelRank";
+import { applyPopulationRisk, domainForProductType } from "./services/substances/classify";
+import { getSubstanceRegistry } from "./services/substances/identity";
+import { getEvidenceStore } from "./services/substances/evidence";
+import { applyPolicy, POLICY_VERSION } from "./services/substances/policy";
+import { ALLERGEN_KEYWORDS, type MajorAllergen } from "./services/allergenMatcher";
 import { getUncachableStripeClient } from "./stripeClient";
 
 // In-memory store for analysis requests (for background processing)
 interface AnalysisRequest {
   id: string;
+  // Who started this scan. Checked on every status poll: without it, any
+  // signed-in caller holding a request id could read someone else's label
+  // text and analysis. The id is 64 bits of randomness so guessing one is not
+  // practical, but "hard to guess" is not an access control.
+  userId: string;
   status: 'processing' | 'ocr_complete' | 'completed' | 'failed';
   result?: AnalysisResult;
   error?: string;
+  // A stable code for the failures a client should word itself. `error` stays
+  // an English sentence for logs; a localized app cannot show it to anyone.
+  errorCode?: string;
   ocrText?: string;
+  // Published as soon as the label is read, before analysis finishes, so the
+  // client can show real progress during the ~20-30s wait instead of a bare
+  // spinner.
+  ingredientCount?: number;
+  productName?: string;
   timestamp: number;
 }
 
@@ -55,6 +80,15 @@ const analysisRequests = new Map<string, AnalysisRequest>();
 interface OCRCacheEntry {
   text: string;
   timestamp: number;
+  // Structured extraction from the multimodal label reader; absent for
+  // entries produced by the legacy text-OCR path.
+  ingredients?: string[];
+  productName?: string;
+  sourceLanguage?: string;
+  declaredAllergens?: { contains: string[]; mayContain: string[] };
+  originalIngredients?: string[];
+  readConfidence?: 'high' | 'medium' | 'low';
+  lineCount?: { read: number; total: number };
 }
 const ocrCache = new Map<string, OCRCacheEntry>();
 
@@ -94,14 +128,67 @@ setInterval(() => {
 // Configure multer for in-memory file uploads
 const upload = multer({ storage: multer.memoryStorage() });
 
-// Schema for batch ingredient analysis (with caching)
-const batchAnalyzeRequestSchema = z.object({
-  ingredients: z.array(z.string().min(1)).min(1),
-  category: z.enum(productTypes as readonly [ProductType, ...ProductType[]]),
-  userLanguage: z.string().optional().default('en')
-});
-
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Liveness. This is what the platform health check hits, and it answers 200
+  // whenever the process can serve HTTP at all.
+  //
+  // It deliberately does NOT fail when Postgres is unreachable. An earlier
+  // version did, which meant a database problem presented as "deployment timed
+  // out waiting for health checks" — indistinguishable from a container that
+  // never booted — and, worse, blocked deploying the fix. Database state is
+  // reported in the body for humans and monitoring; use /api/readyz to gate on
+  // it. Registered before auth so it answers even if the session store is
+  // unhappy.
+  app.get('/api/healthz', async (_req, res) => {
+    let database = 'up';
+    try {
+      await db.execute(sql`select 1`);
+    } catch (error: any) {
+      database = 'down';
+      console.error('Health check: database unreachable:', error?.message ?? error);
+    }
+
+    // The corpus ships inside the image, read from disk at boot. Reporting its
+    // version here is the only way to confirm a deploy actually carried the
+    // data it was supposed to: a server running a stale or absent corpus starts
+    // cleanly, answers every request, and quietly rates ingredients off the
+    // model alone. It has already happened once — the deployed API served the
+    // 17-substance corpus for two days after the real one was built.
+    const registry = getSubstanceRegistry();
+    const evidence = getEvidenceStore();
+
+    res.json({
+      status: 'ok',
+      database,
+      uptimeSeconds: Math.round(process.uptime()),
+      corpus: {
+        registryVersion: registry.version,
+        substances: registry.size,
+        aliases: registry.aliasCount,
+        evidenceVersion: evidence.version || 'empty',
+        records: evidence.recordCount,
+      },
+      policyVersion: POLICY_VERSION,
+    });
+  });
+
+  // Readiness. Strict: 503 unless the process can actually do useful work.
+  // Point monitoring at this one, not at healthz.
+  app.get('/api/readyz', async (_req, res) => {
+    const started = Date.now();
+    try {
+      await db.execute(sql`select 1`);
+      res.json({ status: 'ready', database: 'up', checkedInMs: Date.now() - started });
+    } catch (error: any) {
+      res.status(503).json({
+        status: 'not_ready',
+        database: 'down',
+        reason: error?.message ?? String(error),
+        checkedInMs: Date.now() - started,
+      });
+    }
+  });
+
   // Setup authentication
   await setupAuth(app);
 
@@ -234,6 +321,182 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // ==========================================
+  // PERSONAL PROFILE ENDPOINTS (multi-profile per user)
+  // ==========================================
+
+  app.get('/api/profiles', isAuthenticated, async (req: any, res) => {
+    try {
+      const userProfiles = await storage.getProfiles(req.user.claims.sub);
+      res.json(userProfiles);
+    } catch (error: any) {
+      console.error("Error fetching profiles:", error);
+      res.status(500).json({ message: "Failed to fetch profiles" });
+    }
+  });
+
+  app.post('/api/profiles', isAuthenticated, async (req: any, res) => {
+    try {
+      const input = upsertProfileSchema.parse(req.body);
+      const profile = await storage.createProfile(req.user.claims.sub, input);
+      res.status(201).json(profile);
+    } catch (error: any) {
+      console.error("Error creating profile:", error);
+      res.status(400).json({ message: error.message || "Failed to create profile" });
+    }
+  });
+
+  app.patch('/api/profiles/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const input = upsertProfileSchema.partial().parse(req.body);
+      const profile = await storage.updateProfile(req.params.id, req.user.claims.sub, input);
+      if (!profile) {
+        return res.status(404).json({ message: "Profile not found" });
+      }
+      res.json(profile);
+    } catch (error: any) {
+      console.error("Error updating profile:", error);
+      res.status(400).json({ message: error.message || "Failed to update profile" });
+    }
+  });
+
+  app.delete('/api/profiles/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const result = await storage.deleteProfile(req.params.id, req.user.claims.sub);
+      if (result === "not_found") {
+        return res.status(404).json({ message: "Profile not found" });
+      }
+      if (result === "last_profile") {
+        // 409, not 400: the request is well formed, it just conflicts with the
+        // rule that a user always has someone to check scans against.
+        return res.status(409).json({ code: "last_profile", message: "Cannot delete your only profile" });
+      }
+      res.json({ success: true });
+    } catch (error: any) {
+      console.error("Error deleting profile:", error);
+      res.status(500).json({ message: "Failed to delete profile" });
+    }
+  });
+
+  // GET /api/allergens/:allergen/aliases - the names this allergen hides under
+  //
+  // The ingredient drill-down answers "why did this flag?", and half that
+  // answer is the alias list the matcher actually used. Served from
+  // ALLERGEN_KEYWORDS rather than copied into the app: a stale duplicate in
+  // the client would explain a match using words that no longer match.
+  // GET /api/substances/:substanceId/evidence?domain=food
+  //
+  // The records behind a population-level risk level. The verdict card says
+  // "regulated"; this is where the drill-down finds out by whom, where, and on
+  // what basis.
+  //
+  // Fetched on demand rather than embedded in every analysis result, following
+  // the allergen-aliases route above: a scan payload stays small, stored history
+  // does not carry a frozen copy, and the answer always reflects the corpus as
+  // it stands today rather than as it stood when the photo was taken.
+  //
+  // Source statements are returned VERBATIM and untranslated. They are quotations
+  // from regulatory documents, and paraphrasing a legal instrument into three
+  // languages is how a citation stops being a citation.
+  app.get('/api/substances/:substanceId/evidence', isAuthenticated, async (req: any, res) => {
+    try {
+      const substanceId = String(req.params.substanceId);
+      const domain = req.query.domain === 'cosmetic' ? 'cosmetic' : 'food';
+
+      const substance = getSubstanceRegistry().getById(substanceId);
+      if (!substance) {
+        return res.status(404).json({ message: "Unknown substance" });
+      }
+
+      // Unioned across every id for this chemical, matching what decided the
+      // verdict. If the drill-down listed only the records filed under the id
+      // the name resolved to, the sources shown could not account for the
+      // level shown.
+      const records = getEvidenceStore().forSubstancesInDomain(
+        getSubstanceRegistry().sameSubstanceIds(substanceId),
+        domain,
+      );
+      const decision = applyPolicy(records, { domain });
+
+      // Permitted in one market, prohibited in another. This is the whole point
+      // of the feature, so it is computed here rather than left for the client
+      // to infer from the record list.
+      const permittedIn = Array.from(
+        new Set(records.filter(r => r.kind === 'permitted').map(r => r.jurisdiction)),
+      );
+      const prohibitedIn = Array.from(
+        new Set(records.filter(r => r.kind === 'prohibited').map(r => r.jurisdiction)),
+      );
+
+      res.json({
+        substanceId,
+        name: substance.name,
+        cas: substance.cas ?? null,
+        eNumber: substance.eNumber ?? null,
+        level: decision.level,
+        policyVersion: decision.policyVersion,
+        divergence:
+          permittedIn.length > 0 && prohibitedIn.length > 0
+            ? { permittedIn, prohibitedIn }
+            : null,
+        records: records.map(r => ({
+          statement: r.statement,
+          kind: r.kind,
+          jurisdiction: r.jurisdiction,
+          org: r.citation.org,
+          title: r.citation.title,
+          url: r.citation.url ?? null,
+          determinedOn: r.determinedOn ?? null,
+        })),
+      });
+    } catch (error: any) {
+      console.error("Error fetching substance evidence:", error);
+      res.status(500).json({ message: "Failed to fetch evidence" });
+    }
+  });
+
+  app.get('/api/allergens/:allergen/aliases', isAuthenticated, async (req: any, res) => {
+    const allergen = String(req.params.allergen).toLowerCase() as MajorAllergen;
+    const aliases = ALLERGEN_KEYWORDS[allergen];
+    if (!aliases) {
+      return res.status(404).json({ message: "Unknown allergen" });
+    }
+    res.json({ allergen, aliases });
+  });
+
+  // POST /api/analysis/personalize - re-run the verdict for a different profile
+  //
+  // Switching the active profile must re-answer the question without a
+  // re-scan: the label read is already done and costs a vision call, while
+  // the personal verdict is pure deterministic matching. The client posts the
+  // analysis it is holding and gets it back scored for another person.
+  //
+  // The matcher stays on the server so production and the eval harness keep
+  // sharing one implementation — a second copy in the app is how the two
+  // would silently drift apart.
+  app.post('/api/analysis/personalize', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { analysis, profileId } = req.body ?? {};
+      if (!analysis || typeof analysis !== 'object' || !Array.isArray(analysis.ingredients)) {
+        return res.status(400).json({ message: "An analysis with ingredients is required" });
+      }
+      if (typeof profileId !== 'string' || !profileId) {
+        return res.status(400).json({ message: "profileId is required" });
+      }
+
+      const profile = await storage.getProfile(profileId, userId);
+      if (!profile) {
+        return res.status(404).json({ message: "Profile not found" });
+      }
+
+      res.json(applyProfileToAnalysis(annotateWithCitations(analysis), profile));
+    } catch (error: any) {
+      console.error("[PERSONALIZE] Error re-scoring analysis:", error);
+      res.status(500).json({ message: error.message || "Failed to re-score analysis" });
+    }
+  });
+
+  // ==========================================
   // ACCOUNT MANAGEMENT ENDPOINTS
   // ==========================================
 
@@ -264,6 +527,53 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error: any) {
       console.error("Error fetching scan balance:", error);
       res.status(500).json({ message: "Failed to fetch scan balance" });
+    }
+  });
+
+  // DELETE /api/account - permanently delete the signed-in user
+  //
+  // Required by App Store guideline 5.1.1(v): an app that lets someone create
+  // an account must let them delete it from inside the app, not by emailing
+  // support.
+  //
+  // Everything goes in one statement — profiles, scan history, usage and
+  // purchase logs, and promo redemptions all cascade from users.id, and
+  // analytics events detach to a null user rather than following the person out
+  // (see storage.deleteUser). There is no soft-delete: someone asking to be
+  // forgotten is not asking to be marked inactive.
+  //
+  // The bearer token survives cryptographically but stops working immediately,
+  // because bearerAuthMiddleware looks the user up on every request and bails
+  // when the row is gone.
+  //
+  // Nothing recurring needs cancelling first: purchases here are one-time scan
+  // packs, and the user row holds a Stripe customer id but no subscription.
+  app.delete('/api/account', isAuthenticated, async (req: any, res) => {
+    try {
+      // A deliberate hurdle on an irreversible endpoint. The client shows its
+      // own confirmation; this guards against a stray DELETE reaching it.
+      if (req.body?.confirm !== "DELETE") {
+        return res.status(400).json({ message: 'Send { "confirm": "DELETE" } to delete this account' });
+      }
+
+      const userId = req.user.claims.sub;
+      const deleted = await storage.deleteUser(userId);
+      if (!deleted) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      console.log(`[ACCOUNT] Deleted user ${userId} and all associated data`);
+
+      // Cookie sessions outlive the row they point at, so end the session too.
+      // Bearer clients have no session; the callback simply never fires with
+      // one and the response still goes out.
+      if (req.session) {
+        req.session.destroy(() => res.json({ success: true }));
+        return;
+      }
+      res.json({ success: true });
+    } catch (error: any) {
+      console.error("Error deleting account:", error);
+      res.status(500).json({ message: "Failed to delete account" });
     }
   });
 
@@ -322,63 +632,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Batch analyze ingredients with backend caching (protected)
-  app.post("/api/analyze-ingredients", isAuthenticated, async (req, res) => {
-    const startTime = Date.now();
-    try {
-      const { ingredients, category, userLanguage } = batchAnalyzeRequestSchema.parse(req.body);
-      
-      console.log(`[BATCH-ANALYZE] Processing ${ingredients.length} ingredients for ${category}`);
-      
-      // Use cache-aware batch analyzer
-      // Note: Individual ingredient analysis is a simplified extraction here
-      // In production, you'd call a dedicated ingredient analyzer
-      const results = await batchAnalyzeIngredientsWithCache(
-        ingredients,
-        category,
-        async (ingredient: string) => {
-          // For now, return a placeholder that indicates caching works
-          // In production, this would call your AI service for individual ingredient analysis
-          return JSON.stringify({
-            ingredient,
-            riskLevel: 'moderate',
-            summary: `Cached or analyzed ingredient: ${ingredient}`,
-            details: `Analysis for ${ingredient} in ${category} category`,
-            category
-          });
-        }
-      );
-      
-      const duration = ((Date.now() - startTime) / 1000).toFixed(2);
-      const cachedCount = results.filter(r => r.fromCache).length;
-      const newCount = results.filter(r => !r.fromCache).length;
-      
-      console.log(`[BATCH-ANALYZE] Completed in ${duration}s (${cachedCount} cached, ${newCount} newly analyzed)`);
-      
-      res.json({
-        results: results.map(r => ({
-          ingredient: r.ingredient,
-          analysis: JSON.parse(r.analysis),
-          fromCache: r.fromCache
-        })),
-        summary: {
-          total: results.length,
-          cached: cachedCount,
-          freshlyAnalyzed: newCount,
-          processingTimeMs: Math.round((Date.now() - startTime))
-        }
-      });
-    } catch (error: any) {
-      console.error('Batch analyze error:', error);
-      const statusCode = error instanceof z.ZodError ? 400 : 500;
-      res.status(statusCode).json({
-        error: error.message || 'Failed to analyze ingredients'
-      });
-    }
-  });
-
-  // Cache statistics endpoint (optional)
-  app.get("/api/cache-stats", async (req, res) => {
+  // Cache statistics — read by the legacy web admin page. Gated because on a
+  // public host an open endpoint reporting cache size is free reconnaissance.
+  app.get("/api/cache-stats", isAuthenticated, async (req, res) => {
     try {
       const stats = await getCacheStats();
       res.json(stats);
@@ -388,26 +644,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Check analysis status (for polling from mobile when tab is backgrounded) (protected)
-  app.get("/api/analysis-status/:requestId", isAuthenticated, (req, res) => {
+  app.get("/api/analysis-status/:requestId", isAuthenticated, (req: any, res) => {
     const { requestId } = req.params;
     const request = analysisRequests.get(requestId);
-    
-    if (!request) {
+
+    // Someone else's request is reported as missing rather than forbidden: a
+    // 403 would confirm the id is real, which is itself worth not saying.
+    if (!request || request.userId !== req.user.claims.sub) {
       return res.status(404).json({ error: 'Analysis request not found' });
     }
-    
+
     if (request.status === 'processing') {
       return res.status(202).json({ status: 'processing' });
     }
     
     if (request.status === 'ocr_complete') {
-      return res.status(202).json({ status: 'ocr_complete' });
+      return res.status(202).json({
+        status: 'ocr_complete',
+        ingredientCount: request.ingredientCount,
+      });
     }
     
     if (request.status === 'failed') {
-      return res.status(400).json({ 
+      return res.status(400).json({
         status: 'failed',
-        error: request.error 
+        error: request.error,
+        code: request.errorCode,
       });
     }
     
@@ -432,8 +694,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
     // Generate request ID
     const requestId = crypto.randomBytes(8).toString('hex');
+    const userId: string | undefined = (req as any).user?.claims?.sub;
     const analysisRequest: AnalysisRequest = {
       id: requestId,
+      // isAuthenticated has already run, so claims.sub is present.
+      userId: userId as string,
       status: 'processing',
       timestamp: Date.now()
     };
@@ -446,54 +711,88 @@ export async function registerRoutes(app: Express): Promise<Server> {
     (async () => {
       const startTime = Date.now();
       let ocrText: string | undefined;
+      let structuredIngredients: string[] | undefined;
+      let declaredAllergens: { contains: string[]; mayContain: string[] } | undefined;
+      let originalIngredients: string[] | undefined;
+      let readConfidence: 'high' | 'medium' | 'low' | undefined;
+      let lineCount: { read: number; total: number } | undefined;
+      let sourceLanguage: string | undefined;
       let ocrDuration: string = '0.00';
       let ocrStage: 'skipped' | 'success' | 'failed' = 'skipped';
       let analysisStage: 'pending' | 'success' | 'failed' = 'pending';
-      
+
       try {
-        const { imageData, productType, userLanguage, ocrText: cachedOcrText } = body;
-        
-        // Step 1: Run OCR or use cached (language-independent - same OCR for all languages)
+        const { imageData, productType, userLanguage, ocrText: cachedOcrText, profileId } = body;
+
+        // Step 1: Read the label (multimodal-first) or use cached/client-provided text.
+        // Label reading is language-independent — same result serves all languages.
         if (cachedOcrText) {
           console.log(`[SCAN-AND-ANALYZE-${requestId}] Using frontend-provided OCR text (${cachedOcrText.length} chars)`);
           ocrText = cachedOcrText;
           ocrStage = 'skipped';
         } else if (imageData) {
-          // Check global OCR cache first (keyed by image hash, not language)
+          // Check global label cache first (keyed by image hash, not language)
           const imageHash = hashImageData(imageData);
           const cachedOCREntry = ocrCache.get(imageHash);
-          
+
           if (cachedOCREntry) {
-            console.log(`[SCAN-AND-ANALYZE-${requestId}] OCR cache HIT - reusing result for all languages`);
+            console.log(`[SCAN-AND-ANALYZE-${requestId}] Label cache HIT - reusing result for all languages`);
             ocrText = cachedOCREntry.text;
+            structuredIngredients = cachedOCREntry.ingredients;
+            declaredAllergens = cachedOCREntry.declaredAllergens;
+            originalIngredients = cachedOCREntry.originalIngredients;
+            readConfidence = cachedOCREntry.readConfidence;
+            lineCount = cachedOCREntry.lineCount;
+            sourceLanguage = cachedOCREntry.sourceLanguage;
             ocrStage = 'skipped';
           } else {
-            // Cache miss - run OCR once, will be reused for all language variants
-            console.log(`[SCAN-AND-ANALYZE-${requestId}] OCR cache MISS - running Gemini OCR once`);
+            // Cache miss - read the label once, reused for all language variants
+            console.log(`[SCAN-AND-ANALYZE-${requestId}] Label cache MISS - running multimodal label reader`);
             try {
-              const ocrResult = await extractTextFromImage(imageData);
+              const labelResult = await readLabelFromImage(imageData);
               ocrDuration = ((Date.now() - startTime) / 1000).toFixed(2);
-              console.log(`[TIMING] [OCR-SUCCESS-${requestId}] OCR completed in ${ocrDuration}s`);
+              console.log(`[TIMING] [LABEL-READ-SUCCESS-${requestId}] Label read via ${labelResult.method} in ${ocrDuration}s`);
               ocrStage = 'success';
-              
-              if (!ocrResult.text || ocrResult.text.trim().length < 10) {
-                ocrStage = 'failed';
-                throw new Error('No ingredients found in image. Please ensure the ingredient list is clearly visible and try again.');
+
+              ocrText = labelResult.rawText;
+              // The legacy OCR fallback returns heuristically-extracted
+              // ingredients; only multimodal extractions are trusted as
+              // structured (they're model-translated to English already).
+              if (labelResult.method !== 'ocr-fallback') {
+                structuredIngredients = labelResult.ingredients;
               }
-              
-              ocrText = ocrResult.text;
-              
-              // Store in global cache for future requests (all languages will use this same text)
+              declaredAllergens = labelResult.declaredAllergens;
+              originalIngredients = labelResult.ingredientsOriginal;
+              readConfidence = labelResult.confidence;
+              lineCount = labelResult.lineCount;
+              sourceLanguage = labelResult.sourceLanguage;
+              if (declaredAllergens.contains.length || declaredAllergens.mayContain.length) {
+                console.log(`[LABEL-READER] Declared allergens — contains: [${declaredAllergens.contains.join(', ')}] may contain: [${declaredAllergens.mayContain.join(', ')}]`);
+              }
+
+              // Store in global cache for future requests (all languages will use this same result)
               ocrCache.set(imageHash, {
                 text: ocrText,
+                ingredients: structuredIngredients,
+                productName: labelResult.productName,
+                sourceLanguage: labelResult.sourceLanguage,
+                declaredAllergens,
+                originalIngredients,
+                readConfidence: labelResult.confidence,
+                lineCount: labelResult.lineCount,
                 timestamp: Date.now()
               });
-              console.log(`[SCAN-AND-ANALYZE-${requestId}] OCR result cached - will be reused for other languages`);
+              console.log(`[SCAN-AND-ANALYZE-${requestId}] Label result cached - will be reused for other languages`);
             } catch (ocrError: any) {
               ocrStage = 'failed';
               ocrDuration = ((Date.now() - startTime) / 1000).toFixed(2);
-              console.error(`[OCR-FAILED-${requestId}] OCR error after ${ocrDuration}s:`, ocrError.message);
-              throw new Error(`OCR failed: ${ocrError.message}`);
+              console.error(`[LABEL-READ-FAILED-${requestId}] Error after ${ocrDuration}s:`, ocrError.message);
+              // Re-wrapping for the log prefix used to drop the error's code
+              // with it, so the app fell back to showing this English sentence
+              // verbatim. Carry the code across the boundary.
+              const wrapped: any = new Error(`OCR failed: ${ocrError.message}`);
+              if (typeof ocrError?.code === 'string') wrapped.code = ocrError.code;
+              throw wrapped;
             }
           }
         }
@@ -501,22 +800,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Update status to indicate OCR is complete, now analyzing
         analysisRequest.status = 'ocr_complete';
         analysisRequest.timestamp = Date.now();
+        if (structuredIngredients?.length) {
+          analysisRequest.ingredientCount = structuredIngredients.length;
+        }
         console.log(`[SCAN-AND-ANALYZE-${requestId}] OCR phase complete, starting analysis phase`);
         
-        // Step 2a: Extract ingredients ONCE (language-independent) and cache them
+        // Step 2a: Determine the ingredient list (language-independent) and cache it.
+        // The multimodal label reader already produced structured English
+        // ingredients; the heuristic text extraction only runs for plain-text
+        // inputs (client-provided ocrText or the legacy OCR fallback).
         const extractionStartTime = Date.now();
         let extractedIngredients: string[] = [];
         const ocrTextHash = crypto.createHash('sha256').update(ocrText!).digest('hex');
         const cachedExtraction = extractedIngredientsCache.get(ocrTextHash);
-        
-        if (cachedExtraction) {
+
+        if (structuredIngredients && structuredIngredients.length > 0) {
+          console.log(`[EXTRACTION] Using ${structuredIngredients.length} structured ingredients from multimodal label reader`);
+          extractedIngredients = structuredIngredients;
+          extractedIngredientsCache.set(ocrTextHash, {
+            ingredients: extractedIngredients,
+            timestamp: Date.now()
+          });
+        } else if (cachedExtraction) {
           console.log(`[EXTRACTION] Cache HIT - reusing ${cachedExtraction.ingredients.length} pre-extracted ingredients`);
           extractedIngredients = cachedExtraction.ingredients;
         } else {
           console.log(`[EXTRACTION] Cache MISS - extracting ingredients from OCR text`);
           const extractionResult = extractIngredientsFromText(ocrText!);
           extractedIngredients = extractionResult.ingredients;
-          
+
           // Cache extracted ingredients for future language requests
           extractedIngredientsCache.set(ocrTextHash, {
             ingredients: extractedIngredients,
@@ -531,13 +843,56 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Step 2b: Run Parallel Micro-Batched Analysis (using pre-extracted ingredients)
         const analysisStartTime = Date.now();
         try {
-          const analysisResult = await analyzeIngredientsParallel(productType as ProductType, ocrText!, userLanguage, extractedIngredients);
+          let analysisResult = await analyzeIngredientsParallel(productType as ProductType, ocrText!, userLanguage, extractedIngredients);
           analysisStage = 'success';
           const analysisDuration = ((Date.now() - analysisStartTime) / 1000).toFixed(2);
           const totalDuration = ((Date.now() - startTime) / 1000).toFixed(2);
-          
+
           console.log(`[TIMING] [ANALYSIS-SUCCESS-${requestId}] Analysis completed in ${analysisDuration}s (total: ${totalDuration}s)`);
-          
+
+          // Attach knowledge-base citations post-cache so cached analyses
+          // pick up KB updates without re-analysis.
+          analysisResult = annotateWithCitations(analysisResult);
+
+          // Carry the label's own allergen declaration onto the result so
+          // profile matching can use it (the analysis cache is keyed on
+          // ingredient text and knows nothing about it).
+          if (declaredAllergens) {
+            analysisResult = { ...analysisResult, declaredAllergens };
+          }
+          // Carry the English ingredient names through for allergen matching:
+          // when userLanguage isn't English, analysisResult.ingredients[].name
+          // is localized and would never match the English keyword lists.
+          if (structuredIngredients?.length) {
+            analysisResult = { ...analysisResult, canonicalIngredients: structuredIngredients };
+          }
+          // Source-language names + read confidence drive the bilingual pair
+          // and the uncertain state on the verdict card.
+          analysisResult = {
+            ...analysisResult,
+            originalIngredients,
+            sourceLanguage,
+            readConfidence,
+            lineCount,
+          };
+          // Position on the printed list. Must run after canonicalIngredients
+          // is attached above — that list is the label's own order, and the
+          // analyzer's is not guaranteed to be.
+          analysisResult = withLabelRanks(analysisResult);
+
+          // Apply the personal profile AFTER analysis/cache retrieval so the
+          // cached analysis stays profile-agnostic and serves every profile.
+          if (profileId && userId) {
+            const profile = await storage.getProfile(profileId, userId);
+            if (profile) {
+              analysisResult = applyProfileToAnalysis(analysisResult, profile);
+              const flagCount = analysisResult.personalFlags?.length ?? 0;
+              console.log(`[PERSONAL-RISK-${requestId}] Applied profile "${profile.name}": ${flagCount} personal flags, overall risk ${analysisResult.overallRisk}`);
+            } else {
+              console.warn(`[PERSONAL-RISK-${requestId}] profileId ${profileId} not found for user, skipping personalization`);
+            }
+          }
+
           // Store completed result
           analysisRequest.status = 'completed';
           analysisRequest.result = analysisResult;
@@ -554,6 +909,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.error(`[SCAN-AND-ANALYZE-FAILED-${requestId}] Error:`, error.message);
         analysisRequest.status = 'failed';
         analysisRequest.error = error.message || 'Failed to analyze image. Please try again.';
+        // Only errors that carry their own code get one — an unrecognised
+        // failure must not be dressed up as a known, user-fixable one.
+        analysisRequest.errorCode = typeof error?.code === 'string' ? error.code : undefined;
         analysisRequest.timestamp = Date.now();
       }
     })();
@@ -569,10 +927,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
     detectedIngredients: z.array(z.string()),
     analysisResults: z.array(z.object({
       name: z.string(),
+      // Both carry the model's neutral rating. `riskLevel` stays for older
+      // clients; `modelRiskLevel` is the one re-derivation reads, and having it
+      // explicitly named is what stops a personalized level from being mistaken
+      // for a universal one when the scan is reopened by someone else.
       riskLevel: z.enum(["low", "moderate", "high"]),
+      modelRiskLevel: z.enum(["low", "moderate", "high"]).optional(),
       summary: z.string(),
       details: z.string(),
       category: z.string().nullish(),
+      // Persisted, unlike the policy level beside it. A risk level is re-derived
+      // on every read because the corpus and rules move; a printed ingredient
+      // list does not, and the canonical names it was computed from are not kept
+      // in a form that would let us recover the position later.
+      labelRank: z
+        .object({ rank: z.number().int().min(1), total: z.number().int().min(1) })
+        .optional(),
     })),
     overallRisk: z.enum(["low", "moderate", "high"]),
     language: z.string().optional().default("en"),
@@ -621,6 +991,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const paginationSchema = z.object({
     limit: z.coerce.number().int().min(1).max(50).optional().default(20),
     offset: z.coerce.number().int().min(0).optional().default(0),
+    // The history screen's verdict filter. Applied in SQL so the count and the
+    // paging agree with what the pill claims.
+    risk: z.enum(["low", "moderate", "high"]).optional(),
   });
 
   // Validation schema for scan ID params
@@ -628,23 +1001,108 @@ export async function registerRoutes(app: Express): Promise<Server> {
     scanId: z.string().uuid(),
   });
 
+  /**
+   * Re-derive a stored scan's levels, and its personal overlay when a profile
+   * is supplied.
+   *
+   * Shared by the history list and the scan detail endpoint on purpose. They
+   * used to derive separately — the detail screen re-personalized against the
+   * active profile while the list returned the verdict frozen at scan time — so
+   * a tile could read Safe while the screen it opened read Avoid. One function
+   * is the only way two screens stay agreed.
+   */
+  function deriveStoredScan(
+    scan: any,
+    profile: Profile | undefined,
+    opts: { withCitations: boolean } = { withCitations: true },
+  ) {
+    const domain = domainForProductType(scan.productCategory ?? 'food');
+    const stored: any[] = Array.isArray(scan.analysisResults) ? scan.analysisResults : [];
+    const ingredients: Ingredient[] = stored.map((ing) => applyPopulationRisk(ing, domain));
+    const asAnalysis = {
+      productType: scan.productCategory,
+      productName: scan.productName,
+      ingredients,
+      overallRisk: scan.overallRisk,
+      analyzedAt: scan.createdAt.toISOString(),
+    } as any;
+
+    if (profile) {
+      // applyProfileToAnalysis sets overallRisk to the worst DISPLAYED level.
+      return applyProfileToAnalysis(
+        opts.withCitations ? annotateWithCitations(asAnalysis) : asAnalysis,
+        profile,
+      );
+    }
+
+    // No profile: the verdict is still the worst level actually shown, not the
+    // one stored at scan time. The corpus moves — ingesting a source changes
+    // levels on scans taken months ago — so a frozen overall verdict can sit
+    // above rows that no longer support it.
+    const worst = ingredients.reduce<RiskLevel>((acc, i) => maxRisk(acc, i.riskLevel), 'low');
+    return { ...asAnalysis, overallRisk: ingredients.length > 0 ? worst : scan.overallRisk };
+  }
+
+  // How many recent scans a personalized history view re-derives in one pass.
+  // Personalization cannot be expressed in SQL, so when a profile is applied
+  // the risk filter and the total have to be computed from the same derived
+  // values the tiles show — otherwise the "High" pill counts stored verdicts
+  // while the grid displays personalized ones, and they disagree on screen.
+  // Above this many scans the request falls back to SQL paging rather than
+  // growing without bound; the largest real history today is 140.
+  const PERSONALIZED_WINDOW = 500;
+
   // GET /api/history - Get user's scan history (paginated)
   app.get("/api/history", isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
-      const { limit, offset } = paginationSchema.parse(req.query);
-      
-      const [scans, totalCount] = await Promise.all([
-        storage.getScanHistory(userId, limit, offset),
-        storage.getScanHistoryCount(userId),
-      ]);
-      
+      const { limit, offset, risk } = paginationSchema.parse(req.query);
+      const profileId = typeof req.query.profileId === 'string' ? req.query.profileId : undefined;
+
+      const totalCount = await storage.getScanHistoryCount(userId);
+      // Derived whether or not a profile is involved.
+      //
+      // Gating derivation on having a profile reintroduced the same bug one
+      // branch over: with no profile the grid served stored verdicts while the
+      // detail screen derived, so the two still disagreed for anyone who had
+      // not set a profile up. What makes a stored verdict stale is the corpus
+      // moving underneath it, and that happens to everyone.
+      if (totalCount > PERSONALIZED_WINDOW) {
+        console.warn(
+          `[HISTORY] ${totalCount} scans exceeds the derivation window ` +
+            `(${PERSONALIZED_WINDOW}); serving stored verdicts for user ${userId}`,
+        );
+        const [scans, filteredCount] = await Promise.all([
+          storage.getScanHistory(userId, limit, offset, risk),
+          storage.getScanHistoryCount(userId, risk),
+        ]);
+        return res.json({
+          scans,
+          total: filteredCount,
+          limit,
+          offset,
+          hasMore: offset + scans.length < filteredCount,
+        });
+      }
+
+      const profile = profileId ? await storage.getProfile(profileId, userId) : undefined;
+
+      // Citations are skipped here: they attach reading material to an
+      // ingredient and never change a level, and a tile shows no sources.
+      const all = await storage.getScanHistory(userId, PERSONALIZED_WINDOW, 0);
+      const derived = all.map((scan) => ({
+        scan,
+        overallRisk: deriveStoredScan(scan, profile, { withCitations: false }).overallRisk,
+      }));
+      const matching = risk ? derived.filter((d) => d.overallRisk === risk) : derived;
+      const page = matching.slice(offset, offset + limit);
+
       res.json({
-        scans,
-        total: totalCount,
+        scans: page.map((d) => ({ ...d.scan, overallRisk: d.overallRisk })),
+        total: matching.length,
         limit,
         offset,
-        hasMore: offset + scans.length < totalCount,
+        hasMore: offset + page.length < matching.length,
       });
     } catch (error: any) {
       console.error("[HISTORY] Error fetching history:", error);
@@ -659,12 +1117,56 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { scanId } = scanIdSchema.parse(req.params);
       
       const scan = await storage.getScanById(scanId, userId);
-      
+
       if (!scan) {
         return res.status(404).json({ error: "Scan not found" });
       }
-      
-      res.json(scan);
+
+      // Personal flags are not persisted with the scan — a profile's allergens
+      // change over time, and stale safety flags are worse than none. Instead,
+      // ?profileId= re-applies the *current* profile server-side so the
+      // matching logic stays in one place.
+      // Population risk is re-derived here for the same reason, and from the
+      // same principle: the evidence corpus and the policy rules both move, so a
+      // level frozen at scan time would assert an out-of-date regulatory
+      // picture. Deriving on read also means ingesting a new source improves
+      // every stored scan retroactively.
+      //
+      // saveScan only persists name/riskLevel/summary/details/category, so
+      // without this a reopened scan would report every ingredient as unchecked
+      // while the results screen for the same product said otherwise.
+      const profileId = typeof req.query.profileId === 'string' ? req.query.profileId : undefined;
+      if (profileId) {
+        const profile = await storage.getProfile(profileId, userId);
+        if (profile) {
+          // Same derivation the history list uses, so the tile and this screen
+          // cannot report different verdicts for the same scan.
+          const personalized = deriveStoredScan(scan, profile);
+          return res.json({
+            ...scan,
+            analysisResults: personalized.ingredients,
+            overallRisk: personalized.overallRisk,
+            personalFlags: personalized.personalFlags,
+            appliedProfile: personalized.appliedProfile,
+            // The verdict card's evidence blocks. Re-derived here rather than
+            // persisted, for the same reason the flags are: a profile's
+            // allergens change, and a stale "what we checked" would vouch for
+            // a check that never ran against today's profile.
+            checked: personalized.checked,
+            closestCall: personalized.closestCall,
+            settle: personalized.settle,
+          });
+        }
+      }
+
+      // No profile requested — still derive, so the two paths cannot disagree
+      // about what has been checked or about the overall verdict.
+      const derived = deriveStoredScan(scan, undefined);
+      res.json({
+        ...scan,
+        analysisResults: derived.ingredients,
+        overallRisk: derived.overallRisk,
+      });
     } catch (error: any) {
       console.error("[HISTORY] Error fetching scan:", error);
       res.status(500).json({ error: error.message || "Failed to fetch scan" });
@@ -741,7 +1243,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     message: z.string().min(1).max(5000)
   });
 
-  app.post("/api/feedback", async (req: any, res) => {
+  // Deliberately open to signed-out callers — someone who cannot sign in is
+  // exactly the person with a bug to report. But it sends mail through our
+  // Resend account to a fixed inbox, so unmetered it is a way to flood that
+  // inbox and get the sending domain marked as a spam source.
+  app.post("/api/feedback", rateLimit({ windowMs: 60 * 60 * 1000, max: 5, name: "feedback" }), async (req: any, res) => {
     try {
       const { type, email, message } = feedbackSchema.parse(req.body);
       const userId = req.user?.claims?.sub || 'Anonymous';
@@ -760,7 +1266,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       };
       
       const emailContent = `
-New ${typeLabels[type]} from Auraly
+New ${typeLabels[type]} from Revely
 
 User ID: ${userId}
 User Email: ${userEmail}
@@ -771,16 +1277,16 @@ Message:
 ${message}
 
 ---
-Sent from Auraly Feedback System
+Sent from Revely Feedback System
       `.trim();
       
       console.log(`[FEEDBACK] Attempting to send email from: ${fromEmail} to: ${YOUR_EMAIL}`);
       
       const result = await client.emails.send({
-        from: fromEmail || 'Auraly Feedback <onboarding@resend.dev>',
+        from: fromEmail || 'Revely Feedback <onboarding@resend.dev>',
         to: YOUR_EMAIL,
         replyTo: email || undefined,
-        subject: `[Auraly] ${typeLabels[type]} from ${userEmail}`,
+        subject: `[Revely] ${typeLabels[type]} from ${userEmail}`,
         text: emailContent
       });
       
@@ -930,7 +1436,9 @@ Sent from Auraly Feedback System
     }
   });
 
-  app.post('/api/analytics/purchase-prompt-view', async (req: any, res) => {
+  // Open so the paywall can be measured before sign-in. Each call writes a
+  // row, so without a limit an anonymous caller can grow the table for free.
+  app.post('/api/analytics/purchase-prompt-view', rateLimit({ windowMs: 60 * 1000, max: 30, name: "analytics" }), async (req: any, res) => {
     try {
       const userId = req.user?.claims?.sub || null;
       const { source } = req.body;
@@ -945,13 +1453,22 @@ Sent from Auraly Feedback System
   // ==========================================
   // ADMIN ENDPOINTS
   // ==========================================
-  const ADMIN_USER_ID = "48931740";
+  // No default. The value that used to sit here was a Replit-era numeric user
+  // id baked into the source, which meant "who is the admin" was decided by a
+  // literal in a public repo rather than by deployment configuration. Absent
+  // the variable the admin routes are simply closed — the failure mode of an
+  // unset admin id must be "nobody", never "whoever holds that id".
+  const ADMIN_USER_ID = process.env.ADMIN_USER_ID;
+
+  if (!ADMIN_USER_ID) {
+    console.warn("[ADMIN] ADMIN_USER_ID is not set — /api/admin/* routes are disabled.");
+  }
 
   const isAdmin = (req: any, res: any, next: any) => {
     if (!req.user?.claims?.sub) {
       return res.status(401).json({ error: 'Not authenticated' });
     }
-    if (req.user.claims.sub !== ADMIN_USER_ID) {
+    if (!ADMIN_USER_ID || req.user.claims.sub !== ADMIN_USER_ID) {
       return res.status(403).json({ error: 'Access denied' });
     }
     next();
