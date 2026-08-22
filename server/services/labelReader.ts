@@ -6,10 +6,12 @@ import { extractIngredientsFromText } from './analyzer';
 
 // Multimodal-first label reading: one vision-model call extracts, translates,
 // and structures the ingredient list straight from the photo — replacing the
-// legacy OCR → regex-extraction → translation chain, which remains as the
-// final fallback. The analysis stage (analyzer.ts) is unchanged and consumes
-// this service's English ingredient names, so its per-ingredient cache keys
-// stay stable.
+// legacy OCR → regex-extraction → translation chain. The analysis stage
+// (analyzer.ts) is unchanged and consumes this service's English ingredient
+// names, so its per-ingredient cache keys stay stable.
+//
+// Three readers are implemented here; only OpenAI is called. See
+// DEFAULT_PROVIDER_CHAIN below for why, and for how to turn the others back on.
 
 const VISION_MODEL_OPENAI = process.env.LABEL_VISION_MODEL_OPENAI || 'gpt-5.6-luna';
 const VISION_MODEL_GEMINI = process.env.LABEL_VISION_MODEL_GEMINI || 'gemini-3-flash-preview';
@@ -255,20 +257,70 @@ export interface ReadLabelOptions {
 }
 
 /**
+ * Which providers run, in order.
+ *
+ * OpenAI only, as of 2026-08-22. The chain used to lead with Gemini, and a
+ * measured scan showed what that cost: the Gemini project's prepayment credits
+ * are depleted, so EVERY call returned 429 RESOURCE_EXHAUSTED after ~2.1s and
+ * the chain fell through to OpenAI anyway. Two seconds of guaranteed failure
+ * sat at the front of every scan, inside the "Reading the label…" phase.
+ *
+ * Google Cloud Vision came out with it. It was third, so it never ran while
+ * OpenAI was healthy, and as the ONLY remaining fallback it would have been a
+ * poor one: it is OCR plus regex heuristics, it cannot separate a "contains"
+ * line from a "may contain" line, and so it reports NO declared allergens at
+ * all (see readWithLegacyOcr). A silent fallback that drops the label's own
+ * allergen declaration is worse than a failed scan the person can retry.
+ *
+ * The consequence, stated plainly: there is now no fallback. An OpenAI outage
+ * is a total scanning outage. That is the deliberate trade — one fast path
+ * over a slow path into a reader that answers less honestly.
+ *
+ * Restoring a provider needs no deploy: set LABEL_PROVIDER_CHAIN to a
+ * comma-separated list, e.g. "gemini,openai" once the Gemini credits are
+ * topped up.
+ */
+const DEFAULT_PROVIDER_CHAIN: LabelProvider[] = ['openai'];
+
+function configuredChain(): LabelProvider[] {
+  const raw = process.env.LABEL_PROVIDER_CHAIN?.trim();
+  if (!raw) return DEFAULT_PROVIDER_CHAIN;
+
+  const known: LabelProvider[] = ['gemini', 'openai', 'ocr'];
+  const requested = raw.split(',').map(name => name.trim().toLowerCase());
+  const chain = requested.filter((name): name is LabelProvider =>
+    (known as string[]).includes(name));
+  const unknown = requested.filter(name => !(known as string[]).includes(name));
+
+  if (unknown.length > 0) {
+    console.warn(`[LABEL-READER] LABEL_PROVIDER_CHAIN names unknown provider(s): ${unknown.join(', ')}`);
+  }
+  // An env var that parses to nothing must not silently disable scanning.
+  if (chain.length === 0) {
+    console.warn(`[LABEL-READER] LABEL_PROVIDER_CHAIN="${raw}" named no known provider; using the default chain`);
+    return DEFAULT_PROVIDER_CHAIN;
+  }
+  return chain;
+}
+
+/**
  * Read a product label photo into structured ingredients.
- * Provider chain: Gemini multimodal → OpenAI multimodal → Google Vision OCR + heuristics.
  * A definitive "no label in this image" from a multimodal model short-circuits
  * the chain — falling through to OCR would only produce garbage extractions.
  */
 export async function readLabelFromImage(imageData: string, options?: ReadLabelOptions): Promise<LabelReadResult> {
-  let providers: Array<{ name: LabelProvider; enabled: boolean; run: (d: string) => Promise<LabelReadResult> }> = [
-    { name: 'gemini', enabled: geminiConfigured(), run: readWithGemini },
-    { name: 'openai', enabled: Boolean(process.env.OPENAI_API_KEY), run: readWithOpenAI },
-    { name: 'ocr', enabled: Boolean(process.env.GOOGLE_CLOUD_VISION_API_KEY), run: readWithLegacyOcr },
-  ];
-  if (options?.providers) {
-    providers = providers.filter(p => options.providers!.includes(p.name));
-  }
+  const available: Record<LabelProvider, { enabled: boolean; run: (d: string) => Promise<LabelReadResult> }> = {
+    gemini: { enabled: geminiConfigured(), run: readWithGemini },
+    openai: { enabled: Boolean(process.env.OPENAI_API_KEY), run: readWithOpenAI },
+    ocr: { enabled: Boolean(process.env.GOOGLE_CLOUD_VISION_API_KEY), run: readWithLegacyOcr },
+  };
+
+  // `options.providers` REPLACES the configured chain rather than filtering it,
+  // so `npm run eval -- --provider=gemini` can still exercise a provider that
+  // production no longer calls. Filtering would have made that flag select
+  // nothing the moment the default chain shrank to one entry.
+  const names = options?.providers ?? configuredChain();
+  const providers = names.map(name => ({ name, ...available[name] }));
 
   let lastError: Error | undefined;
   for (const provider of providers) {

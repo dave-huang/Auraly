@@ -40,8 +40,18 @@ fly apps create revely-api
 Set every secret. These are read from the environment, never from a file:
 
 ```bash
-fly secrets set DATABASE_URL="..." SESSION_SECRET="..." OPENAI_API_KEY="..." GEMINI_API_KEY="..." GOOGLE_CLOUD_VISION_API_KEY="..." RESEND_API_KEY="..." RESEND_FROM_EMAIL="..." FEEDBACK_EMAIL="..." PUBLIC_BASE_URL="https://revely-api.fly.dev"
+fly secrets set DATABASE_URL="..." SESSION_SECRET="..." OPENAI_API_KEY="..." APPLE_BUNDLE_ID="life.revely.app" RESEND_API_KEY="..." RESEND_FROM_EMAIL="..." FEEDBACK_EMAIL="..." PUBLIC_BASE_URL="https://revely-api.fly.dev"
 ```
+
+`OPENAI_API_KEY` is the one that matters for scanning: since 2026-08-22 OpenAI
+both reads the label and analyses the ingredients, with no fallback behind it.
+`GEMINI_API_KEY` and `GOOGLE_CLOUD_VISION_API_KEY` are still set on the app but
+nothing in the scan path calls them — see `DEFAULT_PROVIDER_CHAIN` in
+`server/services/labelReader.ts`, and set `LABEL_PROVIDER_CHAIN` to bring one
+back.
+
+Never `fly secrets import < .env`: the local file carries `ALLOW_DEV_LOGIN=true`,
+which would reopen credential-free sign-in in production.
 
 Then:
 
