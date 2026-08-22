@@ -144,6 +144,10 @@ const en = {
   'scan.allowCamera': 'Allow camera',
   'scan.chooseInstead': 'Choose a photo instead',
   'scan.reading': 'Reading the label…',
+  // Shown once the wait passes STILL_WORKING_AFTER_MS. Not a new pipeline
+  // stage — the elapsed time IS the news, and saying so beats a status line
+  // that has not changed in fifteen seconds.
+  'scan.stillWorking': 'Still working…',
   'scan.analyzing': 'Analyzing ingredients…',
   'scan.working': 'Working…',
   'scan.failed': 'Scan failed',
@@ -457,6 +461,7 @@ const zh: Record<TranslationKey, string> = {
   'scan.allowCamera': '允许使用相机',
   'scan.chooseInstead': '改为选择照片',
   'scan.reading': '正在读取标签…',
+  'scan.stillWorking': '仍在处理…',
   'scan.analyzing': '正在分析成分…',
   'scan.working': '处理中…',
   'scan.failed': '扫描失败',
@@ -754,6 +759,7 @@ const es: Record<TranslationKey, string> = {
   'scan.allowCamera': 'Permitir cámara',
   'scan.chooseInstead': 'Elegir una foto',
   'scan.reading': 'Leyendo la etiqueta…',
+  'scan.stillWorking': 'Seguimos trabajando…',
   'scan.analyzing': 'Analizando ingredientes…',
   'scan.working': 'Procesando…',
   'scan.failed': 'Error al escanear',

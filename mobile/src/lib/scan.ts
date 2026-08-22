@@ -59,14 +59,31 @@ export async function submitScan(params: {
   return requestId;
 }
 
-const POLL_INTERVAL_MS = 2500;
+// Poll fast early, then widen.
+//
+// A flat 2500ms interval was coarser than the stages it was meant to observe:
+// a measured scan reached ocr_complete at :05 and completed at :08, so the
+// "analyzing / found N ingredients" phase got one tick if the timing was lucky
+// and none if it was not. Most of the wait showed the first message only, and
+// the screen looked stuck.
+//
+// The status route is a map lookup that answers in ~13ms and does no work per
+// call, so the early burst is cheap; the backoff keeps a slow label (a big
+// image, a cold model) from making hundreds of requests.
+const POLL_SCHEDULE_MS = [400, 400, 600, 600, 800, 1000, 1500] as const;
+const POLL_INTERVAL_MAX_MS = 2500;
 const POLL_TIMEOUT_MS = 150_000;
+
+function pollDelayMs(attempt: number): number {
+  return POLL_SCHEDULE_MS[attempt] ?? POLL_INTERVAL_MAX_MS;
+}
 
 export async function pollAnalysis(
   requestId: string,
   onStatus?: (status: AnalysisStatus) => void,
 ): Promise<AnalysisResult> {
   const deadline = Date.now() + POLL_TIMEOUT_MS;
+  let attempt = 0;
   while (Date.now() < deadline) {
     const status = await apiFetch<AnalysisStatus>(`/api/analysis-status/${requestId}`);
     onStatus?.(status);
@@ -77,7 +94,8 @@ export async function pollAnalysis(
       // throws inside apiFetch; this covers a failed status arriving with 200.)
       throw new ApiError(400, status.error || 'Analysis failed.', status.code);
     }
-    await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL_MS));
+    await new Promise((resolve) => setTimeout(resolve, pollDelayMs(attempt)));
+    attempt += 1;
   }
   throw new Error('Analysis timed out. Please try again.');
 }
