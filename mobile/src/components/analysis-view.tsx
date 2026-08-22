@@ -587,12 +587,24 @@ function buildRows(
 ): Row[] {
   const sameLength = result.canonicalIngredients?.length === result.ingredients.length;
   return result.ingredients.map((ing, i) => {
-    const canonicalName = sameLength
-      ? result.canonicalIngredients?.[i]?.toLowerCase()
-      : undefined;
+    // Pair a flag to its row by the index the server tagged it with, and
+    // otherwise by an exact name match.
+    //
+    // This used to fall back to `canonicalIngredients[i]` whenever the two
+    // arrays were the same length. They are two different lists — the label's
+    // printed order from the reader, and the analyzer's own — and equal length
+    // does not make them aligned. One split or merged entry shifts every
+    // position after it, so a "milk" flag landed on whatever ingredient
+    // happened to sit at the dairy entry's index: Dextrin, Enzymes, Citric
+    // Acid and Maltose all read "matches Milk/Dairy" on a curry roux, each of
+    // them sitting directly beside a genuine dairy row.
+    //
+    // An older cached result carries no index, so the name match still stands
+    // on its own. Flags belonging to no row (a label's "contains" line) never
+    // matched a row before and still do not.
     const flag = flags.find((f) => {
-      const flagName = f.ingredientName.toLowerCase();
-      return flagName === ing.name.toLowerCase() || flagName === canonicalName;
+      if (f.ingredientIndex !== undefined) return f.ingredientIndex === i;
+      return f.ingredientName.toLowerCase() === ing.name.toLowerCase();
     });
 
     // A personally flagged ingredient takes the flag's colour, not the

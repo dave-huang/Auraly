@@ -425,6 +425,20 @@ export type Citation = z.infer<typeof citationSchema>;
 // A personal flag attached to an analysis result for one profile match.
 export const personalFlagSchema = z.object({
   ingredientName: z.string(),
+  // Index into `ingredients` of the row this flag belongs to, when it belongs
+  // to one at all (a label's "contains" declaration belongs to no row).
+  //
+  // The client used to pair a flag to a row by NAME, falling back to
+  // `canonicalIngredients[i]` when the two arrays happened to be the same
+  // length. Equal length is not alignment: the reader's list is the label's
+  // printed order and the analyzer's is not guaranteed to match it, so one
+  // split or merged entry shifts everything after it. On a 63-ingredient curry
+  // roux that put "milk" flags on Dextrin, Enzymes, Citric Acid and Maltose —
+  // each of which sits directly beside a real dairy entry.
+  //
+  // The server knows the row exactly, because it creates the flag while
+  // walking it. Sending the index removes the guess.
+  ingredientIndex: z.number().int().nonnegative().optional(),
   type: z.enum(["allergen", "dietary", "condition"]),
   match: z.string(),           // what matched: "peanut", "vegan", "pregnancy"
   severity: z.enum(allergenSeverities).optional(), // for allergen flags

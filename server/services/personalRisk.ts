@@ -111,16 +111,27 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
   // are still checked so English scans and older cached results keep working.
   const canonical = result.canonicalIngredients ?? [];
   for (const entry of profile.allergens ?? []) {
-    const matchedCanonical = canonical.find(name =>
+    const matchedIndex = canonical.findIndex(name =>
       ingredientMatchesAllergen(name, entry.allergen, entry.keywords ?? []));
+    const matchedCanonical = matchedIndex >= 0 ? canonical[matchedIndex] : undefined;
     const matchedLocalized = result.ingredients.some(ing =>
       ingredientMatchesAllergen(ing.name, entry.allergen, entry.keywords ?? []));
+
+    // This branch fires only for a translated label, where the English keyword
+    // list matched the reader's canonical name and no localized row name did.
+    // There is then no name shared between the flag and any row, so position
+    // is the only link available — and it is trustworthy only if the two lists
+    // are the same length. Where they are not, the flag still shows on the
+    // card; it simply attaches to no row, which is the honest outcome.
+    const alignedByIndex = canonical.length === result.ingredients.length;
+    const rowIndex = alignedByIndex && matchedIndex >= 0 ? matchedIndex : undefined;
 
     if (matchedCanonical && !matchedLocalized) {
       const flagRisk: RiskLevel =
         entry.severity === 'intolerance' || entry.severity === 'avoid' ? 'moderate' : 'high';
       flags.push({
         ingredientName: matchedCanonical,
+        ...(rowIndex !== undefined ? { ingredientIndex: rowIndex } : {}),
         type: 'allergen',
         match: entry.allergen,
         severity: entry.severity,
@@ -184,7 +195,7 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
     }
   }
 
-  const ingredients = result.ingredients.map(ing => {
+  const ingredients = result.ingredients.map((ing, ingIndex) => {
     // The universal level — risk to most people — is the floor. Personal
     // factors can only raise it: an allergy makes peanuts worse for you, it
     // cannot make trans fat better. `personalRisk` stays undefined unless
@@ -206,6 +217,7 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
         const flagRisk: RiskLevel = severity === 'intolerance' || severity === 'avoid' ? 'moderate' : 'high';
         flags.push({
           ingredientName: ing.name,
+          ingredientIndex: ingIndex,
           type: 'allergen',
           match: entry.allergen,
           severity,
@@ -229,6 +241,7 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
       if (definite) {
         flags.push({
           ingredientName: ing.name,
+          ingredientIndex: ingIndex,
           type: 'dietary',
           match: rule,
           certainty: 'definite',
@@ -241,6 +254,7 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
       } else if (verify) {
         flags.push({
           ingredientName: ing.name,
+          ingredientIndex: ingIndex,
           type: 'dietary',
           match: rule,
           certainty: 'verify',
@@ -266,6 +280,7 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
 
       flags.push({
         ingredientName: ing.name,
+        ingredientIndex: ingIndex,
         type: 'condition',
         match: condition,
         certainty: 'definite',

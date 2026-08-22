@@ -313,6 +313,65 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
 }
 
 // ---------------------------------------------------------------------------
+// N. Every personal flag names the row it actually belongs to.
+//
+// The app pairs a flag to an ingredient row. It used to do that by name, and
+// where the name did not match, by POSITION in `canonicalIngredients` —
+// guarded only by that list being the same length as `ingredients`. Equal
+// length is not alignment: the reader's list is the label's printed order and
+// the analyzer's is its own, so a single split or merged entry shifts every
+// position after it.
+//
+// On a real 63-ingredient curry roux that put "Milk" flags on Dextrin,
+// Enzymes, Citric Acid and Maltose — each sitting directly beside a genuine
+// dairy row. The person reading it has a milk intolerance and four ingredients
+// that are fine for them were reported as ones that are not.
+//
+// The flag now carries the row index the server tagged it with. This asserts
+// the pairing survives a deliberately misaligned canonical list, which is the
+// exact shape that broke it.
+// ---------------------------------------------------------------------------
+{
+  const milkProfile = profile({ allergens: [{ allergen: 'milk', severity: 'intolerance' }] });
+  const names = ['Cheese', 'Dextrin', 'Cheese Cultures', 'Enzymes', 'Whey Powder', 'Maltose'];
+  const rows = names.map((n) => ing(n, 'low'));
+
+  const base = result(rows);
+  // Same length, deliberately shifted — one entry merged upstream is all it
+  // takes for the printed list and the analyzed list to stop corresponding.
+  const misaligned = { ...base, canonicalIngredients: ['Milk', ...names.slice(0, names.length - 1)] };
+
+  const out = applyProfileToAnalysis(misaligned as AnalysisResult, milkProfile);
+  const dairy = new Set(['Cheese', 'Cheese Cultures', 'Whey Powder']);
+
+  for (const flag of out.personalFlags ?? []) {
+    if (flag.type !== 'allergen') continue;
+    // A flag that belongs to a row MUST carry its index. Without this the
+    // loop below would pass by skipping everything, and the client would fall
+    // back to guessing — which is the bug.
+    const belongsToRow = out.ingredients.some((r) => r.name === flag.ingredientName);
+    check('flag-row/row-flag-carries-index',
+      !belongsToRow || flag.ingredientIndex !== undefined,
+      `flag for "${flag.ingredientName}" names a row but carries no ingredientIndex`);
+    if (flag.ingredientIndex === undefined) continue;
+    const row = out.ingredients[flag.ingredientIndex];
+    check('flag-row/index-names-its-own-row',
+      row?.name === flag.ingredientName,
+      `flag for "${flag.ingredientName}" points at index ${flag.ingredientIndex}, which is "${row?.name}"`);
+    check('flag-row/no-dairy-free-row-flagged',
+      dairy.has(row?.name ?? ''),
+      `"${row?.name}" contains no milk but carries a milk flag`);
+  }
+
+  const flagged = new Set((out.personalFlags ?? []).map((f) => f.ingredientName));
+  for (const clean of ['Dextrin', 'Enzymes', 'Maltose']) {
+    check('flag-row/clean-row-unflagged', !flagged.has(clean),
+      `"${clean}" was flagged for milk`);
+  }
+  notes.push(`personal flags pair to rows by index across a misaligned canonical list (${names.length} rows)`);
+}
+
+// ---------------------------------------------------------------------------
 
 for (const n of notes) console.log(`  · ${n}`);
 if (notes.length) console.log('');
