@@ -673,6 +673,55 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
 }
 
 // ---------------------------------------------------------------------------
+// Unsettled rules — a clean ingredient list is not a certificate.
+//
+// Halal and kosher turn on slaughter method and supervision. Before this, a
+// kosher profile scanning a gelatin product got overallRisk 'low', which the
+// card renders as "Safe" under a seal reading CLEARED — a false statement about
+// someone's own religious practice, not a rounding error.
+// ---------------------------------------------------------------------------
+{
+  const clean = result([ing('Sugar', 'low'), ing('Water', 'low')]);
+  const gelatin = result([ing('Sugar', 'low'), ing('Gelatin', 'low')]);
+  const pork = result([ing('Sugar', 'low'), ing('Pork Fat', 'low')]);
+
+  const kosher = (r: AnalysisResult) =>
+    applyProfileToAnalysis(r, profile({ dietaryRules: ['kosher'] }));
+
+  check('unsettled/clean-list-is-not-a-pass',
+    (kosher(clean).unsettled ?? []).includes('kosher'),
+    'a kosher profile read a list with no violations as settled');
+  check('unsettled/verify-hit-unsettled',
+    (kosher(gelatin).unsettled ?? []).includes('kosher'),
+    'gelatin did not leave the kosher question unsettled');
+
+  // A definite violation SETTLES the question, in the negative. Pork needs no
+  // certificate to be wrong, and reporting it as "we cannot say" would be
+  // weaker than the truth.
+  const withPork = kosher(pork);
+  check('unsettled/definite-violation-settles',
+    !(withPork.unsettled ?? []).includes('kosher'),
+    'a definite pork violation was reported as merely unsettled');
+  check('unsettled/definite-violation-still-raises',
+    withPork.overallRisk !== 'low',
+    'pork left a kosher verdict at low');
+
+  // Ingredient-determinable rules are unaffected: a clean list really is an
+  // answer for vegan, and marking it unsettled would be crying wolf.
+  const vegan = applyProfileToAnalysis(clean, profile({ dietaryRules: ['vegan'] }));
+  check('unsettled/ingredient-rules-untouched',
+    (vegan.unsettled ?? []).length === 0,
+    'a clean list left the vegan question unsettled');
+
+  // And a profile with no dietary rules never acquires one.
+  check('unsettled/absent-without-rules',
+    (applyProfileToAnalysis(clean, profile({})).unsettled ?? []).length === 0,
+    'a profile with no dietary rules reported an unsettled rule');
+
+  notes.push('certification rules stay unsettled on a clean list; definite violations still settle them');
+}
+
+// ---------------------------------------------------------------------------
 
 for (const n of notes) console.log(`  · ${n}`);
 if (notes.length) console.log('');

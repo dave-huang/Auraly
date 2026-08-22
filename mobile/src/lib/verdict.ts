@@ -79,7 +79,16 @@ export interface VerdictCopy {
   word: string;
   why: string;
   sealLines: [string, string];
+  /** The photo could not be read well enough to answer. */
   uncertain: boolean;
+  /**
+   * The photo was read fine and the question still cannot be answered.
+   *
+   * Separate from `uncertain` because the two have different remedies: one is
+   * fixed by retaking the shot, the other by finding a certification mark. Both
+   * share the neutral treatment — neither may wear a verdict's colours.
+   */
+  unsettled: boolean;
   /** null when the read confidence is unknown — hide the meter entirely. */
   segments: number | null;
   allergenFlags: PersonalFlag[];
@@ -98,12 +107,26 @@ export function useVerdictCopy(result: AnalysisResult, profileName?: string): Ve
   const segments = confidenceSegments(result.readConfidence);
   const uncertain = segments !== null && segments < MIN_CONFIDENT_SEGMENTS;
 
-  const word = uncertain ? t('verdict.uncertain') : t(RISK_KEYS[result.overallRisk]);
+  // Only ever replaces a CLEAN verdict. A real violation or an allergen still
+  // outranks it: being unable to certify a product does not make it safer, and
+  // a Caution card must not soften into "we cannot say".
+  const unsettledRules = result.unsettled ?? [];
+  const unsettled = !uncertain && result.overallRisk === 'low' && unsettledRules.length > 0;
+
+  const word = uncertain
+    ? t('verdict.uncertain')
+    : unsettled
+      ? t('verdict.needsProof')
+      : t(RISK_KEYS[result.overallRisk]);
 
   // One sentence naming the specific cause — never a restatement of the level.
   const why = uncertain
     ? t('verdict.uncertainWhy')
-    : allergenFlags.length > 0
+    : unsettled
+      ? t('verdict.needsProofWhy', {
+          rule: localizeProfileTerm(t, 'dietary', unsettledRules[0]),
+        })
+      : allergenFlags.length > 0
       ? flagReason(t, allergenFlags[0])
       : otherFlags.length > 0
         ? flagReason(t, otherFlags[0])
@@ -117,11 +140,13 @@ export function useVerdictCopy(result: AnalysisResult, profileName?: string): Ve
   // verdict they are looking at.
   const sealLines: [string, string] = uncertain
     ? [t('verdict.sealUnclear1'), t('verdict.sealUnclear2')]
+    : unsettled
+    ? [t('verdict.sealUnsettled1'), t('verdict.sealUnsettled2')]
     : allergenFlags.length > 0
       ? [localizeAllergen(t, allergenFlags[0].match), t('verdict.sealFound')]
       : result.overallRisk === 'low'
         ? [t('verdict.sealCleared'), name ?? '']
         : [t('verdict.sealWatch'), name ?? ''];
 
-  return { word, why, sealLines, uncertain, segments, allergenFlags, otherFlags };
+  return { word, why, sealLines, uncertain, unsettled, segments, allergenFlags, otherFlags };
 }

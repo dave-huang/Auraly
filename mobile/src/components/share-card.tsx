@@ -90,6 +90,7 @@ export function ShareCard({
   sealLines,
   profileName,
   profileAllergens,
+  neutral,
 }: {
   format: ShareFormat;
   result: AnalysisResult;
@@ -98,8 +99,23 @@ export function ShareCard({
   sealLines: [string, string];
   profileName?: string;
   profileAllergens?: string[];
+  /**
+   * The card is showing an answer we cannot stand behind — an unreadable label
+   * or a rule no label can settle.
+   *
+   * The exported image took its colour from `overallRisk` alone, so a card the
+   * app had already refused to commit to shared as a confident green with the
+   * word "Not sure" written across it. The image outlives the moment and gets
+   * forwarded to people who never saw the app, so it is the LAST place a
+   * verdict colour should overstate what we know.
+   */
+  neutral?: boolean;
 }) {
-  const tone = Verdict[RISK_TO_VERDICT[result.overallRisk as RiskLevel]];
+  const verdictTone = Verdict[RISK_TO_VERDICT[result.overallRisk as RiskLevel]];
+  // Paper, not a verdict ink. Matches the in-app card's neutral treatment.
+  const tone = neutral
+    ? { ink: Paper.inkMuted, wash: Paper.sunk }
+    : verdictTone;
   const size = shareLayoutSize(format);
 
   const native = result.originalIngredients?.join('、') ?? '';

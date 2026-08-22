@@ -113,16 +113,18 @@ export function AnalysisView({
   const surface = useSurface();
   const verdictColors = useVerdictColors();
 
-  const { word, why, sealLines, uncertain, segments, allergenFlags, otherFlags } = useVerdictCopy(
-    result,
-    profileName,
-  );
+  const { word, why, sealLines, uncertain, unsettled, segments, allergenFlags, otherFlags } =
+    useVerdictCopy(result, profileName);
+  // Both states drop the verdict ink. An answer we cannot stand behind must
+  // never wear a verdict's clothes — whether the photo failed or the question
+  // was never answerable from a label.
+  const neutral = uncertain || unsettled;
   const flags = result.personalFlags ?? [];
 
   const level = RISK_TO_VERDICT[result.overallRisk];
   const tone = verdictColors[level];
   const name = profileName ?? result.appliedProfile?.name;
-  const edgeColor = uncertain ? surface.rule : tone.ink;
+  const edgeColor = neutral ? surface.rule : tone.ink;
 
   const chipText = profileAllergens?.length
     ? profileAllergens.map((a) => localizeAllergen(t, a)).join(' · ')
@@ -179,27 +181,30 @@ export function AnalysisView({
 
   return (
     <View style={[styles.card, { backgroundColor: surface.card, borderColor: surface.rule }]}>
-      {/* Verdict edge — the card's one saturated stripe. Dashed and colourless
-          when the label could not be read: an uncertain answer must never wear
-          a verdict's clothes. */}
+      {/* Verdict edge — the card's one saturated stripe, and colourless
+          whenever we cannot stand behind an answer.
+          Dashed is reserved for a label we could not READ; an unsettled card
+          gets a solid grey edge, because the reading went fine and it is the
+          question that has no answer. Two different remedies, two different
+          marks. */}
       {uncertain ? (
         <View style={[styles.edgeUncertain, { borderTopColor: surface.inkFaint }]} />
       ) : (
         <View style={[styles.edge, { backgroundColor: edgeColor }]} />
       )}
 
-      <View style={[styles.hero, { backgroundColor: uncertain ? surface.sunk : tone.wash }]}>
+      <View style={[styles.hero, { backgroundColor: neutral ? surface.sunk : tone.wash }]}>
         {/* Profile chip — bordered, mono, and always present. The empty state
             says so out loud rather than hiding: a verdict with nobody behind
             it is the one thing this card must not imply. */}
         <Pressable
-          style={[styles.chip, { borderColor: uncertain ? surface.rule : tone.ink }]}
+          style={[styles.chip, { borderColor: neutral ? surface.rule : tone.ink }]}
           disabled={!onPressProfile}
           onPress={onPressProfile}
         >
-          <ApertureMark size={14} color={uncertain ? surface.inkMuted : tone.ink} />
+          <ApertureMark size={14} color={neutral ? surface.inkMuted : tone.ink} />
           <ThemedText
-            style={[styles.chipText, { color: uncertain ? surface.inkMuted : tone.ink }]}
+            style={[styles.chipText, { color: neutral ? surface.inkMuted : tone.ink }]}
             numberOfLines={1}
           >
             {name ? `${name} · ${chipText}` : t('verdict.noProfile')}
@@ -212,7 +217,7 @@ export function AnalysisView({
               style={[
                 Type.verdict,
                 verdictTextStyle(word),
-                { color: uncertain ? surface.ink : tone.ink },
+                { color: neutral ? surface.ink : tone.ink },
               ]}
             >
               {word}
@@ -221,7 +226,7 @@ export function AnalysisView({
               {why}
             </ThemedText>
           </View>
-          <VerdictSeal lines={sealLines} color={uncertain ? surface.inkFaint : tone.ink} />
+          <VerdictSeal lines={sealLines} color={neutral ? surface.inkFaint : tone.ink} />
         </View>
       </View>
 

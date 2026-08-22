@@ -329,6 +329,21 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
   const closestCall = findClosestCall(result, profile, canonical);
   const settle = findSettlingAction(flags, ingredients, overallRisk);
 
+  // Rules a label cannot answer, however well it was read.
+  //
+  // Halal and kosher turn on slaughter method and supervision, so a clean
+  // ingredient list is not evidence of compliance — it is the absence of one
+  // kind of counter-evidence. Reporting "no violations found" as a pass told a
+  // kosher user that a gelatin product was Cleared, which is a false statement
+  // about their own practice rather than a near miss.
+  //
+  // A DEFINITE violation settles the question in the other direction and is
+  // reported normally: pork in the list needs no certificate to be wrong.
+  const unsettled = (profile.dietaryRules ?? []).filter(rule => {
+    if (getConcept(rule)?.determinability !== 'certification') return false;
+    return !flags.some(f => f.type === 'dietary' && f.match === rule && f.certainty === 'definite');
+  });
+
   return {
     ...result,
     ingredients,
@@ -338,6 +353,7 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
     checked,
     ...(closestCall ? { closestCall } : {}),
     ...(settle ? { settle } : {}),
+    ...(unsettled.length > 0 ? { unsettled } : {}),
   };
 }
 

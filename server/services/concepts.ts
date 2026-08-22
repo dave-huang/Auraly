@@ -130,6 +130,23 @@ export interface Concept {
   identifiers: string[];
   /** Why the concept exists. Empty for concepts that are preference, not law. */
   declarableIn: Regime[];
+  /**
+   * Can an ingredient list answer this concept's question at all?
+   *
+   *   ingredients   — yes, subject to the usual sourcing hedges. Vegan,
+   *                   vegetarian and gluten-free are decided by what is in the
+   *                   product, and a clean list is a real answer.
+   *
+   *   certification — no. Halal and kosher turn on slaughter method and
+   *                   rabbinical or halal supervision, neither of which is a
+   *                   property of the composition. A product with no pork and
+   *                   no alcohol is NOT thereby halal, and telling someone it
+   *                   is Cleared is a false statement about their own faith
+   *                   practice, not a rounding error.
+   *
+   * Absent on allergens, where the question is always about composition.
+   */
+  determinability?: 'ingredients' | 'certification';
 }
 
 export interface ConceptMatch {
@@ -193,6 +210,8 @@ export const CONCEPT_IDENTIFIERS_FOR_CHECK = CONCEPT_IDENTIFIERS;
  * diglycerides") are `verify`, because sourcing varies and a label cannot
  * settle it.
  */
+const CERTIFICATION_RULES = new Set(['halal', 'kosher']);
+
 const DIETARY_TERMS: Record<string, { definite: string[]; verify: string[] }> = {
   vegan: {
     definite: ['gelatin', 'carmine', 'cochineal', 'lard', 'tallow', 'honey', 'beeswax', 'lanolin', 'collagen', 'keratin', 'shellac', 'casein', 'whey', 'albumin', 'milk', 'egg', 'butter', 'cheese', 'cream', 'yogurt', 'fish', 'anchovy', 'meat', 'chicken', 'beef', 'pork', 'bone char', 'isinglass', 'squalene', 'ambergris', 'castoreum', 'silk'],
@@ -244,6 +263,7 @@ function buildRegistry(): Map<string, Concept> {
       borrowAllergenExclusions: true,
       identifiers: [],
       declarableIn: [],
+      determinability: CERTIFICATION_RULES.has(rule) ? 'certification' : 'ingredients',
     });
   }
 

@@ -154,6 +154,7 @@ export default function ResultsScreen() {
             word={copy.word}
             reason={copy.why}
             sealLines={copy.sealLines}
+            neutral={copy.uncertain || copy.unsettled}
             profileName={profile?.name}
             profileAllergens={profile?.allergens}
           />
@@ -165,6 +166,7 @@ export default function ResultsScreen() {
             word={copy.word}
             reason={copy.why}
             sealLines={copy.sealLines}
+            neutral={copy.uncertain || copy.unsettled}
             profileName={profile?.name}
             profileAllergens={profile?.allergens}
           />

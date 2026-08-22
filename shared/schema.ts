@@ -1095,6 +1095,20 @@ export const analysisResultSchema = z.object({
   translatedText: z.string().optional(),
   // Present only when a personal profile was applied (post-cache, per-request)
   personalFlags: z.array(personalFlagSchema).optional(),
+  /**
+   * Profile rules the label cannot settle, however well it was read.
+   *
+   * Distinct from a low read confidence, which is about the photo. This is
+   * about the question: halal and kosher turn on slaughter method and
+   * supervision, so "no pork in the list" is not an answer, and a card that
+   * stamps CLEARED on it tells a person something false about their own
+   * practice.
+   *
+   * Only ever suppresses a clean verdict. A real violation or a genuine
+   * allergen still outranks it — being unable to certify a product does not
+   * make it safer.
+   */
+  unsettled: z.array(z.string()).optional(),
   appliedProfile: z.object({ id: z.string(), name: z.string() }).optional(),
   // The label's own allergen statement, when the reader captured one.
   declaredAllergens: z.object({
