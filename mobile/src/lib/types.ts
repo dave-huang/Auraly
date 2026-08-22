@@ -33,7 +33,15 @@ export const PROFILE_CONDITIONS = [
 export const PRODUCT_TYPES = ['food', 'personal_care'] as const;
 export const RISK_LEVELS = ['low', 'moderate', 'high'] as const;
 
-// The nine major US allergens (FASTER Act) offered during onboarding.
+// Every allergen that must be declared somewhere this app is used — the US
+// FASTER Act nine plus the EU/UK/CA/AU additions and Japan's buckwheat.
+//
+// MUST stay identical to MAJOR_ALLERGENS in server/services/allergenMatcher.ts.
+// An entry offered here with no keyword list there is selectable in the UI and
+// silently matches nothing, which is why eval/risk.check.ts compares the two
+// lists and fails the build when they drift.
 export const MAJOR_ALLERGENS = [
-  'milk', 'egg', 'fish', 'shellfish', 'tree_nuts', 'peanut', 'wheat', 'soy', 'sesame',
+  'milk', 'egg', 'fish', 'shellfish', 'molluscs', 'tree_nuts', 'peanut',
+  'wheat', 'soy', 'sesame', 'sulphites', 'mustard', 'celery', 'lupin',
+  'buckwheat',
 ] as const;

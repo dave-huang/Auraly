@@ -38,10 +38,34 @@ export function normalizeIngredientName(name: string): string {
   return normalized;
 }
 
-// US FASTER Act big-9 major allergens.
+// The union of what must be DECLARED across the markets this app is used in,
+// not the US big-9 alone.
+//
+// The list was the US FASTER Act nine until 2026-08-22. That made six
+// allergens unmatchable: a profile entry whose name has no keyword list here
+// produces no flag and no error, which is a silent false negative — the exact
+// failure class the substance corpus was built to avoid, reproduced in the one
+// layer that is actually about the person. The additions are:
+//
+//   molluscs   EU, UK, Canada, Australia/NZ. `shellfish` below is CRUSTACEANS
+//              only, so oyster, mussel, squid and snail matched nothing at all.
+//   sulphites  EU, UK, Canada, Australia/NZ above 10 mg/kg. Bronchoconstriction
+//              in a share of people with asthma.
+//   mustard    EU, UK, Canada. Frequently hidden inside "spices".
+//   celery     EU, UK. Hides in stock and "natural flavouring".
+//   lupin      EU, UK, Australia/NZ. Common in gluten-free baking.
+//   buckwheat  Japan, Korea. Not wheat, and severe.
+//
+// `shellfish` keeps its id rather than being renamed to `crustaceans`. The id
+// is stored verbatim in every existing profile's jsonb, so renaming it would
+// orphan real allergy entries to buy a better word. The UI label carries the
+// clarification instead.
+//
 // NOTE: coconut is included under tree_nuts per FDA's historical stance.
 export const MAJOR_ALLERGENS = [
-  'milk', 'egg', 'fish', 'shellfish', 'tree_nuts', 'peanut', 'wheat', 'soy', 'sesame',
+  'milk', 'egg', 'fish', 'shellfish', 'molluscs', 'tree_nuts', 'peanut',
+  'wheat', 'soy', 'sesame', 'sulphites', 'mustard', 'celery', 'lupin',
+  'buckwheat',
 ] as const;
 export type MajorAllergen = typeof MAJOR_ALLERGENS[number];
 
@@ -55,6 +79,24 @@ export const ALLERGEN_KEYWORDS: Record<MajorAllergen, string[]> = {
   wheat: ['wheat', 'semolina', 'spelt', 'farina', 'durum', 'seitan'],
   soy: ['soy', 'soya', 'soybean', 'edamame', 'tofu', 'miso', 'tempeh'],
   sesame: ['sesame', 'tahini', 'benne', 'gingelly'],
+  // Snail is here deliberately: snail secretion filtrate is a mainstream
+  // cosmetic ingredient, and a mollusc allergy does not stop at the plate.
+  molluscs: [
+    'oyster', 'mussel', 'clam', 'scallop', 'squid', 'calamari', 'octopus',
+    'cuttlefish', 'snail', 'escargot', 'abalone', 'whelk', 'cockle',
+    'mollusc', 'mollusk', 'helix aspersa',
+  ],
+  // E-numbers appear in both joined and spaced forms because normalization
+  // turns "E-220" into "e 220" but leaves "E220" alone, and labels print both.
+  sulphites: [
+    'sulfite', 'sulphite', 'sulfur dioxide', 'sulphur dioxide',
+    'e220', 'e 220', 'e221', 'e 221', 'e222', 'e 222', 'e223', 'e 223',
+    'e224', 'e 224', 'e226', 'e 226', 'e227', 'e 227', 'e228', 'e 228',
+  ],
+  mustard: ['mustard', 'sinapis', 'brassica juncea', 'brassica nigra'],
+  celery: ['celery', 'celeriac', 'apium graveolens'],
+  lupin: ['lupin', 'lupinus'],
+  buckwheat: ['buckwheat', 'soba', 'fagopyrum'],
 };
 
 // Keyword hits that do NOT indicate the allergen: plant "butters"/"milks"
@@ -67,6 +109,23 @@ export const ALLERGEN_EXCLUSIONS: Partial<Record<MajorAllergen, RegExp[]>> = {
     /\b(soy|oat|almond|rice) milk\b/,   // plant milks are not dairy
   ],
   fish: [/\bswedish fish\b/],
+  // Buckwheat is not wheat, and is not even a grass. This exclusion existed
+  // nowhere before buckwheat was matchable, so "buckwheat flour" — the whole
+  // point of a soba noodle — raised a wheat allergy flag on every label that
+  // carried it, via the bare substring in the `wheat` keyword list.
+  wheat: [/\bbuckwheat\b/],
+  // Oyster mushroom is a fungus. Sea scallop squash and scalloped names are
+  // not molluscs either, but they do not appear on ingredient lists; this one
+  // does, constantly, in stock and seasoning.
+  molluscs: [/\boyster mushroom\b/],
+  // Matching here is substring, not whole-word (see ingredientMatchesAllergen),
+  // so a wine advertising "sulphite free" would otherwise be the strongest
+  // sulphite hit on the shelf. The dietary layer gets this for free from
+  // termMatch; the allergen layer has to say it out loud.
+  sulphites: [
+    /\b(sulfite|sulphite|sulfur dioxide|sulphur dioxide)s?\s+free\b/,
+    /\b(no|zero|without|free of|free from)\s+(added\s+)?(sulfite|sulphite|sulfur dioxide|sulphur dioxide)/,
+  ],
 };
 
 function isMajorAllergen(name: string): name is MajorAllergen {

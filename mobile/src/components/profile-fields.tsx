@@ -23,12 +23,21 @@ export const ALLERGEN_KEYS: Record<string, TranslationKey> = {
   milk: 'allergen.milk',
   egg: 'allergen.egg',
   fish: 'allergen.fish',
+  // Crustaceans only. `molluscs` is a separate entry because they are
+  // separately declarable in the EU, UK, Canada and Australia/NZ, and because
+  // an oyster is not a shrimp to the immune system either.
   shellfish: 'allergen.shellfish',
+  molluscs: 'allergen.molluscs',
   tree_nuts: 'allergen.tree_nuts',
   peanut: 'allergen.peanut',
   wheat: 'allergen.wheat',
   soy: 'allergen.soy',
   sesame: 'allergen.sesame',
+  sulphites: 'allergen.sulphites',
+  mustard: 'allergen.mustard',
+  celery: 'allergen.celery',
+  lupin: 'allergen.lupin',
+  buckwheat: 'allergen.buckwheat',
 };
 
 export const SEVERITY_KEYS: Record<AllergenSeverity, TranslationKey> = {

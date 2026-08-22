@@ -10,7 +10,15 @@
 //
 // Exit codes: 0 = pass · 1 = a check failed.
 
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { applyPopulationRisk, domainForProductType } from '../server/services/substances/classify';
+import {
+  ALLERGEN_KEYWORDS,
+  MAJOR_ALLERGENS,
+  ingredientMatchesAllergen,
+} from '../server/services/allergenMatcher';
 import { applyProfileToAnalysis } from '../server/services/personalRisk';
 import { withLabelRanks } from '../server/services/labelRank';
 import { riskLevels, type Ingredient, type AnalysisResult, type Profile, type RiskLevel } from '../shared/schema';
@@ -369,6 +377,99 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
       `"${clean}" was flagged for milk`);
   }
   notes.push(`personal flags pair to rows by index across a misaligned canonical list (${names.length} rows)`);
+}
+
+// ---------------------------------------------------------------------------
+// Allergen coverage — the guard against a silently inert allergen.
+//
+// A profile allergen with no keyword list produces no flag AND no error. That
+// is how six declarable allergens (molluscs, sulphites, mustard, celery, lupin,
+// buckwheat) sat unmatchable behind a picker that offered nine. Three things
+// have to agree or the picker lies: the matcher's list, the app's list, and the
+// translation catalogue.
+// ---------------------------------------------------------------------------
+{
+  for (const allergen of MAJOR_ALLERGENS) {
+    check('allergen-cover/has-keywords',
+      (ALLERGEN_KEYWORDS[allergen]?.length ?? 0) > 0,
+      `"${allergen}" is offered as a major allergen but has no keyword list`);
+  }
+
+  // The app ships its own copy of the list (mobile cannot import from server/).
+  // Read it as text rather than importing: this file is CommonJS-land tsx and
+  // the app is an Expo module graph, and the only thing worth asserting is that
+  // the two literals say the same thing.
+  const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+  const mobileTypes = fs.readFileSync(path.join(repoRoot, 'mobile/src/lib/types.ts'), 'utf8');
+  const block = mobileTypes.match(/export const MAJOR_ALLERGENS = \[([\s\S]*?)\] as const;/);
+  const mobileList = (block?.[1] ?? '')
+    .split(',')
+    .map((entry) => entry.trim().replace(/^['"]|['"]$/g, ''))
+    .filter((entry) => entry.length > 0 && !entry.startsWith('//'));
+
+  check('allergen-cover/app-list-found', mobileList.length > 0,
+    'could not parse MAJOR_ALLERGENS out of mobile/src/lib/types.ts');
+  check('allergen-cover/app-list-matches',
+    mobileList.join(',') === MAJOR_ALLERGENS.join(','),
+    `mobile list [${mobileList.join(' ')}] != server list [${MAJOR_ALLERGENS.join(' ')}]`);
+
+  // Every allergen needs a label in every language, or the chip renders its
+  // raw matcher key — "gluten_wheat" in a picker is how a person picks wrong.
+  const i18n = fs.readFileSync(path.join(repoRoot, 'mobile/src/lib/i18n.tsx'), 'utf8');
+  for (const allergen of MAJOR_ALLERGENS) {
+    const occurrences = i18n.split(`'allergen.${allergen}':`).length - 1;
+    check('allergen-cover/translated',
+      occurrences === 3,
+      `"allergen.${allergen}" appears in ${occurrences} of 3 catalogues`);
+  }
+
+  notes.push(`${MAJOR_ALLERGENS.length} declarable allergens, each with keywords and 3 translations`);
+}
+
+// ---------------------------------------------------------------------------
+// Allergen matching — the additions, and the lookalikes they drag in.
+// ---------------------------------------------------------------------------
+{
+  const hits: Array<[string, string]> = [
+    ['Oyster Extract', 'molluscs'],
+    ['Snail Secretion Filtrate', 'molluscs'],
+    ['Calamari', 'molluscs'],
+    ['Potassium Metabisulphite', 'sulphites'],
+    ['Sulfur Dioxide', 'sulphites'],
+    ['E220', 'sulphites'],
+    ['Mustard Flour', 'mustard'],
+    ['Celeriac', 'celery'],
+    ['Lupin Flour', 'lupin'],
+    ['Buckwheat Flour', 'buckwheat'],
+    ['Soba Noodles', 'buckwheat'],
+  ];
+  for (const [name, allergen] of hits) {
+    check('allergen-match/detects',
+      ingredientMatchesAllergen(name, allergen),
+      `"${name}" did not match ${allergen}`);
+  }
+
+  const misses: Array<[string, string, string]> = [
+    // The reason the wheat exclusion exists: 'wheat' is a bare substring of
+    // 'buckwheat', so soba raised a wheat allergy flag on every label.
+    ['Buckwheat Flour', 'wheat', 'buckwheat is not wheat'],
+    ['Oyster Mushroom', 'molluscs', 'oyster mushroom is a fungus'],
+    ['Sulphite Free Wine', 'sulphites', 'a "free" claim is not a hit'],
+    ['No Added Sulfites', 'sulphites', 'a "no added" claim is not a hit'],
+    // Crustaceans and molluscs are separate concepts now; neither may answer
+    // for the other, or the split bought nothing.
+    ['Oyster Extract', 'shellfish', 'an oyster is not a crustacean'],
+    ['Shrimp Paste', 'molluscs', 'a shrimp is not a mollusc'],
+    // Sulfate is not sulfite. SLS is in half the bathroom.
+    ['Sodium Lauryl Sulfate', 'sulphites', 'a sulfate is not a sulphite'],
+  ];
+  for (const [name, allergen, why] of misses) {
+    check('allergen-match/no-false-positive',
+      !ingredientMatchesAllergen(name, allergen),
+      `"${name}" matched ${allergen} — ${why}`);
+  }
+
+  notes.push(`${hits.length} allergen detections and ${misses.length} lookalikes hold`);
 }
 
 // ---------------------------------------------------------------------------
