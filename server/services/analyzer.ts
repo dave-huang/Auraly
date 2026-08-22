@@ -674,6 +674,19 @@ function expandParentheticalIngredients(text: string): string {
   }
 }
 
+/**
+ * How the product type is NAMED to the model, as opposed to how it is stored.
+ *
+ * The prompts used to interpolate the enum itself — "from a personal_care
+ * product" — and the model happily echoed that back into summaries the user
+ * reads. The stored value stays `personal_care` (it is a database column and a
+ * cache key); only the wording sent to the model changes.
+ */
+const PRODUCT_TYPE_NAMES: Record<ProductType, string> = {
+  food: 'food',
+  personal_care: 'skincare / personal care',
+};
+
 const PRODUCT_TYPE_CONTEXTS: Record<ProductType, string> = {
   food: `Food & Supplements (including beverages, vitamins, minerals, gummies, meal replacements, protein powders, functional drinks). Focus on:
     - Food additives (E-numbers, preservatives, colorants)
@@ -743,7 +756,7 @@ export async function analyzeIngredients(
   const languageInstruction = LANGUAGE_INSTRUCTIONS[userLanguage as keyof typeof LANGUAGE_INSTRUCTIONS] || LANGUAGE_INSTRUCTIONS['en'];
   console.log(`[ANALYZER] Language instruction: ${languageInstruction.substring(0, 100)}...`);
   
-  const prompt = `You are a health-focused ingredient analyst. Analyze the following ingredient list from a ${productType} product.
+  const prompt = `You are a health-focused ingredient analyst. Analyze the following ingredient list from a ${PRODUCT_TYPE_NAMES[productType]} product.
 
 ${languageInstruction}
 
@@ -1362,7 +1375,7 @@ export async function analyzeIngredientsParallel(
     const languageMap = { 'en': 'English', 'es': 'Spanish', 'zh': 'Simplified Chinese' };
     const targetLanguage = languageMap[userLanguage as keyof typeof languageMap] || 'English';
     
-    const batchPrompt = `Analyze these ${missingIngredients.length} ingredients from a ${productType} product:
+    const batchPrompt = `Analyze these ${missingIngredients.length} ingredients from a ${PRODUCT_TYPE_NAMES[productType]} product:
 
 ${missingList}
 
@@ -1514,7 +1527,7 @@ IMPORTANT: Return ONLY this JSON array, nothing else:
     const individualResults: Ingredient[] = [];
     
     for (const singleIngredient of missingIngredients) {
-      const singlePrompt = `Analyze this single ingredient from a ${productType} product: ${singleIngredient}
+      const singlePrompt = `Analyze this single ingredient from a ${PRODUCT_TYPE_NAMES[productType]} product: ${singleIngredient}
 
 CRITICAL INSTRUCTIONS FOR ${targetLanguage.toUpperCase()}:
 - ALL text (name, summary, details, category) MUST be in ${targetLanguage}

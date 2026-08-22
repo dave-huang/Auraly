@@ -31,6 +31,7 @@ export const LANGUAGE_NAMES: Record<Language, string> = {
 const en = {
   'common.back': 'Back',
   'common.done': 'Done',
+  'common.close': 'Close',
   'common.cancel': 'Cancel',
   'common.delete': 'Delete',
   'common.tryAgain': 'Please try again.',
@@ -136,7 +137,7 @@ const en = {
   'onboarding.tapToChange': 'tap to change',
 
   'scan.food': 'Food',
-  'scan.personalCare': 'Skin & hair',
+  'scan.personalCare': 'Skincare',
   'scan.hint': 'Fill the frame with the ingredient list',
   'scan.library': 'Library',
   'scan.menu': 'More',
@@ -156,7 +157,6 @@ const en = {
   'scan.checkingFor': 'Checking against {name}’s profile…',
   'scan.stepRead': 'Read the label',
   'scan.stepAnalyze': 'Analyze ingredients',
-  'scan.history': 'Past scans',
   'scan.switchProfile': 'Switch profile',
   'scan.setupFirst': 'Set up your profile to start scanning',
 
@@ -185,6 +185,8 @@ const en = {
   'account.name': 'Name',
   'account.noEmail': 'No email on file',
   'account.memberSince': 'Member since',
+  'account.languageLabel': 'Display language',
+  'account.languageNote': 'Ingredient explanations come back in this language too.',
   'account.dangerLabel': 'Delete account',
   'account.deleteExplain': 'Deleting your account removes:',
   'account.deleteItemProfiles': 'every profile and its allergen settings',
@@ -353,6 +355,7 @@ export const TRANSLATED_KEYS = en as Record<string, string>;
 const zh: Record<TranslationKey, string> = {
   'common.back': '返回',
   'common.done': '完成',
+  'common.close': '关闭',
   'common.cancel': '取消',
   'common.delete': '删除',
   'common.tryAgain': '请重试。',
@@ -453,7 +456,7 @@ const zh: Record<TranslationKey, string> = {
   'onboarding.tapToChange': '点击更改',
 
   'scan.food': '食品',
-  'scan.personalCare': '护肤美发',
+  'scan.personalCare': '护肤',
   'scan.hint': '让成分表填满取景框',
   'scan.library': '相册',
   'scan.menu': '更多',
@@ -470,7 +473,6 @@ const zh: Record<TranslationKey, string> = {
   'scan.checkingFor': '正在对照 {name} 的档案检查…',
   'scan.stepRead': '读取标签',
   'scan.stepAnalyze': '分析成分',
-  'scan.history': '历史扫描',
   'scan.switchProfile': '切换档案',
   'scan.setupFirst': '请先设置档案后再开始扫描',
 
@@ -499,6 +501,8 @@ const zh: Record<TranslationKey, string> = {
   'account.name': '姓名',
   'account.noEmail': '未记录邮箱',
   'account.memberSince': '注册时间',
+  'account.languageLabel': '显示语言',
+  'account.languageNote': '成分说明也会以该语言返回。',
   'account.dangerLabel': '删除账户',
   'account.deleteExplain': '删除账户将移除：',
   'account.deleteItemProfiles': '所有档案及其过敏设置',
@@ -648,6 +652,7 @@ const zh: Record<TranslationKey, string> = {
 const es: Record<TranslationKey, string> = {
   'common.back': 'Atrás',
   'common.done': 'Listo',
+  'common.close': 'Cerrar',
   'common.cancel': 'Cancelar',
   'common.delete': 'Eliminar',
   'common.tryAgain': 'Inténtalo de nuevo.',
@@ -751,7 +756,7 @@ const es: Record<TranslationKey, string> = {
   'onboarding.tapToChange': 'toca para cambiar',
 
   'scan.food': 'Alimentos',
-  'scan.personalCare': 'Piel y cabello',
+  'scan.personalCare': 'Cuidado de la piel',
   'scan.hint': 'Llena el marco con la lista de ingredientes',
   'scan.library': 'Galería',
   'scan.menu': 'Más',
@@ -768,7 +773,6 @@ const es: Record<TranslationKey, string> = {
   'scan.checkingFor': 'Comparando con el perfil de {name}…',
   'scan.stepRead': 'Leer la etiqueta',
   'scan.stepAnalyze': 'Analizar ingredientes',
-  'scan.history': 'Escaneos anteriores',
   'scan.switchProfile': 'Cambiar perfil',
   'scan.setupFirst': 'Configura tu perfil para empezar a escanear',
 
@@ -797,6 +801,8 @@ const es: Record<TranslationKey, string> = {
   'account.name': 'Nombre',
   'account.noEmail': 'Sin correo registrado',
   'account.memberSince': 'Miembro desde',
+  'account.languageLabel': 'Idioma de la app',
+  'account.languageNote': 'Las explicaciones de ingredientes también llegan en este idioma.',
   'account.dangerLabel': 'Eliminar cuenta',
   'account.deleteExplain': 'Eliminar tu cuenta borra:',
   'account.deleteItemProfiles': 'todos los perfiles y su configuración de alérgenos',

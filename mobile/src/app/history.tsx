@@ -19,12 +19,7 @@ import {
 import { fetchHistory, scanTitle } from '@/lib/history';
 import { goBackOrHome } from '@/lib/navigation';
 import { getActiveProfileId, listProfiles } from '@/lib/profiles';
-import {
-  LANGUAGE_NAMES,
-  SUPPORTED_LANGUAGES,
-  useTranslation,
-  type TranslationKey,
-} from '@/lib/i18n';
+import { useTranslation, type TranslationKey } from '@/lib/i18n';
 import type { RiskLevel, ScanHistory } from '@/lib/types';
 
 // Screen 08 — Retention · History grid.
@@ -106,7 +101,7 @@ function toItems(scans: ScanHistory[], t: (key: TranslationKey) => string): Item
 
 export default function HistoryScreen() {
   const router = useRouter();
-  const { t, language, setLanguage } = useTranslation();
+  const { t } = useTranslation();
   const surface = useSurface();
   const verdict = useVerdictColors();
 
@@ -293,28 +288,9 @@ export default function HistoryScreen() {
           <ThemedText style={[Type.meta, { color: surface.ink }]}>{t('history.toScan')}</ThemedText>
         </Pressable>
 
-        {/* Language is a set-once choice, so it lives here rather than on the
-            viewfinder where it would be chrome in the way of a scan. */}
-        <View style={styles.languageRow}>
-          {SUPPORTED_LANGUAGES.map((code) => {
-            const active = code === language;
-            return (
-              <Pressable
-                key={code}
-                onPress={() => setLanguage(code)}
-                style={[
-                  styles.pill,
-                  { borderColor: surface.rule },
-                  active && { backgroundColor: surface.ink, borderColor: surface.ink },
-                ]}
-              >
-                <ThemedText style={[styles.pillText, { color: active ? surface.card : surface.inkMuted }]}>
-                  {LANGUAGE_NAMES[code]}
-                </ThemedText>
-              </Pressable>
-            );
-          })}
-        </View>
+        {/* Language used to sit here as a row of pills. Nobody looked for a
+            settings control on a screen of past scans, so it moved to Account,
+            which is where the rest of "things about me" already lives. */}
       </View>
     </SafeAreaView>
   );
@@ -363,5 +339,4 @@ const styles = StyleSheet.create({
     borderTopWidth: StyleSheet.hairlineWidth,
   },
   bottomItem: { flexDirection: 'row', alignItems: 'center', gap: Space.sm },
-  languageRow: { flexDirection: 'row', gap: Space.sm },
 });

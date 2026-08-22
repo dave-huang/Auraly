@@ -272,7 +272,7 @@ export default function ViewfinderScreen() {
           <View style={styles.menuSheet}>
             {(
               [
-                ['scan.history', () => router.push('/history')],
+                ['history.title', () => router.push('/history')],
                 ['scan.switchProfile', openProfiles],
                 ['paywall.menuItem', () => router.push('/paywall')],
                 // Sign-out moved inside Account: deletion needs a screen that

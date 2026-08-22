@@ -7,7 +7,7 @@ import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Radius, Space, Type, useSurface, useVerdictColors } from '@/constants/design';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/lib/auth-context';
-import { useTranslation } from '@/lib/i18n';
+import { LANGUAGE_NAMES, SUPPORTED_LANGUAGES, useTranslation } from '@/lib/i18n';
 import { goBackOrHome } from '@/lib/navigation';
 
 // Screen 12 — Account.
@@ -19,6 +19,11 @@ import { goBackOrHome } from '@/lib/navigation';
 // The honest thing is telling you what deletion actually removes before you
 // tap it. A confirmation dialog that only says "are you sure?" makes someone
 // guess whether their scan history survives; this screen lists it.
+//
+// It also holds display language. That control used to live in the footer of
+// the history screen, where it was invisible to anyone not already browsing
+// past scans — and it is not a scanning control, it is a setting about the
+// reader. It changes the analysis language too, so the row says so.
 //
 // No verdict ink except on the delete control. Those three colours mean a
 // verdict about food, and spending one on a settings row would cheapen the only
@@ -35,7 +40,7 @@ interface AccountDetails {
 
 export default function AccountScreen() {
   const router = useRouter();
-  const { t } = useTranslation();
+  const { t, language, setLanguage } = useTranslation();
   const surface = useSurface();
   const verdictColors = useVerdictColors();
   const { user, signOut, deleteAccount } = useAuth();
@@ -97,6 +102,43 @@ export default function AccountScreen() {
               value={new Date(details.createdAt).toLocaleDateString()}
             />
           ) : null}
+        </View>
+
+        {/* Display language. Pills rather than a picker: three options fit on
+            one line, and seeing all three beats tapping to discover them. */}
+        <View style={[styles.card, { backgroundColor: surface.card, borderColor: surface.rule }]}>
+          <View style={styles.row}>
+            <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
+              {t('account.languageLabel')}
+            </ThemedText>
+            <ThemedText style={[Type.meta, { color: surface.inkMuted }]}>
+              {t('account.languageNote')}
+            </ThemedText>
+          </View>
+          <View style={styles.languageRow}>
+            {SUPPORTED_LANGUAGES.map((code) => {
+              const active = code === language;
+              return (
+                <Pressable
+                  key={code}
+                  onPress={() => setLanguage(code)}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: active }}
+                  style={[
+                    styles.pill,
+                    { borderColor: surface.rule },
+                    active && { backgroundColor: surface.ink, borderColor: surface.ink },
+                  ]}
+                >
+                  <ThemedText
+                    style={[styles.pillText, { color: active ? surface.card : surface.inkMuted }]}
+                  >
+                    {LANGUAGE_NAMES[code]}
+                  </ThemedText>
+                </Pressable>
+              );
+            })}
+          </View>
         </View>
 
         <Pressable
@@ -177,6 +219,17 @@ const styles = StyleSheet.create({
   },
   row: { gap: 2 },
   rowValue: { fontFamily: Font.mono, fontSize: 13, lineHeight: 18 },
+
+  languageRow: { flexDirection: 'row', gap: Space.sm, flexWrap: 'wrap' },
+  pill: {
+    paddingHorizontal: Space.md,
+    paddingVertical: 6,
+    borderRadius: Radius.pill,
+    borderWidth: StyleSheet.hairlineWidth,
+    minHeight: 32,
+    justifyContent: 'center',
+  },
+  pillText: { fontFamily: Font.mono, fontSize: 11, lineHeight: 15 },
 
   action: {
     borderWidth: StyleSheet.hairlineWidth,
