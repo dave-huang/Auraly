@@ -27,7 +27,7 @@ import { goBackOrHome } from '@/lib/navigation';
 import { deleteProfile, listProfiles, updateProfile } from '@/lib/profiles';
 import { getLastProfile, getLastResult, personalizeAnalysis, replaceLastVerdict } from '@/lib/scan';
 import type {
-  AllergenSeverity,
+  ProfileAllergen,
   DietaryRule,
   Profile,
   ProfileCondition,
@@ -63,7 +63,7 @@ export default function ProfileEditScreen() {
   const missing = !id || notFound;
 
   const [name, setName] = useState('');
-  const [allergens, setAllergens] = useState<Map<string, AllergenSeverity>>(new Map());
+  const [allergens, setAllergens] = useState<Map<string, ProfileAllergen>>(new Map());
   const [dietary, setDietary] = useState<Set<DietaryRule>>(new Set());
   const [conditions, setConditions] = useState<Set<ProfileCondition>>(new Set());
   const [busy, setBusy] = useState(false);

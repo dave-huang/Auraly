@@ -1,3 +1,4 @@
+import { tracePolicyFor } from '@shared/schema';
 import type { AnalysisResult, PersonalFlag, Profile, RiskLevel } from '@shared/schema';
 import { nearMissForAllergen } from './allergenMatcher';
 import { getConcept, matchConcept, matchProfileAllergen } from './concepts';
@@ -147,8 +148,14 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
         overallRisk = maxRisk(overallRisk, flagRisk);
       }
 
-      const inMayContain = declared.mayContain.some(d =>
-        matchesAllergenEntry(d, entry.allergen, entry.keywords ?? []));
+      // Whether a trace warning counts is the entry's own call. It used to
+      // count for every entry, which meant a lactose-intolerance profile went
+      // amber on every product sharing a line with dairy — a dose-dependent
+      // condition being warned about a dose that is not there.
+      const inMayContain =
+        tracePolicyFor(entry) === 'flag' &&
+        declared.mayContain.some(d =>
+          matchesAllergenEntry(d, entry.allergen, entry.keywords ?? []));
       if (inMayContain && !inContains && !alreadyFlagged) {
         flags.push({
           ingredientName: 'Label allergen statement',

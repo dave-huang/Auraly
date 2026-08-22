@@ -317,15 +317,56 @@ export const allergenSeverities = [
 ] as const;
 export type AllergenSeverity = typeof allergenSeverities[number];
 
+/**
+ * Whether a label's "may contain" line counts for THIS entry.
+ *
+ * It is a cross-contamination warning about shared equipment, not a statement
+ * that the ingredient is present, and the two severities read it completely
+ * differently. Trace peanut protein off a shared line can put an anaphylactic
+ * person in hospital. Trace milk off a shared line does nothing whatsoever to
+ * someone who is lactose intolerant — the dose is the whole mechanism.
+ *
+ * Treating both the same is why an intolerance profile turns half a supermarket
+ * amber. Per entry rather than per profile, because one person routinely holds
+ * both kinds at once.
+ */
+export const tracePolicies = ["flag", "ignore"] as const;
+export type TracePolicy = typeof tracePolicies[number];
+
+/**
+ * The default when an entry does not say — including every entry written before
+ * this field existed, which is all of them.
+ *
+ * Derived from severity rather than fixed, because a fixed default is wrong for
+ * half the users either way. This DOES change behaviour for existing profiles:
+ * traces used to raise risk for every entry regardless of severity, so an
+ * intolerance or an avoidance preference will now be quieter about them. That
+ * is the intended correction, and it moves nothing for the two severities where
+ * a trace is a genuine clinical concern.
+ */
+export function defaultTracePolicy(severity: AllergenSeverity): TracePolicy {
+  return severity === "anaphylaxis" || severity === "allergy" ? "flag" : "ignore";
+}
+
 export const profileAllergenSchema = z.object({
   // Canonical name: a big-9 allergen ("peanut", "milk", "sesame", ...) or any
   // custom ingredient/term ("red 40", "carrageenan")
   allergen: z.string().min(1),
   severity: z.enum(allergenSeverities).default("allergy"),
+  // Absent means "use defaultTracePolicy(severity)". Left optional rather than
+  // defaulted so an untouched entry keeps following its severity when the
+  // person changes it, instead of freezing whatever the default was on the day
+  // they created it.
+  traces: z.enum(tracePolicies).optional(),
   // Extra match terms beyond the built-in keyword list for this allergen
   keywords: z.array(z.string()).optional(),
 });
 export type ProfileAllergen = z.infer<typeof profileAllergenSchema>;
+
+/** The effective policy for an entry, resolving the absent case. */
+export function tracePolicyFor(entry: ProfileAllergen): TracePolicy {
+  return entry.traces ?? defaultTracePolicy(entry.severity);
+}
 
 export const dietaryRuleTypes = [
   "vegan", "vegetarian", "gluten_free", "halal", "kosher",

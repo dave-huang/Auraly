@@ -30,7 +30,16 @@ import {
 import { getSubstanceRegistry } from '../server/services/substances/identity';
 import { applyProfileToAnalysis } from '../server/services/personalRisk';
 import { withLabelRanks } from '../server/services/labelRank';
-import { riskLevels, type Ingredient, type AnalysisResult, type Profile, type RiskLevel } from '../shared/schema';
+import {
+  defaultTracePolicy,
+  riskLevels,
+  tracePolicyFor,
+  type AllergenSeverity,
+  type Ingredient,
+  type AnalysisResult,
+  type Profile,
+  type RiskLevel,
+} from '../shared/schema';
 
 const errors: string[] = [];
 const notes: string[] = [];
@@ -589,6 +598,78 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
   check('concept/registry-size', listConcepts().length === MAJOR_ALLERGENS.length + 5,
     `expected ${MAJOR_ALLERGENS.length} allergens + 5 diets, got ${listConcepts().length}`);
   notes.push(`${listConcepts().length} concepts registered, dietary negation and borrowed exclusions intact`);
+}
+
+// ---------------------------------------------------------------------------
+// Trace policy — whether a "may contain" line counts, per entry.
+// ---------------------------------------------------------------------------
+{
+  // The default follows severity, and follows it in both directions.
+  const expected: Array<[AllergenSeverity, 'flag' | 'ignore']> = [
+    ['anaphylaxis', 'flag'],
+    ['allergy', 'flag'],
+    ['intolerance', 'ignore'],
+    ['avoid', 'ignore'],
+  ];
+  for (const [severity, policy] of expected) {
+    check('traces/default-follows-severity',
+      defaultTracePolicy(severity) === policy,
+      `${severity} defaulted to ${defaultTracePolicy(severity)}, expected ${policy}`);
+  }
+
+  // An entry that has never been touched must still track its severity rather
+  // than freezing whatever the default was the day it was written.
+  check('traces/absent-follows-severity',
+    tracePolicyFor({ allergen: 'milk', severity: 'anaphylaxis' }) === 'flag' &&
+    tracePolicyFor({ allergen: 'milk', severity: 'intolerance' }) === 'ignore',
+    'an entry with no explicit policy did not follow its severity');
+
+  // An explicit setting beats the default in BOTH directions — someone with a
+  // mild allergy who does not want trace noise, and someone with an intolerance
+  // who does.
+  check('traces/explicit-overrides',
+    tracePolicyFor({ allergen: 'milk', severity: 'allergy', traces: 'ignore' }) === 'ignore' &&
+    tracePolicyFor({ allergen: 'milk', severity: 'intolerance', traces: 'flag' }) === 'flag',
+    'an explicit trace policy did not override the severity default');
+
+  // End to end, through applyProfileToAnalysis: the same label and the same
+  // allergen, flagged for one severity and quiet for the other.
+  const label = {
+    ...result([ing('Rice Flour', 'low'), ing('Sugar', 'low')]),
+    declaredAllergens: { contains: [], mayContain: ['milk'] },
+  };
+
+  const anaphylactic = applyProfileToAnalysis(label, profile({
+    allergens: [{ allergen: 'milk', severity: 'anaphylaxis' }],
+  }));
+  const traceFlags = (anaphylactic.personalFlags ?? []).filter(f => f.reasonKey === 'flag.mayContain');
+  check('traces/flagged-for-anaphylaxis', traceFlags.length === 1,
+    `expected one trace flag for an anaphylactic milk entry, got ${traceFlags.length}`);
+  check('traces/raises-risk', anaphylactic.overallRisk !== 'low',
+    'a trace warning for an anaphylactic entry left the verdict at low');
+
+  const intolerant = applyProfileToAnalysis(label, profile({
+    allergens: [{ allergen: 'milk', severity: 'intolerance' }],
+  }));
+  check('traces/quiet-for-intolerance',
+    (intolerant.personalFlags ?? []).filter(f => f.reasonKey === 'flag.mayContain').length === 0,
+    'a lactose-intolerance entry was warned about trace milk from a shared line');
+
+  // And the override reaches the engine, not just the helper.
+  const intolerantWantsTraces = applyProfileToAnalysis(label, profile({
+    allergens: [{ allergen: 'milk', severity: 'intolerance', traces: 'flag' }],
+  }));
+  check('traces/override-reaches-engine',
+    (intolerantWantsTraces.personalFlags ?? []).filter(f => f.reasonKey === 'flag.mayContain').length === 1,
+    'an intolerance entry that opted INTO traces got no trace flag');
+
+  // A trace must never be mistaken for presence: the flag stays `verify`, and
+  // an actual "contains" line still outranks it.
+  check('traces/stay-verify',
+    traceFlags.every(f => f.certainty === 'verify'),
+    'a trace flag was reported as definite');
+
+  notes.push('trace policy follows severity by default and is overridable in both directions');
 }
 
 // ---------------------------------------------------------------------------

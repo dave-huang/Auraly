@@ -4,8 +4,20 @@ import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Radius, Space, Type, useSurface } from '@/constants/design';
 import { useTranslation, type TranslationKey } from '@/lib/i18n';
-import type { AllergenSeverity, DietaryRule, ProfileAllergen, ProfileCondition } from '@/lib/types';
-import { DIETARY_RULES, MAJOR_ALLERGENS, PROFILE_CONDITIONS } from '@/lib/types';
+import type {
+  AllergenSeverity,
+  DietaryRule,
+  ProfileAllergen,
+  ProfileCondition,
+  TracePolicy,
+} from '@/lib/types';
+import {
+  DIETARY_RULES,
+  MAJOR_ALLERGENS,
+  PROFILE_CONDITIONS,
+  TRACE_POLICIES,
+  tracePolicyFor,
+} from '@/lib/types';
 
 // The profile form, as parts.
 //
@@ -55,6 +67,11 @@ export const SEVERITY_ORDER: AllergenSeverity[] = [
   'intolerance',
   'avoid',
 ];
+
+export const TRACE_KEYS: Record<TracePolicy, TranslationKey> = {
+  flag: 'traces.flag',
+  ignore: 'traces.ignore',
+};
 
 export const DIETARY_KEYS: Record<DietaryRule, TranslationKey> = {
   vegan: 'dietary.vegan',
@@ -119,12 +136,12 @@ export function toggleIn<T>(set: Set<T>, value: T): Set<T> {
 }
 
 /** The allergen map as the server wants it. Insertion order is preserved. */
-export function toAllergenEntries(map: Map<string, AllergenSeverity>): ProfileAllergen[] {
-  return Array.from(map.entries()).map(([allergen, severity]) => ({ allergen, severity }));
+export function toAllergenEntries(map: Map<string, ProfileAllergen>): ProfileAllergen[] {
+  return Array.from(map.values());
 }
 
-export function toAllergenMap(entries: ProfileAllergen[]): Map<string, AllergenSeverity> {
-  return new Map(entries.map((a) => [a.allergen, a.severity]));
+export function toAllergenMap(entries: ProfileAllergen[]): Map<string, ProfileAllergen> {
+  return new Map(entries.map((a) => [a.allergen, a]));
 }
 
 export function NameField({
@@ -164,8 +181,8 @@ export function AllergenField({
   allergens,
   onChange,
 }: {
-  allergens: Map<string, AllergenSeverity>;
-  onChange: (next: Map<string, AllergenSeverity>) => void;
+  allergens: Map<string, ProfileAllergen>;
+  onChange: (next: Map<string, ProfileAllergen>) => void;
 }) {
   const surface = useSurface();
   const { t } = useTranslation();
@@ -178,14 +195,14 @@ export function AllergenField({
     // Default to "allergy", not the most severe option: a default that
     // overstates someone's risk teaches them to distrust the verdicts.
     if (next.has(allergen)) next.delete(allergen);
-    else next.set(allergen, 'allergy');
+    else next.set(allergen, { allergen, severity: 'allergy' });
     onChange(next);
   }
 
   function addCustom() {
     const value = custom.trim().toLowerCase();
     if (!value) return;
-    onChange(new Map(allergens).set(value, 'avoid'));
+    onChange(new Map(allergens).set(value, { allergen: value, severity: 'avoid' }));
     setCustom('');
   }
 
@@ -228,18 +245,22 @@ export function AllergenField({
           <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
             {t('onboarding.strictnessLabel')}
           </ThemedText>
-          {list.map(([allergen, severity]) => (
+          {list.map(([allergen, entry]) => (
             <View key={allergen} style={[styles.strictRow, { borderTopColor: surface.rule }]}>
               <ThemedText style={[Type.label, { color: surface.ink }]}>
                 {allergenLabel(t, allergen)}
               </ThemedText>
               <View style={styles.severityRow}>
                 {SEVERITY_ORDER.map((option) => {
-                  const active = option === severity;
+                  const active = option === entry.severity;
                   return (
                     <Pressable
                       key={option}
-                      onPress={() => onChange(new Map(allergens).set(allergen, option))}
+                      onPress={() =>
+                        onChange(
+                          new Map(allergens).set(allergen, { ...entry, severity: option }),
+                        )
+                      }
                       accessibilityRole="radio"
                       accessibilityState={{ selected: active }}
                       style={[
@@ -259,6 +280,46 @@ export function AllergenField({
                     </Pressable>
                   );
                 })}
+              </View>
+
+              {/* Trace warnings. A second row rather than a mode of the first,
+                  because the two questions are genuinely independent: how bad
+                  a real exposure is, and whether a shared production line
+                  counts as one. The selected option reflects the severity
+                  default until someone chooses otherwise. */}
+              <View style={styles.traceRow}>
+                <ThemedText style={[styles.traceLabel, { color: surface.inkFaint }]}>
+                  {t('traces.label')}
+                </ThemedText>
+                <View style={styles.severityRow}>
+                  {TRACE_POLICIES.map((option) => {
+                    const active = option === tracePolicyFor(entry);
+                    return (
+                      <Pressable
+                        key={option}
+                        onPress={() =>
+                          onChange(new Map(allergens).set(allergen, { ...entry, traces: option }))
+                        }
+                        accessibilityRole="radio"
+                        accessibilityState={{ selected: active }}
+                        style={[
+                          styles.severityOption,
+                          { borderColor: surface.rule, backgroundColor: surface.card },
+                          active && { backgroundColor: surface.ink, borderColor: surface.ink },
+                        ]}
+                      >
+                        <ThemedText
+                          style={[
+                            styles.severityText,
+                            { color: active ? surface.card : surface.inkMuted },
+                          ]}
+                        >
+                          {t(TRACE_KEYS[option])}
+                        </ThemedText>
+                      </Pressable>
+                    );
+                  })}
+                </View>
               </View>
             </View>
           ))}
@@ -339,6 +400,10 @@ const styles = StyleSheet.create({
   strictness: { marginTop: Space.lg, gap: Space.sm },
   strictRow: { paddingTop: Space.md, borderTopWidth: StyleSheet.hairlineWidth, gap: Space.sm },
   severityRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
+  // The trace row sits under the severity row and reads as subordinate to it,
+  // because it is: it qualifies the severity rather than competing with it.
+  traceRow: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: Space.sm },
+  traceLabel: { fontFamily: Font.mono, fontSize: 10, lineHeight: 14, letterSpacing: 1, textTransform: 'uppercase' },
   severityOption: {
     paddingHorizontal: Space.md,
     paddingVertical: 5,

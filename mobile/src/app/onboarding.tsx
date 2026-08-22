@@ -27,7 +27,7 @@ import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Radius, Space, Type, useSurface } from '@/constants/design';
 import { useTranslation } from '@/lib/i18n';
 import { createProfile, setActiveProfileId } from '@/lib/profiles';
-import type { AllergenSeverity, DietaryRule, ProfileCondition } from '@/lib/types';
+import type { DietaryRule, ProfileAllergen, ProfileCondition } from '@/lib/types';
 
 // Screens 06 & 07 — Onboarding, four steps.
 //
@@ -49,7 +49,7 @@ export default function OnboardingScreen() {
 
   const [step, setStep] = useState(1);
   const [name, setName] = useState('');
-  const [allergens, setAllergens] = useState<Map<string, AllergenSeverity>>(new Map());
+  const [allergens, setAllergens] = useState<Map<string, ProfileAllergen>>(new Map());
   const [dietary, setDietary] = useState<Set<DietaryRule>>(new Set());
   const [conditions, setConditions] = useState<Set<ProfileCondition>>(new Set());
   const [saving, setSaving] = useState(false);
@@ -174,8 +174,8 @@ export default function OnboardingScreen() {
                   value={
                     allergenList
                       .map(
-                        ([allergen, severity]) =>
-                          `${allergenLabel(t, allergen)} (${t(SEVERITY_KEYS[severity])})`,
+                        ([allergen, entry]) =>
+                          `${allergenLabel(t, allergen)} (${t(SEVERITY_KEYS[entry.severity])})`,
                       )
                       .join(' · ') || t('onboarding.summaryNone')
                   }
