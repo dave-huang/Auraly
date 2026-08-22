@@ -19,6 +19,15 @@ import {
   MAJOR_ALLERGENS,
   ingredientMatchesAllergen,
 } from '../server/services/allergenMatcher';
+import {
+  CONCEPT_IDENTIFIERS_FOR_CHECK,
+  getConcept,
+  listConcepts,
+  matchConcept,
+  matchCustomEntryByIdentity,
+  matchProfileAllergen,
+} from '../server/services/concepts';
+import { getSubstanceRegistry } from '../server/services/substances/identity';
 import { applyProfileToAnalysis } from '../server/services/personalRisk';
 import { withLabelRanks } from '../server/services/labelRank';
 import { riskLevels, type Ingredient, type AnalysisResult, type Profile, type RiskLevel } from '../shared/schema';
@@ -470,6 +479,116 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
   }
 
   notes.push(`${hits.length} allergen detections and ${misses.length} lookalikes hold`);
+}
+
+// ---------------------------------------------------------------------------
+// Concept layer — equivalence with the matcher it replaced.
+//
+// `ingredientMatchesAllergen` is still exported and still the old logic, which
+// makes it a free oracle: the concept layer must agree with it on every term
+// case, or the Phase 1 refactor moved behaviour it promised not to move.
+// Identity is allowed to differ in ONE direction — it may add a match the term
+// matcher missed, never remove one.
+// ---------------------------------------------------------------------------
+{
+  const names = [
+    'Whole Milk', 'Peanut Butter', 'Coconut Milk', 'Soy Lecithin', 'Buckwheat Flour',
+    'Oyster Mushroom', 'Oyster Extract', 'Sulphite Free Wine', 'Sodium Metabisulfite',
+    'Cream of Tartar', 'Swedish Fish', 'Wheat Starch', 'Almond Butter', 'Water',
+    'Sea Salt', 'Celeriac', 'Lupin Flour', 'Mustard Flour', 'Shrimp Paste',
+    'Natural Flavour', 'Enzymes', 'Citric Acid', 'Soba Noodles', 'Krill Oil',
+  ];
+
+  let agreements = 0;
+  let identityAdded = 0;
+  for (const name of names) {
+    for (const allergen of MAJOR_ALLERGENS) {
+      const before = ingredientMatchesAllergen(name, allergen);
+      const after = matchProfileAllergen(name, allergen);
+      if (before && !after) {
+        check('concept/no-lost-match', false,
+          `"${name}" matched ${allergen} before the concept layer and does not now`);
+      } else if (!before && after) {
+        // Only identity may do this. A term-pass difference is a real drift.
+        check('concept/only-identity-adds', after.via === 'identity',
+          `"${name}" newly matches ${allergen} via ${after.via}, not identity`);
+        identityAdded += 1;
+      } else {
+        agreements += 1;
+      }
+    }
+  }
+  notes.push(`concept layer agrees with the old matcher on ${agreements} pairs, ${identityAdded} added by identity`);
+
+  // Custom free-text entries, which is where identity pays off today: these two
+  // strings share almost nothing and denote one substance.
+  const custom = matchCustomEntryByIdentity('2-Methyl-2H-isothiazol-3-one', 'Methylisothiazolinone');
+  check('concept/custom-identity', custom !== null && custom.via === 'identity',
+    'a profile entry written as "Methylisothiazolinone" did not match the label\'s INCI spelling');
+  check('concept/custom-identity-no-false-positive',
+    matchCustomEntryByIdentity('Citric Acid', 'Methylisothiazolinone') === null,
+    'citric acid matched a methylisothiazolinone profile entry');
+}
+
+// ---------------------------------------------------------------------------
+// Concept layer — the identity pass is actually wired, not merely present.
+// ---------------------------------------------------------------------------
+{
+  const registry = getSubstanceRegistry();
+  for (const [conceptId, identifiers] of Object.entries(CONCEPT_IDENTIFIERS_FOR_CHECK)) {
+    for (const identifier of identifiers) {
+      check('concept/identifier-resolves',
+        registry.resolve(identifier) !== null,
+        `concept "${conceptId}" names "${identifier}", which the corpus no longer resolves — ` +
+        'the identity pass for this concept is silently off');
+    }
+  }
+
+  const byIdentity = matchProfileAllergen('Sodium Metabisulfite', 'sulphites');
+  check('concept/identity-pass-fires',
+    byIdentity?.via === 'identity',
+    `sulphites matched via ${byIdentity?.via ?? 'nothing'} rather than identity`);
+
+  // Provenance has to survive, or the card cannot tell a CAS match from a
+  // substring one — which is the whole reason both passes report separately.
+  const byTerm = matchProfileAllergen('Potassium Metabisulphite', 'sulphites');
+  check('concept/term-pass-reports-term',
+    byTerm?.via === 'term',
+    `expected a term match for an identifier the corpus lacks, got ${byTerm?.via ?? 'nothing'}`);
+}
+
+// ---------------------------------------------------------------------------
+// Concept layer — dietary rules kept their two guards through the move.
+// ---------------------------------------------------------------------------
+{
+  const vegan = getConcept('vegan');
+  const halal = getConcept('halal');
+  check('concept/diet-registered', !!vegan && !!halal, 'dietary concepts missing from the registry');
+
+  if (vegan && halal) {
+    // Negation. The dietary vocabulary is what packaging prints in the negative.
+    check('concept/diet-negation',
+      matchConcept('Sugar Free Syrup', vegan) === null,
+      '"Sugar Free Syrup" matched the vegan verify list');
+    check('concept/diet-negation-halal',
+      matchConcept('Alcohol Free Vanilla', halal) === null,
+      '"Alcohol Free Vanilla" matched halal');
+    // Borrowed allergen exclusions. "butter" is on the vegan definite list.
+    check('concept/diet-borrows-exclusions',
+      matchConcept('Peanut Butter', vegan) === null,
+      '"Peanut Butter" matched vegan via the dairy keyword "butter"');
+    // And the rules still fire on what they should.
+    check('concept/diet-still-fires',
+      matchConcept('Gelatin', vegan)?.certainty === 'definite',
+      'gelatin no longer reads as definitely not vegan');
+    check('concept/diet-verify-tier',
+      matchConcept('Natural Flavor', vegan)?.certainty === 'verify',
+      'natural flavour lost its verify tier');
+  }
+
+  check('concept/registry-size', listConcepts().length === MAJOR_ALLERGENS.length + 5,
+    `expected ${MAJOR_ALLERGENS.length} allergens + 5 diets, got ${listConcepts().length}`);
+  notes.push(`${listConcepts().length} concepts registered, dietary negation and borrowed exclusions intact`);
 }
 
 // ---------------------------------------------------------------------------

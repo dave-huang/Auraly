@@ -1,13 +1,8 @@
-import type { AnalysisResult, PersonalFlag, Profile, RiskLevel, DietaryRule } from '@shared/schema';
-import {
-  ingredientMatchesAllergen,
-  keywordHitExcluded,
-  nearMissForAllergen,
-  normalizeIngredientName,
-} from './allergenMatcher';
+import type { AnalysisResult, PersonalFlag, Profile, RiskLevel } from '@shared/schema';
+import { nearMissForAllergen } from './allergenMatcher';
+import { getConcept, matchConcept, matchProfileAllergen } from './concepts';
 import { advisoryCitation, impactToRisk, matchAdvisory } from './conditionAdvisories';
 import { getCitations } from './knowledgeBase';
-import { matchesTerm } from './termMatch';
 
 // Applies a personal profile to a finished analysis result, producing
 // personalFlags and an adjusted overall risk. Runs AFTER cache retrieval so
@@ -18,32 +13,11 @@ import { matchesTerm } from './termMatch';
 // conservative, and explainable. Better a false flag the user dismisses than
 // a silent miss.
 
-// Ingredients that violate dietary rules. Deliberately conservative: only
-// unambiguous animal-derived/gluten terms; ambiguous ones (e.g. "natural
-// flavor", plain "enzymes", "mono- and diglycerides") get a "verify" flag for
-// vegan since sourcing varies.
-const DIETARY_KEYWORDS: Record<DietaryRule, { definite: string[]; verify?: string[] }> = {
-  vegan: {
-    definite: ['gelatin', 'carmine', 'cochineal', 'lard', 'tallow', 'honey', 'beeswax', 'lanolin', 'collagen', 'keratin', 'shellac', 'casein', 'whey', 'albumin', 'milk', 'egg', 'butter', 'cheese', 'cream', 'yogurt', 'fish', 'anchovy', 'meat', 'chicken', 'beef', 'pork', 'bone char', 'isinglass', 'squalene', 'ambergris', 'castoreum', 'silk'],
-    verify: ['natural flavor', 'mono and diglycerides', 'enzymes', 'glycerin', 'stearic acid', 'lecithin', 'vitamin d3', 'lactic acid', 'sugar'],
-  },
-  vegetarian: {
-    definite: ['gelatin', 'carmine', 'cochineal', 'lard', 'tallow', 'meat', 'chicken', 'beef', 'pork', 'fish', 'anchovy', 'isinglass', 'rennet', 'bone char'],
-    verify: ['natural flavor', 'enzymes', 'mono and diglycerides'],
-  },
-  gluten_free: {
-    definite: ['wheat', 'barley', 'rye', 'malt', 'spelt', 'farro', 'semolina', 'durum', 'triticale', 'seitan', 'brewer\'s yeast', 'farina', 'graham'],
-    verify: ['oat', 'starch', 'dextrin', 'maltodextrin', 'soy sauce'],
-  },
-  halal: {
-    definite: ['pork', 'lard', 'bacon', 'ham', 'alcohol', 'wine', 'rum', 'beer', 'ethanol'],
-    verify: ['gelatin', 'carmine', 'enzymes', 'rennet', 'vanilla extract', 'glycerin', 'mono and diglycerides'],
-  },
-  kosher: {
-    definite: ['pork', 'lard', 'bacon', 'ham', 'shrimp', 'crab', 'lobster', 'prawn', 'shellfish', 'clam', 'oyster', 'squid', 'octopus'],
-    verify: ['gelatin', 'carmine', 'enzymes', 'rennet', 'natural flavor'],
-  },
-};
+// The dietary vocabulary MOVED to server/services/concepts.ts on 2026-08-22,
+// verbatim. It lived here beside a second copy of the same words in the
+// allergen matcher and a third inside the condition advisories; gluten was
+// spelled out in all three and they had already drifted. The concept registry
+// holds one definition and every axis reads it, so a correction lands once.
 
 const riskRank: Record<RiskLevel, number> = { low: 0, moderate: 1, high: 2 };
 /** Exported so callers deriving an overall verdict use this ordering, not a second copy. */
@@ -58,24 +32,20 @@ export const maxRisk = (a: RiskLevel, b: RiskLevel): RiskLevel => (riskRank[a] >
 const impactFor = (risk: RiskLevel): 'avoid' | 'caution' => (risk === 'high' ? 'avoid' : 'caution');
 
 /**
- * The first keyword that genuinely matches, past two filters.
+ * Does this ingredient match a profile allergen entry?
  *
- * Was a bare `n.includes(nkw)`, which read every negative claim on a label as a
- * hit. The dietary lists are full of terms that packaging prints in the
- * negative — 'alcohol' in the halal list against "alcohol free", 'sugar' in the
- * vegan verify list against "sugar free" — so the old form flagged exactly the
- * products that were advertising compliance with the rule being checked.
+ * Thin wrapper so the boolean call sites below read as they did. The concept
+ * layer behind it runs an identity pass first — resolving both the ingredient
+ * and the profile's own words through the substance alias graph — and falls
+ * back to exactly the keyword semantics this used to call directly. Identity
+ * can only add matches, never veto one, so recall cannot fall.
  */
-function matchesAny(ingredientName: string, keywords: string[]): string | undefined {
-  const n = normalizeIngredientName(ingredientName);
-  for (const kw of keywords) {
-    if (!matchesTerm(ingredientName, kw)) continue;
-    // Allergen lookalikes still apply: "butter" inside "peanut butter" is not
-    // dairy, and the dietary lists borrow those keywords wholesale.
-    if (keywordHitExcluded(n, normalizeIngredientName(kw))) continue;
-    return kw;
-  }
-  return undefined;
+function matchesAllergenEntry(
+  ingredientName: string,
+  allergen: string,
+  extraKeywords: string[] = [],
+): boolean {
+  return matchProfileAllergen(ingredientName, allergen, extraKeywords) !== null;
 }
 
 /**
@@ -112,10 +82,10 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
   const canonical = result.canonicalIngredients ?? [];
   for (const entry of profile.allergens ?? []) {
     const matchedIndex = canonical.findIndex(name =>
-      ingredientMatchesAllergen(name, entry.allergen, entry.keywords ?? []));
+      matchesAllergenEntry(name, entry.allergen, entry.keywords ?? []));
     const matchedCanonical = matchedIndex >= 0 ? canonical[matchedIndex] : undefined;
     const matchedLocalized = result.ingredients.some(ing =>
-      ingredientMatchesAllergen(ing.name, entry.allergen, entry.keywords ?? []));
+      matchesAllergenEntry(ing.name, entry.allergen, entry.keywords ?? []));
 
     // This branch fires only for a translated label, where the English keyword
     // list matched the reader's canonical name and no localized row name did.
@@ -153,12 +123,12 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
   if (declared) {
     for (const entry of profile.allergens ?? []) {
       const inContains = declared.contains.some(d =>
-        ingredientMatchesAllergen(d, entry.allergen, entry.keywords ?? []));
+        matchesAllergenEntry(d, entry.allergen, entry.keywords ?? []));
       const alreadyFlagged =
         result.ingredients.some(ing =>
-          ingredientMatchesAllergen(ing.name, entry.allergen, entry.keywords ?? [])) ||
+          matchesAllergenEntry(ing.name, entry.allergen, entry.keywords ?? [])) ||
         canonical.some(name =>
-          ingredientMatchesAllergen(name, entry.allergen, entry.keywords ?? []));
+          matchesAllergenEntry(name, entry.allergen, entry.keywords ?? []));
 
       if (inContains && !alreadyFlagged) {
         const flagRisk: RiskLevel =
@@ -178,7 +148,7 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
       }
 
       const inMayContain = declared.mayContain.some(d =>
-        ingredientMatchesAllergen(d, entry.allergen, entry.keywords ?? []));
+        matchesAllergenEntry(d, entry.allergen, entry.keywords ?? []));
       if (inMayContain && !inContains && !alreadyFlagged) {
         flags.push({
           ingredientName: 'Label allergen statement',
@@ -212,7 +182,7 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
 
     // 1. Allergens — the highest-stakes match
     for (const entry of profile.allergens ?? []) {
-      if (ingredientMatchesAllergen(ing.name, entry.allergen, entry.keywords ?? [])) {
+      if (matchesAllergenEntry(ing.name, entry.allergen, entry.keywords ?? [])) {
         const severity = entry.severity;
         const flagRisk: RiskLevel = severity === 'intolerance' || severity === 'avoid' ? 'moderate' : 'high';
         flags.push({
@@ -234,10 +204,14 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
 
     // 2. Dietary rules
     for (const rule of profile.dietaryRules ?? []) {
-      const spec = DIETARY_KEYWORDS[rule];
+      const spec = getConcept(rule);
       if (!spec) continue;
-      const definite = matchesAny(ing.name, spec.definite);
-      const verify = definite ? undefined : matchesAny(ing.name, spec.verify ?? []);
+      // One call, because the concept layer already orders definite above
+      // verify — it returns the strongest available match rather than the
+      // first one to fire.
+      const hit = matchConcept(ing.name, spec);
+      const definite = hit?.certainty === 'definite' ? hit.evidence : undefined;
+      const verify = hit?.certainty === 'verify' ? hit.evidence : undefined;
       if (definite) {
         flags.push({
           ingredientName: ing.name,
