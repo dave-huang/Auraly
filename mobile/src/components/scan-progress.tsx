@@ -15,11 +15,11 @@ import { Font, Motion, Space } from '@/constants/design';
 import { useTranslation } from '@/lib/i18n';
 import { useReducedMotion } from '@/lib/reduced-motion';
 
-// The frozen frame. On capture the photo freezes full-bleed and a scan line
-// sweeps it exactly ONCE — the design is explicit that a looping scanner
-// reads as "still trying". When the sweep is done but analysis is still
-// running, the frame simply holds with a mono status line, which is the
-// honest signal that work continues without implying repeated attempts.
+// The frozen frame. The photo freezes behind a scan line that sweeps it exactly
+// ONCE — the design is explicit that a looping scanner reads as "still trying".
+// When the sweep is done but analysis is still running, the frame simply holds
+// with a mono status line, which is the honest signal that work continues
+// without implying repeated attempts.
 //
 // That holding state used to be completely motionless: the sweep ended after
 // 1.1s and the status text often never changed, so a wait of ten seconds or
@@ -30,6 +30,13 @@ import { useReducedMotion } from '@/lib/reduced-motion';
 //     the terminal idiom the mono line already speaks, so it says "alive"
 //     rather than "scanning again"
 //   - the text itself changing to "Still working…" once the wait gets long
+//
+// The photo is CONTAINED, not cropped to fill. A library photo is rarely the
+// screen's aspect ratio, so filling the frame cut the top and bottom off the
+// label — and the reader had no way to tell whether the ingredients that fell
+// outside the screen were being read. They always were: prepareImage() only
+// scales the image to 1600px wide, and the picker takes no crop. Showing the
+// whole photo makes the screen agree with what was actually sent.
 //
 // Deliberately NOT a determinate progress bar. Neither OCR nor model latency
 // can be estimated per label, so any percentage would be invented — and a bar
@@ -120,7 +127,7 @@ export function ScanProgress({
   return (
     <View style={styles.container}>
       {imageUri ? (
-        <Image source={{ uri: imageUri }} style={StyleSheet.absoluteFill} contentFit="cover" />
+        <Image source={{ uri: imageUri }} style={StyleSheet.absoluteFill} contentFit="contain" />
       ) : null}
       <View style={styles.scrim} />
 

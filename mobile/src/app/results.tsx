@@ -8,7 +8,7 @@ import { AnalysisView } from '@/components/analysis-view';
 import { RisingSheet } from '@/components/rising-sheet';
 import { ShareCard, type ShareFormat } from '@/components/share-card';
 import { ThemedText } from '@/components/themed-text';
-import { Font, Gutter, Radius, Space, Type, useSurface } from '@/constants/design';
+import { Font, Gutter, Paper, Radius, Space, Type, useSurface } from '@/constants/design';
 import { useTranslation } from '@/lib/i18n';
 import { useLastScan } from '@/lib/scan';
 import { captureAndShare, shareLayoutSize } from '@/lib/share';
@@ -17,6 +17,23 @@ import { useVerdictCopy } from '@/lib/verdict';
 // The verdict card rises over the frozen frame — keeping the still behind it
 // is what makes the card read as an object laid over the moment of capture,
 // rather than a separate screen the app navigated to.
+//
+// It carries no back chevron for that reason, and for a while it had no way
+// out at all except "Scan another product" at the foot of the card — which
+// forces a decision ("do I want to shoot another label?") on someone who only
+// wanted to put the card down. The ✕ sits in the top corner OVER the frame
+// rather than on the card, because it dismisses the card and is not part of
+// it, and it stays pinned while the card scrolls under it.
+//
+// Tapping the darkened frame does NOT dismiss. It would be the natural gesture
+// for a card laid over a photo, but in React Native a tap on the card's own
+// blank space — between rows, beside the seal — bubbles to the backdrop unless
+// every one of those areas claims the touch. Losing a verdict mid-read is a
+// far worse failure than having to reach for the ✕.
+//
+// The exit uses `replace`, not `back`: the frozen frame is a moment that has
+// passed, and leaving it on the stack would let a swipe resurrect a verdict
+// the person just dismissed.
 
 export default function ResultsScreen() {
   const router = useRouter();
@@ -31,6 +48,10 @@ export default function ResultsScreen() {
   const [sharing, setSharing] = useState<ShareFormat | null>(null);
 
   const copy = useVerdictCopy(result ?? ({} as any), profile?.name);
+
+  function dismiss() {
+    router.replace('/');
+  }
 
   if (!result) return <Redirect href="/" />;
 
@@ -56,8 +77,24 @@ export default function ResultsScreen() {
         <View style={[StyleSheet.absoluteFill, { backgroundColor: surface.paper }]} />
       )}
 
-      <SafeAreaView style={styles.safe}>
-        <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+      <SafeAreaView style={styles.safe} pointerEvents="box-none">
+        <View style={styles.topBar} pointerEvents="box-none">
+          <Pressable
+            style={styles.closeButton}
+            onPress={dismiss}
+            hitSlop={10}
+            accessibilityRole="button"
+            accessibilityLabel={t('common.close')}
+          >
+            <ThemedText style={styles.closeGlyph}>✕</ThemedText>
+          </Pressable>
+        </View>
+
+        <ScrollView
+          style={styles.scroll}
+          contentContainerStyle={styles.content}
+          showsVerticalScrollIndicator={false}
+        >
           <RisingSheet>
             {/* Controls live inside the card, part 7 of its fixed order: the
                 card is the object, and the way out of it belongs to it. */}
@@ -141,7 +178,22 @@ const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: '#16130F' },
   scrim: { backgroundColor: 'rgba(22,19,15,0.72)' },
   safe: { flex: 1 },
-  content: { padding: Gutter, gap: Space.lg, paddingTop: Space.xxl, paddingBottom: Space.xxl },
+  scroll: { flex: 1 },
+  // Chrome over the frame, not over paper: it takes lamplight colours the same
+  // way the viewfinder's controls do.
+  topBar: { flexDirection: 'row', justifyContent: 'flex-end', paddingHorizontal: Gutter, paddingTop: Space.sm },
+  closeButton: {
+    width: 40,
+    height: 40,
+    borderRadius: Radius.pill,
+    backgroundColor: 'rgba(14,12,10,0.6)',
+    borderWidth: 1,
+    borderColor: 'rgba(246,241,231,0.18)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  closeGlyph: { fontFamily: Font.sansSemi, fontSize: 15, lineHeight: 20, color: Paper.paper },
+  content: { padding: Gutter, gap: Space.lg, paddingTop: Space.lg, paddingBottom: Space.xxl },
   shareRow: { flexDirection: 'row', gap: Space.md },
   shareButton: {
     flex: 1,
