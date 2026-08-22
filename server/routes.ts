@@ -8,13 +8,11 @@ import { setupAuth, isAuthenticated } from "./localAuth";
 import { rateLimit } from "./rateLimit";
 import { storage } from "./storage";
 import { db } from "./db";
-import { extractTextFromImage } from "./services/ocr";
 import { readLabelFromImage } from "./services/labelReader";
 import { analyzeIngredients, analyzeIngredientsParallel, extractIngredientsFromText } from "./services/analyzer";
 import { getCacheStats, clearAllCache, getAllCacheEntries } from "./services/cache";
 import { subscriptionService } from "./services/subscription";
 import { 
-  ocrRequestSchema, 
   analysisRequestSchema,
   riskPreferencesSchema,
   allergenPreferencesSchema,
@@ -577,25 +575,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // OCR endpoint - extract text from image (protected)
-  app.post("/api/ocr", isAuthenticated, async (req, res) => {
-    const startTime = Date.now();
-    try {
-      const { imageData } = ocrRequestSchema.parse(req.body);
-      
-      const result = await extractTextFromImage(imageData);
-      
-      const duration = ((Date.now() - startTime) / 1000).toFixed(2);
-      console.log(`[TIMING] OCR completed in ${duration}s`);
-      
-      res.json(result);
-    } catch (error: any) {
-      console.error('OCR error:', error);
-      res.status(400).json({ 
-        error: error.message || 'Failed to process image' 
-      });
-    }
-  });
+  // POST /api/ocr is gone (2026-08-22). It was the last caller of the Google
+  // Vision → Gemini OCR chain, and it had no callers of its own: neither the
+  // mobile app nor the web client ever requested it. Scanning goes through
+  // /api/scan-and-analyze, which reads labels via services/labelReader.ts.
+  //
+  // Removed rather than rewired, because an endpoint nothing calls is not worth
+  // keeping alive — and this one kept two sets of third-party credentials in
+  // the request path for no delivered behaviour.
 
   // Analysis endpoint - analyze ingredients (protected)
   app.post("/api/analyze", isAuthenticated, async (req, res) => {

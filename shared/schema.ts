@@ -1121,13 +1121,6 @@ export const analysisResultSchema = z.object({
 
 export type AnalysisResult = z.infer<typeof analysisResultSchema>;
 
-// OCR request schema
-export const ocrRequestSchema = z.object({
-  imageData: z.string(),
-});
-
-export type OCRRequest = z.infer<typeof ocrRequestSchema>;
-
 // OCR result schema
 export const ocrResultSchema = z.object({
   text: z.string(),

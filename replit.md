@@ -34,7 +34,6 @@ Auraly is a mobile-friendly web application designed to help users understand th
     - `POST /api/scan-and-analyze`: **PRIMARY ENDPOINT** - Combined OCR + Analysis for maximum speed.
     - `POST /api/analyze-ingredients`: Batch ingredient analysis with category-specific caching.
     - `GET /api/cache-stats`: Cache performance metrics.
-    - `POST /api/ocr`: Extracts text using Google Cloud Vision (primary) with Gemini fallback.
     - `POST /api/analyze`: Analyzes ingredients with OpenAI GPT-5.6-luna.
     - `GET /api/scan/quota` - Returns current scan quota (dailyFreeScansUsed, purchasedScanBalance, totalScansAvailable)
     - `POST /api/scan/purchase` - Creates Stripe checkout session for 10-scan bundle ($2.99)
