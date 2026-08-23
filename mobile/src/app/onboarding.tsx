@@ -27,7 +27,7 @@ import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Radius, Space, Type, useSurface } from '@/constants/design';
 import { useTranslation } from '@/lib/i18n';
 import { createProfile, setActiveProfileId } from '@/lib/profiles';
-import type { DietaryRule, ProfileAllergen, ProfileCondition, Strictness } from '@/lib/types';
+import type { DietaryRule, ProfileAllergen, ProfileCondition } from '@/lib/types';
 
 // Screens 06 & 07 — Onboarding, four steps.
 //
@@ -50,8 +50,8 @@ export default function OnboardingScreen() {
   const [step, setStep] = useState(1);
   const [name, setName] = useState('');
   const [allergens, setAllergens] = useState<Map<string, ProfileAllergen>>(new Map());
-  const [dietary, setDietary] = useState<Map<DietaryRule, Strictness>>(new Map());
-  const [conditions, setConditions] = useState<Map<ProfileCondition, Strictness>>(new Map());
+  const [dietary, setDietary] = useState<Set<DietaryRule>>(new Set());
+  const [conditions, setConditions] = useState<Set<ProfileCondition>>(new Set());
   const [saving, setSaving] = useState(false);
 
   const profileName = name.trim() || t('onboarding.namePlaceholder');
@@ -63,8 +63,8 @@ export default function OnboardingScreen() {
         name: profileName,
         isDefault: true,
         allergens: toAllergenEntries(allergens),
-        dietaryRules: Array.from(dietary, ([rule, strictness]) => ({ rule, strictness })),
-        conditions: Array.from(conditions, ([condition, strictness]) => ({ condition, strictness })),
+        dietaryRules: Array.from(dietary),
+        conditions: Array.from(conditions),
       });
       // Make it the active profile immediately — the viewfinder's chip has to
       // name someone the moment onboarding hands over.
@@ -183,7 +183,7 @@ export default function OnboardingScreen() {
                 <SummaryRow
                   label={t('onboarding.dietaryLabel')}
                   value={
-                    Array.from(dietary.keys())
+                    Array.from(dietary)
                       .map((rule) => t(DIETARY_KEYS[rule]))
                       .join(' · ') || t('onboarding.summaryNone')
                   }
@@ -191,7 +191,7 @@ export default function OnboardingScreen() {
                 <SummaryRow
                   label={t('onboarding.conditionsLabel')}
                   value={
-                    Array.from(conditions.keys())
+                    Array.from(conditions)
                       .map((condition) => t(CONDITION_KEYS[condition]))
                       .join(' · ') || t('onboarding.summaryNone')
                   }

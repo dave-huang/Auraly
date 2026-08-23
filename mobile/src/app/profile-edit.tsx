@@ -26,13 +26,12 @@ import { useTranslation } from '@/lib/i18n';
 import { goBackOrHome } from '@/lib/navigation';
 import { deleteProfile, listProfiles, updateProfile } from '@/lib/profiles';
 import { getLastProfile, getLastResult, personalizeAnalysis, replaceLastVerdict } from '@/lib/scan';
-import { toConditionMap, toDietaryMap } from '@/lib/types';
+import { conditionNames, dietaryRuleNames } from '@/lib/types';
 import type {
   ProfileAllergen,
   DietaryRule,
   Profile,
   ProfileCondition,
-  Strictness,
 } from '@/lib/types';
 
 // Screen 10a — Profile editing.
@@ -66,8 +65,8 @@ export default function ProfileEditScreen() {
 
   const [name, setName] = useState('');
   const [allergens, setAllergens] = useState<Map<string, ProfileAllergen>>(new Map());
-  const [dietary, setDietary] = useState<Map<DietaryRule, Strictness>>(new Map());
-  const [conditions, setConditions] = useState<Map<ProfileCondition, Strictness>>(new Map());
+  const [dietary, setDietary] = useState<Set<DietaryRule>>(new Set());
+  const [conditions, setConditions] = useState<Set<ProfileCondition>>(new Set());
   const [busy, setBusy] = useState(false);
 
   // Loaded from the list rather than a by-id endpoint so a cold start on this
@@ -88,8 +87,8 @@ export default function ProfileEditScreen() {
         setOtherProfiles(list.length - 1);
         setName(profile.name);
         setAllergens(toAllergenMap(profile.allergens));
-        setDietary(toDietaryMap(profile.dietaryRules));
-        setConditions(toConditionMap(profile.conditions));
+        setDietary(new Set(dietaryRuleNames(profile.dietaryRules)));
+        setConditions(new Set(conditionNames(profile.conditions)));
       })
       .catch(() => live && setNotFound(true));
     return () => {
@@ -104,8 +103,8 @@ export default function ProfileEditScreen() {
       const saved = await updateProfile(loaded.id, {
         name: name.trim() || loaded.name,
         allergens: toAllergenEntries(allergens),
-        dietaryRules: Array.from(dietary, ([rule, strictness]) => ({ rule, strictness })),
-        conditions: Array.from(conditions, ([condition, strictness]) => ({ condition, strictness })),
+        dietaryRules: Array.from(dietary),
+        conditions: Array.from(conditions),
       });
 
       // A verdict on screen behind this was decided by the rules that just

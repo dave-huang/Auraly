@@ -722,77 +722,54 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
 }
 
 // ---------------------------------------------------------------------------
-// Strictness — how much doubt a rule raises, per entry.
+// Stored profile shapes — every profile behaves conservatively, whichever way
+// it was written.
 //
-// The migration risk lives here, not in the feature. Profiles are jsonb and
-// rows written before 2026-08-23 hold bare strings; if a legacy row read as
-// anything other than `strict`, this change would quietly alter what existing
-// users are warned about.
+// A per-entry strictness control existed for one day (2026-08-23) and shipped in
+// build 6 before being removed. Profiles saved by that build hold
+// `{ rule, strictness }` objects. They are never rewritten, so the reader has to
+// keep understanding them — and must ignore the strictness, or a profile saved
+// as "relaxed" would stay quieter than every other profile forever.
 // ---------------------------------------------------------------------------
 {
-  // "Enzymes" is on the vegetarian VERIFY list — sourcing-dependent, the exact
-  // tier strictness governs. "Pork Fat" is definite, and must be immune to it.
+  // "Enzymes" is on the vegetarian VERIFY list — sourcing doubt, the tier the
+  // removed control used to suppress. If an entry-shaped profile still honoured
+  // it, this is where that would show.
   const sourcingDoubt = result([ing('Sugar', 'low'), ing('Enzymes', 'low')]);
-  const definite = result([ing('Sugar', 'low'), ing('Pork Fat', 'low')]);
 
-  const flagsFor = (r: AnalysisResult, rules: any) =>
-    applyProfileToAnalysis(r, profile({ dietaryRules: rules })).personalFlags ?? [];
+  const flagsFor = (rules: any) =>
+    applyProfileToAnalysis(sourcingDoubt, profile({ dietaryRules: rules })).personalFlags ?? [];
 
-  // Legacy bare string === strict. This is the assertion that makes the rest
-  // of the change safe to ship.
-  check('strictness/legacy-string-is-strict',
-    flagsFor(sourcingDoubt, ['vegetarian']).some(f => f.certainty === 'verify'),
-    'a legacy dietary rule stored as a bare string stopped raising sourcing doubt');
-  check('strictness/strict-matches-legacy',
-    flagsFor(sourcingDoubt, [{ rule: 'vegetarian', strictness: 'strict' }]).length ===
-      flagsFor(sourcingDoubt, ['vegetarian']).length,
-    'an explicit strict entry behaved differently from the legacy form');
+  const bare = flagsFor(['vegetarian']);
+  check('profile-shape/bare-string-raises-doubt',
+    bare.some(f => f.certainty === 'verify'),
+    'a rule stored as a bare string stopped raising sourcing doubt');
 
-  check('strictness/relaxed-drops-verify',
-    flagsFor(sourcingDoubt, [{ rule: 'vegetarian', strictness: 'relaxed' }]).length === 0,
-    'a relaxed rule still raised sourcing doubt');
+  for (const stored of [
+    [{ rule: 'vegetarian' }],
+    [{ rule: 'vegetarian', strictness: 'strict' }],
+    [{ rule: 'vegetarian', strictness: 'relaxed' }],
+  ]) {
+    check('profile-shape/entry-matches-bare',
+      flagsFor(stored).length === bare.length,
+      `a profile stored as ${JSON.stringify(stored)} behaved differently from a bare rule`);
+  }
 
-  // A relaxed rule is not a disabled rule.
-  const relaxedOnPork = applyProfileToAnalysis(definite, profile({
-    dietaryRules: [{ rule: 'vegetarian', strictness: 'relaxed' }],
-  }));
-  check('strictness/relaxed-keeps-definite',
-    (relaxedOnPork.personalFlags ?? []).some(f => f.certainty === 'definite'),
-    'a relaxed rule dropped a definite violation');
-  check('strictness/relaxed-still-raises',
-    relaxedOnPork.overallRisk !== 'low',
-    'a definite violation under a relaxed rule left the verdict at low');
-
-  // Conditions. Relaxed keeps the advisory visible and stops it moving the
-  // verdict — and only for a caution.
+  // Same for conditions: a stored "relaxed" must not keep a caution advisory
+  // from moving the verdict.
   const salty = result([ing('Sodium Chloride', 'low'), ing('Sugar', 'low')]);
-  const strictCond = applyProfileToAnalysis(salty, profile({ conditions: ['hypertension'] }));
-  const relaxedCond = applyProfileToAnalysis(salty, profile({
-    conditions: [{ condition: 'hypertension', strictness: 'relaxed' }],
-  }));
+  const conditionRisk = (conditions: any) =>
+    applyProfileToAnalysis(salty, profile({ conditions })).overallRisk;
 
-  check('strictness/condition-legacy-is-strict',
-    strictCond.overallRisk !== 'low',
-    'a legacy condition stored as a bare string stopped raising the verdict');
-  check('strictness/relaxed-condition-quiet',
-    relaxedCond.overallRisk === 'low',
-    'a relaxed caution advisory still moved the verdict');
-  check('strictness/relaxed-condition-still-visible',
-    (relaxedCond.personalFlags ?? []).length === (strictCond.personalFlags ?? []).length,
-    'relaxing a condition hid its advisory instead of quieting it');
+  check('profile-shape/condition-bare-raises',
+    conditionRisk(['hypertension']) !== 'low',
+    'a condition stored as a bare string stopped raising the verdict');
+  check('profile-shape/condition-entry-matches',
+    conditionRisk([{ condition: 'hypertension', strictness: 'relaxed' }]) ===
+      conditionRisk(['hypertension']),
+    'a condition stored with strictness: relaxed stayed quieter than a bare one');
 
-  // An `avoid` advisory is reserved for serious harm to this group. A
-  // preference must never silence one — PKU is the case the whole advisory
-  // module was written for.
-  const aspartame = result([ing('Aspartame', 'low')]);
-  const relaxedPku = applyProfileToAnalysis(aspartame, profile({
-    conditions: [{ condition: 'pku', strictness: 'relaxed' }],
-  }));
-  check('strictness/relaxed-never-silences-avoid',
-    relaxedPku.overallRisk === 'high',
-    'a relaxed PKU profile let aspartame through at less than high');
-
-  notes.push('strictness governs the verify tier only; legacy rows read as strict, avoid advisories are immune');
+  notes.push('bare and entry-shaped profiles behave identically; a stored strictness is ignored');
 }
 
 // ---------------------------------------------------------------------------

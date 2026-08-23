@@ -12,9 +12,6 @@ import type {
   DietaryRule,
   ProfileAllergen,
   ProfileCondition,
-  ProfileConditionEntry,
-  ProfileDietary,
-  Strictness,
   TracePolicy,
 } from '@shared/schema';
 
@@ -27,9 +24,6 @@ export type {
   ProfileAllergen,
   AllergenSeverity,
   TracePolicy,
-  Strictness,
-  ProfileDietary,
-  ProfileConditionEntry,
   DietaryRule,
   ProfileCondition,
   PersonalFlag,
@@ -43,7 +37,6 @@ export type {
 // Keep in sync; the server validates authoritatively.
 export const ALLERGEN_SEVERITIES = ['anaphylaxis', 'allergy', 'intolerance', 'avoid'] as const;
 export const TRACE_POLICIES = ['flag', 'ignore'] as const;
-export const STRICTNESS_LEVELS = ['strict', 'relaxed'] as const;
 
 /**
  * Mirror of defaultTracePolicy in shared/schema.ts — duplicated because it is a
@@ -62,38 +55,28 @@ export function tracePolicyFor(entry: ProfileAllergen): TracePolicy {
 }
 
 /**
- * Read stored dietary rules into the form the editor works in.
+ * Read stored dietary rules, whichever shape they were stored in.
  *
- * Profiles written before 2026-08-23 hold bare rule names, and are never
- * rewritten — jsonb let the strictness field arrive without a migration. A bare
- * string means `strict`, which is exactly what those profiles already did.
- * Mirrors profileDietary() in shared/schema.ts, duplicated because that module
- * pulls in drizzle and must never reach the bundle.
+ * A per-entry strictness control shipped on 2026-08-23 and was removed the same
+ * day, so a few profiles hold `{ rule, strictness }` rather than a bare name.
+ * Those rows are never rewritten; the extra field is dropped on read, landing
+ * them on the conservative behaviour every other profile already had.
  */
-export function toDietaryMap(
-  rules: (DietaryRule | ProfileDietary)[] | null | undefined,
-): Map<DietaryRule, Strictness> {
-  return new Map(
-    (rules ?? []).map((entry) =>
-      typeof entry === 'string'
-        ? ([entry, 'strict'] as const)
-        : ([entry.rule, entry.strictness] as const),
-    ),
-  );
+export function dietaryRuleNames(
+  rules: (DietaryRule | { rule: DietaryRule })[] | null | undefined,
+): DietaryRule[] {
+  return (rules ?? []).map((entry) => (typeof entry === 'string' ? entry : entry.rule));
 }
 
 /** As above, for conditions. */
-export function toConditionMap(
-  conditions: (ProfileCondition | ProfileConditionEntry)[] | null | undefined,
-): Map<ProfileCondition, Strictness> {
-  return new Map(
-    (conditions ?? []).map((entry) =>
-      typeof entry === 'string'
-        ? ([entry, 'strict'] as const)
-        : ([entry.condition, entry.strictness] as const),
-    ),
+export function conditionNames(
+  conditions: (ProfileCondition | { condition: ProfileCondition })[] | null | undefined,
+): ProfileCondition[] {
+  return (conditions ?? []).map((entry) =>
+    typeof entry === 'string' ? entry : entry.condition,
   );
 }
+
 export const DIETARY_RULES = ['vegan', 'vegetarian', 'gluten_free', 'halal', 'kosher'] as const;
 export const PROFILE_CONDITIONS = [
   'pregnancy', 'breastfeeding', 'celiac', 'eczema',

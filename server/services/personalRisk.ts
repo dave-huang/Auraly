@@ -210,7 +210,7 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
     }
 
     // 2. Dietary rules
-    for (const { rule, strictness } of profileDietary(profile.dietaryRules)) {
+    for (const rule of profileDietary(profile.dietaryRules)) {
       const spec = getConcept(rule);
       if (!spec) continue;
       // One call, because the concept layer already orders definite above
@@ -218,12 +218,7 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
       // first one to fire.
       const hit = matchConcept(ing.name, spec);
       const definite = hit?.certainty === 'definite' ? hit.evidence : undefined;
-      // A relaxed rule wants definite violations only. The verify tier is
-      // sourcing doubt — "this rennet might be animal" — and someone holding
-      // the rule by preference rather than observance will not act on it. A
-      // rule that questions half a supermarket is a rule they switch off.
-      const verify =
-        strictness === 'relaxed' || hit?.certainty !== 'verify' ? undefined : hit.evidence;
+      const verify = hit?.certainty === 'verify' ? hit.evidence : undefined;
       if (definite) {
         flags.push({
           ingredientName: ing.name,
@@ -254,7 +249,7 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
     // 3. Conditions — sourced advisories, and the one place a non-allergen
     //    personal match is allowed to reach `high`. Aspartame for someone with
     //    PKU is not a caution.
-    for (const { condition, strictness } of profileConditions(profile.conditions)) {
+    for (const condition of profileConditions(profile.conditions)) {
       const matched = matchAdvisory(ing.name, condition, domain);
       if (!matched) continue;
       const { advisory, term } = matched;
@@ -277,14 +272,7 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
         reasonParams: { ingredient: ing.name, term },
         citations: [advisoryCitation(advisory), ...kbCitations],
       });
-      // Relaxed keeps the advisory VISIBLE and stops it moving the verdict —
-      // but only for a caution. An `avoid` advisory is reserved for exposures
-      // that are seriously harmful to this group, and letting a preference
-      // silence one would be the model deferring on the single question it
-      // exists to answer.
-      if (strictness !== 'relaxed' || advisory.impact === 'avoid') {
-        raise(flagRisk);
-      }
+      raise(flagRisk);
       reasons.push(`${advisory.impact === 'avoid' ? 'Avoid' : 'Caution'} for ${condition}`);
     }
 
@@ -318,12 +306,12 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
       type: 'allergen' as const,
       found: found('allergen', entry.allergen),
     })),
-    ...profileDietary(profile.dietaryRules).map(({ rule }) => ({
+    ...profileDietary(profile.dietaryRules).map(rule => ({
       term: rule,
       type: 'dietary' as const,
       found: found('dietary', rule),
     })),
-    ...profileConditions(profile.conditions).map(({ condition }) => ({
+    ...profileConditions(profile.conditions).map(condition => ({
       term: condition,
       type: 'condition' as const,
       found: found('condition', condition),
@@ -351,12 +339,10 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
   //
   // A DEFINITE violation settles the question in the other direction and is
   // reported normally: pork in the list needs no certificate to be wrong.
-  const unsettled = profileDietary(profile.dietaryRules)
-    .filter(({ rule }) => {
-      if (getConcept(rule)?.determinability !== 'certification') return false;
-      return !flags.some(f => f.type === 'dietary' && f.match === rule && f.certainty === 'definite');
-    })
-    .map(({ rule }) => rule);
+  const unsettled = profileDietary(profile.dietaryRules).filter(rule => {
+    if (getConcept(rule)?.determinability !== 'certification') return false;
+    return !flags.some(f => f.type === 'dietary' && f.match === rule && f.certainty === 'definite');
+  });
 
   return {
     ...result,

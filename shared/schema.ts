@@ -374,27 +374,16 @@ export const dietaryRuleTypes = [
 export type DietaryRule = typeof dietaryRuleTypes[number];
 
 /**
- * How much doubt a person wants surfaced for a rule they hold.
+ * Dietary rules and conditions carried a per-entry `strictness` for one day,
+ * on 2026-08-23. It was removed the same day: the control asked people to
+ * predict how the app would treat "sourcing doubt", which is a distinction
+ * about our internals rather than about their life, and the honest default was
+ * always the conservative one anyway.
  *
- * `strict`  — show sourcing-dependent hits. A strictly observant vegetarian
- *             wants to know that the rennet might be animal.
- * `relaxed` — definite violations only. Someone avoiding meat by preference
- *             does not want every "natural flavour" raising a question they
- *             will not act on, and a rule that flags half a supermarket is a
- *             rule they will switch off entirely.
- *
- * This is the only "certainty appetite" control the model needs. The other
- * place a `verify` flag comes from is a label's "may contain" line, and that is
- * already governed per allergen entry by `traces`.
+ * Everything now behaves as the old `strict` did — sourcing-dependent hits are
+ * shown, caution advisories move the verdict. Entries written while the control
+ * existed still parse; the field is simply ignored.
  */
-export const strictnessLevels = ["strict", "relaxed"] as const;
-export type Strictness = typeof strictnessLevels[number];
-
-export const profileDietarySchema = z.object({
-  rule: z.enum(dietaryRuleTypes),
-  strictness: z.enum(strictnessLevels).default("strict"),
-});
-export type ProfileDietary = z.infer<typeof profileDietarySchema>;
 
 
 // Conditions that change what is safe for THIS person, independent of what any
@@ -411,11 +400,9 @@ export const profileConditionTypes = [
   "pku", "g6pd_deficiency", "hypertension", "diabetes", "kidney_disease",
 ] as const;
 export type ProfileCondition = typeof profileConditionTypes[number];
-export const profileConditionEntrySchema = z.object({
-  condition: z.enum(profileConditionTypes),
-  strictness: z.enum(strictnessLevels).default("strict"),
-});
-export type ProfileConditionEntry = z.infer<typeof profileConditionEntrySchema>;
+/** Stored shape while the strictness control existed. Read, never written. */
+export type LegacyDietaryEntry = { rule: DietaryRule; strictness?: string };
+export type LegacyConditionEntry = { condition: ProfileCondition; strictness?: string };
 
 export const profiles = pgTable(
   "profiles",
@@ -425,15 +412,15 @@ export const profiles = pgTable(
     name: varchar("name").notNull(),
     isDefault: boolean("is_default").notNull().default(false),
     allergens: jsonb("allergens").$type<ProfileAllergen[]>().notNull().default([]),
-    // Union types on purpose. Rows written before 2026-08-23 hold bare strings
-    // and are never rewritten, so the stored shape genuinely is either. Typing
-    // it honestly means TypeScript refuses a direct `.map(r => r.rule)` and
-    // pushes every reader through profileDietary()/profileConditions() below,
-    // which is the only place that knows how to read both.
+    // Union types on purpose. Rows written during the one day the strictness
+    // control existed hold objects, and are never rewritten. Typing the stored
+    // shape honestly means TypeScript refuses a direct read and pushes every
+    // caller through profileDietary()/profileConditions() below, which is the
+    // only place that knows how to read both.
     dietaryRules: jsonb("dietary_rules")
-      .$type<(DietaryRule | ProfileDietary)[]>().notNull().default([]),
+      .$type<(DietaryRule | LegacyDietaryEntry)[]>().notNull().default([]),
     conditions: jsonb("conditions")
-      .$type<(ProfileCondition | ProfileConditionEntry)[]>().notNull().default([]),
+      .$type<(ProfileCondition | LegacyConditionEntry)[]>().notNull().default([]),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },
@@ -478,41 +465,35 @@ export type SubstanceCoverageMiss = typeof substanceCoverageMisses.$inferSelect;
 /**
  * Read a profile's dietary rules, whichever shape they were stored in.
  *
- * Profiles are jsonb, so the strictness field arrived without a migration and
- * every row written before 2026-08-23 still holds a bare rule name. Rather than
- * rewrite them — a migration whose only purpose is to add a default — reads go
- * through here and a bare string means `strict`, which is exactly the behaviour
- * those profiles already had.
+ * Profiles are jsonb, so the short-lived strictness field arrived and left
+ * without a migration. Rows written while it existed hold `{ rule, strictness }`
+ * and are never rewritten; the strictness is dropped on read, which lands them
+ * on the conservative behaviour every other row already had.
  */
 export function profileDietary(
-  rules: (DietaryRule | ProfileDietary)[] | null | undefined,
-): ProfileDietary[] {
-  return (rules ?? []).map(entry =>
-    typeof entry === "string" ? { rule: entry, strictness: "strict" as const } : entry,
-  );
+  rules: (DietaryRule | LegacyDietaryEntry)[] | null | undefined,
+): DietaryRule[] {
+  return (rules ?? []).map(entry => (typeof entry === "string" ? entry : entry.rule));
 }
 
 /** As above, for conditions. */
 export function profileConditions(
-  conditions: (ProfileCondition | ProfileConditionEntry)[] | null | undefined,
-): ProfileConditionEntry[] {
+  conditions: (ProfileCondition | LegacyConditionEntry)[] | null | undefined,
+): ProfileCondition[] {
   return (conditions ?? []).map(entry =>
-    typeof entry === "string" ? { condition: entry, strictness: "strict" as const } : entry,
+    typeof entry === "string" ? entry : entry.condition,
   );
 }
 
-// Accepts either shape from the client too, so an older app build keeps working
-// against a newer server — the two ship independently and always will.
+// Accepts the entry shape from a client too. Build 6 shipped sending it, and an
+// app build the user has not updated must not start failing to save profiles.
 const dietaryInput = z.union([
-  profileDietarySchema,
-  z.enum(dietaryRuleTypes).transform(rule => ({ rule, strictness: "strict" as const })),
+  z.enum(dietaryRuleTypes),
+  z.object({ rule: z.enum(dietaryRuleTypes) }).transform(entry => entry.rule),
 ]);
 const conditionInput = z.union([
-  profileConditionEntrySchema,
-  z.enum(profileConditionTypes).transform(condition => ({
-    condition,
-    strictness: "strict" as const,
-  })),
+  z.enum(profileConditionTypes),
+  z.object({ condition: z.enum(profileConditionTypes) }).transform(entry => entry.condition),
 ]);
 
 export const upsertProfileSchema = z.object({

@@ -9,14 +9,12 @@ import type {
   DietaryRule,
   ProfileAllergen,
   ProfileCondition,
-  Strictness,
   TracePolicy,
 } from '@/lib/types';
 import {
   DIETARY_RULES,
   MAJOR_ALLERGENS,
   PROFILE_CONDITIONS,
-  STRICTNESS_LEVELS,
   TRACE_POLICIES,
   tracePolicyFor,
 } from '@/lib/types';
@@ -75,85 +73,6 @@ export const TRACE_KEYS: Record<TracePolicy, TranslationKey> = {
   ignore: 'traces.ignore',
 };
 
-export const STRICTNESS_KEYS: Record<Strictness, TranslationKey> = {
-  strict: 'strictness.strict',
-  relaxed: 'strictness.relaxed',
-};
-
-/**
- * One strictness row per selected rule or condition.
- *
- * Shared by the dietary and condition fields because the question is identical
- * — how much doubt do you want raised — and two controls that ask the same
- * thing in different words is how someone ends up believing they set one when
- * they set the other.
- */
-function StrictnessRows<T extends string>({
-  selected,
-  labelFor,
-  onChange,
-}: {
-  selected: Map<T, Strictness>;
-  labelFor: (value: T) => string;
-  onChange: (next: Map<T, Strictness>) => void;
-}) {
-  const surface = useSurface();
-  const { t } = useTranslation();
-  const list = Array.from(selected.entries());
-  if (list.length === 0) return null;
-
-  return (
-    <View style={styles.strictness}>
-      <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
-        {t('strictness.label')}
-      </ThemedText>
-      {list.map(([value, strictness]) => (
-        <View key={value} style={[styles.strictRow, { borderTopColor: surface.rule }]}>
-          <ThemedText style={[Type.label, { color: surface.ink }]}>{labelFor(value)}</ThemedText>
-          <View style={styles.severityRow}>
-            {STRICTNESS_LEVELS.map((option) => {
-              const active = option === strictness;
-              return (
-                <Pressable
-                  key={option}
-                  onPress={() => onChange(new Map(selected).set(value, option))}
-                  accessibilityRole="radio"
-                  accessibilityState={{ selected: active }}
-                  style={[
-                    styles.severityOption,
-                    { borderColor: surface.rule, backgroundColor: surface.card },
-                    active && { backgroundColor: surface.ink, borderColor: surface.ink },
-                  ]}
-                >
-                  <ThemedText
-                    style={[
-                      styles.severityText,
-                      { color: active ? surface.card : surface.inkMuted },
-                    ]}
-                  >
-                    {t(STRICTNESS_KEYS[option])}
-                  </ThemedText>
-                </Pressable>
-              );
-            })}
-          </View>
-        </View>
-      ))}
-    </View>
-  );
-}
-
-/** Toggle a value in a strictness map, defaulting a new one to strict. */
-function toggleStrictness<T extends string>(map: Map<T, Strictness>, value: T): Map<T, Strictness> {
-  const next = new Map(map);
-  // Strict by default: it is what every profile did before this control
-  // existed, and quietly relaxing someone's rule is not a default to pick for
-  // them.
-  if (next.has(value)) next.delete(value);
-  else next.set(value, 'strict');
-  return next;
-}
-
 export const DIETARY_KEYS: Record<DietaryRule, TranslationKey> = {
   vegan: 'dietary.vegan',
   vegetarian: 'dietary.vegetarian',
@@ -176,7 +95,14 @@ export const CONDITION_KEYS: Record<ProfileCondition, TranslationKey> = {
   kidney_disease: 'condition.kidney_disease',
 };
 
-/** An allergen's display name, falling back to whatever the user typed. */
+/** Toggle a value in a set. */
+export function toggleIn<T>(set: Set<T>, value: T): Set<T> {
+  const next = new Set(set);
+  if (next.has(value)) next.delete(value);
+  else next.add(value);
+  return next;
+}
+
 export function allergenLabel(t: (key: TranslationKey) => string, allergen: string): string {
   return ALLERGEN_KEYS[allergen] ? t(ALLERGEN_KEYS[allergen]) : allergen;
 }
@@ -403,32 +329,29 @@ export function AllergenField({
   );
 }
 
+// Rules and conditions are on/off. A per-entry strictness control shipped here
+// on 2026-08-23 and was removed the same day: it asked people to predict how the
+// app treats "sourcing doubt", which is a fact about our internals rather than
+// about their life. Everything behaves as the strict setting did.
 export function DietaryField({
   dietary,
   onChange,
 }: {
-  dietary: Map<DietaryRule, Strictness>;
-  onChange: (next: Map<DietaryRule, Strictness>) => void;
+  dietary: Set<DietaryRule>;
+  onChange: (next: Set<DietaryRule>) => void;
 }) {
   const { t } = useTranslation();
   return (
-    <>
-      <View style={styles.chipRow}>
-        {DIETARY_RULES.map((rule) => (
-          <Chip
-            key={rule}
-            label={t(DIETARY_KEYS[rule])}
-            selected={dietary.has(rule)}
-            onPress={() => onChange(toggleStrictness(dietary, rule))}
-          />
-        ))}
-      </View>
-      <StrictnessRows
-        selected={dietary}
-        labelFor={(rule) => t(DIETARY_KEYS[rule])}
-        onChange={onChange}
-      />
-    </>
+    <View style={styles.chipRow}>
+      {DIETARY_RULES.map((rule) => (
+        <Chip
+          key={rule}
+          label={t(DIETARY_KEYS[rule])}
+          selected={dietary.has(rule)}
+          onPress={() => onChange(toggleIn(dietary, rule))}
+        />
+      ))}
+    </View>
   );
 }
 
@@ -436,28 +359,21 @@ export function ConditionsField({
   conditions,
   onChange,
 }: {
-  conditions: Map<ProfileCondition, Strictness>;
-  onChange: (next: Map<ProfileCondition, Strictness>) => void;
+  conditions: Set<ProfileCondition>;
+  onChange: (next: Set<ProfileCondition>) => void;
 }) {
   const { t } = useTranslation();
   return (
-    <>
-      <View style={styles.chipRow}>
-        {PROFILE_CONDITIONS.map((condition) => (
-          <Chip
-            key={condition}
-            label={t(CONDITION_KEYS[condition])}
-            selected={conditions.has(condition)}
-            onPress={() => onChange(toggleStrictness(conditions, condition))}
-          />
-        ))}
-      </View>
-      <StrictnessRows
-        selected={conditions}
-        labelFor={(condition) => t(CONDITION_KEYS[condition])}
-        onChange={onChange}
-      />
-    </>
+    <View style={styles.chipRow}>
+      {PROFILE_CONDITIONS.map((condition) => (
+        <Chip
+          key={condition}
+          label={t(CONDITION_KEYS[condition])}
+          selected={conditions.has(condition)}
+          onPress={() => onChange(toggleIn(conditions, condition))}
+        />
+      ))}
+    </View>
   );
 }
 
