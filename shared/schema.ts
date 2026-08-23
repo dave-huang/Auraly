@@ -373,6 +373,30 @@ export const dietaryRuleTypes = [
 ] as const;
 export type DietaryRule = typeof dietaryRuleTypes[number];
 
+/**
+ * How much doubt a person wants surfaced for a rule they hold.
+ *
+ * `strict`  — show sourcing-dependent hits. A strictly observant vegetarian
+ *             wants to know that the rennet might be animal.
+ * `relaxed` — definite violations only. Someone avoiding meat by preference
+ *             does not want every "natural flavour" raising a question they
+ *             will not act on, and a rule that flags half a supermarket is a
+ *             rule they will switch off entirely.
+ *
+ * This is the only "certainty appetite" control the model needs. The other
+ * place a `verify` flag comes from is a label's "may contain" line, and that is
+ * already governed per allergen entry by `traces`.
+ */
+export const strictnessLevels = ["strict", "relaxed"] as const;
+export type Strictness = typeof strictnessLevels[number];
+
+export const profileDietarySchema = z.object({
+  rule: z.enum(dietaryRuleTypes),
+  strictness: z.enum(strictnessLevels).default("strict"),
+});
+export type ProfileDietary = z.infer<typeof profileDietarySchema>;
+
+
 // Conditions that change what is safe for THIS person, independent of what any
 // regulator has done about an ingredient. Aspartame is approved in every market
 // on earth and causes irreversible harm to someone with PKU; a scale built only
@@ -387,6 +411,11 @@ export const profileConditionTypes = [
   "pku", "g6pd_deficiency", "hypertension", "diabetes", "kidney_disease",
 ] as const;
 export type ProfileCondition = typeof profileConditionTypes[number];
+export const profileConditionEntrySchema = z.object({
+  condition: z.enum(profileConditionTypes),
+  strictness: z.enum(strictnessLevels).default("strict"),
+});
+export type ProfileConditionEntry = z.infer<typeof profileConditionEntrySchema>;
 
 export const profiles = pgTable(
   "profiles",
@@ -396,8 +425,15 @@ export const profiles = pgTable(
     name: varchar("name").notNull(),
     isDefault: boolean("is_default").notNull().default(false),
     allergens: jsonb("allergens").$type<ProfileAllergen[]>().notNull().default([]),
-    dietaryRules: jsonb("dietary_rules").$type<DietaryRule[]>().notNull().default([]),
-    conditions: jsonb("conditions").$type<ProfileCondition[]>().notNull().default([]),
+    // Union types on purpose. Rows written before 2026-08-23 hold bare strings
+    // and are never rewritten, so the stored shape genuinely is either. Typing
+    // it honestly means TypeScript refuses a direct `.map(r => r.rule)` and
+    // pushes every reader through profileDietary()/profileConditions() below,
+    // which is the only place that knows how to read both.
+    dietaryRules: jsonb("dietary_rules")
+      .$type<(DietaryRule | ProfileDietary)[]>().notNull().default([]),
+    conditions: jsonb("conditions")
+      .$type<(ProfileCondition | ProfileConditionEntry)[]>().notNull().default([]),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },
@@ -439,12 +475,52 @@ export const substanceCoverageMisses = pgTable(
 
 export type SubstanceCoverageMiss = typeof substanceCoverageMisses.$inferSelect;
 
+/**
+ * Read a profile's dietary rules, whichever shape they were stored in.
+ *
+ * Profiles are jsonb, so the strictness field arrived without a migration and
+ * every row written before 2026-08-23 still holds a bare rule name. Rather than
+ * rewrite them — a migration whose only purpose is to add a default — reads go
+ * through here and a bare string means `strict`, which is exactly the behaviour
+ * those profiles already had.
+ */
+export function profileDietary(
+  rules: (DietaryRule | ProfileDietary)[] | null | undefined,
+): ProfileDietary[] {
+  return (rules ?? []).map(entry =>
+    typeof entry === "string" ? { rule: entry, strictness: "strict" as const } : entry,
+  );
+}
+
+/** As above, for conditions. */
+export function profileConditions(
+  conditions: (ProfileCondition | ProfileConditionEntry)[] | null | undefined,
+): ProfileConditionEntry[] {
+  return (conditions ?? []).map(entry =>
+    typeof entry === "string" ? { condition: entry, strictness: "strict" as const } : entry,
+  );
+}
+
+// Accepts either shape from the client too, so an older app build keeps working
+// against a newer server — the two ship independently and always will.
+const dietaryInput = z.union([
+  profileDietarySchema,
+  z.enum(dietaryRuleTypes).transform(rule => ({ rule, strictness: "strict" as const })),
+]);
+const conditionInput = z.union([
+  profileConditionEntrySchema,
+  z.enum(profileConditionTypes).transform(condition => ({
+    condition,
+    strictness: "strict" as const,
+  })),
+]);
+
 export const upsertProfileSchema = z.object({
   name: z.string().min(1).max(60),
   isDefault: z.boolean().optional(),
   allergens: z.array(profileAllergenSchema).max(50).default([]),
-  dietaryRules: z.array(z.enum(dietaryRuleTypes)).default([]),
-  conditions: z.array(z.enum(profileConditionTypes)).default([]),
+  dietaryRules: z.array(dietaryInput).default([]),
+  conditions: z.array(conditionInput).default([]),
 });
 export type UpsertProfileInput = z.infer<typeof upsertProfileSchema>;
 

@@ -313,6 +313,13 @@ const en = {
   'traces.flag': 'Warn me',
   'traces.ignore': 'Ignore',
 
+  // Applies to dietary rules and health conditions alike. "Relaxed" hides
+  // sourcing doubt for a rule and stops a caution-level advisory moving the
+  // verdict; it never silences an advisory that says avoid.
+  'strictness.label': 'How strict',
+  'strictness.strict': 'Strict',
+  'strictness.relaxed': 'Relaxed',
+
   'severity.anaphylaxis': 'Severe (anaphylaxis)',
   'severity.allergy': 'Allergy',
   'severity.intolerance': 'Intolerance',
@@ -638,6 +645,10 @@ const zh: Record<TranslationKey, string> = {
   'traces.flag': '提醒我',
   'traces.ignore': '忽略',
 
+  'strictness.label': '严格程度',
+  'strictness.strict': '严格',
+  'strictness.relaxed': '宽松',
+
   'severity.anaphylaxis': '严重（过敏性休克）',
   'severity.allergy': '过敏',
   'severity.intolerance': '不耐受',
@@ -953,6 +964,10 @@ const es: Record<TranslationKey, string> = {
   'traces.label': 'Trazas',
   'traces.flag': 'Avisarme',
   'traces.ignore': 'Ignorar',
+
+  'strictness.label': 'Nivel de rigor',
+  'strictness.strict': 'Estricto',
+  'strictness.relaxed': 'Flexible',
 
   'severity.anaphylaxis': 'Grave (anafilaxia)',
   'severity.allergy': 'Alergia',

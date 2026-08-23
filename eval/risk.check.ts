@@ -722,6 +722,80 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
 }
 
 // ---------------------------------------------------------------------------
+// Strictness — how much doubt a rule raises, per entry.
+//
+// The migration risk lives here, not in the feature. Profiles are jsonb and
+// rows written before 2026-08-23 hold bare strings; if a legacy row read as
+// anything other than `strict`, this change would quietly alter what existing
+// users are warned about.
+// ---------------------------------------------------------------------------
+{
+  // "Enzymes" is on the vegetarian VERIFY list — sourcing-dependent, the exact
+  // tier strictness governs. "Pork Fat" is definite, and must be immune to it.
+  const sourcingDoubt = result([ing('Sugar', 'low'), ing('Enzymes', 'low')]);
+  const definite = result([ing('Sugar', 'low'), ing('Pork Fat', 'low')]);
+
+  const flagsFor = (r: AnalysisResult, rules: any) =>
+    applyProfileToAnalysis(r, profile({ dietaryRules: rules })).personalFlags ?? [];
+
+  // Legacy bare string === strict. This is the assertion that makes the rest
+  // of the change safe to ship.
+  check('strictness/legacy-string-is-strict',
+    flagsFor(sourcingDoubt, ['vegetarian']).some(f => f.certainty === 'verify'),
+    'a legacy dietary rule stored as a bare string stopped raising sourcing doubt');
+  check('strictness/strict-matches-legacy',
+    flagsFor(sourcingDoubt, [{ rule: 'vegetarian', strictness: 'strict' }]).length ===
+      flagsFor(sourcingDoubt, ['vegetarian']).length,
+    'an explicit strict entry behaved differently from the legacy form');
+
+  check('strictness/relaxed-drops-verify',
+    flagsFor(sourcingDoubt, [{ rule: 'vegetarian', strictness: 'relaxed' }]).length === 0,
+    'a relaxed rule still raised sourcing doubt');
+
+  // A relaxed rule is not a disabled rule.
+  const relaxedOnPork = applyProfileToAnalysis(definite, profile({
+    dietaryRules: [{ rule: 'vegetarian', strictness: 'relaxed' }],
+  }));
+  check('strictness/relaxed-keeps-definite',
+    (relaxedOnPork.personalFlags ?? []).some(f => f.certainty === 'definite'),
+    'a relaxed rule dropped a definite violation');
+  check('strictness/relaxed-still-raises',
+    relaxedOnPork.overallRisk !== 'low',
+    'a definite violation under a relaxed rule left the verdict at low');
+
+  // Conditions. Relaxed keeps the advisory visible and stops it moving the
+  // verdict — and only for a caution.
+  const salty = result([ing('Sodium Chloride', 'low'), ing('Sugar', 'low')]);
+  const strictCond = applyProfileToAnalysis(salty, profile({ conditions: ['hypertension'] }));
+  const relaxedCond = applyProfileToAnalysis(salty, profile({
+    conditions: [{ condition: 'hypertension', strictness: 'relaxed' }],
+  }));
+
+  check('strictness/condition-legacy-is-strict',
+    strictCond.overallRisk !== 'low',
+    'a legacy condition stored as a bare string stopped raising the verdict');
+  check('strictness/relaxed-condition-quiet',
+    relaxedCond.overallRisk === 'low',
+    'a relaxed caution advisory still moved the verdict');
+  check('strictness/relaxed-condition-still-visible',
+    (relaxedCond.personalFlags ?? []).length === (strictCond.personalFlags ?? []).length,
+    'relaxing a condition hid its advisory instead of quieting it');
+
+  // An `avoid` advisory is reserved for serious harm to this group. A
+  // preference must never silence one — PKU is the case the whole advisory
+  // module was written for.
+  const aspartame = result([ing('Aspartame', 'low')]);
+  const relaxedPku = applyProfileToAnalysis(aspartame, profile({
+    conditions: [{ condition: 'pku', strictness: 'relaxed' }],
+  }));
+  check('strictness/relaxed-never-silences-avoid',
+    relaxedPku.overallRisk === 'high',
+    'a relaxed PKU profile let aspartame through at less than high');
+
+  notes.push('strictness governs the verify tier only; legacy rows read as strict, avoid advisories are immune');
+}
+
+// ---------------------------------------------------------------------------
 
 for (const n of notes) console.log(`  · ${n}`);
 if (notes.length) console.log('');

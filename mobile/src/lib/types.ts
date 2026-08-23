@@ -7,7 +7,16 @@
 // duplicate it here rather than importing it.
 // `export type { ... }` re-exports without binding the names locally, and the
 // helpers below need them in scope.
-import type { AllergenSeverity, ProfileAllergen, TracePolicy } from '@shared/schema';
+import type {
+  AllergenSeverity,
+  DietaryRule,
+  ProfileAllergen,
+  ProfileCondition,
+  ProfileConditionEntry,
+  ProfileDietary,
+  Strictness,
+  TracePolicy,
+} from '@shared/schema';
 
 export type {
   AnalysisResult,
@@ -18,6 +27,9 @@ export type {
   ProfileAllergen,
   AllergenSeverity,
   TracePolicy,
+  Strictness,
+  ProfileDietary,
+  ProfileConditionEntry,
   DietaryRule,
   ProfileCondition,
   PersonalFlag,
@@ -31,6 +43,7 @@ export type {
 // Keep in sync; the server validates authoritatively.
 export const ALLERGEN_SEVERITIES = ['anaphylaxis', 'allergy', 'intolerance', 'avoid'] as const;
 export const TRACE_POLICIES = ['flag', 'ignore'] as const;
+export const STRICTNESS_LEVELS = ['strict', 'relaxed'] as const;
 
 /**
  * Mirror of defaultTracePolicy in shared/schema.ts — duplicated because it is a
@@ -46,6 +59,40 @@ export function defaultTracePolicy(severity: AllergenSeverity): TracePolicy {
 /** The effective policy for an entry, resolving the absent case. */
 export function tracePolicyFor(entry: ProfileAllergen): TracePolicy {
   return entry.traces ?? defaultTracePolicy(entry.severity);
+}
+
+/**
+ * Read stored dietary rules into the form the editor works in.
+ *
+ * Profiles written before 2026-08-23 hold bare rule names, and are never
+ * rewritten — jsonb let the strictness field arrive without a migration. A bare
+ * string means `strict`, which is exactly what those profiles already did.
+ * Mirrors profileDietary() in shared/schema.ts, duplicated because that module
+ * pulls in drizzle and must never reach the bundle.
+ */
+export function toDietaryMap(
+  rules: (DietaryRule | ProfileDietary)[] | null | undefined,
+): Map<DietaryRule, Strictness> {
+  return new Map(
+    (rules ?? []).map((entry) =>
+      typeof entry === 'string'
+        ? ([entry, 'strict'] as const)
+        : ([entry.rule, entry.strictness] as const),
+    ),
+  );
+}
+
+/** As above, for conditions. */
+export function toConditionMap(
+  conditions: (ProfileCondition | ProfileConditionEntry)[] | null | undefined,
+): Map<ProfileCondition, Strictness> {
+  return new Map(
+    (conditions ?? []).map((entry) =>
+      typeof entry === 'string'
+        ? ([entry, 'strict'] as const)
+        : ([entry.condition, entry.strictness] as const),
+    ),
+  );
 }
 export const DIETARY_RULES = ['vegan', 'vegetarian', 'gluten_free', 'halal', 'kosher'] as const;
 export const PROFILE_CONDITIONS = [
