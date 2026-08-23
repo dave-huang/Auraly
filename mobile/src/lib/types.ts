@@ -7,13 +7,7 @@
 // duplicate it here rather than importing it.
 // `export type { ... }` re-exports without binding the names locally, and the
 // helpers below need them in scope.
-import type {
-  AllergenSeverity,
-  DietaryRule,
-  ProfileAllergen,
-  ProfileCondition,
-  TracePolicy,
-} from '@shared/schema';
+import type { DietaryRule, ProfileCondition } from '@shared/schema';
 
 export type {
   AnalysisResult,
@@ -23,7 +17,6 @@ export type {
   Profile,
   ProfileAllergen,
   AllergenSeverity,
-  TracePolicy,
   DietaryRule,
   ProfileCondition,
   PersonalFlag,
@@ -36,23 +29,6 @@ export type {
 // Runtime constants — duplicated from shared/schema.ts on purpose (see above).
 // Keep in sync; the server validates authoritatively.
 export const ALLERGEN_SEVERITIES = ['anaphylaxis', 'allergy', 'intolerance', 'avoid'] as const;
-export const TRACE_POLICIES = ['flag', 'ignore'] as const;
-
-/**
- * Mirror of defaultTracePolicy in shared/schema.ts — duplicated because it is a
- * runtime value, per the note above.
- *
- * The app needs it to SHOW the right option as selected on an entry nobody has
- * touched. The server is still the authority on what a scan does with it.
- */
-export function defaultTracePolicy(severity: AllergenSeverity): TracePolicy {
-  return severity === 'anaphylaxis' || severity === 'allergy' ? 'flag' : 'ignore';
-}
-
-/** The effective policy for an entry, resolving the absent case. */
-export function tracePolicyFor(entry: ProfileAllergen): TracePolicy {
-  return entry.traces ?? defaultTracePolicy(entry.severity);
-}
 
 /**
  * Read stored dietary rules, whichever shape they were stored in.

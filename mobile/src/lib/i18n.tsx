@@ -308,12 +308,6 @@ const en = {
   'allergen.lupin': 'Lupin',
   'allergen.buckwheat': 'Buckwheat',
 
-  // "Traces" rather than "may contain": the label's own words are a legal
-  // formula, and the question being asked here is plainer than that.
-  'traces.label': 'Traces',
-  'traces.flag': 'Warn me',
-  'traces.ignore': 'Ignore',
-
   'severity.anaphylaxis': 'Severe (anaphylaxis)',
   'severity.allergy': 'Allergy',
   'severity.intolerance': 'Intolerance',
@@ -636,10 +630,6 @@ const zh: Record<TranslationKey, string> = {
   'allergen.lupin': '羽扇豆',
   'allergen.buckwheat': '荞麦',
 
-  'traces.label': '微量',
-  'traces.flag': '提醒我',
-  'traces.ignore': '忽略',
-
   'severity.anaphylaxis': '严重（过敏性休克）',
   'severity.allergy': '过敏',
   'severity.intolerance': '不耐受',
@@ -952,10 +942,6 @@ const es: Record<TranslationKey, string> = {
   'allergen.celery': 'Apio',
   'allergen.lupin': 'Altramuz',
   'allergen.buckwheat': 'Alforfón',
-
-  'traces.label': 'Trazas',
-  'traces.flag': 'Avisarme',
-  'traces.ignore': 'Ignorar',
 
   'severity.anaphylaxis': 'Grave (anafilaxia)',
   'severity.allergy': 'Alergia',

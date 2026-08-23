@@ -601,75 +601,42 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
 }
 
 // ---------------------------------------------------------------------------
-// Trace policy — whether a "may contain" line counts, per entry.
+// Traces — a "may contain" line warns on every entry.
+//
+// A per-entry `traces` policy existed for one day and shipped in builds 6 and
+// 7, so some stored entries carry `traces: 'ignore'`. Those rows are never
+// rewritten and there is no UI left to change them, so an ignored policy must
+// stay ignored — otherwise an allergen someone set months ago would be silently
+// quieter than the identical allergen set today.
 // ---------------------------------------------------------------------------
 {
-  // The default follows severity, and follows it in both directions.
-  const expected: Array<[AllergenSeverity, 'flag' | 'ignore']> = [
-    ['anaphylaxis', 'flag'],
-    ['allergy', 'flag'],
-    ['intolerance', 'ignore'],
-    ['avoid', 'ignore'],
-  ];
-  for (const [severity, policy] of expected) {
-    check('traces/default-follows-severity',
-      defaultTracePolicy(severity) === policy,
-      `${severity} defaulted to ${defaultTracePolicy(severity)}, expected ${policy}`);
-  }
-
-  // An entry that has never been touched must still track its severity rather
-  // than freezing whatever the default was the day it was written.
-  check('traces/absent-follows-severity',
-    tracePolicyFor({ allergen: 'milk', severity: 'anaphylaxis' }) === 'flag' &&
-    tracePolicyFor({ allergen: 'milk', severity: 'intolerance' }) === 'ignore',
-    'an entry with no explicit policy did not follow its severity');
-
-  // An explicit setting beats the default in BOTH directions — someone with a
-  // mild allergy who does not want trace noise, and someone with an intolerance
-  // who does.
-  check('traces/explicit-overrides',
-    tracePolicyFor({ allergen: 'milk', severity: 'allergy', traces: 'ignore' }) === 'ignore' &&
-    tracePolicyFor({ allergen: 'milk', severity: 'intolerance', traces: 'flag' }) === 'flag',
-    'an explicit trace policy did not override the severity default');
-
-  // End to end, through applyProfileToAnalysis: the same label and the same
-  // allergen, flagged for one severity and quiet for the other.
   const label = {
     ...result([ing('Rice Flour', 'low'), ing('Sugar', 'low')]),
     declaredAllergens: { contains: [], mayContain: ['milk'] },
   };
+  const traceFlags = (allergens: any) =>
+    (applyProfileToAnalysis(label, profile({ allergens })).personalFlags ?? [])
+      .filter(f => f.reasonKey === 'flag.mayContain');
 
-  const anaphylactic = applyProfileToAnalysis(label, profile({
-    allergens: [{ allergen: 'milk', severity: 'anaphylaxis' }],
-  }));
-  const traceFlags = (anaphylactic.personalFlags ?? []).filter(f => f.reasonKey === 'flag.mayContain');
-  check('traces/flagged-for-anaphylaxis', traceFlags.length === 1,
-    `expected one trace flag for an anaphylactic milk entry, got ${traceFlags.length}`);
-  check('traces/raises-risk', anaphylactic.overallRisk !== 'low',
-    'a trace warning for an anaphylactic entry left the verdict at low');
+  // Every severity warns, including the two the removed default kept quiet.
+  for (const severity of ['anaphylaxis', 'allergy', 'intolerance', 'avoid'] as const) {
+    check('traces/every-severity-warns',
+      traceFlags([{ allergen: 'milk', severity }]).length === 1,
+      `a ${severity} milk entry was not warned about trace milk`);
+  }
 
-  const intolerant = applyProfileToAnalysis(label, profile({
-    allergens: [{ allergen: 'milk', severity: 'intolerance' }],
-  }));
-  check('traces/quiet-for-intolerance',
-    (intolerant.personalFlags ?? []).filter(f => f.reasonKey === 'flag.mayContain').length === 0,
-    'a lactose-intolerance entry was warned about trace milk from a shared line');
+  // A stored policy from the removed control cannot make an entry quieter.
+  check('traces/stored-policy-ignored',
+    traceFlags([{ allergen: 'milk', severity: 'intolerance', traces: 'ignore' }]).length === 1,
+    'an entry stored with traces: ignore stayed quiet about trace milk');
 
-  // And the override reaches the engine, not just the helper.
-  const intolerantWantsTraces = applyProfileToAnalysis(label, profile({
-    allergens: [{ allergen: 'milk', severity: 'intolerance', traces: 'flag' }],
-  }));
-  check('traces/override-reaches-engine',
-    (intolerantWantsTraces.personalFlags ?? []).filter(f => f.reasonKey === 'flag.mayContain').length === 1,
-    'an intolerance entry that opted INTO traces got no trace flag');
-
-  // A trace must never be mistaken for presence: the flag stays `verify`, and
-  // an actual "contains" line still outranks it.
+  // A trace is still not presence: the flag stays `verify`, so the card can
+  // present it as a cross-contamination warning rather than an ingredient.
   check('traces/stay-verify',
-    traceFlags.every(f => f.certainty === 'verify'),
+    traceFlags([{ allergen: 'milk', severity: 'allergy' }]).every(f => f.certainty === 'verify'),
     'a trace flag was reported as definite');
 
-  notes.push('trace policy follows severity by default and is overridable in both directions');
+  notes.push('every allergen entry warns on traces; a stored trace policy is ignored');
 }
 
 // ---------------------------------------------------------------------------

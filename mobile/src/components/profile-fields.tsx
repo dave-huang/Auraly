@@ -9,15 +9,8 @@ import type {
   DietaryRule,
   ProfileAllergen,
   ProfileCondition,
-  TracePolicy,
 } from '@/lib/types';
-import {
-  DIETARY_RULES,
-  MAJOR_ALLERGENS,
-  PROFILE_CONDITIONS,
-  TRACE_POLICIES,
-  tracePolicyFor,
-} from '@/lib/types';
+import { DIETARY_RULES, MAJOR_ALLERGENS, PROFILE_CONDITIONS } from '@/lib/types';
 
 // The profile form, as parts.
 //
@@ -67,11 +60,6 @@ export const SEVERITY_ORDER: AllergenSeverity[] = [
   'intolerance',
   'avoid',
 ];
-
-export const TRACE_KEYS: Record<TracePolicy, TranslationKey> = {
-  flag: 'traces.flag',
-  ignore: 'traces.ignore',
-};
 
 export const DIETARY_KEYS: Record<DietaryRule, TranslationKey> = {
   vegan: 'dietary.vegan',
@@ -305,45 +293,6 @@ export function AllergenField({
                 })}
               </View>
 
-              {/* Trace warnings. A second row rather than a mode of the first,
-                  because the two questions are genuinely independent: how bad
-                  a real exposure is, and whether a shared production line
-                  counts as one. The selected option reflects the severity
-                  default until someone chooses otherwise. */}
-              <View style={styles.traceRow}>
-                <ThemedText style={[styles.traceLabel, { color: surface.inkFaint }]}>
-                  {t('traces.label')}
-                </ThemedText>
-                <View style={styles.severityRow}>
-                  {TRACE_POLICIES.map((option) => {
-                    const active = option === tracePolicyFor(entry);
-                    return (
-                      <Pressable
-                        key={option}
-                        onPress={() =>
-                          onChange(new Map(allergens).set(allergen, { ...entry, traces: option }))
-                        }
-                        accessibilityRole="radio"
-                        accessibilityState={{ selected: active }}
-                        style={[
-                          styles.severityOption,
-                          { borderColor: surface.rule, backgroundColor: surface.card },
-                          active && { backgroundColor: surface.ink, borderColor: surface.ink },
-                        ]}
-                      >
-                        <ThemedText
-                          style={[
-                            styles.severityText,
-                            { color: active ? surface.card : surface.inkMuted },
-                          ]}
-                        >
-                          {t(TRACE_KEYS[option])}
-                        </ThemedText>
-                      </Pressable>
-                    );
-                  })}
-                </View>
-              </View>
             </View>
           ))}
         </View>
@@ -429,10 +378,6 @@ const styles = StyleSheet.create({
   entryHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   removeGlyph: { fontFamily: Font.mono, fontSize: 13, lineHeight: 18 },
   severityRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
-  // The trace row sits under the severity row and reads as subordinate to it,
-  // because it is: it qualifies the severity rather than competing with it.
-  traceRow: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: Space.sm },
-  traceLabel: { fontFamily: Font.mono, fontSize: 10, lineHeight: 14, letterSpacing: 1, textTransform: 'uppercase' },
   severityOption: {
     paddingHorizontal: Space.md,
     paddingVertical: 5,
