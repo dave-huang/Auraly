@@ -247,9 +247,32 @@ export function AllergenField({
           </ThemedText>
           {list.map(([allergen, entry]) => (
             <View key={allergen} style={[styles.strictRow, { borderTopColor: surface.rule }]}>
-              <ThemedText style={[Type.label, { color: surface.ink }]}>
-                {allergenLabel(t, allergen)}
-              </ThemedText>
+              {/* Remove sits on the row, not on the chips above, because a
+                  custom allergen has no chip. Someone who typed "carrageenan"
+                  could add it and then had no way at all to take it back —
+                  the preset chips toggle off, and a typed entry appeared only
+                  here, where nothing was tappable. */}
+              <View style={styles.entryHeader}>
+                <ThemedText style={[Type.label, { color: surface.ink }]}>
+                  {allergenLabel(t, allergen)}
+                </ThemedText>
+                <Pressable
+                  onPress={() => {
+                    const next = new Map(allergens);
+                    next.delete(allergen);
+                    onChange(next);
+                  }}
+                  hitSlop={12}
+                  accessibilityRole="button"
+                  accessibilityLabel={t('onboarding.removeAllergen', {
+                    allergen: allergenLabel(t, allergen),
+                  })}
+                >
+                  <ThemedText style={[styles.removeGlyph, { color: surface.inkFaint }]}>
+                    ✕
+                  </ThemedText>
+                </Pressable>
+              </View>
               <View style={styles.severityRow}>
                 {SEVERITY_ORDER.map((option) => {
                   const active = option === entry.severity;
@@ -403,6 +426,8 @@ const styles = StyleSheet.create({
   },
   strictness: { marginTop: Space.lg, gap: Space.sm },
   strictRow: { paddingTop: Space.md, borderTopWidth: StyleSheet.hairlineWidth, gap: Space.sm },
+  entryHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  removeGlyph: { fontFamily: Font.mono, fontSize: 13, lineHeight: 18 },
   severityRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   // The trace row sits under the severity row and reads as subordinate to it,
   // because it is: it qualifies the severity rather than competing with it.
