@@ -32,6 +32,7 @@ export type AliasSource =
   | 'prop65' // OEHHA chemical name
   | 'iarc' // IARC agent name
   | 'fda' // FDA Substances Added to Food inventory name
+  | 'efsa' // EFSA OpenFoodTox dossier subject name
   /**
    * The substance's own preferred name, indexed as an alias of itself.
    *

@@ -12,6 +12,7 @@ import {
   cosingAnnexVAdapter,
   cosingAnnexVIAdapter,
 } from './cosing';
+import { efsaOpenFoodToxAdapter } from './efsa';
 import { fdaFoodAdditivesAdapter } from './fda';
 import { iarcAdapter } from './iarc';
 import { prop65Adapter } from './prop65';
@@ -36,6 +37,7 @@ const ADAPTERS: Record<string, SourceAdapter> = {
   prop65: prop65Adapter,
   iarc: iarcAdapter,
   fda_food_additives: fdaFoodAdditivesAdapter,
+  efsa_openfoodtox: efsaOpenFoodToxAdapter,
   cosing_annex_ii: cosingAnnexIIAdapter,
   cosing_annex_iii: cosingAnnexIIIAdapter,
   cosing_annex_iv: cosingAnnexIVAdapter,

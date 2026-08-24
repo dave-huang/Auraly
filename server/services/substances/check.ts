@@ -236,6 +236,20 @@ function main(): void {
       expectRule: 'moderate.restricted_with_limit',
       why: 'permitted in the EU under a concentration limit, not prohibited',
     },
+    // --- EFSA OpenFoodTox ---
+    {
+      // The guard against the flood. Riboflavin is vitamin B2 and EFSA has set
+      // an intake value for it; when a guidance value could set a level on its
+      // own, that made it a caution. If this ever reads moderate again, a rule
+      // has started treating "somebody worked out how much is safe" as a
+      // warning, and sixty-six other ordinary ingredients went with it.
+      substanceId: 'riboflavin',
+      name: 'Riboflavin',
+      domain: 'food',
+      expectLevel: 'low',
+      why: 'an acceptable daily intake is the output of a safety assessment, never a caution on its own',
+    },
+
     // --- FDA Substances Added to Food ---
     //
     // The food source. Everything above it is about cosmetics or about cancer,
@@ -332,6 +346,52 @@ function main(): void {
       why: 'a concentration cap is how an authorisation is written, not a finding of concern',
     },
   ];
+
+  // --- guidance values ---
+  //
+  // These assert the RECORDS rather than the level, because that is where this
+  // source's value and its failure modes both live: an ADI is quoted to the
+  // reader, so a wrong number or a wrong paper is a wrong sentence on screen
+  // even when the colour is right.
+  console.log('\n[CHECK] guidance values');
+  {
+    const adiChecks: { name: string; value: number; determinedOn: string; why: string }[] = [
+      {
+        name: 'Potassium sorbate',
+        value: 11,
+        determinedOn: '2019-01-30',
+        why: 'three ADIs across four decades are a revision history, not a disagreement — only the current one is shown',
+      },
+    ];
+    for (const check of adiChecks) {
+      const result = classifyIngredient(check.name, 'food', { recordMiss: false });
+      const values = result.evidence.filter((r) => r.kind === 'guidance_value');
+      const failures: string[] = [];
+      if (values.length !== 1) failures.push(`expected exactly 1 guidance value, got ${values.length}`);
+      const held = values[0];
+      if (held && held.guidance?.value !== check.value) {
+        failures.push(`expected ADI ${check.value}, got ${held.guidance?.value}`);
+      }
+      if (held && held.determinedOn !== check.determinedOn) {
+        failures.push(`expected it dated ${check.determinedOn}, got ${held.determinedOn}`);
+      }
+      // The citation has to name the paper that set THIS number. Reaching the
+      // dossier by way of the substance instead of the value document paired
+      // every ADI with whichever opinion came first, so two thirds of them
+      // quoted a paper that never said them.
+      if (held && !/follow-up/i.test(held.citation.title)) {
+        failures.push(`expected the follow-up opinion, got "${held.citation.title.slice(0, 60)}"`);
+      }
+      console.log(
+        `  ${failures.length === 0 ? 'ok  ' : 'FAIL'} "${check.name}" → ` +
+          `${values.length} value(s), ADI ${held?.guidance?.value ?? '—'} ${held?.guidance?.unit ?? ''} ` +
+          `(${held?.determinedOn ?? '—'})  — ${check.why}`,
+      );
+      for (const failure of failures) {
+        problems.push({ severity: 'error', message: `"${check.name}" guidance value: ${failure}` });
+      }
+    }
+  }
 
   console.log('\n[CHECK] regression guards');
   for (const guard of guards) {

@@ -27,7 +27,7 @@ import type { EvidenceRecord, UseDomain } from './evidence';
  * It is simply no longer NECESSARY: a health body's dated, quotable
  * determination can also produce a level, in either direction.
  */
-export const POLICY_VERSION = '2026-08-14.1';
+export const POLICY_VERSION = '2026-08-23.1';
 
 /**
  * Four states, not three.
@@ -175,12 +175,31 @@ export const POLICY_RULES: PolicyRule[] = [
         (r) => r.kind === 'restricted' && (r.domain === 'any' || r.domain === ctx.domain),
       ),
   },
-  {
-    id: 'moderate.has_guidance_value',
-    level: 'moderate',
-    rationale: 'Has a health-based guidance value (ADI/TDI/UL), so intake is bounded rather than unlimited.',
-    match: has((r) => r.kind === 'guidance_value'),
-  },
+  // There was a `moderate.has_guidance_value` rule here, and it was wrong.
+  //
+  // It fired on any ADI, TDI or UL, on the reasoning that a bounded intake is a
+  // bounded intake. But a guidance value is the OUTPUT of a safety assessment:
+  // a regulator derives an ADI at the end of the work and then authorises uses
+  // that keep intake beneath it. "Somebody established how much of this is
+  // safe" is close to the opposite of a warning.
+  //
+  // Ingesting EFSA's OpenFoodTox made the consequence measurable rather than
+  // theoretical: sixty-seven substances would have moved from low to moderate,
+  // among them riboflavin — vitamin B2 — potassium sorbate, tartaric acid and
+  // MSG. That is the false-alarm flood, and this file already refuses it once,
+  // for exactly the same reason, in `moderate.permitted_only_for_limited_uses`:
+  // a concentration cap is how an authorisation is written, not a finding of
+  // concern. A guidance value is the food-side twin of that cap.
+  //
+  // Guidance values are still ingested and still shown. They make the app able
+  // to say "EFSA set an acceptable daily intake of 25 mg per kg of body weight
+  // in 2015", which is worth reading. They no longer set a level on their own.
+  //
+  // What legitimately raises a level is a body concluding that real intake
+  // EXCEEDS its own guidance value. That is a finding, not a number, and it
+  // lives in opinion prose rather than in any column of any export — so it
+  // arrives as curated evidence when someone writes it down, and never by
+  // inference from the presence of an ADI.
   {
     id: 'moderate.authorization_withdrawn',
     level: 'moderate',
