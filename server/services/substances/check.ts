@@ -115,7 +115,7 @@ function main(): void {
   //
   // So the count is what is gated. Lower the baseline as they are curated
   // away; it can never drift upward without failing.
-  const UNRESOLVABLE_BASELINE = 10;
+  const UNRESOLVABLE_BASELINE = 9;
   if (unresolvable.length > UNRESOLVABLE_BASELINE) {
     problems.push({
       severity: 'error',
@@ -235,6 +235,53 @@ function main(): void {
       expectLevel: 'moderate',
       expectRule: 'moderate.restricted_with_limit',
       why: 'permitted in the EU under a concentration limit, not prohibited',
+    },
+    // --- FDA Substances Added to Food ---
+    //
+    // The food source. Everything above it is about cosmetics or about cancer,
+    // and before it landed an ordinary food label resolved almost nothing.
+    {
+      substanceId: 'diethyl_pyrocarbonate',
+      name: 'Diethyl Pyrocarbonate',
+      domain: 'food',
+      expectLevel: 'high',
+      expectRule: 'high.prohibited_in_tracked_market',
+      why: 'the FDA spells one of its twenty prohibitions "-- PROHIBITED", with a space, and a marker regex without slack read it as an ordinary additive',
+    },
+    {
+      substanceId: 'fd_c_red_no_40',
+      name: 'Red 40',
+      domain: 'food',
+      expectLevel: 'low',
+      why: 'the regulation calls it FD&C Red No. 40 and every label calls it Red 40; without the colour alias the most-scanned dye in the inventory resolved to nothing',
+    },
+    {
+      substanceId: 'mannitol',
+      name: 'Mannitol',
+      domain: 'food',
+      expectLevel: 'moderate',
+      expectRule: 'moderate.under_reevaluation',
+      why: 'permitted on an interim basis pending additional study — an unresolved question, not a clean bill of health',
+    },
+    {
+      substanceId: 'acacia_gum_acacia_senegal_l_willd',
+      name: 'Gum Acacia',
+      domain: 'food',
+      expectLevel: 'low',
+      expectRule: 'low.assessed_no_concern',
+      why: 'the inventory files it comma-inverted and botanically qualified; a label just says gum acacia',
+    },
+    {
+      // The rule that keeps the food source honest. Acetaldehyde is an
+      // authorised flavouring AND an IARC Group 2A carcinogen, filed under
+      // different ids by the two sources. If permission could outrank a hazard
+      // — or if the CAS grouping failed to join them — this reads low.
+      substanceId: 'acetaldehyde',
+      name: 'Acetaldehyde',
+      domain: 'food',
+      expectLevel: 'high',
+      expectRule: 'high.iarc_group_1_or_2a',
+      why: 'an FDA authorisation never outranks a carcinogen listing, even across two substance ids',
     },
     {
       substanceId: 'formaldehyde',

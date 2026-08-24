@@ -30,7 +30,19 @@ export type AliasSource =
   | 'pubchem' // PubChem synonym list
   | 'eu_additives' // E-number ↔ name from the EU additive annexes
   | 'prop65' // OEHHA chemical name
-  | 'iarc'; // IARC agent name
+  | 'iarc' // IARC agent name
+  | 'fda' // FDA Substances Added to Food inventory name
+  /**
+   * The substance's own preferred name, indexed as an alias of itself.
+   *
+   * Never written to a data file — the registry synthesises it at index time.
+   * It exists as its own source so that `curated` can keep meaning what it says:
+   * a name a person recorded, deliberately, as denoting this substance. When
+   * every entry's own name also counted as curated, "a human wrote this down"
+   * was true of all 7,764 substances and could not break a tie between any two
+   * of them.
+   */
+  | 'self';
 
 export interface SubstanceAlias {
   /** The printable form, as written by the source. */
@@ -247,7 +259,7 @@ export class SubstanceRegistry {
   private indexAliases(substance: Substance): void {
 
     const aliases: SubstanceAlias[] = [
-      { name: substance.name, source: 'curated', confidence: 1 },
+      { name: substance.name, source: 'self', confidence: 1 },
       ...substance.aliases,
       ...(substance.inci ? [{ name: substance.inci, source: 'cosing' as AliasSource, confidence: 1 }] : []),
     ];
@@ -279,11 +291,66 @@ export class SubstanceRegistry {
         if (alias.confidence > existing.alias.confidence) {
           this.ambiguous.delete(key);
           this.byAlias.set(key, { substance, alias });
-        } else if (alias.confidence < existing.alias.confidence) {
-          // Keep the stronger claim already indexed.
-        } else {
-          this.ambiguous.add(key);
+          continue;
         }
+        if (alias.confidence < existing.alias.confidence) {
+          // Keep the stronger claim already indexed.
+          continue;
+        }
+
+        // Equal confidence, and one claimant carries a CAS number while the
+        // other does not. That is not a tie: a CAS is an identity assertion
+        // about a single chemical, and an entry making one is a better answer
+        // for a chemical's name than an entry that does not.
+        //
+        // The shape this keeps resolving is a named substance meeting a family
+        // it belongs to. "Benzoic acid" is claimed by the FDA's entry for
+        // benzoic acid, CAS 65-85-0, and by CosIng's "Benzoic acid and its
+        // sodium salt", which has no CAS because a family does not have one.
+        // Both claims are honest and both are confident, so the registry
+        // dropped the name — and benzoic acid, sorbic acid, propionic acid,
+        // formic acid, sodium sulfite and menthol all stopped resolving on the
+        // day a second source arrived that knew them individually. Adding
+        // knowledge should not subtract answers.
+        const existingCas = normalizeCas(existing.substance.cas);
+        const incomingCas = normalizeCas(substance.cas);
+        if (incomingCas && !existingCas) {
+          this.ambiguous.delete(key);
+          this.byAlias.set(key, { substance, alias });
+          continue;
+        }
+        if (existingCas && !incomingCas) {
+          // Keep the identified claim already indexed.
+          continue;
+        }
+
+        // Still tied, and one of the claims is a name a person recorded by hand
+        // while the other is a name an adapter read off a list. The ingest
+        // already resolves that comparison this way — a curated alias is never
+        // overwritten by an ingested one — and arbitration should not disagree
+        // with merging about who wins.
+        //
+        // "Corn syrup" is the case: a human mapped it onto glucose syrup, which
+        // is what carries the intake guidance, and then the FDA inventory
+        // arrived with its own CORN SYRUP row and no CAS on either side. The
+        // deliberate mapping is the better answer, and letting the newer list
+        // cancel it would mean every ingest quietly costs us curation.
+        const curatedIncoming = alias.source === 'curated';
+        const curatedExisting = existing.alias.source === 'curated';
+        if (curatedIncoming && !curatedExisting) {
+          this.ambiguous.delete(key);
+          this.byAlias.set(key, { substance, alias });
+          continue;
+        }
+        if (curatedExisting && !curatedIncoming) {
+          // Keep the hand-recorded claim already indexed.
+          continue;
+        }
+
+        // Two substances of equal standing wanting the same name. Genuinely
+        // ambiguous — two species of thyme — and guessing between them is worse
+        // than admitting we cannot tell.
+        this.ambiguous.add(key);
         continue;
       }
       this.byAlias.set(key, { substance, alias });
