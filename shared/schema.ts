@@ -436,6 +436,69 @@ export const substanceCoverageMisses = pgTable(
   ]
 );
 
+export const crashReports = pgTable(
+  "crash_reports",
+  {
+    id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+    /**
+     * Null for a crash before sign-in, which is exactly when the worst ones
+     * happen — so this endpoint accepts unauthenticated reports rather than
+     * being blind to the cold-start failures it most needs to see.
+     */
+    userId: varchar("user_id").references(() => users.id, { onDelete: "set null" }),
+    /** Scrubbed on the device before it was sent. Never re-derived here. */
+    message: text("message").notNull(),
+    stack: text("stack"),
+    /** 'render' | 'global' | 'promise' */
+    origin: varchar("origin").notNull(),
+    /** Route name only. Never route params — those carry scan data. */
+    screen: varchar("screen"),
+    fatal: boolean("fatal").notNull().default(false),
+    appVersion: varchar("app_version").notNull(),
+    buildVersion: varchar("build_version").notNull(),
+    platform: varchar("platform").notNull(),
+    osVersion: varchar("os_version").notNull(),
+    /**
+     * Stable hash of the message plus the first frames, so the same bug
+     * arriving from two hundred devices reads as one row to attend to rather
+     * than two hundred. Computed server-side: a client deciding what counts as
+     * "the same crash" is a client that can hide one by disagreeing.
+     */
+    fingerprint: varchar("fingerprint").notNull(),
+    occurredAt: timestamp("occurred_at").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    index("IDX_crash_fingerprint").on(table.fingerprint),
+    index("IDX_crash_created_at").on(table.createdAt),
+  ]
+);
+
+export type CrashReportRow = typeof crashReports.$inferSelect;
+
+/**
+ * What a device is allowed to send.
+ *
+ * Unknown keys are stripped rather than rejected, because a slightly newer app
+ * build must never lose its crash reports to a slightly older server — the
+ * moment you most need reports is a bad release. Lengths are capped here as
+ * well as on the device: the client scrubs, and the server does not have to
+ * believe it.
+ */
+export const crashReportInputSchema = z.object({
+  message: z.string().min(1).max(2000),
+  stack: z.string().max(8192).optional(),
+  origin: z.enum(["render", "global", "promise"]),
+  screen: z.string().max(64).optional(),
+  fatal: z.boolean().default(false),
+  appVersion: z.string().max(32),
+  buildVersion: z.string().max(32),
+  platform: z.string().max(16),
+  osVersion: z.string().max(32),
+  at: z.number().int().positive(),
+});
+export type CrashReportInput = z.infer<typeof crashReportInputSchema>;
+
 export type SubstanceCoverageMiss = typeof substanceCoverageMisses.$inferSelect;
 
 /**

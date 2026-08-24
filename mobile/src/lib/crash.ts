@@ -1,6 +1,8 @@
 import * as Application from 'expo-application';
 import { Platform } from 'react-native';
 
+import { apiFetch } from '@/lib/api';
+
 /**
  * Crash capture, with the scrubbing done before anything leaves the device.
  *
@@ -27,12 +29,16 @@ import { Platform } from 'react-native';
  *
  * WHERE REPORTS GO
  *
- * Nowhere yet, deliberately. `setCrashSink` takes the destination, and until
- * one is installed a report is logged and held in a small ring buffer that the
- * error screen can offer the person to copy. Choosing the destination is a
- * decision with consequences beyond code — a third-party processor has to be
- * declared in the App Store privacy labels, and for health data that is not a
- * box-ticking exercise — so the seam is built and the choice is left open.
+ * To our own API, at POST /api/crash. Not to a third-party processor, and that
+ * was the deciding argument: sending crash data to Sentry or its equivalents
+ * would mean declaring another recipient of health-adjacent data in the App
+ * Store privacy labels, and routing profile-shaped material through a company
+ * that is not us. The cost is real — no native crash capture, no symbolication,
+ * no alerting, just JavaScript errors in a table you have to look at — and it
+ * is the right trade for this app at this size.
+ *
+ * The sink is still a seam rather than a hard-coded call, so swapping in a
+ * hosted service later is one function.
  */
 
 export interface CrashReport {
@@ -178,4 +184,40 @@ export function installCrashHandlers(): void {
       reportCrash(event?.reason ?? 'Unhandled promise rejection', 'promise');
     });
   }
+}
+
+/**
+ * The sink that ships reports to our own API.
+ *
+ * Fire-and-forget by design, and unauthenticated. The crashes worth hearing
+ * about most are the ones before anyone signs in — a release that dies at
+ * startup files nothing at all if a token is required, which is exactly the
+ * release you need to hear about. The server attaches a user id when a session
+ * happens to exist.
+ *
+ * A failure to report is swallowed. There is no retry and no queue: a crash
+ * loop would turn one broken device into a write storm against the endpoint
+ * that is meant to be telling you the device is broken.
+ */
+export function apiCrashSink(report: CrashReport): void {
+  const { message, stack, origin, screen, fatal, appVersion, buildVersion, platform, osVersion, at } =
+    report;
+  void apiFetch('/api/crash', {
+    method: 'POST',
+    auth: false,
+    body: JSON.stringify({
+      message,
+      stack,
+      origin,
+      screen,
+      fatal,
+      appVersion,
+      buildVersion,
+      platform,
+      osVersion,
+      at,
+    }),
+  }).catch(() => {
+    // Deliberately silent — see above.
+  });
 }

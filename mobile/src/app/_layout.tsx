@@ -14,7 +14,7 @@ import { View } from 'react-native';
 import { ErrorBoundary, TranslatedErrorBoundary } from '@/components/error-boundary';
 import { useSurface } from '@/constants/design';
 import { AuthProvider } from '@/lib/auth-context';
-import { installCrashHandlers } from '@/lib/crash';
+import { apiCrashSink, installCrashHandlers, setCrashSink } from '@/lib/crash';
 import { I18nProvider } from '@/lib/i18n';
 
 SplashScreen.preventAutoHideAsync();
@@ -22,6 +22,7 @@ SplashScreen.preventAutoHideAsync();
 // Installed at module load, before any component renders, so an error thrown
 // on the way up is still caught. Inside an effect it would miss exactly the
 // startup failures that are hardest to reproduce.
+setCrashSink(apiCrashSink);
 installCrashHandlers();
 
 export default function RootLayout() {

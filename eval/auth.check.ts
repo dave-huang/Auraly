@@ -58,6 +58,7 @@ const INTENTIONALLY_PUBLIC: Record<string, string> = {
   'POST /api/feedback': 'someone who cannot sign in is who most needs to report a bug',
   'GET /api/stripe/publishable-key': 'publishable by definition',
   'POST /api/analytics/purchase-prompt-view': 'paywall views are counted before sign-in',
+  'POST /api/crash': 'a release that dies at startup files nothing if a token is required — which is exactly the release you need to hear about; rate-limited and size-capped instead',
   'POST /api/stripe/webhook/:uuid': 'called by Stripe; authenticated by signature, not session',
 };
 

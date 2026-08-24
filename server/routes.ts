@@ -39,6 +39,8 @@ import {
   referrals,
   REFERRAL_REWARD_SCANS,
   upsertProfileSchema,
+  crashReports,
+  crashReportInputSchema,
 } from "@shared/schema";
 import { applyProfileToAnalysis, annotateWithCitations, maxRisk } from "./services/personalRisk";
 import { withLabelRanks } from "./services/labelRank";
@@ -1437,6 +1439,78 @@ Sent from Revely Feedback System
     }
   });
 
+  /**
+   * Crash reports from the app.
+   *
+   * Unauthenticated on purpose. The crashes worth hearing about most are the
+   * ones that happen before a person ever signs in — a bad release that dies at
+   * startup reports nothing at all if this endpoint requires a session, which is
+   * precisely the release you need to hear about. A user id is attached when
+   * there happens to be one.
+   *
+   * That openness is why the limits below exist. The body is validated and
+   * capped by `crashReportInputSchema`, unknown keys are stripped, and the rate
+   * limit is per-IP: a crash LOOP on one device would otherwise write a row per
+   * frame, and the app's own retry is not something this endpoint can see.
+   *
+   * Nothing here scrubs. The device already did that before sending, and a
+   * second pass on the server would imply the first one is optional.
+   */
+  app.post(
+    '/api/crash',
+    rateLimit({ windowMs: 60 * 1000, max: 10, name: "crash" }),
+    async (req: any, res) => {
+      try {
+        const parsed = crashReportInputSchema.safeParse(req.body);
+        if (!parsed.success) {
+          // 400 rather than a silent 200: a client sending malformed reports is
+          // a client whose reports are being dropped, and it should find out.
+          return res.status(400).json({ error: 'Invalid crash report' });
+        }
+        const report = parsed.data;
+
+        // Grouping key: the message plus the first few stack frames. Deeper
+        // frames vary with the route a person happened to take into the bug and
+        // would split one fault into many.
+        const frames = (report.stack ?? '')
+          .split('\n')
+          .slice(0, 4)
+          .map(line => line.trim())
+          .join('|');
+        const fingerprint = crypto.createHash('sha256')
+          .update(`${report.message}|${frames}`)
+          .digest('hex')
+          .slice(0, 16);
+
+        await db.insert(crashReports).values({
+          userId: req.user?.claims?.sub ?? null,
+          message: report.message,
+          stack: report.stack ?? null,
+          origin: report.origin,
+          screen: report.screen ?? null,
+          fatal: report.fatal,
+          appVersion: report.appVersion,
+          buildVersion: report.buildVersion,
+          platform: report.platform,
+          osVersion: report.osVersion,
+          fingerprint,
+          occurredAt: new Date(report.at),
+        });
+
+        console.error(
+          `[CRASH] ${report.platform} v${report.appVersion} (${report.buildVersion}) ` +
+          `${report.origin}${report.fatal ? ' FATAL' : ''} [${fingerprint}] ${report.message}`,
+        );
+        res.status(204).end();
+      } catch (error: any) {
+        // Never surface a failure here. A device that cannot file a crash report
+        // must not then retry, or a bad release turns into a write storm.
+        console.error('Error storing crash report:', error.message);
+        res.status(204).end();
+      }
+    },
+  );
+
   // ==========================================
   // ADMIN ENDPOINTS
   // ==========================================
@@ -1488,6 +1562,38 @@ Sent from Revely Feedback System
     
     return false;
   }
+
+  /**
+   * Crash reports, newest fault first. Admin only.
+   *
+   * Grouped by fingerprint, because the question is never "what happened to
+   * this one person" — it is "what is broken, how many people has it reached,
+   * and did it start with a particular build".
+   */
+  app.get('/api/admin/crashes', isAuthenticated, isAdmin, async (_req: any, res) => {
+    try {
+      const rows = await db
+        .select({
+          fingerprint: crashReports.fingerprint,
+          message: sql<string>`min(${crashReports.message})`,
+          origin: sql<string>`min(${crashReports.origin})`,
+          screen: sql<string>`min(${crashReports.screen})`,
+          occurrences: sql<number>`count(*)::int`,
+          devices: sql<number>`count(distinct ${crashReports.userId})::int`,
+          builds: sql<string>`string_agg(distinct ${crashReports.buildVersion}, ', ')`,
+          firstSeen: sql<Date>`min(${crashReports.occurredAt})`,
+          lastSeen: sql<Date>`max(${crashReports.occurredAt})`,
+        })
+        .from(crashReports)
+        .groupBy(crashReports.fingerprint)
+        .orderBy(sql`max(${crashReports.occurredAt}) desc`)
+        .limit(100);
+      res.json(rows);
+    } catch (error: any) {
+      console.error('Error reading crash reports:', error.message);
+      res.status(500).json({ error: 'Failed to read crash reports' });
+    }
+  });
 
   app.get('/api/admin/dashboard', isAuthenticated, isAdmin, async (req: any, res) => {
     try {
