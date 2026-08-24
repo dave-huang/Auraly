@@ -36,6 +36,14 @@ const en = {
   'common.delete': 'Delete',
   'common.tryAgain': 'Please try again.',
 
+  // Shown when a render error would otherwise leave a white screen. The
+  // wording avoids blaming the photo or the label — the person did nothing
+  // wrong, and this is the one screen where saying so plainly matters.
+  'crash.title': 'Something went wrong',
+  'crash.body': 'The app hit an unexpected problem and had to stop what it was doing. Your scans and profiles are safe.',
+  'crash.restart': 'Start over',
+  'crash.copy': 'Copy error details',
+
   'risk.low': 'Safe',
   'risk.moderate': 'Caution',
   'risk.high': 'Avoid',
@@ -377,6 +385,11 @@ const zh: Record<TranslationKey, string> = {
   'common.delete': '删除',
   'common.tryAgain': '请重试。',
 
+  'crash.title': '出了点问题',
+  'crash.body': '应用遇到意外问题，已停止当前操作。您的扫描记录和档案都安全无恙。',
+  'crash.restart': '重新开始',
+  'crash.copy': '复制错误详情',
+
   'risk.low': '安全',
   'risk.moderate': '注意',
   'risk.high': '避免',
@@ -684,6 +697,11 @@ const es: Record<TranslationKey, string> = {
   'common.cancel': 'Cancelar',
   'common.delete': 'Eliminar',
   'common.tryAgain': 'Inténtalo de nuevo.',
+
+  'crash.title': 'Algo salió mal',
+  'crash.body': 'La aplicación encontró un problema inesperado y tuvo que detenerse. Tus escaneos y perfiles están a salvo.',
+  'crash.restart': 'Empezar de nuevo',
+  'crash.copy': 'Copiar detalles del error',
 
   'risk.low': 'Seguro',
   'risk.moderate': 'Precaución',
