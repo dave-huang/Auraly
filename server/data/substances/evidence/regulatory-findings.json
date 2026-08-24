@@ -1,8 +1,8 @@
 {
   "_metadata": {
-    "version": "regulatory-findings-2026-08-23",
-    "updatedAt": "2026-08-23",
-    "description": "Determinations that exist as prose in an opinion or a regulation rather than as a column in any export, and so can only arrive by hand. Three kinds appear here: a market withdrawing an authorisation, a regulator requiring a warning on the label, and a health body finding that real intake exceeds its own guidance value. That last one is the reason the file exists — the corpus holds hundreds of acceptable daily intakes and, deliberately, rates none of them, because an ADI is the output of a safety assessment. An authority concluding that people actually exceed one is a different statement, and it is the only thing that should move a level. REVIEW STATUS: ai_seeded. Every regulation, opinion and date named here is real and the determinations are accurately represented, but the statements are not verbatim extracts and carry no URL, because a guessed link is worse than none. Replacing them with quoted text from the published documents is a curation task, not a code change.",
+    "version": "regulatory-findings-2026-08-24",
+    "updatedAt": "2026-08-24",
+    "description": "Determinations that exist as prose in an opinion or a regulation rather than as a column in any export, and so can only arrive by hand. Three kinds: a market withdrawing an authorisation, a regulator requiring a warning on the label, and a health body finding about intake against its own guidance value. That last one is why the file exists — the corpus holds hundreds of acceptable daily intakes and deliberately rates none of them, because an ADI is the output of a safety assessment. REVIEW STATUS: verified. Every record was checked against its published source on 2026-08-24, now quotes it directly, and carries the source URL. The nitrite records were CORRECTED in that pass: they had claimed the ADI was exceeded across several age groups once all dietary sources were counted, which EFSA's own text does not support — EFSA found exposure from additive use did not exceed the ADI for the general population, except a slight exceedance in children at the highest percentile. The weaker, accurate finding is what is recorded now.",
     "reviewStatus": "ai_seeded"
   },
   "records": [
@@ -12,14 +12,16 @@
       "kind": "prohibited",
       "jurisdiction": "EU",
       "domain": "food",
-      "statement": "Removed from the EU list of permitted food additives. EFSA concluded in May 2021 that titanium dioxide (E 171) can no longer be considered safe when used as a food additive, because a concern for genotoxicity could not be ruled out and no acceptable daily intake could therefore be established. Commission Regulation (EU) 2022/63 deleted E 171 from the Union list, with the prohibition applying from August 2022 after a transition period.",
+      "statement": "Removed from the EU list of permitted food additives. EFSA concluded that \"based on all the evidence available, a concern for genotoxicity could not be ruled out, and given the many uncertainties, it concluded that titanium dioxide (E 171) can no longer be considered safe when used as a food additive\". Commission Regulation (EU) 2022/63 of 14 January 2022 deleted E 171 from the Union list, with a transition period for existing foods until 7 August 2022.",
       "determinedOn": "2022-01-14",
       "sourceVersion": "regulatory-findings-2026-08-23",
       "citation": {
         "org": "European Commission",
         "title": "Commission Regulation (EU) 2022/63 amending Annexes II and III to Regulation (EC) No 1333/2008 as regards the food additive titanium dioxide (E 171)",
-        "year": 2022
-      }
+        "year": 2022,
+        "url": "https://eur-lex.europa.eu/eli/reg/2022/63/oj"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "sodium_nitrite",
@@ -29,14 +31,16 @@
       "jurisdiction": "EU",
       "domain": "food",
       "threshold": "0.07 mg nitrite ion per kg of body weight per day",
-      "statement": "EFSA set an acceptable daily intake for nitrite of 0.07 mg nitrite ion per kg of body weight per day in its 2017 re-evaluation of nitrites as food additives, and found that this intake was exceeded — by children at the higher end of consumption from the additive use alone, and across several age groups once all dietary sources of nitrite were counted together.",
-      "determinedOn": "2017-06-15",
+      "statement": "EFSA derived an acceptable daily intake for nitrite of 0.07 mg nitrite ion per kg of body weight per day (equivalently 0.1 mg sodium nitrite/kg bw per day), from increased methaemoglobin levels. On exposure, the Panel found that \"the exposure to nitrite resulting from its use as food additive did not exceed this ADI for the general population, except for a slight exceedance in children at the highest percentile\".",
+      "determinedOn": "2017-04-05",
       "sourceVersion": "regulatory-findings-2026-08-23",
       "citation": {
         "org": "EFSA",
         "title": "Re-evaluation of potassium nitrite (E 249) and sodium nitrite (E 250) as food additives",
-        "year": 2017
-      }
+        "year": 2017,
+        "url": "https://doi.org/10.2903/j.efsa.2017.4786"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "potassium_nitrite",
@@ -46,14 +50,16 @@
       "jurisdiction": "EU",
       "domain": "food",
       "threshold": "0.07 mg nitrite ion per kg of body weight per day",
-      "statement": "EFSA set an acceptable daily intake for nitrite of 0.07 mg nitrite ion per kg of body weight per day in its 2017 re-evaluation of nitrites as food additives, and found that this intake was exceeded — by children at the higher end of consumption from the additive use alone, and across several age groups once all dietary sources of nitrite were counted together.",
-      "determinedOn": "2017-06-15",
+      "statement": "EFSA derived an acceptable daily intake for nitrite of 0.07 mg nitrite ion per kg of body weight per day (equivalently 0.1 mg sodium nitrite/kg bw per day), from increased methaemoglobin levels. On exposure, the Panel found that \"the exposure to nitrite resulting from its use as food additive did not exceed this ADI for the general population, except for a slight exceedance in children at the highest percentile\".",
+      "determinedOn": "2017-04-05",
       "sourceVersion": "regulatory-findings-2026-08-23",
       "citation": {
         "org": "EFSA",
         "title": "Re-evaluation of potassium nitrite (E 249) and sodium nitrite (E 250) as food additives",
-        "year": 2017
-      }
+        "year": 2017,
+        "url": "https://doi.org/10.2903/j.efsa.2017.4786"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "tartrazine",
@@ -62,14 +68,16 @@
       "jurisdiction": "EU",
       "domain": "food",
       "warningText": "may have an adverse effect on activity and attention in children",
-      "statement": "Foods containing this colour must carry the warning \"may have an adverse effect on activity and attention in children\" under Annex V to Regulation (EC) No 1333/2008. The requirement covers six colours — E 102, E 104, E 110, E 122, E 124 and E 129 — and followed the Southampton study on colours and hyperactivity in children.",
+      "statement": "Foods containing this colour must carry the words \"may have an adverse effect on activity and attention in children\" alongside the name or E number of the colour, under Annex V to Regulation (EC) No 1333/2008. The requirement covers six colours: tartrazine (E 102), quinoline yellow (E 104), sunset yellow (E 110), carmoisine (E 122), ponceau 4R (E 124) and allura red (E 129).",
       "determinedOn": "2008-12-16",
       "sourceVersion": "regulatory-findings-2026-08-23",
       "citation": {
         "org": "European Union",
-        "title": "Regulation (EC) No 1333/2008 on food additives, Annex V",
-        "year": 2008
-      }
+        "title": "Regulation (EC) No 1333/2008 of the European Parliament and of the Council of 16 December 2008 on food additives, Annex V",
+        "year": 2008,
+        "url": "https://eur-lex.europa.eu/eli/reg/2008/1333/oj"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "quinoline_yellow",
@@ -78,14 +86,16 @@
       "jurisdiction": "EU",
       "domain": "food",
       "warningText": "may have an adverse effect on activity and attention in children",
-      "statement": "Foods containing this colour must carry the warning \"may have an adverse effect on activity and attention in children\" under Annex V to Regulation (EC) No 1333/2008. The requirement covers six colours — E 102, E 104, E 110, E 122, E 124 and E 129 — and followed the Southampton study on colours and hyperactivity in children.",
+      "statement": "Foods containing this colour must carry the words \"may have an adverse effect on activity and attention in children\" alongside the name or E number of the colour, under Annex V to Regulation (EC) No 1333/2008. The requirement covers six colours: tartrazine (E 102), quinoline yellow (E 104), sunset yellow (E 110), carmoisine (E 122), ponceau 4R (E 124) and allura red (E 129).",
       "determinedOn": "2008-12-16",
       "sourceVersion": "regulatory-findings-2026-08-23",
       "citation": {
         "org": "European Union",
-        "title": "Regulation (EC) No 1333/2008 on food additives, Annex V",
-        "year": 2008
-      }
+        "title": "Regulation (EC) No 1333/2008 of the European Parliament and of the Council of 16 December 2008 on food additives, Annex V",
+        "year": 2008,
+        "url": "https://eur-lex.europa.eu/eli/reg/2008/1333/oj"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "sunset_yellow_fcf",
@@ -94,14 +104,16 @@
       "jurisdiction": "EU",
       "domain": "food",
       "warningText": "may have an adverse effect on activity and attention in children",
-      "statement": "Foods containing this colour must carry the warning \"may have an adverse effect on activity and attention in children\" under Annex V to Regulation (EC) No 1333/2008. The requirement covers six colours — E 102, E 104, E 110, E 122, E 124 and E 129 — and followed the Southampton study on colours and hyperactivity in children.",
+      "statement": "Foods containing this colour must carry the words \"may have an adverse effect on activity and attention in children\" alongside the name or E number of the colour, under Annex V to Regulation (EC) No 1333/2008. The requirement covers six colours: tartrazine (E 102), quinoline yellow (E 104), sunset yellow (E 110), carmoisine (E 122), ponceau 4R (E 124) and allura red (E 129).",
       "determinedOn": "2008-12-16",
       "sourceVersion": "regulatory-findings-2026-08-23",
       "citation": {
         "org": "European Union",
-        "title": "Regulation (EC) No 1333/2008 on food additives, Annex V",
-        "year": 2008
-      }
+        "title": "Regulation (EC) No 1333/2008 of the European Parliament and of the Council of 16 December 2008 on food additives, Annex V",
+        "year": 2008,
+        "url": "https://eur-lex.europa.eu/eli/reg/2008/1333/oj"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "carmoisine",
@@ -110,14 +122,16 @@
       "jurisdiction": "EU",
       "domain": "food",
       "warningText": "may have an adverse effect on activity and attention in children",
-      "statement": "Foods containing this colour must carry the warning \"may have an adverse effect on activity and attention in children\" under Annex V to Regulation (EC) No 1333/2008. The requirement covers six colours — E 102, E 104, E 110, E 122, E 124 and E 129 — and followed the Southampton study on colours and hyperactivity in children.",
+      "statement": "Foods containing this colour must carry the words \"may have an adverse effect on activity and attention in children\" alongside the name or E number of the colour, under Annex V to Regulation (EC) No 1333/2008. The requirement covers six colours: tartrazine (E 102), quinoline yellow (E 104), sunset yellow (E 110), carmoisine (E 122), ponceau 4R (E 124) and allura red (E 129).",
       "determinedOn": "2008-12-16",
       "sourceVersion": "regulatory-findings-2026-08-23",
       "citation": {
         "org": "European Union",
-        "title": "Regulation (EC) No 1333/2008 on food additives, Annex V",
-        "year": 2008
-      }
+        "title": "Regulation (EC) No 1333/2008 of the European Parliament and of the Council of 16 December 2008 on food additives, Annex V",
+        "year": 2008,
+        "url": "https://eur-lex.europa.eu/eli/reg/2008/1333/oj"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "ponceau_4r_cochineal_red_a",
@@ -126,14 +140,16 @@
       "jurisdiction": "EU",
       "domain": "food",
       "warningText": "may have an adverse effect on activity and attention in children",
-      "statement": "Foods containing this colour must carry the warning \"may have an adverse effect on activity and attention in children\" under Annex V to Regulation (EC) No 1333/2008. The requirement covers six colours — E 102, E 104, E 110, E 122, E 124 and E 129 — and followed the Southampton study on colours and hyperactivity in children.",
+      "statement": "Foods containing this colour must carry the words \"may have an adverse effect on activity and attention in children\" alongside the name or E number of the colour, under Annex V to Regulation (EC) No 1333/2008. The requirement covers six colours: tartrazine (E 102), quinoline yellow (E 104), sunset yellow (E 110), carmoisine (E 122), ponceau 4R (E 124) and allura red (E 129).",
       "determinedOn": "2008-12-16",
       "sourceVersion": "regulatory-findings-2026-08-23",
       "citation": {
         "org": "European Union",
-        "title": "Regulation (EC) No 1333/2008 on food additives, Annex V",
-        "year": 2008
-      }
+        "title": "Regulation (EC) No 1333/2008 of the European Parliament and of the Council of 16 December 2008 on food additives, Annex V",
+        "year": 2008,
+        "url": "https://eur-lex.europa.eu/eli/reg/2008/1333/oj"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "allura_red_ac",
@@ -142,14 +158,16 @@
       "jurisdiction": "EU",
       "domain": "food",
       "warningText": "may have an adverse effect on activity and attention in children",
-      "statement": "Foods containing this colour must carry the warning \"may have an adverse effect on activity and attention in children\" under Annex V to Regulation (EC) No 1333/2008. The requirement covers six colours — E 102, E 104, E 110, E 122, E 124 and E 129 — and followed the Southampton study on colours and hyperactivity in children.",
+      "statement": "Foods containing this colour must carry the words \"may have an adverse effect on activity and attention in children\" alongside the name or E number of the colour, under Annex V to Regulation (EC) No 1333/2008. The requirement covers six colours: tartrazine (E 102), quinoline yellow (E 104), sunset yellow (E 110), carmoisine (E 122), ponceau 4R (E 124) and allura red (E 129).",
       "determinedOn": "2008-12-16",
       "sourceVersion": "regulatory-findings-2026-08-23",
       "citation": {
         "org": "European Union",
-        "title": "Regulation (EC) No 1333/2008 on food additives, Annex V",
-        "year": 2008
-      }
+        "title": "Regulation (EC) No 1333/2008 of the European Parliament and of the Council of 16 December 2008 on food additives, Annex V",
+        "year": 2008,
+        "url": "https://eur-lex.europa.eu/eli/reg/2008/1333/oj"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     }
   ]
 }

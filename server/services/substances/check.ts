@@ -380,7 +380,7 @@ function main(): void {
       domain: 'food',
       expectLevel: 'moderate',
       expectRule: 'moderate.health_body_intake_limit',
-      why: 'a finding that intake exceeds the limit is what raises a level; the limit merely existing is not',
+      why: 'EFSA found a slight exceedance in children at the highest percentile — a finding about intake, not the mere existence of a limit',
     },
     {
       substanceId: 'mannitol',
@@ -466,6 +466,87 @@ function main(): void {
   // source's value and its failure modes both live: an ADI is quoted to the
   // reader, so a wrong number or a wrong paper is a wrong sentence on screen
   // even when the colour is right.
+  // --- provenance of hand-written evidence ---
+  //
+  // Ingested records trace to a committed snapshot; anyone can re-run the
+  // adapter and get them back. Hand-written ones trace to whatever the writer
+  // remembered, which is not the same thing and must not look the same.
+  //
+  // This counts the difference. It is a warning rather than an error because a
+  // record can be true and unverified at once — but it should never be possible
+  // to add one and have nothing say so. Verification found a real overstatement
+  // the first time it ran: the nitrite records claimed the ADI was exceeded
+  // across several age groups from all dietary sources, where EFSA had found a
+  // slight exceedance in children at the highest percentile and nothing more.
+  console.log('\n[CHECK] hand-written evidence');
+  {
+    const HAND = new Set(['curated', 'who', 'jecfa']);
+    const all = evidence.substanceIds().flatMap((id) => evidence.forSubstance(id));
+    const hand = all.filter((r) => HAND.has(r.source));
+    const unverified = hand.filter((r) => !r.reviewedBy);
+    const noUrl = hand.filter((r) => !r.citation.url);
+
+    console.log(`  ${hand.length} hand-written of ${all.length} records`);
+    console.log(
+      `  ${unverified.length === 0 ? 'ok  ' : 'note'} ${hand.length - unverified.length} verified against a published source`,
+    );
+    for (const r of unverified) {
+      console.log(`       unverified: ${r.substanceId} (${r.source}) — ${r.citation.title.slice(0, 62)}`);
+    }
+    if (noUrl.length > unverified.length) {
+      problems.push({
+        severity: 'warning',
+        message: `${noUrl.length} hand-written record(s) carry no source URL — a reader cannot check them.`,
+      });
+    }
+    // The sharper question. An unverified record sitting in the corpus is
+    // untidy; an unverified record DECIDING a level is a claim the app is
+    // making to a person on nobody's authority. Only the second is worth
+    // stopping for, and the two are easy to confuse — ascorbic acid and
+    // lecithin each hold an unverified JECFA note, and neither decides
+    // anything, because an FDA GRAS listing settles them either way.
+    const deciding: string[] = [];
+    for (const substanceId of evidence.substanceIds()) {
+      for (const domain of ['food', 'cosmetic'] as const) {
+        const records = evidence.forSubstanceInDomain(substanceId, domain);
+        if (records.length === 0) continue;
+        // Necessity, not presence. A record can sit inside the deciding rule
+        // and change nothing — ascorbic acid holds an unverified JECFA note
+        // alongside an FDA GRAS listing, and the rule fires on the FDA record
+        // whether or not the note is there. What matters is whether taking the
+        // unverified records away would change the answer a person is given.
+        const withoutUnverified = records.filter((r) => !(HAND.has(r.source) && !r.reviewedBy));
+        if (withoutUnverified.length === records.length) continue;
+        const before = applyPolicy(records, { domain }).level;
+        const after =
+          withoutUnverified.length === 0
+            ? 'unknown'
+            : applyPolicy(withoutUnverified, { domain }).level;
+        if (before !== after) deciding.push(`${substanceId}:${domain} (${after} → ${before})`);
+      }
+    }
+    console.log(
+      `  ${deciding.length === 0 ? 'ok  ' : 'FAIL'} ${deciding.length} level(s) would change if the unverified records were removed` +
+        (deciding.length ? `: ${deciding.join(', ')}` : ''),
+    );
+    if (deciding.length > 0) {
+      problems.push({
+        severity: 'error',
+        message:
+          `${deciding.length} substance level(s) are decided by a record nobody has checked against its source: ` +
+          `${deciding.join(', ')}. Verify it or remove it — the app is asserting this to a person.`,
+      });
+    }
+    if (unverified.length > 0) {
+      problems.push({
+        severity: 'warning',
+        message:
+          `${unverified.length} hand-written record(s) have never been checked against their source. ` +
+          `None decides a level today, but that can change with the next ingest.`,
+      });
+    }
+  }
+
   console.log('\n[CHECK] guidance values');
   {
     const adiChecks: { name: string; value: number; determinedOn: string; why: string }[] = [

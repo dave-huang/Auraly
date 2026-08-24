@@ -1,8 +1,8 @@
 {
   "_metadata": {
-    "version": "health-guidance-2026-08-24",
+    "version": "health-guidance-2026-08-24.2",
     "updatedAt": "2026-08-24",
-    "description": "Health-guidance evidence: what health authorities say about intake, as opposed to what regulators have prohibited. This is the first evidence in the corpus that is not an enforcement action, and it exists because a risk scale that can only see enforcement reports \"no restrictions found\" for sugar and for trans fat alike. Three nutrients are covered: free sugars, sodium and saturated fat, plus trans fat's elimination target. Each is applied to the ingredients that are a major dietary source of it, which is a step of reasoning beyond what WHO wrote — WHO's guidelines are about nutrients, and a label names ingredients. The step is small and well established (salt is sodium; palm kernel oil is mostly saturated fat) but it is a step, and it is why the ingredients chosen are only the unambiguous ones. Oils that are NOT largely saturated — soybean, canola, sunflower, olive — deliberately carry no such record, and adding one to them would be wrong. REVIEW STATUS: ai_seeded. Sources, dates and determinations are real and named; the statements are accurate representations rather than verified verbatim extracts, and carry no URL — a guessed link is worse than none. Replacing these with verbatim text pulled from the published documents is a curation task, not a code change.",
+    "description": "What health authorities say about intake, as opposed to what regulators have prohibited. This is the evidence that is not an enforcement action, and it exists because a risk scale that can only see enforcement reports \"no restrictions found\" for sugar and for trans fat alike. Four nutrients: free sugars, sodium, saturated fat, and trans fat's elimination target. REVIEW STATUS: every WHO record here was verified against the published WHO source on 2026-08-24 and quotes it directly; each carries the source URL and a reviewedBy stamp. Records marked 'composition-inferred' quote WHO accurately but apply the guideline to an ingredient WHO does not name — cocoa butter and palm kernel oil — on the basis of their fat composition; WHO names butter, palm oil and coconut oil itself. STILL UNVERIFIED (no reviewedBy): the three JECFA 'ADI not specified' records and the FDA partially-hydrogenated-oils determination. The JECFA evaluations are not machine-readable and the Federal Register blocks automated fetches; both need a person to open the document and quote it.",
     "reviewStatus": "ai_seeded"
   },
   "records": [
@@ -14,14 +14,16 @@
       "jurisdiction": "INTL",
       "domain": "food",
       "threshold": "under 10% of total energy intake, ideally under 5%",
-      "statement": "WHO recommends reducing the intake of free sugars to less than 10% of total energy intake, and suggests a further reduction to below 5%. Free sugars include sugars added to foods by the manufacturer, cook or consumer, plus sugars naturally present in honey, syrups and fruit juices.",
+      "statement": "WHO recommends that \"the consumption of free sugars should be limited to less than 10% of total daily energy intake\", and that \"limiting further to 5% or less of total daily energy intake may provide additional health benefits\". Free sugars are \"monosaccharides and disaccharides (e.g. sucrose, fructose, glucose) added to foods and beverages by the manufacturer, cook or consumer, and sugars naturally present in honey, syrups, fruit juices and fruit juice concentrates\".",
       "determinedOn": "2015-03-04",
       "sourceVersion": "who-sugars-guideline-2015",
       "citation": {
         "org": "World Health Organization",
         "title": "Guideline: Sugars intake for adults and children",
-        "year": 2015
-      }
+        "year": 2015,
+        "url": "https://www.who.int/news-room/fact-sheets/detail/healthy-diet"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "brown_sugar",
@@ -31,14 +33,16 @@
       "jurisdiction": "INTL",
       "domain": "food",
       "threshold": "under 10% of total energy intake, ideally under 5%",
-      "statement": "WHO recommends reducing the intake of free sugars to less than 10% of total energy intake, and suggests a further reduction to below 5%. Free sugars include sugars added to foods by the manufacturer, cook or consumer, plus sugars naturally present in honey, syrups and fruit juices.",
+      "statement": "WHO recommends that \"the consumption of free sugars should be limited to less than 10% of total daily energy intake\", and that \"limiting further to 5% or less of total daily energy intake may provide additional health benefits\". Free sugars are \"monosaccharides and disaccharides (e.g. sucrose, fructose, glucose) added to foods and beverages by the manufacturer, cook or consumer, and sugars naturally present in honey, syrups, fruit juices and fruit juice concentrates\".",
       "determinedOn": "2015-03-04",
       "sourceVersion": "who-sugars-guideline-2015",
       "citation": {
         "org": "World Health Organization",
         "title": "Guideline: Sugars intake for adults and children",
-        "year": 2015
-      }
+        "year": 2015,
+        "url": "https://www.who.int/news-room/fact-sheets/detail/healthy-diet"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "coconut_palm_sugar",
@@ -48,14 +52,16 @@
       "jurisdiction": "INTL",
       "domain": "food",
       "threshold": "under 10% of total energy intake, ideally under 5%",
-      "statement": "WHO recommends reducing the intake of free sugars to less than 10% of total energy intake, and suggests a further reduction to below 5%. Free sugars include sugars added to foods by the manufacturer, cook or consumer, plus sugars naturally present in honey, syrups and fruit juices.",
+      "statement": "WHO recommends that \"the consumption of free sugars should be limited to less than 10% of total daily energy intake\", and that \"limiting further to 5% or less of total daily energy intake may provide additional health benefits\". Free sugars are \"monosaccharides and disaccharides (e.g. sucrose, fructose, glucose) added to foods and beverages by the manufacturer, cook or consumer, and sugars naturally present in honey, syrups, fruit juices and fruit juice concentrates\".",
       "determinedOn": "2015-03-04",
       "sourceVersion": "who-sugars-guideline-2015",
       "citation": {
         "org": "World Health Organization",
         "title": "Guideline: Sugars intake for adults and children",
-        "year": 2015
-      }
+        "year": 2015,
+        "url": "https://www.who.int/news-room/fact-sheets/detail/healthy-diet"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "glucose",
@@ -65,14 +71,16 @@
       "jurisdiction": "INTL",
       "domain": "food",
       "threshold": "under 10% of total energy intake, ideally under 5%",
-      "statement": "WHO recommends reducing the intake of free sugars to less than 10% of total energy intake, and suggests a further reduction to below 5%. Free sugars include sugars added to foods by the manufacturer, cook or consumer, plus sugars naturally present in honey, syrups and fruit juices.",
+      "statement": "WHO recommends that \"the consumption of free sugars should be limited to less than 10% of total daily energy intake\", and that \"limiting further to 5% or less of total daily energy intake may provide additional health benefits\". Free sugars are \"monosaccharides and disaccharides (e.g. sucrose, fructose, glucose) added to foods and beverages by the manufacturer, cook or consumer, and sugars naturally present in honey, syrups, fruit juices and fruit juice concentrates\".",
       "determinedOn": "2015-03-04",
       "sourceVersion": "who-sugars-guideline-2015",
       "citation": {
         "org": "World Health Organization",
         "title": "Guideline: Sugars intake for adults and children",
-        "year": 2015
-      }
+        "year": 2015,
+        "url": "https://www.who.int/news-room/fact-sheets/detail/healthy-diet"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "fructose",
@@ -82,14 +90,16 @@
       "jurisdiction": "INTL",
       "domain": "food",
       "threshold": "under 10% of total energy intake, ideally under 5%",
-      "statement": "WHO recommends reducing the intake of free sugars to less than 10% of total energy intake, and suggests a further reduction to below 5%. Free sugars include sugars added to foods by the manufacturer, cook or consumer, plus sugars naturally present in honey, syrups and fruit juices.",
+      "statement": "WHO recommends that \"the consumption of free sugars should be limited to less than 10% of total daily energy intake\", and that \"limiting further to 5% or less of total daily energy intake may provide additional health benefits\". Free sugars are \"monosaccharides and disaccharides (e.g. sucrose, fructose, glucose) added to foods and beverages by the manufacturer, cook or consumer, and sugars naturally present in honey, syrups, fruit juices and fruit juice concentrates\".",
       "determinedOn": "2015-03-04",
       "sourceVersion": "who-sugars-guideline-2015",
       "citation": {
         "org": "World Health Organization",
         "title": "Guideline: Sugars intake for adults and children",
-        "year": 2015
-      }
+        "year": 2015,
+        "url": "https://www.who.int/news-room/fact-sheets/detail/healthy-diet"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "glucose_syrup",
@@ -99,14 +109,16 @@
       "jurisdiction": "INTL",
       "domain": "food",
       "threshold": "under 10% of total energy intake, ideally under 5%",
-      "statement": "WHO recommends reducing the intake of free sugars to less than 10% of total energy intake, and suggests a further reduction to below 5%. Free sugars include sugars added to foods by the manufacturer, cook or consumer, plus sugars naturally present in honey, syrups and fruit juices.",
+      "statement": "WHO recommends that \"the consumption of free sugars should be limited to less than 10% of total daily energy intake\", and that \"limiting further to 5% or less of total daily energy intake may provide additional health benefits\". Free sugars are \"monosaccharides and disaccharides (e.g. sucrose, fructose, glucose) added to foods and beverages by the manufacturer, cook or consumer, and sugars naturally present in honey, syrups, fruit juices and fruit juice concentrates\".",
       "determinedOn": "2015-03-04",
       "sourceVersion": "who-sugars-guideline-2015",
       "citation": {
         "org": "World Health Organization",
         "title": "Guideline: Sugars intake for adults and children",
-        "year": 2015
-      }
+        "year": 2015,
+        "url": "https://www.who.int/news-room/fact-sheets/detail/healthy-diet"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "high_fructose_corn_syrup",
@@ -116,14 +128,16 @@
       "jurisdiction": "INTL",
       "domain": "food",
       "threshold": "under 10% of total energy intake, ideally under 5%",
-      "statement": "WHO recommends reducing the intake of free sugars to less than 10% of total energy intake, and suggests a further reduction to below 5%. Free sugars include sugars added to foods by the manufacturer, cook or consumer, plus sugars naturally present in honey, syrups and fruit juices.",
+      "statement": "WHO recommends that \"the consumption of free sugars should be limited to less than 10% of total daily energy intake\", and that \"limiting further to 5% or less of total daily energy intake may provide additional health benefits\". Free sugars are \"monosaccharides and disaccharides (e.g. sucrose, fructose, glucose) added to foods and beverages by the manufacturer, cook or consumer, and sugars naturally present in honey, syrups, fruit juices and fruit juice concentrates\".",
       "determinedOn": "2015-03-04",
       "sourceVersion": "who-sugars-guideline-2015",
       "citation": {
         "org": "World Health Organization",
         "title": "Guideline: Sugars intake for adults and children",
-        "year": 2015
-      }
+        "year": 2015,
+        "url": "https://www.who.int/news-room/fact-sheets/detail/healthy-diet"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "invert_sugar",
@@ -133,14 +147,16 @@
       "jurisdiction": "INTL",
       "domain": "food",
       "threshold": "under 10% of total energy intake, ideally under 5%",
-      "statement": "WHO recommends reducing the intake of free sugars to less than 10% of total energy intake, and suggests a further reduction to below 5%. Free sugars include sugars added to foods by the manufacturer, cook or consumer, plus sugars naturally present in honey, syrups and fruit juices.",
+      "statement": "WHO recommends that \"the consumption of free sugars should be limited to less than 10% of total daily energy intake\", and that \"limiting further to 5% or less of total daily energy intake may provide additional health benefits\". Free sugars are \"monosaccharides and disaccharides (e.g. sucrose, fructose, glucose) added to foods and beverages by the manufacturer, cook or consumer, and sugars naturally present in honey, syrups, fruit juices and fruit juice concentrates\".",
       "determinedOn": "2015-03-04",
       "sourceVersion": "who-sugars-guideline-2015",
       "citation": {
         "org": "World Health Organization",
         "title": "Guideline: Sugars intake for adults and children",
-        "year": 2015
-      }
+        "year": 2015,
+        "url": "https://www.who.int/news-room/fact-sheets/detail/healthy-diet"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "honey",
@@ -150,14 +166,16 @@
       "jurisdiction": "INTL",
       "domain": "food",
       "threshold": "under 10% of total energy intake, ideally under 5%",
-      "statement": "WHO recommends reducing the intake of free sugars to less than 10% of total energy intake, and suggests a further reduction to below 5%. Free sugars include sugars added to foods by the manufacturer, cook or consumer, plus sugars naturally present in honey, syrups and fruit juices.",
+      "statement": "WHO recommends that \"the consumption of free sugars should be limited to less than 10% of total daily energy intake\", and that \"limiting further to 5% or less of total daily energy intake may provide additional health benefits\". Free sugars are \"monosaccharides and disaccharides (e.g. sucrose, fructose, glucose) added to foods and beverages by the manufacturer, cook or consumer, and sugars naturally present in honey, syrups, fruit juices and fruit juice concentrates\".",
       "determinedOn": "2015-03-04",
       "sourceVersion": "who-sugars-guideline-2015",
       "citation": {
         "org": "World Health Organization",
         "title": "Guideline: Sugars intake for adults and children",
-        "year": 2015
-      }
+        "year": 2015,
+        "url": "https://www.who.int/news-room/fact-sheets/detail/healthy-diet"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "molasses",
@@ -167,14 +185,16 @@
       "jurisdiction": "INTL",
       "domain": "food",
       "threshold": "under 10% of total energy intake, ideally under 5%",
-      "statement": "WHO recommends reducing the intake of free sugars to less than 10% of total energy intake, and suggests a further reduction to below 5%. Free sugars include sugars added to foods by the manufacturer, cook or consumer, plus sugars naturally present in honey, syrups and fruit juices.",
+      "statement": "WHO recommends that \"the consumption of free sugars should be limited to less than 10% of total daily energy intake\", and that \"limiting further to 5% or less of total daily energy intake may provide additional health benefits\". Free sugars are \"monosaccharides and disaccharides (e.g. sucrose, fructose, glucose) added to foods and beverages by the manufacturer, cook or consumer, and sugars naturally present in honey, syrups, fruit juices and fruit juice concentrates\".",
       "determinedOn": "2015-03-04",
       "sourceVersion": "who-sugars-guideline-2015",
       "citation": {
         "org": "World Health Organization",
         "title": "Guideline: Sugars intake for adults and children",
-        "year": 2015
-      }
+        "year": 2015,
+        "url": "https://www.who.int/news-room/fact-sheets/detail/healthy-diet"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "maple_syrup",
@@ -184,14 +204,16 @@
       "jurisdiction": "INTL",
       "domain": "food",
       "threshold": "under 10% of total energy intake, ideally under 5%",
-      "statement": "WHO recommends reducing the intake of free sugars to less than 10% of total energy intake, and suggests a further reduction to below 5%. Free sugars include sugars added to foods by the manufacturer, cook or consumer, plus sugars naturally present in honey, syrups and fruit juices.",
+      "statement": "WHO recommends that \"the consumption of free sugars should be limited to less than 10% of total daily energy intake\", and that \"limiting further to 5% or less of total daily energy intake may provide additional health benefits\". Free sugars are \"monosaccharides and disaccharides (e.g. sucrose, fructose, glucose) added to foods and beverages by the manufacturer, cook or consumer, and sugars naturally present in honey, syrups, fruit juices and fruit juice concentrates\".",
       "determinedOn": "2015-03-04",
       "sourceVersion": "who-sugars-guideline-2015",
       "citation": {
         "org": "World Health Organization",
         "title": "Guideline: Sugars intake for adults and children",
-        "year": 2015
-      }
+        "year": 2015,
+        "url": "https://www.who.int/news-room/fact-sheets/detail/healthy-diet"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "agave_syrup",
@@ -201,14 +223,16 @@
       "jurisdiction": "INTL",
       "domain": "food",
       "threshold": "under 10% of total energy intake, ideally under 5%",
-      "statement": "WHO recommends reducing the intake of free sugars to less than 10% of total energy intake, and suggests a further reduction to below 5%. Free sugars include sugars added to foods by the manufacturer, cook or consumer, plus sugars naturally present in honey, syrups and fruit juices.",
+      "statement": "WHO recommends that \"the consumption of free sugars should be limited to less than 10% of total daily energy intake\", and that \"limiting further to 5% or less of total daily energy intake may provide additional health benefits\". Free sugars are \"monosaccharides and disaccharides (e.g. sucrose, fructose, glucose) added to foods and beverages by the manufacturer, cook or consumer, and sugars naturally present in honey, syrups, fruit juices and fruit juice concentrates\".",
       "determinedOn": "2015-03-04",
       "sourceVersion": "who-sugars-guideline-2015",
       "citation": {
         "org": "World Health Organization",
         "title": "Guideline: Sugars intake for adults and children",
-        "year": 2015
-      }
+        "year": 2015,
+        "url": "https://www.who.int/news-room/fact-sheets/detail/healthy-diet"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "fruit_juice_concentrate",
@@ -218,14 +242,16 @@
       "jurisdiction": "INTL",
       "domain": "food",
       "threshold": "under 10% of total energy intake, ideally under 5%",
-      "statement": "WHO recommends reducing the intake of free sugars to less than 10% of total energy intake, and suggests a further reduction to below 5%. Free sugars include sugars added to foods by the manufacturer, cook or consumer, plus sugars naturally present in honey, syrups and fruit juices.",
+      "statement": "WHO recommends that \"the consumption of free sugars should be limited to less than 10% of total daily energy intake\", and that \"limiting further to 5% or less of total daily energy intake may provide additional health benefits\". Free sugars are \"monosaccharides and disaccharides (e.g. sucrose, fructose, glucose) added to foods and beverages by the manufacturer, cook or consumer, and sugars naturally present in honey, syrups, fruit juices and fruit juice concentrates\".",
       "determinedOn": "2015-03-04",
       "sourceVersion": "who-sugars-guideline-2015",
       "citation": {
         "org": "World Health Organization",
         "title": "Guideline: Sugars intake for adults and children",
-        "year": 2015
-      }
+        "year": 2015,
+        "url": "https://www.who.int/news-room/fact-sheets/detail/healthy-diet"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "partially_hydrogenated_oil",
@@ -235,22 +261,24 @@
       "jurisdiction": "INTL",
       "domain": "food",
       "threshold": "elimination from the food supply",
-      "statement": "WHO calls for the elimination of industrially-produced trans-fatty acids from the global food supply. Partially hydrogenated oils are their principal source. Trans-fat intake is associated with increased risk of coronary heart disease.",
+      "statement": "WHO calls for the elimination of industrially produced trans fat, which \"can be eliminated and replaced with healthier fats or oils\", and recommends intake of \"less than 1% of total energy intake, which is less than 2.2 g per day for a 2000-calorie diet\". Partially hydrogenated oils are named as a major source. WHO reports that trans fat intake \"increases the risk of death from any cause by 34%, coronary heart disease deaths by 28%, and coronary heart disease by 21%\".",
       "determinedOn": "2018-05-14",
       "sourceVersion": "who-replace-2018",
       "citation": {
         "org": "World Health Organization",
-        "title": "REPLACE: An action package to eliminate industrially-produced trans-fatty acids",
-        "year": 2018
-      }
+        "title": "Trans fat (WHO fact sheet)",
+        "year": 2024,
+        "url": "https://www.who.int/news-room/fact-sheets/detail/trans-fat"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "partially_hydrogenated_oil",
-      "source": "fda_food_additives",
+      "source": "curated",
       "kind": "authorization_withdrawn",
       "jurisdiction": "US",
       "domain": "food",
-      "statement": "FDA determined that partially hydrogenated oils are no longer Generally Recognized as Safe (GRAS) for any use in human food.",
+      "statement": "FDA determined that partially hydrogenated oils are no longer Generally Recognized as Safe (GRAS) for any use in human food. (Hand-entered: the Federal Register blocks automated retrieval, so this has not been quoted from the source.)",
       "determinedOn": "2015-06-17",
       "sourceVersion": "fda-pho-gras-determination-2015",
       "citation": {
@@ -265,12 +293,16 @@
       "kind": "no_concern_at_typical_exposure",
       "jurisdiction": "INTL",
       "domain": "food",
-      "statement": "JECFA has allocated Citric acid an ADI \"not specified\" — the designation used when a substance is of very low toxicity and its intake at the levels needed to achieve the desired technological effect does not represent a hazard to health.",
+      "statement": "JECFA evaluated citric acid in 1973 and recorded its acceptable daily intake as \"NOT LIMITED\" — the designation, equivalent to the modern \"ADI not specified\", used for an additive of very low toxicity where total dietary exposure at the levels needed for its technological effect does not represent a hazard to health.",
       "sourceVersion": "jecfa-adi-not-specified",
       "citation": {
         "org": "Joint FAO/WHO Expert Committee on Food Additives",
-        "title": "Evaluations of the Joint FAO/WHO Expert Committee on Food Additives (JECFA)"
-      }
+        "title": "JECFA evaluation: citric acid",
+        "year": 1973,
+        "url": "https://apps.who.int/food-additives-contaminants-jecfa-database/chemical.aspx?chemID=3594"
+      },
+      "determinedOn": "1973",
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "ascorbic_acid",
@@ -306,14 +338,16 @@
       "jurisdiction": "INTL",
       "domain": "food",
       "threshold": "under 5 g of salt a day, which is under 2 g of sodium",
-      "statement": "WHO recommends that adults consume less than 2 g of sodium per day, equivalent to less than 5 g of salt, and that the recommendation be adjusted downward for children. High sodium intake raises blood pressure, which is a leading risk for heart disease and stroke; most people consume far more than the recommended amount, and the majority of it comes from processed food rather than the table.",
+      "statement": "WHO recommends adults consume \"less than 2000 mg/day of sodium (equivalent to less than 5 g/day salt)\", and for children aged 2–15 \"adjusting the adult dose downward based on their energy requirements\". WHO notes that \"the primary health effect associated with diets high in sodium is raised blood pressure which increases the risk of cardiovascular diseases\", and that \"a significant proportion of sodium in the diet comes from processed foods\".",
       "determinedOn": "2012-01-31",
       "sourceVersion": "who-sodium-guideline-2012",
       "citation": {
         "org": "World Health Organization",
         "title": "Guideline: Sodium intake for adults and children",
-        "year": 2012
-      }
+        "year": 2012,
+        "url": "https://www.who.int/news-room/fact-sheets/detail/salt-reduction"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "palm_oil",
@@ -323,14 +357,16 @@
       "jurisdiction": "INTL",
       "domain": "food",
       "threshold": "saturated fat under 10% of total energy intake",
-      "statement": "WHO recommends that adults and children limit saturated fatty acid intake to 10% of total energy intake, and replace it with polyunsaturated fat where possible, to reduce the risk of cardiovascular disease. Palm oil is roughly half saturated fat, which makes it one of the larger contributors in a typical diet.",
+      "statement": "WHO recommends \"no more than 10% of total energy intake coming from saturated fatty acids\", and that saturated fat \"can be replaced with other nutrients such as polyunsaturated fatty acids, monounsaturated fatty acids from plant sources, or carbohydrates from foods containing naturally occurring dietary fibre\". WHO names this among the sources of saturated fat: saturated fatty acids \"can be found in fatty meat, dairy foods, and hard fats and oils such as butter, ghee, lard, palm oil and coconut oil\".",
       "determinedOn": "2023-07-17",
       "sourceVersion": "who-saturated-fat-guideline-2023",
       "citation": {
         "org": "World Health Organization",
         "title": "Saturated fatty acid and trans-fatty acid intake for adults and children: WHO guideline",
-        "year": 2023
-      }
+        "year": 2023,
+        "url": "https://www.who.int/news/item/17-07-2023-who-updates-guidelines-on-fats-and-carbohydrates"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "palm_kernel_oil",
@@ -340,14 +376,16 @@
       "jurisdiction": "INTL",
       "domain": "food",
       "threshold": "saturated fat under 10% of total energy intake",
-      "statement": "WHO recommends that adults and children limit saturated fatty acid intake to 10% of total energy intake, and replace it with polyunsaturated fat where possible, to reduce the risk of cardiovascular disease. Palm kernel oil is over four fifths saturated fat, which makes it one of the larger contributors in a typical diet.",
+      "statement": "WHO recommends \"no more than 10% of total energy intake coming from saturated fatty acids\", and that saturated fat \"can be replaced with other nutrients such as polyunsaturated fatty acids, monounsaturated fatty acids from plant sources, or carbohydrates from foods containing naturally occurring dietary fibre\". WHO does not name this ingredient; it is included because it is predominantly saturated fat by composition.",
       "determinedOn": "2023-07-17",
       "sourceVersion": "who-saturated-fat-guideline-2023",
       "citation": {
         "org": "World Health Organization",
         "title": "Saturated fatty acid and trans-fatty acid intake for adults and children: WHO guideline",
-        "year": 2023
-      }
+        "year": 2023,
+        "url": "https://www.who.int/news/item/17-07-2023-who-updates-guidelines-on-fats-and-carbohydrates"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24-composition-inferred"
     },
     {
       "substanceId": "coconut_oil",
@@ -357,14 +395,16 @@
       "jurisdiction": "INTL",
       "domain": "food",
       "threshold": "saturated fat under 10% of total energy intake",
-      "statement": "WHO recommends that adults and children limit saturated fatty acid intake to 10% of total energy intake, and replace it with polyunsaturated fat where possible, to reduce the risk of cardiovascular disease. Coconut oil is around nine tenths saturated fat, which makes it one of the larger contributors in a typical diet.",
+      "statement": "WHO recommends \"no more than 10% of total energy intake coming from saturated fatty acids\", and that saturated fat \"can be replaced with other nutrients such as polyunsaturated fatty acids, monounsaturated fatty acids from plant sources, or carbohydrates from foods containing naturally occurring dietary fibre\". WHO names this among the sources of saturated fat: saturated fatty acids \"can be found in fatty meat, dairy foods, and hard fats and oils such as butter, ghee, lard, palm oil and coconut oil\".",
       "determinedOn": "2023-07-17",
       "sourceVersion": "who-saturated-fat-guideline-2023",
       "citation": {
         "org": "World Health Organization",
         "title": "Saturated fatty acid and trans-fatty acid intake for adults and children: WHO guideline",
-        "year": 2023
-      }
+        "year": 2023,
+        "url": "https://www.who.int/news/item/17-07-2023-who-updates-guidelines-on-fats-and-carbohydrates"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "cocoa_butter",
@@ -374,14 +414,16 @@
       "jurisdiction": "INTL",
       "domain": "food",
       "threshold": "saturated fat under 10% of total energy intake",
-      "statement": "WHO recommends that adults and children limit saturated fatty acid intake to 10% of total energy intake, and replace it with polyunsaturated fat where possible, to reduce the risk of cardiovascular disease. Cocoa butter is around three fifths saturated fat, which makes it one of the larger contributors in a typical diet.",
+      "statement": "WHO recommends \"no more than 10% of total energy intake coming from saturated fatty acids\", and that saturated fat \"can be replaced with other nutrients such as polyunsaturated fatty acids, monounsaturated fatty acids from plant sources, or carbohydrates from foods containing naturally occurring dietary fibre\". WHO does not name this ingredient; it is included because it is predominantly saturated fat by composition.",
       "determinedOn": "2023-07-17",
       "sourceVersion": "who-saturated-fat-guideline-2023",
       "citation": {
         "org": "World Health Organization",
         "title": "Saturated fatty acid and trans-fatty acid intake for adults and children: WHO guideline",
-        "year": 2023
-      }
+        "year": 2023,
+        "url": "https://www.who.int/news/item/17-07-2023-who-updates-guidelines-on-fats-and-carbohydrates"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24-composition-inferred"
     },
     {
       "substanceId": "butter",
@@ -391,14 +433,16 @@
       "jurisdiction": "INTL",
       "domain": "food",
       "threshold": "saturated fat under 10% of total energy intake",
-      "statement": "WHO recommends that adults and children limit saturated fatty acid intake to 10% of total energy intake, and replace it with polyunsaturated fat where possible, to reduce the risk of cardiovascular disease. Butter is around two thirds saturated fat, which makes it one of the larger contributors in a typical diet.",
+      "statement": "WHO recommends \"no more than 10% of total energy intake coming from saturated fatty acids\", and that saturated fat \"can be replaced with other nutrients such as polyunsaturated fatty acids, monounsaturated fatty acids from plant sources, or carbohydrates from foods containing naturally occurring dietary fibre\". WHO names this among the sources of saturated fat: saturated fatty acids \"can be found in fatty meat, dairy foods, and hard fats and oils such as butter, ghee, lard, palm oil and coconut oil\".",
       "determinedOn": "2023-07-17",
       "sourceVersion": "who-saturated-fat-guideline-2023",
       "citation": {
         "org": "World Health Organization",
         "title": "Saturated fatty acid and trans-fatty acid intake for adults and children: WHO guideline",
-        "year": 2023
-      }
+        "year": 2023,
+        "url": "https://www.who.int/news/item/17-07-2023-who-updates-guidelines-on-fats-and-carbohydrates"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     }
   ]
 }
