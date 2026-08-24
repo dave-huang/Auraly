@@ -276,9 +276,16 @@ export interface ReadLabelOptions {
  * is a total scanning outage. That is the deliberate trade — one fast path
  * over a slow path into a reader that answers less honestly.
  *
- * Restoring a provider needs no deploy: set LABEL_PROVIDER_CHAIN to a
- * comma-separated list, e.g. "gemini,openai" once the Gemini credits are
- * topped up.
+ * The provider code is kept rather than deleted, precisely because of that
+ * trade: it is the recovery path, and deleting it would make the single point
+ * of failure permanent. Both providers gate on their own env var and are inert
+ * without one.
+ *
+ * As of 2026-08-24 neither key exists any more — GEMINI_API_KEY and
+ * GOOGLE_CLOUD_VISION_API_KEY were removed from .env and unset as Fly secrets,
+ * because a live credential behind unreachable code is a liability with no
+ * upside. Restoring a fallback is therefore two steps and still no deploy: set
+ * the provider's key, then set LABEL_PROVIDER_CHAIN, e.g. "gemini,openai".
  */
 const DEFAULT_PROVIDER_CHAIN: LabelProvider[] = ['openai'];
 
