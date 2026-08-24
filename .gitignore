@@ -18,6 +18,10 @@ xcuserdata/
 # Local secrets — never commit
 secrets.env.txt
 .env.local
+# Any .env variant, including timestamped backups made while switching
+# databases. A backup of .env is still a file with a production password in it.
+.env.*
+!.env.example
 
 # Expo local env
 mobile/.env
