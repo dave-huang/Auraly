@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 import { loadEvidenceStore, type EvidenceFile } from '../evidence';
-import type { Substance, SubstanceRegistryFile } from '../identity';
+import { stampRegistry, type Substance, type SubstanceRegistryFile } from '../identity';
 import { applyPolicy, POLICY_VERSION } from '../policy';
 import { assertColumns, parseCsv, type SnapshotMeta, type SourceAdapter } from './adapter';
 import {
@@ -221,8 +221,9 @@ async function main() {
   }
 
   registryFile.substances = merged;
-  registryFile._metadata.updatedAt = meta.fetchedAt;
+  const registryVersion = stampRegistry(registryFile, `${args.source}-${args.version}`);
   fs.writeFileSync(REGISTRY_PATH, JSON.stringify(registryFile, null, 2) + '\n');
+  console.log(`  registry: ${registryVersion}`);
   fs.mkdirSync(EVIDENCE_DIR, { recursive: true });
   fs.writeFileSync(evidencePath, JSON.stringify(evidenceFile, null, 2) + '\n');
 

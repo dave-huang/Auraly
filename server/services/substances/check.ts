@@ -1,3 +1,6 @@
+import fs from 'fs';
+import path from 'path';
+
 import { profileConditionTypes } from '@shared/schema';
 import {
   CONDITION_ADVISORIES,
@@ -5,7 +8,13 @@ import {
   matchAdvisory,
 } from '../conditionAdvisories';
 import { getEvidenceStore } from './evidence';
-import { getSubstanceRegistry, isValidCas, normalizeSubstanceName } from './identity';
+import {
+  fingerprintSubstances,
+  getSubstanceRegistry,
+  isValidCas,
+  normalizeSubstanceName,
+  type SubstanceRegistryFile,
+} from './identity';
 import { POLICY_RULES, POLICY_VERSION, applyPolicy } from './policy';
 import { classifyIngredient } from './classify';
 
@@ -174,6 +183,49 @@ function main(): void {
     `\n[CHECK] levels across substance/domain pairs: ` +
       `high ${levels.high}, moderate ${levels.moderate}, low ${levels.low}, unknown ${levels.unknown}`,
   );
+
+  // --- the registry describes itself ---
+  //
+  // The version reported by /api/healthz is the only way to tell what a running
+  // server is classifying against, and for twelve days it did not do that: both
+  // writers bumped `updatedAt` and left `version` alone, so the corpus grew from
+  // 3,903 substances to 8,487 while still calling itself by the name of the seed
+  // file. It is derived from the contents now, and this is what keeps it
+  // derived — a hand-edit to substances.json, or a writer that forgets to
+  // stamp, moves the fingerprint away from the recorded one and fails here
+  // rather than shipping a corpus that misreports itself.
+  console.log('\n[CHECK] registry self-description');
+  {
+    const file = JSON.parse(
+      fs.readFileSync(path.join(process.cwd(), 'server/data/substances/substances.json'), 'utf-8'),
+    ) as SubstanceRegistryFile;
+    const actual = fingerprintSubstances(file.substances);
+    const recorded = file._metadata.version.split('#')[1] ?? '';
+    const sources = file._metadata.sources ?? [];
+
+    if (recorded !== actual) {
+      problems.push({
+        severity: 'error',
+        message:
+          `substances.json says it is #${recorded || '(nothing)'} but its contents fingerprint ` +
+          `as #${actual}. Something wrote the registry without stamping it — re-run the ingest ` +
+          `or curation that made the change rather than editing the version by hand.`,
+      });
+      console.log(`  FAIL recorded #${recorded || '—'}, actual #${actual}`);
+    } else {
+      console.log(`  ok   #${actual} across ${file.substances.length} substances`);
+    }
+
+    if (sources.length === 0) {
+      problems.push({
+        severity: 'error',
+        message: 'substances.json records no contributing sources, so its version names nothing.',
+      });
+      console.log('  FAIL no contributing sources recorded');
+    } else {
+      console.log(`  ok   ${sources.length} contributing source(s): ${sources.join(', ')}`);
+    }
+  }
 
   // --- must never resolve ---
   //

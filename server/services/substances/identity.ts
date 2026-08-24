@@ -1,3 +1,4 @@
+import { createHash } from 'crypto';
 import fs from 'fs';
 import path from 'path';
 
@@ -81,11 +82,76 @@ export interface Substance {
 
 export interface SubstanceRegistryFile {
   _metadata: {
+    /**
+     * What is in this file, derived rather than written.
+     *
+     * Every source that has contributed, joined the way the evidence store
+     * joins its own, followed by a fingerprint of the substances themselves.
+     * `stampRegistry` computes it; nobody types it.
+     *
+     * The fingerprint is the part that matters. This string is reported by
+     * /api/healthz and is the only way to tell what a running server is
+     * actually classifying against — and for twelve days it did not do that.
+     * Both writers bumped `updatedAt` and left `version` alone, so the registry
+     * went from 3,903 substances to 8,487 across three ingests and a curation
+     * pass while still calling itself curated-nutrients-2026-08-12. A corpus
+     * whose whole claim is that every record traces to a snapshot cannot have a
+     * version that stops describing it, and a rule saying "remember to bump
+     * this" would have failed the same way. Deriving it from the contents means
+     * it cannot be forgotten.
+     */
     version: string;
     updatedAt: string;
     description: string;
+    /** Source stamps that have contributed, in the order they arrived. */
+    sources?: string[];
   };
   substances: Substance[];
+}
+
+/**
+ * Fingerprint of the identity content — everything a lookup can depend on.
+ *
+ * Deliberately not a hash of the file. Formatting, key order and `updatedAt`
+ * must not change the fingerprint, or every rewrite would look like a corpus
+ * change and the signal would be worthless. Two registries with the same
+ * fingerprint resolve every name identically.
+ */
+export function fingerprintSubstances(substances: Substance[]): string {
+  const canonical = substances
+    .map((s) =>
+      [
+        s.id,
+        s.name,
+        s.cas ?? '',
+        s.ec ?? '',
+        s.eNumber ?? '',
+        s.inci ?? '',
+        [...s.aliases]
+          .map((a) => `${a.name}:${a.source}:${a.confidence}`)
+          .sort()
+          .join('|'),
+      ].join('\u0001'),
+    )
+    .sort()
+    .join('\u0002');
+  return createHash('sha256').update(canonical).digest('hex').slice(0, 12);
+}
+
+/**
+ * Record a contribution and restamp the version. Called by every writer.
+ *
+ * Idempotent in the way that matters: re-running the same ingest re-records the
+ * same stamp once and produces the same fingerprint, so a no-op ingest leaves
+ * the version alone.
+ */
+export function stampRegistry(file: SubstanceRegistryFile, contribution: string): string {
+  const sources = file._metadata.sources ?? [];
+  if (contribution && !sources.includes(contribution)) sources.push(contribution);
+  file._metadata.sources = sources;
+  file._metadata.updatedAt = new Date().toISOString().slice(0, 10);
+  file._metadata.version = `${sources.join('+')}#${fingerprintSubstances(file.substances)}`;
+  return file._metadata.version;
 }
 
 /** Aliases below this confidence never produce a match on their own. */

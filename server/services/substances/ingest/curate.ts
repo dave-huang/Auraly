@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import type { Substance, SubstanceRegistryFile } from '../identity';
+import { stampRegistry, type Substance, type SubstanceRegistryFile } from '../identity';
 
 /**
  * Apply hand-curated identifiers and names to the registry.
@@ -169,8 +169,9 @@ async function main() {
     console.log(`\n[DRY RUN] would write ${REGISTRY_PATH}\n`);
     return;
   }
-  registry._metadata.updatedAt = new Date().toISOString().slice(0, 10);
+  const version = stampRegistry(registry, curated._metadata.version);
   fs.writeFileSync(REGISTRY_PATH, JSON.stringify(registry, null, 2) + '\n');
+  console.log(`  registry: ${version}`);
   console.log(`  wrote ${REGISTRY_PATH}\n`);
 }
 
