@@ -15,7 +15,17 @@ if (!process.env.DATABASE_URL) {
  * hostname half of a connection string whose password lives in the environment.
  * What it buys is the check below.
  */
-const PRODUCTION_DB_HOST = 'ep-sparkling-boat-ae3ij9vz.c-2.us-east-2.aws.neon.tech';
+const PRODUCTION_DB_HOST = 'ep-small-term-ayv7p5i8.c-5.us-east-2.aws.neon.tech';
+
+/**
+ * The database production used to live in, before 24 August 2026.
+ *
+ * Kept because it is still running and still holds every row it held at
+ * cutover — it is the rollback, for as long as that is worth having. Pointing
+ * anything at it now is a mistake in both directions: it is not production any
+ * more, so writes there are lost, and it is not a scratch database either.
+ */
+const RETIRED_DB_HOST = 'ep-sparkling-boat-ae3ij9vz.c-2.us-east-2.aws.neon.tech';
 
 /**
  * Refuse to run a development server against the production database.
@@ -46,15 +56,24 @@ function assertNotProductionDatabase(url: string): void {
     );
     return;
   }
+  if (url.includes(RETIRED_DB_HOST)) {
+    throw new Error(
+      `DATABASE_URL points at the RETIRED production database (${RETIRED_DB_HOST}).\n\n` +
+        `Production moved to ${PRODUCTION_DB_HOST} on 2026-08-24. The old database is ` +
+        `still running as a rollback and still holds the data it had at cutover, but it ` +
+        `is no longer read by anything — writes there go nowhere.\n\n` +
+        `Use the dev branch: npx neonctl connection-string dev --project-id icy-dust-42865450`,
+    );
+  }
+
   if (!url.includes(PRODUCTION_DB_HOST)) return;
 
   throw new Error(
     `DATABASE_URL points at the production database (${PRODUCTION_DB_HOST}) and ` +
       `NODE_ENV is not production.\n\n` +
-      `Point .env at a Neon development branch instead — branching is copy-on-write, ` +
+      `Point .env at the dev branch instead — it is copy-on-write off production, ` +
       `so it costs nothing and starts with production's data:\n` +
-      `  npx neonctl branches create --name dev --parent production\n` +
-      `  npx neonctl connection-string dev\n\n` +
+      `  npx neonctl connection-string dev --project-id icy-dust-42865450\n\n` +
       `If reading production really is the intent, say so for this command only:\n` +
       `  ALLOW_PRODUCTION_DB=true npm run <script>`,
   );
