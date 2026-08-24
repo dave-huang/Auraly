@@ -266,8 +266,40 @@ function main(): void {
       substanceId: 'fd_c_red_no_40',
       name: 'Red 40',
       domain: 'food',
-      expectLevel: 'low',
-      why: 'the regulation calls it FD&C Red No. 40 and every label calls it Red 40; without the colour alias the most-scanned dye in the inventory resolved to nothing',
+      expectLevel: 'moderate',
+      expectRule: 'moderate.mandatory_consumer_warning',
+      why: 'the regulation calls it FD&C Red No. 40 and every label calls it Red 40; the EU requires a warning on it, which is a caution and not an avoid',
+    },
+
+    // --- curated regulatory findings ---
+    {
+      substanceId: 'titanium_dioxide',
+      name: 'Titanium dioxide',
+      domain: 'food',
+      expectLevel: 'high',
+      expectRule: 'high.prohibited_in_tracked_market',
+      why: 'the EU deleted E 171 from its permitted list in 2022, and a withdrawal outranks the IARC 2B listing that had been deciding it',
+    },
+    {
+      substanceId: 'allura_red_ac',
+      name: 'E129',
+      domain: 'food',
+      expectLevel: 'moderate',
+      expectRule: 'moderate.mandatory_consumer_warning',
+      why: 'European labels print the E number, and no ingested source carries one — the corpus held three E numbers across 8,483 substances',
+    },
+    {
+      // The distinction the whole ADI decision rests on. Nitrite is moderate
+      // because EFSA found intake EXCEEDS its acceptable daily intake, not
+      // because an acceptable daily intake exists — riboflavin has one of those
+      // and stays low. If this ever reads moderate via a guidance-value rule,
+      // the two have been conflated again.
+      substanceId: 'sodium_nitrite',
+      name: 'Sodium nitrite',
+      domain: 'food',
+      expectLevel: 'moderate',
+      expectRule: 'moderate.health_body_intake_limit',
+      why: 'a finding that intake exceeds the limit is what raises a level; the limit merely existing is not',
     },
     {
       substanceId: 'mannitol',

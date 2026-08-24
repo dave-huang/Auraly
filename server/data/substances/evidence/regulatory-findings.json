@@ -1,0 +1,155 @@
+{
+  "_metadata": {
+    "version": "regulatory-findings-2026-08-23",
+    "updatedAt": "2026-08-23",
+    "description": "Determinations that exist as prose in an opinion or a regulation rather than as a column in any export, and so can only arrive by hand. Three kinds appear here: a market withdrawing an authorisation, a regulator requiring a warning on the label, and a health body finding that real intake exceeds its own guidance value. That last one is the reason the file exists — the corpus holds hundreds of acceptable daily intakes and, deliberately, rates none of them, because an ADI is the output of a safety assessment. An authority concluding that people actually exceed one is a different statement, and it is the only thing that should move a level. REVIEW STATUS: ai_seeded. Every regulation, opinion and date named here is real and the determinations are accurately represented, but the statements are not verbatim extracts and carry no URL, because a guessed link is worse than none. Replacing them with quoted text from the published documents is a curation task, not a code change.",
+    "reviewStatus": "ai_seeded"
+  },
+  "records": [
+    {
+      "substanceId": "titanium_dioxide",
+      "source": "curated",
+      "kind": "prohibited",
+      "jurisdiction": "EU",
+      "domain": "food",
+      "statement": "Removed from the EU list of permitted food additives. EFSA concluded in May 2021 that titanium dioxide (E 171) can no longer be considered safe when used as a food additive, because a concern for genotoxicity could not be ruled out and no acceptable daily intake could therefore be established. Commission Regulation (EU) 2022/63 deleted E 171 from the Union list, with the prohibition applying from August 2022 after a transition period.",
+      "determinedOn": "2022-01-14",
+      "sourceVersion": "regulatory-findings-2026-08-23",
+      "citation": {
+        "org": "European Commission",
+        "title": "Commission Regulation (EU) 2022/63 amending Annexes II and III to Regulation (EC) No 1333/2008 as regards the food additive titanium dioxide (E 171)",
+        "year": 2022
+      }
+    },
+    {
+      "substanceId": "sodium_nitrite",
+      "source": "curated",
+      "kind": "health_guidance",
+      "direction": "limit",
+      "jurisdiction": "EU",
+      "domain": "food",
+      "threshold": "0.07 mg nitrite ion per kg of body weight per day",
+      "statement": "EFSA set an acceptable daily intake for nitrite of 0.07 mg nitrite ion per kg of body weight per day in its 2017 re-evaluation of nitrites as food additives, and found that this intake was exceeded — by children at the higher end of consumption from the additive use alone, and across several age groups once all dietary sources of nitrite were counted together.",
+      "determinedOn": "2017-06-15",
+      "sourceVersion": "regulatory-findings-2026-08-23",
+      "citation": {
+        "org": "EFSA",
+        "title": "Re-evaluation of potassium nitrite (E 249) and sodium nitrite (E 250) as food additives",
+        "year": 2017
+      }
+    },
+    {
+      "substanceId": "potassium_nitrite",
+      "source": "curated",
+      "kind": "health_guidance",
+      "direction": "limit",
+      "jurisdiction": "EU",
+      "domain": "food",
+      "threshold": "0.07 mg nitrite ion per kg of body weight per day",
+      "statement": "EFSA set an acceptable daily intake for nitrite of 0.07 mg nitrite ion per kg of body weight per day in its 2017 re-evaluation of nitrites as food additives, and found that this intake was exceeded — by children at the higher end of consumption from the additive use alone, and across several age groups once all dietary sources of nitrite were counted together.",
+      "determinedOn": "2017-06-15",
+      "sourceVersion": "regulatory-findings-2026-08-23",
+      "citation": {
+        "org": "EFSA",
+        "title": "Re-evaluation of potassium nitrite (E 249) and sodium nitrite (E 250) as food additives",
+        "year": 2017
+      }
+    },
+    {
+      "substanceId": "tartrazine",
+      "source": "curated",
+      "kind": "warning_required",
+      "jurisdiction": "EU",
+      "domain": "food",
+      "warningText": "may have an adverse effect on activity and attention in children",
+      "statement": "Foods containing this colour must carry the warning \"may have an adverse effect on activity and attention in children\" under Annex V to Regulation (EC) No 1333/2008. The requirement covers six colours — E 102, E 104, E 110, E 122, E 124 and E 129 — and followed the Southampton study on colours and hyperactivity in children.",
+      "determinedOn": "2008-12-16",
+      "sourceVersion": "regulatory-findings-2026-08-23",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1333/2008 on food additives, Annex V",
+        "year": 2008
+      }
+    },
+    {
+      "substanceId": "quinoline_yellow",
+      "source": "curated",
+      "kind": "warning_required",
+      "jurisdiction": "EU",
+      "domain": "food",
+      "warningText": "may have an adverse effect on activity and attention in children",
+      "statement": "Foods containing this colour must carry the warning \"may have an adverse effect on activity and attention in children\" under Annex V to Regulation (EC) No 1333/2008. The requirement covers six colours — E 102, E 104, E 110, E 122, E 124 and E 129 — and followed the Southampton study on colours and hyperactivity in children.",
+      "determinedOn": "2008-12-16",
+      "sourceVersion": "regulatory-findings-2026-08-23",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1333/2008 on food additives, Annex V",
+        "year": 2008
+      }
+    },
+    {
+      "substanceId": "sunset_yellow_fcf",
+      "source": "curated",
+      "kind": "warning_required",
+      "jurisdiction": "EU",
+      "domain": "food",
+      "warningText": "may have an adverse effect on activity and attention in children",
+      "statement": "Foods containing this colour must carry the warning \"may have an adverse effect on activity and attention in children\" under Annex V to Regulation (EC) No 1333/2008. The requirement covers six colours — E 102, E 104, E 110, E 122, E 124 and E 129 — and followed the Southampton study on colours and hyperactivity in children.",
+      "determinedOn": "2008-12-16",
+      "sourceVersion": "regulatory-findings-2026-08-23",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1333/2008 on food additives, Annex V",
+        "year": 2008
+      }
+    },
+    {
+      "substanceId": "carmoisine",
+      "source": "curated",
+      "kind": "warning_required",
+      "jurisdiction": "EU",
+      "domain": "food",
+      "warningText": "may have an adverse effect on activity and attention in children",
+      "statement": "Foods containing this colour must carry the warning \"may have an adverse effect on activity and attention in children\" under Annex V to Regulation (EC) No 1333/2008. The requirement covers six colours — E 102, E 104, E 110, E 122, E 124 and E 129 — and followed the Southampton study on colours and hyperactivity in children.",
+      "determinedOn": "2008-12-16",
+      "sourceVersion": "regulatory-findings-2026-08-23",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1333/2008 on food additives, Annex V",
+        "year": 2008
+      }
+    },
+    {
+      "substanceId": "ponceau_4r_cochineal_red_a",
+      "source": "curated",
+      "kind": "warning_required",
+      "jurisdiction": "EU",
+      "domain": "food",
+      "warningText": "may have an adverse effect on activity and attention in children",
+      "statement": "Foods containing this colour must carry the warning \"may have an adverse effect on activity and attention in children\" under Annex V to Regulation (EC) No 1333/2008. The requirement covers six colours — E 102, E 104, E 110, E 122, E 124 and E 129 — and followed the Southampton study on colours and hyperactivity in children.",
+      "determinedOn": "2008-12-16",
+      "sourceVersion": "regulatory-findings-2026-08-23",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1333/2008 on food additives, Annex V",
+        "year": 2008
+      }
+    },
+    {
+      "substanceId": "allura_red_ac",
+      "source": "curated",
+      "kind": "warning_required",
+      "jurisdiction": "EU",
+      "domain": "food",
+      "warningText": "may have an adverse effect on activity and attention in children",
+      "statement": "Foods containing this colour must carry the warning \"may have an adverse effect on activity and attention in children\" under Annex V to Regulation (EC) No 1333/2008. The requirement covers six colours — E 102, E 104, E 110, E 122, E 124 and E 129 — and followed the Southampton study on colours and hyperactivity in children.",
+      "determinedOn": "2008-12-16",
+      "sourceVersion": "regulatory-findings-2026-08-23",
+      "citation": {
+        "org": "European Union",
+        "title": "Regulation (EC) No 1333/2008 on food additives, Annex V",
+        "year": 2008
+      }
+    }
+  ]
+}

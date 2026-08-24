@@ -27,7 +27,7 @@ import type { EvidenceRecord, UseDomain } from './evidence';
  * It is simply no longer NECESSARY: a health body's dated, quotable
  * determination can also produce a level, in either direction.
  */
-export const POLICY_VERSION = '2026-08-23.1';
+export const POLICY_VERSION = '2026-08-23.2';
 
 /**
  * Four states, not three.
@@ -124,12 +124,6 @@ export const POLICY_RULES: PolicyRule[] = [
       ),
   },
   {
-    id: 'high.mandatory_consumer_warning',
-    level: 'high',
-    rationale: 'A regulator requires a consumer-facing warning on products containing it.',
-    match: has((r) => r.kind === 'warning_required'),
-  },
-  {
     id: 'high.ntp_known_carcinogen',
     level: 'high',
     rationale: 'Listed by the US National Toxicology Program as a known human carcinogen.',
@@ -173,6 +167,31 @@ export const POLICY_RULES: PolicyRule[] = [
     match: (records, ctx) =>
       records.filter(
         (r) => r.kind === 'restricted' && (r.domain === 'any' || r.domain === ctx.domain),
+      ),
+  },
+  {
+    id: 'moderate.mandatory_consumer_warning',
+    level: 'moderate',
+    rationale: 'A regulator requires a consumer-facing warning on products containing it.',
+    // This was a `high` rule until the first records that could fire it arrived,
+    // and seeing what they were is what re-levelled it. The six colours the EU
+    // requires a warning on — E 102, E 104, E 110, E 122, E 124, E 129 — include
+    // Red 40 and Yellow 5, which are in an enormous share of packaged food. All
+    // of it reading Avoid would empty the word out.
+    //
+    // The distinction that settles it: there is a difference between a
+    // regulator saying "you may not sell this" and one saying "you must tell
+    // people this", and it is exactly the difference between avoid and caution.
+    // A prohibition already produces `high` through its own rule, and a warning
+    // that accompanies a genuine hazard finding — a Prop 65 cancer warning —
+    // produces `high` through the carcinogen rule. What is left for this rule to
+    // decide alone is the informational case, where a regulator wants a person
+    // to be able to weigh something for themselves. That is a caution, and the
+    // warning text is the point: it is shown, so the reader weighs the actual
+    // statement rather than our compression of it.
+    match: (records, ctx) =>
+      records.filter(
+        (r) => r.kind === 'warning_required' && (r.domain === 'any' || r.domain === ctx.domain),
       ),
   },
   // There was a `moderate.has_guidance_value` rule here, and it was wrong.

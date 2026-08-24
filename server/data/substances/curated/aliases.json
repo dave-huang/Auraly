@@ -1,0 +1,63 @@
+{
+  "_metadata": {
+    "version": "curated-aliases-2026-08-23",
+    "updatedAt": "2026-08-23",
+    "description": "Identifiers and names a person recorded by hand, because no ingested source carried them in a form a label would print. Applied by curate.ts, which never invents a substance: every entry names an id that must already exist."
+  },
+  "entries": [
+    {
+      "substanceId": "ponceau_4r_cochineal_red_a",
+      "why": "The annex files two names in one field, so neither of them resolves on its own — and this is one of the six colours the EU requires a warning for.",
+      "eNumber": "E124",
+      "aliases": ["Ponceau 4R", "Cochineal Red A", "New Coccine", "CI 16255"]
+    },
+    {
+      "substanceId": "tartrazine",
+      "why": "EU labels print the E number, and the warning requirement is written in terms of it.",
+      "eNumber": "E102",
+      "aliases": ["Tartrazine", "CI 19140"]
+    },
+    {
+      "substanceId": "quinoline_yellow",
+      "why": "As above.",
+      "eNumber": "E104",
+      "aliases": ["Quinoline Yellow", "CI 47005"]
+    },
+    {
+      "substanceId": "sunset_yellow_fcf",
+      "why": "As above.",
+      "eNumber": "E110",
+      "aliases": ["Sunset Yellow FCF", "Orange Yellow S", "CI 15985"]
+    },
+    {
+      "substanceId": "carmoisine",
+      "why": "As above. Labels print either name.",
+      "eNumber": "E122",
+      "aliases": ["Carmoisine", "Azorubine", "CI 14720"]
+    },
+    {
+      "substanceId": "allura_red_ac",
+      "why": "As above.",
+      "eNumber": "E129",
+      "aliases": ["Allura Red AC", "CI 16035"]
+    },
+    {
+      "substanceId": "titanium_dioxide",
+      "why": "Banned as a food additive in the EU under its E number; food labels outside the EU still print it.",
+      "eNumber": "E171",
+      "aliases": ["CI 77891"]
+    },
+    {
+      "substanceId": "sodium_nitrite",
+      "why": "EFSA's re-evaluation and the EU authorisation are both written in terms of the E number.",
+      "eNumber": "E250",
+      "aliases": []
+    },
+    {
+      "substanceId": "potassium_nitrite",
+      "why": "As above.",
+      "eNumber": "E249",
+      "aliases": []
+    }
+  ]
+}

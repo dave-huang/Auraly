@@ -20754,13 +20754,18 @@
       "name": "Titanium dioxide",
       "cas": "13463-67-7",
       "ec": "236-675-5[1] /215-280-1[2]/215-282-2 [ 3]",
-      "eNumber": null,
+      "eNumber": "E171",
       "inci": "TITANIUM DIOXIDE",
       "category": "ANTICAKING AGENT OR FREE-FLOW AGENT, COLOR OR COLORING ADJUNCT, DRYING AGENT, HUMECTANT, PROCESSING AID, SURFACE-FINISHING AGENT, TRACER",
       "aliases": [
         {
           "name": "Titanium dioxide",
           "source": "iarc",
+          "confidence": 1
+        },
+        {
+          "name": "CI 77891",
+          "source": "curated",
           "confidence": 1
         }
       ]
@@ -22738,7 +22743,7 @@
       "name": "Sunset Yellow FCF",
       "cas": "2783-94-0",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E110",
       "inci": null,
       "category": null,
       "aliases": [
@@ -22746,6 +22751,16 @@
           "name": "Sunset Yellow FCF",
           "source": "efsa",
           "confidence": 0.95
+        },
+        {
+          "name": "Orange Yellow S",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "CI 15985",
+          "source": "curated",
+          "confidence": 1
         }
       ]
     },
@@ -23287,13 +23302,23 @@
       "name": "Carmoisine",
       "cas": "3567-69-9",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E122",
       "inci": null,
       "category": null,
       "aliases": [
         {
           "name": "Carmoisine",
           "source": "iarc",
+          "confidence": 1
+        },
+        {
+          "name": "Azorubine",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "CI 14720",
+          "source": "curated",
           "confidence": 1
         }
       ]
@@ -54666,7 +54691,7 @@
       "name": "Sodium nitrite",
       "cas": "7632-00-0",
       "ec": "231-555-9",
-      "eNumber": null,
+      "eNumber": "E250",
       "inci": "SODIUM NITRITE",
       "category": "ANTIMICROBIAL AGENT, ANTIOXIDANT, COLOR OR COLORING ADJUNCT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, PROPELLANT",
       "aliases": [
@@ -123748,7 +123773,7 @@
       "name": "POTASSIUM NITRITE",
       "cas": "7758-09-0",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E249",
       "inci": null,
       "category": null,
       "aliases": [
@@ -139316,7 +139341,7 @@
       "name": "Ponceau 4R, Cochineal Red A",
       "cas": "2611-82-7",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E124",
       "inci": null,
       "category": null,
       "aliases": [
@@ -139324,6 +139349,26 @@
           "name": "Ponceau 4R, Cochineal Red A",
           "source": "efsa",
           "confidence": 0.95
+        },
+        {
+          "name": "Ponceau 4R",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Cochineal Red A",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "New Coccine",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "CI 16255",
+          "source": "curated",
+          "confidence": 1
         }
       ]
     },
@@ -139364,7 +139409,7 @@
       "name": "Tartrazine",
       "cas": "1934-21-0",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E102",
       "inci": null,
       "category": null,
       "aliases": [
@@ -139372,6 +139417,11 @@
           "name": "Tartrazine",
           "source": "efsa",
           "confidence": 0.95
+        },
+        {
+          "name": "CI 19140",
+          "source": "curated",
+          "confidence": 1
         }
       ]
     },
@@ -142804,7 +142854,7 @@
       "name": "Quinoline Yellow",
       "cas": "8004-92-0",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E104",
       "inci": null,
       "category": null,
       "aliases": [
@@ -142812,6 +142862,11 @@
           "name": "Quinoline Yellow",
           "source": "efsa",
           "confidence": 0.95
+        },
+        {
+          "name": "CI 47005",
+          "source": "curated",
+          "confidence": 1
         }
       ]
     },
@@ -147204,7 +147259,7 @@
       "name": "Allura Red AC",
       "cas": "25956-17-6",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E129",
       "inci": null,
       "category": null,
       "aliases": [
@@ -147212,6 +147267,11 @@
           "name": "Allura Red AC",
           "source": "efsa",
           "confidence": 0.95
+        },
+        {
+          "name": "CI 16035",
+          "source": "curated",
+          "confidence": 1
         }
       ]
     },
