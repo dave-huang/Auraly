@@ -22,9 +22,22 @@ import type { Substance, SubstanceRegistryFile } from '../identity';
  * how the regulations that govern them are written, and no source in the corpus
  * carries them: the registry holds three E numbers across 8,483 substances.
  *
- * The one rule: this never invents a substance. Every entry names an id that
- * must already exist, so curation stays a correction to what a publisher said
- * and never becomes an unattributed claim of its own.
+ * Two sections, kept apart on purpose. `entries` corrects substances a
+ * publisher already gave us, and an entry naming an id that does not exist is
+ * fatal — that is how a typo stays a typo instead of quietly becoming a new
+ * substance. `creates` adds substances no publisher will ever supply.
+ *
+ * That second section exists for whole foods. Every source in this corpus is a
+ * register of things somebody regulates: additives, colours, preservatives,
+ * carcinogens. Nobody maintains a register of palm oil, and so the ingredients
+ * printed most often on real labels were the ones the corpus could not see at
+ * all — palm oil, cocoa butter, butter, salt. They are not exotic and they are
+ * not unknowable; they are simply nobody's job to list.
+ *
+ * A created substance carries no CAS unless a human is certain of it. A wrong
+ * CAS joins another source's evidence onto the wrong chemical, which is the
+ * failure the identity layer exists to prevent, and for a whole food the CAS
+ * buys nothing: no other source is going to have a record to join.
  *
  *   npx tsx server/services/substances/ingest/curate.ts [--dry-run]
  */
@@ -37,9 +50,20 @@ interface CuratedEntry {
   aliases?: string[];
 }
 
+interface CreatedSubstance {
+  id: string;
+  name: string;
+  why: string;
+  cas?: string;
+  eNumber?: string;
+  category?: string;
+  aliases: string[];
+}
+
 interface CuratedFile {
   _metadata: { version: string; updatedAt: string; description: string };
   entries: CuratedEntry[];
+  creates?: CreatedSubstance[];
 }
 
 const DATA_DIR = path.join(process.cwd(), 'server/data/substances');
@@ -49,11 +73,38 @@ const CURATED_PATH = path.join(DATA_DIR, 'curated/aliases.json');
 export function applyCuration(
   registry: SubstanceRegistryFile,
   curated: CuratedFile,
-): { applied: number; added: number; missing: string[] } {
+): { applied: number; added: number; created: number; missing: string[]; collided: string[] } {
   const byId = new Map(registry.substances.map((s) => [s.id, s]));
   const missing: string[] = [];
+  const collided: string[] = [];
   let applied = 0;
   let added = 0;
+  let created = 0;
+
+  // Creates run first, so an `entries` correction can refer to one of them.
+  for (const create of curated.creates ?? []) {
+    if (byId.has(create.id)) {
+      // A publisher has since started covering this, which is good news and
+      // still has to be looked at: their entry and this one may disagree about
+      // what the name denotes, and silently keeping one of the two would hide
+      // that. Reported rather than merged.
+      collided.push(create.id);
+      continue;
+    }
+    const substance: Substance = {
+      id: create.id,
+      name: create.name,
+      cas: create.cas ?? null,
+      ec: null,
+      eNumber: create.eNumber ?? null,
+      inci: null,
+      category: create.category ?? null,
+      aliases: create.aliases.map((name) => ({ name, source: 'curated' as const, confidence: 1 })),
+    };
+    registry.substances.push(substance);
+    byId.set(substance.id, substance);
+    created += 1;
+  }
 
   for (const entry of curated.entries) {
     const substance = byId.get(entry.substanceId) as Substance | undefined;
@@ -85,7 +136,7 @@ export function applyCuration(
     if (touched) applied += 1;
   }
 
-  return { applied, added, missing };
+  return { applied, added, created, missing, collided };
 }
 
 async function main() {
@@ -93,9 +144,16 @@ async function main() {
   const registry = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf-8')) as SubstanceRegistryFile;
   const curated = JSON.parse(fs.readFileSync(CURATED_PATH, 'utf-8')) as CuratedFile;
 
-  console.log(`\n[CURATE] ${curated._metadata.version} — ${curated.entries.length} entries`);
-  const { applied, added, missing } = applyCuration(registry, curated);
-  console.log(`  applied to ${applied} substances, ${added} new aliases`);
+  console.log(
+    `\n[CURATE] ${curated._metadata.version} — ${curated.entries.length} entries, ` +
+      `${curated.creates?.length ?? 0} creates`,
+  );
+  const { applied, added, created, missing, collided } = applyCuration(registry, curated);
+  console.log(`  applied to ${applied} substances, ${added} new aliases, ${created} substances created`);
+
+  for (const id of collided) {
+    console.log(`  note: "${id}" now exists in an ingested source — compare them and drop the curated create`);
+  }
 
   if (missing.length > 0) {
     // Fatal rather than warned. An entry naming an id that does not exist is

@@ -194,6 +194,14 @@ function main(): void {
     // that line: if this ever resolves, the nano restrictions have been
     // attached to the bulk pigment or the reverse.
     { name: 'CI 77266', domain: 'cosmetic' as const },
+    // Curating "salt" onto sodium chloride is what makes the most-scanned
+    // ingredient in the corpus resolvable, and it is also the moment "lake
+    // salt" above stops being a historical note. Epsom salt is magnesium
+    // sulfate and garlic salt is mostly garlic; neither is what WHO's sodium
+    // guideline was written about, and exact matching is the only reason they
+    // stay out.
+    { name: 'epsom salt', domain: 'food' as const },
+    { name: 'garlic salt', domain: 'food' as const },
   ];
 
   console.log('\n[CHECK] must-not-resolve');
@@ -269,6 +277,27 @@ function main(): void {
       expectLevel: 'moderate',
       expectRule: 'moderate.mandatory_consumer_warning',
       why: 'the regulation calls it FD&C Red No. 40 and every label calls it Red 40; the EU requires a warning on it, which is a caution and not an avoid',
+    },
+
+    // --- curated whole foods ---
+    {
+      // The largest single gap the corpus had: 307 sightings, and no source
+      // calls it what every label calls it. Moderate on WHO's sodium guideline,
+      // which is the same treatment sugar already gets.
+      substanceId: 'sodium_chloride',
+      name: 'Salt',
+      domain: 'food',
+      expectLevel: 'moderate',
+      expectRule: 'moderate.health_body_intake_limit',
+      why: 'no register lists salt, because nobody regulates it — and it is the most-scanned ingredient we hold',
+    },
+    {
+      substanceId: 'palm_oil',
+      name: 'Palm Oil',
+      domain: 'food',
+      expectLevel: 'moderate',
+      expectRule: 'moderate.health_body_intake_limit',
+      why: 'a whole food no publisher will ever supply, carrying WHO’s saturated fat guideline — which soybean, canola and sunflower oil deliberately do not',
     },
 
     // --- curated regulatory findings ---

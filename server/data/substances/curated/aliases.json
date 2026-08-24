@@ -1,51 +1,75 @@
 {
   "_metadata": {
-    "version": "curated-aliases-2026-08-23",
-    "updatedAt": "2026-08-23",
-    "description": "Identifiers and names a person recorded by hand, because no ingested source carried them in a form a label would print. Applied by curate.ts, which never invents a substance: every entry names an id that must already exist."
+    "version": "curated-aliases-2026-08-24",
+    "updatedAt": "2026-08-24",
+    "description": "Identifiers, names and whole-food substances a person recorded by hand, because no ingested source carried them in a form a label would print. `entries` corrects substances a publisher already supplied and may never name an id that does not exist. `creates` adds the whole foods no register covers: every source in this corpus lists things somebody regulates, so palm oil and butter — printed on more labels than any additive — were invisible. Applied by curate.ts."
   },
   "entries": [
     {
       "substanceId": "ponceau_4r_cochineal_red_a",
       "why": "The annex files two names in one field, so neither of them resolves on its own — and this is one of the six colours the EU requires a warning for.",
       "eNumber": "E124",
-      "aliases": ["Ponceau 4R", "Cochineal Red A", "New Coccine", "CI 16255"]
+      "aliases": [
+        "Ponceau 4R",
+        "Cochineal Red A",
+        "New Coccine",
+        "CI 16255"
+      ]
     },
     {
       "substanceId": "tartrazine",
       "why": "EU labels print the E number, and the warning requirement is written in terms of it.",
       "eNumber": "E102",
-      "aliases": ["Tartrazine", "CI 19140"]
+      "aliases": [
+        "Tartrazine",
+        "CI 19140"
+      ]
     },
     {
       "substanceId": "quinoline_yellow",
       "why": "As above.",
       "eNumber": "E104",
-      "aliases": ["Quinoline Yellow", "CI 47005"]
+      "aliases": [
+        "Quinoline Yellow",
+        "CI 47005"
+      ]
     },
     {
       "substanceId": "sunset_yellow_fcf",
       "why": "As above.",
       "eNumber": "E110",
-      "aliases": ["Sunset Yellow FCF", "Orange Yellow S", "CI 15985"]
+      "aliases": [
+        "Sunset Yellow FCF",
+        "Orange Yellow S",
+        "CI 15985"
+      ]
     },
     {
       "substanceId": "carmoisine",
       "why": "As above. Labels print either name.",
       "eNumber": "E122",
-      "aliases": ["Carmoisine", "Azorubine", "CI 14720"]
+      "aliases": [
+        "Carmoisine",
+        "Azorubine",
+        "CI 14720"
+      ]
     },
     {
       "substanceId": "allura_red_ac",
       "why": "As above.",
       "eNumber": "E129",
-      "aliases": ["Allura Red AC", "CI 16035"]
+      "aliases": [
+        "Allura Red AC",
+        "CI 16035"
+      ]
     },
     {
       "substanceId": "titanium_dioxide",
       "why": "Banned as a food additive in the EU under its E number; food labels outside the EU still print it.",
       "eNumber": "E171",
-      "aliases": ["CI 77891"]
+      "aliases": [
+        "CI 77891"
+      ]
     },
     {
       "substanceId": "sodium_nitrite",
@@ -58,6 +82,79 @@
       "why": "As above.",
       "eNumber": "E249",
       "aliases": []
+    },
+    {
+      "substanceId": "sodium_chloride",
+      "why": "The single most-scanned ingredient we hold, and no source calls it what every label calls it. Exact matching keeps 'lake salt' and 'Epsom salt' out on their own.",
+      "aliases": [
+        "Salt",
+        "Table Salt",
+        "Sea Salt",
+        "Common Salt",
+        "Iodized Salt",
+        "Kosher Salt"
+      ]
+    },
+    {
+      "substanceId": "coconut_oil",
+      "why": "Labels print the refined and virgin forms by name.",
+      "aliases": [
+        "Coconut Oil",
+        "Virgin Coconut Oil",
+        "Refined Coconut Oil",
+        "Copra Oil"
+      ]
+    }
+  ],
+  "creates": [
+    {
+      "id": "palm_oil",
+      "name": "Palm oil",
+      "why": "On more labels than any additive in the corpus, and in no register, because nobody regulates it. Among the richest common sources of saturated fat.",
+      "category": "fat or oil",
+      "aliases": [
+        "Palm Oil",
+        "Palm Fruit Oil",
+        "Refined Palm Oil",
+        "Elaeis guineensis Oil"
+      ]
+    },
+    {
+      "id": "palm_kernel_oil",
+      "name": "Palm kernel oil",
+      "why": "A different oil from palm oil, pressed from the seed rather than the fruit, and higher in saturated fat again. Labels frequently name both.",
+      "category": "fat or oil",
+      "aliases": [
+        "Palm Kernel Oil",
+        "Palm Kernel Fat",
+        "Palm Kernel Stearin"
+      ]
+    },
+    {
+      "id": "cocoa_butter",
+      "name": "Cocoa butter",
+      "why": "Present on every chocolate label there is.",
+      "category": "fat or oil",
+      "aliases": [
+        "Cocoa Butter",
+        "Theobroma Cacao Seed Butter",
+        "Cacao Butter"
+      ]
+    },
+    {
+      "id": "butter",
+      "name": "Butter",
+      "why": "As above, and the reference case people have in mind when they think about saturated fat.",
+      "category": "fat or oil",
+      "aliases": [
+        "Butter",
+        "Sweet Cream Butter",
+        "Unsalted Butter",
+        "Butterfat",
+        "Milk Fat",
+        "Butter Oil",
+        "Anhydrous Milk Fat"
+      ]
     }
   ]
 }

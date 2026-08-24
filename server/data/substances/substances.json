@@ -80773,6 +80773,21 @@
           "name": "COCONUT OIL",
           "source": "fda",
           "confidence": 1
+        },
+        {
+          "name": "Virgin Coconut Oil",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Refined Coconut Oil",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Copra Oil",
+          "source": "curated",
+          "confidence": 1
         }
       ]
     },
@@ -128870,6 +128885,36 @@
           "name": "SODIUM CHLORIDE",
           "source": "fda",
           "confidence": 1
+        },
+        {
+          "name": "Salt",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Table Salt",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Sea Salt",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Common Salt",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Iodized Salt",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Kosher Salt",
+          "source": "curated",
+          "confidence": 1
         }
       ]
     },
@@ -149048,6 +149093,135 @@
           "name": "Tebufenpyrad",
           "source": "efsa",
           "confidence": 0.95
+        }
+      ]
+    },
+    {
+      "id": "palm_oil",
+      "name": "Palm oil",
+      "cas": null,
+      "ec": null,
+      "eNumber": null,
+      "inci": null,
+      "category": "fat or oil",
+      "aliases": [
+        {
+          "name": "Palm Oil",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Palm Fruit Oil",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Refined Palm Oil",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Elaeis guineensis Oil",
+          "source": "curated",
+          "confidence": 1
+        }
+      ]
+    },
+    {
+      "id": "palm_kernel_oil",
+      "name": "Palm kernel oil",
+      "cas": null,
+      "ec": null,
+      "eNumber": null,
+      "inci": null,
+      "category": "fat or oil",
+      "aliases": [
+        {
+          "name": "Palm Kernel Oil",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Palm Kernel Fat",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Palm Kernel Stearin",
+          "source": "curated",
+          "confidence": 1
+        }
+      ]
+    },
+    {
+      "id": "cocoa_butter",
+      "name": "Cocoa butter",
+      "cas": null,
+      "ec": null,
+      "eNumber": null,
+      "inci": null,
+      "category": "fat or oil",
+      "aliases": [
+        {
+          "name": "Cocoa Butter",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Theobroma Cacao Seed Butter",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Cacao Butter",
+          "source": "curated",
+          "confidence": 1
+        }
+      ]
+    },
+    {
+      "id": "butter",
+      "name": "Butter",
+      "cas": null,
+      "ec": null,
+      "eNumber": null,
+      "inci": null,
+      "category": "fat or oil",
+      "aliases": [
+        {
+          "name": "Butter",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Sweet Cream Butter",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Unsalted Butter",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Butterfat",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Milk Fat",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Butter Oil",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Anhydrous Milk Fat",
+          "source": "curated",
+          "confidence": 1
         }
       ]
     }

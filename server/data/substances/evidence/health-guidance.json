@@ -1,8 +1,8 @@
 {
   "_metadata": {
-    "version": "health-guidance-2026-08-11",
-    "updatedAt": "2026-08-11",
-    "description": "Health-guidance evidence: what health authorities say about intake, as opposed to what regulators have prohibited. This is the first evidence in the corpus that is not an enforcement action, and it exists because a risk scale that can only see enforcement reports \"no restrictions found\" for sugar and for trans fat alike. REVIEW STATUS: ai_seeded. Sources, dates and determinations are real and named; the statements are accurate representations rather than verified verbatim extracts, and carry no URL — a guessed link is worse than none. Replacing these with verbatim text pulled from the published documents is a curation task, not a code change.",
+    "version": "health-guidance-2026-08-24",
+    "updatedAt": "2026-08-24",
+    "description": "Health-guidance evidence: what health authorities say about intake, as opposed to what regulators have prohibited. This is the first evidence in the corpus that is not an enforcement action, and it exists because a risk scale that can only see enforcement reports \"no restrictions found\" for sugar and for trans fat alike. Three nutrients are covered: free sugars, sodium and saturated fat, plus trans fat's elimination target. Each is applied to the ingredients that are a major dietary source of it, which is a step of reasoning beyond what WHO wrote — WHO's guidelines are about nutrients, and a label names ingredients. The step is small and well established (salt is sodium; palm kernel oil is mostly saturated fat) but it is a step, and it is why the ingredients chosen are only the unambiguous ones. Oils that are NOT largely saturated — soybean, canola, sunflower, olive — deliberately carry no such record, and adding one to them would be wrong. REVIEW STATUS: ai_seeded. Sources, dates and determinations are real and named; the statements are accurate representations rather than verified verbatim extracts, and carry no URL — a guessed link is worse than none. Replacing these with verbatim text pulled from the published documents is a curation task, not a code change.",
     "reviewStatus": "ai_seeded"
   },
   "records": [
@@ -296,6 +296,108 @@
       "citation": {
         "org": "Joint FAO/WHO Expert Committee on Food Additives",
         "title": "Evaluations of the Joint FAO/WHO Expert Committee on Food Additives (JECFA)"
+      }
+    },
+    {
+      "substanceId": "sodium_chloride",
+      "source": "who",
+      "kind": "health_guidance",
+      "direction": "limit",
+      "jurisdiction": "INTL",
+      "domain": "food",
+      "threshold": "under 5 g of salt a day, which is under 2 g of sodium",
+      "statement": "WHO recommends that adults consume less than 2 g of sodium per day, equivalent to less than 5 g of salt, and that the recommendation be adjusted downward for children. High sodium intake raises blood pressure, which is a leading risk for heart disease and stroke; most people consume far more than the recommended amount, and the majority of it comes from processed food rather than the table.",
+      "determinedOn": "2012-01-31",
+      "sourceVersion": "who-sodium-guideline-2012",
+      "citation": {
+        "org": "World Health Organization",
+        "title": "Guideline: Sodium intake for adults and children",
+        "year": 2012
+      }
+    },
+    {
+      "substanceId": "palm_oil",
+      "source": "who",
+      "kind": "health_guidance",
+      "direction": "limit",
+      "jurisdiction": "INTL",
+      "domain": "food",
+      "threshold": "saturated fat under 10% of total energy intake",
+      "statement": "WHO recommends that adults and children limit saturated fatty acid intake to 10% of total energy intake, and replace it with polyunsaturated fat where possible, to reduce the risk of cardiovascular disease. Palm oil is roughly half saturated fat, which makes it one of the larger contributors in a typical diet.",
+      "determinedOn": "2023-07-17",
+      "sourceVersion": "who-saturated-fat-guideline-2023",
+      "citation": {
+        "org": "World Health Organization",
+        "title": "Saturated fatty acid and trans-fatty acid intake for adults and children: WHO guideline",
+        "year": 2023
+      }
+    },
+    {
+      "substanceId": "palm_kernel_oil",
+      "source": "who",
+      "kind": "health_guidance",
+      "direction": "limit",
+      "jurisdiction": "INTL",
+      "domain": "food",
+      "threshold": "saturated fat under 10% of total energy intake",
+      "statement": "WHO recommends that adults and children limit saturated fatty acid intake to 10% of total energy intake, and replace it with polyunsaturated fat where possible, to reduce the risk of cardiovascular disease. Palm kernel oil is over four fifths saturated fat, which makes it one of the larger contributors in a typical diet.",
+      "determinedOn": "2023-07-17",
+      "sourceVersion": "who-saturated-fat-guideline-2023",
+      "citation": {
+        "org": "World Health Organization",
+        "title": "Saturated fatty acid and trans-fatty acid intake for adults and children: WHO guideline",
+        "year": 2023
+      }
+    },
+    {
+      "substanceId": "coconut_oil",
+      "source": "who",
+      "kind": "health_guidance",
+      "direction": "limit",
+      "jurisdiction": "INTL",
+      "domain": "food",
+      "threshold": "saturated fat under 10% of total energy intake",
+      "statement": "WHO recommends that adults and children limit saturated fatty acid intake to 10% of total energy intake, and replace it with polyunsaturated fat where possible, to reduce the risk of cardiovascular disease. Coconut oil is around nine tenths saturated fat, which makes it one of the larger contributors in a typical diet.",
+      "determinedOn": "2023-07-17",
+      "sourceVersion": "who-saturated-fat-guideline-2023",
+      "citation": {
+        "org": "World Health Organization",
+        "title": "Saturated fatty acid and trans-fatty acid intake for adults and children: WHO guideline",
+        "year": 2023
+      }
+    },
+    {
+      "substanceId": "cocoa_butter",
+      "source": "who",
+      "kind": "health_guidance",
+      "direction": "limit",
+      "jurisdiction": "INTL",
+      "domain": "food",
+      "threshold": "saturated fat under 10% of total energy intake",
+      "statement": "WHO recommends that adults and children limit saturated fatty acid intake to 10% of total energy intake, and replace it with polyunsaturated fat where possible, to reduce the risk of cardiovascular disease. Cocoa butter is around three fifths saturated fat, which makes it one of the larger contributors in a typical diet.",
+      "determinedOn": "2023-07-17",
+      "sourceVersion": "who-saturated-fat-guideline-2023",
+      "citation": {
+        "org": "World Health Organization",
+        "title": "Saturated fatty acid and trans-fatty acid intake for adults and children: WHO guideline",
+        "year": 2023
+      }
+    },
+    {
+      "substanceId": "butter",
+      "source": "who",
+      "kind": "health_guidance",
+      "direction": "limit",
+      "jurisdiction": "INTL",
+      "domain": "food",
+      "threshold": "saturated fat under 10% of total energy intake",
+      "statement": "WHO recommends that adults and children limit saturated fatty acid intake to 10% of total energy intake, and replace it with polyunsaturated fat where possible, to reduce the risk of cardiovascular disease. Butter is around two thirds saturated fat, which makes it one of the larger contributors in a typical diet.",
+      "determinedOn": "2023-07-17",
+      "sourceVersion": "who-saturated-fat-guideline-2023",
+      "citation": {
+        "org": "World Health Organization",
+        "title": "Saturated fatty acid and trans-fatty acid intake for adults and children: WHO guideline",
+        "year": 2023
       }
     }
   ]
