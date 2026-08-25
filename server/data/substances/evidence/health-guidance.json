@@ -1,8 +1,8 @@
 {
   "_metadata": {
-    "version": "health-guidance-2026-08-24.2",
+    "version": "health-guidance-2026-08-24.3",
     "updatedAt": "2026-08-24",
-    "description": "What health authorities say about intake, as opposed to what regulators have prohibited. This is the evidence that is not an enforcement action, and it exists because a risk scale that can only see enforcement reports \"no restrictions found\" for sugar and for trans fat alike. Four nutrients: free sugars, sodium, saturated fat, and trans fat's elimination target. REVIEW STATUS: every WHO record here was verified against the published WHO source on 2026-08-24 and quotes it directly; each carries the source URL and a reviewedBy stamp. Records marked 'composition-inferred' quote WHO accurately but apply the guideline to an ingredient WHO does not name — cocoa butter and palm kernel oil — on the basis of their fat composition; WHO names butter, palm oil and coconut oil itself. STILL UNVERIFIED (no reviewedBy): the three JECFA 'ADI not specified' records and the FDA partially-hydrogenated-oils determination. The JECFA evaluations are not machine-readable and the Federal Register blocks automated fetches; both need a person to open the document and quote it.",
+    "description": "What health authorities say about intake, as opposed to what regulators have prohibited. This is the evidence that is not an enforcement action, and it exists because a risk scale that can only see enforcement reports \"no restrictions found\" for sugar and for trans fat alike. Four nutrients: free sugars, sodium, saturated fat, and trans fat's elimination target. REVIEW STATUS: every WHO record here was verified against the published WHO source on 2026-08-24 and quotes it directly; each carries the source URL and a reviewedBy stamp. Records marked 'composition-inferred' quote WHO accurately but apply the guideline to an ingredient WHO does not name — cocoa butter and palm kernel oil — on the basis of their fat composition; WHO names butter, palm oil and coconut oil itself. Every record here is now verified. The FDA partially-hydrogenated-oils record was checked through the Federal Register's API and gained the 2023 revocation alongside the 2015 determination it originally cited. Two JECFA 'ADI not specified' notes, on ascorbic acid and lecithin, were REMOVED rather than verified: the JECFA database is not reachable without a person working its search box, and both substances are already settled by an ingested FDA GRAS record citing the CFR section directly. An unverifiable assertion of safety that changes no answer is liability without benefit. Re-adding them is a few lines once someone has the evaluation open.",
     "reviewStatus": "ai_seeded"
   },
   "records": [
@@ -278,14 +278,16 @@
       "kind": "authorization_withdrawn",
       "jurisdiction": "US",
       "domain": "food",
-      "statement": "FDA determined that partially hydrogenated oils are no longer Generally Recognized as Safe (GRAS) for any use in human food. (Hand-entered: the Federal Register blocks automated retrieval, so this has not been quoted from the source.)",
-      "determinedOn": "2015-06-17",
+      "statement": "FDA determined in 2015 that \"there is no longer a consensus among qualified experts that partially hydrogenated oils (PHOs), which are the primary dietary source of industrially-produced trans fatty acids (IP-TFA) are generally recognized as safe (GRAS) for any use in human food\" (80 FR 34650). In 2023 the FDA went further and revoked the remaining prior authorisations — for PHOs in margarine, shortening and bread products — on the conclusion that \"these uses of PHOs may be injurious to health\" (88 FR 53764, effective 22 December 2023).",
+      "determinedOn": "2023-12-22",
       "sourceVersion": "fda-pho-gras-determination-2015",
       "citation": {
         "org": "US Food and Drug Administration",
-        "title": "Final Determination Regarding Partially Hydrogenated Oils",
-        "year": 2015
-      }
+        "title": "Revocation of Uses of Partially Hydrogenated Oils in Foods (88 FR 53764), following the Final Determination Regarding Partially Hydrogenated Oils (80 FR 34650)",
+        "year": 2023,
+        "url": "https://www.federalregister.gov/documents/2023/08/09/2023-16725/revocation-of-uses-of-partially-hydrogenated-oils-in-foods"
+      },
+      "reviewedBy": "verified-against-source-2026-08-24"
     },
     {
       "substanceId": "citric_acid",
@@ -303,32 +305,6 @@
       },
       "determinedOn": "1973",
       "reviewedBy": "verified-against-source-2026-08-24"
-    },
-    {
-      "substanceId": "ascorbic_acid",
-      "source": "jecfa",
-      "kind": "no_concern_at_typical_exposure",
-      "jurisdiction": "INTL",
-      "domain": "food",
-      "statement": "JECFA has allocated Ascorbic acid an ADI \"not specified\" — the designation used when a substance is of very low toxicity and its intake at the levels needed to achieve the desired technological effect does not represent a hazard to health.",
-      "sourceVersion": "jecfa-adi-not-specified",
-      "citation": {
-        "org": "Joint FAO/WHO Expert Committee on Food Additives",
-        "title": "Evaluations of the Joint FAO/WHO Expert Committee on Food Additives (JECFA)"
-      }
-    },
-    {
-      "substanceId": "lecithin",
-      "source": "jecfa",
-      "kind": "no_concern_at_typical_exposure",
-      "jurisdiction": "INTL",
-      "domain": "food",
-      "statement": "JECFA has allocated Lecithin an ADI \"not specified\" — the designation used when a substance is of very low toxicity and its intake at the levels needed to achieve the desired technological effect does not represent a hazard to health.",
-      "sourceVersion": "jecfa-adi-not-specified",
-      "citation": {
-        "org": "Joint FAO/WHO Expert Committee on Food Additives",
-        "title": "Evaluations of the Joint FAO/WHO Expert Committee on Food Additives (JECFA)"
-      }
     },
     {
       "substanceId": "sodium_chloride",
