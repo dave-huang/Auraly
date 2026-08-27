@@ -9,6 +9,7 @@ import { RisingSheet } from '@/components/rising-sheet';
 import { ShareCard, type ShareFormat } from '@/components/share-card';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Paper, Radius, Space, Type, useSurface } from '@/constants/design';
+import { useAuth } from '@/lib/auth-context';
 import { useTranslation } from '@/lib/i18n';
 import { useLastScan } from '@/lib/scan';
 import { captureAndShare, shareLayoutSize } from '@/lib/share';
@@ -36,6 +37,7 @@ import { useVerdictCopy } from '@/lib/verdict';
 // the person just dismissed.
 
 export default function ResultsScreen() {
+  const { user } = useAuth();
   const router = useRouter();
   const { t } = useTranslation();
   const surface = useSurface();
@@ -106,6 +108,39 @@ export default function ResultsScreen() {
               onPressProfile={() => router.push('/profiles')}
               controls={
                 <>
+                  {/* The sign-in ask, and the only place it belongs.
+                      Onboarding no longer opens with it: this is the moment
+                      someone has a profile they built and a verdict they
+                      wanted, which is the first point at which "keep this" is
+                      a true sentence rather than a toll gate. Shown only to
+                      someone with no account. */}
+                  {!user && (
+                    <View style={[styles.saveCard, { borderColor: surface.rule }]}>
+                      <ThemedText style={[Type.label, { color: surface.ink }]}>
+                        {t('signIn.saveTitle')}
+                      </ThemedText>
+                      <ThemedText style={[Type.body, { color: surface.inkMuted }]}>
+                        {t('signIn.saveBody', {
+                          name: profile?.name || t('onboarding.namePlaceholder'),
+                        })}
+                      </ThemedText>
+                      <Pressable
+                        style={[styles.inkButton, { backgroundColor: surface.ink }]}
+                        onPress={() =>
+                          router.push({
+                            pathname: '/sign-in',
+                            params: { mode: 'save', name: profile?.name ?? '' },
+                          })
+                        }
+                        accessibilityRole="button"
+                      >
+                        <ThemedText style={[Type.label, styles.inkLabel, { color: surface.card }]}>
+                          {t('signIn.saveCta')}
+                        </ThemedText>
+                      </Pressable>
+                    </View>
+                  )}
+
                   <Pressable
                     style={[styles.inkButton, { backgroundColor: surface.ink }]}
                     onPress={() => router.replace('/')}
@@ -177,6 +212,13 @@ export default function ResultsScreen() {
 }
 
 const styles = StyleSheet.create({
+  saveCard: {
+    borderWidth: StyleSheet.hairlineWidth,
+    borderRadius: Radius.flat,
+    padding: Space.lg,
+    gap: Space.md,
+    marginBottom: Space.md,
+  },
   root: { flex: 1, backgroundColor: '#16130F' },
   scrim: { backgroundColor: 'rgba(22,19,15,0.72)' },
   safe: { flex: 1 },

@@ -213,6 +213,37 @@ for (const level of riskLevels) {
 }
 
 // ---------------------------------------------------------------------------
+// 4b. The same, for an infant profile and honey.
+//
+// Honey is the second case of the same shape and a sharper one: there is no
+// regulator anywhere that restricts it, so unlike aspartame there is not even a
+// labelling duty for the corpus to have missed. A parent scanning a jar for a
+// ten-month-old must not read "no concerns found".
+// ---------------------------------------------------------------------------
+{
+  const base = applyPopulationRisk(ing('Honey', 'low'), food);
+  const infant = profile({ conditions: ['infant'] });
+  const out = applyProfileToAnalysis(result([base]), infant);
+  check('advisory/infant-honey', out.ingredients[0].personalRiskLevel === 'high',
+    `expected personal level high for an infant profile, got ${out.ingredients[0].personalRiskLevel ?? 'none'}`);
+  check('advisory/infant-honey', (out.personalFlags ?? []).length > 0,
+    'no personal flag was produced, so the results screen has nothing to explain the level with');
+
+  const adult = applyProfileToAnalysis(result([base]), profile({}));
+  check('advisory/infant-honey', adult.ingredients[0].personalRiskLevel === undefined,
+    `honey was personally flagged for a profile with no conditions (${adult.ingredients[0].personalRiskLevel})`);
+
+  // Honey is food. An infant profile must not turn a honey-containing lip balm
+  // into an Avoid — the botulism route is swallowing it.
+  const balm = applyProfileToAnalysis(
+    result([applyPopulationRisk(ing('Honey', 'low'), 'personal_care')], 'personal_care'),
+    infant,
+  );
+  check('advisory/infant-honey', balm.ingredients[0].personalRiskLevel === undefined,
+    'a food-domain advisory fired on a personal care label');
+}
+
+// ---------------------------------------------------------------------------
 // 5. Negation. "Sugar free" must not pick up the free-sugars record.
 //
 // The matcher is word-boundary and negation-aware for exactly this reason: a

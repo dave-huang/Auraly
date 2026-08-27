@@ -81,6 +81,9 @@ export const CONDITION_KEYS: Record<ProfileCondition, TranslationKey> = {
   hypertension: 'condition.hypertension',
   diabetes: 'condition.diabetes',
   kidney_disease: 'condition.kidney_disease',
+  // Last on purpose: it describes who the profile is FOR rather than a
+  // diagnosis, so it reads oddly in the middle of a list of illnesses.
+  infant: 'condition.infant',
 };
 
 /** Toggle a value in a set. */

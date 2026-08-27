@@ -16,6 +16,7 @@ import {
   VerdictDark,
 } from '@/constants/design';
 import { goBackOrHome } from '@/lib/navigation';
+import { useAuth } from '@/lib/auth-context';
 import { useTranslation } from '@/lib/i18n';
 import { getActiveProfileId, listProfiles, setActiveProfileId } from '@/lib/profiles';
 import { getLastProfile, getLastResult, personalizeAnalysis, replaceLastVerdict } from '@/lib/scan';
@@ -33,6 +34,7 @@ import { localizeAllergen } from '@/lib/verdict';
 // changes.
 
 export default function ProfileSwitcherScreen() {
+  const { user } = useAuth();
   const router = useRouter();
   const { t } = useTranslation();
 
@@ -181,9 +183,32 @@ export default function ProfileSwitcherScreen() {
             );
           })}
 
-          <Pressable style={styles.addRow} onPress={() => router.push('/onboarding')}>
+          {/* Adding a second profile needs an account.
+              Not a paywall move — there is physically nowhere to put it. Before
+              sign-in the app holds exactly ONE profile, in the keychain, and
+              sending an anonymous user to onboarding here would silently
+              overwrite the allergies they already entered. So this row offers
+              the thing that actually unblocks them. */}
+          <Pressable
+            style={styles.addRow}
+            onPress={() =>
+              user
+                ? router.push('/onboarding')
+                : router.push({
+                    pathname: '/sign-in',
+                    // Name the person whose profile is about to be preserved.
+                    // Without it the sign-in screen falls back to the "Me"
+                    // placeholder and offers to save "Me's profile" to someone
+                    // looking at a card that says Maya.
+                    params: {
+                      mode: 'save',
+                      name: profiles.find((p) => p.id === activeId)?.name ?? '',
+                    },
+                  })
+            }
+          >
             <ThemedText style={[Type.label, { color: Lamplight.ink }]}>
-              {t('profiles.add')}
+              {user ? t('profiles.add') : t('profiles.addNeedsAccount')}
             </ThemedText>
           </Pressable>
         </ScrollView>

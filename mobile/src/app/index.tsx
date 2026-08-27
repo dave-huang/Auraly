@@ -3,7 +3,7 @@ import * as Haptics from 'expo-haptics';
 import * as ImagePicker from 'expo-image-picker';
 import { Redirect, useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useRef, useState } from 'react';
-import { Alert, Modal, Pressable, StyleSheet, View } from 'react-native';
+import { Alert, Linking, Modal, Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ApertureMark, RevelyLockup } from '@/components/aperture-mark';
@@ -11,6 +11,7 @@ import { ScanProgress } from '@/components/scan-progress';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Lamplight, Paper, Radius, Space, Type, useSurface } from '@/constants/design';
 import { useAuth } from '@/lib/auth-context';
+import { useEntitlement } from '@/lib/entitlement';
 import { fireVerdictHaptic } from '@/lib/haptics';
 import { saveScan } from '@/lib/history';
 import { useTranslation } from '@/lib/i18n';
@@ -57,12 +58,16 @@ export default function ViewfinderScreen() {
   const [ingredientCount, setIngredientCount] = useState<number | undefined>();
   const [previewUri, setPreviewUri] = useState<string | undefined>();
   const [menuOpen, setMenuOpen] = useState(false);
+  // Only meaningful with an account — the anonymous grant is counted per device
+  // on the server, and this endpoint requires a token.
+  const { entitlement } = useEntitlement(Boolean(user));
 
   useFocusEffect(
     useCallback(() => {
-      if (!user) return;
-      // Re-read on focus so a switch made in the profile sheet is reflected
-      // the moment the viewfinder comes back.
+      // Runs signed in OR not. Before sign-in `listProfiles` returns the one
+      // profile onboarding built on this device, which is what lets the very
+      // first scan be about a person rather than about the average human.
+      // Gating this on `user` was what made onboarding unreachable.
       Promise.all([listProfiles(), getActiveProfileId()])
         .then(([list, stored]) => {
           setProfiles(list);
@@ -74,7 +79,7 @@ export default function ViewfinderScreen() {
           );
         })
         .catch(() => setProfiles([]));
-    }, [user]),
+    }, []),
   );
 
   const activeProfile = profiles?.find((p) => p.id === activeId) ?? null;
@@ -118,6 +123,22 @@ export default function ViewfinderScreen() {
       router.push('/results');
     } catch (error: any) {
       setPhase(null);
+
+      // Out of scans. Not a failure, and it must not read as one — the app is
+      // working exactly as designed, and an "Error" alert here trains people to
+      // dismiss alerts. Straight to the paywall instead.
+      if (error?.status === 402 || error?.code === 'no_scans') {
+        router.push('/paywall');
+        return;
+      }
+      // A claimed device signed out on this install: the person HAS an account
+      // and the useful answer is to get them back into it, not to sell them a
+      // second subscription.
+      if (error?.code === 'sign_in_required') {
+        router.push('/sign-in');
+        return;
+      }
+
       // "No label found" is the one failure the person can actually fix, and
       // it is common — so it gets a written sentence in their language, not the
       // server's English "OCR failed:" prose. Anything else is genuinely
@@ -149,26 +170,64 @@ export default function ViewfinderScreen() {
   }
 
   if (isLoading) return <View style={{ flex: 1, backgroundColor: surface.paper }} />;
-  if (!user) return <Redirect href="/sign-in" />;
 
+  // The first launch is the whole argument for this block.
+  //
+  // This used to be `if (!user) return <Redirect href="/sign-in" />` — cold
+  // start went straight to "Continue with Apple", before the app had shown a
+  // single verdict, and /onboarding was reachable only by tapping a chip that
+  // said "Set up first". Most people never saw it.
+  //
+  // Now: no account and no profile means they have not been through welcome,
+  // so send them there. No account WITH a profile is the normal state during
+  // onboarding — they scan anonymously, and the sign-in ask comes after the
+  // first verdict, when there is something worth saving.
+  //
+  // `profiles === null` means the read has not finished. Holding the blank
+  // frame for a beat is right: routing on an unloaded list would bounce someone
+  // who has a profile out to welcome every cold start.
+  if (profiles === null) return <View style={{ flex: 1, backgroundColor: surface.paper }} />;
+  if (!user && profiles.length === 0) return <Redirect href="/welcome" />;
+
+  // Camera priming.
+  //
+  // iOS gives an app exactly one chance at the system dialog. A denial is
+  // effectively permanent — it can only be undone in Settings, which almost
+  // nobody finds — so the ask is explained BEFORE it is made, and the two
+  // states are told apart: `canAskAgain` false means the dialog is spent and
+  // the honest next step is Settings, not a button that does nothing.
   if (!permission?.granted) {
+    const spent = permission != null && !permission.canAskAgain;
     return (
       <SafeAreaView style={[styles.permission, { backgroundColor: surface.paper }]}>
         <RevelyLockup size={22} color={surface.ink} />
+        <ThemedText style={[Type.title, styles.center, { color: surface.ink }]}>
+          {t('camera.title')}
+        </ThemedText>
         <ThemedText style={[Type.body, styles.center, { color: surface.inkMuted }]}>
-          {t('scan.permissionBody')}
+          {spent ? t('camera.deniedBody') : t('camera.body')}
         </ThemedText>
         <Pressable
           style={[styles.inkButton, { backgroundColor: surface.ink }]}
-          onPress={() => void requestPermission()}
+          onPress={() => (spent ? void Linking.openSettings() : void requestPermission())}
+          accessibilityRole="button"
         >
           <ThemedText style={[Type.label, { color: surface.card }]}>
-            {t('scan.allowCamera')}
+            {spent ? t('camera.settings') : t('camera.allow')}
           </ThemedText>
         </Pressable>
-        <Pressable onPress={() => void pickFromLibrary()}>
+        {/* hitSlop and padding are not decoration here. This is 11px mono type,
+            which gives a tap target about 15 points tall against Apple's 44pt
+            minimum — and it is the ONLY way forward for someone who has denied
+            the camera. Missing it looks to them like the app is simply broken. */}
+        <Pressable
+          onPress={() => void pickFromLibrary()}
+          hitSlop={{ top: 16, bottom: 16, left: 24, right: 24 }}
+          style={styles.permissionSecondary}
+          accessibilityRole="button"
+        >
           <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>
-            {t('scan.chooseInstead')}
+            {t('camera.library')}
           </ThemedText>
         </Pressable>
       </SafeAreaView>
@@ -274,7 +333,15 @@ export default function ViewfinderScreen() {
               [
                 ['history.title', () => router.push('/history')],
                 ['scan.switchProfile', openProfiles],
-                ['paywall.menuItem', () => router.push('/paywall')],
+                [
+                  // Says what is left, so the row is information rather than an
+                  // unexplained door to a paywall. A subscriber sees the plan,
+                  // never a countdown — there is nothing to count.
+                  entitlement?.subscription.active
+                    ? 'paywall.menuItemPlus'
+                    : 'paywall.menuItem',
+                  () => router.push('/paywall'),
+                ],
                 // Sign-out moved inside Account: deletion needs a screen that
                 // can say what it removes before it removes it, and a menu row
                 // cannot.
@@ -313,6 +380,7 @@ const styles = StyleSheet.create({
     gap: Space.lg,
     padding: Space.xl,
   },
+  permissionSecondary: { paddingVertical: Space.md, paddingHorizontal: Space.xl },
   center: { textAlign: 'center' },
   inkButton: { paddingHorizontal: Space.xl, paddingVertical: Space.md, borderRadius: Radius.pill },
 

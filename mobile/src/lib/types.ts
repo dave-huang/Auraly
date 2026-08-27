@@ -57,6 +57,7 @@ export const DIETARY_RULES = ['vegan', 'vegetarian', 'gluten_free', 'halal', 'ko
 export const PROFILE_CONDITIONS = [
   'pregnancy', 'breastfeeding', 'celiac', 'eczema',
   'pku', 'g6pd_deficiency', 'hypertension', 'diabetes', 'kidney_disease',
+  'infant',
 ] as const;
 export const PRODUCT_TYPES = ['food', 'personal_care'] as const;
 export const RISK_LEVELS = ['low', 'moderate', 'high'] as const;

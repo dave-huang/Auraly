@@ -67,6 +67,7 @@ export default function RootLayout() {
                 }}
               >
                 <Stack.Screen name="index" />
+                <Stack.Screen name="welcome" options={{ animation: 'fade' }} />
                 <Stack.Screen name="sign-in" options={{ animation: 'fade' }} />
                 <Stack.Screen name="onboarding" />
                 <Stack.Screen name="results" options={{ animation: 'fade', animationDuration: 140 }} />

@@ -6,6 +6,7 @@ import {
   signOut as doSignOut,
   type AuthUser,
 } from './auth';
+import { configurePurchases, resetPurchaser } from './purchases';
 
 interface AuthState {
   user: AuthUser | null;
@@ -27,10 +28,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!token) {
       setUser(null);
       setIsLoading(false);
+      // Start the store anonymously. Purchasing has to work before sign-in, or
+      // someone who hits the paywall during onboarding has no way through it
+      // except creating an account first — which is the ask this whole flow
+      // exists to defer.
+      configurePurchases(null);
       return;
     }
     try {
-      setUser(await fetchCurrentUser());
+      const current = await fetchCurrentUser();
+      setUser(current);
+      // Configure with OUR user id so the RevenueCat webhook can attribute a
+      // purchase to an account rather than to an anonymous store id.
+      configurePurchases(current.id);
     } catch {
       // Token invalid/expired (apiFetch already cleared it) or the API is
       // unreachable — either way, treat as signed out.
@@ -47,6 +57,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signOut = useCallback(async () => {
     await doSignOut();
     setUser(null);
+    // Detach the store identity too, so the next person to sign in on this
+    // phone does not inherit the last one's entitlement in the SDK's cache.
+    await resetPurchaser();
   }, []);
 
   // Throws if the server refuses, and deliberately leaves the user signed in

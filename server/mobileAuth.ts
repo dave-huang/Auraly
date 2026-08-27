@@ -1,6 +1,8 @@
 import type { Express, RequestHandler } from "express";
 import { createRemoteJWKSet, jwtVerify, SignJWT } from "jose";
 import { storage } from "./storage";
+import { readDeviceId } from "./anonymousAccess";
+import { subscriptionService } from "./services/subscription";
 
 // Roll-your-own mobile auth: the app performs native Sign in with Apple /
 // Google, sends the resulting identity token here, and we verify it against
@@ -163,6 +165,21 @@ export function setupMobileAuth(app: Express) {
           lastName: identity.lastName ?? user.lastName,
           profileImageUrl: user.profileImageUrl,
         });
+      }
+
+      // Carry the free scans this device already spent onto the account.
+      //
+      // Without it, signing in hands everybody a second grant: spend three
+      // anonymously, sign in, get three more. The grant is meant to follow the
+      // person, not the credential. Never fatal — a sign-in that works is worth
+      // more than a counter that is exactly right.
+      const deviceId = readDeviceId(req);
+      if (deviceId) {
+        try {
+          await subscriptionService.claimDevice(deviceId, user.id);
+        } catch (claimError: any) {
+          console.error(`[MOBILE-AUTH] device claim failed:`, claimError?.message);
+        }
       }
 
       const { token, expiresAt } = await issueToken(user.id);

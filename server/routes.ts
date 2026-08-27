@@ -5,6 +5,13 @@ import z from "zod";
 import crypto from "crypto";
 import { eq, sql, gte, and, count, desc, inArray } from "drizzle-orm";
 import { setupAuth, isAuthenticated } from "./localAuth";
+import { setupRevenueCatWebhook } from "./revenueCatWebhook";
+import {
+  allowAnonymousScan,
+  requireScanQuota,
+  consumeForPrincipal,
+  type ScanPrincipal,
+} from "./anonymousAccess";
 import { rateLimit } from "./rateLimit";
 import { storage } from "./storage";
 import { db } from "./db";
@@ -29,10 +36,11 @@ import {
   type RiskLevel,
   productTypes,
   productCategories,
-  getDailyFreeScansRemaining,
+  freeScansRemaining,
   getTotalScansAvailable,
   canUserScan,
-  getDailyFreeScansLimit,
+  FREE_SCAN_GRANT,
+  hasActiveSubscription,
   promoCodes,
   promoRedemptions,
   insertPromoCodeSchema,
@@ -58,7 +66,13 @@ interface AnalysisRequest {
   // signed-in caller holding a request id could read someone else's label
   // text and analysis. The id is 64 bits of randomness so guessing one is not
   // practical, but "hard to guess" is not an access control.
-  userId: string;
+  //
+  // A scan can now be started before sign-in, so this is "user:<id>" or
+  // "device:<id>" rather than a bare user id. Comparing the whole string keeps
+  // the two namespaces from ever colliding.
+  ownerKey: string;
+  /** Present only for a signed-in scan. */
+  userId?: string;
   status: 'processing' | 'ocr_complete' | 'completed' | 'failed';
   result?: AnalysisResult;
   error?: string;
@@ -75,6 +89,36 @@ interface AnalysisRequest {
 }
 
 const analysisRequests = new Map<string, AnalysisRequest>();
+
+/**
+ * Validate a profile sent inline with a scan.
+ *
+ * Same schema the stored profiles are written through, so an onboarding scan
+ * cannot express anything a saved profile could not. Returns undefined on
+ * anything malformed rather than throwing: a bad profile must degrade to a
+ * generic verdict, never fail the scan.
+ */
+function parseInlineProfile(raw: unknown): any | undefined {
+  const parsed = upsertProfileSchema.safeParse(raw);
+  if (!parsed.success) return undefined;
+  return {
+    id: 'inline',
+    userId: 'inline',
+    name: parsed.data.name,
+    isDefault: true,
+    allergens: parsed.data.allergens,
+    dietaryRules: parsed.data.dietaryRules,
+    conditions: parsed.data.conditions,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+}
+
+/** Namespaced owner key for an in-flight scan. See AnalysisRequest.ownerKey. */
+function principalKey(principal: ScanPrincipal | undefined): string {
+  if (!principal) return '';
+  return principal.kind === 'user' ? `user:${principal.userId}` : `device:${principal.deviceId}`;
+}
 
 // Global OCR cache - keyed by image content hash (language-independent)
 interface OCRCacheEntry {
@@ -191,6 +235,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Setup authentication
   await setupAuth(app);
+
+  // Subscription state, pushed by RevenueCat. Registered after auth so the
+  // bearer middleware has run, though the route itself deliberately does not
+  // use it — RevenueCat authenticates with a shared secret, not a user token.
+  setupRevenueCatWebhook(app);
 
   // Auth endpoint
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
@@ -517,12 +566,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         firstName: user.firstName,
         lastName: user.lastName,
         createdAt: user.createdAt,
-        dailyFreeScansUsed: quota.dailyFreeScansUsed,
-        dailyFreeScansLimit: quota.dailyFreeScansLimit,
-        dailyFreeScansRemaining: quota.dailyFreeScansRemaining,
+        freeScansRemaining: quota.freeScansRemaining,
+        freeScanGrant: quota.freeScanGrant,
         purchasedScanBalance: quota.purchasedScanBalance,
+        // null means unlimited. The client renders the word, not the number.
         totalScansAvailable: quota.totalScansAvailable,
-        nextDailyReset: quota.nextDailyReset,
+        subscription: quota.subscription,
       });
     } catch (error: any) {
       console.error("Error fetching scan balance:", error);
@@ -633,13 +682,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Check analysis status (for polling from mobile when tab is backgrounded) (protected)
-  app.get("/api/analysis-status/:requestId", isAuthenticated, (req: any, res) => {
+  app.get("/api/analysis-status/:requestId", allowAnonymousScan, (req: any, res) => {
     const { requestId } = req.params;
     const request = analysisRequests.get(requestId);
 
     // Someone else's request is reported as missing rather than forbidden: a
     // 403 would confirm the id is real, which is itself worth not saying.
-    if (!request || request.userId !== req.user.claims.sub) {
+    if (!request || request.ownerKey !== principalKey(req.scanPrincipal)) {
       return res.status(404).json({ error: 'Analysis request not found' });
     }
 
@@ -671,7 +720,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Combined OCR + Analysis endpoint (returns request ID immediately for mobile resilience) (protected)
-  app.post("/api/scan-and-analyze", isAuthenticated, async (req, res) => {
+  app.post("/api/scan-and-analyze", allowAnonymousScan, requireScanQuota, async (req, res) => {
     const body = req.body;
     
     // Validate required fields
@@ -683,11 +732,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
     // Generate request ID
     const requestId = crypto.randomBytes(8).toString('hex');
-    const userId: string | undefined = (req as any).user?.claims?.sub;
+    const principal: ScanPrincipal = (req as any).scanPrincipal;
+    const userId: string | undefined =
+      principal.kind === 'user' ? principal.userId : undefined;
     const analysisRequest: AnalysisRequest = {
       id: requestId,
-      // isAuthenticated has already run, so claims.sub is present.
-      userId: userId as string,
+      ownerKey: principalKey(principal),
+      userId,
       status: 'processing',
       timestamp: Date.now()
     };
@@ -711,7 +762,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let analysisStage: 'pending' | 'success' | 'failed' = 'pending';
 
       try {
-        const { imageData, productType, userLanguage, ocrText: cachedOcrText, profileId } = body;
+        const {
+          imageData, productType, userLanguage, ocrText: cachedOcrText, profileId,
+          profile: inlineProfile,
+        } = body;
 
         // Step 1: Read the label (multimodal-first) or use cached/client-provided text.
         // Label reading is language-independent — same result serves all languages.
@@ -871,15 +925,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
           // Apply the personal profile AFTER analysis/cache retrieval so the
           // cached analysis stays profile-agnostic and serves every profile.
-          if (profileId && userId) {
-            const profile = await storage.getProfile(profileId, userId);
-            if (profile) {
-              analysisResult = applyProfileToAnalysis(analysisResult, profile);
-              const flagCount = analysisResult.personalFlags?.length ?? 0;
-              console.log(`[PERSONAL-RISK-${requestId}] Applied profile "${profile.name}": ${flagCount} personal flags, overall risk ${analysisResult.overallRisk}`);
-            } else {
-              console.warn(`[PERSONAL-RISK-${requestId}] profileId ${profileId} not found for user, skipping personalization`);
-            }
+          //
+          // Two ways in. A signed-in scan names a stored profile by id. A scan
+          // made during onboarding, before there is an account, sends the
+          // profile INLINE — it exists only on that device, so there is nothing
+          // here to look up.
+          //
+          // The inline profile is validated and used for this one analysis and
+          // never written anywhere. That is the whole point: someone who has
+          // not signed in has not agreed to us storing their child's allergies,
+          // and the first scan still has to be about that child or the app has
+          // shown them the generic answer it is trying to prove it is better
+          // than.
+          const resolvedProfile = profileId && userId
+            ? await storage.getProfile(profileId, userId)
+            : inlineProfile
+              ? parseInlineProfile(inlineProfile)
+              : undefined;
+
+          if (resolvedProfile) {
+            analysisResult = applyProfileToAnalysis(analysisResult, resolvedProfile);
+            const flagCount = analysisResult.personalFlags?.length ?? 0;
+            console.log(`[PERSONAL-RISK-${requestId}] Applied profile "${resolvedProfile.name}": ${flagCount} personal flags, overall risk ${analysisResult.overallRisk}`);
+          } else if (profileId || inlineProfile) {
+            console.warn(`[PERSONAL-RISK-${requestId}] profile could not be resolved, skipping personalization`);
           }
 
           // Store completed result
@@ -887,6 +956,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
           analysisRequest.result = analysisResult;
           analysisRequest.ocrText = ocrText;
           analysisRequest.timestamp = Date.now();
+
+          // Spend the scan HERE, on success, and nowhere else.
+          //
+          // It used to be spent when the client saved the scan to history,
+          // inside a try/catch that logged the failure and carried on. Three
+          // things were wrong with that: an anonymous scan never reaches the
+          // history route at all, a client that simply never called it scanned
+          // for free forever, and a user at zero still got their analysis
+          // because the check ran after we had already paid for it.
+          //
+          // Still swallowed on failure, but for the opposite reason: the person
+          // has their verdict, and taking it away because a counter would not
+          // increment is a worse outcome than one uncounted scan.
+          try {
+            await consumeForPrincipal(principal, productType);
+          } catch (quotaError: any) {
+            console.error(`[QUOTA-${requestId}] consume failed:`, quotaError?.message);
+          }
           
         } catch (analysisError: any) {
           analysisStage = 'failed';
@@ -960,14 +1047,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const scan = await storage.createScanHistory(scanData);
       console.log(`[HISTORY] Saved scan ${scan.id} for user ${userId}`);
       
-      // Consume a scan from user's quota (tracks free scans / premium rate limits)
-      try {
-        await subscriptionService.consumeScan(userId, data.productCategory);
-        console.log(`[HISTORY] Consumed scan for user ${userId}`);
-      } catch (scanError: any) {
-        console.error(`[HISTORY] Failed to consume scan for user ${userId}:`, scanError.message);
-        // Don't fail the request - scan is already saved
-      }
+      // Quota is NOT spent here. Saving to history is a separate act from
+      // scanning — the client can retry it, skip it, or call it twice — and
+      // metering on it charged people for the wrong thing. See the consume call
+      // in /api/scan-and-analyze.
       
       res.status(201).json({ success: true, scanId: scan.id });
     } catch (error: any) {
@@ -1650,7 +1733,8 @@ Sent from Revely Feedback System
             replitId: u.id,
             email: u.email || '',
             name: `${u.firstName || ''} ${u.lastName || ''}`.trim() || 'Unknown',
-            dailyFreeScansUsed: u.dailyFreeScansUsed || 0,
+            freeScansUsed: u.freeScansUsed || 0,
+            subscriptionStatus: u.subscriptionStatus,
             purchasedScanBalance: u.purchasedScanBalance || 0,
             createdAt: u.createdAt?.toString() || '',
             scansToday: scanCounts.today,

@@ -60,6 +60,9 @@ const INTENTIONALLY_PUBLIC: Record<string, string> = {
   'POST /api/analytics/purchase-prompt-view': 'paywall views are counted before sign-in',
   'POST /api/crash': 'a release that dies at startup files nothing if a token is required — which is exactly the release you need to hear about; rate-limited and size-capped instead',
   'POST /api/stripe/webhook/:uuid': 'called by Stripe; authenticated by signature, not session',
+  'POST /api/webhooks/revenuecat': 'called by RevenueCat, which holds no user session; authenticated by a constant-time shared-secret check on the Authorization header, and refuses everything when REVENUECAT_WEBHOOK_SECRET is unset',
+  'POST /api/scan-and-analyze': 'scanning works before sign-in so the app can prove itself, and so a reviewer can use it without an account — see server/anonymousAccess.ts. Guarded instead by allowAnonymousScan + requireScanQuota: a device with no free scans left is refused with 402 before any work is done',
+  'GET /api/analysis-status/:requestId': 'polls a scan that may have been started anonymously. Guarded by allowAnonymousScan, and the result is released only to the namespaced owner key that started it',
 };
 
 /** Routes that must additionally be behind the admin gate. */
@@ -197,6 +200,7 @@ const routes = [
   ...findRoutes('server/localAuth.ts'),
   ...findRoutes('server/mobileAuth.ts'),
   ...findRoutes('server/index.ts'),
+  ...findRoutes('server/revenueCatWebhook.ts'),
 ];
 
 console.log(`\n[AUTH] ${routes.length} routes found`);

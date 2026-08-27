@@ -1,12 +1,13 @@
 import { Redirect, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Alert, Linking, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Radius, Space, Type, useSurface, useVerdictColors } from '@/constants/design';
 import { apiFetch } from '@/lib/api';
 import { useAuth } from '@/lib/auth-context';
+import { trialDaysRemaining, type Entitlement } from '@/lib/entitlement';
 import { LANGUAGE_NAMES, SUPPORTED_LANGUAGES, useTranslation } from '@/lib/i18n';
 import { goBackOrHome } from '@/lib/navigation';
 
@@ -30,13 +31,22 @@ import { goBackOrHome } from '@/lib/navigation';
 // signal the app has — but a permanent deletion is the one place a warning
 // colour is telling the truth.
 
-interface AccountDetails {
+interface AccountDetails extends Entitlement {
   email: string | null;
   firstName: string | null;
   createdAt: string | null;
-  totalScansAvailable: number;
-  purchasedScanBalance: number;
 }
+
+/**
+ * Where Apple lets someone cancel.
+ *
+ * We cannot cancel a subscription from inside the app — StoreKit does not allow
+ * it, and neither does any wrapper around it. The only honest thing an app can
+ * do is hand the person straight to the place that can, which is this deep
+ * link. Hiding it, or making them hunt through Settings, is the pattern that
+ * produces refund requests and one-star reviews.
+ */
+const APPLE_SUBSCRIPTIONS_URL = 'https://apps.apple.com/account/subscriptions';
 
 export default function AccountScreen() {
   const router = useRouter();
@@ -80,6 +90,8 @@ export default function AccountScreen() {
   }
 
   const purchased = details?.purchasedScanBalance ?? 0;
+  const sub = details?.subscription;
+  const trialDays = details ? trialDaysRemaining(details) : 0;
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: surface.paper }]}>
@@ -102,6 +114,50 @@ export default function AccountScreen() {
               value={new Date(details.createdAt).toLocaleDateString()}
             />
           ) : null}
+        </View>
+
+        {/* Subscription.
+            Status first, then the way out. Someone opening this screen mid-trial
+            is usually here to work out when they get charged or how to stop it,
+            and both answers are on the card rather than a tap away. */}
+        <View style={[styles.card, { backgroundColor: surface.card, borderColor: surface.rule }]}>
+          <View style={styles.row}>
+            <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
+              {t('account.subscriptionLabel')}
+            </ThemedText>
+            <ThemedText style={[Type.body, { color: surface.ink }]}>
+              {sub?.status === 'trialing'
+                ? t('account.subTrialing', { days: trialDays })
+                : sub?.status === 'grace'
+                  ? t('account.subGrace')
+                  : sub?.active
+                    ? t(sub.plan === 'annual' ? 'account.subAnnual' : 'account.subMonthly')
+                    : t('account.subFree', {
+                        count: details?.freeScansRemaining ?? 0,
+                      })}
+            </ThemedText>
+            {sub?.expiresAt && sub.active ? (
+              <ThemedText style={[Type.meta, { color: surface.inkMuted }]}>
+                {t(sub.status === 'trialing' ? 'account.subChargeOn' : 'account.subRenewsOn', {
+                  date: new Date(sub.expiresAt).toLocaleDateString(),
+                })}
+              </ThemedText>
+            ) : null}
+          </View>
+
+          <Pressable
+            style={[styles.action, { borderColor: surface.rule }]}
+            onPress={() =>
+              sub?.active
+                ? void Linking.openURL(APPLE_SUBSCRIPTIONS_URL)
+                : router.push('/paywall')
+            }
+            accessibilityRole="button"
+          >
+            <ThemedText style={[Type.label, { color: surface.ink }]}>
+              {sub?.active ? t('account.manageSubscription') : t('account.seePlans')}
+            </ThemedText>
+          </Pressable>
         </View>
 
         {/* Display language. Pills rather than a picker: three options fit on
@@ -172,6 +228,15 @@ export default function AccountScreen() {
           {purchased > 0 ? (
             <ThemedText style={[Type.meta, { color: surface.inkMuted }]}>
               {t('account.deleteScansWarning', { count: purchased })}
+            </ThemedText>
+          ) : null}
+          {/* The one thing deletion does NOT do. Apple owns the subscription,
+              so removing the account leaves it billing — and someone who
+              deleted their account and then kept being charged has a refund
+              request and a fair grievance. */}
+          {sub?.active ? (
+            <ThemedText style={[Type.meta, { color: surface.inkMuted }]}>
+              {t('account.deleteSubWarning')}
             </ThemedText>
           ) : null}
           <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>

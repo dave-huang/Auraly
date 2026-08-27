@@ -47,3 +47,34 @@ export const GOOGLE_SIGN_IN_ENABLED = !!GOOGLE_IOS_CLIENT_ID;
 
 /** Dev-only sign-in shortcut; requires ALLOW_DEV_LOGIN=true on the server. */
 export const ALLOW_DEV_LOGIN = __DEV__;
+
+// ---------------------------------------------------------------------------
+// Subscriptions
+// ---------------------------------------------------------------------------
+
+/** RevenueCat public SDK key for iOS. Build-time, via eas.json. */
+export const REVENUECAT_IOS_KEY = process.env.EXPO_PUBLIC_REVENUECAT_IOS_KEY;
+
+/**
+ * Whether purchasing can actually complete.
+ *
+ * Same reasoning as GOOGLE_SIGN_IN_ENABLED above, and the same failure it
+ * avoids: without a key, `Purchases.configure` succeeds and the paywall still
+ * renders, and the error only arrives after someone has tapped "Start free
+ * trial" and decided to trust us with a card. A paywall that cannot take money
+ * must say so before the tap, not after.
+ */
+export const PURCHASES_ENABLED = !!REVENUECAT_IOS_KEY;
+
+/**
+ * The entitlement RevenueCat grants on either plan. Must match the identifier
+ * configured in the RevenueCat dashboard AND the server's
+ * REVENUECAT_ENTITLEMENT_ID, or every purchase will look like a failure.
+ */
+export const ENTITLEMENT_ID = 'plus';
+
+/** Product identifiers, as configured in App Store Connect. */
+export const PRODUCTS = {
+  monthly: 'revely.plus.monthly',
+  annual: 'revely.plus.annual',
+} as const;

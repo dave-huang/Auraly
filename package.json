@@ -14,10 +14,11 @@
     "eval:check": "tsx eval/scoring.check.ts",
     "risk:check": "tsx eval/risk.check.ts",
     "auth:check": "tsx eval/auth.check.ts",
-    "check:all": "tsc && npm run eval:check && npm run risk:check && npm run substances:check && npm run auth:check",
+    "check:all": "tsc && npm run eval:check && npm run risk:check && npm run substances:check && npm run entitlement:check && npm run auth:check",
     "substances:ingest": "tsx server/services/substances/ingest/run.ts",
     "substances:check": "tsx server/services/substances/check.ts",
-    "scans:backfill": "tsx server/scripts/backfillModelRisk.ts"
+    "scans:backfill": "tsx server/scripts/backfillModelRisk.ts",
+    "entitlement:check": "tsx eval/entitlement.check.ts"
   },
   "dependencies": {
     "@capacitor/app": "^8.1.0",

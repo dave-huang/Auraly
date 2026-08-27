@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -5,68 +6,131 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ApertureMark } from '@/components/aperture-mark';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Lamplight, Radius, Space, Type } from '@/constants/design';
-import { goBackOrHome } from '@/lib/navigation';
-import { apiFetch } from '@/lib/api';
+import { PURCHASES_ENABLED } from '@/lib/config';
+import { awaitEntitlement } from '@/lib/entitlement';
 import { useTranslation } from '@/lib/i18n';
+import { goBackOrHome } from '@/lib/navigation';
+import { scheduleTrialReminder } from '@/lib/trialReminder';
+import {
+  PurchaseCancelledError,
+  getPlans,
+  purchasePlan,
+  restorePurchases,
+  storeSaysEntitled,
+  type PlanOffer,
+} from '@/lib/purchases';
 
-// Screen 11 — Monetisation · paywall.
+// Screen 11 — Monetisation.
 //
-// Ink ground, and no verdict colour anywhere: the three inks mean a verdict,
-// and a green "recommended" badge on a price would spend the app's only
-// trusted signal on selling something.
+// Ink ground, and no verdict colour anywhere. The three inks mean a verdict;
+// spending them on a "recommended" badge would trade the app's only trusted
+// signal for a sale, and the verdict screen is where that trust has to survive.
 //
-// The screen leads with what is actually left today rather than with a price.
-// Someone who hits this has just been stopped mid-scan, and the honest thing
-// to show first is the number that stopped them.
+// WHAT THIS SCREEN REFUSES TO DO
 //
-// NOT WIRED TO PURCHASING. Taking money needs RevenueCat and IAP products
-// configured in App Store Connect; until those exist this screen is
-// deliberately a dead end rather than a button that fails silently.
-
-interface Balance {
-  dailyFreeScansUsed: number;
-  dailyFreeScansLimit: number;
-  dailyFreeScansRemaining: number;
-  purchasedScanBalance: number;
-  totalScansAvailable: number;
-  nextDailyReset: string | null;
-}
-
-const PLANS = [
-  { id: 'pack20', scans: 20, key: 'paywall.pack20' },
-  { id: 'pack100', scans: 100, key: 'paywall.pack100' },
-] as const;
+// No countdown. No "offer ends today". No pre-ticked plan the eye slides past,
+// no obscured close button, no price that appears only after the tap. This app
+// is a health tool whose entire equity is that it tells people the truth about
+// what is in a jar; a dark pattern here is not a growth tactic, it is a
+// contradiction of the product.
+//
+// THE TIMELINE IS THE POINT OF THE SCREEN
+//
+// It comes before the prices, and it says plainly when money moves: today it is
+// free, on day five we remind you, on day seven you are charged unless you
+// cancel. Saying so out loud raises trial starts rather than lowering them, and
+// it collapses the two things that actually cost money later — refund requests
+// and one-star reviews from people who felt ambushed. Apple also requires the
+// terms to be legible before purchase (Guideline 3.1.2); this is that, written
+// like a sentence instead of a disclosure.
+//
+// PRICES COME FROM THE STORE, NEVER FROM HERE
+//
+// `PlanOffer.price` is whatever StoreKit says in the person's own currency and
+// storefront. Hard-coding "$7.99" would print a lie to everyone outside the US
+// price tier — and a refund.
 
 export default function PaywallScreen() {
+  const router = useRouter();
   const { t } = useTranslation();
 
-  const [balance, setBalance] = useState<Balance | null>(null);
-  const [selected, setSelected] = useState<string>(PLANS[0].id);
+  const [plans, setPlans] = useState<PlanOffer[] | null>(null);
+  const [selected, setSelected] = useState<'monthly' | 'annual'>('annual');
+  const [busy, setBusy] = useState<'purchase' | 'restore' | null>(null);
 
   useEffect(() => {
-    apiFetch<Balance>('/api/account/scan-balance')
-      .then(setBalance)
-      .catch(() => setBalance(null));
+    void getPlans().then(setPlans);
   }, []);
 
-  function purchase() {
-    // Deliberately explicit rather than a spinner that goes nowhere: an app
-    // that appears to take a payment and doesn't is worse than one that says
-    // the shop isn't open.
-    Alert.alert(t('paywall.unavailableTitle'), t('paywall.unavailableBody'));
+  const offer = plans?.find((p) => p.plan === selected) ?? null;
+  const trialDays = offer?.trialDays || 7;
+
+  async function startTrial() {
+    if (!offer) return;
+    setBusy('purchase');
+    try {
+      const info = await purchasePlan(offer);
+      // Trust the SERVER, not the receipt in hand. RevenueCat's webhook is what
+      // grants entitlement, and it lands a beat after StoreKit returns.
+      const entitled = storeSaysEntitled(info) ? await awaitEntitlement() : null;
+      if (entitled) {
+        // Keep the promise the timeline just made, three lines up the screen.
+        // Uses the server's expiry rather than a local date guess, so the
+        // reminder lands relative to when Apple will actually bill.
+        if (entitled.subscription.status === 'trialing' && entitled.subscription.expiresAt) {
+          await scheduleTrialReminder(entitled.subscription.expiresAt, {
+            title: t('trial.reminderTitle'),
+            body: t('trial.reminderBody', {
+              date: new Date(entitled.subscription.expiresAt).toLocaleDateString(),
+            }),
+          });
+        }
+        router.replace('/');
+        return;
+      }
+      // Paid, but our side has not caught up. Never say "failed" here — the
+      // money moved, and telling someone their purchase failed is how you get a
+      // chargeback and a support thread on a purchase that actually worked.
+      Alert.alert(t('paywall.pendingTitle'), t('paywall.pendingBody'));
+      router.replace('/');
+    } catch (error: any) {
+      // Cancelling out of Apple's sheet is the most common outcome on any
+      // paywall. It is not an error and must never produce an alert.
+      if (error instanceof PurchaseCancelledError) return;
+      Alert.alert(t('paywall.failedTitle'), error?.message ?? t('common.tryAgain'));
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  async function restore() {
+    setBusy('restore');
+    try {
+      const info = await restorePurchases();
+      if (storeSaysEntitled(info)) {
+        await awaitEntitlement();
+        router.replace('/');
+        return;
+      }
+      Alert.alert(t('paywall.restoreNoneTitle'), t('paywall.restoreNoneBody'));
+    } catch (error: any) {
+      Alert.alert(t('paywall.failedTitle'), error?.message ?? t('common.tryAgain'));
+    } finally {
+      setBusy(null);
+    }
   }
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Pressable onPress={goBackOrHome} hitSlop={12}>
+        <Pressable onPress={goBackOrHome} hitSlop={12} accessibilityRole="button">
           <ThemedText style={[Type.meta, { color: Lamplight.inkFaint }]}>
             ✕ {t('common.back')}
           </ThemedText>
         </Pressable>
 
         <View style={styles.head}>
-          <ApertureMark size={44} color={Lamplight.ink} />
+          <ApertureMark size={40} color={Lamplight.ink} />
           <ThemedText style={[Type.title, { color: Lamplight.ink }]}>
             {t('paywall.title')}
           </ThemedText>
@@ -75,96 +139,183 @@ export default function PaywallScreen() {
           </ThemedText>
         </View>
 
-        {/* What's left today — the machine reporting a count, so mono. */}
-        <View style={[styles.balance, { borderColor: Lamplight.rule }]}>
+        {/* What the subscription actually funds. The corpus line is the one
+            claim no competitor can make, and it is true. */}
+        <View style={styles.includes}>
+          <Include text={t('paywall.includeUnlimited')} />
+          <Include text={t('paywall.includeProfiles')} />
+          <Include text={t('paywall.includeCitations')} />
+          <Include text={t('paywall.includeHistory')} />
+        </View>
+
+        {/* The timeline. Before the prices, deliberately. */}
+        <View style={[styles.timeline, { borderColor: Lamplight.rule }]}>
           <ThemedText style={[Type.eyebrow, { color: Lamplight.inkFaint }]}>
-            {t('paywall.remaining')}
+            {t('paywall.timelineLabel', { days: trialDays })}
           </ThemedText>
-          {balance === null ? (
-            <ActivityIndicator size="small" color={Lamplight.ink} />
-          ) : (
-            <>
-              <ThemedText style={styles.count}>{balance.totalScansAvailable}</ThemedText>
-              <ThemedText style={[Type.meta, { color: Lamplight.inkMuted }]}>
-                {t('paywall.breakdown', {
-                  free: balance.dailyFreeScansRemaining,
-                  limit: balance.dailyFreeScansLimit,
-                  purchased: balance.purchasedScanBalance,
-                })}
-              </ThemedText>
-            </>
-          )}
+          <Beat day={t('paywall.dayToday')} text={t('paywall.dayTodayBody')} />
+          <Beat day={t('paywall.dayRemind')} text={t('paywall.dayRemindBody')} />
+          <Beat
+            day={t('paywall.dayCharge', { days: trialDays })}
+            text={
+              offer
+                ? t('paywall.dayChargeBody', { price: offer.price })
+                : t('paywall.dayChargeBodyGeneric')
+            }
+            last
+          />
         </View>
 
-        <View style={styles.plans}>
-          {PLANS.map((plan) => {
-            const active = plan.id === selected;
-            return (
-              <Pressable
-                key={plan.id}
-                onPress={() => setSelected(plan.id)}
-                style={[
-                  styles.plan,
-                  { borderColor: active ? Lamplight.ink : Lamplight.rule },
-                  active && { backgroundColor: Lamplight.card },
-                ]}
-              >
-                <View style={styles.planText}>
-                  <ThemedText style={[Type.label, { color: Lamplight.ink }]}>
-                    {t(plan.key)}
-                  </ThemedText>
-                  <ThemedText style={[Type.meta, { color: Lamplight.inkMuted }]}>
-                    {t('paywall.scanCount', { count: plan.scans })}
-                  </ThemedText>
-                </View>
-                {/* Selection is a mono mark, not a coloured tick. */}
-                <ThemedText style={styles.tick}>{active ? '✓' : ''}</ThemedText>
-              </Pressable>
-            );
-          })}
-        </View>
+        {plans === null ? (
+          <ActivityIndicator color={Lamplight.ink} />
+        ) : plans.length === 0 ? (
+          // Honest dead end rather than a button that fails after the tap.
+          <View style={[styles.unavailable, { borderColor: Lamplight.rule }]}>
+            <ThemedText style={[Type.body, { color: Lamplight.inkMuted }]}>
+              {PURCHASES_ENABLED ? t('paywall.plansUnavailable') : t('paywall.notOpenYet')}
+            </ThemedText>
+          </View>
+        ) : (
+          <View style={styles.plans}>
+            {plans.map((plan) => {
+              const active = plan.plan === selected;
+              return (
+                <Pressable
+                  key={plan.plan}
+                  onPress={() => setSelected(plan.plan)}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: active }}
+                  style={[
+                    styles.plan,
+                    { borderColor: active ? Lamplight.ink : Lamplight.rule },
+                    active && { backgroundColor: Lamplight.card },
+                  ]}
+                >
+                  <View style={styles.planText}>
+                    <ThemedText style={[Type.label, { color: Lamplight.ink }]}>
+                      {t(plan.plan === 'annual' ? 'paywall.annual' : 'paywall.monthly')}
+                    </ThemedText>
+                    <ThemedText style={[Type.meta, { color: Lamplight.inkMuted }]}>
+                      {plan.plan === 'annual'
+                        ? t('paywall.annualDetail', {
+                            price: plan.price,
+                            perMonth: plan.pricePerMonth,
+                          })
+                        : t('paywall.monthlyDetail', { price: plan.price })}
+                    </ThemedText>
+                  </View>
+                  {/* Selection is a mono mark, never a coloured tick. */}
+                  <ThemedText style={styles.tick}>{active ? '✓' : ''}</ThemedText>
+                </Pressable>
+              );
+            })}
+          </View>
+        )}
 
-        <Pressable style={[styles.primary, { backgroundColor: Lamplight.ink }]} onPress={purchase}>
+        <Pressable
+          style={[
+            styles.primary,
+            { backgroundColor: Lamplight.ink },
+            (!offer || busy !== null) && styles.disabled,
+          ]}
+          disabled={!offer || busy !== null}
+          onPress={() => void startTrial()}
+          accessibilityRole="button"
+        >
           <ThemedText style={[styles.primaryLabel, { color: Lamplight.paper }]}>
-            {t('paywall.cta')}
+            {busy === 'purchase' ? t('paywall.working') : t('paywall.cta', { days: trialDays })}
+          </ThemedText>
+        </Pressable>
+
+        {/* Required by Apple, and the real answer to "same person, new phone". */}
+        <Pressable
+          onPress={() => void restore()}
+          disabled={busy !== null}
+          hitSlop={12}
+          style={styles.restore}
+          accessibilityRole="button"
+        >
+          <ThemedText style={[Type.meta, { color: Lamplight.inkFaint }]}>
+            {busy === 'restore' ? t('paywall.working') : t('paywall.restore')}
           </ThemedText>
         </Pressable>
 
         <ThemedText style={[Type.meta, styles.fine, { color: Lamplight.inkFaint }]}>
-          {t('paywall.fine')}
+          {t('paywall.fine', { days: trialDays })}
         </ThemedText>
       </ScrollView>
     </SafeAreaView>
   );
 }
 
+function Include({ text }: { text: string }) {
+  return (
+    <View style={styles.include}>
+      <View style={[styles.dot, { backgroundColor: Lamplight.inkFaint }]} />
+      <ThemedText style={[Type.body, styles.includeText, { color: Lamplight.inkMuted }]}>
+        {text}
+      </ThemedText>
+    </View>
+  );
+}
+
+function Beat({ day, text, last = false }: { day: string; text: string; last?: boolean }) {
+  return (
+    <View style={[styles.beat, !last && { borderBottomColor: Lamplight.rule, borderBottomWidth: StyleSheet.hairlineWidth }]}>
+      <ThemedText style={[Type.label, styles.beatDay, { color: Lamplight.ink }]}>{day}</ThemedText>
+      <ThemedText style={[Type.body, styles.beatText, { color: Lamplight.inkMuted }]}>
+        {text}
+      </ThemedText>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Lamplight.paper },
-  content: { padding: Gutter, gap: Space.xl, paddingBottom: Space.xxl },
-  head: { gap: Space.md, marginTop: Space.lg },
+  content: {
+    paddingHorizontal: Gutter,
+    paddingTop: Space.lg,
+    paddingBottom: Space.xxl,
+    gap: Space.xl,
+  },
+  head: { gap: Space.md },
 
-  balance: {
+  includes: { gap: Space.sm },
+  include: { flexDirection: 'row', alignItems: 'flex-start', gap: Space.sm },
+  dot: { width: 4, height: 4, borderRadius: 2, marginTop: 9, marginHorizontal: 5 },
+  includeText: { flex: 1 },
+
+  timeline: {
     borderWidth: StyleSheet.hairlineWidth,
     borderRadius: Radius.flat,
     padding: Space.lg,
-    gap: Space.xs,
+    gap: Space.sm,
   },
-  // The count is set in mono, not the display serif: Newsreader belongs to the
-  // verdict word alone, and a big serif number here would read as one.
-  count: { fontFamily: Font.monoMedium, fontSize: 40, lineHeight: 50, color: Lamplight.ink },
+  beat: { paddingVertical: Space.md, gap: 2 },
+  beatDay: { letterSpacing: 0.3 },
+  beatText: {},
 
-  plans: { gap: Space.md },
+  plans: { gap: Space.sm },
   plan: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
+    justifyContent: 'space-between',
+    borderWidth: StyleSheet.hairlineWidth,
     borderRadius: Radius.flat,
     padding: Space.lg,
   },
-  planText: { flex: 1, gap: 2 },
-  tick: { fontFamily: Font.sansSemi, fontSize: 15, lineHeight: 20, color: Lamplight.ink },
+  planText: { gap: Space.xs, flex: 1 },
+  tick: { fontFamily: Font.monoMedium, fontSize: 14, color: Lamplight.ink },
+
+  unavailable: {
+    borderWidth: StyleSheet.hairlineWidth,
+    borderRadius: Radius.flat,
+    padding: Space.lg,
+  },
 
   primary: { borderRadius: Radius.pill, paddingVertical: Space.lg, alignItems: 'center' },
   primaryLabel: { fontFamily: Font.sansSemi, fontSize: 15, lineHeight: 20 },
-  fine: { textAlign: 'center' },
+  disabled: { opacity: 0.4 },
+  restore: { alignItems: 'center', paddingVertical: Space.sm },
+  fine: { textAlign: 'center', lineHeight: 17 },
 });
