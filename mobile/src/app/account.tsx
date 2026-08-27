@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Radius, Space, Type, useSurface, useVerdictColors } from '@/constants/design';
 import { apiFetch } from '@/lib/api';
+import { HEALTH_DATA_URL, PRIVACY_URL, TERMS_URL } from '@/lib/config';
 import { useAuth } from '@/lib/auth-context';
 import { trialDaysRemaining, type Entitlement } from '@/lib/entitlement';
 import { LANGUAGE_NAMES, SUPPORTED_LANGUAGES, useTranslation } from '@/lib/i18n';
@@ -257,8 +258,30 @@ export default function AccountScreen() {
             )}
           </Pressable>
         </View>
+
+        {/* The legal documents, reachable from inside the app rather than only
+            from the App Store listing. The health-data policy is a peer link
+            rather than a line inside the privacy policy, because Washington's
+            My Health My Data Act requires it to be linked distinctly. */}
+        <View style={styles.legal}>
+          <LegalLink label={t('account.privacy')} url={PRIVACY_URL} />
+          <LegalLink label={t('account.terms')} url={TERMS_URL} />
+          <LegalLink label={t('account.healthData')} url={HEALTH_DATA_URL} />
+        </View>
       </ScrollView>
     </SafeAreaView>
+  );
+}
+
+/** A link out to a legal document. hitSlop because the label is small. */
+function LegalLink({ label, url }: { label: string; url: string }) {
+  const surface = useSurface();
+  return (
+    <Pressable onPress={() => void Linking.openURL(url)} hitSlop={10} accessibilityRole="link">
+      <ThemedText style={[Type.meta, styles.legalLabel, { color: surface.inkFaint }]}>
+        {label}
+      </ThemedText>
+    </Pressable>
   );
 }
 
@@ -283,6 +306,8 @@ const styles = StyleSheet.create({
     gap: Space.md,
   },
   row: { gap: 2 },
+  legal: { alignItems: 'center', gap: Space.sm, paddingTop: Space.md },
+  legalLabel: { textDecorationLine: 'underline' },
   rowValue: { fontFamily: Font.mono, fontSize: 13, lineHeight: 18 },
 
   languageRow: { flexDirection: 'row', gap: Space.sm, flexWrap: 'wrap' },

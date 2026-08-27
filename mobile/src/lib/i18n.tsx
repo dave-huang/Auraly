@@ -195,6 +195,9 @@ const en = {
 
   'account.menuItem': 'Account',
   'account.title': 'Account',
+  'account.privacy': 'Privacy Policy',
+  'account.terms': 'Terms of Use',
+  'account.healthData': 'Consumer Health Data Privacy Policy',
   'account.signedInAs': 'Signed in as',
   'account.name': 'Name',
   'account.noEmail': 'No email on file',
@@ -598,6 +601,9 @@ const zh: Record<TranslationKey, string> = {
 
   'account.menuItem': '账户',
   'account.title': '账户',
+  'account.privacy': '隐私政策',
+  'account.terms': '使用条款',
+  'account.healthData': '消费者健康数据隐私政策',
   'account.signedInAs': '登录身份',
   'account.name': '姓名',
   'account.noEmail': '未记录邮箱',
@@ -982,6 +988,9 @@ const es: Record<TranslationKey, string> = {
 
   'account.menuItem': 'Cuenta',
   'account.title': 'Cuenta',
+  'account.privacy': 'Política de privacidad',
+  'account.terms': 'Términos de uso',
+  'account.healthData': 'Política de privacidad de datos de salud',
   'account.signedInAs': 'Sesión iniciada como',
   'account.name': 'Nombre',
   'account.noEmail': 'Sin correo registrado',

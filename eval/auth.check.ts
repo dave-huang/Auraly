@@ -65,6 +65,7 @@ const INTENTIONALLY_PUBLIC: Record<string, string> = {
   'GET /api/analysis-status/:requestId': 'polls a scan that may have been started anonymously. Guarded by allowAnonymousScan, and the result is released only to the namespaced owner key that started it',
   'GET /privacy': 'the privacy policy — App Store Connect fetches this URL unauthenticated at every submission, and the paywall links to it before anyone has an account',
   'GET /terms': 'the terms of use — same reason; Guideline 3.1.2 requires it reachable from the purchase screen',
+  'GET /health-data-privacy': 'the Washington My Health My Data Act policy — RCW 19.373.020 requires it publicly linked and distinct from the general privacy policy',
   'GET /privacy-policy': 'permanent redirect to /privacy; a legal URL that 404s is worse than a redirect',
   'GET /legal/privacy': 'permanent redirect to /privacy',
   'GET /terms-of-use': 'permanent redirect to /terms',

@@ -40,6 +40,15 @@ export const API_BASE_URL = resolveApiBaseUrl();
 export const PRIVACY_URL = `${API_BASE_URL}/privacy`;
 export const TERMS_URL = `${API_BASE_URL}/terms`;
 
+/**
+ * The Washington My Health My Data Act policy.
+ *
+ * A separate document with its own link, because RCW 19.373.020 requires it to
+ * be exactly that — linked distinctly rather than folded into the general
+ * privacy policy. Keep it a peer of the other two wherever it appears.
+ */
+export const HEALTH_DATA_URL = `${API_BASE_URL}/health-data-privacy`;
+
 export const GOOGLE_IOS_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID;
 export const GOOGLE_WEB_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID;
 

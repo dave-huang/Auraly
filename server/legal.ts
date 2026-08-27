@@ -154,6 +154,7 @@ function page(title: string, body: string): string {
 ${body}
 <footer>
   <p><a href="/privacy">Privacy Policy</a> · <a href="/terms">Terms of Use</a></p>
+  <p><a href="/health-data-privacy">Consumer Health Data Privacy Policy</a></p>
   <p>${LEGAL_ENTITY} · <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a></p>
 </footer>
 </main>
@@ -335,6 +336,150 @@ Revely afterwards means the new version applies.</p>
 `);
 
 // ---------------------------------------------------------------------------
+// Consumer health data privacy policy (Washington My Health My Data Act)
+// ---------------------------------------------------------------------------
+
+/**
+ * A SEPARATE document, on purpose.
+ *
+ * RCW 19.373.020 requires a consumer health data privacy policy that is linked
+ * distinctly and is NOT merged into the general privacy policy — and it
+ * requires the policy to carry the five disclosures below and nothing else.
+ * That last part is why this page has no summary box, no reassurance, and no
+ * writing that is not doing required work: padding it with brand voice is not
+ * a neutral stylistic choice here, it is the thing the statute forbids.
+ *
+ * The Act has no revenue threshold, so being small does not exempt Dozy Labs
+ * LLC, and it carries a private right of action through the Consumer
+ * Protection Act rather than regulator-only enforcement.
+ *
+ * The sharing disclosure is narrow because the architecture is: profiles never
+ * reach OpenAI. analyzeIngredients() takes ingredient text and a language, and
+ * applyProfileToAnalysis() runs afterwards on our own server — personalRisk.ts
+ * contains no fetch and no await, because it is local matching. Keep it that
+ * way. Passing a profile into a model prompt would move health data to a third
+ * party and make this section false.
+ */
+const HEALTH_DATA = page("Consumer Health Data Privacy Policy", `
+<p>This policy is required by the Washington My Health My Data Act and applies
+to consumer health data that ${LEGAL_ENTITY} collects through Revely. It covers
+Washington residents and anyone whose consumer health data we collect in
+Washington. It is separate from our
+<a href="/privacy">general Privacy Policy</a>, which covers everything else.</p>
+
+<h2>1. What consumer health data we collect, and why</h2>
+<div class="scroll">
+<table>
+  <thead><tr><th>Category</th><th>Why we collect it, and how it is used</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>Health conditions you record in a profile — including pregnancy,
+      breastfeeding, an infant under twelve months, kidney disease, high blood
+      pressure, diabetes, and coeliac disease</td>
+      <td>To decide which ingredients on a label matter for the person that
+      profile describes. Used only to produce that answer.</td>
+    </tr>
+    <tr>
+      <td>Allergies and intolerances you record, and how severe each one is,
+      including anaphylaxis</td>
+      <td>To flag matching ingredients and set how strongly a result is
+      stated. Used only to produce that answer.</td>
+    </tr>
+    <tr>
+      <td>Dietary rules you record</td>
+      <td>Same purpose. Some rules imply a health status, so we treat all of
+      them as health data rather than sorting them.</td>
+    </tr>
+    <tr>
+      <td>Your scans and their results, which can indicate a health status by
+      what you were checking for</td>
+      <td>To show you the result, and to keep your history available to you
+      when you are signed in.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>We do not use consumer health data for advertising, marketing, or profiling,
+and we do not use it to make any decision about you beyond answering the
+question you asked about a label.</p>
+<p>We do not collect location data of any kind. Revely has no location
+permission and no location capability, so we cannot and do not infer anything
+about health services you visit.</p>
+
+<h2>2. Where it comes from</h2>
+<p>One source: <strong>you</strong>. Every category above is entered by you in
+the app or produced by a scan you took. We do not buy consumer health data, and
+we do not receive it from data brokers, advertising networks, health care
+providers, or any other outside source.</p>
+
+<h2>3. What consumer health data we share</h2>
+<p>We share the categories in section 1 only with the infrastructure providers
+in section 4, and only so that the app can store and serve your own data back
+to you. We share no consumer health data for any other purpose.</p>
+<p><strong>Your profiles and conditions are not sent to our ingredient-reading
+provider.</strong> A scan sends the label photo to OpenAI, which reads the
+ingredients out of it. Matching those ingredients against your profile happens
+afterwards on our own servers. OpenAI does not receive your allergies, your
+conditions, your dietary rules, or your identity.</p>
+<p><strong>We do not sell consumer health data</strong> as the My Health My
+Data Act defines selling, and we have never done so. If that ever changes, the
+Act requires us to obtain your signed authorization first, separately from any
+other consent.</p>
+
+<h2>4. Who receives it</h2>
+<div class="scroll">
+<table>
+  <thead><tr><th>Category of recipient</th><th>Who</th><th>What they do with it</th></tr></thead>
+  <tbody>
+    <tr><td>Database hosting</td><td>Neon Inc.</td><td>Stores the database on our instructions. No independent use.</td></tr>
+    <tr><td>Application hosting</td><td>Fly.io Inc.</td><td>Runs our servers, so the data passes through their infrastructure. No independent use.</td></tr>
+  </tbody>
+</table>
+</div>
+<p>That is the complete list. ${LEGAL_ENTITY} has no affiliates, and no
+advertiser, analytics provider, data broker, or marketing partner receives
+consumer health data from us.</p>
+<p>Our other providers — OpenAI, Apple, Google, RevenueCat, and Resend —
+receive no consumer health data. What each of them does receive is described in
+our <a href="/privacy">general Privacy Policy</a>.</p>
+
+<h2>5. Your rights, and how to use them</h2>
+<p>Write to <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a> to exercise
+any right below. We will confirm we received your request and respond within
+<strong>45 days</strong>. If we need more time we may take up to 45 additional
+days, and we will tell you why before the first period ends.</p>
+<ul>
+  <li><strong>Confirm and access.</strong> Ask whether we collect, share, or
+  sell your consumer health data, and get a copy of it, along with a list of
+  every third party and affiliate we have shared it with and how to contact
+  them.</li>
+  <li><strong>Withdraw consent.</strong> Withdraw your consent to our
+  collecting your consumer health data, to our sharing it, or to both
+  separately. Withdrawing stops future processing; it does not undo processing
+  that already happened.</li>
+  <li><strong>Delete.</strong> Ask us to delete your consumer health data. We
+  will delete it from our live systems, our archives, and our backups within
+  <strong>30 days</strong>, and we will tell every provider in section 4 that
+  received it to do the same. You can also delete it yourself at any time from
+  the Account screen in the app, which is immediate.</li>
+</ul>
+
+<h2>6. If we refuse</h2>
+<p>If we decline a request, we will tell you why, and you may appeal by
+replying to that message or writing again to
+<a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a> with the word "appeal".
+We will decide the appeal and write to you within <strong>45 days</strong>,
+explaining the reasons.</p>
+<p>If we deny the appeal, you may submit a complaint to the Washington State
+Attorney General at
+<a href="https://www.atg.wa.gov/file-complaint">atg.wa.gov/file-complaint</a>.
+We will include that link in any denial we send you.</p>
+
+<h2>7. Contact</h2>
+<p>${LEGAL_ENTITY} — <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a></p>
+`);
+
+// ---------------------------------------------------------------------------
 // Terms of use
 // ---------------------------------------------------------------------------
 
@@ -486,6 +631,7 @@ export function registerLegalRoutes(app: Express): void {
 
   app.get("/privacy", send(PRIVACY));
   app.get("/terms", send(TERMS));
+  app.get("/health-data-privacy", send(HEALTH_DATA));
 
   // The App Store listing form and older links have used these spellings.
   // A legal URL that 404s is worse than a redirect nobody needed.
