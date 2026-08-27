@@ -14,20 +14,24 @@ import type { Express } from "express";
  *   - Guideline 3.1.2 requires functional links to both documents on the
  *     paywall itself. mobile/src/app/paywall.tsx links here.
  *
+ * The three values below are the real ones: Dozy Labs LLC is the entity that
+ * publishes Revely and carries the liability these documents describe, and
+ * Washington is where a dispute is heard. They are defaults in code rather
+ * than deployment config on purpose — they are not secret, they are the same
+ * in every environment, and a legal page that renders a placeholder because
+ * an env var was missed is worse than one that cannot be overridden.
+ *
  * ---------------------------------------------------------------------------
- * BEFORE LAUNCH, a human has to settle three things a program cannot:
- *   1. LEGAL_ENTITY — the name that is actually liable. If Revely is not
- *      incorporated, that is a personal name, and that is a real decision.
- *   2. GOVERNING_LAW — the jurisdiction whose courts hear a dispute.
- *   3. A lawyer's read of the whole thing. What follows is accurate about
- *      the software — every claim in it was checked against the code — but
- *      accuracy about the software is not the same as legal sufficiency for
- *      an app that holds health information.
+ * STILL OPEN: a lawyer's read of the whole thing. What follows is accurate
+ * about the software — every claim in it was checked against the code — but
+ * accuracy about the software is not the same as legal sufficiency for an app
+ * that holds health information about pregnancies, infants, and diagnosed
+ * conditions.
  * ---------------------------------------------------------------------------
  */
 
-/** The entity these documents bind. Override in the environment. */
-const LEGAL_ENTITY = process.env.LEGAL_ENTITY || "Revely";
+/** The entity these documents bind. */
+const LEGAL_ENTITY = process.env.LEGAL_ENTITY || "Dozy Labs LLC";
 
 /**
  * Where privacy requests go.
@@ -36,12 +40,15 @@ const LEGAL_ENTITY = process.env.LEGAL_ENTITY || "Revely";
  * personal inbox, and this address is printed on a page the whole internet
  * reads and App Store reviewers archive — a fallback that quietly publishes
  * someone's personal address is a privacy leak inside a privacy policy.
- * Set LEGAL_CONTACT_EMAIL to a real, monitored address on the domain.
+ *
+ * The policy promises a reply within 30 days, so whatever address is here has
+ * to be one somebody actually reads.
  */
-const CONTACT_EMAIL = process.env.LEGAL_CONTACT_EMAIL || "privacy@revely.life";
+const CONTACT_EMAIL = process.env.LEGAL_CONTACT_EMAIL || "hello@dozylabs.net";
 
 /** Jurisdiction for disputes. */
-const GOVERNING_LAW = process.env.LEGAL_GOVERNING_LAW || "the State of California, USA";
+const GOVERNING_LAW =
+  process.env.LEGAL_GOVERNING_LAW || "the State of Washington, USA";
 
 /** Shown as "last updated". Bump when the text changes in substance. */
 const LAST_UPDATED = "26 August 2026";
