@@ -178,6 +178,17 @@ console.log('[ENTITLEMENT] RevenueCat event mapping');
   check('rc/plan-annual',
     resolveState({ product_id: 'revely.plus.annual', period_type: 'NORMAL', expiration_at_ms: future }).plan === 'annual',
     'the annual product id did not map to the annual plan — check it against App Store Connect');
+  // The trial is on the annual plan only. A monthly purchase arrives with
+  // period_type NORMAL and must resolve to `active` — never `trialing`, which
+  // would make the app tell someone who was charged today that they are inside
+  // a free trial, and suppress nothing but their willingness to trust it.
+  check('rc/monthly-has-no-trial',
+    resolveState({ type: 'INITIAL_PURCHASE', period_type: 'NORMAL', product_id: 'revely.plus.monthly', expiration_at_ms: future }).status === 'active',
+    'a first monthly purchase resolved as trialing — monthly is billed immediately');
+  check('rc/annual-trial-still-works',
+    resolveState({ type: 'INITIAL_PURCHASE', period_type: 'TRIAL', product_id: 'revely.plus.annual', expiration_at_ms: future }).status === 'trialing',
+    'the annual trial stopped resolving as a trial');
+
   check('rc/unknown-product',
     resolveState({ product_id: 'revely.plus.weekly', period_type: 'NORMAL', expiration_at_ms: future }).plan === null,
     'an unrecognised product id should resolve to a null plan, not guess one');

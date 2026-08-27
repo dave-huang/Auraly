@@ -81,9 +81,17 @@ export interface PlanOffer {
  * whatever Apple's tier conversion says today. Printing "$7.99" to someone
  * being charged €8.99 is both a lie and a refund.
  *
- * The trial length is read the same way, for the same reason: the priming
- * screen promises "7 days", and it must promise whatever the store will
- * actually honour.
+ * THE TRIAL IS READ THE SAME WAY, AND ONLY THE ANNUAL PLAN HAS ONE.
+ *
+ * `trialDays` comes from the product's introductory offer, per plan, and is 0
+ * when there is none — the app never assumes a trial exists. That matters more
+ * than it sounds: the offer lives in App Store Connect, not here, so if the
+ * annual trial is changed to 14 days or added to monthly, every screen follows
+ * without a release. Equally, if it is removed, nothing keeps promising it.
+ *
+ * The paywall is built on that value rather than on a constant, so a plan with
+ * no trial shows "billed today" and a Subscribe button instead of a countdown
+ * to a charge that has in fact already happened.
  */
 export async function getPlans(): Promise<PlanOffer[]> {
   if (!PURCHASES_ENABLED || !configured) return [];

@@ -50,6 +50,15 @@ import {
 // storefront. Hard-coding "$7.99" would print a lie to everyone outside the US
 // price tier — and a refund.
 
+/**
+ * The trial length we advertise, used ONLY while the store's own answer is
+ * unavailable — see the note in the component. The real number always comes
+ * from the product's introductory offer, so changing the offer in App Store
+ * Connect changes every screen without a release; this constant exists so the
+ * loading state is not blank, and never overrides a value the store gave us.
+ */
+const ADVERTISED_TRIAL_DAYS = 7;
+
 export default function PaywallScreen() {
   const router = useRouter();
   const { t } = useTranslation();
@@ -63,7 +72,23 @@ export default function PaywallScreen() {
   }, []);
 
   const offer = plans?.find((p) => p.plan === selected) ?? null;
-  const trialDays = offer?.trialDays || 7;
+
+  // The trial is on the ANNUAL plan only; monthly bills immediately.
+  //
+  // Both values come from the store when we have it. This used to be
+  // `offer?.trialDays || 7`, which promised a free week on whatever was
+  // selected — so picking monthly would have shown a seven-day timeline and
+  // then charged immediately, which is exactly the ambush this screen exists
+  // to prevent, committed by our own copy.
+  //
+  // Before the offerings load, and when they cannot load at all, there is no
+  // store answer to read. The screen still has to say something, so it says
+  // what we advertise: annual carries the trial, monthly does not. Nothing can
+  // be bought in that state — the CTA below is disabled whenever `offer` is
+  // null — so this describes the offer rather than promising a specific
+  // transaction.
+  const hasTrial = offer ? offer.trialDays > 0 : selected === 'annual';
+  const trialDays = offer?.trialDays || ADVERTISED_TRIAL_DAYS;
 
   async function startTrial() {
     if (!offer) return;
@@ -148,22 +173,46 @@ export default function PaywallScreen() {
           <Include text={t('paywall.includeHistory')} />
         </View>
 
-        {/* The timeline. Before the prices, deliberately. */}
+        {/* The timeline, before the prices — but only when the selected plan
+            actually has a trial. Monthly is billed today, and showing it a
+            seven-day countdown would be a lie about that person's money.
+            The monthly case gets its own, shorter statement rather than
+            silence: the absence of a trial is the thing they most need to
+            notice before tapping. */}
         <View style={[styles.timeline, { borderColor: Lamplight.rule }]}>
-          <ThemedText style={[Type.eyebrow, { color: Lamplight.inkFaint }]}>
-            {t('paywall.timelineLabel', { days: trialDays })}
-          </ThemedText>
-          <Beat day={t('paywall.dayToday')} text={t('paywall.dayTodayBody')} />
-          <Beat day={t('paywall.dayRemind')} text={t('paywall.dayRemindBody')} />
-          <Beat
-            day={t('paywall.dayCharge', { days: trialDays })}
-            text={
-              offer
-                ? t('paywall.dayChargeBody', { price: offer.price })
-                : t('paywall.dayChargeBodyGeneric')
-            }
-            last
-          />
+          {hasTrial ? (
+            <>
+              <ThemedText style={[Type.eyebrow, { color: Lamplight.inkFaint }]}>
+                {t('paywall.timelineLabel', { days: trialDays })}
+              </ThemedText>
+              <Beat day={t('paywall.dayToday')} text={t('paywall.dayTodayBody')} />
+              <Beat day={t('paywall.dayRemind')} text={t('paywall.dayRemindBody')} />
+              <Beat
+                day={t('paywall.dayCharge', { days: trialDays })}
+                text={
+                  offer
+                    ? t('paywall.dayChargeBody', { price: offer.price })
+                    : t('paywall.dayChargeBodyGeneric')
+                }
+                last
+              />
+            </>
+          ) : (
+            <>
+              <ThemedText style={[Type.eyebrow, { color: Lamplight.inkFaint }]}>
+                {t('paywall.noTrialLabel')}
+              </ThemedText>
+              <Beat
+                day={t('paywall.dayToday')}
+                text={
+                  offer
+                    ? t('paywall.billedTodayBody', { price: offer.price })
+                    : t('paywall.billedTodayBodyGeneric')
+                }
+                last
+              />
+            </>
+          )}
         </View>
 
         {plans === null ? (
@@ -203,6 +252,17 @@ export default function PaywallScreen() {
                           })
                         : t('paywall.monthlyDetail', { price: plan.price })}
                     </ThemedText>
+                    {/* Which plan carries the trial, stated on the row itself.
+                        Only annual has one, and someone scanning the two
+                        options has to be able to see that without selecting
+                        each in turn to find out. Said plainly on BOTH rows —
+                        "billed today" on monthly is the half that protects
+                        the person rather than the sale. */}
+                    <ThemedText style={[Type.meta, { color: Lamplight.inkFaint }]}>
+                      {plan.trialDays > 0
+                        ? t('paywall.planTrial', { days: plan.trialDays })
+                        : t('paywall.planNoTrial')}
+                    </ThemedText>
                   </View>
                   {/* Selection is a mono mark, never a coloured tick. */}
                   <ThemedText style={styles.tick}>{active ? '✓' : ''}</ThemedText>
@@ -223,7 +283,11 @@ export default function PaywallScreen() {
           accessibilityRole="button"
         >
           <ThemedText style={[styles.primaryLabel, { color: Lamplight.paper }]}>
-            {busy === 'purchase' ? t('paywall.working') : t('paywall.cta', { days: trialDays })}
+            {busy === 'purchase'
+              ? t('paywall.working')
+              : hasTrial
+                ? t('paywall.cta', { days: trialDays })
+                : t('paywall.ctaNoTrial')}
           </ThemedText>
         </Pressable>
 
@@ -241,7 +305,7 @@ export default function PaywallScreen() {
         </Pressable>
 
         <ThemedText style={[Type.meta, styles.fine, { color: Lamplight.inkFaint }]}>
-          {t('paywall.fine', { days: trialDays })}
+          {hasTrial ? t('paywall.fine', { days: trialDays }) : t('paywall.fineNoTrial')}
         </ThemedText>
       </ScrollView>
     </SafeAreaView>

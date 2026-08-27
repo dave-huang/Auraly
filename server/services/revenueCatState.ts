@@ -8,7 +8,16 @@ import type { SubscriptionPlan, SubscriptionStatus } from "@shared/schema";
  * and it is the part most worth testing directly. See eval/entitlement.check.ts.
  */
 
-/** Product identifiers, as configured in App Store Connect. */
+/**
+ * Product identifiers, as configured in App Store Connect.
+ *
+ * The 7-day introductory offer is attached to the ANNUAL product only; monthly
+ * bills immediately. Nothing here encodes that — `period_type` on the event
+ * tells us which one a given purchase was, so a purchase resolves correctly
+ * whichever plan carries a trial. The split is a merchandising decision that
+ * lives in App Store Connect, and this file must keep following it rather than
+ * asserting it.
+ */
 export const PLAN_BY_PRODUCT: Record<string, SubscriptionPlan> = {
   "revely.plus.monthly": "monthly",
   "revely.plus.annual": "annual",
