@@ -6,6 +6,7 @@ import crypto from "crypto";
 import { eq, sql, gte, and, count, desc, inArray } from "drizzle-orm";
 import { setupAuth, isAuthenticated } from "./localAuth";
 import { setupRevenueCatWebhook } from "./revenueCatWebhook";
+import { registerLegalRoutes } from "./legal";
 import {
   allowAnonymousScan,
   requireScanQuota,
@@ -173,6 +174,11 @@ setInterval(() => {
 const upload = multer({ storage: multer.memoryStorage() });
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Privacy policy and terms of use. Registered first because they are two of
+  // the URLs an App Store submission is rejected for missing, and because the
+  // paywall links to them (Guideline 3.1.2). See server/legal.ts.
+  registerLegalRoutes(app);
+
   // Liveness. This is what the platform health check hits, and it answers 200
   // whenever the process can serve HTTP at all.
   //
@@ -595,8 +601,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // because bearerAuthMiddleware looks the user up on every request and bails
   // when the row is gone.
   //
-  // Nothing recurring needs cancelling first: purchases here are one-time scan
-  // packs, and the user row holds a Stripe customer id but no subscription.
+  // NOTE: this does not cancel an active subscription, and it cannot. The
+  // subscription belongs to the Apple ID, not to this row — only the person
+  // holding it can cancel, in their Apple ID settings. Deleting here removes
+  // our record of the entitlement while Apple keeps billing, so both legal
+  // documents say so in as many words (see server/legal.ts). If we ever want
+  // to do better than a warning, the move is to surface it on the Account
+  // screen before the confirm, not to fake a cancellation we cannot perform.
   app.delete('/api/account', isAuthenticated, async (req: any, res) => {
     try {
       // A deliberate hurdle on an irreversible endpoint. The client shows its

@@ -63,6 +63,12 @@ const INTENTIONALLY_PUBLIC: Record<string, string> = {
   'POST /api/webhooks/revenuecat': 'called by RevenueCat, which holds no user session; authenticated by a constant-time shared-secret check on the Authorization header, and refuses everything when REVENUECAT_WEBHOOK_SECRET is unset',
   'POST /api/scan-and-analyze': 'scanning works before sign-in so the app can prove itself, and so a reviewer can use it without an account — see server/anonymousAccess.ts. Guarded instead by allowAnonymousScan + requireScanQuota: a device with no free scans left is refused with 402 before any work is done',
   'GET /api/analysis-status/:requestId': 'polls a scan that may have been started anonymously. Guarded by allowAnonymousScan, and the result is released only to the namespaced owner key that started it',
+  'GET /privacy': 'the privacy policy — App Store Connect fetches this URL unauthenticated at every submission, and the paywall links to it before anyone has an account',
+  'GET /terms': 'the terms of use — same reason; Guideline 3.1.2 requires it reachable from the purchase screen',
+  'GET /privacy-policy': 'permanent redirect to /privacy; a legal URL that 404s is worse than a redirect',
+  'GET /legal/privacy': 'permanent redirect to /privacy',
+  'GET /terms-of-use': 'permanent redirect to /terms',
+  'GET /legal/terms': 'permanent redirect to /terms',
 };
 
 /** Routes that must additionally be behind the admin gate. */
@@ -201,6 +207,7 @@ const routes = [
   ...findRoutes('server/mobileAuth.ts'),
   ...findRoutes('server/index.ts'),
   ...findRoutes('server/revenueCatWebhook.ts'),
+  ...findRoutes('server/legal.ts'),
 ];
 
 console.log(`\n[AUTH] ${routes.length} routes found`);

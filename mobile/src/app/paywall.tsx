@@ -1,12 +1,12 @@
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Alert, Linking, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ApertureMark } from '@/components/aperture-mark';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Lamplight, Radius, Space, Type } from '@/constants/design';
-import { PURCHASES_ENABLED } from '@/lib/config';
+import { PRIVACY_URL, PURCHASES_ENABLED, TERMS_URL } from '@/lib/config';
 import { awaitEntitlement } from '@/lib/entitlement';
 import { useTranslation } from '@/lib/i18n';
 import { goBackOrHome } from '@/lib/navigation';
@@ -307,8 +307,41 @@ export default function PaywallScreen() {
         <ThemedText style={[Type.meta, styles.fine, { color: Lamplight.inkFaint }]}>
           {hasTrial ? t('paywall.fine', { days: trialDays }) : t('paywall.fineNoTrial')}
         </ThemedText>
+
+        {/*
+          Required by Guideline 3.1.2: both documents must be reachable from
+          the screen where money is asked for, not buried in Settings. They are
+          links rather than a sheet so that a reviewer can confirm in one tap
+          that the URLs actually resolve.
+        */}
+        <View style={styles.legal}>
+          <LegalLink label={t('paywall.terms')} url={TERMS_URL} />
+          <ThemedText style={[Type.meta, { color: Lamplight.inkFaint }]}>·</ThemedText>
+          <LegalLink label={t('paywall.privacy')} url={PRIVACY_URL} />
+        </View>
       </ScrollView>
     </SafeAreaView>
+  );
+}
+
+/**
+ * A link out to a legal document.
+ *
+ * hitSlop because the label is deliberately small — it must not compete with
+ * the price — and a 12px target is unusable without it. This is the same
+ * mistake the photo-picker link made, and the fix is the same.
+ */
+function LegalLink({ label, url }: { label: string; url: string }) {
+  return (
+    <Pressable
+      onPress={() => void Linking.openURL(url)}
+      hitSlop={12}
+      accessibilityRole="link"
+    >
+      <ThemedText style={[Type.meta, styles.legalLabel, { color: Lamplight.inkFaint }]}>
+        {label}
+      </ThemedText>
+    </Pressable>
   );
 }
 
@@ -381,5 +414,13 @@ const styles = StyleSheet.create({
   primaryLabel: { fontFamily: Font.sansSemi, fontSize: 15, lineHeight: 20 },
   disabled: { opacity: 0.4 },
   restore: { alignItems: 'center', paddingVertical: Space.sm },
+  legal: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: Space.xs,
+    marginTop: Space.sm,
+  },
+  legalLabel: { textDecorationLine: 'underline' },
   fine: { textAlign: 'center', lineHeight: 17 },
 });

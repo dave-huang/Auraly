@@ -29,6 +29,17 @@ function resolveApiBaseUrl(): string {
 
 export const API_BASE_URL = resolveApiBaseUrl();
 
+/**
+ * The legal pages, served by the API host — see server/legal.ts.
+ *
+ * Guideline 3.1.2 requires both to be reachable from the purchase screen, and
+ * App Store Connect re-fetches the privacy URL at every submission. Derived
+ * from API_BASE_URL rather than written out, so a build pointed at staging
+ * shows staging's documents instead of silently linking production.
+ */
+export const PRIVACY_URL = `${API_BASE_URL}/privacy`;
+export const TERMS_URL = `${API_BASE_URL}/terms`;
+
 export const GOOGLE_IOS_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID;
 export const GOOGLE_WEB_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID;
 
