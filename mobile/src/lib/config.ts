@@ -93,8 +93,11 @@ export const PURCHASES_ENABLED = !!REVENUECAT_IOS_KEY;
  */
 export const ENTITLEMENT_ID = 'plus';
 
-/** Product identifiers, as configured in App Store Connect. */
-export const PRODUCTS = {
-  monthly: 'revely.plus.monthly',
-  annual: 'revely.plus.annual',
-} as const;
+/**
+ * Product identifiers, as configured in App Store Connect.
+ *
+ * Imported rather than written here: the server maps the same strings the other
+ * way, and an id that matches in one place but not the other produces a paywall
+ * with no plans on it and no error anywhere.
+ */
+export { PRODUCT_IDS as PRODUCTS } from '@shared/schema';

@@ -1,4 +1,4 @@
-import type { SubscriptionPlan, SubscriptionStatus } from "@shared/schema";
+import { PLAN_BY_PRODUCT, type SubscriptionPlan, type SubscriptionStatus } from "@shared/schema";
 
 /**
  * RevenueCat's vocabulary, translated into ours.
@@ -9,7 +9,9 @@ import type { SubscriptionPlan, SubscriptionStatus } from "@shared/schema";
  */
 
 /**
- * Product identifiers, as configured in App Store Connect.
+ * Re-exported so the webhook and its tests have one import for this mapping.
+ * The identifiers themselves live in shared/schema.ts, because the app needs
+ * the same strings and two hand-maintained copies is how they drift.
  *
  * The 7-day introductory offer is attached to the ANNUAL product only; monthly
  * bills immediately. Nothing here encodes that — `period_type` on the event
@@ -18,10 +20,7 @@ import type { SubscriptionPlan, SubscriptionStatus } from "@shared/schema";
  * lives in App Store Connect, and this file must keep following it rather than
  * asserting it.
  */
-export const PLAN_BY_PRODUCT: Record<string, SubscriptionPlan> = {
-  "revely.plus.monthly": "monthly",
-  "revely.plus.annual": "annual",
-};
+export { PLAN_BY_PRODUCT };
 
 export interface RevenueCatEvent {
   type?: string;

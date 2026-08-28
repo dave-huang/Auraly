@@ -172,6 +172,31 @@ export type SubscriptionStatus = typeof subscriptionStatuses[number];
 export const subscriptionPlans = ["monthly", "annual"] as const;
 export type SubscriptionPlan = typeof subscriptionPlans[number];
 
+/**
+ * The App Store product identifiers, defined once for both sides.
+ *
+ * The server maps an incoming RevenueCat product id to a plan; the app matches
+ * the store's offerings against the same strings. Those used to be two
+ * hard-coded lists in two packages, which is fine right up until one of them is
+ * edited — and then the app quietly shows no plans at all, because a product it
+ * cannot name is a product it skips. There is no error for that, only an empty
+ * paywall.
+ *
+ * These must match App Store Connect exactly. Apple will not let you rename a
+ * product id or reuse a deleted one, so a typo here is permanent over there:
+ * the fix is always a new product, never an edit.
+ */
+export const PRODUCT_IDS = {
+  monthly: "revely.monthly",
+  annual: "revely.annual",
+} as const satisfies Record<SubscriptionPlan, string>;
+
+/** Reverse lookup: which plan a product id means. */
+export const PLAN_BY_PRODUCT: Record<string, SubscriptionPlan> = {
+  [PRODUCT_IDS.monthly]: "monthly",
+  [PRODUCT_IDS.annual]: "annual",
+};
+
 /** Statuses that entitle, subject to the expiry date still being in the future. */
 const ENTITLING_STATUSES = new Set<SubscriptionStatus>(["trialing", "active", "grace"]);
 

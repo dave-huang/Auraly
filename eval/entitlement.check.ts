@@ -1,4 +1,6 @@
 import {
+  PLAN_BY_PRODUCT,
+  PRODUCT_IDS,
   FREE_SCAN_GRANT,
   freeScansRemaining,
   hasActiveSubscription,
@@ -99,6 +101,34 @@ for (const status of ['none', 'expired'] as const) {
 }
 
 // ---------------------------------------------------------------------------
+// 2b. The product identifiers themselves.
+//
+// Apple will not rename a product id or let you reuse a deleted one, so a typo
+// in App Store Connect is permanent there and silent here: the app skips a
+// product it cannot name and renders a paywall with no plans, raising nothing.
+// These cannot check what Apple actually holds, but they catch the shapes a
+// slip produces.
+// ---------------------------------------------------------------------------
+{
+  const ids = Object.values(PRODUCT_IDS);
+  const PREFIX = 'revely.';
+
+  check('products/distinct', new Set(ids).size === ids.length,
+    `the two plans must have different product ids, got ${ids.join(', ')}`);
+
+  // A single mistyped identifier — revenly.annual for revely.annual — leaves
+  // the other one correct, so the prefix is what breaks rather than both ids.
+  const wrong = ids.filter(id => !id.startsWith(PREFIX));
+  check('products/prefix', wrong.length === 0,
+    `every product id should start with "${PREFIX}"; check the spelling of: ${wrong.join(', ')}`);
+
+  for (const [plan, id] of Object.entries(PRODUCT_IDS)) {
+    check(`products/maps-back/${plan}`, PLAN_BY_PRODUCT[id] === plan,
+      `${id} should resolve to the ${plan} plan, got ${PLAN_BY_PRODUCT[id]}`);
+  }
+}
+
+// ---------------------------------------------------------------------------
 // 3. The free grant, and the hard paywall behind it.
 // ---------------------------------------------------------------------------
 {
@@ -171,14 +201,14 @@ console.log('[ENTITLEMENT] RevenueCat event mapping');
   const past = Date.now() - HOUR;
 
   const cases: [string, Parameters<typeof resolveState>[0], SubscriptionStatus][] = [
-    ['initial trial', { type: 'INITIAL_PURCHASE', period_type: 'TRIAL', product_id: 'revely.plus.annual', expiration_at_ms: future }, 'trialing'],
-    ['trial converts', { type: 'RENEWAL', period_type: 'NORMAL', product_id: 'revely.plus.annual', expiration_at_ms: future }, 'active'],
-    ['cancellation', { type: 'CANCELLATION', period_type: 'NORMAL', product_id: 'revely.plus.monthly', expiration_at_ms: future }, 'active'],
-    ['billing issue', { type: 'BILLING_ISSUE', period_type: 'NORMAL', product_id: 'revely.plus.monthly', expiration_at_ms: future }, 'grace'],
-    ['expiration', { type: 'EXPIRATION', period_type: 'NORMAL', product_id: 'revely.plus.monthly', expiration_at_ms: past }, 'expired'],
-    ['stale date', { type: 'RENEWAL', period_type: 'NORMAL', product_id: 'revely.plus.monthly', expiration_at_ms: past }, 'expired'],
-    ['no date at all', { type: 'RENEWAL', period_type: 'NORMAL', product_id: 'revely.plus.monthly' }, 'expired'],
-    ['unknown event type', { type: 'SOMETHING_NEW', period_type: 'NORMAL', product_id: 'revely.plus.annual', expiration_at_ms: future }, 'active'],
+    ['initial trial', { type: 'INITIAL_PURCHASE', period_type: 'TRIAL', product_id: PRODUCT_IDS.annual, expiration_at_ms: future }, 'trialing'],
+    ['trial converts', { type: 'RENEWAL', period_type: 'NORMAL', product_id: PRODUCT_IDS.annual, expiration_at_ms: future }, 'active'],
+    ['cancellation', { type: 'CANCELLATION', period_type: 'NORMAL', product_id: PRODUCT_IDS.monthly, expiration_at_ms: future }, 'active'],
+    ['billing issue', { type: 'BILLING_ISSUE', period_type: 'NORMAL', product_id: PRODUCT_IDS.monthly, expiration_at_ms: future }, 'grace'],
+    ['expiration', { type: 'EXPIRATION', period_type: 'NORMAL', product_id: PRODUCT_IDS.monthly, expiration_at_ms: past }, 'expired'],
+    ['stale date', { type: 'RENEWAL', period_type: 'NORMAL', product_id: PRODUCT_IDS.monthly, expiration_at_ms: past }, 'expired'],
+    ['no date at all', { type: 'RENEWAL', period_type: 'NORMAL', product_id: PRODUCT_IDS.monthly }, 'expired'],
+    ['unknown event type', { type: 'SOMETHING_NEW', period_type: 'NORMAL', product_id: PRODUCT_IDS.annual, expiration_at_ms: future }, 'active'],
   ];
 
   for (const [label, event, expected] of cases) {
@@ -187,24 +217,24 @@ console.log('[ENTITLEMENT] RevenueCat event mapping');
   }
 
   check('rc/plan-monthly',
-    resolveState({ product_id: 'revely.plus.monthly', period_type: 'NORMAL', expiration_at_ms: future }).plan === 'monthly',
+    resolveState({ product_id: PRODUCT_IDS.monthly, period_type: 'NORMAL', expiration_at_ms: future }).plan === 'monthly',
     'the monthly product id did not map to the monthly plan — check it against App Store Connect');
   check('rc/plan-annual',
-    resolveState({ product_id: 'revely.plus.annual', period_type: 'NORMAL', expiration_at_ms: future }).plan === 'annual',
+    resolveState({ product_id: PRODUCT_IDS.annual, period_type: 'NORMAL', expiration_at_ms: future }).plan === 'annual',
     'the annual product id did not map to the annual plan — check it against App Store Connect');
   // The trial is on the annual plan only. A monthly purchase arrives with
   // period_type NORMAL and must resolve to `active` — never `trialing`, which
   // would make the app tell someone who was charged today that they are inside
   // a free trial, and suppress nothing but their willingness to trust it.
   check('rc/monthly-has-no-trial',
-    resolveState({ type: 'INITIAL_PURCHASE', period_type: 'NORMAL', product_id: 'revely.plus.monthly', expiration_at_ms: future }).status === 'active',
+    resolveState({ type: 'INITIAL_PURCHASE', period_type: 'NORMAL', product_id: PRODUCT_IDS.monthly, expiration_at_ms: future }).status === 'active',
     'a first monthly purchase resolved as trialing — monthly is billed immediately');
   check('rc/annual-trial-still-works',
-    resolveState({ type: 'INITIAL_PURCHASE', period_type: 'TRIAL', product_id: 'revely.plus.annual', expiration_at_ms: future }).status === 'trialing',
+    resolveState({ type: 'INITIAL_PURCHASE', period_type: 'TRIAL', product_id: PRODUCT_IDS.annual, expiration_at_ms: future }).status === 'trialing',
     'the annual trial stopped resolving as a trial');
 
   check('rc/unknown-product',
-    resolveState({ product_id: 'revely.plus.weekly', period_type: 'NORMAL', expiration_at_ms: future }).plan === null,
+    resolveState({ product_id: 'revely.weekly.not.configured', period_type: 'NORMAL', expiration_at_ms: future }).plan === null,
     'an unrecognised product id should resolve to a null plan, not guess one');
 }
 
