@@ -110,6 +110,20 @@ for (const status of ['none', 'expired'] as const) {
     'an overspent grant must clamp at 0, never go negative and hand out scans');
   check('free/exhausted-blocks', !canUserScan(user({ freeScansUsed: FREE_SCAN_GRANT })),
     'the paywall is hard past the grant — an unsubscribed account at zero must be blocked');
+
+  // The assertions above are written against the constant, so they hold at any
+  // grant. This one is about the value we actually ship: the wall is at the
+  // front door. A brand-new account, having used nothing, can scan nothing.
+  // If someone raises FREE_SCAN_GRANT without meaning to, this fails and says so.
+  check('free/hard-walled-at-zero', FREE_SCAN_GRANT === 0 && !canUserScan(user()),
+    `Revely is subscription-only: a new account must be blocked before it scans. ` +
+    `FREE_SCAN_GRANT is ${FREE_SCAN_GRANT}, and a fresh user ` +
+    `${canUserScan(user()) ? 'can' : 'cannot'} scan`);
+
+  // Same claim for someone who has never signed in. The device path is a
+  // separate counter and could drift from the account one.
+  check('free/hard-walled-anonymously', deviceScansRemaining(undefined) === 0,
+    'an unknown device must get nothing — the trial is the only way in');
 }
 
 // ---------------------------------------------------------------------------

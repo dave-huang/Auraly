@@ -334,9 +334,10 @@ export default function ViewfinderScreen() {
                 ['history.title', () => router.push('/history')],
                 ['scan.switchProfile', openProfiles],
                 [
-                  // Says what is left, so the row is information rather than an
-                  // unexplained door to a paywall. A subscriber sees the plan,
-                  // never a countdown — there is nothing to count.
+                  // Subscribers see "Subscription"; everyone else sees
+                  // "Subscribe". There is no count to show any more — the free
+                  // grant is zero, so the row names the door instead of what is
+                  // left behind it.
                   entitlement?.subscription.active
                     ? 'paywall.menuItemPlus'
                     : 'paywall.menuItem',

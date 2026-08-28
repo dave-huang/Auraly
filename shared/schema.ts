@@ -248,7 +248,28 @@ export type UpsertUser = typeof users.$inferInsert;
  * incoherent together: the refill IS a free tier, and a person who waits until
  * tomorrow never has a reason to subscribe.
  */
-export const FREE_SCAN_GRANT = 3;
+/**
+ * Scans granted before anyone pays. Zero: Revely is subscription-only.
+ *
+ * This was 3, and the argument for a free tier was that people with a serious
+ * allergy will not trust an app they have not watched get their own condition
+ * right. The counter-argument won: the 7-day trial is the taste, and a second
+ * kind of free muddles what the product costs.
+ *
+ * THE TRIAL IS ON THE ANNUAL PLAN ONLY, so with no free scans the only way to
+ * try Revely without paying today is to choose annual. Monthly is pay-first.
+ * That is a funnel decision, not an accident — if it should change, the fix is
+ * an introductory offer on the monthly product in App Store Connect, and the
+ * app will follow without a release.
+ *
+ * Changing this number needs no app release: nothing in the mobile copy writes
+ * it down, every screen reads it from the server. Raising it to 1 or 3 is a
+ * deploy. Which also means the reverse — shipping a build whose RevenueCat key
+ * is missing now leaves the app with no way in at all, where free scans used to
+ * be the safety net. PURCHASES_ENABLED being false is a broken build, not a
+ * degraded one.
+ */
+export const FREE_SCAN_GRANT = 0;
 
 /** Scans left in the free grant. Independent of any subscription. */
 export function freeScansRemaining(user: User): number {

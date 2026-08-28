@@ -133,9 +133,7 @@ export default function AccountScreen() {
                   ? t('account.subGrace')
                   : sub?.active
                     ? t(sub.plan === 'annual' ? 'account.subAnnual' : 'account.subMonthly')
-                    : t('account.subFree', {
-                        count: details?.freeScansRemaining ?? 0,
-                      })}
+                    : t('account.subFree')}
             </ThemedText>
             {sub?.expiresAt && sub.active ? (
               <ThemedText style={[Type.meta, { color: surface.inkMuted }]}>
