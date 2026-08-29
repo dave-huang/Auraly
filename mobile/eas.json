@@ -10,7 +10,8 @@
         "simulator": true
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://revely-api.fly.dev"
+        "EXPO_PUBLIC_API_URL": "https://revely-api.fly.dev",
+        "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_vFVQuKaKQzfbnoaUFVphFZhTUzh"
       }
     },
     "preview": {
@@ -19,7 +20,8 @@
         "resourceClass": "m-medium"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://revely-api.fly.dev"
+        "EXPO_PUBLIC_API_URL": "https://revely-api.fly.dev",
+        "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_vFVQuKaKQzfbnoaUFVphFZhTUzh"
       }
     },
     "production": {
@@ -28,7 +30,8 @@
         "resourceClass": "m-medium"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://revely-api.fly.dev"
+        "EXPO_PUBLIC_API_URL": "https://revely-api.fly.dev",
+        "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_vFVQuKaKQzfbnoaUFVphFZhTUzh"
       }
     }
   },
