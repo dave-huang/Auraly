@@ -87,11 +87,12 @@ export const REVENUECAT_IOS_KEY = process.env.EXPO_PUBLIC_REVENUECAT_IOS_KEY;
 export const PURCHASES_ENABLED = !!REVENUECAT_IOS_KEY;
 
 /**
- * The entitlement RevenueCat grants on either plan. Must match the identifier
- * configured in the RevenueCat dashboard AND the server's
- * REVENUECAT_ENTITLEMENT_ID, or every purchase will look like a failure.
+ * The entitlement RevenueCat grants on either plan.
+ *
+ * Imported rather than declared: the server checks for the same name, and a
+ * copy in each package is a copy that can drift.
  */
-export const ENTITLEMENT_ID = 'plus';
+export { ENTITLEMENT_ID } from '@shared/schema';
 
 /**
  * Product identifiers, as configured in App Store Connect.

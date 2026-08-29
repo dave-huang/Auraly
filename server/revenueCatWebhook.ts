@@ -2,7 +2,7 @@ import type { Express, Request, Response } from "express";
 import { timingSafeEqual } from "crypto";
 
 import { db } from "./db";
-import { users } from "@shared/schema";
+import { users, ENTITLEMENT_ID as DEFAULT_ENTITLEMENT_ID } from "@shared/schema";
 import { resolveState, type RevenueCatEvent } from "./services/revenueCatState";
 import { eq } from "drizzle-orm";
 import { subscriptionService } from "./services/subscription";
@@ -27,7 +27,12 @@ import { subscriptionService } from "./services/subscription";
  * RevenueCat will do) writes the same row three times.
  */
 
-const ENTITLEMENT_ID = process.env.REVENUECAT_ENTITLEMENT_ID || "plus";
+/**
+ * The entitlement, overridable per environment for a staging RevenueCat
+ * project. The default lives in shared/schema.ts so the app cannot drift
+ * from it — see the note there for what a mismatch costs.
+ */
+const ENTITLEMENT_ID = process.env.REVENUECAT_ENTITLEMENT_ID || DEFAULT_ENTITLEMENT_ID;
 
 /** Re-exported so the webhook route remains the one public entry point. */
 export { resolveState, PLAN_BY_PRODUCT, type RevenueCatEvent } from "./services/revenueCatState";

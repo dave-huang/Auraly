@@ -191,6 +191,21 @@ export const PRODUCT_IDS = {
   annual: "revely.annual",
 } as const satisfies Record<SubscriptionPlan, string>;
 
+/**
+ * The entitlement RevenueCat grants on either plan.
+ *
+ * Shared for the same reason the product ids are: the app checks for this name
+ * in the customer's active entitlements, the server reads it out of the webhook
+ * payload, and if the two ever disagree the failure is silent and expensive —
+ * the purchase succeeds, Apple takes the money, and the person is left
+ * unsubscribed holding a receipt.
+ *
+ * Must match the identifier in the RevenueCat dashboard exactly. Named for the
+ * state it describes rather than a tier: Revely sells one subscription and has
+ * no free tier, so "plus" implied a "basic" that never existed.
+ */
+export const ENTITLEMENT_ID = "subscriber";
+
 /** Reverse lookup: which plan a product id means. */
 export const PLAN_BY_PRODUCT: Record<string, SubscriptionPlan> = {
   [PRODUCT_IDS.monthly]: "monthly",
