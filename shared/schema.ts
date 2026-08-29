@@ -2,6 +2,9 @@ import { z } from "zod";
 import { sql } from 'drizzle-orm';
 import { boolean, index, integer, jsonb, pgTable, text, timestamp, uniqueIndex, varchar } from "drizzle-orm/pg-core";
 
+// Local binding: a re-export does not put the name in this file's scope.
+import type { SubscriptionPlan } from "./products";
+
 // Sessions table (REQUIRED for Replit Auth)
 export const sessions = pgTable(
   "sessions",
@@ -169,48 +172,17 @@ export const defaultRiskPreferences: RiskPreferences = {
 export const subscriptionStatuses = ["none", "trialing", "active", "grace", "expired"] as const;
 export type SubscriptionStatus = typeof subscriptionStatuses[number];
 
-export const subscriptionPlans = ["monthly", "annual"] as const;
-export type SubscriptionPlan = typeof subscriptionPlans[number];
-
-/**
- * The App Store product identifiers, defined once for both sides.
- *
- * The server maps an incoming RevenueCat product id to a plan; the app matches
- * the store's offerings against the same strings. Those used to be two
- * hard-coded lists in two packages, which is fine right up until one of them is
- * edited — and then the app quietly shows no plans at all, because a product it
- * cannot name is a product it skips. There is no error for that, only an empty
- * paywall.
- *
- * These must match App Store Connect exactly. Apple will not let you rename a
- * product id or reuse a deleted one, so a typo here is permanent over there:
- * the fix is always a new product, never an edit.
- */
-export const PRODUCT_IDS = {
-  monthly: "revely.monthly",
-  annual: "revely.annual",
-} as const satisfies Record<SubscriptionPlan, string>;
-
-/**
- * The entitlement RevenueCat grants on either plan.
- *
- * Shared for the same reason the product ids are: the app checks for this name
- * in the customer's active entitlements, the server reads it out of the webhook
- * payload, and if the two ever disagree the failure is silent and expensive —
- * the purchase succeeds, Apple takes the money, and the person is left
- * unsubscribed holding a receipt.
- *
- * Must match the identifier in the RevenueCat dashboard exactly. Named for the
- * state it describes rather than a tier: Revely sells one subscription and has
- * no free tier, so "plus" implied a "basic" that never existed.
- */
-export const ENTITLEMENT_ID = "subscriber";
-
-/** Reverse lookup: which plan a product id means. */
-export const PLAN_BY_PRODUCT: Record<string, SubscriptionPlan> = {
-  [PRODUCT_IDS.monthly]: "monthly",
-  [PRODUCT_IDS.annual]: "annual",
-};
+// Subscription plans, product ids and the entitlement name live in
+// shared/products.ts, which has no imports on purpose: the app imports them at
+// runtime, and anything reachable from here drags drizzle-orm and zod into an
+// iOS bundle. Re-exported so server code has one import for schema things.
+export {
+  subscriptionPlans,
+  PRODUCT_IDS,
+  PLAN_BY_PRODUCT,
+  ENTITLEMENT_ID,
+  type SubscriptionPlan,
+} from "./products";
 
 /** Statuses that entitle, subject to the expiry date still being in the future. */
 const ENTITLING_STATUSES = new Set<SubscriptionStatus>(["trialing", "active", "grace"]);

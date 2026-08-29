@@ -92,7 +92,7 @@ export const PURCHASES_ENABLED = !!REVENUECAT_IOS_KEY;
  * Imported rather than declared: the server checks for the same name, and a
  * copy in each package is a copy that can drift.
  */
-export { ENTITLEMENT_ID } from '@shared/schema';
+export { ENTITLEMENT_ID } from '@shared/products';
 
 /**
  * Product identifiers, as configured in App Store Connect.
@@ -101,4 +101,4 @@ export { ENTITLEMENT_ID } from '@shared/schema';
  * way, and an id that matches in one place but not the other produces a paywall
  * with no plans on it and no error anywhere.
  */
-export { PRODUCT_IDS as PRODUCTS } from '@shared/schema';
+export { PRODUCT_IDS as PRODUCTS } from '@shared/products';
