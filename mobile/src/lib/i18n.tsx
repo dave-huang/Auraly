@@ -238,6 +238,7 @@ const en = {
   'paywall.ctaNoTrial': 'Subscribe',
   'paywall.fineNoTrial': 'Billed to your Apple ID today, then each month. Renews until cancelled. Cancel any time in Settings.',
   'paywall.planTrial': '{days}-day free trial',
+  'paywall.saveBadge': 'Save {percent}%',
   'paywall.fine': 'Free for {days} days, then the plan you picked, billed to your Apple ID. Renews until cancelled. Cancel any time in Settings, at least 24 hours before the trial ends.',
 
   'ingredient.whyFlagged': 'Why this flagged',
@@ -633,6 +634,7 @@ const zh: Record<TranslationKey, string> = {
   'paywall.ctaNoTrial': '订阅',
   'paywall.fineNoTrial': '今天通过你的 Apple ID 收费，之后按月收取，到期自动续订直至取消。可随时在「设置」中取消。',
   'paywall.planTrial': '{days} 天免费试用',
+  'paywall.saveBadge': '省 {percent}%',
   'paywall.fine': '前 {days} 天免费，之后按所选方案通过你的 Apple ID 收费，到期自动续订直至取消。可随时在「设置」中取消，请至少在试用结束前 24 小时操作。',
 
   'ingredient.whyFlagged': '为何标记',
@@ -1009,6 +1011,7 @@ const es: Record<TranslationKey, string> = {
   'paywall.ctaNoTrial': 'Suscribirme',
   'paywall.fineNoTrial': 'Se cobra hoy a tu Apple ID y después cada mes. Se renueva hasta que canceles. Cancela cuando quieras en Ajustes.',
   'paywall.planTrial': 'Prueba gratuita de {days} días',
+  'paywall.saveBadge': 'Ahorra {percent}%',
   'paywall.fine': 'Gratis {days} días y después el plan elegido, cobrado a tu Apple ID. Se renueva hasta que canceles. Cancela cuando quieras en Ajustes, al menos 24 horas antes de que termine la prueba.',
 
   'ingredient.whyFlagged': 'Por qué se marcó',

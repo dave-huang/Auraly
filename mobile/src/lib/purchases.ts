@@ -70,6 +70,15 @@ export interface PlanOffer {
   pricePerMonth: string;
   /** Trial length in days, as the store reports it. 0 when there is none. */
   trialDays: number;
+  /**
+   * The raw price as a number, in the storefront's currency.
+   *
+   * Only for comparing the two plans against each other — the annual saving is
+   * arithmetic on what the store actually charges, so it stays true in a
+   * currency where Apple's tiers do not divide the way they do in dollars.
+   * Never render this; render `price`, which the store has formatted.
+   */
+  amount: number;
   pkg: PurchasesPackage;
 }
 
@@ -115,6 +124,7 @@ export async function getPlans(): Promise<PlanOffer[]> {
             ? formatPerMonth(pkg.product.price / 12, pkg.product.currencyCode)
             : pkg.product.priceString,
         trialDays: trialDaysFrom(intro),
+        amount: pkg.product.price,
         pkg,
       });
     }

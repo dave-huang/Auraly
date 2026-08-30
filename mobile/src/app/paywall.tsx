@@ -73,6 +73,26 @@ export default function PaywallScreen() {
 
   const offer = plans?.find((p) => p.plan === selected) ?? null;
 
+  /**
+   * What annual saves against twelve months of monthly, as a percentage.
+   *
+   * Arithmetic on the store's own numbers rather than a written-in "58%",
+   * for the reason nothing else here is hard-coded: Apple's price tiers do not
+   * divide the same way in every currency, and a badge claiming a saving
+   * somebody is not getting is worse than no badge.
+   *
+   * Null unless the saving is real and worth naming — if the two plans are
+   * ever repriced closer together, the badge disappears rather than shrinking
+   * to "Save 2%".
+   */
+  const annualSaving = (() => {
+    const annual = plans?.find((p) => p.plan === 'annual');
+    const monthly = plans?.find((p) => p.plan === 'monthly');
+    if (!annual || !monthly || monthly.amount <= 0 || annual.amount <= 0) return null;
+    const percent = Math.round((1 - annual.amount / (monthly.amount * 12)) * 100);
+    return percent >= 5 ? percent : null;
+  })();
+
   // The trial is on the ANNUAL plan only; monthly bills immediately.
   //
   // Both values come from the store when we have it. This used to be
@@ -209,9 +229,27 @@ export default function PaywallScreen() {
                   ]}
                 >
                   <View style={styles.planText}>
-                    <ThemedText style={[Type.label, { color: Lamplight.ink }]}>
-                      {t(plan.plan === 'annual' ? 'paywall.annual' : 'paywall.monthly')}
-                    </ThemedText>
+                    <View style={styles.planHeading}>
+                      <ThemedText style={[Type.label, { color: Lamplight.ink }]}>
+                        {t(plan.plan === 'annual' ? 'paywall.annual' : 'paywall.monthly')}
+                      </ThemedText>
+                      {/* Inverted ink, never a verdict colour — the three inks
+                          mean a verdict, and spending one on a badge that
+                          wants your money is how a trusted signal stops being
+                          one. Contrast does the highlighting instead.
+
+                          It says what the arithmetic says. "Most popular" would
+                          be an invented claim on the one screen where being
+                          believed is the entire job, and on day one it would
+                          describe nobody. */}
+                      {plan.plan === 'annual' && annualSaving !== null ? (
+                        <View style={[styles.badge, { backgroundColor: Lamplight.ink }]}>
+                          <ThemedText style={[styles.badgeText, { color: Lamplight.paper }]}>
+                            {t('paywall.saveBadge', { percent: annualSaving })}
+                          </ThemedText>
+                        </View>
+                      ) : null}
+                    </View>
                     <ThemedText style={[Type.meta, { color: Lamplight.inkMuted }]}>
                       {plan.plan === 'annual'
                         ? t('paywall.annualDetail', {
@@ -349,6 +387,14 @@ const styles = StyleSheet.create({
     padding: Space.lg,
   },
   planText: { gap: Space.xs, flex: 1 },
+  planHeading: { flexDirection: 'row', alignItems: 'center', gap: Space.sm },
+  badge: { paddingHorizontal: Space.sm, paddingVertical: 2, borderRadius: Radius.pill },
+  badgeText: {
+    fontFamily: Font.monoMedium,
+    fontSize: 10,
+    letterSpacing: 0.08 * 10,
+    textTransform: 'uppercase',
+  },
   tick: { fontFamily: Font.monoMedium, fontSize: 14, color: Lamplight.ink },
 
   unavailable: {
