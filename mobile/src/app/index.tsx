@@ -2,8 +2,8 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 import * as Haptics from 'expo-haptics';
 import * as ImagePicker from 'expo-image-picker';
 import { Redirect, useFocusEffect, useRouter } from 'expo-router';
-import { useCallback, useRef, useState } from 'react';
-import { Alert, Linking, Modal, Pressable, StyleSheet, View } from 'react-native';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Alert, AppState, Linking, Modal, Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ApertureMark, RevelyLockup } from '@/components/aperture-mark';
@@ -51,6 +51,43 @@ export default function ViewfinderScreen() {
 
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
+
+  /**
+   * Whether the camera session should be running.
+   *
+   * iOS interrupts the capture session when the app leaves the foreground and
+   * does not resume it on return, which left the preview frozen on a stale
+   * frame — live enough to look working, dead enough that takePictureAsync
+   * rejects. `active` is expo-camera's own switch for exactly this: it tears
+   * the session down and builds a fresh one rather than leaving an interrupted
+   * one on screen.
+   *
+   * Screen focus counts too: the camera has no business holding the hardware
+   * while someone reads a verdict on another screen.
+   */
+  const [appForeground, setAppForeground] = useState(AppState.currentState === 'active');
+  const [screenFocused, setScreenFocused] = useState(true);
+  const cameraActive = appForeground && screenFocused;
+
+  /** Guards against a second shutter press before the first photo returns. */
+  const [capturing, setCapturing] = useState(false);
+
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (next) => {
+      setAppForeground(next === 'active');
+      // A capture in flight when the app backgrounds never settles, and a
+      // stuck flag is indistinguishable from a broken button.
+      if (next !== 'active') setCapturing(false);
+    });
+    return () => sub.remove();
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      setScreenFocused(true);
+      return () => setScreenFocused(false);
+    }, []),
+  );
   const [productType, setProductType] = useState<ProductType>('food');
   const [profiles, setProfiles] = useState<Profile[] | null>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -153,9 +190,25 @@ export default function ViewfinderScreen() {
   }
 
   async function capture() {
-    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    const photo = await cameraRef.current?.takePictureAsync({ quality: 1 });
-    if (photo?.uri) await analyze(photo.uri);
+    // Two ways this used to do nothing at all. The camera could be mid-restart
+    // after the app came back, so takePictureAsync rejected — and the rejection
+    // went nowhere, because the caller is `void capture()`. And a double tap
+    // fired a second capture over the first. Both looked identical from the
+    // outside: a shutter that swallows presses.
+    if (capturing || !cameraActive) return;
+    setCapturing(true);
+    try {
+      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      const photo = await cameraRef.current?.takePictureAsync({ quality: 1 });
+      if (photo?.uri) await analyze(photo.uri);
+    } catch (error: any) {
+      // analyze() handles its own failures; reaching here means the camera
+      // itself refused. Say so rather than leaving the button looking broken.
+      console.warn('[CAMERA] capture failed', error?.message);
+      Alert.alert(t('scan.failed'), t('camera.captureFailed'));
+    } finally {
+      setCapturing(false);
+    }
   }
 
   async function pickFromLibrary() {
@@ -236,7 +289,7 @@ export default function ViewfinderScreen() {
 
   return (
     <View style={styles.container}>
-      <CameraView ref={cameraRef} style={StyleSheet.absoluteFill} facing="back" />
+      <CameraView ref={cameraRef} style={StyleSheet.absoluteFill} facing="back" active={cameraActive} />
 
       {/* Vignette — pulls the eye to the middle of the frame and gives the
           paper chrome something to sit on at the edges. */}
@@ -302,7 +355,13 @@ export default function ViewfinderScreen() {
               <View style={styles.galleryFront} />
             </Pressable>
 
-            <Pressable style={styles.shutter} onPress={() => void capture()}>
+            <Pressable
+              style={[styles.shutter, (capturing || !cameraActive) && styles.shutterBusy]}
+              onPress={() => void capture()}
+              disabled={capturing || !cameraActive}
+              accessibilityRole="button"
+              accessibilityState={{ disabled: capturing || !cameraActive }}
+            >
               <View style={styles.shutterInner} />
             </Pressable>
 
@@ -483,6 +542,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  // Visibly unavailable while the session restarts or a capture is in flight.
+  // A shutter that refuses a press must look like it is refusing.
+  shutterBusy: { opacity: 0.4 },
   shutterInner: {
     width: SHUTTER.fill,
     height: SHUTTER.fill,
