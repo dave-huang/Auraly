@@ -70,3 +70,79 @@ export function resolveState(event: RevenueCatEvent): {
   return { status: "active", plan, expiresAt };
 }
 
+
+// ---------------------------------------------------------------------------
+// The pull path
+// ---------------------------------------------------------------------------
+
+/**
+ * A subscriber as RevenueCat's REST API returns it.
+ *
+ * Only the fields we read. The shape differs from a webhook event in ways that
+ * matter: entitlements are keyed by name rather than listed, dates are ISO
+ * strings rather than epoch milliseconds, and `period_type` is lower case here
+ * and upper case there. Normalising is this file's job precisely so the two
+ * paths cannot drift into disagreeing about who is subscribed.
+ */
+export interface RevenueCatSubscriber {
+  entitlements?: Record<
+    string,
+    { expires_date?: string | null; product_identifier?: string } | undefined
+  >;
+  subscriptions?: Record<
+    string,
+    {
+      expires_date?: string | null;
+      period_type?: string;
+      billing_issues_detected_at?: string | null;
+    } | undefined
+  >;
+  original_app_user_id?: string;
+}
+
+/**
+ * Resolve state by ASKING RevenueCat, rather than waiting to be told.
+ *
+ * Exists because the webhook is a push, and a push that is lost is lost — a
+ * bad secret, an outage, a deploy landing at the wrong second, and the person
+ * who paid is left unsubscribed with no way back but waiting for some future
+ * event. That happened, and the person it happened to was us; with customers
+ * it is a refund and a one-star review about being charged for nothing.
+ *
+ * Deliberately the same vocabulary and the same precedence as resolveState:
+ * expiry first, then billing trouble, then trial, then active. If the two ever
+ * answer differently for the same subscription, one of them is a bug.
+ */
+export function resolveFromSubscriber(
+  subscriber: RevenueCatSubscriber | undefined,
+  entitlementId: string,
+): { status: SubscriptionStatus; plan: SubscriptionPlan | null; expiresAt: Date | null } {
+  const entitlement = subscriber?.entitlements?.[entitlementId];
+
+  // No record of this entitlement at all: not expired, never held. `none` is
+  // the honest answer, and it is what a fresh account already says — so a
+  // refresh for someone who never subscribed writes nothing surprising.
+  if (!entitlement) return { status: "none", plan: null, expiresAt: null };
+
+  const productId = entitlement.product_identifier;
+  const plan = productId ? PLAN_BY_PRODUCT[productId] ?? null : null;
+  const expiresAt = entitlement.expires_date ? new Date(entitlement.expires_date) : null;
+
+  // A malformed date must not read as "entitled forever".
+  const valid = expiresAt !== null && !Number.isNaN(expiresAt.getTime());
+  if (!valid || expiresAt.getTime() <= Date.now()) {
+    return { status: "expired", plan, expiresAt: valid ? expiresAt : null };
+  }
+
+  const subscription = productId ? subscriber?.subscriptions?.[productId] : undefined;
+
+  if (subscription?.billing_issues_detected_at) {
+    return { status: "grace", plan, expiresAt };
+  }
+
+  const periodType = (subscription?.period_type || "").toUpperCase();
+  if (periodType === "TRIAL" || periodType === "INTRO") {
+    return { status: "trialing", plan, expiresAt };
+  }
+  return { status: "active", plan, expiresAt };
+}

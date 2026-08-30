@@ -11,7 +11,7 @@ import {
   type AnonymousDevice,
   type SubscriptionStatus,
 } from '../shared/schema';
-import { resolveState } from '../server/services/revenueCatState';
+import { resolveState, resolveFromSubscriber } from '../server/services/revenueCatState';
 
 /**
  * Entitlement — the deterministic half.
@@ -169,6 +169,93 @@ for (const status of ['none', 'expired'] as const) {
     'someone holding a purchased pack was blocked by the new paywall — they paid for those scans');
   check('packs/counted', getTotalScansAvailable(packHolder) === 7,
     `expected 7 available, got ${getTotalScansAvailable(packHolder)}`);
+}
+
+// ---------------------------------------------------------------------------
+// 4b. The pull path.
+//
+// resolveFromSubscriber answers the same question as resolveState from a
+// different shape, and the two MUST agree — if asking RevenueCat and being told
+// by RevenueCat can disagree about the same subscription, one is a bug and the
+// person finds out by losing access they paid for.
+// ---------------------------------------------------------------------------
+{
+  const ENT = 'subscriber';
+  const future = new Date(Date.now() + 86_400_000).toISOString();
+  const past = new Date(Date.now() - 86_400_000).toISOString();
+
+  const sub = (over: any = {}) => ({
+    entitlements: { [ENT]: { expires_date: future, product_identifier: PRODUCT_IDS.annual } },
+    subscriptions: { [PRODUCT_IDS.annual]: { expires_date: future, period_type: 'normal' } },
+    ...over,
+  });
+
+  check('pull/active', resolveFromSubscriber(sub(), ENT).status === 'active',
+    'a live non-trial subscription should read active');
+
+  check('pull/trialing',
+    resolveFromSubscriber(sub({
+      subscriptions: { [PRODUCT_IDS.annual]: { expires_date: future, period_type: 'trial' } },
+    }), ENT).status === 'trialing',
+    'period_type trial should read trialing — lower case here, upper case in webhooks');
+
+  check('pull/intro-is-trial',
+    resolveFromSubscriber(sub({
+      subscriptions: { [PRODUCT_IDS.annual]: { expires_date: future, period_type: 'intro' } },
+    }), ENT).status === 'trialing',
+    'intro counts as a trial, same as the webhook path');
+
+  check('pull/grace',
+    resolveFromSubscriber(sub({
+      subscriptions: {
+        [PRODUCT_IDS.annual]: {
+          expires_date: future, period_type: 'normal',
+          billing_issues_detected_at: '2026-08-30T00:00:00Z',
+        },
+      },
+    }), ENT).status === 'grace',
+    'a billing problem keeps access, exactly as BILLING_ISSUE does');
+
+  check('pull/expired',
+    resolveFromSubscriber({
+      entitlements: { [ENT]: { expires_date: past, product_identifier: PRODUCT_IDS.annual } },
+    }, ENT).status === 'expired',
+    'a past expiry is expired however healthy the rest looks');
+
+  check('pull/none', resolveFromSubscriber({ entitlements: {} }, ENT).status === 'none',
+    'never subscribed is none, not expired');
+
+  check('pull/unknown-subscriber', resolveFromSubscriber(undefined, ENT).status === 'none',
+    'a customer RevenueCat has never heard of is not entitled');
+
+  // The entitlement name is the thing most likely to be mistyped in a
+  // dashboard, and getting it wrong takes money without granting access.
+  check('pull/wrong-entitlement-name',
+    resolveFromSubscriber(sub(), 'plus').status === 'none',
+    'an entitlement under another name must not grant access');
+
+  check('pull/plan-mapped',
+    resolveFromSubscriber(sub(), ENT).plan === 'annual',
+    'the product id should map to its plan, as it does in the webhook path');
+
+  // A malformed date must not read as "entitled forever".
+  check('pull/garbage-date',
+    resolveFromSubscriber({
+      entitlements: { [ENT]: { expires_date: 'not-a-date', product_identifier: PRODUCT_IDS.annual } },
+    }, ENT).status === 'expired',
+    'an unparseable expiry must fail closed');
+
+  // The two paths, same subscription, same answer.
+  const pushed = resolveState({
+    type: 'RENEWAL', period_type: 'TRIAL', product_id: PRODUCT_IDS.annual,
+    expiration_at_ms: Date.parse(future),
+  });
+  const pulled = resolveFromSubscriber(sub({
+    subscriptions: { [PRODUCT_IDS.annual]: { expires_date: future, period_type: 'trial' } },
+  }), ENT);
+  check('pull/agrees-with-push',
+    pushed.status === pulled.status && pushed.plan === pulled.plan,
+    `push said ${pushed.status}/${pushed.plan}, pull said ${pulled.status}/${pulled.plan}`);
 }
 
 // ---------------------------------------------------------------------------

@@ -7,7 +7,8 @@ import { ApertureMark } from '@/components/aperture-mark';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Lamplight, Radius, Space, Type } from '@/constants/design';
 import { PRIVACY_URL, PURCHASES_ENABLED, TERMS_URL } from '@/lib/config';
-import { awaitEntitlement } from '@/lib/entitlement';
+import { useAuth } from '@/lib/auth-context';
+import { awaitEntitlement, refreshEntitlement } from '@/lib/entitlement';
 import { useTranslation } from '@/lib/i18n';
 import { goBackOrHome } from '@/lib/navigation';
 import { scheduleTrialReminder } from '@/lib/trialReminder';
@@ -62,6 +63,7 @@ const ADVERTISED_TRIAL_DAYS = 7;
 export default function PaywallScreen() {
   const router = useRouter();
   const { t } = useTranslation();
+  const { user } = useAuth();
 
   const [plans, setPlans] = useState<PlanOffer[] | null>(null);
   const [selected, setSelected] = useState<'monthly' | 'annual'>('annual');
@@ -70,6 +72,32 @@ export default function PaywallScreen() {
   useEffect(() => {
     void getPlans().then(setPlans);
   }, []);
+
+  /**
+   * Silently check whether this person is ALREADY subscribed before selling to
+   * them.
+   *
+   * Landing on the paywall holding a valid subscription is the exact shape of
+   * a lost webhook: the purchase went through, RevenueCat knows, and our
+   * server was never successfully told. The person then gets asked to pay
+   * twice, which is the worst thing this screen could do.
+   *
+   * Signed in only — an anonymous device has no account to look up. Failures
+   * are ignored on purpose: this is a rescue, and if it cannot run the screen
+   * should still work as an ordinary paywall.
+   */
+  useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+    void refreshEntitlement()
+      .then((entitlement) => {
+        if (!cancelled && entitlement?.subscription.active) router.replace('/');
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [user, router]);
 
   const offer = plans?.find((p) => p.plan === selected) ?? null;
 

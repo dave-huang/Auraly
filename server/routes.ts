@@ -7,6 +7,9 @@ import { eq, sql, gte, and, count, desc, inArray } from "drizzle-orm";
 import { setupAuth, isAuthenticated } from "./localAuth";
 import { setupRevenueCatWebhook } from "./revenueCatWebhook";
 import { registerLegalRoutes } from "./legal";
+import { fetchSubscriber, RevenueCatNotConfigured } from "./services/revenueCatApi";
+import { resolveFromSubscriber } from "./services/revenueCatState";
+import { ENTITLEMENT_ID } from "@shared/products";
 import {
   allowAnonymousScan,
   requireScanQuota,
@@ -582,6 +585,44 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error: any) {
       console.error("Error fetching scan balance:", error);
       res.status(500).json({ message: "Failed to fetch scan balance" });
+    }
+  });
+
+  // POST /api/account/refresh-entitlement — ask RevenueCat, do not wait to be told
+  //
+  // The webhook is the normal path and stays the authority. This is the
+  // recovery path for when a push is lost: a wrong secret, an outage, a deploy
+  // landing between the purchase and the notification. Without it, someone who
+  // has paid is stuck unsubscribed until some future event happens to arrive,
+  // which is the worst support case a paid app has.
+  //
+  // The client may ask, but still does not decide — it triggers a question we
+  // put to RevenueCat, and we write the answer. A device claiming to be
+  // subscribed is worth exactly as much here as it was before.
+  app.post('/api/account/refresh-entitlement', isAuthenticated, async (req: any, res) => {
+    const userId = req.user.claims.sub;
+    try {
+      const subscriber = await fetchSubscriber(userId);
+      const state = resolveFromSubscriber(subscriber, ENTITLEMENT_ID);
+
+      await subscriptionService.applySubscriptionState(userId, {
+        ...state,
+        revenueCatCustomerId: subscriber?.original_app_user_id,
+      });
+      console.log(`[RC-REFRESH] ${userId} is ${state.status}${state.plan ? ` (${state.plan})` : ''}`);
+
+      const quota = await subscriptionService.getUserQuotaStatus(userId);
+      res.json({ subscription: quota.subscription });
+    } catch (error: any) {
+      if (error instanceof RevenueCatNotConfigured) {
+        console.warn('[RC-REFRESH] REVENUECAT_SECRET_KEY is not set');
+        return res.status(503).json({ message: 'Subscription lookup is unavailable' });
+      }
+      // 502, and NOTHING written. Failing to reach RevenueCat is not evidence
+      // that someone is unsubscribed, and writing `none` on a timeout would
+      // cancel a subscription somebody is paying for.
+      console.error('[RC-REFRESH] lookup failed:', error?.message);
+      res.status(502).json({ message: 'Could not reach the store' });
     }
   });
 

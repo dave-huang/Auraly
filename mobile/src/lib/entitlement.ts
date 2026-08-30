@@ -72,7 +72,36 @@ export async function awaitEntitlement(
     }
     await new Promise((resolve) => setTimeout(resolve, delayMs));
   }
-  return null;
+
+  // The webhook never came. It usually lands in a second or two, so six
+  // seconds of silence means it is probably not coming at all — a lost push,
+  // an outage, a secret that stopped matching. Ask the server to go and find
+  // out instead of leaving someone who has just paid on the paywall.
+  try {
+    return await refreshEntitlement();
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Make the server ask RevenueCat directly, rather than wait to be told.
+ *
+ * Still not the client deciding anything: this triggers a question the server
+ * puts to RevenueCat, and the server writes the answer. It exists because a
+ * push that is lost is lost, and the person holding the receipt should not
+ * have to wait for a renewal weeks away to get what they paid for.
+ */
+export async function refreshEntitlement(): Promise<Entitlement | null> {
+  await apiFetch<{ subscription: Entitlement['subscription'] }>(
+    '/api/account/refresh-entitlement',
+    { method: 'POST' },
+  );
+  // Re-read the full record rather than trusting the narrower reply: scan
+  // balances and the free grant come from the same place, and a caller holding
+  // half an Entitlement is how the two drift.
+  const entitlement = await fetchEntitlement();
+  return entitlement.subscription.active ? entitlement : null;
 }
 
 /**
