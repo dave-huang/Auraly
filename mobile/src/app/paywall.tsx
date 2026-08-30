@@ -155,7 +155,10 @@ export default function PaywallScreen() {
         </Pressable>
 
         <View style={styles.head}>
-          <ApertureMark size={40} color={Lamplight.ink} />
+          {/* 44 is APERTURE_BAR_BREAK, not a round number: below it the mark
+              drops its second bar for legibility at small sizes, and 40 was
+              quietly rendering that reduced variant on a full-size header. */}
+          <ApertureMark size={48} color={Lamplight.ink} />
           <ThemedText style={[Type.title, { color: Lamplight.ink }]}>
             {t('paywall.title')}
           </ThemedText>
@@ -173,47 +176,12 @@ export default function PaywallScreen() {
           <Include text={t('paywall.includeHistory')} />
         </View>
 
-        {/* The timeline, before the prices — but only when the selected plan
-            actually has a trial. Monthly is billed today, and showing it a
-            seven-day countdown would be a lie about that person's money.
-            The monthly case gets its own, shorter statement rather than
-            silence: the absence of a trial is the thing they most need to
-            notice before tapping. */}
-        <View style={[styles.timeline, { borderColor: Lamplight.rule }]}>
-          {hasTrial ? (
-            <>
-              <ThemedText style={[Type.eyebrow, { color: Lamplight.inkFaint }]}>
-                {t('paywall.timelineLabel', { days: trialDays })}
-              </ThemedText>
-              <Beat day={t('paywall.dayToday')} text={t('paywall.dayTodayBody')} />
-              <Beat day={t('paywall.dayRemind')} text={t('paywall.dayRemindBody')} />
-              <Beat
-                day={t('paywall.dayCharge', { days: trialDays })}
-                text={
-                  offer
-                    ? t('paywall.dayChargeBody', { price: offer.price })
-                    : t('paywall.dayChargeBodyGeneric')
-                }
-                last
-              />
-            </>
-          ) : (
-            <>
-              <ThemedText style={[Type.eyebrow, { color: Lamplight.inkFaint }]}>
-                {t('paywall.noTrialLabel')}
-              </ThemedText>
-              <Beat
-                day={t('paywall.dayToday')}
-                text={
-                  offer
-                    ? t('paywall.billedTodayBody', { price: offer.price })
-                    : t('paywall.billedTodayBodyGeneric')
-                }
-                last
-              />
-            </>
-          )}
-        </View>
+        {/* The timeline that used to sit here — Today / Day 5 / Day 7, and a
+            shorter monthly variant — is gone. It said out loud when money
+            moves, which the plan rows and the fine print below already do, and
+            it changed as you switched plans, so the screen appeared to rewrite
+            itself under your thumb. The commitment it made is kept: the button
+            never says "free trial" for a plan that bills today. */}
 
         {plans === null ? (
           <ActivityIndicator color={Lamplight.ink} />
@@ -252,17 +220,15 @@ export default function PaywallScreen() {
                           })
                         : t('paywall.monthlyDetail', { price: plan.price })}
                     </ThemedText>
-                    {/* Which plan carries the trial, stated on the row itself.
-                        Only annual has one, and someone scanning the two
-                        options has to be able to see that without selecting
-                        each in turn to find out. Said plainly on BOTH rows —
-                        "billed today" on monthly is the half that protects
-                        the person rather than the sale. */}
-                    <ThemedText style={[Type.meta, { color: Lamplight.inkFaint }]}>
-                      {plan.trialDays > 0
-                        ? t('paywall.planTrial', { days: plan.trialDays })
-                        : t('paywall.planNoTrial')}
-                    </ThemedText>
+                    {/* Only the plan that HAS a trial says so. Annotating
+                        monthly with its absence was answering a question
+                        nobody asked, and it made the cheaper plan read as the
+                        punished one. The fine print still states the terms. */}
+                    {plan.trialDays > 0 ? (
+                      <ThemedText style={[Type.meta, { color: Lamplight.inkFaint }]}>
+                        {t('paywall.planTrial', { days: plan.trialDays })}
+                      </ThemedText>
+                    ) : null}
                   </View>
                   {/* Selection is a mono mark, never a coloured tick. */}
                   <ThemedText style={styles.tick}>{active ? '✓' : ''}</ThemedText>
@@ -356,16 +322,6 @@ function Include({ text }: { text: string }) {
   );
 }
 
-function Beat({ day, text, last = false }: { day: string; text: string; last?: boolean }) {
-  return (
-    <View style={[styles.beat, !last && { borderBottomColor: Lamplight.rule, borderBottomWidth: StyleSheet.hairlineWidth }]}>
-      <ThemedText style={[Type.label, styles.beatDay, { color: Lamplight.ink }]}>{day}</ThemedText>
-      <ThemedText style={[Type.body, styles.beatText, { color: Lamplight.inkMuted }]}>
-        {text}
-      </ThemedText>
-    </View>
-  );
-}
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Lamplight.paper },
@@ -382,15 +338,6 @@ const styles = StyleSheet.create({
   dot: { width: 4, height: 4, borderRadius: 2, marginTop: 9, marginHorizontal: 5 },
   includeText: { flex: 1 },
 
-  timeline: {
-    borderWidth: StyleSheet.hairlineWidth,
-    borderRadius: Radius.flat,
-    padding: Space.lg,
-    gap: Space.sm,
-  },
-  beat: { paddingVertical: Space.md, gap: 2 },
-  beatDay: { letterSpacing: 0.3 },
-  beatText: {},
 
   plans: { gap: Space.sm },
   plan: {
