@@ -1,13 +1,22 @@
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Platform, Pressable, StyleSheet, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  Platform,
+  Pressable,
+  StyleSheet,
+  useColorScheme,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { RevelyLockup } from '@/components/aperture-mark';
+import { GoogleMark } from '@/components/google-mark';
 import { ThemedText } from '@/components/themed-text';
 import { ALLOW_DEV_LOGIN, GOOGLE_SIGN_IN_ENABLED } from '@/lib/config';
-import { Radius, Space, Type, useSurface } from '@/constants/design';
+import { Font, Space, Type, useSurface } from '@/constants/design';
 import { useTranslation } from '@/lib/i18n';
 import {
   isAppleAuthAvailable,
@@ -41,6 +50,18 @@ export default function SignInScreen() {
   const { setUser } = useAuth();
   const { t } = useTranslation();
   const surface = useSurface();
+  /**
+   * Both buttons have to contrast with the page, not with each other.
+   *
+   * Apple's button was pinned to BLACK, which is correct on paper and nearly
+   * invisible on the dark ground — while the Google button next to it took its
+   * colour from `surface.ink`, which flips to cream. So by lamplight the two
+   * sign-in options looked like two different controls from two different
+   * apps. They now flip together: dark buttons on the light page, light
+   * buttons on the dark one, which is what both Apple and Google publish their
+   * buttons in pairs for.
+   */
+  const dark = useColorScheme() === 'dark';
   const params = useLocalSearchParams<{ mode?: string; name?: string; recover?: string }>();
   const saving = params.mode === 'save';
   /**
@@ -139,22 +160,47 @@ export default function SignInScreen() {
           <ActivityIndicator />
         ) : (
           <>
+            {/* Apple's own button, not a copy of it: it carries the mark, the
+                wording and the localisation Apple requires, and review checks
+                this one specifically. Its geometry is what the Google button
+                below is built to match — same height, same corner. */}
             {appleAvailable && Platform.OS === 'ios' && (
               <AppleAuthentication.AppleAuthenticationButton
                 buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-                buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
-                cornerRadius={12}
-                style={styles.appleButton}
+                buttonStyle={
+                  dark
+                    ? AppleAuthentication.AppleAuthenticationButtonStyle.WHITE
+                    : AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
+                }
+                cornerRadius={BUTTON_RADIUS}
+                style={styles.providerButton}
                 onPress={() => handle('apple', signInWithApple)}
               />
             )}
 
+            {/* Built to sit beside Apple's, in the colours Google publishes:
+                #131314 on white text, or white on #1F1F1F text, with the
+                four-colour G untouched in both. The pill it used to be, in
+                theme ink with no mark on it at all, read as this app's own
+                button rather than as Google's — and the word was "Continue"
+                while the button above it said "Sign in". */}
             {GOOGLE_SIGN_IN_ENABLED && (
               <Pressable
-                style={[styles.googleButton, { backgroundColor: surface.ink }]}
+                style={[
+                  styles.providerButton,
+                  styles.googleButton,
+                  { backgroundColor: dark ? '#FFFFFF' : '#131314' },
+                ]}
                 onPress={() => handle('google', signInWithGoogle)}
+                accessibilityRole="button"
+                accessibilityLabel={t('signIn.google')}
               >
-                <ThemedText style={[Type.label, { color: surface.card }]}>{t('signIn.google')}</ThemedText>
+                <GoogleMark size={18} />
+                <ThemedText
+                  style={[styles.googleLabel, { color: dark ? '#1F1F1F' : '#FFFFFF' }]}
+                >
+                  {t('signIn.google')}
+                </ThemedText>
               </Pressable>
             )}
 
@@ -184,17 +230,31 @@ export default function SignInScreen() {
   );
 }
 
+/** Apple's button takes its corner as a prop; Google's takes it from styles. */
+const BUTTON_RADIUS = 12;
+
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'space-between', padding: Space.xl },
   hero: { flex: 1, justifyContent: 'center', alignItems: 'center', gap: 12 },
   tagline: { textAlign: 'center', maxWidth: 300 },
   actions: { gap: 12, paddingBottom: 24, minHeight: 140, justifyContent: 'flex-end' },
-  appleButton: { height: 52 },
+  // One geometry, used by both providers. Apple's native button takes the
+  // radius as a prop rather than from styles, so the constant is shared.
+  providerButton: { height: 52 },
   googleButton: {
-    height: 52,
-    borderRadius: Radius.pill,
+    borderRadius: BUTTON_RADIUS,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    gap: 10,
+  },
+  // Apple sets its button's label in the system font at ~19pt semibold, so the
+  // Google label matches it rather than the app's own type scale — two sign-in
+  // buttons with different type sizes is the same mismatch in another channel.
+  googleLabel: {
+    fontFamily: Font.sansSemi,
+    fontSize: 17,
+    lineHeight: 22,
   },
 
   devButton: { alignItems: 'center', paddingVertical: 12, opacity: 0.6 },

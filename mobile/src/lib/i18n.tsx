@@ -107,7 +107,7 @@ const en = {
   'verdict.sealUnclear2': 'unclear',
 
   'signIn.tagline': 'Your ingredient guardian.',
-  'signIn.google': 'Continue with Google',
+  'signIn.google': 'Sign in with Google',
   'signIn.dev': 'Dev sign-in (local only)',
   'signIn.failed': 'Sign-in failed',
 
@@ -528,7 +528,7 @@ const zh: Record<TranslationKey, string> = {
   'verdict.sealUnclear2': '不清晰',
 
   'signIn.tagline': '你的配料守护者。',
-  'signIn.google': '使用 Google 继续',
+  'signIn.google': '通过 Google 登录',
   'signIn.dev': '开发者登录（仅限本地）',
   'signIn.failed': '登录失败',
 
@@ -923,7 +923,7 @@ const es: Record<TranslationKey, string> = {
   'verdict.sealUnclear2': 'ilegible',
 
   'signIn.tagline': 'Tu guardián de ingredientes.',
-  'signIn.google': 'Continuar con Google',
+  'signIn.google': 'Iniciar sesión con Google',
   'signIn.dev': 'Acceso de desarrollo (solo local)',
   'signIn.failed': 'Error al iniciar sesión',
 
