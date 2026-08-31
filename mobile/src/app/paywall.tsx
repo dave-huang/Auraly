@@ -18,7 +18,9 @@ import { useTranslation } from '@/lib/i18n';
 import { goBackOrHome } from '@/lib/navigation';
 import { scheduleTrialReminder } from '@/lib/trialReminder';
 import {
+  AlreadySubscribedError,
   PurchaseCancelledError,
+  ReceiptInUseError,
   getPlans,
   purchasePlan,
   restorePurchases,
@@ -165,6 +167,46 @@ export default function PaywallScreen() {
   const hasTrial = offer ? offer.trialDays > 0 : selected === 'annual';
   const trialDays = offer?.trialDays || ADVERTISED_TRIAL_DAYS;
 
+  /**
+   * The store says this Apple ID already has the subscription, and we have not
+   * been able to turn that into access.
+   *
+   * Two different situations, and they need different sentences.
+   *
+   * NOT SIGNED IN. The overwhelmingly common one: a reinstall, or a new phone.
+   * The subscription belongs to their account, not to the handset, so there is
+   * literally nowhere to put it until they sign in — and no amount of retrying
+   * will change that. Saying it plainly and offering the one door that works
+   * beats an alert that only reports a failure.
+   *
+   * SIGNED IN. Rarer, and genuinely our problem: the receipt exists, we asked
+   * RevenueCat, and we still could not record it. Never suggest buying again.
+   */
+  function offerSignInToRecover() {
+    Alert.alert(t('paywall.foundTitle'), t('paywall.foundBody'), [
+      { text: t('common.cancel'), style: 'cancel' },
+      { text: t('paywall.foundCta'), onPress: () => router.replace('/sign-in?recover=1') },
+    ]);
+  }
+
+  /** Shared tail of both recovery paths. Returns true if it got them in. */
+  async function recoverExisting(alreadyPulled: boolean): Promise<boolean> {
+    if (!user) {
+      offerSignInToRecover();
+      return false;
+    }
+    // `alreadyPulled` is set by callers that have just been through
+    // awaitEntitlement, which ends in a pull of its own — asking RevenueCat
+    // the same question twice in four seconds gets the same answer.
+    const found = alreadyPulled ? null : await refreshEntitlement().catch(() => null);
+    if (found) {
+      router.replace('/');
+      return true;
+    }
+    Alert.alert(t('paywall.foundTitle'), t('paywall.foundStuckBody'));
+    return false;
+  }
+
   async function startTrial() {
     if (!offer) return;
     setBusy('purchase');
@@ -197,6 +239,16 @@ export default function PaywallScreen() {
       // Cancelling out of Apple's sheet is the most common outcome on any
       // paywall. It is not an error and must never produce an alert.
       if (error instanceof PurchaseCancelledError) return;
+      // Already owned. Not a failure — they are further along than the screen
+      // thinks — so this must never wear the word "failed".
+      if (error instanceof AlreadySubscribedError) {
+        await recoverExisting(false);
+        return;
+      }
+      if (error instanceof ReceiptInUseError) {
+        Alert.alert(t('paywall.receiptInUseTitle'), t('paywall.receiptInUseBody'));
+        return;
+      }
       Alert.alert(t('paywall.failedTitle'), error?.message ?? t('common.tryAgain'));
     } finally {
       setBusy(null);
@@ -208,12 +260,25 @@ export default function PaywallScreen() {
     try {
       const info = await restorePurchases();
       if (storeSaysEntitled(info)) {
-        await awaitEntitlement();
-        router.replace('/');
+        // Returns immediately when there is no account, rather than spending
+        // six seconds polling endpoints that can only answer 401.
+        const found = await awaitEntitlement();
+        if (found) {
+          router.replace('/');
+          return;
+        }
+        // It restored, and we still cannot use it. This used to go home
+        // anyway, leaving someone holding a valid subscription on a camera
+        // that would refuse the next photo without ever saying why.
+        await recoverExisting(true);
         return;
       }
       Alert.alert(t('paywall.restoreNoneTitle'), t('paywall.restoreNoneBody'));
     } catch (error: any) {
+      if (error instanceof ReceiptInUseError) {
+        Alert.alert(t('paywall.receiptInUseTitle'), t('paywall.receiptInUseBody'));
+        return;
+      }
       Alert.alert(t('paywall.failedTitle'), error?.message ?? t('common.tryAgain'));
     } finally {
       setBusy(null);

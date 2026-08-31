@@ -1,4 +1,8 @@
-import Purchases, { type CustomerInfo, type PurchasesPackage } from 'react-native-purchases';
+import Purchases, {
+  PURCHASES_ERROR_CODE,
+  type CustomerInfo,
+  type PurchasesPackage,
+} from 'react-native-purchases';
 
 import { ENTITLEMENT_ID, PRODUCTS, PURCHASES_ENABLED, REVENUECAT_IOS_KEY } from './config';
 
@@ -160,6 +164,35 @@ function formatPerMonth(amount: number, currency: string): string {
 export class PurchaseCancelledError extends Error {}
 
 /**
+ * This Apple ID already owns the subscription.
+ *
+ * Common and not a mistake: a reinstall, a new phone, or someone who
+ * subscribed before signing in. StoreKit refuses the second purchase — which
+ * is correct, and the reason it must never surface as "Could not complete".
+ * The person does not need to buy anything; they need what they bought.
+ */
+export class AlreadySubscribedError extends Error {}
+
+/**
+ * The receipt is attached to a DIFFERENT account of ours.
+ *
+ * One Apple ID, two Revely accounts. Nothing the app can fix — the answer is
+ * to sign in as the account that holds it — but silence here looks like a
+ * subscription that vanished.
+ */
+export class ReceiptInUseError extends Error {}
+
+/**
+ * RevenueCat's codes cross the native bridge as strings on one platform and
+ * numbers on another, and the published enum disagrees with both depending on
+ * version. Comparing as text is not fussiness; a `===` here silently matched
+ * nothing and sent every one of these to the generic failure alert.
+ */
+function isCode(error: any, code: PURCHASES_ERROR_CODE): boolean {
+  return String(error?.code) === String(code);
+}
+
+/**
  * Buy a plan.
  *
  * A user cancelling out of Apple's sheet is not an error and must never
@@ -169,6 +202,12 @@ export class PurchaseCancelledError extends Error {}
 export async function purchasePlan(offer: PlanOffer): Promise<CustomerInfo> {
   const { customerInfo } = await Purchases.purchasePackage(offer.pkg).catch((error: any) => {
     if (error?.userCancelled) throw new PurchaseCancelledError('cancelled');
+    if (isCode(error, PURCHASES_ERROR_CODE.PRODUCT_ALREADY_PURCHASED_ERROR)) {
+      throw new AlreadySubscribedError('already subscribed');
+    }
+    if (isCode(error, PURCHASES_ERROR_CODE.RECEIPT_ALREADY_IN_USE_ERROR)) {
+      throw new ReceiptInUseError('receipt in use');
+    }
     throw error;
   });
   return customerInfo;
@@ -183,7 +222,12 @@ export async function purchasePlan(offer: PlanOffer): Promise<CustomerInfo> {
  */
 export async function restorePurchases(): Promise<CustomerInfo | null> {
   if (!PURCHASES_ENABLED || !configured) return null;
-  return Purchases.restorePurchases();
+  return Purchases.restorePurchases().catch((error: any) => {
+    if (isCode(error, PURCHASES_ERROR_CODE.RECEIPT_ALREADY_IN_USE_ERROR)) {
+      throw new ReceiptInUseError('receipt in use');
+    }
+    throw error;
+  });
 }
 
 /** Whether the store currently believes this person is entitled. */

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { apiFetch } from './api';
+import { apiFetch, getToken } from './api';
 import { cancelTrialReminder } from './trialReminder';
 
 /**
@@ -63,6 +63,12 @@ export async function awaitEntitlement(
   attempts = 6,
   delayMs = 1000,
 ): Promise<Entitlement | null> {
+  // No account, nothing to wait for. Every request below would 401, so polling
+  // spends six seconds under a "Working…" label to reach the answer we already
+  // have — and the caller then has to guess whether the silence meant "not
+  // paid" or "nowhere to put it". Say so immediately instead.
+  if (!(await getToken())) return null;
+
   for (let i = 0; i < attempts; i++) {
     try {
       const entitlement = await fetchEntitlement();
@@ -93,6 +99,9 @@ export async function awaitEntitlement(
  * have to wait for a renewal weeks away to get what they paid for.
  */
 export async function refreshEntitlement(): Promise<Entitlement | null> {
+  // Same reason as above: there is no account for the server to write to.
+  if (!(await getToken())) return null;
+
   await apiFetch<{ subscription: Entitlement['subscription'] }>(
     '/api/account/refresh-entitlement',
     { method: 'POST' },

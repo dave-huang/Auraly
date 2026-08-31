@@ -17,6 +17,7 @@ import {
   SignInCancelledError,
 } from '@/lib/auth';
 import { useAuth } from '@/lib/auth-context';
+import { refreshEntitlement } from '@/lib/entitlement';
 import { syncLocalProfile } from '@/lib/profiles';
 import { identifyPurchaser } from '@/lib/purchases';
 
@@ -40,8 +41,18 @@ export default function SignInScreen() {
   const { setUser } = useAuth();
   const { t } = useTranslation();
   const surface = useSurface();
-  const params = useLocalSearchParams<{ mode?: string; name?: string }>();
+  const params = useLocalSearchParams<{ mode?: string; name?: string; recover?: string }>();
   const saving = params.mode === 'save';
+  /**
+   * Sent here from the subscription screen by someone whose Apple ID already
+   * holds a subscription.
+   *
+   * They did not come to make an account; they came to get back something they
+   * are already paying for, and being shown the generic "Save this?" pitch
+   * would read as being asked to sign up all over again. It changes the words,
+   * and it changes what happens the moment sign-in succeeds.
+   */
+  const recovering = params.recover === '1';
   const [appleAvailable, setAppleAvailable] = useState(false);
   const [busy, setBusy] = useState<string | null>(null);
 
@@ -72,6 +83,16 @@ export default function SignInScreen() {
       // attributed to the account rather than to an anonymous store id.
       await identifyPurchaser(user.id);
 
+      // The account now exists AND the store knows about it, which is the
+      // first moment the subscription can actually be attached. Asking now is
+      // what puts them on the camera instead of back on the paywall, one tap
+      // later, wondering what the sign-in was for.
+      //
+      // Awaited, not fired and forgotten: the whole point is that the next
+      // screen already knows. Failures are ignored — the account is real
+      // either way, and the paywall pulls again on open.
+      if (recovering) await refreshEntitlement().catch(() => null);
+
       router.replace('/');
     } catch (error: any) {
       if (!(error instanceof SignInCancelledError)) {
@@ -88,7 +109,16 @@ export default function SignInScreen() {
         {/* The lockup, not a serif wordmark: Newsreader belongs to the verdict
             word alone, so the app's own name is set in Instrument Sans. */}
         <RevelyLockup size={38} color={surface.ink} />
-        {saving ? (
+        {recovering ? (
+          <>
+            <ThemedText style={[Type.title, styles.tagline, { color: surface.ink }]}>
+              {t('signIn.recoverTitle')}
+            </ThemedText>
+            <ThemedText style={[Type.reason, styles.tagline, { color: surface.inkMuted }]}>
+              {t('signIn.recoverBody')}
+            </ThemedText>
+          </>
+        ) : saving ? (
           <>
             <ThemedText style={[Type.title, styles.tagline, { color: surface.ink }]}>
               {t('signIn.saveTitle')}
