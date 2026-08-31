@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Linking, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -6,9 +6,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ApertureMark } from '@/components/aperture-mark';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Lamplight, Radius, Space, Type } from '@/constants/design';
-import { PRIVACY_URL, PURCHASES_ENABLED, TERMS_URL } from '@/lib/config';
+import { APPLE_SUBSCRIPTIONS_URL, PRIVACY_URL, PURCHASES_ENABLED, TERMS_URL } from '@/lib/config';
 import { useAuth } from '@/lib/auth-context';
-import { awaitEntitlement, refreshEntitlement } from '@/lib/entitlement';
+import {
+  awaitEntitlement,
+  refreshEntitlement,
+  useEntitlement,
+  type Entitlement,
+} from '@/lib/entitlement';
 import { useTranslation } from '@/lib/i18n';
 import { goBackOrHome } from '@/lib/navigation';
 import { scheduleTrialReminder } from '@/lib/trialReminder';
@@ -65,6 +70,23 @@ export default function PaywallScreen() {
   const { t } = useTranslation();
   const { user } = useAuth();
 
+  /**
+   * Whether this screen came up as a locked door or was opened deliberately.
+   *
+   * It changes what "already subscribed" should do. Someone stopped mid-scan
+   * wants their scan, so the right answer is to send them back to it. Someone
+   * who tapped "Subscription" in the menu wants to see their subscription, and
+   * bouncing them to the camera would look like the tap did nothing.
+   */
+  const gate = useLocalSearchParams<{ gate?: string }>().gate === '1';
+
+  // What the SERVER says this person already has. Not the store — same rule as
+  // everywhere else in the app, and the reason a jailbroken device cannot show
+  // itself a subscribed screen.
+  const { entitlement, loading: entitlementLoading, refresh } = useEntitlement(!!user);
+  const sub = entitlement?.subscription;
+  const subscribed = !!sub?.active;
+
   const [plans, setPlans] = useState<PlanOffer[] | null>(null);
   const [selected, setSelected] = useState<'monthly' | 'annual'>('annual');
   const [busy, setBusy] = useState<'purchase' | 'restore' | null>(null);
@@ -90,14 +112,19 @@ export default function PaywallScreen() {
     if (!user) return;
     let cancelled = false;
     void refreshEntitlement()
-      .then((entitlement) => {
-        if (!cancelled && entitlement?.subscription.active) router.replace('/');
+      .then((found) => {
+        if (cancelled || !found?.subscription.active) return;
+        // A locked door that turns out to be unlocked: go through it. Anywhere
+        // else, stay and show them what they have — which the refetch below
+        // puts on screen.
+        if (gate) router.replace('/');
+        else void refresh();
       })
       .catch(() => {});
     return () => {
       cancelled = true;
     };
-  }, [user, router]);
+  }, [user, gate, router, refresh]);
 
   const offer = plans?.find((p) => p.plan === selected) ?? null;
 
@@ -191,6 +218,23 @@ export default function PaywallScreen() {
     } finally {
       setBusy(null);
     }
+  }
+
+  // Nothing is decided until the server has answered. A signed-in subscriber
+  // seeing "Subscribe to Revely" for half a second before it corrects itself
+  // is the same insult as seeing it permanently, delivered faster.
+  if (user && entitlementLoading) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.waiting}>
+          <ActivityIndicator color={Lamplight.ink} />
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  if (subscribed && sub) {
+    return <SubscribedView sub={sub} onClose={goBackOrHome} />;
   }
 
   return (
@@ -357,6 +401,106 @@ export default function PaywallScreen() {
 }
 
 /**
+ * What a subscriber sees instead of a paywall.
+ *
+ * Three things, in the order someone actually wants them: that they are
+ * covered, when money next moves, and how to stop it. No plan rows and no
+ * purchase button — there is nothing here left to buy, and a Subscribe button
+ * a subscriber cannot use is worse than no button at all.
+ *
+ * SWITCHING PLANS IS NOT OFFERED HERE, ON PURPOSE
+ *
+ * Moving between monthly and annual is a StoreKit upgrade Apple performs in
+ * its own sheet, with its own proration; an in-app control for it would be a
+ * button that opens Settings wearing a costume. The link says where it goes.
+ */
+function SubscribedView({
+  sub,
+  onClose,
+}: {
+  sub: NonNullable<Entitlement['subscription']>;
+  onClose: () => void;
+}) {
+  const { t } = useTranslation();
+  const trialing = sub.status === 'trialing';
+  const grace = sub.status === 'grace';
+  const date = sub.expiresAt ? new Date(sub.expiresAt).toLocaleDateString() : null;
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.content}>
+        <Pressable onPress={onClose} hitSlop={12} accessibilityRole="button">
+          <ThemedText style={[Type.meta, { color: Lamplight.inkFaint }]}>
+            ✕ {t('common.back')}
+          </ThemedText>
+        </Pressable>
+
+        <View style={styles.head}>
+          <ApertureMark size={48} color={Lamplight.ink} />
+          <ThemedText style={[Type.title, { color: Lamplight.ink }]}>
+            {grace
+              ? t('paywall.graceTitle')
+              : trialing
+                ? t('paywall.trialTitle')
+                : t('paywall.subscribedTitle')}
+          </ThemedText>
+          {/* The plan, then the date, as two lines rather than one sentence:
+              the date is the fact people come here for, and it should not have
+              to be read out of a paragraph. */}
+          <ThemedText style={[Type.reason, { color: Lamplight.inkMuted }]}>
+            {t(sub.plan === 'annual' ? 'paywall.planAnnualNamed' : 'paywall.planMonthlyNamed')}
+          </ThemedText>
+          {date ? (
+            <ThemedText style={[Type.reason, { color: Lamplight.inkMuted }]}>
+              {t(
+                grace
+                  ? 'paywall.graceDetail'
+                  : trialing
+                    ? 'paywall.trialChargeOn'
+                    : 'paywall.renewsOn',
+                { date },
+              )}
+            </ThemedText>
+          ) : null}
+        </View>
+
+        {/* The same list the paywall sells, now read as a receipt. Worth
+            keeping: most people never see this screen except when wondering
+            whether the subscription is worth it. */}
+        <View style={styles.includes}>
+          <Include text={t('paywall.includeUnlimited')} />
+          <Include text={t('paywall.includeProfiles')} />
+          <Include text={t('paywall.includeCitations')} />
+          <Include text={t('paywall.includeHistory')} />
+        </View>
+
+        {/* Outlined rather than filled. The filled button on this screen means
+            "spend money"; nothing here should wear that weight. */}
+        <Pressable
+          style={[styles.secondary, { borderColor: Lamplight.ink }]}
+          onPress={() => void Linking.openURL(APPLE_SUBSCRIPTIONS_URL)}
+          accessibilityRole="button"
+        >
+          <ThemedText style={[styles.primaryLabel, { color: Lamplight.ink }]}>
+            {t('paywall.manageCta')}
+          </ThemedText>
+        </Pressable>
+
+        <ThemedText style={[Type.meta, styles.fine, { color: Lamplight.inkFaint }]}>
+          {t('paywall.manageNote')}
+        </ThemedText>
+
+        <View style={styles.legal}>
+          <LegalLink label={t('paywall.terms')} url={TERMS_URL} />
+          <ThemedText style={[Type.meta, { color: Lamplight.inkFaint }]}>·</ThemedText>
+          <LegalLink label={t('paywall.privacy')} url={PRIVACY_URL} />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+/**
  * A link out to a legal document.
  *
  * hitSlop because the label is deliberately small — it must not compete with
@@ -432,7 +576,16 @@ const styles = StyleSheet.create({
   },
 
   primary: { borderRadius: Radius.pill, paddingVertical: Space.lg, alignItems: 'center' },
+  // Same shape as `primary`, outlined — the subscriber screen's one action is
+  // a door out to Apple, not a purchase, and it should not look like one.
+  secondary: {
+    borderRadius: Radius.pill,
+    borderWidth: StyleSheet.hairlineWidth,
+    paddingVertical: Space.lg,
+    alignItems: 'center',
+  },
   primaryLabel: { fontFamily: Font.sansSemi, fontSize: 15, lineHeight: 20 },
+  waiting: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   disabled: { opacity: 0.4 },
   restore: { alignItems: 'center', paddingVertical: Space.sm },
   legal: {

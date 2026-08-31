@@ -165,7 +165,11 @@ export default function ViewfinderScreen() {
       // working exactly as designed, and an "Error" alert here trains people to
       // dismiss alerts. Straight to the paywall instead.
       if (error?.status === 402 || error?.code === 'no_scans') {
-        router.push('/paywall');
+        // gate=1: opened as a locked door, not on purpose. If the subscription
+        // screen finds this person is in fact subscribed — a webhook we never
+        // received — it sends them straight back here rather than showing them
+        // a status page they did not ask for.
+        router.push('/paywall?gate=1');
         return;
       }
       // A claimed device signed out on this install: the person HAS an account

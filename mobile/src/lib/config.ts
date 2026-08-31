@@ -102,3 +102,14 @@ export { ENTITLEMENT_ID } from '@shared/products';
  * with no plans on it and no error anywhere.
  */
 export { PRODUCT_IDS as PRODUCTS } from '@shared/products';
+
+/**
+ * Apple's own subscription management page.
+ *
+ * Where every change to a live subscription has to happen — upgrading,
+ * downgrading, cancelling. StoreKit gives us no way to do any of it in-app, so
+ * the honest thing is to send people to the place that can, rather than build
+ * controls that only look like they work. Shared by the account screen and the
+ * subscription screen so the two cannot point at different URLs.
+ */
+export const APPLE_SUBSCRIPTIONS_URL = 'https://apps.apple.com/account/subscriptions';

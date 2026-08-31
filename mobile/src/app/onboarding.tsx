@@ -73,7 +73,7 @@ export default function OnboardingScreen() {
       // someone to the viewfinder means they frame a label, take the photo and
       // only then learn they cannot have the answer — effort spent for nothing.
       // Asking before the work is the honest order, and it costs us no scan.
-      router.replace('/paywall');
+      router.replace('/paywall?gate=1');
     } catch (error: any) {
       Alert.alert(t('onboarding.saveFailed'), error?.message ?? t('common.tryAgain'));
     } finally {

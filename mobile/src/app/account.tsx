@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Radius, Space, Type, useSurface, useVerdictColors } from '@/constants/design';
 import { apiFetch } from '@/lib/api';
-import { HEALTH_DATA_URL, PRIVACY_URL, TERMS_URL } from '@/lib/config';
+import { APPLE_SUBSCRIPTIONS_URL, HEALTH_DATA_URL, PRIVACY_URL, TERMS_URL } from '@/lib/config';
 import { useAuth } from '@/lib/auth-context';
 import { trialDaysRemaining, type Entitlement } from '@/lib/entitlement';
 import { LANGUAGE_NAMES, SUPPORTED_LANGUAGES, useTranslation } from '@/lib/i18n';
@@ -37,17 +37,6 @@ interface AccountDetails extends Entitlement {
   firstName: string | null;
   createdAt: string | null;
 }
-
-/**
- * Where Apple lets someone cancel.
- *
- * We cannot cancel a subscription from inside the app — StoreKit does not allow
- * it, and neither does any wrapper around it. The only honest thing an app can
- * do is hand the person straight to the place that can, which is this deep
- * link. Hiding it, or making them hunt through Settings, is the pattern that
- * produces refund requests and one-star reviews.
- */
-const APPLE_SUBSCRIPTIONS_URL = 'https://apps.apple.com/account/subscriptions';
 
 export default function AccountScreen() {
   const router = useRouter();
