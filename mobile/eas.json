@@ -12,7 +12,8 @@
       },
       "env": {
         "EXPO_PUBLIC_API_URL": "https://revely-api.fly.dev",
-        "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_vFVQuKaKQzfbnoaUFVphFZhTUzh"
+        "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_vFVQuKaKQzfbnoaUFVphFZhTUzh",
+        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "937721168112-n1gj0lbqle47husqo1tb3dq8snmtfoks.apps.googleusercontent.com"
       }
     },
     "preview": {
@@ -22,7 +23,8 @@
       },
       "env": {
         "EXPO_PUBLIC_API_URL": "https://revely-api.fly.dev",
-        "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_vFVQuKaKQzfbnoaUFVphFZhTUzh"
+        "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_vFVQuKaKQzfbnoaUFVphFZhTUzh",
+        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "937721168112-n1gj0lbqle47husqo1tb3dq8snmtfoks.apps.googleusercontent.com"
       }
     },
     "production": {
@@ -32,7 +34,8 @@
       },
       "env": {
         "EXPO_PUBLIC_API_URL": "https://revely-api.fly.dev",
-        "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_vFVQuKaKQzfbnoaUFVphFZhTUzh"
+        "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_vFVQuKaKQzfbnoaUFVphFZhTUzh",
+        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "937721168112-n1gj0lbqle47husqo1tb3dq8snmtfoks.apps.googleusercontent.com"
       }
     }
   },
