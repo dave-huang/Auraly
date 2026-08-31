@@ -352,9 +352,6 @@ export default function PaywallScreen() {
         </Pressable>
 
         <View style={styles.head}>
-          {/* 44 is APERTURE_BAR_BREAK, not a round number: below it the mark
-              drops its second bar for legibility at small sizes, and 40 was
-              quietly rendering that reduced variant on a full-size header. */}
           <ApertureMark size={48} color={Lamplight.ink} />
           <ThemedText style={[Type.title, { color: Lamplight.ink }]}>
             {t('paywall.title')}

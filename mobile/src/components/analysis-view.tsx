@@ -488,7 +488,9 @@ export function AnalysisView({
 
       <View style={[styles.footer, { borderTopColor: surface.rule }]}>
         <View style={styles.footerMark}>
-          <ApertureMark size={12} color={surface.inkFaint} />
+          {/* 14, not 12: the mark carries two bars at every size now, and 12
+              was the one place where the pair started closing into a slab. */}
+          <ApertureMark size={14} color={surface.inkFaint} />
           <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>Revely</ThemedText>
         </View>
         <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>{subtitle ?? ''}</ThemedText>

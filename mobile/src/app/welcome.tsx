@@ -42,7 +42,11 @@ export default function WelcomeScreen() {
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.head}>
           <RevelyLockup size={30} color={surface.ink} />
-          <ThemedText style={[Type.reason, { color: surface.inkMuted }]}>
+          {/* Full ink at title weight, now that it is a sentence rather than
+              a paragraph. The screen's job is to be understood in one glance
+              and then got past; the specimen card below is the argument, and
+              it cannot land while a wall of prose is competing with it. */}
+          <ThemedText style={[Type.title, { color: surface.ink }]}>
             {t('welcome.tagline')}
           </ThemedText>
         </View>
