@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ApertureMark } from '@/components/aperture-mark';
 import { ThemedText } from '@/components/themed-text';
-import { Font, Gutter, Lamplight, Radius, Space, Type } from '@/constants/design';
+import { Font, Gutter, Radius, Space, Type, useSurface } from '@/constants/design';
 import { APPLE_SUBSCRIPTIONS_URL, PRIVACY_URL, PURCHASES_ENABLED, TERMS_URL } from '@/lib/config';
 import { useAuth } from '@/lib/auth-context';
 import {
@@ -31,7 +31,13 @@ import {
 
 // Screen 11 — Monetisation.
 //
-// Ink ground, and no verdict colour anywhere. The three inks mean a verdict;
+// It follows the device theme. It used to be pinned to ink ground in both,
+// which read as deliberate weight in the design and as a rendering fault on a
+// phone set to light: welcome, onboarding and results are all paper, and this
+// screen dropped to black between them. The emphasis was not worth being
+// mistaken for a bug on the screen that asks for money.
+//
+// No verdict colour anywhere, which has not changed. The three inks mean a
 // spending them on a "recommended" badge would trade the app's only trusted
 // signal for a sale, and the verdict screen is where that trust has to survive.
 //
@@ -69,6 +75,7 @@ import {
 const ADVERTISED_TRIAL_DAYS = 7;
 
 export default function PaywallScreen() {
+  const surface = useSurface();
   const router = useRouter();
   const { t } = useTranslation();
   const { user } = useAuth();
@@ -316,9 +323,9 @@ export default function PaywallScreen() {
   // is the same insult as seeing it permanently, delivered faster.
   if ((user && entitlementLoading) || checkingStore) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: surface.paper }]}>
         <View style={styles.waiting}>
-          <ActivityIndicator color={Lamplight.ink} />
+          <ActivityIndicator color={surface.ink} />
         </View>
       </SafeAreaView>
     );
@@ -343,20 +350,20 @@ export default function PaywallScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: surface.paper }]}>
       <ScrollView contentContainerStyle={styles.content}>
         <Pressable onPress={goBackOrHome} hitSlop={12} accessibilityRole="button">
-          <ThemedText style={[Type.meta, { color: Lamplight.inkFaint }]}>
+          <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>
             ✕ {t('common.back')}
           </ThemedText>
         </Pressable>
 
         <View style={styles.head}>
-          <ApertureMark size={48} color={Lamplight.ink} />
-          <ThemedText style={[Type.title, { color: Lamplight.ink }]}>
+          <ApertureMark size={48} color={surface.ink} />
+          <ThemedText style={[Type.title, { color: surface.ink }]}>
             {t('paywall.title')}
           </ThemedText>
-          <ThemedText style={[Type.reason, { color: Lamplight.inkMuted }]}>
+          <ThemedText style={[Type.reason, { color: surface.inkMuted }]}>
             {t('paywall.body')}
           </ThemedText>
         </View>
@@ -378,11 +385,11 @@ export default function PaywallScreen() {
             never says "free trial" for a plan that bills today. */}
 
         {plans === null ? (
-          <ActivityIndicator color={Lamplight.ink} />
+          <ActivityIndicator color={surface.ink} />
         ) : plans.length === 0 ? (
           // Honest dead end rather than a button that fails after the tap.
-          <View style={[styles.unavailable, { borderColor: Lamplight.rule }]}>
-            <ThemedText style={[Type.body, { color: Lamplight.inkMuted }]}>
+          <View style={[styles.unavailable, { borderColor: surface.rule }]}>
+            <ThemedText style={[Type.body, { color: surface.inkMuted }]}>
               {PURCHASES_ENABLED ? t('paywall.plansUnavailable') : t('paywall.notOpenYet')}
             </ThemedText>
           </View>
@@ -398,13 +405,13 @@ export default function PaywallScreen() {
                   accessibilityState={{ selected: active }}
                   style={[
                     styles.plan,
-                    { borderColor: active ? Lamplight.ink : Lamplight.rule },
-                    active && { backgroundColor: Lamplight.card },
+                    { borderColor: active ? surface.ink : surface.rule },
+                    active && { backgroundColor: surface.card },
                   ]}
                 >
                   <View style={styles.planText}>
                     <View style={styles.planHeading}>
-                      <ThemedText style={[Type.label, { color: Lamplight.ink }]}>
+                      <ThemedText style={[Type.label, { color: surface.ink }]}>
                         {t(plan.plan === 'annual' ? 'paywall.annual' : 'paywall.monthly')}
                       </ThemedText>
                       {/* Inverted ink, never a verdict colour — the three inks
@@ -417,14 +424,14 @@ export default function PaywallScreen() {
                           believed is the entire job, and on day one it would
                           describe nobody. */}
                       {plan.plan === 'annual' && annualSaving !== null ? (
-                        <View style={[styles.badge, { backgroundColor: Lamplight.ink }]}>
-                          <ThemedText style={[styles.badgeText, { color: Lamplight.paper }]}>
+                        <View style={[styles.badge, { backgroundColor: surface.ink }]}>
+                          <ThemedText style={[styles.badgeText, { color: surface.paper }]}>
                             {t('paywall.saveBadge', { percent: annualSaving })}
                           </ThemedText>
                         </View>
                       ) : null}
                     </View>
-                    <ThemedText style={[Type.meta, { color: Lamplight.inkMuted }]}>
+                    <ThemedText style={[Type.meta, { color: surface.inkMuted }]}>
                       {plan.plan === 'annual'
                         ? t('paywall.annualDetail', {
                             price: plan.price,
@@ -437,13 +444,13 @@ export default function PaywallScreen() {
                         nobody asked, and it made the cheaper plan read as the
                         punished one. The fine print still states the terms. */}
                     {plan.trialDays > 0 ? (
-                      <ThemedText style={[Type.meta, { color: Lamplight.inkFaint }]}>
+                      <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>
                         {t('paywall.planTrial', { days: plan.trialDays })}
                       </ThemedText>
                     ) : null}
                   </View>
                   {/* Selection is a mono mark, never a coloured tick. */}
-                  <ThemedText style={styles.tick}>{active ? '✓' : ''}</ThemedText>
+                  <ThemedText style={[styles.tick, { color: surface.ink }]}>{active ? '✓' : ''}</ThemedText>
                 </Pressable>
               );
             })}
@@ -453,14 +460,14 @@ export default function PaywallScreen() {
         <Pressable
           style={[
             styles.primary,
-            { backgroundColor: Lamplight.ink },
+            { backgroundColor: surface.ink },
             (!offer || busy !== null) && styles.disabled,
           ]}
           disabled={!offer || busy !== null}
           onPress={() => void startTrial()}
           accessibilityRole="button"
         >
-          <ThemedText style={[styles.primaryLabel, { color: Lamplight.paper }]}>
+          <ThemedText style={[styles.primaryLabel, { color: surface.paper }]}>
             {busy === 'purchase'
               ? t('paywall.working')
               : hasTrial
@@ -487,7 +494,7 @@ export default function PaywallScreen() {
           <ThemedText
             style={[
               Type.meta,
-              { color: user ? Lamplight.inkFaint : Lamplight.ink },
+              { color: user ? surface.inkFaint : surface.ink },
             ]}
           >
             {busy === 'restore'
@@ -498,7 +505,7 @@ export default function PaywallScreen() {
           </ThemedText>
         </Pressable>
 
-        <ThemedText style={[Type.meta, styles.fine, { color: Lamplight.inkFaint }]}>
+        <ThemedText style={[Type.meta, styles.fine, { color: surface.inkFaint }]}>
           {hasTrial ? t('paywall.fine', { days: trialDays }) : t('paywall.fineNoTrial')}
         </ThemedText>
 
@@ -510,7 +517,7 @@ export default function PaywallScreen() {
         */}
         <View style={styles.legal}>
           <LegalLink label={t('paywall.terms')} url={TERMS_URL} />
-          <ThemedText style={[Type.meta, { color: Lamplight.inkFaint }]}>·</ThemedText>
+          <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>·</ThemedText>
           <LegalLink label={t('paywall.privacy')} url={PRIVACY_URL} />
         </View>
       </ScrollView>
@@ -543,34 +550,35 @@ function RecoverView({
   onSignIn: () => void;
   onRetry: () => void;
 }) {
+  const surface = useSurface();
   const { t } = useTranslation();
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: surface.paper }]}>
       <ScrollView contentContainerStyle={styles.content}>
         <Pressable onPress={onClose} hitSlop={12} accessibilityRole="button">
-          <ThemedText style={[Type.meta, { color: Lamplight.inkFaint }]}>
+          <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>
             ✕ {t('common.back')}
           </ThemedText>
         </Pressable>
 
         <View style={styles.head}>
-          <ApertureMark size={48} color={Lamplight.ink} />
-          <ThemedText style={[Type.title, { color: Lamplight.ink }]}>
+          <ApertureMark size={48} color={surface.ink} />
+          <ThemedText style={[Type.title, { color: surface.ink }]}>
             {t('paywall.foundTitle')}
           </ThemedText>
-          <ThemedText style={[Type.reason, { color: Lamplight.inkMuted }]}>
+          <ThemedText style={[Type.reason, { color: surface.inkMuted }]}>
             {signedIn ? t('paywall.foundStuckBody') : t('paywall.foundBody')}
           </ThemedText>
         </View>
 
         <Pressable
-          style={[styles.primary, { backgroundColor: Lamplight.ink }, busy && styles.disabled]}
+          style={[styles.primary, { backgroundColor: surface.ink }, busy && styles.disabled]}
           disabled={busy}
           onPress={signedIn ? onRetry : onSignIn}
           accessibilityRole="button"
         >
-          <ThemedText style={[styles.primaryLabel, { color: Lamplight.paper }]}>
+          <ThemedText style={[styles.primaryLabel, { color: surface.paper }]}>
             {busy
               ? t('paywall.working')
               : signedIn
@@ -581,7 +589,7 @@ function RecoverView({
 
         <View style={styles.legal}>
           <LegalLink label={t('paywall.terms')} url={TERMS_URL} />
-          <ThemedText style={[Type.meta, { color: Lamplight.inkFaint }]}>·</ThemedText>
+          <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>·</ThemedText>
           <LegalLink label={t('paywall.privacy')} url={PRIVACY_URL} />
         </View>
       </ScrollView>
@@ -610,23 +618,24 @@ function SubscribedView({
   sub: NonNullable<Entitlement['subscription']>;
   onClose: () => void;
 }) {
+  const surface = useSurface();
   const { t } = useTranslation();
   const trialing = sub.status === 'trialing';
   const grace = sub.status === 'grace';
   const date = sub.expiresAt ? new Date(sub.expiresAt).toLocaleDateString() : null;
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: surface.paper }]}>
       <ScrollView contentContainerStyle={styles.content}>
         <Pressable onPress={onClose} hitSlop={12} accessibilityRole="button">
-          <ThemedText style={[Type.meta, { color: Lamplight.inkFaint }]}>
+          <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>
             ✕ {t('common.back')}
           </ThemedText>
         </Pressable>
 
         <View style={styles.head}>
-          <ApertureMark size={48} color={Lamplight.ink} />
-          <ThemedText style={[Type.title, { color: Lamplight.ink }]}>
+          <ApertureMark size={48} color={surface.ink} />
+          <ThemedText style={[Type.title, { color: surface.ink }]}>
             {grace
               ? t('paywall.graceTitle')
               : trialing
@@ -636,11 +645,11 @@ function SubscribedView({
           {/* The plan, then the date, as two lines rather than one sentence:
               the date is the fact people come here for, and it should not have
               to be read out of a paragraph. */}
-          <ThemedText style={[Type.reason, { color: Lamplight.inkMuted }]}>
+          <ThemedText style={[Type.reason, { color: surface.inkMuted }]}>
             {t(sub.plan === 'annual' ? 'paywall.planAnnualNamed' : 'paywall.planMonthlyNamed')}
           </ThemedText>
           {date ? (
-            <ThemedText style={[Type.reason, { color: Lamplight.inkMuted }]}>
+            <ThemedText style={[Type.reason, { color: surface.inkMuted }]}>
               {t(
                 grace
                   ? 'paywall.graceDetail'
@@ -666,22 +675,22 @@ function SubscribedView({
         {/* Outlined rather than filled. The filled button on this screen means
             "spend money"; nothing here should wear that weight. */}
         <Pressable
-          style={[styles.secondary, { borderColor: Lamplight.ink }]}
+          style={[styles.secondary, { borderColor: surface.ink }]}
           onPress={() => void Linking.openURL(APPLE_SUBSCRIPTIONS_URL)}
           accessibilityRole="button"
         >
-          <ThemedText style={[styles.primaryLabel, { color: Lamplight.ink }]}>
+          <ThemedText style={[styles.primaryLabel, { color: surface.ink }]}>
             {t('paywall.manageCta')}
           </ThemedText>
         </Pressable>
 
-        <ThemedText style={[Type.meta, styles.fine, { color: Lamplight.inkFaint }]}>
+        <ThemedText style={[Type.meta, styles.fine, { color: surface.inkFaint }]}>
           {t('paywall.manageNote')}
         </ThemedText>
 
         <View style={styles.legal}>
           <LegalLink label={t('paywall.terms')} url={TERMS_URL} />
-          <ThemedText style={[Type.meta, { color: Lamplight.inkFaint }]}>·</ThemedText>
+          <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>·</ThemedText>
           <LegalLink label={t('paywall.privacy')} url={PRIVACY_URL} />
         </View>
       </ScrollView>
@@ -697,13 +706,14 @@ function SubscribedView({
  * mistake the photo-picker link made, and the fix is the same.
  */
 function LegalLink({ label, url }: { label: string; url: string }) {
+  const surface = useSurface();
   return (
     <Pressable
       onPress={() => void Linking.openURL(url)}
       hitSlop={12}
       accessibilityRole="link"
     >
-      <ThemedText style={[Type.meta, styles.legalLabel, { color: Lamplight.inkFaint }]}>
+      <ThemedText style={[Type.meta, styles.legalLabel, { color: surface.inkFaint }]}>
         {label}
       </ThemedText>
     </Pressable>
@@ -711,10 +721,11 @@ function LegalLink({ label, url }: { label: string; url: string }) {
 }
 
 function Include({ text }: { text: string }) {
+  const surface = useSurface();
   return (
     <View style={styles.include}>
-      <View style={[styles.dot, { backgroundColor: Lamplight.inkFaint }]} />
-      <ThemedText style={[Type.body, styles.includeText, { color: Lamplight.inkMuted }]}>
+      <View style={[styles.dot, { backgroundColor: surface.inkFaint }]} />
+      <ThemedText style={[Type.body, styles.includeText, { color: surface.inkMuted }]}>
         {text}
       </ThemedText>
     </View>
@@ -723,7 +734,7 @@ function Include({ text }: { text: string }) {
 
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Lamplight.paper },
+  container: { flex: 1 },
   content: {
     paddingHorizontal: Gutter,
     paddingTop: Space.lg,
@@ -756,7 +767,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.08 * 10,
     textTransform: 'uppercase',
   },
-  tick: { fontFamily: Font.monoMedium, fontSize: 14, color: Lamplight.ink },
+  tick: { fontFamily: Font.monoMedium, fontSize: 14 },
 
   unavailable: {
     borderWidth: StyleSheet.hairlineWidth,

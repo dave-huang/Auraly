@@ -8,12 +8,12 @@ import { ThemedText } from '@/components/themed-text';
 import {
   Font,
   Gutter,
-  Lamplight,
   RISK_TO_VERDICT,
   Radius,
   Space,
   Type,
-  VerdictDark,
+  useSurface,
+  useVerdictColors,
 } from '@/constants/design';
 import { goBackOrHome } from '@/lib/navigation';
 import { useAuth } from '@/lib/auth-context';
@@ -25,15 +25,21 @@ import { localizeAllergen } from '@/lib/verdict';
 
 // Screen 10 — Multi-profile · profile switcher.
 //
-// On ink ground in both themes, because this is the one screen that is about
-// *whose* body the next answer is for. The weight of the dark surface is the
-// point: it stops the tap being mistaken for a filter.
+// This used to be on ink ground in BOTH themes, on the reasoning that the
+// weight of a dark surface is what stops the tap being mistaken for a filter.
+// The reasoning was sound and the result was not: in light mode the app went
+// welcome, onboarding, results — all paper — and then dropped into two ink
+// screens, which reads as a rendering fault rather than as emphasis. Emphasis
+// that a person reads as a bug is not emphasis. It follows the theme now, and
+// the weight comes from the card and the rule instead.
 //
 // Switching re-evaluates the scan already on screen rather than sending the
 // user back to the camera — the label read is done, and only the matching
 // changes.
 
 export default function ProfileSwitcherScreen() {
+  const surface = useSurface();
+  const verdict = useVerdictColors();
   const { user } = useAuth();
   const router = useRouter();
   const { t } = useTranslation();
@@ -103,22 +109,22 @@ export default function ProfileSwitcherScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: surface.paper }]}>
       <View style={styles.header}>
         <Pressable onPress={goBackOrHome} hitSlop={12}>
-          <ThemedText style={[Type.meta, { color: Lamplight.inkFaint }]}>
+          <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>
             ‹ {t('common.back')}
           </ThemedText>
         </Pressable>
-        <ThemedText style={[Type.title, styles.title]}>{t('profiles.title')}</ThemedText>
-        <ThemedText style={[Type.meta, { color: Lamplight.inkMuted }]}>
+        <ThemedText style={[Type.title, { color: surface.ink }]}>{t('profiles.title')}</ThemedText>
+        <ThemedText style={[Type.meta, { color: surface.inkMuted }]}>
           {t('profiles.subtitle')}
         </ThemedText>
       </View>
 
       {profiles === null ? (
         <View style={styles.centered}>
-          <ActivityIndicator color={Lamplight.ink} />
+          <ActivityIndicator color={surface.ink} />
         </View>
       ) : (
         <ScrollView contentContainerStyle={styles.list}>
@@ -134,36 +140,43 @@ export default function ProfileSwitcherScreen() {
             const worst = profile.allergens.some(
               (a) => a.severity !== 'intolerance' && a.severity !== 'avoid',
             )
-              ? VerdictDark[RISK_TO_VERDICT.high]
+              ? verdict[RISK_TO_VERDICT.high]
               : profile.allergens.length > 0
-                ? VerdictDark[RISK_TO_VERDICT.moderate]
+                ? verdict[RISK_TO_VERDICT.moderate]
                 : null;
 
             return (
               <Pressable
                 key={profile.id}
-                style={[styles.row, active && styles.rowActive]}
+                style={[
+                  styles.row,
+                  { backgroundColor: surface.card, borderColor: surface.rule },
+                  active && { borderColor: surface.inkMuted },
+                ]}
                 onPress={() => void choose(profile)}
                 disabled={switchingTo !== null}
               >
                 {worst ? <View style={[styles.rowEdge, { backgroundColor: worst.ink }]} /> : null}
                 <ApertureMark
                   size={22}
-                  color={active ? Lamplight.ink : Lamplight.inkMuted}
+                  color={active ? surface.ink : surface.inkMuted}
                   style={styles.rowMark}
                 />
                 <View style={styles.rowText}>
-                  <ThemedText style={[Type.label, { color: Lamplight.ink }]}>
+                  <ThemedText style={[Type.label, { color: surface.ink }]}>
                     {profile.name}
                   </ThemedText>
-                  <ThemedText style={styles.rowMeta} numberOfLines={2}>
+                  <ThemedText
+                    style={[styles.rowMeta, { color: surface.inkMuted }]}
+                    numberOfLines={2}
+                  >
                     {allergens.join(' · ') || t('verdict.noAllergens')}
                   </ThemedText>
                 </View>
                 {switchingTo === profile.id ? (
-                  <ActivityIndicator size="small" color={Lamplight.ink} />
+                  <ActivityIndicator size="small" color={surface.ink} />
                 ) : active ? (
-                  <ThemedText style={styles.check}>✓</ThemedText>
+                  <ThemedText style={[styles.check, { color: surface.ink }]}>✓</ThemedText>
                 ) : null}
 
                 {/* Editing is its own target inside the row. Tapping the row
@@ -175,9 +188,11 @@ export default function ProfileSwitcherScreen() {
                   disabled={switchingTo !== null}
                   hitSlop={10}
                   accessibilityLabel={t('profiles.editLabel', { name: profile.name })}
-                  style={styles.editButton}
+                  style={[styles.editButton, { borderColor: surface.rule }]}
                 >
-                  <ThemedText style={styles.editText}>{t('profiles.edit')}</ThemedText>
+                  <ThemedText style={[styles.editText, { color: surface.inkMuted }]}>
+                    {t('profiles.edit')}
+                  </ThemedText>
                 </Pressable>
               </Pressable>
             );
@@ -190,7 +205,7 @@ export default function ProfileSwitcherScreen() {
               overwrite the allergies they already entered. So this row offers
               the thing that actually unblocks them. */}
           <Pressable
-            style={styles.addRow}
+            style={[styles.addRow, { borderColor: surface.rule }]}
             onPress={() =>
               user
                 ? router.push('/onboarding')
@@ -207,7 +222,7 @@ export default function ProfileSwitcherScreen() {
                   })
             }
           >
-            <ThemedText style={[Type.label, { color: Lamplight.ink }]}>
+            <ThemedText style={[Type.label, { color: surface.ink }]}>
               {user ? t('profiles.add') : t('profiles.addNeedsAccount')}
             </ThemedText>
           </Pressable>
@@ -218,39 +233,33 @@ export default function ProfileSwitcherScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Lamplight.paper },
+  container: { flex: 1 },
   centered: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { paddingHorizontal: Gutter, paddingTop: Space.sm, paddingBottom: Space.lg, gap: Space.xs },
-  title: { color: Lamplight.ink },
   list: { paddingHorizontal: Gutter, paddingBottom: Space.xxl, gap: Space.md },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: Space.md,
-    backgroundColor: Lamplight.card,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: Lamplight.rule,
     borderRadius: Radius.flat,
     padding: Space.lg,
     paddingLeft: Space.lg + 3,
     overflow: 'hidden',
   },
-  rowActive: { borderColor: Lamplight.inkMuted },
   rowEdge: { position: 'absolute', left: 0, top: 0, bottom: 0, width: 3 },
   rowMark: { opacity: 0.9 },
   rowText: { flex: 1, gap: 2 },
-  rowMeta: { fontFamily: Font.mono, fontSize: 11, lineHeight: 15, color: Lamplight.inkMuted },
-  check: { fontFamily: Font.sansSemi, fontSize: 15, lineHeight: 20, color: Lamplight.ink },
+  rowMeta: { fontFamily: Font.mono, fontSize: 11, lineHeight: 15 },
+  check: { fontFamily: Font.sansSemi, fontSize: 15, lineHeight: 20 },
   editButton: {
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: Lamplight.rule,
     paddingHorizontal: Space.md,
     paddingVertical: 6,
   },
-  editText: { fontFamily: Font.mono, fontSize: 11, lineHeight: 15, color: Lamplight.inkMuted },
+  editText: { fontFamily: Font.mono, fontSize: 11, lineHeight: 15 },
   addRow: {
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: Lamplight.rule,
     borderStyle: 'dashed',
     padding: Space.lg,
     alignItems: 'center',
