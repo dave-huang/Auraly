@@ -74,6 +74,11 @@ export function saveScan(params: {
       productName: result.productName || 'Unnamed Product',
       productCategory: productType,
       detectedIngredients: result.ingredients.map((i) => i.name),
+      // The label as printed, sent so the saved scan's count matches the card
+      // it was saved from. `detectedIngredients` above is everything that was
+      // analysed, sub-ingredients included, so counting it says a packet has
+      // 31 ingredients when its label prints 12.
+      composition: result.composition,
       analysisResults: result.ingredients.map((i) => ({
         name: i.name,
         // The MODEL's rating, not the level on screen.

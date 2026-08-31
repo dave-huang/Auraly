@@ -1366,6 +1366,32 @@ export const analysisResultSchema = z.object({
   // matching runs against these: keyword lists are English, so matching a
   // Chinese or Spanish display name would silently find nothing.
   canonicalIngredients: z.array(z.string()).optional(),
+  /**
+   * The ingredient list AS PRINTED — top-level entries, each holding whatever
+   * the label put in brackets after it.
+   *
+   * `canonicalIngredients` above is the same list flattened: parents and
+   * sub-ingredients side by side, because the analysis has to see every leaf
+   * or it misses allergens hidden inside brackets. That flat list is right for
+   * analysis and wrong for everything else. Counting it says a biscuit has 31
+   * ingredients when the label prints 12, and ranking against it is worse —
+   * lists are ordered by weight, so it reports the niacin inside enriched
+   * flour as the third heaviest thing in the product.
+   *
+   * So this is the shape used for the count, for rank, and for display, while
+   * the flat list stays the shape used for safety. Neither can be derived from
+   * the other after the fact, which is why both travel.
+   *
+   * Optional, and absent for every scan taken before this existed and for the
+   * OCR fallback, which splits on commas and never sees a bracket. Absent
+   * means "no structure known" — readers fall back to the flat list.
+   */
+  composition: z.array(z.object({
+    /** Canonical English name of the printed entry. */
+    name: z.string(),
+    /** Canonical English names of its sub-ingredients. Usually empty. */
+    parts: z.array(z.string()).default([]),
+  })).optional(),
   // Ingredient names exactly as printed on the label, in its own language.
   // Kept alongside the English canonical names so the verdict card can show
   // the original beside the translation — the bilingual pair is the app's

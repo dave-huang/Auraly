@@ -17,13 +17,42 @@ import { containsStatementsFromText } from './declarations';
 const VISION_MODEL_OPENAI = process.env.LABEL_VISION_MODEL_OPENAI || 'gpt-5.6-luna';
 const VISION_MODEL_GEMINI = process.env.LABEL_VISION_MODEL_GEMINI || 'gemini-3-flash-preview';
 
+/**
+ * One printed entry, with anything the label put in brackets after it.
+ *
+ * A label writes "Enriched Flour (Wheat Flour, Niacin, Reduced Iron)" because
+ * those three things ARE the flour — they are not three more ingredients
+ * standing beside it. Reading them as siblings inflates the count and, much
+ * worse, corrupts rank: ingredient lists are ordered by weight, so promoting
+ * niacin to a top-level position claims it is the third heaviest thing in the
+ * product when it is a trace fortifier inside the first.
+ */
+export interface LabelEntry {
+  /** Canonical English name. */
+  english: string;
+  /** As printed, in the label's own language. */
+  original: string;
+  /** Sub-ingredients printed in brackets after it. Usually empty. */
+  parts: { english: string; original: string }[];
+}
+
 export interface LabelReadResult {
   /** Verbatim transcription of the ingredient-list section (original language) */
   rawText: string;
-  /** Canonical English ingredient names, in label order, deduplicated */
+  /**
+   * Every ingredient name, parents and sub-ingredients alike, flattened.
+   *
+   * THIS IS WHAT GETS ANALYSED, and it stays exhaustive on purpose. Allergens
+   * hide inside brackets — "Enriched Flour (Wheat Flour)" is a wheat allergen
+   * and nothing in the parent's name says so — so the analysis has to see
+   * every leaf. `entries` below carries the structure that this list flattens
+   * away; it is for counting, ranking and display, never for deciding safety.
+   */
   ingredients: string[];
   /** Ingredient names as printed on the label (original language) */
   ingredientsOriginal: string[];
+  /** The list as PRINTED: top-level entries, each holding its own bracket. */
+  entries: LabelEntry[];
   productName?: string;
   /** BCP-47-ish language code of the label text, e.g. "en", "zh", "ja" */
   sourceLanguage?: string;
@@ -56,6 +85,13 @@ const labelExtractionSchema = z.object({
   ingredients: z.array(z.object({
     original: z.string(),
     english: z.string(),
+    // Optional because the model does omit it, and because every label
+    // without a bracket on it has no parts to report. Absent and empty mean
+    // the same thing: an ordinary ingredient.
+    parts: z.array(z.object({
+      original: z.string(),
+      english: z.string(),
+    })).default([]),
   })).default([]),
   declared_allergens: z.object({
     contains: z.array(z.string()).default([]),
@@ -74,9 +110,12 @@ Return ONLY a JSON object with this exact shape:
   "product_name": string|null,   // product name if visible on packaging, else null
   "source_language": string|null,// ISO 639-1 code of the ingredient list text (e.g. "en", "zh", "ja", "es")
   "raw_ingredients_text": string,// verbatim transcription of the ingredient list section, original language, preserving order and parentheses
-  "ingredients": [               // one entry per distinct ingredient, in label order
+  "ingredients": [               // one entry per ingredient PRINTED AT TOP LEVEL, in label order
     { "original": string,        // name exactly as printed (original language)
-      "english": string }        // canonical English name (translate if needed; expand common E-numbers to their name, e.g. "E330" -> "Citric Acid")
+      "english": string,         // canonical English name (translate if needed; expand common E-numbers to their name, e.g. "E330" -> "Citric Acid")
+      "parts": [                 // sub-ingredients printed in brackets after it; [] when there are none
+        { "original": string, "english": string }
+      ] }
   ],
   "declared_allergens": {        // the label's OWN allergen statements, if any
     "contains": [string],        // declared as PRESENT, e.g. "Contains: milk, soy" / "含有大豆制品" / "過敏原資訊：本產品含有..."
@@ -89,8 +128,12 @@ Return ONLY a JSON object with this exact shape:
 
 Rules:
 - Extract ONLY ingredients. Exclude allergen statements ("Contains:", "May contain:"), nutrition facts, directions, addresses, marketing text, expiry dates, and net weight.
-- Functional annotations and processing notes are NOT ingredients: skip standalone entries like "[Emulsifier]", "(Preservative)", "Processed with Alkali", "(Color)" — but keep the ingredient they describe.
-- Flatten sub-ingredients in parentheses/brackets into their own entries (e.g. "Peanut Butter (Peanuts, Salt)" -> "Peanut Butter", "Peanuts", "Salt").
+- Functional annotations and processing notes are NOT ingredients: skip standalone entries like "[Emulsifier]", "(Preservative)", "Processed with Alkali", "(Color)" — but keep the ingredient they describe, and do not turn the annotation into a "part".
+- Sub-ingredients in parentheses/brackets belong to the ingredient they follow. Put them in that entry's "parts", NEVER as separate top-level entries. "Peanut Butter (Peanuts, Salt)" is ONE entry: {"original":"Peanut Butter","english":"Peanut Butter","parts":[{"original":"Peanuts","english":"Peanuts"},{"original":"Salt","english":"Salt"}]}.
+- Never omit a sub-ingredient. They are the reason allergens get missed — "Enriched Flour (Wheat Flour)" is a wheat allergen and the parent name does not say so. Every name printed inside the brackets must appear in "parts".
+- If brackets nest deeper than one level, put every sub-ingredient into the same flat "parts" array. "Coating (Sugar, Milk Solids (Milk))" -> one entry "Coating" with parts Sugar, Milk Solids, Milk.
+- A bracket that RENAMES the ingredient is not a sub-ingredient list — it is the same substance twice. "Tocopherol (Vitamin E)", "Sodium Chloride (Salt)", "E330 (Citric Acid)" are ONE entry with empty "parts"; use the name a shopper would recognise.
+- A bracket carrying an allergen note rather than a composition — "Natural Flavour (contains milk)" — is one entry with empty "parts"; the allergen goes to declared_allergens.contains instead.
 - Deduplicate: if the same ingredient appears twice, list it once.
 - Do NOT guess ingredients that are not legible. If the list is cut off, transcribe what is visible and set confidence accordingly.
 - If no ingredient list is legible anywhere in the image, set label_found=false and leave ingredients empty.
@@ -126,15 +169,48 @@ function toResult(
   if (!parsed.label_found || parsed.ingredients.length === 0) {
     throw new NoLabelFoundError();
   }
+  // Two shapes out of one parse, and the order matters.
+  //
+  // `entries` is the label as printed — what to count, rank and show. The flat
+  // `ingredients` is every name in it, parents and parts alike, which is what
+  // gets analysed. Building the flat list FROM the tree rather than asking the
+  // model for both is what stops the two disagreeing: there is no such thing
+  // here as a sub-ingredient that never reaches the analysis.
   const seen = new Set<string>();
   const ingredients: string[] = [];
   const ingredientsOriginal: string[] = [];
-  for (const ing of parsed.ingredients) {
-    const key = ing.english.trim().toLowerCase();
-    if (!key || seen.has(key)) continue;
+  const entries: LabelEntry[] = [];
+
+  /** Adds a name to the flat analysis list. Returns false if already present. */
+  const take = (english: string, original: string): boolean => {
+    const key = english.trim().toLowerCase();
+    if (!key || seen.has(key)) return false;
     seen.add(key);
-    ingredients.push(ing.english.trim());
-    ingredientsOriginal.push(ing.original.trim());
+    ingredients.push(english.trim());
+    ingredientsOriginal.push(original.trim());
+    return true;
+  };
+
+  for (const ing of parsed.ingredients) {
+    const english = ing.english.trim();
+    if (!english) continue;
+
+    // A parent already seen keeps its FIRST appearance's parts rather than
+    // gaining a second entry — a name printed twice is one thing on the label.
+    const isNewEntry = take(english, ing.original);
+
+    const parts: LabelEntry['parts'] = [];
+    for (const part of ing.parts) {
+      const partEnglish = part.english.trim();
+      if (!partEnglish) continue;
+      // Deliberately NOT gated on `take`. A sub-ingredient that also appears
+      // elsewhere on the label is already in the analysis list, and dropping
+      // it here would silently empty the bracket it belongs to on screen.
+      take(partEnglish, part.original);
+      parts.push({ english: partEnglish, original: part.original.trim() });
+    }
+
+    if (isNewEntry) entries.push({ english, original: ing.original.trim(), parts });
   }
   const rawText = parsed.raw_ingredients_text || ingredientsOriginal.join(', ');
   const contains = parsed.declared_allergens.contains.map(a => a.trim()).filter(Boolean);
@@ -154,6 +230,7 @@ function toResult(
     rawText,
     ingredients,
     ingredientsOriginal,
+    entries,
     productName: parsed.product_name || undefined,
     sourceLanguage: parsed.source_language || undefined,
     confidence: parsed.confidence,
@@ -255,6 +332,12 @@ async function readWithLegacyOcr(imageData: string): Promise<LabelReadResult> {
     rawText: ocr.text,
     ingredients: extraction.ingredients,
     ingredientsOriginal: extraction.ingredients,
+    // The regex extractor splits on commas, so a bracket is already lost by
+    // the time we see its output. Reporting a flat list AS a flat list is
+    // honest; inventing a structure it never recovered would not be, and
+    // everything downstream treats an empty `entries` as "no structure known"
+    // and falls back to counting the flat list.
+    entries: [],
     sourceLanguage: ocr.language,
     confidence: 'medium',
     method: 'ocr-fallback',

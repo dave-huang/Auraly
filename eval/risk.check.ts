@@ -372,6 +372,91 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
 }
 
 // ---------------------------------------------------------------------------
+// M2. Sub-ingredients are never given a position on the printed list.
+//
+// A label reading "Enriched Flour (Wheat Flour, Niacin, Reduced Iron), Sugar,
+// Palm Oil, Salt, Cocoa" prints FIVE ingredients. The analysis walks into the
+// bracket, because that is where allergens hide, and so sees eight.
+//
+// Ranking against the eight made niacin the third ingredient of the product —
+// a trace fortifier inside the first, reported as one of the three heaviest
+// things in the jar, on a card whose whole claim is that position means dose.
+// Nothing caught it: the reader and the analyzer agreed on the same flattened
+// list, so they lined up perfectly and the rank was confidently wrong.
+// ---------------------------------------------------------------------------
+{
+  const printed = ['Enriched Flour', 'Sugar', 'Palm Oil', 'Salt', 'Cocoa'];
+  const parts = ['Wheat Flour', 'Niacin', 'Reduced Iron'];
+  // The analyser's view: every printed entry plus everything in the bracket.
+  const analysed = [printed[0], ...parts, ...printed.slice(1)];
+
+  const flat = result(analysed.map((n) => ing(n, 'low')));
+  const nested = withLabelRanks({
+    ...flat,
+    composition: [
+      { name: 'Enriched Flour', parts },
+      ...printed.slice(1).map((name) => ({ name, parts: [] })),
+    ],
+  } as AnalysisResult);
+
+  const rankOf = (name: string) =>
+    nested.ingredients.find((i) => i.name === name)?.labelRank;
+
+  check('composition/sub-ingredient-unranked',
+    parts.every((name) => rankOf(name) === undefined),
+    `a sub-ingredient was given a position on the printed list: ${
+      parts.map((n) => `${n}=${JSON.stringify(rankOf(n))}`).join(', ')}`);
+
+  check('composition/parent-keeps-its-rank',
+    rankOf('Enriched Flour')?.rank === 1,
+    `the bracketed parent lost its own position: ${JSON.stringify(rankOf('Enriched Flour'))}`);
+
+  check('composition/total-is-the-printed-count',
+    rankOf('Sugar')?.total === printed.length,
+    `rank total counted sub-ingredients: ${JSON.stringify(rankOf('Sugar'))}`);
+
+  check('composition/order-survives-the-bracket',
+    rankOf('Sugar')?.rank === 2 && rankOf('Cocoa')?.rank === printed.length,
+    `positions shifted around the bracket: sugar=${JSON.stringify(rankOf('Sugar'))} cocoa=${JSON.stringify(rankOf('Cocoa'))}`);
+
+  // The old behaviour, kept as the thing being guarded against: with no
+  // composition the flat list is all there is, and niacin lands third.
+  const legacy = withLabelRanks(flat);
+  const niacin = legacy.ingredients.find((i) => i.name === 'Niacin')?.labelRank;
+  notes.push(`without composition, "Niacin" ranks ${niacin ? `${niacin.rank} of ${niacin.total}` : 'unranked'} — the behaviour composition exists to fix`);
+}
+
+// ---------------------------------------------------------------------------
+// M3. A sub-ingredient that is ALSO printed on its own keeps its own rank.
+//
+// "Peanut Butter (Peanuts, Salt), Sugar, Salt, Cocoa, Oil" prints salt twice:
+// once inside the peanut butter and once in its own right. The second is a
+// real position on the label and must not be suppressed just because the name
+// also appears in a bracket.
+// ---------------------------------------------------------------------------
+{
+  const printed = ['Peanut Butter', 'Sugar', 'Salt', 'Cocoa', 'Oil'];
+  const analysed = ['Peanut Butter', 'Peanuts', 'Salt', 'Sugar', 'Cocoa', 'Oil'];
+  const ranked = withLabelRanks({
+    ...result(analysed.map((n) => ing(n, 'low'))),
+    composition: [
+      { name: 'Peanut Butter', parts: ['Peanuts', 'Salt'] },
+      ...printed.slice(1).map((name) => ({ name, parts: [] })),
+    ],
+  } as AnalysisResult);
+
+  const rankOf = (name: string) =>
+    ranked.ingredients.find((i) => i.name === name)?.labelRank;
+
+  check('composition/shared-name-keeps-printed-rank',
+    rankOf('Salt')?.rank === 3,
+    `salt is printed third in its own right but ranked ${JSON.stringify(rankOf('Salt'))}`);
+  check('composition/bracket-only-name-unranked',
+    rankOf('Peanuts') === undefined,
+    `peanuts is only inside a bracket but was ranked ${JSON.stringify(rankOf('Peanuts'))}`);
+}
+
+// ---------------------------------------------------------------------------
 // N. Every personal flag names the row it actually belongs to.
 //
 // The app pairs a flag to an ingredient row. It used to do that by name, and
