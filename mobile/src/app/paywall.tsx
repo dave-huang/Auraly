@@ -24,6 +24,7 @@ import {
   getPlans,
   purchasePlan,
   restorePurchases,
+  storeHasSubscription,
   storeSaysEntitled,
   type PlanOffer,
 } from '@/lib/purchases';
@@ -89,6 +90,13 @@ export default function PaywallScreen() {
   const sub = entitlement?.subscription;
   const subscribed = !!sub?.active;
 
+  /**
+   * The store says there is already a subscription here and we could not turn
+   * it into access. Never sell on top of that — see the mount effect below.
+   */
+  const [storeSubscribed, setStoreSubscribed] = useState(false);
+  const [checkingStore, setCheckingStore] = useState(PURCHASES_ENABLED);
+
   const [plans, setPlans] = useState<PlanOffer[] | null>(null);
   const [selected, setSelected] = useState<'monthly' | 'annual'>('annual');
   const [busy, setBusy] = useState<'purchase' | 'restore' | null>(null);
@@ -111,18 +119,36 @@ export default function PaywallScreen() {
    * should still work as an ordinary paywall.
    */
   useEffect(() => {
-    if (!user) return;
     let cancelled = false;
-    void refreshEntitlement()
-      .then((found) => {
-        if (cancelled || !found?.subscription.active) return;
-        // A locked door that turns out to be unlocked: go through it. Anywhere
-        // else, stay and show them what they have — which the refetch below
-        // puts on screen.
-        if (gate) router.replace('/');
-        else void refresh();
-      })
-      .catch(() => {});
+    void (async () => {
+      try {
+        // 1. Ask our server to go and look. Signed in only — an anonymous
+        //    device has no account to write an answer to.
+        if (user) {
+          const found = await refreshEntitlement().catch(() => null);
+          if (cancelled) return;
+          if (found?.subscription.active) {
+            // A locked door that turns out to be unlocked: go through it.
+            // Anywhere else, stay and show them what they have.
+            if (gate) router.replace('/');
+            else void refresh();
+            return;
+          }
+        }
+
+        // 2. Ask the store. This is what catches the case that produced this
+        //    code: a subscription the store knows about and we do not, where
+        //    the plan rows below would happily sell a SECOND plan. Apple does
+        //    not refuse that — monthly and annual are different products in
+        //    one group, so buying the other one is a plan change, not a
+        //    duplicate — which means nothing downstream can catch it either.
+        //    It has to be caught before the tap.
+        if (!(await storeHasSubscription()) || cancelled) return;
+        setStoreSubscribed(true);
+      } finally {
+        if (!cancelled) setCheckingStore(false);
+      }
+    })();
     return () => {
       cancelled = true;
     };
@@ -288,7 +314,7 @@ export default function PaywallScreen() {
   // Nothing is decided until the server has answered. A signed-in subscriber
   // seeing "Subscribe to Revely" for half a second before it corrects itself
   // is the same insult as seeing it permanently, delivered faster.
-  if (user && entitlementLoading) {
+  if ((user && entitlementLoading) || checkingStore) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.waiting}>
@@ -300,6 +326,20 @@ export default function PaywallScreen() {
 
   if (subscribed && sub) {
     return <SubscribedView sub={sub} onClose={goBackOrHome} />;
+  }
+
+  // The store knows about a subscription that our account does not. Showing
+  // plans here is what let a subscriber buy a second one.
+  if (storeSubscribed) {
+    return (
+      <RecoverView
+        signedIn={!!user}
+        onClose={goBackOrHome}
+        onSignIn={() => router.replace('/sign-in?recover=1')}
+        onRetry={() => void restore()}
+        busy={busy === 'restore'}
+      />
+    );
   }
 
   return (
@@ -440,8 +480,24 @@ export default function PaywallScreen() {
           style={styles.restore}
           accessibilityRole="button"
         >
-          <ThemedText style={[Type.meta, { color: Lamplight.inkFaint }]}>
-            {busy === 'restore' ? t('paywall.working') : t('paywall.restore')}
+          {/* Louder when signed out, and phrased as a question.
+
+              This is the only way an app can find a subscription bought on a
+              phone it has since been deleted from: Apple gives no silent way
+              to ask what an Apple ID owns, and restore is user-initiated by
+              design. A grey afterthought under the button is not an ask, and
+              somebody who does not see it buys a second plan instead. */}
+          <ThemedText
+            style={[
+              Type.meta,
+              { color: user ? Lamplight.inkFaint : Lamplight.ink },
+            ]}
+          >
+            {busy === 'restore'
+              ? t('paywall.working')
+              : user
+                ? t('paywall.restore')
+                : t('paywall.restorePrompt')}
           </ThemedText>
         </Pressable>
 
@@ -455,6 +511,77 @@ export default function PaywallScreen() {
           links rather than a sheet so that a reviewer can confirm in one tap
           that the URLs actually resolve.
         */}
+        <View style={styles.legal}>
+          <LegalLink label={t('paywall.terms')} url={TERMS_URL} />
+          <ThemedText style={[Type.meta, { color: Lamplight.inkFaint }]}>·</ThemedText>
+          <LegalLink label={t('paywall.privacy')} url={PRIVACY_URL} />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+/**
+ * The store says there is a subscription; we cannot use it yet.
+ *
+ * A separate screen rather than an alert over the plans, because an alert
+ * saying "you already have a subscription" on top of two Subscribe buttons is
+ * a screen arguing with itself — and the buttons win, because they are bigger.
+ *
+ * NOT SIGNED IN is the ordinary case: a reinstall or a new phone. The
+ * subscription lives on the account, so signing in is the whole fix, and the
+ * copy says outright that nobody is charged twice — that is the fear, and
+ * leaving it unanswered is what makes people buy a second plan to be safe.
+ */
+function RecoverView({
+  signedIn,
+  busy,
+  onClose,
+  onSignIn,
+  onRetry,
+}: {
+  signedIn: boolean;
+  busy: boolean;
+  onClose: () => void;
+  onSignIn: () => void;
+  onRetry: () => void;
+}) {
+  const { t } = useTranslation();
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.content}>
+        <Pressable onPress={onClose} hitSlop={12} accessibilityRole="button">
+          <ThemedText style={[Type.meta, { color: Lamplight.inkFaint }]}>
+            ✕ {t('common.back')}
+          </ThemedText>
+        </Pressable>
+
+        <View style={styles.head}>
+          <ApertureMark size={48} color={Lamplight.ink} />
+          <ThemedText style={[Type.title, { color: Lamplight.ink }]}>
+            {t('paywall.foundTitle')}
+          </ThemedText>
+          <ThemedText style={[Type.reason, { color: Lamplight.inkMuted }]}>
+            {signedIn ? t('paywall.foundStuckBody') : t('paywall.foundBody')}
+          </ThemedText>
+        </View>
+
+        <Pressable
+          style={[styles.primary, { backgroundColor: Lamplight.ink }, busy && styles.disabled]}
+          disabled={busy}
+          onPress={signedIn ? onRetry : onSignIn}
+          accessibilityRole="button"
+        >
+          <ThemedText style={[styles.primaryLabel, { color: Lamplight.paper }]}>
+            {busy
+              ? t('paywall.working')
+              : signedIn
+                ? t('paywall.foundRetry')
+                : t('paywall.foundCta')}
+          </ThemedText>
+        </Pressable>
+
         <View style={styles.legal}>
           <LegalLink label={t('paywall.terms')} url={TERMS_URL} />
           <ThemedText style={[Type.meta, { color: Lamplight.inkFaint }]}>·</ThemedText>

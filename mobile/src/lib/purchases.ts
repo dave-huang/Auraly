@@ -230,6 +230,33 @@ export async function restorePurchases(): Promise<CustomerInfo | null> {
   });
 }
 
+/**
+ * Whether the STORE already believes this device is subscribed.
+ *
+ * Cheap and silent — `getCustomerInfo` reads the SDK's cache and never shows
+ * an App Store prompt, so it is safe to call on every paywall open. It exists
+ * to stop the app selling a plan to somebody who already has one.
+ *
+ * IT IS NOT COMPLETE, AND IT CANNOT BE.
+ *
+ * It answers for the store identity this install is currently using. After a
+ * fresh install with no account there is a brand-new anonymous id, and the
+ * subscription sitting on the Apple ID is invisible to it until a restore or a
+ * sign-in attaches the two. Apple gives no silent way to ask "what does this
+ * Apple ID own" — restore is user-initiated by design — which is exactly why
+ * the paywall also has to ASK, in words, rather than only guess.
+ */
+export async function storeHasSubscription(): Promise<boolean> {
+  if (!PURCHASES_ENABLED || !configured) return false;
+  try {
+    return storeSaysEntitled(await Purchases.getCustomerInfo());
+  } catch {
+    // Unknown is not "no subscription", but it is the only safe render: a
+    // failed lookup must never hide the paywall from someone trying to buy.
+    return false;
+  }
+}
+
 /** Whether the store currently believes this person is entitled. */
 export function storeSaysEntitled(info: CustomerInfo | null): boolean {
   if (!info) return false;
