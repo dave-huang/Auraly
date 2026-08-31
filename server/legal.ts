@@ -1,7 +1,7 @@
 import type { Express } from "express";
 
 /**
- * The privacy policy and terms of use, served as public pages.
+ * The public web pages: a home page, and the three legal documents.
  *
  * These live here as strings rather than as files under a static directory
  * because `build:server` is a single esbuild bundle with no asset copying —
@@ -94,6 +94,9 @@ header { padding: 48px 0 8px; border-bottom: 1px solid var(--rule); margin-botto
   font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--ink-faint); margin: 0 0 12px;
 }
+/* The mark itself, in full ink — .mark above is the faint text eyebrow, and
+   the logo wearing that colour reads as a disabled control. */
+.brandmark { color: var(--ink); margin: 0 0 18px; line-height: 0; }
 h1 { font-size: 30px; line-height: 1.2; margin: 0 0 10px; text-wrap: balance; }
 h2 {
   font-size: 21px; margin: 40px 0 12px; text-wrap: balance;
@@ -135,21 +138,28 @@ footer {
 footer a { color: var(--ink-faint); }
 `;
 
-function page(title: string, body: string): string {
+/**
+ * The document chrome, with no opinion about what sits at the top.
+ *
+ * Split out when the home page arrived: `page()` below stamps a "Last updated"
+ * line under the title, which is right for a legal instrument and meaningless
+ * on a home page — and a home page whose <title> read "Revely · Revely" and
+ * whose first two lines both said "Revely" was the giveaway that one wrapper
+ * was doing two jobs.
+ */
+function shell(title: string, head: string, body: string): string {
   return `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${title} · Revely</title>
+<title>${title}</title>
 <style>${STYLE}</style>
 </head>
 <body>
 <main>
 <header>
-  <p class="mark">Revely</p>
-  <h1>${title}</h1>
-  <p class="updated">Last updated ${LAST_UPDATED}</p>
+${head}
 </header>
 ${body}
 <footer>
@@ -160,6 +170,17 @@ ${body}
 </main>
 </body>
 </html>`;
+}
+
+/** A legal document: eyebrow, title, and the date it last changed. */
+function page(title: string, body: string): string {
+  return shell(
+    `${title} · Revely`,
+    `  <p class="mark">Revely</p>
+  <h1>${title}</h1>
+  <p class="updated">Last updated ${LAST_UPDATED}</p>`,
+    body,
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -614,6 +635,70 @@ you rights that cannot be overridden.</p>
 `);
 
 // ---------------------------------------------------------------------------
+// Home
+// ---------------------------------------------------------------------------
+
+/**
+ * The Aperture, as SVG.
+ *
+ * Transcribed from mobile/src/components/aperture-mark.tsx on the same
+ * 100-unit grid, at its LARGE optical size — four detached corner brackets
+ * over two text bars. Inline rather than a file for the reason the whole
+ * module is inline: `build:server` is one esbuild bundle and copies no assets.
+ */
+const MARK = `<svg viewBox="0 0 100 100" width="44" height="44" fill="currentColor" aria-hidden="true">
+  <path d="M11.5 11.5h25v5h-25z"/><path d="M11.5 11.5h5v25h-5z"/>
+  <path d="M63.5 11.5h25v5h-25z"/><path d="M83.5 11.5h5v25h-5z"/>
+  <path d="M63.5 83.5h25v5h-25z"/><path d="M83.5 63.5h5v25h-5z"/>
+  <path d="M11.5 83.5h25v5h-25z"/><path d="M11.5 63.5h5v25h-5z"/>
+  <rect x="27" y="41" width="46" height="6"/><rect x="27" y="55" width="32" height="6"/>
+</svg>`;
+
+/**
+ * The home page.
+ *
+ * It exists because three separate parties ask for one and the site had
+ * nothing at the root but a JSON 404: Google's OAuth consent screen wants an
+ * application home page before it will let the app be published, the App Store
+ * listing wants a marketing URL, and anyone who reads a privacy policy and
+ * wonders who wrote it needs somewhere to land.
+ *
+ * Deliberately not a marketing site. It says what the app does, who publishes
+ * it, and where the documents are. It does not claim an App Store link that
+ * does not exist yet — a dead "Download" button on the page a reviewer visits
+ * is worse than no button.
+ */
+const HOME = shell(
+  "Revely · Scan a label, know what it means for you",
+  `  <p class="brandmark">${MARK}</p>
+  <h1>Scan a label. Know what it means for you.</h1>
+  <p class="updated">An iOS app from ${LEGAL_ENTITY}</p>`,
+  `<div class="summary">
+<p>Point your camera at an ingredient list and Revely reads it — in any
+language — and checks it against the allergies, conditions and dietary rules of
+whoever you are shopping for.</p>
+<p>Every verdict names the authority behind it: findings published by the FDA,
+EFSA, IARC and the WHO, quoted rather than summarised, so you can see who says
+so and decide for yourself.</p>
+</div>
+
+<h2>Documents</h2>
+<ul>
+  <li><a href="/privacy">Privacy Policy</a> — what we collect, what we never
+  collect, and every company that receives anything.</li>
+  <li><a href="/terms">Terms of Use</a> — including what Revely is not, which is
+  a medical device or a substitute for advice from a clinician.</li>
+  <li><a href="/health-data-privacy">Consumer Health Data Privacy Policy</a> —
+  required by Washington's My Health My Data Act, and written for it.</li>
+</ul>
+
+<h2>Contact</h2>
+<p>${LEGAL_ENTITY} — <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a></p>
+<p>Privacy requests go to the same address, and are answered within 30 days.</p>
+`,
+);
+
+// ---------------------------------------------------------------------------
 // Routes
 // ---------------------------------------------------------------------------
 
@@ -628,6 +713,10 @@ export function registerLegalRoutes(app: Express): void {
   const send = (html: string) => (_req: unknown, res: any) => {
     res.type("html").send(html);
   };
+
+  // The root used to answer `{"message":"Not found"}` — see serveStatic's
+  // API-only branch, whose catch-all this must be registered before.
+  app.get("/", send(HOME));
 
   app.get("/privacy", send(PRIVACY));
   app.get("/terms", send(TERMS));
