@@ -134,6 +134,8 @@ Rules:
 - If brackets nest deeper than one level, put every sub-ingredient into the same flat "parts" array. "Coating (Sugar, Milk Solids (Milk))" -> one entry "Coating" with parts Sugar, Milk Solids, Milk.
 - A bracket that RENAMES the ingredient is not a sub-ingredient list — it is the same substance twice. "Tocopherol (Vitamin E)", "Sodium Chloride (Salt)", "E330 (Citric Acid)" are ONE entry with empty "parts"; use the name a shopper would recognise.
 - A bracket carrying an allergen note rather than a composition — "Natural Flavour (contains milk)" — is one entry with empty "parts"; the allergen goes to declared_allergens.contains instead.
+- A list item that joins two ingredient names with "and" or "and/or" is TWO ingredients: "Palm Kernel Oil and Palm Oil" -> "Palm Kernel Oil" + "Palm Oil"; "Sunflower and/or Canola Oil" -> "Sunflower Oil" + "Canola Oil". Keep it as one only when the whole phrase names a single thing, e.g. "Salt and Vinegar Seasoning".
+- Two list items that differ only by a processing note are the same ingredient printed twice — "Cocoa Powder, Cocoa Powder Processed With Alkali" — so list it once.
 - Deduplicate: if the same ingredient appears twice, list it once.
 - Do NOT guess ingredients that are not legible. If the list is cut off, transcribe what is visible and set confidence accordingly.
 - If no ingredient list is legible anywhere in the image, set label_found=false and leave ingredients empty.
@@ -200,9 +202,20 @@ function toResult(
     const isNewEntry = take(english, ing.original);
 
     const parts: LabelEntry['parts'] = [];
+    const seenParts = new Set<string>();
     for (const part of ing.parts) {
       const partEnglish = part.english.trim();
       if (!partEnglish) continue;
+      const partKey = partEnglish.toLowerCase();
+      // Within one bracket, the same name twice is one ingredient. Real labels
+      // produce this: "Cocoa Powder, Cocoa Powder Processed With Alkali"
+      // collapses to a pair of identical names once the processing note is
+      // dropped, and the bracket would otherwise print "Cocoa Powder" twice.
+      if (seenParts.has(partKey)) continue;
+      seenParts.add(partKey);
+      // A bracket that merely restates its own parent — "Palm Oil (Palm Oil)"
+      // — adds nothing and reads as a rendering fault.
+      if (partKey === english.toLowerCase()) continue;
       // Deliberately NOT gated on `take`. A sub-ingredient that also appears
       // elsewhere on the label is already in the analysis list, and dropping
       // it here would silently empty the bracket it belongs to on screen.

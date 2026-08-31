@@ -31,7 +31,7 @@ import {
 } from '../server/services/concepts';
 import { getSubstanceRegistry } from '../server/services/substances/identity';
 import { applyProfileToAnalysis } from '../server/services/personalRisk';
-import { withLabelRanks } from '../server/services/labelRank';
+import { MIN_LIST_FOR_RANK, withLabelRanks } from '../server/services/labelRank';
 import {
   defaultTracePolicy,
   riskLevels,
@@ -424,6 +424,59 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
   const legacy = withLabelRanks(flat);
   const niacin = legacy.ingredients.find((i) => i.name === 'Niacin')?.labelRank;
   notes.push(`without composition, "Niacin" ranks ${niacin ? `${niacin.rank} of ${niacin.total}` : 'unranked'} — the behaviour composition exists to fix`);
+}
+
+// ---------------------------------------------------------------------------
+// M2b. A real label, transcribed from the packet.
+//
+// Trader Joe's coffee-glazed pretzels — four printed ingredients, three of
+// them compound, one bracket nested two deep. Kept as a fixture because it is
+// the shape that broke: flattened, this label is 25 ingredients, and the old
+// reader reported it as such.
+//
+// The composition here is exactly what the reader now returns for it.
+// ---------------------------------------------------------------------------
+{
+  const label = [
+    { name: 'White Candy Coating', parts: ['Sugar', 'Palm Kernel Oil', 'Nonfat Milk Powder', 'Whole Milk Powder', 'Whey Powder', 'Palm Oil', 'Soy Lecithin', 'Natural Vanilla Flavor'] },
+    { name: 'Pretzels', parts: ['Unbleached Enriched Flour', 'Wheat Flour', 'Niacin', 'Reduced Iron', 'Thiamine Mononitrate', 'Riboflavin', 'Folic Acid', 'Malted Barley Flour', 'Salt', 'Soybean Oil'] },
+    { name: 'Dark Chocolatey Drizzle', parts: ['Sugar', 'Palm Kernel Oil', 'Palm Oil', 'Cocoa Powder', 'Whey Powder', 'Soy Lecithin', 'Natural Vanilla Flavor'] },
+    { name: 'Ground Coffee Beans', parts: [] },
+  ];
+
+  // Everything analysed: each printed entry plus every name in its bracket,
+  // deduplicated the way the reader deduplicates.
+  const analysed: string[] = [];
+  for (const entry of label) {
+    for (const name of [entry.name, ...entry.parts]) {
+      if (!analysed.some((n) => n.toLowerCase() === name.toLowerCase())) analysed.push(name);
+    }
+  }
+
+  const ranked = withLabelRanks({
+    ...result(analysed.map((n) => ing(n, 'low'))),
+    composition: label,
+  } as AnalysisResult);
+  const rankOf = (name: string) =>
+    ranked.ingredients.find((i) => i.name === name)?.labelRank;
+
+  check('real-label/printed-count',
+    label.length === 4,
+    `expected 4 printed ingredients, got ${label.length}`);
+  check('real-label/analysis-still-sees-every-leaf',
+    ['Wheat Flour', 'Soy Lecithin', 'Whey Powder', 'Palm Oil'].every((n) =>
+      analysed.some((a) => a.toLowerCase() === n.toLowerCase())),
+    'an allergen-bearing sub-ingredient did not reach the analysis');
+  check('real-label/no-sub-ingredient-ranked',
+    ['Wheat Flour', 'Niacin', 'Folic Acid', 'Soybean Oil'].every((n) => rankOf(n) === undefined),
+    'a sub-ingredient was given a position on this label');
+
+  notes.push(`real label: ${label.length} printed ingredients, ${analysed.length} analysed — the old reader called all ${analysed.length} of them ingredients`);
+  // Four printed entries sits under MIN_LIST_FOR_RANK, so this label now shows
+  // no rank at all where it used to show ranks out of 25. That is the
+  // threshold doing its job on a genuinely short list, but the threshold was
+  // tuned when lists arrived flattened and therefore longer.
+  notes.push(`MIN_LIST_FOR_RANK=${MIN_LIST_FOR_RANK}: this 4-ingredient label now shows no rank (it previously ranked against ${analysed.length})`);
 }
 
 // ---------------------------------------------------------------------------
