@@ -31,7 +31,7 @@ import {
 } from '../server/services/concepts';
 import { getSubstanceRegistry } from '../server/services/substances/identity';
 import { applyProfileToAnalysis } from '../server/services/personalRisk';
-import { MIN_LIST_FOR_RANK, withLabelRanks } from '../server/services/labelRank';
+import { MIN_LIST_FOR_RANK, isProminent, withLabelRanks } from '../server/services/labelRank';
 import {
   defaultTracePolicy,
   riskLevels,
@@ -471,12 +471,67 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
     ['Wheat Flour', 'Niacin', 'Folic Acid', 'Soybean Oil'].every((n) => rankOf(n) === undefined),
     'a sub-ingredient was given a position on this label');
 
+  // Four printed entries, so the top two speak and the rest stay quiet.
+  // "White Candy Coating, 1st of 4" is the whole story about this product —
+  // there is more coating in the bag than pretzel.
+  check('real-label/first-ingredient-speaks',
+    isProminent(rankOf('White Candy Coating')) && rankOf('White Candy Coating')?.rank === 1,
+    `the first printed ingredient is not shown as prominent: ${JSON.stringify(rankOf('White Candy Coating'))}`);
+  check('real-label/third-of-four-stays-quiet',
+    rankOf('Dark Chocolatey Drizzle')?.rank === 3 &&
+      !isProminent(rankOf('Dark Chocolatey Drizzle')),
+    `third of four should carry a rank but not be called prominent: ${JSON.stringify(rankOf('Dark Chocolatey Drizzle'))}`);
+
   notes.push(`real label: ${label.length} printed ingredients, ${analysed.length} analysed — the old reader called all ${analysed.length} of them ingredients`);
-  // Four printed entries sits under MIN_LIST_FOR_RANK, so this label now shows
-  // no rank at all where it used to show ranks out of 25. That is the
-  // threshold doing its job on a genuinely short list, but the threshold was
-  // tuned when lists arrived flattened and therefore longer.
-  notes.push(`MIN_LIST_FOR_RANK=${MIN_LIST_FOR_RANK}: this 4-ingredient label now shows no rank (it previously ranked against ${analysed.length})`);
+}
+
+// ---------------------------------------------------------------------------
+// M2c. Which positions are allowed to speak, as a table.
+//
+// Two numbers decide it and both were retuned when the count became the
+// PRINTED count rather than the flattened one. A short list only speaks for
+// its top two: third of fourteen is a statement about a product, third of four
+// is nearly the end of the list.
+// ---------------------------------------------------------------------------
+{
+  const cases: [number, number, boolean][] = [
+    // [rank, total, shown]
+    [1, 2, false],  // no list to have a position in
+    [1, 3, true],   // shortest list that says anything
+    [2, 3, true],
+    [3, 3, false],  // last of three is not prominence
+    [1, 4, true],
+    [2, 4, true],
+    [3, 4, false],  // the case the retune deliberately excludes
+    [1, 5, true],
+    [3, 5, true],   // third of five and up is worth naming
+    [4, 5, false],
+    [3, 14, true],
+    [11, 14, false],
+  ];
+  for (const [rank, total, expected] of cases) {
+    check('rank/prominence-table',
+      isProminent({ rank, total }) === expected,
+      `${rank} of ${total} should ${expected ? '' : 'not '}be shown`);
+  }
+  notes.push(`prominence: lists of ${MIN_LIST_FOR_RANK}+ speak, top 2 on a short list and top 3 from 5 up`);
+}
+
+// ---------------------------------------------------------------------------
+// M2d. The app's copy of that rule agrees with the server's.
+//
+// mobile/src/lib/verdict.ts reimplements it, because the app cannot import
+// server modules. Two copies of a threshold drift silently and the symptom is
+// a rank note appearing on one screen and not another, which nobody reports.
+// ---------------------------------------------------------------------------
+{
+  const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+  const client = fs.readFileSync(path.join(root, 'mobile/src/lib/verdict.ts'), 'utf8');
+  const body = client.slice(client.indexOf('export function isProminentRank'));
+  const fn = body.slice(0, body.indexOf('\n}'));
+  check('rank/client-copy-agrees',
+    fn.includes(`< ${MIN_LIST_FOR_RANK}`) && fn.includes('>= 5 ? 3 : 2'),
+    'mobile/src/lib/verdict.ts no longer matches the server prominence rule');
 }
 
 // ---------------------------------------------------------------------------

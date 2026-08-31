@@ -53,6 +53,10 @@ export function localizeProfileTerm(
  * derivation. Keep the two in step; the server owns the real definition.
  *
  * "11th of 14" is trivia. "2nd of 14" tells you what the product mostly is.
+ *
+ * The limit tightens on a short list: third of fourteen is a real statement,
+ * third of four is nearly the end of the list and implies a prominence the
+ * position does not carry. Mirrors prominentRankLimit on the server.
  */
 /**
  * How to join the label's own ingredient list, in the label's own script.
@@ -70,7 +74,8 @@ export function nativeListSeparator(sourceLanguage?: string): string {
 
 export function isProminentRank(labelRank?: { rank: number; total: number }): boolean {
   if (!labelRank) return false;
-  return labelRank.total >= 5 && labelRank.rank <= 3;
+  if (labelRank.total < 3) return false;
+  return labelRank.rank <= (labelRank.total >= 5 ? 3 : 2);
 }
 
 export function flagReason(t: T, flag: PersonalFlag): string {

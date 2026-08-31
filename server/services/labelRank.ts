@@ -39,10 +39,27 @@ import { normalizeIngredientName } from './allergenMatcher';
  * number on something the label never stated. Silence is the true answer.
  */
 
-/** Below this many ingredients, "2nd of 3" is not informative. */
-export const MIN_LIST_FOR_RANK = 5;
-/** Only the leading positions carry weight worth mentioning. */
-export const PROMINENT_RANK = 3;
+/**
+ * Below this many ingredients there is no list to have a position in.
+ *
+ * This was 5, tuned when lists still arrived flattened and were therefore
+ * systematically longer — a packet printing four ingredients used to reach the
+ * reader as twenty-three. Now that the count is the printed one, 5 silenced
+ * rank on a large share of ordinary groceries, including a four-ingredient
+ * label whose first ingredient is the whole story about the product.
+ */
+export const MIN_LIST_FOR_RANK = 3;
+
+/**
+ * How many leading positions are worth naming, given how long the list is.
+ *
+ * Third of fourteen is a real statement about a product. Third of four is
+ * nearly the end of the list, and saying it out loud implies a prominence the
+ * position does not carry — so a short list only speaks for its top two.
+ */
+export function prominentRankLimit(total: number): number {
+  return total >= 5 ? 3 : 2;
+}
 
 /**
  * Is this rank worth putting on screen?
@@ -53,7 +70,10 @@ export const PROMINENT_RANK = 3;
  */
 export function isProminent(labelRank?: { rank: number; total: number }): boolean {
   if (!labelRank) return false;
-  return labelRank.total >= MIN_LIST_FOR_RANK && labelRank.rank <= PROMINENT_RANK;
+  return (
+    labelRank.total >= MIN_LIST_FOR_RANK &&
+    labelRank.rank <= prominentRankLimit(labelRank.total)
+  );
 }
 
 /**
