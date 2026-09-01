@@ -11,6 +11,10 @@ export type VerdictLevel = 'safe' | 'caution' | 'avoid';
 // else. Buttons are ink. Links are ink. A colour outside a verdict is a bug.
 
 export const Paper = {
+  // Light, as a surface. Not a glow — a glow is chrome, and this system has
+  // none. Light here is simply the brightest ground in the palette, used only
+  // inside an aperture to say "this part is resolved".
+  lift: '#FFFFFF',
   card: '#FFFCF6',
   paper: '#F6F1E7',
   sunk: '#EDE6D8',
@@ -22,6 +26,9 @@ export const Paper = {
 
 // Lamplight — the same logic, read by lamp.
 export const Lamplight = {
+  // Lifted by lamp: still the brightest ground here, but reached by opening
+  // up rather than by adding white, so the dark theme never goes grey.
+  lift: '#2A241C',
   card: '#1E1A15',
   paper: '#16130F',
   sunk: '#241F19',
@@ -32,6 +39,7 @@ export const Lamplight = {
 } as const;
 
 export interface Surface {
+  lift: string;
   card: string;
   paper: string;
   sunk: string;
@@ -136,6 +144,16 @@ export const Gutter = 24;
 
 export const Motion = {
   sweep: { ms: 1100, loops: 1 },
+  /**
+   * The reveal — an aperture travelling once down a block of content, which
+   * resolves as it passes.
+   *
+   * `settle` is not optional decoration. A permanently masked block is
+   * permanently unreadable, so the reveal must always END fully resolved; the
+   * aperture is a transition into clarity, never a state the reader is left
+   * in.
+   */
+  reveal: { ms: 900, settle: 320, window: 132 },
   rise: { ms: 420, dy: 46 },
   seal: { ms: 450, delay: 200, rotate: -4 },
   press: { ms: 120 },

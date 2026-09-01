@@ -3,6 +3,7 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ApertureMark, RevelyLockup } from '@/components/aperture-mark';
+import { ApertureReveal } from '@/components/aperture-reveal';
 import { ThemedText } from '@/components/themed-text';
 import {
   Font, Gutter, Radius, Space, Type, useSurface, useVerdictColors,
@@ -30,6 +31,17 @@ import { useTranslation } from '@/lib/i18n';
 // The specimen is fixed and honest — an evidence record the app really holds,
 // worded as the results screen would word it. It is not a fabricated screenshot
 // of a verdict we cannot produce.
+//
+// THE REVEAL
+//
+// The card arrives through the aperture: unresolved, then read, then clear.
+// Reading a label is the first thing the app does and the only thing it claims
+// to do, so the entrance demonstrates the product rather than decorating it —
+// and it is built from the mark, so it introduces no new vocabulary.
+//
+// Curiosity, not fear. The sweep invites a look; it withholds nothing. It runs
+// once and leaves the card fully legible, which is also what someone with
+// reduced motion sees from the very first frame.
 
 export default function WelcomeScreen() {
   const router = useRouter();
@@ -54,31 +66,33 @@ export default function WelcomeScreen() {
         {/* The specimen. Same flat card, same seal, same citation rule the
             results screen uses — this is a sample of the product, not an
             illustration of it. */}
-        <View style={[styles.specimen, { backgroundColor: surface.card, borderColor: surface.rule }]}>
-          <View style={styles.specimenHead}>
-            <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
-              {t('welcome.specimenLabel')}
+        <ApertureReveal>
+          <View style={[styles.specimen, { backgroundColor: surface.card, borderColor: surface.rule }]}>
+            <View style={styles.specimenHead}>
+              <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
+                {t('welcome.specimenLabel')}
+              </ThemedText>
+              <View style={[styles.seal, { backgroundColor: verdict.caution.wash }]}>
+                <ThemedText style={[styles.sealText, { color: verdict.caution.ink }]}>
+                  {t('welcome.specimenVerdict')}
+                </ThemedText>
+              </View>
+            </View>
+
+            <ThemedText style={[Type.title, { color: surface.ink }]}>
+              {t('welcome.specimenIngredient')}
             </ThemedText>
-            <View style={[styles.seal, { backgroundColor: verdict.caution.wash }]}>
-              <ThemedText style={[styles.sealText, { color: verdict.caution.ink }]}>
-                {t('welcome.specimenVerdict')}
+            <ThemedText style={[Type.body, { color: surface.inkMuted }]}>
+              {t('welcome.specimenReason')}
+            </ThemedText>
+
+            <View style={[styles.citation, { borderTopColor: surface.rule }]}>
+              <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>
+                {t('welcome.specimenSource')}
               </ThemedText>
             </View>
           </View>
-
-          <ThemedText style={[Type.title, { color: surface.ink }]}>
-            {t('welcome.specimenIngredient')}
-          </ThemedText>
-          <ThemedText style={[Type.body, { color: surface.inkMuted }]}>
-            {t('welcome.specimenReason')}
-          </ThemedText>
-
-          <View style={[styles.citation, { borderTopColor: surface.rule }]}>
-            <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>
-              {t('welcome.specimenSource')}
-            </ThemedText>
-          </View>
-        </View>
+        </ApertureReveal>
 
         <View style={styles.points}>
           <Point icon text={t('welcome.pointPersonal')} />
