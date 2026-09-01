@@ -1,5 +1,5 @@
 import { Image } from 'expo-image';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import Animated, {
   Easing,
@@ -48,10 +48,16 @@ const STILL_WORKING_AFTER_MS = 12_000;
 
 export function ScanProgress({
   imageUri,
+  backdrop,
   phase,
   ingredientCount,
 }: {
   imageUri?: string;
+  /** Anything to sweep over instead of a photo. The onboarding example passes
+   *  the label as type, because there is no photograph of a label that does
+   *  not exist — and a rendered list is more legible under the sweep than a
+   *  stock photo would be. */
+  backdrop?: ReactNode;
   phase: 'reading' | 'analyzing';
   ingredientCount?: number;
 }) {
@@ -143,6 +149,7 @@ export function ScanProgress({
       {imageUri ? (
         <Image source={{ uri: imageUri }} style={StyleSheet.absoluteFill} contentFit="contain" />
       ) : null}
+      {backdrop ? <View style={StyleSheet.absoluteFill}>{backdrop}</View> : null}
       <View style={styles.scrim} />
 
       {!reduced ? <Animated.View style={[styles.sweepLine, sweepStyle]} /> : null}

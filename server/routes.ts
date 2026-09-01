@@ -56,6 +56,7 @@ import {
 } from "@shared/schema";
 import { applyProfileToAnalysis, annotateWithCitations, maxRisk } from "./services/personalRisk";
 import { withLabelRanks } from "./services/labelRank";
+import { demoAnalysis } from "./demoScan";
 import { applyPopulationRisk, domainForProductType } from "./services/substances/classify";
 import { getSubstanceRegistry } from "./services/substances/identity";
 import { getEvidenceStore } from "./services/substances/evidence";
@@ -551,6 +552,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error: any) {
       console.error("[PERSONALIZE] Error re-scoring analysis:", error);
       res.status(500).json({ message: error.message || "Failed to re-score analysis" });
+    }
+  });
+
+  // POST /api/demo-scan - the example verdict shown at the end of onboarding
+  //
+  // No quota, no vision call, no cost: the label is a fixture (server/demoScan.ts).
+  // The VERDICT is not — it goes through the same chain a live scan does, so
+  // what the app tells someone about their own allergies here is produced by
+  // the real matcher and is true of the label it is shown against.
+  //
+  // Behind allowAnonymousScan but NOT requireScanQuota. The whole point is to
+  // run before anyone has an account or an entitlement; the middleware is here
+  // only so a caller has to be one of ours, and it spends nothing.
+  app.post('/api/demo-scan', allowAnonymousScan, async (req: any, res) => {
+    try {
+      const { language, profile: inlineProfile } = req.body ?? {};
+
+      let result = annotateWithCitations(demoAnalysis(language));
+      result = withLabelRanks(result);
+
+      // Same two-way resolution as a real scan, minus the stored-profile path:
+      // by definition nobody has reached this endpoint with a saved profile.
+      const profile = inlineProfile ? parseInlineProfile(inlineProfile) : undefined;
+      if (profile) {
+        result = applyProfileToAnalysis(result, profile);
+      } else if (inlineProfile) {
+        console.warn('[DEMO] inline profile could not be parsed; serving the generic example');
+      }
+
+      res.json(result);
+    } catch (error: any) {
+      console.error('[DEMO] Failed to build the example scan:', error?.message);
+      res.status(500).json({ message: 'Failed to build the example scan' });
     }
   });
 

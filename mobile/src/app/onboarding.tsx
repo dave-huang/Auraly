@@ -86,11 +86,18 @@ export default function OnboardingScreen() {
       // Make it the active profile immediately — the viewfinder's chip has to
       // name someone the moment onboarding hands over.
       await setActiveProfileId(profile.id);
-      // Straight to the paywall, not the camera. With no free scans, sending
-      // someone to the viewfinder means they frame a label, take the photo and
-      // only then learn they cannot have the answer — effort spent for nothing.
-      // Asking before the work is the honest order, and it costs us no scan.
-      router.replace('/paywall?gate=1');
+      // To the example scan, which goes on to the paywall.
+      //
+      // Not the camera: with no free scans, sending someone to the viewfinder
+      // means they frame a label, take the photo and only then learn they
+      // cannot have the answer — effort spent for nothing.
+      //
+      // And not straight to the paywall either, which was the previous
+      // destination. That asked for money from an app that had never once done
+      // the thing it is for, immediately after asking a stranger for their
+      // child's allergies. /demo puts one real verdict in between, over a label
+      // we supply. It costs no scan and no API call.
+      router.replace('/demo');
     } catch (error: any) {
       Alert.alert(t('onboarding.saveFailed'), error?.message ?? t('common.tryAgain'));
     } finally {
