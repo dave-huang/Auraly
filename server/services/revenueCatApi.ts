@@ -17,6 +17,38 @@ const BASE = "https://api.revenuecat.com/v1";
 /** Long enough for a slow API, short enough that a person is still waiting. */
 const TIMEOUT_MS = 8000;
 
+/**
+ * Known credential prefixes, so a wrong secret names itself.
+ *
+ * Every one of these is a public, documented prefix — the part of a token that
+ * exists precisely to say what it is. Naming it costs nothing and turns "401,
+ * good luck" into a fix, because the two ways to get here (wrong key, right
+ * key mangled) are invisible from the status alone.
+ */
+const KNOWN_PREFIXES: Array<[RegExp, string]> = [
+  [/^sk_/, "a RevenueCat SECRET key — correct type, so the value itself is wrong or revoked"],
+  [/^appl_|^goog_|^amzn_|^rcb_/, "a RevenueCat PUBLIC SDK key — this endpoint needs the secret key instead"],
+  [/^FlyV1|^fm[12]_|^fo1_/, "a Fly.io token"],
+  [/^fly/i, "something beginning with \"fly\" — probably a Fly.io credential"],
+  [/^sk-|^sk-proj-/, "an OpenAI key"],
+  [/^re_/, "a Resend key"],
+  [/^ghp_|^gho_|^github_pat_/, "a GitHub token"],
+  [/^postgres:|^postgresql:/, "a Postgres connection string"],
+  [/^ey[A-Za-z0-9_-]*\./, "a JWT"],
+];
+
+/**
+ * Describe a key without disclosing it.
+ *
+ * Length and a short prefix are not a credential — a prefix is an identifier
+ * by design — but nothing beyond that is ever logged.
+ */
+function describeKey(key: string): string {
+  const shape = `key shape: ${key.length} chars, starts ${JSON.stringify(key.slice(0, 8))}`;
+  const match = KNOWN_PREFIXES.find(([pattern]) => pattern.test(key));
+  return match ? `${shape} — looks like ${match[1]}` : shape;
+}
+
 export class RevenueCatNotConfigured extends Error {
   constructor() {
     super("REVENUECAT_SECRET_KEY is not set");
@@ -63,8 +95,7 @@ export async function fetchSubscriber(
       // key itself is never logged, and `sk_` is not a secret.
       if (response.status === 401) {
         console.error(
-          `[RC-API] 401 — key shape: ${key.length} chars, ` +
-            `prefix ${JSON.stringify(key.slice(0, 3))}, ` +
+          `[RC-API] 401 — ${describeKey(key)}, ` +
             `${raw.length === key.length ? "no surrounding whitespace" : `${raw.length - key.length} whitespace char(s) trimmed`}`,
         );
       }
