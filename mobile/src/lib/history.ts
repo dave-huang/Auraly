@@ -49,13 +49,26 @@ export function deleteScan(scanId: string): Promise<void> {
  * product's objective analysis; re-opening a scan re-applies the current
  * profile client-side.
  */
+/**
+ * What POST /api/history actually replies with.
+ *
+ * NOT a ScanHistory, which is what this used to claim. `apiFetch` casts the
+ * JSON without checking it, so the wrong type compiled cleanly and every
+ * caller reading `.id` silently got undefined — which is exactly how the
+ * label thumbnail came to be keyed on nothing and never saved.
+ */
+export interface SavedScan {
+  success: boolean;
+  scanId: string;
+}
+
 export function saveScan(params: {
   result: AnalysisResult;
   productType: ProductType;
   language: string;
-}): Promise<ScanHistory> {
+}): Promise<SavedScan> {
   const { result, productType, language } = params;
-  return apiFetch<ScanHistory>('/api/history', {
+  return apiFetch<SavedScan>('/api/history', {
     method: 'POST',
     body: JSON.stringify({
       productName: result.productName || 'Unnamed Product',

@@ -60,20 +60,34 @@ export function ScanProgress({
   const reduced = useReducedMotion();
 
   const sweep = useSharedValue(0);
+  // Visibility is its own value now. It used to be derived from the sweep's
+  // position — hidden at 0 and at 1 — which worked while the line only ever
+  // travelled one way and would blink the line out at the turn.
+  const sweepVisible = useSharedValue(0);
 
   useEffect(() => {
     if (reduced) return;
     sweep.value = 0;
-    sweep.value = withTiming(1, {
-      duration: Motion.sweep.ms,
-      easing: Easing.bezier(0.4, 0, 0.2, 1),
-    });
-    // No repeat: the sweep is a single pass, by design.
-  }, [reduced, sweep]);
+    sweepVisible.value = 1;
+    sweep.value = withSequence(
+      withTiming(1, { duration: Motion.sweep.ms, easing: Easing.bezier(0.4, 0, 0.2, 1) }),
+      withTiming(
+        0,
+        { duration: Motion.sweep.back, easing: Easing.bezier(0.4, 0, 0.2, 1) },
+        (finished) => {
+          'worklet';
+          if (finished) sweepVisible.value = withTiming(0, { duration: 200 });
+        },
+      ),
+    );
+    // Down and back, once. NOT a repeat — the design's rule that a looping
+    // scan line reads as "still trying" is still in force, and this is one
+    // round trip rather than a cycle.
+  }, [reduced, sweep, sweepVisible]);
 
   const sweepStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: sweep.value * height }],
-    opacity: sweep.value > 0 && sweep.value < 1 ? 1 : 0,
+    opacity: sweepVisible.value,
   }));
 
   // The caret keeps blinking for as long as the frame is up. Unlike the sweep

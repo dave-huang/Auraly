@@ -143,7 +143,16 @@ export const Radius = { flat: 0, tile: 4, sheet: 28, pill: 999 } as const;
 export const Gutter = 24;
 
 export const Motion = {
-  sweep: { ms: 1100, loops: 1 },
+  /**
+   * The scan line's pass over the frozen frame.
+   *
+   * `ms` down, `back` up — ONE round trip, still not a loop. The design's rule
+   * is that a looping scan line reads as "still trying", and that holds; a
+   * single return pass reads as the eye going back over the label once, which
+   * is what a person does. The return is quicker than the pass so it reads as
+   * coming back rather than as a second scan.
+   */
+  sweep: { ms: 1100, back: 850, loops: 1 },
   /**
    * The reveal — an aperture travelling once down a block of content, which
    * resolves as it passes.

@@ -26,7 +26,7 @@ import {
   localizeProfileTerm,
   useVerdictCopy,
 } from '@/lib/verdict';
-import type { AnalysisResult, Ingredient, PersonalFlag } from '@/lib/types';
+import type { AnalysisResult, Ingredient, PersonalFlag, RiskLevel } from '@/lib/types';
 
 // The verdict card. One component carries the product, so it is built as a
 // self-contained object with a FIXED internal order — every screenshot of it
@@ -42,6 +42,41 @@ import type { AnalysisResult, Ingredient, PersonalFlag } from '@/lib/types';
 //
 // The card is FLAT (Radius.flat). Roundness in this system means "you can
 // press this" or "this is a sheet"; the card is neither.
+
+/**
+ * The risk mark on an ingredient row.
+ *
+ * SHAPE CARRIES THE LEVEL, NOT JUST COLOUR.
+ *
+ * The three verdict inks were doing this alone, and measured against each
+ * other they cannot: avoid against caution is a contrast ratio of 1.65:1 on
+ * paper and 1.49:1 by lamplight, where 3:1 is the usual floor for telling two
+ * graphics apart. Avoid against safe is 1.16:1. They are three dark, similarly
+ * heavy inks — distinguishable side by side in a swatch, and not at 6px in a
+ * list, which is the only place they actually appear.
+ *
+ * That is before colour vision: red against orange is the single most common
+ * confusion there is, and it affects around one man in twelve.
+ *
+ * So the ink stays exactly as designed and the FORM now says it too:
+ *
+ *   avoid   — a filled disc, the heaviest mark on the row
+ *   caution — a ring, open in the middle: look at this
+ *   clear   — a short rule, barely there
+ *
+ * Each reads in greyscale, at a glance, and to someone who sees no difference
+ * between the two inks at all. It also borrows the seal's own language, which
+ * is already a ring.
+ */
+function RiskMark({ level, color }: { level: RiskLevel; color: string }) {
+  if (level === 'high') {
+    return <View style={[styles.markDisc, { backgroundColor: color }]} />;
+  }
+  if (level === 'moderate') {
+    return <View style={[styles.markRing, { borderColor: color }]} />;
+  }
+  return <View style={[styles.markRule, { backgroundColor: color }]} />;
+}
 
 /**
  * Five ink segments, never a percentage — a number invites arguing.
@@ -405,7 +440,7 @@ export function AnalysisView({
             style={[styles.row, { borderBottomColor: surface.sunk }]}
             onPress={() => openIngredient(row)}
           >
-            <View style={[styles.dot, { backgroundColor: row.dotColor }]} />
+            <RiskMark level={row.ingredient.riskLevel} color={row.dotColor} />
             <View style={styles.rowText}>
               <ThemedText style={[Type.label, { color: surface.ink }]}>{row.name}</ThemedText>
               {/* The printed name under the translation. Someone comparing the
@@ -774,7 +809,10 @@ const styles = StyleSheet.create({
     paddingVertical: Space.md,
     borderBottomWidth: 1,
   },
-  dot: { width: 6, height: 6, borderRadius: 3 },
+  // One 10pt box for all three so the rows' text stays on a single left edge.
+  markDisc: { width: 10, height: 10, borderRadius: 5 },
+  markRing: { width: 10, height: 10, borderRadius: 5, borderWidth: 2.5 },
+  markRule: { width: 10, height: 2, borderRadius: 1, marginVertical: 4 },
   rowText: { flex: 1, gap: 1 },
   rowOriginal: { fontFamily: Font.mono, fontSize: 11, lineHeight: 15 },
   rowNote: { textAlign: 'right', maxWidth: '38%' },

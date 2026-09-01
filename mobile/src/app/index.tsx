@@ -161,9 +161,11 @@ export default function ViewfinderScreen() {
       // the verdict is already on screen and neither of these may delay it or
       // fail in front of it.
       saveScan({ result, productType, language })
-        .then(async (scan) => {
-          if (!scan?.id) return;
-          await saveLabelThumbnail(scan.id, uri);
+        .then(async (saved) => {
+          // `scanId`, not `id`: the endpoint replies { success, scanId } and
+          // never a ScanHistory row.
+          if (!saved?.scanId) return;
+          await saveLabelThumbnail(saved.scanId, uri);
           pruneLabelThumbnails();
         })
         .catch((e) => console.warn('[SCAN] Failed to save to history:', e?.message));
