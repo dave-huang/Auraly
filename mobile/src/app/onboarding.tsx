@@ -26,6 +26,7 @@ import {
 import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Radius, Space, Type, useSurface } from '@/constants/design';
 import { useTranslation } from '@/lib/i18n';
+import { goBackOrHome } from '@/lib/navigation';
 import { createProfile, setActiveProfileId } from '@/lib/profiles';
 import type { DietaryRule, ProfileAllergen, ProfileCondition } from '@/lib/types';
 
@@ -55,6 +56,22 @@ export default function OnboardingScreen() {
   const [saving, setSaving] = useState(false);
 
   const profileName = name.trim() || t('onboarding.namePlaceholder');
+
+  // Everything on every step, so "have they put work in yet" is one question.
+  const dirty =
+    name.trim().length > 0 || allergens.size > 0 || dietary.size > 0 || conditions.size > 0;
+
+  // Onboarding is reachable by a single tap from the profile list, so it is
+  // reachable by a single MIS-tap too. The swipe-back gesture is a real exit,
+  // but an invisible one — nothing on the screen said it was there, which left
+  // a four-step form looking like a room with no door.
+  function close() {
+    if (!dirty) return goBackOrHome();
+    Alert.alert(t('onboarding.discardTitle'), t('onboarding.discardBody'), [
+      { text: t('common.cancel'), style: 'cancel' },
+      { text: t('onboarding.discardConfirm'), style: 'destructive', onPress: goBackOrHome },
+    ]);
+  }
 
   async function save() {
     setSaving(true);
@@ -90,9 +107,23 @@ export default function OnboardingScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         <View style={styles.header}>
-          <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
-            {t('onboarding.stepOf', { step, total: TOTAL_STEPS })}
-          </ThemedText>
+          <View style={styles.headerRow}>
+            <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
+              {t('onboarding.stepOf', { step, total: TOTAL_STEPS })}
+            </ThemedText>
+            {/* Leaving, not stepping back — so it sits apart from the footer's
+                ‹ Back, and reads the same as the paywall's way out. */}
+            <Pressable
+              onPress={close}
+              hitSlop={12}
+              accessibilityRole="button"
+              accessibilityLabel={t('common.cancel')}
+            >
+              <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>
+                ✕ {t('common.cancel')}
+              </ThemedText>
+            </Pressable>
+          </View>
           {/* Same segmented language as the confidence meter — the machine
               reporting position, not a decorative progress bar. */}
           <View style={styles.progress}>
@@ -248,6 +279,7 @@ function SummaryRow({ label, value }: { label: string; value: string }) {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   header: { paddingHorizontal: Gutter, paddingTop: Space.md, gap: Space.sm },
+  headerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   progress: { flexDirection: 'row', gap: 3 },
   progressSegment: { flex: 1, height: 3 },
   content: {

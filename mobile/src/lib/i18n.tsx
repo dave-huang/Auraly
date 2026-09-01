@@ -167,6 +167,9 @@ const en = {
   'onboarding.conditionsLabel': 'Health considerations',
   'onboarding.save': 'Save & continue',
   'onboarding.saving': 'Saving…',
+  'onboarding.discardTitle': 'Leave without saving?',
+  'onboarding.discardBody': 'What you have entered so far will not be kept.',
+  'onboarding.discardConfirm': 'Leave',
   'onboarding.saveFailed': 'Could not save profile',
   'onboarding.tapToChange': 'tap to change',
 
@@ -588,6 +591,9 @@ const zh: Record<TranslationKey, string> = {
   'onboarding.conditionsLabel': '健康考量',
   'onboarding.save': '保存并继续',
   'onboarding.saving': '正在保存…',
+  'onboarding.discardTitle': '要放弃并离开吗？',
+  'onboarding.discardBody': '目前填写的内容将不会保存。',
+  'onboarding.discardConfirm': '离开',
   'onboarding.saveFailed': '无法保存档案',
   'onboarding.tapToChange': '点击更改',
 
@@ -984,6 +990,9 @@ const es: Record<TranslationKey, string> = {
   'onboarding.conditionsLabel': 'Consideraciones de salud',
   'onboarding.save': 'Guardar y continuar',
   'onboarding.saving': 'Guardando…',
+  'onboarding.discardTitle': '¿Salir sin guardar?',
+  'onboarding.discardBody': 'No se conservará lo que has introducido hasta ahora.',
+  'onboarding.discardConfirm': 'Salir',
   'onboarding.saveFailed': 'No se pudo guardar el perfil',
   'onboarding.tapToChange': 'toca para cambiar',
 
