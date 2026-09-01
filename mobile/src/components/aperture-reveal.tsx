@@ -4,6 +4,7 @@ import Animated, {
   Easing,
   useAnimatedStyle,
   useSharedValue,
+  withDelay,
   withTiming,
 } from 'react-native-reanimated';
 
@@ -199,3 +200,62 @@ const styles = StyleSheet.create({
   br: { bottom: 0, right: 0, borderRightWidth: BRACKET_STROKE, borderBottomWidth: BRACKET_STROKE },
   bl: { bottom: 0, left: 0, borderLeftWidth: BRACKET_STROKE, borderBottomWidth: BRACKET_STROKE },
 });
+
+/**
+ * The resolve, without the aperture.
+ *
+ * The same unresolved-to-clear move the reveal performs, applied down a list so
+ * its items come into focus one after another. It is what the app is doing said
+ * as motion — reading a label line by line — and it belongs on the ingredient
+ * list, which is the densest and most-read thing in the product.
+ *
+ * No brackets here on purpose. An aperture over every row would be the motif
+ * shouting; the language is unresolved becoming resolved, and the frame is only
+ * one way of saying it.
+ *
+ * THE STAGGER IS CAPPED.
+ *
+ * A label with forty ingredients is completely normal, and an uncapped stagger
+ * would take well over a second to finish — turning a flourish into a wait, on
+ * the screen where somebody is trying to find out whether they can eat
+ * something. After CAP items the remainder land together: the effect reads at
+ * the top of the list, which is the only place it is looked at.
+ *
+ * Ends fully resolved, always, for the same reason the reveal does.
+ */
+const STAGGER_MS = 34;
+const STAGGER_CAP = 12;
+const RESOLVE_MS = 260;
+const LIFT_PX = 6;
+
+export function ResolveIn({
+  index = 0,
+  children,
+  style,
+}: {
+  /** Position in the list. Delay is capped, so large values are safe. */
+  index?: number;
+  children: React.ReactNode;
+  style?: StyleProp<ViewStyle>;
+}) {
+  const reduced = useReducedMotion();
+  const resolved = useSharedValue(0);
+
+  useEffect(() => {
+    if (reduced) {
+      resolved.value = 1;
+      return;
+    }
+    resolved.value = withDelay(
+      Math.min(index, STAGGER_CAP) * STAGGER_MS,
+      withTiming(1, { duration: RESOLVE_MS, easing: Easing.bezier(0.16, 1, 0.3, 1) }),
+    );
+  }, [reduced, index, resolved]);
+
+  const animated = useAnimatedStyle(() => ({
+    opacity: UNRESOLVED_OPACITY + (1 - UNRESOLVED_OPACITY) * resolved.value,
+    transform: [{ translateY: (1 - resolved.value) * LIFT_PX }],
+  }));
+
+  return <Animated.View style={[style, animated]}>{children}</Animated.View>;
+}

@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { ApertureMark } from '@/components/aperture-mark';
-import { ApertureFrame } from '@/components/aperture-reveal';
+import { ApertureFrame, ResolveIn } from '@/components/aperture-reveal';
 import { ThemedText } from '@/components/themed-text';
 import { VerdictSeal } from '@/components/verdict-seal';
 import {
@@ -43,13 +43,27 @@ import type { AnalysisResult, Ingredient, PersonalFlag } from '@/lib/types';
 // The card is FLAT (Radius.flat). Roundness in this system means "you can
 // press this" or "this is a sheet"; the card is neither.
 
-/** Five ink segments, never a percentage — a number invites arguing. */
+/**
+ * Five ink segments, never a percentage — a number invites arguing.
+ *
+ * The filled segments arrive one at a time, left to right, which is the
+ * machine counting rather than announcing. Only the FILLED ones animate: the
+ * empty segments are the measure the filled ones are read against, so they are
+ * present from the first frame. A meter that drew its own scale as it went
+ * would make four-of-five look like four-of-four until it finished.
+ */
 function ConfidenceMeter({ segments, color, faint }: { segments: number; color: string; faint: string }) {
   return (
     <View style={styles.meter}>
-      {Array.from({ length: CONFIDENCE_SEGMENTS }).map((_, i) => (
-        <View key={i} style={[styles.segment, { backgroundColor: i < segments ? color : faint }]} />
-      ))}
+      {Array.from({ length: CONFIDENCE_SEGMENTS }).map((_, i) =>
+        i < segments ? (
+          <ResolveIn key={i} index={i} style={styles.segment}>
+            <View style={[styles.segmentFill, { backgroundColor: color }]} />
+          </ResolveIn>
+        ) : (
+          <View key={i} style={[styles.segment, { backgroundColor: faint }]} />
+        ),
+      )}
     </View>
   );
 }
@@ -381,9 +395,13 @@ export function AnalysisView({
         <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
           {t('verdict.ingredientCount', { count: result.ingredients.length })}
         </ThemedText>
-        {ordered.map((row) => (
+        {/* Read line by line, and shown that way. The rows come into focus in
+            order rather than all at once — the app's own act, said as motion.
+            The stagger is capped inside ResolveIn, so a forty-ingredient label
+            still finishes in the same fraction of a second a short one does. */}
+        {ordered.map((row, i) => (
+          <ResolveIn key={row.key} index={i}>
           <Pressable
-            key={row.key}
             style={[styles.row, { borderBottomColor: surface.sunk }]}
             onPress={() => openIngredient(row)}
           >
@@ -403,6 +421,7 @@ export function AnalysisView({
               {row.note}
             </ThemedText>
           </Pressable>
+          </ResolveIn>
         ))}
       </View>
 
@@ -781,6 +800,9 @@ const styles = StyleSheet.create({
     marginTop: Space.xs,
   },
   segment: { flex: 1, height: 3 },
+  // The fill inside an animated segment: the wrapper owns the track's width,
+  // this owns the ink.
+  segmentFill: { flex: 1, height: 3 },
 
   controls: {
     padding: Space.xl,
