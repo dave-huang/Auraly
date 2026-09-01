@@ -26,6 +26,17 @@ export interface RevenueCatEvent {
   type?: string;
   app_user_id?: string;
   original_app_user_id?: string;
+  /**
+   * TRANSFER ONLY, and the reason it needs its own path.
+   *
+   * A TRANSFER event carries NEITHER `app_user_id` NOR `original_app_user_id`
+   * — RevenueCat identifies the parties exclusively through these two arrays.
+   * Reading the usual fields on a transfer therefore yields undefined, which
+   * is indistinguishable from an anonymous purchase, so the event is dropped
+   * and a subscription silently changes hands without us hearing about it.
+   */
+  transferred_from?: string[];
+  transferred_to?: string[];
   product_id?: string;
   period_type?: string;
   expiration_at_ms?: number;

@@ -3,7 +3,12 @@ import { timingSafeEqual } from "crypto";
 
 import { db } from "./db";
 import { users, ENTITLEMENT_ID as DEFAULT_ENTITLEMENT_ID } from "@shared/schema";
-import { resolveState, type RevenueCatEvent } from "./services/revenueCatState";
+import {
+  resolveFromSubscriber,
+  resolveState,
+  type RevenueCatEvent,
+} from "./services/revenueCatState";
+import { fetchSubscriber } from "./services/revenueCatApi";
 import { eq } from "drizzle-orm";
 import { subscriptionService } from "./services/subscription";
 
@@ -65,6 +70,13 @@ export function setupRevenueCatWebhook(app: Express) {
     }
 
     const event: RevenueCatEvent = (req.body as any)?.event ?? {};
+
+    // A transfer names its parties in two arrays and carries no app_user_id at
+    // all, so it cannot go through the path below and must be handled first.
+    if ((event.type || "").toUpperCase() === "TRANSFER") {
+      return handleTransfer(event, res);
+    }
+
     // app_user_id is set by the client to OUR user id when RevenueCat is
     // configured at sign-in. An anonymous RevenueCat id means a purchase made
     // before sign-in, which we cannot attribute yet; the app re-identifies and
@@ -101,6 +113,73 @@ export function setupRevenueCatWebhook(app: Express) {
       res.status(500).json({ message: "Webhook processing failed" });
     }
   });
+}
+
+/**
+ * A subscription changing hands.
+ *
+ * RevenueCat sends TRANSFER when one Apple ID's purchase moves between our
+ * accounts — a person signing in as somebody else on a shared phone, or, far
+ * more often, the same person signing into a second account of their own. It
+ * is the event behind "I paid and the app says I have not".
+ *
+ * TWO THINGS MAKE IT DIFFERENT FROM EVERY OTHER EVENT.
+ *
+ * It names its parties in `transferred_from` / `transferred_to` and carries
+ * neither `app_user_id` nor `original_app_user_id`, so the ordinary path reads
+ * undefined and drops it as unattributable.
+ *
+ * And it carries no entitlement block — no product, no expiry — so there is
+ * nothing to resolve a state FROM. `resolveState` on a transfer would read a
+ * missing `expiration_at_ms` as already expired and cancel a live
+ * subscription. So we ask RevenueCat what each side holds now, and write that.
+ *
+ * BOTH SIDES ARE UPDATED. The receiver gains what moved; the sender loses it,
+ * and leaving them entitled would hand out a second free subscription per
+ * transfer. Neither is inferred — both are whatever RevenueCat reports when
+ * asked, which is the only account of this we are entitled to trust.
+ */
+async function handleTransfer(event: RevenueCatEvent, res: Response) {
+  const parties = [...(event.transferred_to ?? []), ...(event.transferred_from ?? [])].filter(
+    (id): id is string => typeof id === "string" && !!id && !id.startsWith("$RCAnonymousID:"),
+  );
+
+  if (parties.length === 0) {
+    console.log("[RC-WEBHOOK] TRANSFER: no named parties, acknowledged");
+    return res.status(200).json({ received: true });
+  }
+
+  let unreachable = false;
+
+  for (const userId of Array.from(new Set(parties))) {
+    try {
+      const [user] = await db.select().from(users).where(eq(users.id, userId));
+      // Not ours, or deleted since. A retry cannot conjure the row.
+      if (!user) continue;
+
+      const subscriber = await fetchSubscriber(userId);
+      const state = resolveFromSubscriber(subscriber, ENTITLEMENT_ID);
+      await subscriptionService.applySubscriptionState(userId, {
+        ...state,
+        revenueCatCustomerId: subscriber?.original_app_user_id,
+      });
+      console.log(`[RC-WEBHOOK] TRANSFER → ${userId} is ${state.status}`);
+    } catch (error: any) {
+      // Could not ask. NOTHING is written for this party — a failed lookup is
+      // not evidence of anything, and guessing here either revokes a paid
+      // subscription or grants a free one.
+      unreachable = true;
+      console.error(`[RC-WEBHOOK] TRANSFER lookup failed for ${userId}:`, error?.message);
+    }
+  }
+
+  if (unreachable) {
+    // 500 so RevenueCat redelivers. A transfer we could not process leaves
+    // somebody holding a receipt the app does not honour, which is worth
+    // retrying for.
+    return res.status(500).json({ message: "Transfer lookup failed" });
+  }
+  return res.status(200).json({ received: true });
 }
 
 /** Exposed for eval/auth.check.ts, which asserts the endpoint is not public. */
