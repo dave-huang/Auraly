@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ApertureMark, RevelyLockup } from '@/components/aperture-mark';
 import { ApertureReveal } from '@/components/aperture-reveal';
+import { LanguagePicker } from '@/components/language-picker';
 import { ThemedText } from '@/components/themed-text';
 import {
   Font, Gutter, Radius, Space, Type, useSurface, useVerdictColors,
@@ -53,7 +54,17 @@ export default function WelcomeScreen() {
     <SafeAreaView style={[styles.container, { backgroundColor: surface.paper }]}>
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.head}>
-          <RevelyLockup size={30} color={surface.ink} />
+          {/* Language sits on the FIRST screen, not only on sign-in.
+
+              A cold start lands here, and sign-in is behind "Already have an
+              account?" — so putting the control only there still stranded
+              anyone who cannot read this page. It shares the lockup's row
+              rather than floating above it: this screen scrolls, and a pinned
+              pill would drift over the specimen card on a small phone. */}
+          <View style={styles.headTop}>
+            <RevelyLockup size={30} color={surface.ink} />
+            <LanguagePicker />
+          </View>
           {/* Full ink at title weight, now that it is a sentence rather than
               a paragraph. The screen's job is to be understood in one glance
               and then got past; the specimen card below is the argument, and
@@ -149,6 +160,7 @@ const styles = StyleSheet.create({
     gap: Space.xl,
   },
   head: { gap: Space.md },
+  headTop: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
 
   specimen: {
     borderWidth: StyleSheet.hairlineWidth,
