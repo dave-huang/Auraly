@@ -14,6 +14,7 @@ import { useAuth } from '@/lib/auth-context';
 import { useEntitlement } from '@/lib/entitlement';
 import { fireVerdictHaptic } from '@/lib/haptics';
 import { saveScan } from '@/lib/history';
+import { pruneLabelThumbnails, saveLabelThumbnail } from '@/lib/label-thumbnails';
 import { useTranslation } from '@/lib/i18n';
 import { getActiveProfileId, listProfiles } from '@/lib/profiles';
 import { pollAnalysis, prepareImage, setLastResult, submitScan } from '@/lib/scan';
@@ -153,9 +154,19 @@ export default function ViewfinderScreen() {
       // Haptic fires before the card is readable — the body knows the answer
       // a beat before the eyes do.
       void fireVerdictHaptic(result.overallRisk, result.readConfidence);
-      saveScan({ result, productType, language }).catch((e) =>
-        console.warn('[SCAN] Failed to save to history:', e?.message),
-      );
+      // Keep the label photograph against the scan it belongs to, so history
+      // can show the specimen rather than only describing it. On this device
+      // only — see lib/label-thumbnails. Chained off the save because the
+      // scan's id is what the two are keyed by, and still fire-and-forget:
+      // the verdict is already on screen and neither of these may delay it or
+      // fail in front of it.
+      saveScan({ result, productType, language })
+        .then(async (scan) => {
+          if (!scan?.id) return;
+          await saveLabelThumbnail(scan.id, uri);
+          pruneLabelThumbnails();
+        })
+        .catch((e) => console.warn('[SCAN] Failed to save to history:', e?.message));
       setPhase(null);
       router.push('/results');
     } catch (error: any) {

@@ -6,6 +6,7 @@ import {
   signOut as doSignOut,
   type AuthUser,
 } from './auth';
+import { clearLabelThumbnails } from './label-thumbnails';
 import { configurePurchases, resetPurchaser } from './purchases';
 
 interface AuthState {
@@ -57,6 +58,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signOut = useCallback(async () => {
     await doSignOut();
     setUser(null);
+    // Same reasoning as the store identity below, and more pointed: these are
+    // photographs. They are keyed by scan id, the next account's history has
+    // different ids, and nothing would ever surface them again — but they are
+    // pictures of one person's shopping sitting on a phone somebody else is
+    // now signed into, and "unreachable" is not "gone".
+    clearLabelThumbnails();
     // Detach the store identity too, so the next person to sign in on this
     // phone does not inherit the last one's entitlement in the SDK's cache.
     await resetPurchaser();
@@ -68,6 +75,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const deleteAccount = useCallback(async () => {
     await doDeleteAccount();
     setUser(null);
+    // Somebody asking to be forgotten is not asking to be forgotten server
+    // side only. The scans are gone; their photographs go with them.
+    clearLabelThumbnails();
+    await resetPurchaser();
   }, []);
 
   const value = useMemo(

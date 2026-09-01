@@ -1,7 +1,8 @@
 import { useFocusEffect, useRouter } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { ActivityIndicator, FlatList, Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Image } from 'expo-image';
 
 import { ApertureMark } from '@/components/aperture-mark';
 import { ApertureFrame } from '@/components/aperture-reveal';
@@ -18,6 +19,7 @@ import {
   useVerdictColors,
 } from '@/constants/design';
 import { fetchHistory, scanTitle } from '@/lib/history';
+import { labelThumbnailUri } from '@/lib/label-thumbnails';
 import { goBackOrHome } from '@/lib/navigation';
 import { getActiveProfileId, listProfiles } from '@/lib/profiles';
 import { useTranslation, type TranslationKey } from '@/lib/i18n';
@@ -169,6 +171,15 @@ export default function HistoryScreen() {
     void load(scans.length, filter);
   }
 
+  // Resolved once per page of scans, never per render: each lookup is a
+  // synchronous filesystem check, and doing that inside renderItem would put
+  // one on the JS thread for every tile of every frame while scrolling.
+  const thumbnails = useMemo(() => {
+    const map: Record<string, string | null> = {};
+    for (const scan of scans) map[scan.id] = labelThumbnailUri(scan.id);
+    return map;
+  }, [scans]);
+
   const items = toItems(scans, t);
 
   return (
@@ -263,6 +274,37 @@ export default function HistoryScreen() {
                       style={[styles.tile, { backgroundColor: surface.card, borderColor: surface.rule }]}
                       onPress={() => router.push({ pathname: '/scan-detail', params: { id: scan.id } })}
                     >
+                      {/* The specimen itself, behind its own record.
+
+                          This is the app's most credible image and it was
+                          already being taken and thrown away — a grid about
+                          products somebody physically held, rendered entirely
+                          in type. The photograph never left the phone and does
+                          not start now; it is a local cache keyed to the scan
+                          id, absent on a second device, and the tile is built
+                          to read with or without it.
+
+                          Held well back. It is the ground the record sits on,
+                          not the subject — at full strength a snapshot of a
+                          crumpled packet would out-shout the verdict seal,
+                          which is the one thing on this tile that has to be
+                          legible at a glance. */}
+                      {thumbnails[scan.id] ? (
+                        <>
+                          <Image
+                            source={{ uri: thumbnails[scan.id]! }}
+                            style={StyleSheet.absoluteFill}
+                            contentFit="cover"
+                            transition={220}
+                          />
+                          <View
+                            style={[
+                              StyleSheet.absoluteFill,
+                              { backgroundColor: surface.card, opacity: 0.86 },
+                            ]}
+                          />
+                        </>
+                      ) : null}
                       <View style={[styles.tileEdge, { backgroundColor: tone.ink }]} />
                       <View style={styles.tileBody}>
                         <VerdictSeal
