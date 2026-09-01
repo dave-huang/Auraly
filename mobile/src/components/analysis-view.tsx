@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { ApertureMark } from '@/components/aperture-mark';
+import { ApertureFrame } from '@/components/aperture-reveal';
 import { ThemedText } from '@/components/themed-text';
 import { VerdictSeal } from '@/components/verdict-seal';
 import {
@@ -300,14 +301,23 @@ export function AnalysisView({
           </ThemedText>
           <View style={[styles.quote, { backgroundColor: surface.paper, borderColor: surface.rule }]}>
             {uncertain ? (
-              <View style={styles.redacted}>
-                {[0.92, 0.78, 0.85, 0.4].map((width, i) => (
-                  <View
-                    key={i}
-                    style={[styles.redactedBar, { width: `${width * 100}%`, backgroundColor: surface.rule }]}
-                  />
-                ))}
-              </View>
+              /* The aperture, held still over the part that would not come
+                 clear. Everywhere else in the app it sweeps and resolves;
+                 here it must not, because the read genuinely failed and an
+                 animation that resolved would be claiming otherwise. Static
+                 brackets say only "this is where we looked", which is the
+                 whole of what we can honestly say. Drawn faint, and never in
+                 a verdict ink — uncertain carries no verdict colour. */
+              <ApertureFrame style={styles.redactedFrame} color={surface.inkFaint}>
+                <View style={styles.redacted}>
+                  {[0.92, 0.78, 0.85, 0.4].map((width, i) => (
+                    <View
+                      key={i}
+                      style={[styles.redactedBar, { width: `${width * 100}%`, backgroundColor: surface.rule }]}
+                    />
+                  ))}
+                </View>
+              </ApertureFrame>
             ) : (
               <View style={styles.bilingual}>
                 <ThemedText style={[Type.body, styles.bilingualCol, { color: surface.ink }]}>
@@ -714,6 +724,7 @@ const styles = StyleSheet.create({
   bilingual: { flexDirection: 'row', gap: Space.md, alignItems: 'flex-start' },
   bilingualCol: { flex: 1 },
   hairline: { width: StyleSheet.hairlineWidth, alignSelf: 'stretch' },
+  redactedFrame: { paddingVertical: Space.sm, paddingHorizontal: Space.md },
   redacted: { gap: 6, paddingVertical: 2 },
   redactedBar: { height: 9 },
 

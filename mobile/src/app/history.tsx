@@ -4,6 +4,7 @@ import { ActivityIndicator, FlatList, Pressable, StyleSheet, View } from 'react-
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ApertureMark } from '@/components/aperture-mark';
+import { ApertureFrame } from '@/components/aperture-reveal';
 import { ThemedText } from '@/components/themed-text';
 import { VerdictSeal } from '@/components/verdict-seal';
 import {
@@ -216,8 +217,16 @@ export default function HistoryScreen() {
           <ThemedText style={[Type.body, { color: surface.ink }]}>{error}</ThemedText>
         </View>
       ) : scans.length === 0 ? (
+        /* An empty aperture, at the size of the tile that will fill it.
+           The brackets are the mark's own, drawn faint because nothing has
+           been caught in them yet — a slot waiting for the first scan rather
+           than a sentence apologising for the absence of one. Curiosity, not
+           fear: the frame invites, it does not explain. */
         <View style={styles.centered}>
-          <ThemedText style={[Type.body, { color: surface.inkMuted }]}>
+          <ApertureFrame style={styles.emptySlot} color={surface.inkFaint}>
+            <ApertureMark size={28} color={surface.inkFaint} />
+          </ApertureFrame>
+          <ThemedText style={[Type.body, styles.emptyText, { color: surface.inkMuted }]}>
             {filter === 'all' ? t('history.empty') : t('history.emptyFiltered')}
           </ThemedText>
           {filter === 'all' ? (
@@ -299,6 +308,14 @@ export default function HistoryScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   centered: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: Space.md, padding: Gutter },
+  emptySlot: {
+    width: 132,
+    height: 132,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: Space.sm,
+  },
+  emptyText: { textAlign: 'center' },
   header: {
     paddingHorizontal: Gutter,
     paddingTop: Space.sm,

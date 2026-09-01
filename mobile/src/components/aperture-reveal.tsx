@@ -46,6 +46,50 @@ const UNRESOLVED_OPACITY = 0.24;
 const BRACKET = 26;
 const BRACKET_STROKE = 2;
 
+/** One definition of the four brackets, so the frame and the reveal cannot drift apart. */
+function Corners({ color }: { color: string }) {
+  return (
+    <>
+      <View style={[styles.corner, styles.tl, { borderColor: color }]} />
+      <View style={[styles.corner, styles.tr, { borderColor: color }]} />
+      <View style={[styles.corner, styles.br, { borderColor: color }]} />
+      <View style={[styles.corner, styles.bl, { borderColor: color }]} />
+    </>
+  );
+}
+
+/**
+ * The aperture, standing still.
+ *
+ * Four corner brackets around a region, with no sweep and nothing to resolve.
+ * It marks a place rather than performing on it — "this is where we looked",
+ * or "this is where the first one goes".
+ *
+ * Deliberately a separate export from the reveal. Most places that want the
+ * aperture want the FRAME, not the animation, and reaching for the animated one
+ * everywhere is how a motif turns into a tic.
+ */
+export function ApertureFrame({
+  children,
+  style,
+  color,
+}: {
+  children?: React.ReactNode;
+  style?: StyleProp<ViewStyle>;
+  /** Defaults to the theme's ink; pass inkFaint for a waiting, unfilled slot. */
+  color?: string;
+}) {
+  const surface = useSurface();
+  const stroke = color ?? surface.ink;
+
+  return (
+    <View style={style}>
+      {children}
+      <Corners color={stroke} />
+    </View>
+  );
+}
+
 export function ApertureReveal({
   children,
   style,
@@ -131,11 +175,7 @@ export function ApertureReveal({
         importantForAccessibility="no-hide-descendants"
       >
         <Animated.View style={innerStyle}>{children}</Animated.View>
-
-        <View style={[styles.corner, styles.tl, { borderColor: surface.ink }]} />
-        <View style={[styles.corner, styles.tr, { borderColor: surface.ink }]} />
-        <View style={[styles.corner, styles.br, { borderColor: surface.ink }]} />
-        <View style={[styles.corner, styles.bl, { borderColor: surface.ink }]} />
+        <Corners color={surface.ink} />
       </Animated.View>
     </View>
   );
