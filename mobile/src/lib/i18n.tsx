@@ -28,6 +28,24 @@ export const LANGUAGE_NAMES: Record<Language, string> = {
   es: 'Español',
 };
 
+/**
+ * The short form, for a control too small to hold a language's full name.
+ *
+ * Written in each language's OWN script, never as a flag. A flag is a country
+ * and a language is not: English is not the United States to the several
+ * hundred million people who speak it elsewhere, and putting Spain's flag on
+ * Spanish tells nine of every ten Spanish speakers the app was not built with
+ * them in mind. It is also the wrong register entirely for a system whose only
+ * saturated colour is a verdict.
+ *
+ * "ZH" would be no better — a person looking for Chinese is looking for 中文.
+ */
+export const LANGUAGE_CODES: Record<Language, string> = {
+  en: 'EN',
+  zh: '中文',
+  es: 'ES',
+};
+
 const en = {
   'common.back': 'Back',
   'common.done': 'Done',

@@ -14,6 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { RevelyLockup } from '@/components/aperture-mark';
 import { GoogleMark } from '@/components/google-mark';
+import { LanguagePicker } from '@/components/language-picker';
 import { ThemedText } from '@/components/themed-text';
 import { ALLOW_DEV_LOGIN, GOOGLE_SIGN_IN_ENABLED } from '@/lib/config';
 import { Font, Space, Type, useSurface } from '@/constants/design';
@@ -126,6 +127,17 @@ export default function SignInScreen() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: surface.paper }]}>
+      {/* Language, before an account exists.
+
+          The full setting lives on Account, which is behind a sign-in — so
+          somebody who cannot read this screen cannot reach the control that
+          would fix it. Its own row rather than a floating overlay: this screen
+          centres its hero, and an absolutely positioned pill would sit on the
+          lockup on a small phone. */}
+      <View style={styles.topBar}>
+        <LanguagePicker />
+      </View>
+
       <View style={styles.hero}>
         {/* The lockup, not a serif wordmark: Newsreader belongs to the verdict
             word alone, so the app's own name is set in Instrument Sans. */}
@@ -235,6 +247,7 @@ const BUTTON_RADIUS = 12;
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'space-between', padding: Space.xl },
+  topBar: { flexDirection: 'row', justifyContent: 'flex-end' },
   hero: { flex: 1, justifyContent: 'center', alignItems: 'center', gap: 12 },
   tagline: { textAlign: 'center', maxWidth: 300 },
   actions: { gap: 12, paddingBottom: 24, minHeight: 140, justifyContent: 'flex-end' },
