@@ -54,6 +54,20 @@ export function localizeProfileTerm(
  *
  * "11th of 14" is trivia. "2nd of 14" tells you what the product mostly is.
  */
+/**
+ * How to join the label's own ingredient list, in the label's own script.
+ *
+ * The list used to be joined with "、" unconditionally — the CJK enumeration
+ * comma. That is right for a Chinese or Japanese packet and wrong everywhere
+ * else: on a Spanish label it set "Almendras、Caseinato de Sodio", a CJK
+ * punctuation mark inside a Latin-script list, which reads as exactly the
+ * rendering bug the bilingual block exists to avoid looking like.
+ */
+export function nativeListSeparator(sourceLanguage?: string): string {
+  const base = (sourceLanguage ?? '').slice(0, 2).toLowerCase();
+  return base === 'zh' || base === 'ja' ? '、' : ', ';
+}
+
 export function isProminentRank(labelRank?: { rank: number; total: number }): boolean {
   if (!labelRank) return false;
   return labelRank.total >= 5 && labelRank.rank <= 3;

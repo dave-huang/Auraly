@@ -24,6 +24,7 @@ import {
   isProminentRank,
   localizeAllergen,
   localizeProfileTerm,
+  nativeListSeparator,
   useVerdictCopy,
 } from '@/lib/verdict';
 import type { AnalysisResult, Ingredient, PersonalFlag, RiskLevel } from '@/lib/types';
@@ -180,7 +181,7 @@ export function AnalysisView({
     ? profileAllergens.map((a) => localizeAllergen(t, a)).join(' · ')
     : t('verdict.noAllergens');
 
-  const native = result.originalIngredients?.join('、') ?? '';
+  const native = result.originalIngredients?.join(nativeListSeparator(result.sourceLanguage)) ?? '';
   const english = result.canonicalIngredients?.join(', ') ?? '';
   // Only a genuine translation earns the block. On an English label the two
   // columns are the same words with different separators, which reads as a
