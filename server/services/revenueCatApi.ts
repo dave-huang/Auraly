@@ -35,8 +35,13 @@ export class RevenueCatNotConfigured extends Error {
 export async function fetchSubscriber(
   appUserId: string,
 ): Promise<RevenueCatSubscriber | undefined> {
-  const key = process.env.REVENUECAT_SECRET_KEY;
-  if (!key) throw new RevenueCatNotConfigured();
+  const raw = process.env.REVENUECAT_SECRET_KEY;
+  if (!raw) throw new RevenueCatNotConfigured();
+
+  // TRIMMED, because a secret set from a copy-paste or a file very often
+  // carries a trailing newline, and `Authorization: Bearer sk_x\n` is a 401
+  // that looks exactly like a wrong key.
+  const key = raw.trim();
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
@@ -51,6 +56,18 @@ export async function fetchSubscriber(
     if (response.status === 404) return undefined;
 
     if (!response.ok) {
+      // A 401 is the one status worth describing, because "wrong key" and
+      // "right key, mangled in transit" are indistinguishable from the status
+      // alone and lead to completely different fixes. Shape only — length,
+      // prefix and whether the value arrived with whitespace around it. The
+      // key itself is never logged, and `sk_` is not a secret.
+      if (response.status === 401) {
+        console.error(
+          `[RC-API] 401 — key shape: ${key.length} chars, ` +
+            `prefix ${JSON.stringify(key.slice(0, 3))}, ` +
+            `${raw.length === key.length ? "no surrounding whitespace" : `${raw.length - key.length} whitespace char(s) trimmed`}`,
+        );
+      }
       throw new Error(`RevenueCat API returned ${response.status}`);
     }
 
