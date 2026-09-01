@@ -18,7 +18,7 @@ import { LanguagePicker } from '@/components/language-picker';
 import { ThemedText } from '@/components/themed-text';
 import { ALLOW_DEV_LOGIN, GOOGLE_SIGN_IN_ENABLED } from '@/lib/config';
 import { Font, Space, Type, useSurface } from '@/constants/design';
-import { useTranslation } from '@/lib/i18n';
+import { deviceLanguage, translate, useTranslation } from '@/lib/i18n';
 import {
   isAppleAuthAvailable,
   signInAsDeveloper,
@@ -125,6 +125,20 @@ export default function SignInScreen() {
     }
   }
 
+  // Both sign-in buttons speak the DEVICE's language, not the app's.
+  //
+  // Apple's is their own native component and has no locale prop — its text
+  // comes from the device and cannot be changed at runtime. Rather than have
+  // one button follow the picker and the other refuse, both follow the
+  // device, so the pair always agrees.
+  //
+  // It is the less obvious half that is worth stating: this deliberately
+  // ignores the language picker sitting a few points above it. A row of
+  // sign-in buttons is platform chrome — the account being reached belongs to
+  // Apple or to Google, not to Revely — and chrome that disagrees with itself
+  // looks broken in a way that chrome in the "wrong" language does not.
+  const platformLanguage = deviceLanguage();
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: surface.paper }]}>
       {/* Language, before an account exists.
@@ -205,13 +219,13 @@ export default function SignInScreen() {
                 ]}
                 onPress={() => handle('google', signInWithGoogle)}
                 accessibilityRole="button"
-                accessibilityLabel={t('signIn.google')}
+                accessibilityLabel={translate(platformLanguage, 'signIn.google')}
               >
                 <GoogleMark size={18} />
                 <ThemedText
                   style={[styles.googleLabel, { color: dark ? '#1F1F1F' : '#FFFFFF' }]}
                 >
-                  {t('signIn.google')}
+                  {translate(platformLanguage, 'signIn.google')}
                 </ThemedText>
               </Pressable>
             )}
