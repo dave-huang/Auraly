@@ -3,11 +3,11 @@ import { StyleSheet, type ImageStyle, type StyleProp } from 'react-native';
 
 import { useSurface } from '@/constants/design';
 
-// An ink wash plate, sitting behind content.
+// An ink wash plate.
 //
 // WHAT THESE ARE
 //
-// Brush studies — a naturalist's wash drawing of one object, the kind of thing
+// Brush studies. A naturalist's wash drawing of one object, the kind of thing
 // pressed between the pages of a field guide. They replaced a set of halftone
 // plates, which were photographs screened down to a dot pattern. Halftone is a
 // printing artefact: the trick a newspaper used because it could not print
@@ -16,89 +16,107 @@ import { useSurface } from '@/constants/design';
 //
 // WHY THEY CARRY NO COLOUR
 //
-// Each asset ships as coverage only — a transparent PNG whose alpha IS the
-// ink, with the colour channels thrown away. The tint is applied here, from
-// the live theme, which is what lets ONE file sit over cream in light mode and
-// over near-black by lamplight. Shipping two baked versions would double the
-// bundle and guarantee they drift.
+// Each asset ships as coverage only: a transparent PNG whose alpha IS the ink,
+// with the colour channels thrown away. The tint is applied here, from the
+// theme, which is what lets one file serve any ground the app ever paints.
 //
-// It is also the reason these can never become a brand colour by accident:
-// there is no colour in the file to leak. The sources were warm, nearly sepia,
+// It is also the reason these can never become a brand colour by accident.
+// There is no colour in the file to leak. The sources were warm, nearly sepia,
 // and none of that survives the conversion.
 //
-// HOW LOUD, AND WHY IT IS PER PLATE
+// TWO PLACEMENTS, TWO STRENGTHS
 //
-// The halftone component took an opacity at every call site and defaulted to
-// 10%. That worked because screening spreads ink evenly, so every plate had
-// roughly the same coverage and one number fitted them all.
+// The first version of this had one number per plate and put every plate at
+// full bleed, behind the whole screen. That is the wrong home for a drawing.
+// Behind text it has to be faint enough to read through, and at that strength
+// it is not an illustration any more, just a smudge. Worse, the parts worth
+// looking at ended up under a title or under the button.
 //
-// A wash does not spread. It puts real black in one place and leaves the rest
-// of the sheet empty, so measured coverage across this set runs from 1.2% (the
-// paper tag, mostly outline) to 7.6% (the basket, a dense weave) — six to one.
-// At a single opacity the tag is invisible and the basket is shouting.
+// So a plate now has two strengths and the caller says which job it is doing:
 //
-// So the number lives with the file, normalised against measured coverage, and
-// no screen passes one. That is the right home for it: how loud a plate is
-// belongs to how much ink is in it, not to the page it lands on. `opacity`
-// stays available to override, but an override should be an argument.
+//   PLATE (the default) — the drawing sits in its own empty space, usually the
+//   gap between the end of the content and the footer, and nothing is printed
+//   over it. Because nothing has to be read through it, it can be dark enough
+//   to actually look like a drawing.
 //
-// ON THE DARK GROUND
+//   WASH (`wash`) — genuinely behind content, holding a page together. Kept
+//   faint on purpose, because the text on top of it has to win.
 //
-// The halftone plates were dialled to 0.8 by lamplight, because fine dots on a
-// dark ground bloom and read louder than the arithmetic says. Washes do the
-// opposite — large soft areas at low alpha lose contrast against near-black
-// and read FAINTER. Measured on both grounds at the same numbers: no scaling.
+// HOW THE TWO NUMBERS WERE ARRIVED AT
+//
+// Not by eye, and not by one rule for all fourteen. Each file was measured on
+// two things: its MEAN alpha over the whole canvas, which is how heavy the
+// drawing feels, and the alpha of its darkest strokes, which is how black its
+// darkest line will go. Those pull in opposite directions. A drawing can be
+// mostly empty paper and still have one near-solid stroke in it.
+//
+// So each number is the smaller of two ceilings: enough opacity to bring the
+// mean up to a target weight, and no more opacity than keeps the darkest
+// stroke short of solid black. The plate target is a drawing you are meant to
+// look at; the wash target is roughly a third of that, because text has to win.
+//
+// The measured means run from 1.2% (the paper tag, which is mostly outline) to
+// 7.6% (the basket, a dense weave), six to one. That spread is why one number
+// could never have fitted all fourteen, and it is also why most of these land
+// near the top of the range: these are pale wash drawings, and the first
+// version of this component was quietly holding them at a fifth of their
+// strength.
 //
 // Decorative by definition, so it is hidden from assistive technology and
-// takes no touches — a screen reader announcing "image" over a texture is
+// takes no touches. A screen reader announcing "image" over a texture is
 // noise, and a plate that swallowed a tap would be a bug.
 
 interface Plate {
   source: ReturnType<typeof require>;
-  /** Normalised against measured ink coverage. See "how loud" above. */
-  opacity: number;
+  /** In its own space, with nothing printed over it. */
+  plate: number;
+  /** Behind content that has to stay readable. */
+  wash: number;
 }
 
 export const PLATES = {
   /** Three graduated bowls. A household, without depicting anybody in it. */
-  bowls: { source: require('@/assets/images/inkwash/bowls.png'), opacity: 0.067 },
-  /** A blank paper tag — the object that exists to carry a name. */
-  tag: { source: require('@/assets/images/inkwash/tag.png'), opacity: 0.224 },
+  bowls: { source: require('@/assets/images/inkwash/bowls.png'), plate: 0.90, wash: 0.30 },
+  /** A blank paper tag: the object that exists to carry a name. */
+  tag: { source: require('@/assets/images/inkwash/tag.png'), plate: 1.00, wash: 0.69 },
   /** Wheat, peanuts and a scallop shell, laid out for study. */
-  allergens: { source: require('@/assets/images/inkwash/allergens.png'), opacity: 0.123 },
+  allergens: { source: require('@/assets/images/inkwash/allergens.png'), plate: 1.00, wash: 0.49 },
   /** A balance and its weights. The instrument for the judgement being asked. */
-  balance: { source: require('@/assets/images/inkwash/balance.png'), opacity: 0.102 },
+  balance: { source: require('@/assets/images/inkwash/balance.png'), plate: 0.93, wash: 0.42 },
   /** Jug, butter, cheese: three things that look different and are one thing. */
-  milk: { source: require('@/assets/images/inkwash/milk.png'), opacity: 0.111 },
-  /** Herbs and pulses — what most dietary rules leave you eating. */
-  dietary: { source: require('@/assets/images/inkwash/dietary.png'), opacity: 0.107 },
+  milk: { source: require('@/assets/images/inkwash/milk.png'), plate: 1.00, wash: 0.47 },
+  /** Herbs and pulses, which is what most dietary rules leave you eating. */
+  dietary: { source: require('@/assets/images/inkwash/dietary.png'), plate: 1.00, wash: 0.48 },
   /** Apothecary bottle and mortar. Not a hospital; this is not a diagnosis. */
-  conditions: { source: require('@/assets/images/inkwash/conditions.png'), opacity: 0.076 },
+  conditions: { source: require('@/assets/images/inkwash/conditions.png'), plate: 0.90, wash: 0.35 },
   /** Bound reports, covers blank. The documents the verdicts quote. */
-  sources: { source: require('@/assets/images/inkwash/sources.png'), opacity: 0.071 },
+  sources: { source: require('@/assets/images/inkwash/sources.png'), plate: 0.90, wash: 0.32 },
   /** A folded map: contour lines, no place names. Elsewhere, without words. */
-  language: { source: require('@/assets/images/inkwash/language.png'), opacity: 0.155 },
-  /** A sheet caught mid-fall — read, then dropped. Not a padlock. */
-  privacy: { source: require('@/assets/images/inkwash/privacy.png'), opacity: 0.154 },
+  language: { source: require('@/assets/images/inkwash/language.png'), plate: 1.00, wash: 0.80 },
+  /** A sheet caught mid-fall, read and then dropped. Not a padlock. */
+  privacy: { source: require('@/assets/images/inkwash/privacy.png'), plate: 1.00, wash: 0.51 },
   /** A pressed sprig on a mounting card. The profile as a finished thing. */
-  specimen: { source: require('@/assets/images/inkwash/specimen.png'), opacity: 0.115 },
-  /** A split pod, the specimen plate. Quiet enough to sit under a first impression. */
-  vanillaPod: { source: require('@/assets/images/inkwash/vanilla-pod.png'), opacity: 0.062 },
-  /** Blank tins. The only landscape plate — it is clipped to a band. */
-  packets: { source: require('@/assets/images/inkwash/packets.png'), opacity: 0.077 },
+  specimen: { source: require('@/assets/images/inkwash/specimen.png'), plate: 1.00, wash: 0.45 },
+  /** A split pod. Looking closely at what a thing is actually made of. */
+  vanillaPod: { source: require('@/assets/images/inkwash/vanilla-pod.png'), plate: 0.80, wash: 0.27 },
+  /** Blank tins. Every product on the shelf, before you know anything about it. */
+  packets: { source: require('@/assets/images/inkwash/packets.png'), plate: 0.95, wash: 0.36 },
   /** An empty basket. Nothing scanned yet. */
-  basket: { source: require('@/assets/images/inkwash/basket.png'), opacity: 0.056 },
+  basket: { source: require('@/assets/images/inkwash/basket.png'), plate: 0.72, wash: 0.24 },
 } as const satisfies Record<string, Plate>;
 
 export type PlateName = keyof typeof PLATES;
 
 export function InkWashPlate({
   name,
+  wash = false,
   opacity,
   style,
-  contentFit = 'cover',
+  contentFit = 'contain',
 }: {
   name: PlateName;
+  /** Behind content that has to be read through it. Quieter, by design. */
+  wash?: boolean;
   /** Override the plate's own measured value. Should be an argument, not a preference. */
   opacity?: number;
   /** Where it sits. Defaults to filling its parent. */
@@ -111,7 +129,11 @@ export function InkWashPlate({
   return (
     <Image
       source={plate.source}
-      style={[StyleSheet.absoluteFill, style, { opacity: opacity ?? plate.opacity }]}
+      style={[
+        StyleSheet.absoluteFill,
+        style,
+        { opacity: opacity ?? (wash ? plate.wash : plate.plate) },
+      ]}
       contentFit={contentFit}
       // The alpha channel is the artwork; this is what colours it.
       tintColor={surface.ink}

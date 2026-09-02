@@ -16,6 +16,24 @@ whose alpha is the ink, colour channels discarded, tinted live from the theme.
 sprig, which at 246 converts to a solid grey slab. Its white point is 231, just
 under the panel, so the panel drops out and every stroke survives.
 
+## Then crop to the drawing
+
+Every source came back with the subject in the lower half of a portrait frame
+and a great deal of empty paper above it. That was fine while the plates sat at
+full bleed behind a screen, and wrong the moment they became drawings placed in
+their own space: `contentFit: contain` fits the CANVAS, so the empty half was
+being fitted too and the drawing came out small and floating.
+
+So the shipped PNGs are cropped to the alpha bounding box, with a 3% margin,
+after the conversion:
+
+    box = alpha.point(lambda v: 255 if v > 12 else 0).getbbox()
+
+The `> 12` floor matters: without it the box catches the faintest halo of the
+wash and the crop does almost nothing. Aspect ratios stop being uniform after
+this, which is the point — most of these are landscape once cropped, and that
+is the shape of the band a drawing lands in under an onboarding step.
+
 ## What the generation actually got wrong
 
 Almost nothing. Three things worth recording, because they were not what was
@@ -26,12 +44,17 @@ predicted:
   in the ink plus JPEG noise, and it does not survive the conversion anyway —
   only luminance is kept.
 - **Bottom-weighting worked exactly.** Every plate has effectively zero ink in
-  the top 40% of the frame, which is what lets one full-bleed asset sit behind
-  eleven different screens without per-screen cropping.
+  the top 40% of the frame. That was read at the time as a feature, because it
+  let one full-bleed asset sit behind a screen without per-screen cropping. It
+  was actually the problem: see the crop step above.
 - **Coverage varies six to one** — 1.2% for the tag, 7.6% for the basket. That
   is the real difference from halftone, where screening spread ink evenly and
   one opacity fitted every plate. See the opacity note in
   `mobile/src/components/inkwash-plate.tsx`.
+- **They are paler than they look.** Measured, the darkest strokes on most of
+  these top out around alpha 200 of 255, and the mean over the whole drawing is
+  a few per cent. The first component held them at a fifth of that on top, which
+  is how fourteen finished drawings ended up invisible.
 
 ## Naming
 

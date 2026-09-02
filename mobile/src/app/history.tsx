@@ -235,11 +235,17 @@ export default function HistoryScreen() {
            than a sentence apologising for the absence of one. Curiosity, not
            fear: the frame invites, it does not explain. */
         <View style={styles.centered}>
-          {/* A page with genuinely nothing on it is the one place a plate is
-              doing work rather than decorating: it gives the eye somewhere to
-              rest that is not an apology for the absence of scans. Scatter,
-              not a subject — it must not look like a scan that failed. */}
-          <InkWashPlate name="basket" />
+          {/* An empty basket, above the empty frame. A page with genuinely
+              nothing on it is the one place a drawing is doing work rather than
+              decorating: it gives the eye somewhere to rest that is not an
+              apology for the absence of scans.
+
+              In its own band rather than washed behind the frame and the
+              sentence. Behind them it had to be faint enough to read through,
+              and it sat directly under the words. */}
+          <View style={styles.emptyPlate}>
+            <InkWashPlate name="basket" />
+          </View>
           <ApertureFrame style={styles.emptySlot} color={surface.inkFaint}>
             <ApertureMark size={28} color={surface.inkFaint} />
           </ApertureFrame>
@@ -356,6 +362,8 @@ export default function HistoryScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   centered: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: Space.md, padding: Gutter },
+  // Wide and short, which is how the basket is drawn.
+  emptyPlate: { alignSelf: 'stretch', height: 150, marginBottom: Space.sm },
   emptySlot: {
     width: 132,
     height: 132,

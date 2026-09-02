@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -20,6 +20,24 @@ import { Font, Gutter, Radius, Space, Type, useSurface } from '@/constants/desig
 // actions on the screen were adjacent and the same size. It is now top-left,
 // where a back control lives on every other screen of every other app, and the
 // footer belongs entirely to the one thing we want pressed.
+//
+// WHERE THE DRAWING GOES
+//
+// The plate used to sit at full bleed behind the whole step, which meant the
+// interesting part of the drawing was under the title on a short step and
+// under the button on every step. It was also faint enough to read through,
+// which is another way of saying it was too faint to see.
+//
+// Now the frame measures itself. It knows how tall the scrolling area is and
+// how tall the content inside it turned out to be, and the difference is the
+// empty space at the bottom of the page. If there is enough of it, the drawing
+// goes there, at full strength, with nothing printed on top. If there is not,
+// there is no drawing: a step with a long list of allergens does not need one,
+// and squeezing it in would put it back under the text.
+//
+// This is why the plate is a prop rather than something each step positions.
+// A step knows which drawing belongs to it; only the frame knows whether the
+// page has room.
 //
 // WHY THE PROGRESS BAR IS CONTINUOUS
 //
@@ -73,11 +91,19 @@ export function StepFrame({
 }) {
   const surface = useSurface();
 
+  // The scrolling area's height, and the height the content turned out to be.
+  // Both arrive after the first paint, so the plate appears on the second one.
+  // That is invisible in practice and much cheaper than guessing.
+  const [viewport, setViewport] = useState(0);
+  const [contentHeight, setContentHeight] = useState(0);
+
+  // What is left at the bottom once the content has had its space.
+  const blank = viewport - contentHeight;
+  const plateHeight = Math.min(blank - Space.md, viewport * 0.52);
+  const showPlate = Boolean(plate) && plateHeight >= MIN_PLATE_HEIGHT;
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: surface.paper }]}>
-      {/* Each plate carries its own measured opacity, so no screen sets one. */}
-      {plate ? <InkWashPlate name={plate} /> : null}
-
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -103,17 +129,28 @@ export function StepFrame({
           </View>
         </View>
 
-        <ScrollView
-          contentContainerStyle={styles.content}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-        >
-          <ThemedText style={[StepType.title, { color: surface.ink }]}>{title}</ThemedText>
-          {body ? (
-            <ThemedText style={[Type.reason, { color: surface.inkMuted }]}>{body}</ThemedText>
+        <View style={styles.body} onLayout={(e) => setViewport(e.nativeEvent.layout.height)}>
+          {/* Behind the scroll view, in the space the content did not use.
+              Full strength, because nothing is printed over it. */}
+          {plate && showPlate ? (
+            <View style={[styles.plateSlot, { height: plateHeight }]} pointerEvents="none">
+              <InkWashPlate name={plate} />
+            </View>
           ) : null}
-          {children ? <View style={styles.slot}>{children}</View> : null}
-        </ScrollView>
+
+          <ScrollView
+            contentContainerStyle={styles.content}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+            onContentSizeChange={(_, height) => setContentHeight(height)}
+          >
+            <ThemedText style={[StepType.title, { color: surface.ink }]}>{title}</ThemedText>
+            {body ? (
+              <ThemedText style={[Type.reason, { color: surface.inkMuted }]}>{body}</ThemedText>
+            ) : null}
+            {children ? <View style={styles.slot}>{children}</View> : null}
+          </ScrollView>
+        </View>
 
         <View style={[styles.footer, { borderTopColor: surface.rule }]}>
           <Pressable
@@ -142,6 +179,9 @@ export function StepFrame({
     </SafeAreaView>
   );
 }
+
+/** Below this the drawing is a smudge rather than a picture, so it is dropped. */
+const MIN_PLATE_HEIGHT = 132;
 
 function clamp(value: number): number {
   if (!Number.isFinite(value)) return 0;
@@ -173,6 +213,13 @@ const styles = StyleSheet.create({
 
   track: { flex: 1, height: 3, overflow: 'hidden' },
   fill: { height: 3 },
+
+  // The scrolling area and the plate share this box, which is what lets the
+  // plate be measured against the space the content left behind.
+  body: { flex: 1 },
+  // Sits on the floor of that box. Inset by the gutter so a wide drawing does
+  // not run into the edge of the screen.
+  plateSlot: { position: 'absolute', left: Gutter, right: Gutter, bottom: 0 },
 
   content: {
     paddingHorizontal: Gutter,

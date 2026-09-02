@@ -425,18 +425,26 @@ export default function PaywallScreen() {
           </ThemedText>
         </Pressable>
 
-        <View style={styles.head}>
-          {/* Tins and a packet, every surface blank. This is the screen where
-              the app asks to be paid for reading a label, so the plate is the
-              claim rather than an ornament beside it — and the surfaces are
-              bare because the previous plate's invented lettering was the one
-              thing on it a reader could catch us getting wrong.
+        {/* Tins and a packet, every surface blank. This is the screen where the
+            app asks to be paid for reading a label, so the drawing is the claim
+            rather than an ornament beside it, and the surfaces are bare because
+            an earlier plate's invented lettering was the one thing on it a
+            reader could catch us getting wrong.
 
-              Only on THIS head, not the two below it. The subscribed and
-              unavailable screens share the style but not the argument — one is
-              a receipt and the other is an apology, and neither is a place to
-              be selling. */}
+            In a band of its own, above the head, rather than washed behind the
+            title. Behind the title it had to be faint enough to read through,
+            which made it a smudge, and the tins landed across the sentence
+            asking for money.
+
+            Only on THIS screen, not the two states below it. The subscribed and
+            unavailable views share the style but not the argument: one is a
+            receipt and the other is an apology, and neither is a place to be
+            selling. */}
+        <View style={styles.plate}>
           <InkWashPlate name="packets" />
+        </View>
+
+        <View style={styles.head}>
           <ApertureMark size={48} color={surface.ink} />
           <ThemedText style={[Type.title, { color: surface.ink }]}>
             {t('paywall.title')}
@@ -822,7 +830,9 @@ const styles = StyleSheet.create({
   // Clipped, and that is the point: the plate is allowed behind the headline
   // and nowhere near the prices. Anything sitting behind a number someone is
   // about to be charged is a legibility problem, not a texture.
-  head: { gap: Space.md, overflow: 'hidden' },
+  head: { gap: Space.md },
+  // Short and wide, which is the shape the tins are drawn in.
+  plate: { height: 132 },
 
   includes: { gap: Space.sm },
   include: { flexDirection: 'row', alignItems: 'flex-start', gap: Space.sm },
