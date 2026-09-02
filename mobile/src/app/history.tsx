@@ -6,6 +6,7 @@ import { Image } from 'expo-image';
 
 import { ApertureMark } from '@/components/aperture-mark';
 import { ApertureFrame } from '@/components/aperture-reveal';
+import { HalftonePlate } from '@/components/halftone-plate';
 import { ThemedText } from '@/components/themed-text';
 import { VerdictSeal } from '@/components/verdict-seal';
 import {
@@ -234,6 +235,11 @@ export default function HistoryScreen() {
            than a sentence apologising for the absence of one. Curiosity, not
            fear: the frame invites, it does not explain. */
         <View style={styles.centered}>
+          {/* A page with genuinely nothing on it is the one place a plate is
+              doing work rather than decorating: it gives the eye somewhere to
+              rest that is not an apology for the absence of scans. Scatter,
+              not a subject — it must not look like a scan that failed. */}
+          <HalftonePlate name="almonds" opacity={0.07} />
           <ApertureFrame style={styles.emptySlot} color={surface.inkFaint}>
             <ApertureMark size={28} color={surface.inkFaint} />
           </ApertureFrame>

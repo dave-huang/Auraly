@@ -4,6 +4,7 @@ import { ActivityIndicator, Alert, Linking, Pressable, ScrollView, StyleSheet, V
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ApertureMark } from '@/components/aperture-mark';
+import { HalftonePlate } from '@/components/halftone-plate';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Radius, Space, Type, useSurface } from '@/constants/design';
 import { APPLE_SUBSCRIPTIONS_URL, PRIVACY_URL, PURCHASES_ENABLED, TERMS_URL } from '@/lib/config';
@@ -359,6 +360,15 @@ export default function PaywallScreen() {
         </Pressable>
 
         <View style={styles.head}>
+          {/* Four packets, four writing systems. This is the screen where the
+              app asks to be paid for reading a label you cannot read, so the
+              plate is the claim rather than an ornament beside it.
+
+              Only on THIS head, not the two below it. The subscribed and
+              unavailable screens share the style but not the argument — one is
+              a receipt and the other is an apology, and neither is a place to
+              be selling. */}
+          <HalftonePlate name="packets" opacity={0.09} />
           <ApertureMark size={48} color={surface.ink} />
           <ThemedText style={[Type.title, { color: surface.ink }]}>
             {t('paywall.title')}
@@ -741,7 +751,10 @@ const styles = StyleSheet.create({
     paddingBottom: Space.xxl,
     gap: Space.xl,
   },
-  head: { gap: Space.md },
+  // Clipped, and that is the point: the plate is allowed behind the headline
+  // and nowhere near the prices. Anything sitting behind a number someone is
+  // about to be charged is a legibility problem, not a texture.
+  head: { gap: Space.md, overflow: 'hidden' },
 
   includes: { gap: Space.sm },
   include: { flexDirection: 'row', alignItems: 'flex-start', gap: Space.sm },

@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ApertureMark, RevelyLockup } from '@/components/aperture-mark';
 import { ApertureReveal } from '@/components/aperture-reveal';
+import { HalftonePlate } from '@/components/halftone-plate';
 import { LanguagePicker } from '@/components/language-picker';
 import { ThemedText } from '@/components/themed-text';
 import {
@@ -52,6 +53,13 @@ export default function WelcomeScreen() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: surface.paper }]}>
+      {/* A single split pod, shot like a specimen plate — the field guide
+          stated before a word of it is read. Behind the whole scroll rather
+          than inside the head: this screen's argument is the specimen card,
+          and a plate that stopped above it would fence the card off from the
+          page it is supposed to belong to. */}
+      <HalftonePlate name="vanillaPod" opacity={0.08} />
+
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.head}>
           {/* Language sits on the FIRST screen, not only on sign-in.
