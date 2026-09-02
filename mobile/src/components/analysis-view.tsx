@@ -4,6 +4,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { ApertureMark } from '@/components/aperture-mark';
 import { ApertureFrame, ResolveIn } from '@/components/aperture-reveal';
+import { RiskMark } from '@/components/risk-mark';
 import { ThemedText } from '@/components/themed-text';
 import { VerdictSeal } from '@/components/verdict-seal';
 import {
@@ -27,7 +28,7 @@ import {
   nativeListSeparator,
   useVerdictCopy,
 } from '@/lib/verdict';
-import type { AnalysisResult, Ingredient, PersonalFlag, RiskLevel } from '@/lib/types';
+import type { AnalysisResult, Ingredient, PersonalFlag } from '@/lib/types';
 
 // The verdict card. One component carries the product, so it is built as a
 // self-contained object with a FIXED internal order — every screenshot of it
@@ -43,41 +44,6 @@ import type { AnalysisResult, Ingredient, PersonalFlag, RiskLevel } from '@/lib/
 //
 // The card is FLAT (Radius.flat). Roundness in this system means "you can
 // press this" or "this is a sheet"; the card is neither.
-
-/**
- * The risk mark on an ingredient row.
- *
- * SHAPE CARRIES THE LEVEL, NOT JUST COLOUR.
- *
- * The three verdict inks were doing this alone, and measured against each
- * other they cannot: avoid against caution is a contrast ratio of 1.65:1 on
- * paper and 1.49:1 by lamplight, where 3:1 is the usual floor for telling two
- * graphics apart. Avoid against safe is 1.16:1. They are three dark, similarly
- * heavy inks — distinguishable side by side in a swatch, and not at 6px in a
- * list, which is the only place they actually appear.
- *
- * That is before colour vision: red against orange is the single most common
- * confusion there is, and it affects around one man in twelve.
- *
- * So the ink stays exactly as designed and the FORM now says it too:
- *
- *   avoid   — a filled disc, the heaviest mark on the row
- *   caution — a ring, open in the middle: look at this
- *   clear   — a short rule, barely there
- *
- * Each reads in greyscale, at a glance, and to someone who sees no difference
- * between the two inks at all. It also borrows the seal's own language, which
- * is already a ring.
- */
-function RiskMark({ level, color }: { level: RiskLevel; color: string }) {
-  if (level === 'high') {
-    return <View style={[styles.markDisc, { backgroundColor: color }]} />;
-  }
-  if (level === 'moderate') {
-    return <View style={[styles.markRing, { borderColor: color }]} />;
-  }
-  return <View style={[styles.markRule, { backgroundColor: color }]} />;
-}
 
 /**
  * Five ink segments, never a percentage — a number invites arguing.
@@ -109,7 +75,6 @@ interface Row {
   name: string;
   original?: string;
   note: string;
-  dotColor: string;
   flagged: boolean;
   /** Position as analysed, so ties keep the label's own order. */
   index: number;
@@ -191,7 +156,7 @@ export function AnalysisView({
   );
   const showBilingual = Boolean(native && english && translated);
 
-  const rows = buildRows(result, flags, verdictColors, surface.rule, t, translated);
+  const rows = buildRows(result, flags, t, translated);
   // The list is the evidence for the verdict, so it is ordered by how much each
   // row contributed to it.
   //
@@ -426,7 +391,7 @@ export function AnalysisView({
         </View>
       ) : null}
 
-      {/* Ingredients — 6px verdict dot, name, and the reason it matched. */}
+      {/* Ingredients: a green, amber or red mark, the name, and the reason. */}
       <View style={[styles.block, { borderTopColor: surface.rule }]}>
         <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
           {t('verdict.ingredientCount', { count: result.ingredients.length })}
@@ -441,7 +406,7 @@ export function AnalysisView({
             style={[styles.row, { borderBottomColor: surface.sunk }]}
             onPress={() => openIngredient(row)}
           >
-            <RiskMark level={row.ingredient.riskLevel} color={row.dotColor} />
+            <RiskMark level={row.ingredient.riskLevel} />
             <View style={styles.rowText}>
               <ThemedText style={[Type.label, { color: surface.ink }]}>{row.name}</ThemedText>
               {/* The printed name under the translation. Someone comparing the
@@ -652,8 +617,6 @@ function unflaggedNote(
 function buildRows(
   result: AnalysisResult,
   flags: PersonalFlag[],
-  verdictColors: ReturnType<typeof useVerdictColors>,
-  clearColor: string,
   t: (key: any, params?: Record<string, string | number>) => string,
   translated: boolean,
 ): Row[] {
@@ -679,10 +642,12 @@ function buildRows(
       return f.ingredientName.toLowerCase() === ing.name.toLowerCase();
     });
 
-    // A personally flagged ingredient takes the flag's colour, not the
+    // A personally flagged ingredient carries the flag's level, not the
     // population-level risk. Peanut butter is "low risk" in general and an
-    // avoid for someone with a peanut allergy — showing it green because the
+    // avoid for someone with a peanut allergy, and showing it green because the
     // base analysis says low would contradict the verdict directly above it.
+    // `ing.riskLevel` is already the level in force (personal where one
+    // applies, universal otherwise), so the mark needs no branch for it.
     //
     // Which colour comes from the flag's own `impact`, not from its type. The
     // old test — allergen means avoid, everything else means caution — was
@@ -700,13 +665,6 @@ function buildRows(
     // arguing with itself.
     const personal = ing.personalRiskLevel;
     const leadWithFlag = Boolean(flag) && Boolean(personal);
-
-    // riskLevel is already the level in force — personal where one applies,
-    // universal otherwise — so the dot needs no separate branch for it.
-    const dotColor =
-      ing.riskLevel === 'low'
-        ? clearColor
-        : verdictColors[RISK_TO_VERDICT[ing.riskLevel]].ink;
 
     return {
       key: `${ing.name}-${i}`,
@@ -738,7 +696,6 @@ function buildRows(
       note: leadWithFlag
         ? t('verdict.noteForYou', { reason: rowNote(t, flag!) })
         : unflaggedNote(t, ing),
-      dotColor,
       flagged: Boolean(flag),
       index: i,
       ingredient: ing,
@@ -810,10 +767,6 @@ const styles = StyleSheet.create({
     paddingVertical: Space.md,
     borderBottomWidth: 1,
   },
-  // One 10pt box for all three so the rows' text stays on a single left edge.
-  markDisc: { width: 10, height: 10, borderRadius: 5 },
-  markRing: { width: 10, height: 10, borderRadius: 5, borderWidth: 2.5 },
-  markRule: { width: 10, height: 2, borderRadius: 1, marginVertical: 4 },
   rowText: { flex: 1, gap: 1 },
   rowOriginal: { fontFamily: Font.mono, fontSize: 11, lineHeight: 15 },
   rowNote: { textAlign: 'right', maxWidth: '38%' },

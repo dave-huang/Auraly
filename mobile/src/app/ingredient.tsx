@@ -9,6 +9,7 @@ import {
   Gutter,
   RISK_TO_VERDICT,
   Radius,
+  RiskSignal,
   Space,
   Type,
   useSurface,
@@ -110,6 +111,25 @@ export default function IngredientScreen() {
 
   const citations = flag?.citations ?? ingredient.citations ?? [];
 
+  /**
+   * Nothing published set this level, so the level is our reading.
+   *
+   * This used to be its own section, under the same "What the sources say"
+   * heading the regulatory record uses, saying that there was no regulatory
+   * record. A heading promising sources above a paragraph explaining that there
+   * are none is a section that exists to disappoint, and it made people think
+   * something had failed to load.
+   *
+   * The admission still has to be made, so it is now a footnote to what the
+   * ingredient IS, which is the thing it actually qualifies. Quieter, and in
+   * the right place.
+   */
+  const unsourced =
+    ingredient.riskSource !== 'record' ||
+    !ingredient.substanceId ||
+    evidenceFailed ||
+    (evidence !== null && evidence.records.length === 0);
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: surface.paper }]}>
       <ScrollView contentContainerStyle={styles.content}>
@@ -146,7 +166,9 @@ export default function IngredientScreen() {
               <ThemedText style={[Type.body, styles.levelLabel, { color: surface.inkMuted }]}>
                 {t('ingredient.forMostPeople')}
               </ThemedText>
-              <ThemedText style={[Type.label, { color: surface.inkMuted }]}>
+              <ThemedText
+                style={[Type.label, { color: RiskSignal[ingredient.universalRiskLevel].ink }]}
+              >
                 {t(RISK_LABEL_KEYS[ingredient.universalRiskLevel])}
               </ThemedText>
             </View>
@@ -155,10 +177,7 @@ export default function IngredientScreen() {
                 {profileName ? t('ingredient.forProfile', { profile: profileName }) : t('ingredient.forYou')}
               </ThemedText>
               <ThemedText
-                style={[
-                  Type.label,
-                  { color: verdictColors[RISK_TO_VERDICT[ingredient.personalRiskLevel]].ink },
-                ]}
+                style={[Type.label, { color: RiskSignal[ingredient.personalRiskLevel].ink }]}
               >
                 {t(RISK_LABEL_KEYS[ingredient.personalRiskLevel])}
               </ThemedText>
@@ -249,39 +268,6 @@ export default function IngredientScreen() {
           </View>
         ) : null}
 
-        {/* No published record behind this level — so the level is our reading,
-            and this is where that gets said.
-
-            This block is the honest half of letting the model rate everything.
-            The card no longer distinguishes a sourced level from an assessed
-            one, because on a list row that distinction is noise. Here, where
-            someone has tapped through to ask "says who?", it is the answer. */}
-        {ingredient.riskSource !== 'record' ||
-        !ingredient.substanceId ||
-        evidenceFailed ||
-        (evidence !== null && evidence.records.length === 0) ? (
-          <View style={[styles.section, { borderTopColor: surface.rule }]}>
-            <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
-              {t('ingredient.regulatoryRecord')}
-            </ThemedText>
-            <ThemedText style={[Type.body, { color: surface.inkMuted }]}>
-              {/* Two different admissions, and using the stronger one when it
-                  is false made this screen contradict itself: it announced
-                  that no published source covered the ingredient, directly
-                  above a Sources block listing published sources for it.
-
-                  The level and the context come from different places. A
-                  knowledge-base entry explains an ingredient; only a record in
-                  the substance corpus sets its level. When we hold the former
-                  but not the latter, the honest sentence is "we rated this,
-                  the sources below did not" — not "nothing is known". */}
-              {citations.length > 0
-                ? t('ingredient.ourAssessmentWithSources')
-                : t('ingredient.ourAssessment')}
-            </ThemedText>
-          </View>
-        ) : null}
-
         {/* What it is. */}
         <View style={[styles.section, { borderTopColor: surface.rule }]}>
           <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
@@ -293,6 +279,24 @@ export default function IngredientScreen() {
           {ingredient.riskAdjustmentReason ? (
             <ThemedText style={[Type.meta, { color: surface.inkMuted }]}>
               {ingredient.riskAdjustmentReason}
+            </ThemedText>
+          ) : null}
+
+          {/* Two different admissions, and using the stronger one when it is
+              false made this screen contradict itself: it announced that no
+              published source covered the ingredient, directly above a Sources
+              block listing published sources for it.
+
+              The level and the context come from different places. A knowledge
+              base entry explains an ingredient; only a record in the substance
+              corpus sets its level. When we hold the former but not the latter,
+              the honest sentence is "we rated this, the sources below did not",
+              not "nothing is known". */}
+          {unsourced ? (
+            <ThemedText style={[Type.meta, styles.footnote, { color: surface.inkFaint }]}>
+              {citations.length > 0
+                ? t('ingredient.ourAssessmentWithSources')
+                : t('ingredient.ourAssessment')}
             </ThemedText>
           ) : null}
         </View>
@@ -336,7 +340,7 @@ export default function IngredientScreen() {
                   >
                     <ThemedText style={[styles.source, { color: surface.inkMuted }]}>
                       {source.org}
-                      {source.year ? ` · ${source.year}` : ''} — {source.title}
+                      {source.year ? ` · ${source.year}` : ''} · {source.title}
                       {source.url ? ' ↗' : ''}
                     </ThemedText>
                   </Pressable>
@@ -403,6 +407,7 @@ const styles = StyleSheet.create({
   levelRow: { flexDirection: 'row', alignItems: 'baseline', gap: Space.md },
   levelLabel: { flex: 1 },
   citation: { gap: Space.xs, paddingTop: Space.sm },
+  footnote: { paddingTop: Space.xs },
   source: { fontFamily: Font.mono, fontSize: 11, lineHeight: 16 },
   // The divergence sits in a bordered box rather than a coloured one: the three
   // verdict inks mean a verdict, and this is a fact about two legal regimes.
