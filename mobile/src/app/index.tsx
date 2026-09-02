@@ -98,7 +98,7 @@ export default function ViewfinderScreen() {
   const [menuOpen, setMenuOpen] = useState(false);
   // Only meaningful with an account — the anonymous grant is counted per device
   // on the server, and this endpoint requires a token.
-  const { entitlement } = useEntitlement(Boolean(user));
+  const { entitlement, loading: entitlementLoading } = useEntitlement(Boolean(user));
 
   useFocusEffect(
     useCallback(() => {
@@ -257,7 +257,37 @@ export default function ViewfinderScreen() {
   // frame for a beat is right: routing on an unloaded list would bounce someone
   // who has a profile out to welcome every cold start.
   if (profiles === null) return <View style={{ flex: 1, backgroundColor: surface.paper }} />;
-  if (!user && profiles.length === 0) return <Redirect href="/welcome" />;
+
+  // No profile means they have not been through the flow. Which flow depends
+  // on whether there is an account: a cold start goes to welcome, and someone
+  // who arrived by signing in — tapped "I already have an account", authorised
+  // with Apple, and turned out not to have one — goes straight to onboarding.
+  // That second case used to land HERE, on a viewfinder, with no profile and
+  // no idea it was supposed to have one.
+  if (profiles.length === 0) return <Redirect href={user ? '/onboarding' : '/welcome'} />;
+
+  // NO SCANNING BEFORE THE PAYWALL.
+  //
+  // The camera used to be reachable by anyone: you framed a label, pressed the
+  // shutter, waited, and only then found out you had no scans. The refusal was
+  // correct and the timing was indefensible — it spent someone's effort to
+  // make a sale.
+  //
+  // Two conditions, and the asymmetry between them is the point:
+  //
+  //   No account. There is no such thing as an entitled anonymous device —
+  //   entitlement is granted by our server against a user id — so this is a
+  //   fact, not a guess.
+  //
+  //   An entitlement that says NO. Affirmative only. `null` means the question
+  //   could not be answered (a network blip, a cold cache), and null must
+  //   never be read as "blocked" — the whole point of routing entitlement
+  //   through one place is that a dropped request cannot put a paywall in
+  //   front of somebody who is paying. Unknown falls through to the camera and
+  //   the shutter's own 402 handling, which is where it was before this gate
+  //   existed.
+  const walled = !user || entitlement?.subscription.active === false;
+  if (!entitlementLoading && walled) return <Redirect href="/paywall?gate=1" />;
 
   // Camera priming.
   //

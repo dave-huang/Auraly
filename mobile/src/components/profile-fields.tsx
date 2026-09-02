@@ -171,15 +171,24 @@ export function NameField({
 export function AllergenField({
   allergens,
   onChange,
+  showStrictness = true,
 }: {
   allergens: Map<string, ProfileAllergen>;
   onChange: (next: Map<string, ProfileAllergen>) => void;
+  /**
+   * Whether the per-allergen strictness rows appear under the chips.
+   *
+   * The editor wants them: someone who came back to correct one severity
+   * should not be marched through a wizard to reach it. Onboarding does not —
+   * it gives strictness a page of its own, because it is the setting that
+   * decides whether a trace warning becomes an Avoid, and underneath fifteen
+   * chips it is the control everybody leaves on its default.
+   */
+  showStrictness?: boolean;
 }) {
   const surface = useSurface();
   const { t } = useTranslation();
   const [custom, setCustom] = useState('');
-
-  const list = Array.from(allergens.entries());
 
   function toggle(allergen: string) {
     const next = new Map(allergens);
@@ -231,76 +240,93 @@ export function AllergenField({
         </Pressable>
       </View>
 
-      {list.length > 0 ? (
-        <View style={styles.strictness}>
-          <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
-            {t('onboarding.strictnessLabel')}
-          </ThemedText>
-          {list.map(([allergen, entry]) => (
-            <View key={allergen} style={[styles.strictRow, { borderTopColor: surface.rule }]}>
-              {/* Remove sits on the row, not on the chips above, because a
-                  custom allergen has no chip. Someone who typed "carrageenan"
-                  could add it and then had no way at all to take it back —
-                  the preset chips toggle off, and a typed entry appeared only
-                  here, where nothing was tappable. */}
-              <View style={styles.entryHeader}>
-                <ThemedText style={[Type.label, { color: surface.ink }]}>
-                  {allergenLabel(t, allergen)}
-                </ThemedText>
+      {showStrictness ? <StrictnessField allergens={allergens} onChange={onChange} /> : null}
+    </>
+  );
+}
+
+/**
+ * One strictness row per chosen allergen.
+ *
+ * A visible set of options rather than a tap-to-cycle value: this decides
+ * whether "may contain traces" reads as a caution or as an Avoid, and a
+ * control you have to press repeatedly to discover its range is the wrong
+ * shape for a question about somebody's anaphylaxis.
+ */
+export function StrictnessField({
+  allergens,
+  onChange,
+  showHeading = true,
+}: {
+  allergens: Map<string, ProfileAllergen>;
+  onChange: (next: Map<string, ProfileAllergen>) => void;
+  showHeading?: boolean;
+}) {
+  const surface = useSurface();
+  const { t } = useTranslation();
+  const list = Array.from(allergens.entries());
+  if (list.length === 0) return null;
+
+  return (
+    <View style={styles.strictness}>
+      {showHeading ? (
+        <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
+          {t('onboarding.strictnessLabel')}
+        </ThemedText>
+      ) : null}
+      {list.map(([allergen, entry]) => (
+        <View key={allergen} style={[styles.strictRow, { borderTopColor: surface.rule }]}>
+          {/* Remove sits on the row, not on the chips above, because a custom
+              allergen has no chip. Someone who typed "carrageenan" could add
+              it and then had no way at all to take it back. */}
+          <View style={styles.entryHeader}>
+            <ThemedText style={[Type.label, { color: surface.ink }]}>
+              {allergenLabel(t, allergen)}
+            </ThemedText>
+            <Pressable
+              onPress={() => {
+                const next = new Map(allergens);
+                next.delete(allergen);
+                onChange(next);
+              }}
+              hitSlop={12}
+              accessibilityRole="button"
+              accessibilityLabel={t('onboarding.removeAllergen', {
+                allergen: allergenLabel(t, allergen),
+              })}
+            >
+              <ThemedText style={[styles.removeGlyph, { color: surface.inkFaint }]}>✕</ThemedText>
+            </Pressable>
+          </View>
+          <View style={styles.severityRow}>
+            {SEVERITY_ORDER.map((option) => {
+              const active = option === entry.severity;
+              return (
                 <Pressable
-                  onPress={() => {
-                    const next = new Map(allergens);
-                    next.delete(allergen);
-                    onChange(next);
-                  }}
-                  hitSlop={12}
-                  accessibilityRole="button"
-                  accessibilityLabel={t('onboarding.removeAllergen', {
-                    allergen: allergenLabel(t, allergen),
-                  })}
+                  key={option}
+                  onPress={() =>
+                    onChange(new Map(allergens).set(allergen, { ...entry, severity: option }))
+                  }
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: active }}
+                  style={[
+                    styles.severityOption,
+                    { borderColor: surface.rule, backgroundColor: surface.card },
+                    active && { backgroundColor: surface.ink, borderColor: surface.ink },
+                  ]}
                 >
-                  <ThemedText style={[styles.removeGlyph, { color: surface.inkFaint }]}>
-                    ✕
+                  <ThemedText
+                    style={[styles.severityText, { color: active ? surface.card : surface.inkMuted }]}
+                  >
+                    {t(SEVERITY_KEYS[option])}
                   </ThemedText>
                 </Pressable>
-              </View>
-              <View style={styles.severityRow}>
-                {SEVERITY_ORDER.map((option) => {
-                  const active = option === entry.severity;
-                  return (
-                    <Pressable
-                      key={option}
-                      onPress={() =>
-                        onChange(
-                          new Map(allergens).set(allergen, { ...entry, severity: option }),
-                        )
-                      }
-                      accessibilityRole="radio"
-                      accessibilityState={{ selected: active }}
-                      style={[
-                        styles.severityOption,
-                        { borderColor: surface.rule, backgroundColor: surface.card },
-                        active && { backgroundColor: surface.ink, borderColor: surface.ink },
-                      ]}
-                    >
-                      <ThemedText
-                        style={[
-                          styles.severityText,
-                          { color: active ? surface.card : surface.inkMuted },
-                        ]}
-                      >
-                        {t(SEVERITY_KEYS[option])}
-                      </ThemedText>
-                    </Pressable>
-                  );
-                })}
-              </View>
-
-            </View>
-          ))}
+              );
+            })}
+          </View>
         </View>
-      ) : null}
-    </>
+      ))}
+    </View>
   );
 }
 

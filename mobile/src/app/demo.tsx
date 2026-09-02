@@ -53,8 +53,10 @@ export default function DemoScreen() {
   // person may already have tapped Skip.
   const alive = useRef(true);
 
-  function toPaywall() {
-    router.replace('/paywall?gate=1');
+  // Onward, from every exit this screen has: Continue, Skip, and the network
+  // failure. /reminder states the trial promise, then hands to the paywall.
+  function next() {
+    router.replace('/reminder');
   }
 
   useEffect(() => {
@@ -85,7 +87,7 @@ export default function DemoScreen() {
         // No network, no example. Degrade to the flow that existed before this
         // screen did rather than stranding someone on a frozen scan line.
         console.warn('[DEMO] could not build the example scan:', error?.message);
-        if (alive.current) toPaywall();
+        if (alive.current) next();
       });
 
     return () => {
@@ -108,7 +110,7 @@ export default function DemoScreen() {
         />
         <SafeAreaView style={styles.safe} pointerEvents="box-none">
           <View style={styles.topBar} pointerEvents="box-none">
-            <Pressable onPress={toPaywall} hitSlop={12} style={styles.skip} accessibilityRole="button">
+            <Pressable onPress={next} hitSlop={12} style={styles.skip} accessibilityRole="button">
               <ThemedText style={styles.skipLabel}>{t('demo.skip')}</ThemedText>
             </Pressable>
           </View>
@@ -145,7 +147,7 @@ export default function DemoScreen() {
               controls={
                 <Pressable
                   style={[styles.inkButton, { backgroundColor: surface.ink }]}
-                  onPress={toPaywall}
+                  onPress={next}
                   accessibilityRole="button"
                 >
                   <ThemedText style={[Type.label, styles.inkLabel, { color: surface.card }]}>
@@ -174,7 +176,9 @@ export default function DemoScreen() {
  * the analysed list are the same list by construction and cannot drift.
  */
 function DemoLabel({ scan }: { scan: DemoScan | null }) {
+  const { t } = useTranslation();
   const printed = scan?.result.originalIngredients ?? [];
+  const stampWord = t('demo.stamp');
 
   return (
     <View style={styles.labelStage}>
@@ -188,6 +192,21 @@ function DemoLabel({ scan }: { scan: DemoScan | null }) {
           {printed.join(', ')}
           {printed.length ? '.' : ''}
         </ThemedText>
+
+        {/* The stamp.
+            The verdict on this label is real — it comes back from the same
+            matcher a paid scan uses — but the PACKET is ours, and at a glance
+            a card mid-sweep looks exactly like a card from the camera. A line
+            of small type under the card is not enough to carry that: it is
+            the first thing cropped out of a screenshot and the last thing read
+            on a screen someone is watching animate.
+            An archive stamp rather than a tiled watermark. It belongs to the
+            document, the way "SPECIMEN" belongs to a banknote, and it leaves
+            the ingredient list legible — which matters, because that list
+            being readable IS the argument this screen makes. */}
+        <View style={styles.stamp} pointerEvents="none">
+          <ThemedText style={styles.stampText}>{stampWord}</ThemedText>
+        </View>
       </View>
     </View>
   );
@@ -255,6 +274,32 @@ const styles = StyleSheet.create({
     color: 'rgba(22,19,15,0.55)',
   },
   labelBody: { fontFamily: Font.mono, fontSize: 12, lineHeight: 19, color: '#16130F' },
+  stamp: {
+    position: 'absolute',
+    right: -4,
+    // TOP right, not bottom right. Bottom right is where the ingredient list
+    // ends, and a stamp sitting on the last line made both harder to read —
+    // which defeats the point, since that list being legible is the argument
+    // this screen makes. The head row is short in all three languages, so the
+    // top corner is reliably empty.
+    top: 12,
+    borderWidth: 2,
+    borderColor: 'rgba(22,19,15,0.30)',
+    paddingHorizontal: Space.sm,
+    paddingVertical: 3,
+    transform: [{ rotate: '-9deg' }],
+  },
+  stampText: {
+    fontFamily: Font.monoMedium,
+    fontSize: 13,
+    lineHeight: 18,
+    letterSpacing: 2.4,
+    // Uppercased here rather than in the catalogue, so the translations stay
+    // ordinary words a translator can read. A no-op in Chinese, which is fine —
+    // the box and the angle carry the stamp there.
+    textTransform: 'uppercase',
+    color: 'rgba(22,19,15,0.30)',
+  },
 
   inkButton: { borderRadius: Radius.pill, paddingVertical: Space.lg, alignItems: 'center' },
   inkLabel: { fontFamily: Font.sansSemi, fontSize: 15, lineHeight: 20 },

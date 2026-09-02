@@ -63,7 +63,7 @@ export default function SignInScreen() {
    * buttons in pairs for.
    */
   const dark = useColorScheme() === 'dark';
-  const params = useLocalSearchParams<{ mode?: string; name?: string; recover?: string }>();
+  const params = useLocalSearchParams<{ mode?: string; name?: string; recover?: string; then?: string }>();
   const saving = params.mode === 'save';
   /**
    * Sent here from the subscription screen by someone whose Apple ID already
@@ -115,7 +115,11 @@ export default function SignInScreen() {
       // either way, and the paywall pulls again on open.
       if (recovering) await refreshEntitlement().catch(() => null);
 
-      router.replace('/');
+      // Sent here mid-purchase by the paywall, because an anonymous purchase
+      // cannot be granted. Going to '/' would bounce off the viewfinder's gate
+      // and land back on the paywall anyway — but by way of a screen that
+      // exists to turn people around, which flickers. Go where they were.
+      router.replace(params.then === 'paywall' ? '/paywall?gate=1' : '/');
     } catch (error: any) {
       if (!(error instanceof SignInCancelledError)) {
         Alert.alert(t('signIn.failed'), error?.message ?? t('common.tryAgain'));

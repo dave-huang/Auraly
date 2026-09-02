@@ -17,6 +17,7 @@ import {
 } from '@/lib/entitlement';
 import { useTranslation } from '@/lib/i18n';
 import { goBackOrHome } from '@/lib/navigation';
+import { getActiveProfileId, listProfiles } from '@/lib/profiles';
 import { scheduleTrialReminder } from '@/lib/trialReminder';
 import {
   AlreadySubscribedError,
@@ -104,6 +105,30 @@ export default function PaywallScreen() {
    */
   const [storeSubscribed, setStoreSubscribed] = useState(false);
   const [checkingStore, setCheckingStore] = useState(PURCHASES_ENABLED);
+
+  /**
+   * Who the profile on this device belongs to, for the sign-in ask below.
+   *
+   * Without it, someone who spent eleven screens building a profile for their
+   * daughter and is then sent to sign in gets offered the chance to save "Me's
+   * profile" — the placeholder — over a flow that has been saying Maya
+   * throughout. Best-effort: a failure here costs the name in one sentence,
+   * and sign-in falls back to the placeholder on its own.
+   */
+  const [profileName, setProfileName] = useState<string | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    void Promise.all([listProfiles(), getActiveProfileId()])
+      .then(([list, activeId]) => {
+        if (cancelled) return;
+        const profile = list.find((p) => p.id === activeId) ?? list[0];
+        if (profile) setProfileName(profile.name);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const [plans, setPlans] = useState<PlanOffer[] | null>(null);
   const [selected, setSelected] = useState<'monthly' | 'annual'>('annual');
@@ -241,8 +266,45 @@ export default function PaywallScreen() {
     return false;
   }
 
+  /**
+   * Where closing this screen goes.
+   *
+   * It used to be `goBackOrHome`, and home is the camera. That was right while
+   * the camera was reachable without a subscription: you closed the paywall,
+   * you got a viewfinder, and the refusal came later at the shutter. The
+   * viewfinder is now gated, so the same tap would land on a screen whose only
+   * job is to send you straight back here — a paywall you cannot close, which
+   * is a bug even in an app that is deliberately a hard wall.
+   *
+   * So a gated close goes back to welcome. The profile they built is kept, so
+   * returning drops them at this screen again rather than at the questions.
+   * Opened deliberately from the menu, it still just goes back.
+   */
+  function leave() {
+    if (gate) router.replace('/welcome');
+    else goBackOrHome();
+  }
+
   async function startTrial() {
     if (!offer) return;
+
+    // An anonymous purchase cannot be granted.
+    //
+    // RevenueCat will happily take the money without an account, but
+    // entitlement is granted by OUR server against a user id, and
+    // awaitEntitlement returns null the moment it finds no token. So the
+    // anonymous path ends at "Purchase received", on a camera that still
+    // refuses — money taken, nothing unlocked, and no screen able to explain
+    // it. Sign-in first is not friction added to the sale; it is the sale
+    // being possible at all.
+    if (!user) {
+      router.push({
+        pathname: '/sign-in',
+        params: { mode: 'save', name: profileName ?? '', then: 'paywall' },
+      });
+      return;
+    }
+
     setBusy('purchase');
     try {
       const info = await purchasePlan(offer);
@@ -342,7 +404,11 @@ export default function PaywallScreen() {
     return (
       <RecoverView
         signedIn={!!user}
-        onClose={goBackOrHome}
+        // `leave`, not goBackOrHome. This state means the store says
+        // subscribed and we could not turn that into access — so the
+        // viewfinder's gate will refuse them, bounce them straight back here,
+        // and the close control becomes a button that visibly does nothing.
+        onClose={leave}
         onSignIn={() => router.replace('/sign-in?recover=1')}
         onRetry={() => void restore()}
         busy={busy === 'restore'}
@@ -353,7 +419,7 @@ export default function PaywallScreen() {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: surface.paper }]}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Pressable onPress={goBackOrHome} hitSlop={12} accessibilityRole="button">
+        <Pressable onPress={leave} hitSlop={12} accessibilityRole="button">
           <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>
             ✕ {t('common.back')}
           </ThemedText>

@@ -208,7 +208,11 @@ export default function ProfileSwitcherScreen() {
             style={[styles.addRow, { borderColor: surface.rule }]}
             onPress={() =>
               user
-                ? router.push('/onboarding')
+                ? // `mode=add` — the same questions without the first-run
+                  // introduction, and it ends back here rather than at the
+                  // paywall. Somebody who already pays for this, adding their
+                  // second child, must not be sold to again.
+                  router.push('/onboarding?mode=add')
                 : router.push({
                     pathname: '/sign-in',
                     // Name the person whose profile is about to be preserved.
