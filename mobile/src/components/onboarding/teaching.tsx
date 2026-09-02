@@ -18,7 +18,7 @@ import { useTranslation } from '@/lib/i18n';
 // Everything here is set in type. There is no photograph in any of them, and
 // that is deliberate: a stock shot of a supermarket aisle would say nothing
 // these words do not, and this app's whole visual argument is that a label is
-// a document. The halftone plates behind them are texture, not illustration.
+// a document. The wash plates behind them are texture, not illustration.
 
 /**
  * Split a string on `*marked*` runs.

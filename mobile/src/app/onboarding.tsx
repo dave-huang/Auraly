@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 
 import { LanguagePicker } from '@/components/language-picker';
-import { type PlateName } from '@/components/halftone-plate';
+import { type PlateName } from '@/components/inkwash-plate';
 import { ChoiceCard } from '@/components/onboarding/choice-card';
 import { StepFrame } from '@/components/onboarding/chrome';
 import {
@@ -267,6 +267,7 @@ function renderStep(args: {
     case 'subject':
       return {
         title: t('onboarding.subjectTitle'),
+        plate: 'bowls',
         body: t('onboarding.subjectBody'),
         cta: t('onboarding.next'),
         children: (
@@ -288,6 +289,7 @@ function renderStep(args: {
       return {
         title:
           subject === 'me' ? t('onboarding.nameTitleMe') : t('onboarding.nameTitleOther'),
+        plate: 'tag',
         body: t('onboarding.nameBody'),
         cta: t('onboarding.next'),
         children: <NameField value={args.name} onChange={args.setName} autoFocus />,
@@ -296,6 +298,7 @@ function renderStep(args: {
     case 'allergens':
       return {
         title: t('onboarding.allergensTitle', { name: profileName }),
+        plate: 'allergens',
         body: t('onboarding.allergensBody'),
         cta: t('onboarding.next'),
         // Nobody has to have an allergy. A diet or a condition alone is a
@@ -314,6 +317,7 @@ function renderStep(args: {
     case 'strictness':
       return {
         title: t('onboarding.strictnessTitle'),
+        plate: 'balance',
         body: t('onboarding.strictnessBody'),
         cta: t('onboarding.next'),
         children: (
@@ -330,17 +334,16 @@ function renderStep(args: {
         title: t('teach.aliasTitle'),
         body: t('teach.aliasBody'),
         cta: t('onboarding.next'),
-        // NOT `packets`, which is the obvious choice and the wrong one: its
-        // invented CJK and Arabic glyphs are harmless cropped to a strip
-        // behind a price, and indefensible full-bleed behind the screen whose
-        // entire claim is that we can read the writing on a packet.
-        plate: 'almonds',
+        // The still life of the thing being taught: a jug, butter and cheese,
+        // three objects that look nothing alike and are one ingredient.
+        plate: 'milk',
         children: <AliasPlate />,
       };
 
     case 'dietary':
       return {
         title: t('onboarding.dietaryTitle'),
+        plate: 'dietary',
         body: t('onboarding.dietaryBody'),
         cta: t('onboarding.next'),
         optional: args.dietary.size === 0,
@@ -350,6 +353,7 @@ function renderStep(args: {
     case 'conditions':
       return {
         title: t('onboarding.conditionsTitle'),
+        plate: 'conditions',
         body: t('onboarding.conditionsBody'),
         cta: t('onboarding.next'),
         optional: args.conditions.size === 0,
@@ -361,13 +365,14 @@ function renderStep(args: {
         title: t('teach.sourceTitle'),
         body: t('teach.sourceBody'),
         cta: t('onboarding.next'),
-        plate: 'vanillaPod',
+        plate: 'sources',
         children: <SourcePlate />,
       };
 
     case 'language':
       return {
         title: t('onboarding.languageTitle'),
+        plate: 'language',
         body: t('onboarding.languageBody'),
         cta: t('onboarding.next'),
         children: (
@@ -382,6 +387,7 @@ function renderStep(args: {
         title: t('teach.privacyTitle'),
         body: t('teach.privacyBody'),
         cta: t('onboarding.next'),
+        plate: 'privacy',
         children: <PrivacyPlate />,
       };
 
@@ -389,6 +395,7 @@ function renderStep(args: {
     default:
       return {
         title: t('onboarding.reflectTitle', { name: profileName }),
+        plate: 'specimen',
         body: t('onboarding.reflectBody'),
         // Never "Start scanning". Nothing scans next — an example does, and
         // then a price. A button that promises a camera it does not open is

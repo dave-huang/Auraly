@@ -4,7 +4,7 @@ import { ActivityIndicator, Alert, Linking, Pressable, ScrollView, StyleSheet, V
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ApertureMark } from '@/components/aperture-mark';
-import { HalftonePlate } from '@/components/halftone-plate';
+import { InkWashPlate } from '@/components/inkwash-plate';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Radius, Space, Type, useSurface } from '@/constants/design';
 import { APPLE_SUBSCRIPTIONS_URL, PRIVACY_URL, PURCHASES_ENABLED, TERMS_URL } from '@/lib/config';
@@ -426,15 +426,17 @@ export default function PaywallScreen() {
         </Pressable>
 
         <View style={styles.head}>
-          {/* Four packets, four writing systems. This is the screen where the
-              app asks to be paid for reading a label you cannot read, so the
-              plate is the claim rather than an ornament beside it.
+          {/* Tins and a packet, every surface blank. This is the screen where
+              the app asks to be paid for reading a label, so the plate is the
+              claim rather than an ornament beside it — and the surfaces are
+              bare because the previous plate's invented lettering was the one
+              thing on it a reader could catch us getting wrong.
 
               Only on THIS head, not the two below it. The subscribed and
               unavailable screens share the style but not the argument — one is
               a receipt and the other is an apology, and neither is a place to
               be selling. */}
-          <HalftonePlate name="packets" opacity={0.09} />
+          <InkWashPlate name="packets" />
           <ApertureMark size={48} color={surface.ink} />
           <ThemedText style={[Type.title, { color: surface.ink }]}>
             {t('paywall.title')}

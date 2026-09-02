@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { HalftonePlate, type PlateName } from '@/components/halftone-plate';
+import { InkWashPlate, type PlateName } from '@/components/inkwash-plate';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Radius, Space, Type, useSurface } from '@/constants/design';
 
@@ -50,7 +50,6 @@ export function StepFrame({
   title,
   body,
   plate,
-  plateOpacity = 0.07,
   children,
   cta,
   onCta,
@@ -65,7 +64,6 @@ export function StepFrame({
   title: string;
   body?: string;
   plate?: PlateName;
-  plateOpacity?: number;
   children?: ReactNode;
   cta: string;
   onCta: () => void;
@@ -77,7 +75,8 @@ export function StepFrame({
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: surface.paper }]}>
-      {plate ? <HalftonePlate name={plate} opacity={plateOpacity} /> : null}
+      {/* Each plate carries its own measured opacity, so no screen sets one. */}
+      {plate ? <InkWashPlate name={plate} /> : null}
 
       <KeyboardAvoidingView
         style={styles.container}

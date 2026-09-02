@@ -6,7 +6,7 @@ import { Image } from 'expo-image';
 
 import { ApertureMark } from '@/components/aperture-mark';
 import { ApertureFrame } from '@/components/aperture-reveal';
-import { HalftonePlate } from '@/components/halftone-plate';
+import { InkWashPlate } from '@/components/inkwash-plate';
 import { ThemedText } from '@/components/themed-text';
 import { VerdictSeal } from '@/components/verdict-seal';
 import {
@@ -239,7 +239,7 @@ export default function HistoryScreen() {
               doing work rather than decorating: it gives the eye somewhere to
               rest that is not an apology for the absence of scans. Scatter,
               not a subject — it must not look like a scan that failed. */}
-          <HalftonePlate name="almonds" opacity={0.07} />
+          <InkWashPlate name="basket" />
           <ApertureFrame style={styles.emptySlot} color={surface.inkFaint}>
             <ApertureMark size={28} color={surface.inkFaint} />
           </ApertureFrame>
