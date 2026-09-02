@@ -45,8 +45,6 @@ import {
   canUserScan,
   FREE_SCAN_GRANT,
   hasActiveSubscription,
-  referrals,
-  REFERRAL_REWARD_SCANS,
   upsertProfileSchema,
   crashReports,
   crashReportInputSchema,
@@ -1945,108 +1943,24 @@ Sent from Revely Feedback System
     }
   });
 
-  // ==========================================
-  // REFERRAL ROUTES
-  // ==========================================
-
-  app.get('/api/referral', isAuthenticated, async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
-      if (!user) return res.status(404).json({ error: 'User not found' });
-
-      const [stats] = await db.select({ count: sql<number>`count(*)::int` })
-        .from(referrals)
-        .where(and(eq(referrals.referrerId, userId), eq(referrals.rewardGranted, true)));
-
-      res.json({
-        referralCode: user.referralCode,
-        successfulReferrals: stats?.count ?? 0,
-        rewardPerReferral: REFERRAL_REWARD_SCANS,
-      });
-    } catch (error: any) {
-      console.error('Get referral info error:', error);
-      res.status(500).json({ error: 'Failed to get referral info' });
-    }
-  });
-
-  app.post('/api/referral/process', isAuthenticated, async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-      const { referralCode } = req.body;
-      if (!referralCode || typeof referralCode !== 'string') {
-        return res.status(400).json({ error: 'Referral code is required' });
-      }
-
-      const code = referralCode.toUpperCase().trim();
-
-      const currentUser = await storage.getUser(userId);
-      if (!currentUser) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-
-      const accountAge = Date.now() - new Date(currentUser.createdAt!).getTime();
-      const ONE_HOUR = 60 * 60 * 1000;
-      if (accountAge > ONE_HOUR) {
-        return res.status(400).json({ error: 'Referrals can only be applied to new accounts' });
-      }
-
-      const [referrer] = await db.select().from(users).where(eq(users.referralCode, code));
-      if (!referrer) {
-        return res.status(404).json({ error: 'Invalid referral code' });
-      }
-      if (referrer.id === userId) {
-        return res.status(400).json({ error: 'You cannot refer yourself' });
-      }
-
-      await db.transaction(async (tx) => {
-        try {
-          await tx.insert(referrals).values({
-            referrerId: referrer.id,
-            referredId: userId,
-            rewardGranted: true,
-          });
-        } catch (e: any) {
-          if (e.code === '23505') {
-            throw new Error('ALREADY_REFERRED');
-          }
-          throw e;
-        }
-
-        await tx.update(users)
-          .set({ purchasedScanBalance: sql`COALESCE(purchased_scan_balance, 0) + ${REFERRAL_REWARD_SCANS}`, updatedAt: new Date() })
-          .where(eq(users.id, referrer.id));
-
-        await tx.update(users)
-          .set({ purchasedScanBalance: sql`COALESCE(purchased_scan_balance, 0) + ${REFERRAL_REWARD_SCANS}`, updatedAt: new Date() })
-          .where(eq(users.id, userId));
-      });
-
-      console.log(`[REFERRAL] User ${userId} referred by ${referrer.id} (code: ${code}). Both granted ${REFERRAL_REWARD_SCANS} scans.`);
-      res.json({ success: true, scansGranted: REFERRAL_REWARD_SCANS });
-    } catch (error: any) {
-      if (error.message === 'ALREADY_REFERRED') {
-        return res.status(400).json({ error: 'You have already been referred' });
-      }
-      console.error('Process referral error:', error);
-      res.status(500).json({ error: 'Failed to process referral' });
-    }
-  });
-
-  // The scan-pack promo codes that used to live here are gone.
+  // The promo codes and the referral scheme that used to live here are gone.
   //
-  // They granted `purchasedScanBalance`, which was the currency of the model
-  // this app has left: ten scans for $2.99, packs that never expire. Under a
-  // subscription the app no longer sells packs, and the viewfinder's gate asks
-  // `subscription.active`, not how many scans are banked. So a redeemed code
-  // credited scans the holder could never reach — the server would have allowed
-  // the scan and the app would still have sent them to the paywall.
+  // Both handed out `purchasedScanBalance`, which was the currency of the model
+  // this app has left: ten scans for $2.99, packs that never expire. A promo
+  // code granted some; referring a friend granted ten to each of you.
   //
-  // Nothing in the mobile app ever called it. It is removed rather than
-  // repointed because the thing worth building instead is a comp entitlement,
-  // which is a different shape entirely: it grants subscription TIME, it has to
-  // survive RevenueCat overwriting the subscription columns, and it wants no
-  // redeem field in the app at all.
+  // Under a subscription the app no longer sells packs, and the viewfinder's
+  // gate asks `subscription.active` and never looks at how many scans are
+  // banked. So both schemes credited scans the holder could not spend: the
+  // server would have allowed the scan and the app would still have sent them
+  // to the paywall. Nothing in the mobile app called either one, so nobody
+  // found out.
+  //
+  // Removed rather than repointed at subscriptions, because the thing worth
+  // building instead is a comp entitlement, and that is a different shape: it
+  // grants subscription TIME, it has to survive RevenueCat overwriting the
+  // subscription columns on every refresh, and it wants no redeem field in the
+  // app at all.
 
   // Clear ingredient cache (admin only - use when AI prompts change)
   app.post('/api/admin/clear-cache', isAuthenticated, isAdmin, async (req: any, res) => {

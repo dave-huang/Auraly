@@ -233,9 +233,6 @@ export const users = pgTable("users", {
   // daily counter: see FREE_SCAN_GRANT below for why the daily model went away.
   freeScansUsed: integer("free_scans_used").notNull().default(0),
   
-  // Referral code (unique per user, auto-generated)
-  referralCode: varchar("referral_code").unique(),
-  
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -1468,37 +1465,19 @@ export const ingredientCache = pgTable(
 export type IngredientCacheEntry = typeof ingredientCache.$inferSelect;
 export type InsertIngredientCacheEntry = typeof ingredientCache.$inferInsert;
 
-// The scan-pack promo code tables used to sit here: `promo_codes` and
-// `promo_redemptions`, a code granting N scans into `purchasedScanBalance`.
+// Two scan-granting schemes used to be modelled here and are not any more:
+// `promo_codes` + `promo_redemptions` (a code worth N scans) and `referrals`
+// (ten scans each to referrer and referred, keyed off a `referral_code` column
+// on users). Both paid out in `purchasedScanBalance`.
 //
 // They belonged to the pack model, which the app no longer sells, and by the
 // end they granted something unreachable: the viewfinder gates on
-// `subscription.active` and never looks at a scan balance, so a redeemed code
-// bought scans the holder could not spend.
+// `subscription.active` and never looks at a scan balance, so what they handed
+// out could not be spent.
 //
-// The two tables still EXIST in Postgres. Dropping them is a separate,
-// deliberate act, not a side effect of a code change, and `db:push` will offer
-// to do it the next time it runs.
+// All three tables and the `users.referral_code` column still EXIST in
+// Postgres. Dropping them is a separate, deliberate act rather than a side
+// effect of a code change, and `db:push` will offer to do it the next time it
+// runs. Note that `referral_code` is a column on a live table, so that one is a
+// heavier decision than the two orphan tables.
 
-// ==========================================
-// REFERRALS
-// ==========================================
-
-export const referrals = pgTable(
-  "referrals",
-  {
-    id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-    referrerId: varchar("referrer_id").notNull().references(() => users.id, { onDelete: "cascade" }),
-    referredId: varchar("referred_id").notNull().references(() => users.id, { onDelete: "cascade" }),
-    rewardGranted: boolean("reward_granted").notNull().default(false),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-  },
-  (table) => [
-    index("IDX_referral_referrer").on(table.referrerId),
-    index("IDX_referral_referred").on(table.referredId),
-  ]
-);
-
-export type Referral = typeof referrals.$inferSelect;
-
-export const REFERRAL_REWARD_SCANS = 10;

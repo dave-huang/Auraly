@@ -1,21 +1,6 @@
-import { users, scanHistory, referrals, profiles, type User, type UpsertUser, type ScanHistory, type InsertScanHistory, type RiskPreferences, type AllergenPreferences, type Profile, type UpsertProfileInput, type RiskLevel, defaultRiskPreferences, defaultAllergenPreferences, REFERRAL_REWARD_SCANS } from "@shared/schema";
+import { users, scanHistory, profiles, type User, type UpsertUser, type ScanHistory, type InsertScanHistory, type RiskPreferences, type AllergenPreferences, type Profile, type UpsertProfileInput, type RiskLevel, defaultRiskPreferences, defaultAllergenPreferences } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, sql, count } from "drizzle-orm";
-import crypto from "crypto";
-
-function generateReferralCode(): string {
-  return crypto.randomBytes(4).toString('hex').toUpperCase();
-}
-
-async function generateUniqueReferralCode(): Promise<string> {
-  for (let i = 0; i < 5; i++) {
-    const code = generateReferralCode();
-    const [existing] = await db.select().from(users).where(eq(users.referralCode, code));
-    if (!existing) return code;
-  }
-  return crypto.randomBytes(6).toString('hex').toUpperCase();
-}
-
 // Why a profile deletion did or didn't happen. A bare boolean would collapse
 // "you don't own that profile" and "that's your last one" into the same 404,
 // and the second needs a different sentence in front of the user.
@@ -156,9 +141,6 @@ export class DatabaseStorage implements IStorage {
         profileImageUrl: userData.profileImageUrl,
         updatedAt: new Date(),
       };
-      if (!existingUser.referralCode) {
-        updates.referralCode = await generateUniqueReferralCode();
-      }
       const [user] = await db
         .update(users)
         .set(updates)
@@ -169,10 +151,7 @@ export class DatabaseStorage implements IStorage {
     
     const [user] = await db
       .insert(users)
-      .values({
-        ...userData,
-        referralCode: await generateUniqueReferralCode(),
-      })
+      .values(userData)
       .returning();
     return user;
   }
