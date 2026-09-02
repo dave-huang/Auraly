@@ -210,7 +210,7 @@ export default function AccountScreen() {
             ] as const
           ).map((key) => (
             <ThemedText key={key} style={[styles.bullet, { color: surface.inkMuted }]}>
-              — {t(key)}
+              · {t(key)}
             </ThemedText>
           ))}
           {purchased > 0 ? (

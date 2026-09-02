@@ -48,7 +48,7 @@ import type { AnalysisResult, Ingredient, RiskLevel } from '@shared/schema';
  *   - sulphur dioxide is the reason dried fruit stays orange
  *
  * Between them they touch milk, tree nuts, soy, sesame, wheat and sulphites,
- * plus vegan, vegetarian, halal, kosher, gluten-free and coeliac. Most
+ * plus vegan, vegetarian, halal, kosher, gluten-free and celiac. Most
  * profiles will find something. Peanut is deliberately NOT in the list — the
  * most frightened group of users gets a calm, evidenced clear verdict, and
  * the label's own "may contain" line does the rest honestly.
@@ -78,7 +78,7 @@ const ROWS: DemoRow[] = [
         name: 'Rolled Oats',
         summary: 'A whole grain. Gluten-free in itself, but rarely milled that way.',
         details:
-          'Oats contain no gluten of their own. Most are grown and milled alongside wheat, barley and rye, so only oats specifically labelled gluten-free are considered safe in coeliac disease.',
+          'Oats contain no gluten of their own. Most are grown and milled alongside wheat, barley and rye, so only oats specifically labelled gluten-free are considered safe in celiac disease.',
       },
       zh: {
         name: '燕麦片',
@@ -128,13 +128,13 @@ const ROWS: DemoRow[] = [
     copy: {
       en: {
         name: 'Sodium Caseinate',
-        summary: 'A milk protein — including on products sold as non-dairy.',
+        summary: 'A milk protein, including on products sold as non-dairy.',
         details:
           'Casein is the main protein in milk. In the US a product can be labelled non-dairy and still contain sodium caseinate, because that claim is about butterfat rather than milk protein. For anyone allergic to milk it is the real thing, and it is not vegan.',
       },
       zh: {
         name: '酪蛋白酸钠',
-        summary: '一种牛奶蛋白——即使产品标示为"非乳制品"。',
+        summary: '一种牛奶蛋白，即使产品标示为"非乳制品"。',
         details:
           '酪蛋白是牛奶中的主要蛋白质。在美国，产品可以标示为"非乳制品"却仍含有酪蛋白酸钠，因为该标示针对的是乳脂而非乳蛋白。对牛奶过敏的人而言，它就是牛奶成分，而且不属于纯素。',
       },
@@ -258,13 +258,13 @@ const ROWS: DemoRow[] = [
     copy: {
       en: {
         name: 'Sesame Seeds',
-        summary: 'A major allergen — required on US labels only since 2023.',
+        summary: 'A major allergen, required on US labels only since 2023.',
         details:
           'The FASTER Act made sesame the ninth allergen US labels must declare, effective January 2023. Before that it could legally hide inside "spices" or "natural flavour", which is exactly how people were caught out.',
       },
       zh: {
         name: '芝麻',
-        summary: '主要过敏原——美国自 2023 年起才要求标示。',
+        summary: '主要过敏原，美国自 2023 年起才要求标示。',
         details:
           '《FASTER 法案》将芝麻列为美国标签必须标示的第九种过敏原，自 2023 年 1 月起生效。在此之前，它可以合法地隐藏在"香辛料"或"天然香料"之中，许多人正是因此中招。',
       },
@@ -286,13 +286,13 @@ const ROWS: DemoRow[] = [
         name: 'Wheat Starch',
         summary: 'A starch from wheat. Contains gluten unless it says otherwise.',
         details:
-          'Ordinary wheat starch keeps enough gluten to matter in coeliac disease. A version processed to remove it exists and is labelled "gluten-free wheat starch" — the distinction is the whole difference, and it is one word.',
+          'Ordinary wheat starch keeps enough gluten to matter in celiac disease. A version processed to remove it exists and is labelled "gluten-free wheat starch". The distinction is the whole difference, and it is one word.',
       },
       zh: {
         name: '小麦淀粉',
         summary: '来自小麦的淀粉。除非另有标示，否则含麸质。',
         details:
-          '普通小麦淀粉保留的麸质足以对乳糜泻患者构成影响。经处理去除麸质的版本会标示为"无麸质小麦淀粉"——差别全在这几个字上。',
+          '普通小麦淀粉保留的麸质足以对乳糜泻患者构成影响。经处理去除麸质的版本会标示为"无麸质小麦淀粉"，差别全在这几个字上。',
       },
       es: {
         name: 'Almidón de Trigo',
@@ -312,13 +312,13 @@ const ROWS: DemoRow[] = [
         name: 'Gelatin',
         summary: 'An animal protein, usually pork or beef. The animal is rarely named.',
         details:
-          'Boiled from skin, bone and connective tissue. Because the source animal is almost never printed, gelatin cannot be cleared as halal or kosher from an ingredient list alone — that takes certification. It is never vegan or vegetarian.',
+          'Boiled from skin, bone and connective tissue. Because the source animal is almost never printed, gelatin cannot be cleared as halal or kosher from an ingredient list alone, and that takes certification. It is never vegan or vegetarian.',
       },
       zh: {
         name: '明胶',
         summary: '动物蛋白，通常来自猪或牛。标签极少注明来源。',
         details:
-          '由皮、骨和结缔组织熬制而成。由于来源动物几乎从不标注，仅凭成分表无法判定明胶是否符合清真或洁食标准——这需要认证。它绝不属于纯素或素食。',
+          '由皮、骨和结缔组织熬制而成。由于来源动物几乎从不标注，仅凭成分表无法判定明胶是否符合清真或洁食标准，这需要认证。它绝不属于纯素或素食。',
       },
       es: {
         name: 'Gelatina',
@@ -338,13 +338,13 @@ const ROWS: DemoRow[] = [
         name: 'Carmine (E120)',
         summary: 'A red colour made from insects.',
         details:
-          'Also printed as cochineal or carminic acid. It is produced from the dried bodies of the cochineal scale insect — around 70,000 of them per kilogram. Not vegan or vegetarian, and a rare allergen in its own right.',
+          'Also printed as cochineal or carminic acid. It is produced from the dried bodies of the cochineal scale insect, around 70,000 of them per kilogram. Not vegan or vegetarian, and a rare allergen in its own right.',
       },
       zh: {
         name: '胭脂红（E120）',
         summary: '由昆虫制成的红色色素。',
         details:
-          '也标示为胭脂虫红或胭脂虫酸。由胭脂虫的干燥虫体制成——每公斤约需七万只。不属于纯素或素食，本身也是一种罕见过敏原。',
+          '也标示为胭脂虫红或胭脂虫酸。由胭脂虫的干燥虫体制成，每公斤约需七万只。不属于纯素或素食，本身也是一种罕见过敏原。',
       },
       es: {
         name: 'Carmín (E120)',

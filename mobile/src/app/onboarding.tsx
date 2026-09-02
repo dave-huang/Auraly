@@ -8,6 +8,8 @@ import { ChoiceCard } from '@/components/onboarding/choice-card';
 import { StepFrame } from '@/components/onboarding/chrome';
 import {
   AliasPlate,
+  DecodePlate,
+  LabelPlate,
   PrivacyPlate,
   ReflectPlate,
   SourcePlate,
@@ -43,11 +45,20 @@ import type { DietaryRule, ProfileAllergen, ProfileCondition } from '@/lib/types
 // Four screens is the right length for a form and the wrong length for an
 // introduction.
 //
-// So there are now eleven steps, and three of them ask for nothing at all —
-// they pay out something instead (how a label hides milk, who the verdicts
-// quote, what happens to the photograph). The questions are one to a screen,
-// which reads as faster even though it is longer, and the last screen reads
-// the whole profile back before anyone is asked for anything.
+// So it is now fourteen steps, and six of them ask for nothing at all. They pay
+// out something instead: a welcome that says why anyone would bother, what a
+// chemical name turns into, how a label hides milk, why a barcode is the wrong
+// thing to read, who the verdicts quote, and what happens to the photograph.
+// The questions are one to a screen, which reads as faster even though it is
+// longer, and the last screen reads the whole profile back before anyone is
+// asked for anything.
+//
+// WHY THE VALUE IS ARGUED HERE AND NOT ON THE WELCOME SCREEN
+//
+// It used to be argued there: a worked example and three supporting points, all
+// landing on somebody who had been in the app for two seconds. It read as dense,
+// and dense on a first screen reads as work. Behind the button there is room to
+// make one point per screen, to a person who has already chosen to look.
 //
 // WHAT IS DELIBERATELY NOT ASKED
 //
@@ -64,6 +75,8 @@ import type { DietaryRule, ProfileAllergen, ProfileCondition } from '@/lib/types
 type Subject = 'me' | 'child' | 'other';
 
 type StepId =
+  | 'begin'
+  | 'decode'
   | 'subject'
   | 'name'
   | 'allergens'
@@ -71,6 +84,7 @@ type StepId =
   | 'aliases'
   | 'dietary'
   | 'conditions'
+  | 'label'
   | 'sources'
   | 'language'
   | 'privacy'
@@ -87,6 +101,11 @@ type StepId =
 const ADD_STEPS: StepId[] = ['subject', 'name', 'allergens', 'strictness', 'dietary', 'conditions', 'reflect'];
 
 const FIRST_RUN_STEPS: StepId[] = [
+  // Two before a single question is asked. The first says why anyone would
+  // bother; the second shows the thing being bothered with. Asking a stranger
+  // for their child's allergies before either of those is the wrong order.
+  'begin',
+  'decode',
   'subject',
   'name',
   'allergens',
@@ -94,6 +113,9 @@ const FIRST_RUN_STEPS: StepId[] = [
   'aliases',
   'dietary',
   'conditions',
+  // The profile is complete here. Everything after it is the case for the app,
+  // made to somebody who has already put work in.
+  'label',
   'sources',
   'language',
   'privacy',
@@ -264,6 +286,25 @@ function renderStep(args: {
   const { step, t, subject, profileName } = args;
 
   switch (step) {
+    case 'begin':
+      return {
+        title: t('onboarding.beginTitle'),
+        // An empty basket. Nothing in it yet, which is where this starts.
+        plate: 'basket',
+        body: t('onboarding.beginBody'),
+        cta: t('onboarding.beginCta'),
+      };
+
+    case 'decode':
+      return {
+        title: t('teach.decodeTitle'),
+        // No plate: three worked examples fill the page, and the frame would
+        // drop a drawing anyway.
+        body: t('teach.decodeBody'),
+        cta: t('onboarding.next'),
+        children: <DecodePlate />,
+      };
+
     case 'subject':
       return {
         title: t('onboarding.subjectTitle'),
@@ -360,6 +401,17 @@ function renderStep(args: {
         children: <ConditionsField conditions={args.conditions} onChange={args.setConditions} />,
       };
 
+    case 'label':
+      return {
+        title: t('teach.labelTitle'),
+        body: t('teach.labelBody'),
+        cta: t('onboarding.next'),
+        // Blank tins, no words on them anywhere. Exactly what a barcode leaves
+        // you holding: a product identified only by a number.
+        plate: 'packets',
+        children: <LabelPlate />,
+      };
+
     case 'sources':
       return {
         title: t('teach.sourceTitle'),
@@ -394,7 +446,12 @@ function renderStep(args: {
     case 'reflect':
     default:
       return {
-        title: t('onboarding.reflectTitle', { name: profileName }),
+        // "That is Me's profile" is what the placeholder name produces, and it
+        // reads like a bug. Somebody who never typed a name gets the sentence
+        // addressed to them instead of to a third person.
+        title: args.name.trim()
+          ? t('onboarding.reflectTitle', { name: profileName })
+          : t('onboarding.reflectTitleSelf'),
         plate: 'specimen',
         body: t('onboarding.reflectBody'),
         // Never "Start scanning". Nothing scans next — an example does, and

@@ -209,7 +209,7 @@ requests to see or delete your data, write to
 <p>Profiles are the heart of the app. A profile can record allergens and how
 severe each one is (including anaphylaxis), dietary rules, and health conditions
 — which may include <strong>pregnancy, breastfeeding, an infant under twelve
-months, kidney disease, high blood pressure, diabetes, coeliac disease, and
+months, kidney disease, high blood pressure, diabetes, celiac disease, and
 similar</strong>. You may create profiles for other people, such as your
 children.</p>
 <p>We use this for one purpose: deciding what to tell you about a label you
@@ -396,7 +396,7 @@ Washington. It is separate from our
     <tr>
       <td>Health conditions you record in a profile — including pregnancy,
       breastfeeding, an infant under twelve months, kidney disease, high blood
-      pressure, diabetes, and coeliac disease</td>
+      pressure, diabetes, and celiac disease</td>
       <td>To decide which ingredients on a label matter for the person that
       profile describes. Used only to produce that answer.</td>
     </tr>

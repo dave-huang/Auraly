@@ -99,8 +99,8 @@ export const CONDITION_ADVISORIES: ConditionAdvisory[] = [
     },
   },
 
-  // ---- coeliac disease ----
-  // Raised from the seed list's blanket "caution" to avoid. For coeliac disease
+  // ---- celiac disease ----
+  // Raised from the seed list's blanket "caution" to avoid. For celiac disease
   // gluten is not a substance to watch, it is the thing that causes the damage —
   // the same standing an allergen has, and it should read that way on the card.
   {
@@ -113,7 +113,7 @@ export const CONDITION_ADVISORIES: ConditionAdvisory[] = [
     impact: 'avoid',
     domain: 'food',
     reasonKey: 'advisory.celiac.gluten',
-    reason: 'Contains or derives from a gluten grain, which damages the small intestine in coeliac disease.',
+    reason: 'Contains or derives from a gluten grain, which damages the small intestine in celiac disease.',
     source: {
       org: 'American College of Gastroenterology',
       title: 'ACG Clinical Guidelines: Diagnosis and Management of Celiac Disease',

@@ -1,126 +1,74 @@
 import { useRouter } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { useState } from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { ApertureMark, RevelyLockup } from '@/components/aperture-mark';
-import { ApertureReveal } from '@/components/aperture-reveal';
+import { RevelyLockup } from '@/components/aperture-mark';
 import { InkWashPlate } from '@/components/inkwash-plate';
 import { LanguagePicker } from '@/components/language-picker';
+import { SignInSheet } from '@/components/sign-in-providers';
 import { ThemedText } from '@/components/themed-text';
-import {
-  Font, Gutter, Radius, Space, Type, useSurface, useVerdictColors,
-} from '@/constants/design';
+import { Font, Gutter, Radius, Space, Type, useSurface } from '@/constants/design';
 import { useTranslation } from '@/lib/i18n';
 
 // Screen 00 — Welcome.
 //
-// The first screen anyone sees, and it exists because of what used to be here:
-// a sign-in wall. Cold start went straight to "Continue with Apple" — hand over
-// an identity to an app that had not yet done anything, said anything, or shown
-// a single verdict. Everything past that screen was invisible to someone who
-// had not already decided to trust it.
+// ONE DECISION, TWO DOORS
 //
-// SHOW THE PRODUCT, DO NOT DESCRIBE IT
+// This screen used to argue. It carried a worked example (a real ingredient, a
+// real verdict, the regulator underneath it) and three supporting points, on
+// the theory that showing the product beats describing it. The theory is right
+// and the placement was wrong: all of it landed on somebody who had been in the
+// app for two seconds and had not yet decided to care. It read as dense, and
+// dense on a first screen reads as work.
 //
-// So this screen is one specimen card: a real ingredient, a real verdict, and
-// the authority underneath it. Not a carousel — three swipeable slides of
-// promises get skipped by everyone and remembered by nobody.
+// So the argument moved into the flow behind the button, where there is room to
+// make it one idea at a time, and this screen went back to doing the only job a
+// first screen can actually do: name the app, and offer the two doors.
 //
-// The citation line is the part that matters. Every competitor gives a score;
-// the thing this app does that they do not is say WHO SAYS SO, and that has to
-// be visible before the first ask, not discovered later by someone who stayed.
+//   Get started  — into onboarding, which ends at the subscription.
+//   Sign in      — a drawer on this same page, not another screen. Somebody
+//                  reinstalling wants their account back in one tap. If they
+//                  turn out to have no profile yet, the gate sends them into
+//                  onboarding anyway, so the two doors meet.
 //
-// The specimen is fixed and honest — an evidence record the app really holds,
-// worded as the results screen would word it. It is not a fabricated screenshot
-// of a verdict we cannot produce.
-//
-// THE REVEAL
-//
-// The card arrives through the aperture: unresolved, then read, then clear.
-// Reading a label is the first thing the app does and the only thing it claims
-// to do, so the entrance demonstrates the product rather than decorating it —
-// and it is built from the mark, so it introduces no new vocabulary.
-//
-// Curiosity, not fear. The sweep invites a look; it withholds nothing. It runs
-// once and leaves the card fully legible, which is also what someone with
-// reduced motion sees from the very first frame.
+// The drawing is the whole upper half and carries no text over it, which is the
+// rule everywhere in the app now: a plate is either a picture with its own
+// space or it is not worth having.
 
 export default function WelcomeScreen() {
   const router = useRouter();
   const { t } = useTranslation();
   const surface = useSurface();
-  const verdict = useVerdictColors();
+  const [signingIn, setSigningIn] = useState(false);
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: surface.paper }]}>
-      {/* A single split pod, brushed like a specimen plate — the field guide
-          stated before a word of it is read. Behind the whole scroll rather
-          than inside the head: this screen's argument is the specimen card,
-          and a plate that stopped above it would fence the card off from the
-          page it is supposed to belong to. */}
-      <InkWashPlate name="vanillaPod" />
+      {/* Language sits on the FIRST screen, not only behind sign-in. A cold
+          start lands here, so putting the control anywhere else strands anyone
+          who cannot read this page. */}
+      <View style={styles.topBar}>
+        <LanguagePicker />
+      </View>
 
-      <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.head}>
-          {/* Language sits on the FIRST screen, not only on sign-in.
+      {/* A split pod: looking closely at what a thing is actually made of,
+          which is the entire product in one drawing. Portrait, because this
+          band is tall and narrow, and a landscape drawing would letterbox into
+          a strip with dead space above and below it. */}
+      <View style={styles.art}>
+        <InkWashPlate name="vanillaPod" />
+      </View>
 
-              A cold start lands here, and sign-in is behind "Already have an
-              account?" — so putting the control only there still stranded
-              anyone who cannot read this page. It shares the lockup's row
-              rather than floating above it: this screen scrolls, and a pinned
-              pill would drift over the specimen card on a small phone. */}
-          <View style={styles.headTop}>
-            <RevelyLockup size={30} color={surface.ink} />
-            <LanguagePicker />
-          </View>
-          {/* Full ink at title weight, now that it is a sentence rather than
-              a paragraph. The screen's job is to be understood in one glance
-              and then got past; the specimen card below is the argument, and
-              it cannot land while a wall of prose is competing with it. */}
-          <ThemedText style={[Type.title, { color: surface.ink }]}>
-            {t('welcome.tagline')}
-          </ThemedText>
-        </View>
+      <View style={styles.head}>
+        {/* The lockup, not a serif wordmark: Newsreader belongs to the verdict
+            word alone, so the app's own name is set in Instrument Sans. */}
+        <RevelyLockup size={40} color={surface.ink} />
+        <ThemedText style={[styles.tagline, { color: surface.ink }]}>
+          {t('welcome.tagline')}
+        </ThemedText>
+      </View>
 
-        {/* The specimen. Same flat card, same seal, same citation rule the
-            results screen uses — this is a sample of the product, not an
-            illustration of it. */}
-        <ApertureReveal>
-          <View style={[styles.specimen, { backgroundColor: surface.card, borderColor: surface.rule }]}>
-            <View style={styles.specimenHead}>
-              <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
-                {t('welcome.specimenLabel')}
-              </ThemedText>
-              <View style={[styles.seal, { backgroundColor: verdict.caution.wash }]}>
-                <ThemedText style={[styles.sealText, { color: verdict.caution.ink }]}>
-                  {t('welcome.specimenVerdict')}
-                </ThemedText>
-              </View>
-            </View>
-
-            <ThemedText style={[Type.title, { color: surface.ink }]}>
-              {t('welcome.specimenIngredient')}
-            </ThemedText>
-            <ThemedText style={[Type.body, { color: surface.inkMuted }]}>
-              {t('welcome.specimenReason')}
-            </ThemedText>
-
-            <View style={[styles.citation, { borderTopColor: surface.rule }]}>
-              <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>
-                {t('welcome.specimenSource')}
-              </ThemedText>
-            </View>
-          </View>
-        </ApertureReveal>
-
-        <View style={styles.points}>
-          <Point icon text={t('welcome.pointPersonal')} />
-          <Point text={t('welcome.pointSources')} />
-          <Point text={t('welcome.pointLanguages')} />
-        </View>
-      </ScrollView>
-
-      <View style={[styles.footer, { borderTopColor: surface.rule }]}>
+      <View style={styles.footer}>
         <Pressable
           style={[styles.primary, { backgroundColor: surface.ink }]}
           onPress={() => router.push('/onboarding')}
@@ -131,78 +79,61 @@ export default function WelcomeScreen() {
           </ThemedText>
         </Pressable>
 
-        {/* Present, but quiet. Someone reinstalling needs it immediately;
-            someone new must not read it as the expected next step. */}
-        <Pressable onPress={() => router.push('/sign-in')} hitSlop={12} style={styles.secondary}>
-          <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>
-            {t('welcome.haveAccount')}
+        {/* Present, and readable, but not the expected next step. */}
+        <Pressable
+          onPress={() => setSigningIn(true)}
+          hitSlop={12}
+          style={styles.secondary}
+          accessibilityRole="button"
+          accessibilityLabel={`${t('welcome.haveAccount')} ${t('welcome.signIn')}`}
+        >
+          <ThemedText style={[Type.body, { color: surface.inkMuted }]}>
+            {t('welcome.haveAccount')}{' '}
+            <ThemedText style={[styles.signIn, { color: surface.ink }]}>
+              {t('welcome.signIn')}
+            </ThemedText>
           </ThemedText>
         </Pressable>
       </View>
-    </SafeAreaView>
-  );
-}
 
-function Point({ text, icon = false }: { text: string; icon?: boolean }) {
-  const surface = useSurface();
-  return (
-    <View style={styles.point}>
-      {icon ? (
-        <ApertureMark size={14} color={surface.inkFaint} />
-      ) : (
-        <View style={[styles.dot, { backgroundColor: surface.inkFaint }]} />
-      )}
-      <ThemedText style={[Type.body, styles.pointText, { color: surface.inkMuted }]}>
-        {text}
-      </ThemedText>
-    </View>
+      {/* The gate decides where they land: straight to the camera if they have
+          a profile and a subscription, into onboarding if they do not. */}
+      <SignInSheet
+        visible={signingIn}
+        onClose={() => setSigningIn(false)}
+        onSignedIn={() => {
+          setSigningIn(false);
+          router.replace('/');
+        }}
+      />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  content: {
-    paddingHorizontal: Gutter,
-    paddingTop: Space.xxl,
-    paddingBottom: Space.xl,
-    gap: Space.xl,
-  },
-  head: { gap: Space.md },
-  headTop: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  topBar: { flexDirection: 'row', justifyContent: 'flex-end', paddingHorizontal: Gutter },
 
-  specimen: {
-    borderWidth: StyleSheet.hairlineWidth,
-    borderRadius: Radius.flat,
-    padding: Space.lg,
-    gap: Space.sm,
-  },
-  specimenHead: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: Space.xs,
-  },
-  seal: { paddingHorizontal: Space.sm, paddingVertical: 3, borderRadius: Radius.tile },
-  sealText: { fontFamily: Font.sansSemi, fontSize: 11, lineHeight: 15, letterSpacing: 0.6 },
-  citation: {
-    borderTopWidth: StyleSheet.hairlineWidth,
-    paddingTop: Space.sm,
-    marginTop: Space.xs,
+  // Takes whatever height is left once the name, the tagline and the buttons
+  // have theirs, which on a small phone is less and on a large one is more.
+  // The drawing is contained rather than cropped, so it simply gets smaller
+  // instead of losing its edges.
+  art: { flex: 1, marginHorizontal: Gutter, marginTop: Space.sm, minHeight: 140 },
+
+  head: { paddingHorizontal: Gutter, paddingTop: Space.xl, alignItems: 'center', gap: Space.lg },
+  // Bigger than Type.title and set centred: this is the one sentence the screen
+  // exists to say, and at 22 it looked like a caption for the drawing above it.
+  tagline: {
+    fontFamily: Font.sansSemi,
+    fontSize: 30,
+    lineHeight: 37,
+    letterSpacing: -0.5,
+    textAlign: 'center',
   },
 
-  points: { gap: Space.md },
-  point: { flexDirection: 'row', alignItems: 'flex-start', gap: Space.sm },
-  dot: { width: 4, height: 4, borderRadius: 2, marginTop: 9, marginHorizontal: 5 },
-  pointText: { flex: 1 },
-
-  footer: {
-    paddingHorizontal: Gutter,
-    paddingTop: Space.md,
-    paddingBottom: Space.sm,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    gap: Space.md,
-  },
+  footer: { paddingHorizontal: Gutter, paddingTop: Space.xl, paddingBottom: Space.md, gap: Space.sm },
   primary: { borderRadius: Radius.pill, paddingVertical: Space.lg, alignItems: 'center' },
-  primaryLabel: { fontFamily: Font.sansSemi, fontSize: 15, lineHeight: 20 },
-  secondary: { alignItems: 'center', paddingVertical: Space.sm },
+  primaryLabel: { fontFamily: Font.sansSemi, fontSize: 16, lineHeight: 21 },
+  secondary: { alignItems: 'center', paddingVertical: Space.md },
+  signIn: { fontFamily: Font.sansSemi },
 });
