@@ -45,9 +45,6 @@ import {
   canUserScan,
   FREE_SCAN_GRANT,
   hasActiveSubscription,
-  promoCodes,
-  promoRedemptions,
-  insertPromoCodeSchema,
   referrals,
   REFERRAL_REWARD_SCANS,
   upsertProfileSchema,
@@ -666,11 +663,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // an account must let them delete it from inside the app, not by emailing
   // support.
   //
-  // Everything goes in one statement — profiles, scan history, usage and
-  // purchase logs, and promo redemptions all cascade from users.id, and
-  // analytics events detach to a null user rather than following the person out
-  // (see storage.deleteUser). There is no soft-delete: someone asking to be
-  // forgotten is not asking to be marked inactive.
+  // Everything goes in one statement — profiles, scan history, and usage and
+  // purchase logs all cascade from users.id, and analytics events detach to a
+  // null user rather than following the person out (see storage.deleteUser).
+  // There is no soft-delete: someone asking to be forgotten is not asking to
+  // be marked inactive.
   //
   // The bearer token survives cryptographically but stops working immediately,
   // because bearerAuthMiddleware looks the user up on every request and bails
@@ -2036,152 +2033,20 @@ Sent from Revely Feedback System
     }
   });
 
-  // ==========================================
-  // PROMO CODE ROUTES
-  // ==========================================
-  
-  app.post('/api/scan/redeem', isAuthenticated, async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-      const { code } = req.body;
-      if (!code || typeof code !== 'string') {
-        return res.status(400).json({ error: 'Promo code is required' });
-      }
-
-      const normalizedCode = code.toUpperCase().trim();
-
-      const [promo] = await db.select().from(promoCodes).where(eq(promoCodes.code, normalizedCode));
-      if (!promo) {
-        return res.status(404).json({ error: 'Invalid promo code' });
-      }
-      if (!promo.isActive) {
-        return res.status(400).json({ error: 'This promo code is no longer active' });
-      }
-      if (new Date(promo.expiresAt) < new Date()) {
-        return res.status(400).json({ error: 'This promo code has expired' });
-      }
-      if (promo.totalRedemptions >= promo.maxRedemptions) {
-        return res.status(400).json({ error: 'This promo code has reached its redemption limit' });
-      }
-
-      const [existing] = await db.select().from(promoRedemptions)
-        .where(and(
-          eq(promoRedemptions.promoCodeId, promo.id),
-          eq(promoRedemptions.userId, userId)
-        ));
-      if (existing) {
-        return res.status(400).json({ error: 'You have already redeemed this promo code' });
-      }
-
-      await db.transaction(async (tx) => {
-        await tx.insert(promoRedemptions).values({
-          promoCodeId: promo.id,
-          userId,
-        });
-        await tx.update(promoCodes)
-          .set({ totalRedemptions: promo.totalRedemptions + 1 })
-          .where(eq(promoCodes.id, promo.id));
-        const user = await storage.getUser(userId);
-        const newBalance = (user?.purchasedScanBalance || 0) + promo.scansGranted;
-        await tx.update(users)
-          .set({ purchasedScanBalance: newBalance, updatedAt: new Date() })
-          .where(eq(users.id, userId));
-      });
-
-      console.log(`[PROMO] User ${userId} redeemed code "${normalizedCode}" for ${promo.scansGranted} scans`);
-      res.json({ success: true, scansGranted: promo.scansGranted });
-    } catch (error: any) {
-      console.error('Promo redemption error:', error);
-      res.status(500).json({ error: 'Failed to redeem promo code' });
-    }
-  });
-
-  // Admin: List promo codes
-  app.get('/api/admin/promo-codes', isAuthenticated, isAdmin, async (req: any, res) => {
-    try {
-      const codes = await db.select().from(promoCodes).orderBy(desc(promoCodes.createdAt));
-      res.json(codes);
-    } catch (error: any) {
-      console.error('List promo codes error:', error);
-      res.status(500).json({ error: 'Failed to list promo codes' });
-    }
-  });
-
-  // Admin: Create promo code
-  app.post('/api/admin/promo-codes', isAuthenticated, isAdmin, async (req: any, res) => {
-    try {
-      const parsed = insertPromoCodeSchema.safeParse(req.body);
-      if (!parsed.success) {
-        return res.status(400).json({ error: 'Invalid input', details: parsed.error.flatten() });
-      }
-
-      const { code, scansGranted, maxRedemptions, expiresAt } = parsed.data;
-
-      const [existingCode] = await db.select().from(promoCodes).where(eq(promoCodes.code, code));
-      if (existingCode) {
-        return res.status(409).json({ error: 'A promo code with this name already exists' });
-      }
-
-      const [created] = await db.insert(promoCodes).values({
-        code,
-        scansGranted,
-        maxRedemptions,
-        expiresAt: new Date(expiresAt),
-      }).returning();
-
-      console.log(`[ADMIN] Promo code created by ${req.user.claims.sub}: ${code}`);
-      res.json(created);
-    } catch (error: any) {
-      console.error('Create promo code error:', error);
-      res.status(500).json({ error: 'Failed to create promo code' });
-    }
-  });
-
-  // Admin: Update promo code (toggle active, update expiration/max)
-  app.patch('/api/admin/promo-codes/:id', isAuthenticated, isAdmin, async (req: any, res) => {
-    try {
-      const { id } = req.params;
-      const { isActive, maxRedemptions, expiresAt } = req.body;
-
-      const updates: Record<string, any> = {};
-      if (typeof isActive === 'boolean') updates.isActive = isActive;
-      if (typeof maxRedemptions === 'number' && maxRedemptions > 0) updates.maxRedemptions = maxRedemptions;
-      if (expiresAt) updates.expiresAt = new Date(expiresAt);
-
-      if (Object.keys(updates).length === 0) {
-        return res.status(400).json({ error: 'No valid fields to update' });
-      }
-
-      const [updated] = await db.update(promoCodes)
-        .set(updates)
-        .where(eq(promoCodes.id, id))
-        .returning();
-
-      if (!updated) {
-        return res.status(404).json({ error: 'Promo code not found' });
-      }
-
-      res.json(updated);
-    } catch (error: any) {
-      console.error('Update promo code error:', error);
-      res.status(500).json({ error: 'Failed to update promo code' });
-    }
-  });
-
-  // Admin: Delete promo code
-  app.delete('/api/admin/promo-codes/:id', isAuthenticated, isAdmin, async (req: any, res) => {
-    try {
-      const { id } = req.params;
-      const result = await db.delete(promoCodes).where(eq(promoCodes.id, id)).returning();
-      if (result.length === 0) {
-        return res.status(404).json({ error: 'Promo code not found' });
-      }
-      res.json({ success: true });
-    } catch (error: any) {
-      console.error('Delete promo code error:', error);
-      res.status(500).json({ error: 'Failed to delete promo code' });
-    }
-  });
+  // The scan-pack promo codes that used to live here are gone.
+  //
+  // They granted `purchasedScanBalance`, which was the currency of the model
+  // this app has left: ten scans for $2.99, packs that never expire. Under a
+  // subscription the app no longer sells packs, and the viewfinder's gate asks
+  // `subscription.active`, not how many scans are banked. So a redeemed code
+  // credited scans the holder could never reach — the server would have allowed
+  // the scan and the app would still have sent them to the paywall.
+  //
+  // Nothing in the mobile app ever called it. It is removed rather than
+  // repointed because the thing worth building instead is a comp entitlement,
+  // which is a different shape entirely: it grants subscription TIME, it has to
+  // survive RevenueCat overwriting the subscription columns, and it wants no
+  // redeem field in the app at all.
 
   // Clear ingredient cache (admin only - use when AI prompts change)
   app.post('/api/admin/clear-cache', isAuthenticated, isAdmin, async (req: any, res) => {

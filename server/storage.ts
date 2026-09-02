@@ -133,8 +133,8 @@ export class DatabaseStorage implements IStorage {
   //
   // Every table that references users.id is ON DELETE CASCADE, except
   // analytics_events which is SET NULL — so the row goes and the usage,
-  // purchase, scan history, profile, and promo rows go with it, while the
-  // anonymised event stream survives without pointing at a person.
+  // purchase, scan history and profile rows go with it, while the anonymised
+  // event stream survives without pointing at a person.
   //
   // Nothing is soft-deleted: someone asking to be forgotten is not asking to
   // be flagged as inactive.
