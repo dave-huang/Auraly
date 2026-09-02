@@ -1,5 +1,3 @@
-import { useColorScheme } from 'react-native';
-
 export type VerdictLevel = 'safe' | 'caution' | 'avoid';
 
 // Revely design system — "a field guide, not a dashboard".
@@ -68,6 +66,39 @@ export const VerdictDark = {
 } as const;
 
 export const onVerdictInk = '#F6F1E7';
+
+/**
+ * Risk signal ink — green, amber, red, at traffic-light strength.
+ *
+ * This is a deliberate exception to "the verdict inks are the only saturated
+ * colour", and it is worth writing down why rather than quietly widening the
+ * rule.
+ *
+ * The verdict inks are chosen to be READ AT SIZE: a 56pt word, a seal, a 6pt
+ * card edge. At that scale a deep field green and an oxide red are unmistakably
+ * different, and their restraint is most of what stops the app looking like a
+ * dashboard.
+ *
+ * An ingredient row is not that. It is a 10pt mark in a list of thirty, glanced
+ * at while somebody stands in an aisle holding the packet, and at that size the
+ * three verdict inks measure 1.16:1 to 1.65:1 against each other. They are
+ * three dark inks. The colour was doing no work, and the only thing telling the
+ * levels apart was the shape.
+ *
+ * So the list gets its own three, pushed until the hues actually separate:
+ * green near 145°, amber near 35°, red near 5°, all holding at least 3:1
+ * against the paper. The shapes stay exactly as they were, because colour alone
+ * still fails the one man in twelve who cannot tell the amber from the red.
+ * Colour and shape now say the same thing twice.
+ *
+ * Confined to the ingredient list and the ingredient screen's level rows.
+ * A verdict is still spoken in verdict ink.
+ */
+export const RiskSignal = {
+  low: { ink: '#1B7A3D', wash: '#E0EEE4' },
+  moderate: { ink: '#C86A00', wash: '#F7E7CE' },
+  high: { ink: '#C62317', wash: '#F7DCD8' },
+} as const satisfies Record<'low' | 'moderate' | 'high', VerdictTone>;
 
 /** The app's risk levels map onto the design's verdict vocabulary. */
 export const RISK_TO_VERDICT = {
@@ -168,12 +199,26 @@ export const Motion = {
   press: { ms: 120 },
 } as const;
 
+/**
+ * The app is light only, for now.
+ *
+ * Lamplight and VerdictDark are still here, still correct, and still the
+ * palette a dark build would use. They are unhooked rather than deleted: every
+ * screen already reads its colours through these two functions, so switching
+ * the product back is these two lines and nothing else. Deleting the tokens
+ * would mean rebuilding a whole second palette from scratch to get it back.
+ *
+ * Paired with `userInterfaceStyle: "light"` in app.json, which is what stops
+ * iOS handing the app a dark scheme in the first place. Both are needed: the
+ * manifest setting governs native chrome (keyboards, action sheets, the status
+ * bar), and this governs everything we draw ourselves.
+ */
 export function useSurface(): Surface {
-  return useColorScheme() === 'dark' ? Lamplight : Paper;
+  return Paper;
 }
 
 export function useVerdictColors(): VerdictPalette {
-  return useColorScheme() === 'dark' ? VerdictDark : Verdict;
+  return Verdict;
 }
 
 /** Below three of five confidence segments, show the uncertain state. */

@@ -7,7 +7,7 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "revely",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "ios": {
       "icon": {
         "light": "./assets/images/icon.png",
@@ -43,14 +43,9 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#16130F",
-          "image": "./assets/images/splash-mark.png",
-          "imageWidth": 96,
-          "dark": {
-            "backgroundColor": "#16130F",
-            "image": "./assets/images/splash-mark.png",
-            "imageWidth": 96
-          }
+          "backgroundColor": "#F6F1E7",
+          "image": "./assets/images/splash-mark-ink.png",
+          "imageWidth": 96
         }
       ],
       [
