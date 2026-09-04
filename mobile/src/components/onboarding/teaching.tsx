@@ -86,7 +86,7 @@ export function AliasPlate() {
         ))}
       </ThemedText>
 
-      <View style={[styles.rule, { borderTopColor: surface.rule }]} />
+      <View style={[styles.rule, { backgroundColor: surface.rule }]} />
 
       <ThemedText style={[Type.title, { color: surface.ink }]}>
         {t('teach.aliasVerdict')}
@@ -135,7 +135,7 @@ export function DecodePlate() {
 
       {rows.map(([name, what, level], index) => (
         <Fragment key={name}>
-          {index > 0 ? <View style={[styles.rule, { borderTopColor: surface.rule }]} /> : null}
+          {index > 0 ? <View style={[styles.rule, { backgroundColor: surface.rule }]} /> : null}
           <View style={styles.decodeRow}>
             <View style={styles.decodeMark}>
               <RiskMark level={level} />
@@ -213,7 +213,7 @@ export function SourcePlate() {
     <View style={[styles.card, { backgroundColor: surface.card, borderColor: surface.rule }]}>
       {bodies.map(([name, what], index) => (
         <Fragment key={name}>
-          {index > 0 ? <View style={[styles.rule, { borderTopColor: surface.rule }]} /> : null}
+          {index > 0 ? <View style={[styles.rule, { backgroundColor: surface.rule }]} /> : null}
           <View style={styles.sourceRow}>
             <ThemedText style={[styles.sourceName, { color: surface.ink }]}>{name}</ThemedText>
             <ThemedText style={[Type.body, styles.sourceWhat, { color: surface.inkMuted }]}>
@@ -233,7 +233,16 @@ const styles = StyleSheet.create({
     padding: Space.lg,
     gap: Space.md,
   },
-  rule: { borderTopWidth: StyleSheet.hairlineWidth },
+  // A FILLED BOX, not a top border.
+  //
+  // As a hairline border on a zero-height View this vanished at some vertical
+  // offsets and not others — one separator of three, and which one depended on
+  // how much text the rows above it happened to need. Yoga rounds a view's box
+  // to the pixel grid and rounds its borders separately, so a 0.33pt-tall box
+  // can round to nothing and take its border with it. A view with a real
+  // height and a background survives the rounding, which is why the packet
+  // rule in WelcomeScan is drawn this way too.
+  rule: { height: StyleSheet.hairlineWidth },
   // The card's own eyebrow on the left, the Example stamp on the right.
   cardHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: Space.sm },
 

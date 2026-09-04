@@ -2,6 +2,13 @@ import { useRouter } from 'expo-router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Animated, {
+  Easing,
+  type SharedValue,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
 import { AnalysisView } from '@/components/analysis-view';
 import { RisingSheet } from '@/components/rising-sheet';
@@ -10,6 +17,7 @@ import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Paper, Radius, Space, Type, useSurface } from '@/constants/design';
 import { fetchDemoScan, type DemoScan } from '@/lib/demo';
 import { useTranslation } from '@/lib/i18n';
+import { useReducedMotion } from '@/lib/reduced-motion';
 
 // The example scan, shown once, between onboarding and the paywall.
 //
@@ -36,10 +44,31 @@ import { useTranslation } from '@/lib/i18n';
 // a stranger for their child's allergies, then ask them for money, having
 // never once done the thing it is for.
 
+/**
+ * The frame drawn around the example packet.
+ *
+ * Deliberately the viewfinder's own numbers, scaled to a card rather than a
+ * screen: 2pt strokes, detached corners, never a closed box. Somebody who has
+ * just watched this meets the same shape over their own camera a tap later.
+ */
+const RETICLE = { bracket: 26, stroke: 2, gap: Space.md };
+
 /** How much of the card to leave above the list once it is scrolled to. */
 const LIST_HEADROOM = 96;
 /** After the sheet has risen, before the teaching ring is drawn on the list. */
 const RISE_SETTLE_MS = 620;
+
+/**
+ * The lens finding the packet, before anything is read.
+ *
+ * A demo that opens mid-sweep skips the part of the real experience that
+ * people are actually unsure about: what am I supposed to point this at. So
+ * the reticle arrives the way it does over a live frame — dropping in, a
+ * little too large, and settling onto the label — and only then does the read
+ * begin. Nothing is being scanned during it, which is exactly the point: this
+ * is the beat where a person aims.
+ */
+const FRAME_MS = 900;
 
 /** Long enough for the sweep to finish its round trip and settle. */
 const FLOOR_MS = 2600;
@@ -51,8 +80,18 @@ export default function DemoScreen() {
   const { t, language } = useTranslation();
   const surface = useSurface();
 
+  const reduced = useReducedMotion();
   const [scan, setScan] = useState<DemoScan | null>(null);
   const [seated, setSeated] = useState(false);
+  /** True until the reticle has settled. Nothing sweeps while it is. */
+  const [aiming, setAiming] = useState(true);
+
+  // Owned HERE rather than inside DemoLabel, and this is the whole reason the
+  // reticle animation lives on a shared value at all: DemoLabel is rendered
+  // bare while aiming and inside ScanProgress afterwards, so it remounts at
+  // the handover. A value held by the parent survives that; one held by the
+  // child would restart the drop-in halfway through the scan.
+  const framing = useSharedValue(0);
   const [phase, setPhase] = useState<'reading' | 'analyzing'>('reading');
   // Survives the unmount race: the fetch and two timers all resolve after the
   // person may already have tapped Skip.
@@ -95,9 +134,27 @@ export default function DemoScreen() {
     alive.current = true;
     const started = Date.now();
 
+    // With reduced motion there is no pre-roll to wait out: the reticle is
+    // simply already on the packet. Expressed as a zero-length phase rather
+    // than as a branch, so every timing below stays one expression and cannot
+    // drift out of agreement with the others.
+    const preroll = reduced ? 0 : FRAME_MS;
+
+    framing.value = reduced
+      ? 1
+      : withTiming(1, {
+          duration: FRAME_MS,
+          // Arrives the way a hand arrives: quickly, then settling.
+          easing: Easing.out(Easing.cubic),
+        });
+
+    const aimTimer = setTimeout(() => {
+      if (alive.current) setAiming(false);
+    }, preroll);
+
     const readTimer = setTimeout(() => {
       if (alive.current) setPhase('analyzing');
-    }, READ_MS);
+    }, preroll + READ_MS);
 
     let seatTimer: ReturnType<typeof setTimeout> | undefined;
 
@@ -112,7 +169,7 @@ export default function DemoScreen() {
           () => {
             if (alive.current) setSeated(true);
           },
-          Math.max(0, FLOOR_MS - (Date.now() - started)),
+          Math.max(0, preroll + FLOOR_MS - (Date.now() - started)),
         );
       })
       .catch((error: any) => {
@@ -124,6 +181,7 @@ export default function DemoScreen() {
 
     return () => {
       alive.current = false;
+      clearTimeout(aimTimer);
       clearTimeout(readTimer);
       if (seatTimer) clearTimeout(seatTimer);
     };
@@ -135,11 +193,18 @@ export default function DemoScreen() {
   if (!seated || !scan) {
     return (
       <View style={styles.root}>
-        <ScanProgress
-          phase={phase}
-          ingredientCount={phase === 'analyzing' ? scan?.result.ingredients.length : undefined}
-          backdrop={<DemoLabel scan={scan} />}
-        />
+        {/* Aiming first, then reading. ScanProgress sweeps the moment it
+            mounts, so holding it back IS the pre-roll — there is no way to
+            ask it to wait, and no reason it should have to know. */}
+        {aiming ? (
+          <DemoLabel scan={scan} framing={framing} />
+        ) : (
+          <ScanProgress
+            phase={phase}
+            ingredientCount={phase === 'analyzing' ? scan?.result.ingredients.length : undefined}
+            backdrop={<DemoLabel scan={scan} framing={framing} />}
+          />
+        )}
         <SafeAreaView style={styles.safe} pointerEvents="box-none">
           <View style={styles.topBar} pointerEvents="box-none">
             <Pressable onPress={next} hitSlop={12} style={styles.skip} accessibilityRole="button">
@@ -153,7 +218,7 @@ export default function DemoScreen() {
 
   return (
     <View style={styles.root}>
-      <DemoLabel scan={scan} />
+      <DemoLabel scan={scan} framing={framing} />
       <View style={[StyleSheet.absoluteFill, styles.scrim]} />
 
       <SafeAreaView style={styles.safe} pointerEvents="box-none">
@@ -225,14 +290,30 @@ export default function DemoScreen() {
  *
  * Rendered from the result's own `originalIngredients`, so the printed list and
  * the analysed list are the same list by construction and cannot drift.
+ *
+ * And it is FRAMED. The reticle around it is the same four detached brackets
+ * the viewfinder draws over a live camera, screen-aligned while the packet
+ * underneath sits a degree off square — which is the honest geometry, since
+ * one of them is the camera and the other is an object on a table.
  */
-function DemoLabel({ scan }: { scan: DemoScan | null }) {
+function DemoLabel({ scan, framing }: { scan: DemoScan | null; framing: SharedValue<number> }) {
   const { t } = useTranslation();
   const printed = scan?.result.originalIngredients ?? [];
   const stampWord = t('demo.stamp');
 
+  // Drops in slightly too large and settles, the way a phone does when
+  // somebody raises it to a packet and the frame catches up with the hand.
+  const reticleStyle = useAnimatedStyle(() => ({
+    opacity: framing.value,
+    transform: [
+      { translateY: -34 * (1 - framing.value) },
+      { scale: 1 + 0.12 * (1 - framing.value) },
+    ],
+  }));
+
   return (
     <View style={styles.labelStage}>
+      <View style={styles.labelFrame}>
       <View style={styles.labelCard}>
         <ThemedText style={styles.labelHead}>
           {scan?.result.productName ?? ''}
@@ -258,6 +339,17 @@ function DemoLabel({ scan }: { scan: DemoScan | null }) {
         <View style={styles.stamp} pointerEvents="none">
           <ThemedText style={styles.stampText}>{stampWord}</ThemedText>
         </View>
+      </View>
+
+        {/* Outside the card, so it frames the packet rather than sitting on
+            it. Paper-coloured, because this is chrome floating over a dark
+            stage — the same colour the real reticle takes over a camera. */}
+        <Animated.View style={[styles.reticle, reticleStyle]} pointerEvents="none">
+          <View style={[styles.bracket, styles.tl]} />
+          <View style={[styles.bracket, styles.tr]} />
+          <View style={[styles.bracket, styles.bl]} />
+          <View style={[styles.bracket, styles.br]} />
+        </Animated.View>
       </View>
     </View>
   );
@@ -305,9 +397,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: Gutter,
   },
+  // Holds the card and the reticle in one box, so the brackets can be pinned
+  // to the card's own edges rather than guessed against the screen.
+  labelFrame: { width: '100%', maxWidth: 340 },
   labelCard: {
     width: '100%',
-    maxWidth: 340,
     backgroundColor: Paper.paper,
     padding: Space.lg,
     gap: Space.sm,
@@ -351,6 +445,24 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     color: 'rgba(22,19,15,0.30)',
   },
+
+  reticle: {
+    position: 'absolute',
+    top: -RETICLE.gap,
+    left: -RETICLE.gap,
+    right: -RETICLE.gap,
+    bottom: -RETICLE.gap,
+  },
+  bracket: {
+    position: 'absolute',
+    width: RETICLE.bracket,
+    height: RETICLE.bracket,
+    borderColor: Paper.paper,
+  },
+  tl: { top: 0, left: 0, borderTopWidth: RETICLE.stroke, borderLeftWidth: RETICLE.stroke },
+  tr: { top: 0, right: 0, borderTopWidth: RETICLE.stroke, borderRightWidth: RETICLE.stroke },
+  bl: { bottom: 0, left: 0, borderBottomWidth: RETICLE.stroke, borderLeftWidth: RETICLE.stroke },
+  br: { bottom: 0, right: 0, borderBottomWidth: RETICLE.stroke, borderRightWidth: RETICLE.stroke },
 
   inkButton: { borderRadius: Radius.pill, paddingVertical: Space.lg, alignItems: 'center' },
   inkLabel: { fontFamily: Font.sansSemi, fontSize: 15, lineHeight: 20 },
