@@ -169,9 +169,9 @@ function DevButton({ onPress }: { onPress: () => void }) {
  * controls sit within an inch of each other on the welcome screen, and each one
  * opens a drawer; when one faded in under an eyebrow and the other slid up
  * under a title with a ✕ in the corner, the screen looked like two screens
- * built by two people. So this one takes the other's fade, its eyebrow, its
- * note, and its dismissal: the backdrop is the way out, and there is no close
- * mark. Whichever of the two you press first teaches you how the other behaves.
+ * built by two people. So this one takes the other's fade, its eyebrow, and
+ * its dismissal: the backdrop is the way out, and there is no close mark.
+ * Whichever of the two you press first teaches you how the other behaves.
  *
  * If either sheet's pattern changes, change both.
  */
@@ -198,11 +198,13 @@ export function SignInSheet({
           // Swallows taps so pressing the sheet itself does not dismiss it.
           onPress={() => {}}
         >
-          <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
+          {/* The eyebrow and nothing else. There was a line under it saying
+              that profiles, history and subscription all come back, and it was
+              answering a question nobody asks at this moment: somebody pressing
+              "already have an account" has decided, and is looking for the
+              button. */}
+          <ThemedText style={[Type.eyebrow, styles.eyebrow, { color: surface.inkFaint }]}>
             {t('signIn.sheetTitle')}
-          </ThemedText>
-          <ThemedText style={[Type.body, styles.note, { color: surface.inkMuted }]}>
-            {t('signIn.sheetBody')}
           </ThemedText>
 
           <ProviderButtons onSignedIn={onSignedIn} />
@@ -234,7 +236,7 @@ const styles = StyleSheet.create({
   googleLabel: { fontFamily: Font.sansSemi, fontSize: 17, lineHeight: 22 },
   quiet: { alignItems: 'center', paddingVertical: Space.md, opacity: 0.6 },
 
-  // Backdrop, sheet and note are the language picker's, value for value.
+  // Backdrop and sheet are the language picker's, value for value.
   backdrop: { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(22,19,15,0.45)' },
   sheet: {
     borderTopLeftRadius: Radius.sheet,
@@ -245,5 +247,7 @@ const styles = StyleSheet.create({
     paddingBottom: Space.xxl + Space.lg,
     gap: Space.sm,
   },
-  note: { marginBottom: Space.sm },
+  // Holds the gap the note used to occupy, so the buttons do not ride up
+  // against the eyebrow.
+  eyebrow: { marginBottom: Space.sm },
 });

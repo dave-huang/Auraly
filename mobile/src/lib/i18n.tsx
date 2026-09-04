@@ -129,7 +129,6 @@ const en = {
   'signIn.dev': 'Dev sign-in (local only)',
   'signIn.failed': 'Sign-in failed',
   'signIn.sheetTitle': 'Welcome back',
-  'signIn.sheetBody': 'Everything comes back with you.',
 
   'home.greeting': 'Hi {name}, here is what is in your products.',
   'home.greetingNoName': 'Know what’s in your products.',
@@ -641,7 +640,6 @@ const zh: Record<TranslationKey, string> = {
   'signIn.dev': '开发者登录（仅限本地）',
   'signIn.failed': '登录失败',
   'signIn.sheetTitle': '欢迎回来',
-  'signIn.sheetBody': '你的一切都会回来。',
 
   'home.greeting': '{name}，您好，一起看看产品里有什么。',
   'home.greetingNoName': '了解产品中的成分。',
@@ -1122,7 +1120,6 @@ const es: Record<TranslationKey, string> = {
   'signIn.dev': 'Acceso de desarrollo (solo local)',
   'signIn.failed': 'Error al iniciar sesión',
   'signIn.sheetTitle': 'Bienvenido de nuevo',
-  'signIn.sheetBody': 'Todo vuelve contigo.',
 
   'home.greeting': 'Hola {name}, vamos a ver qué contienen tus productos.',
   'home.greetingNoName': 'Descubre qué contienen tus productos.',
