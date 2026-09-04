@@ -10,20 +10,14 @@ import {
   AliasPlate,
   DecodePlate,
   LabelPlate,
-  PrivacyPlate,
-  ReflectPlate,
   SourcePlate,
 } from '@/components/onboarding/teaching';
 import {
   AllergenField,
-  CONDITION_KEYS,
   ConditionsField,
-  DIETARY_KEYS,
   DietaryField,
   NameField,
-  SEVERITY_KEYS,
   StrictnessField,
-  allergenLabel,
   toAllergenEntries,
 } from '@/components/profile-fields';
 import { Space } from '@/constants/design';
@@ -86,9 +80,7 @@ type StepId =
   | 'conditions'
   | 'label'
   | 'sources'
-  | 'language'
-  | 'privacy'
-  | 'reflect';
+  | 'language';
 
 /**
  * Adding a second profile is not a first run.
@@ -98,7 +90,7 @@ type StepId =
  * paywall. Same questions, none of the introduction, and it ends where it
  * started instead of at the till.
  */
-const ADD_STEPS: StepId[] = ['subject', 'name', 'allergens', 'strictness', 'dietary', 'conditions', 'reflect'];
+const ADD_STEPS: StepId[] = ['subject', 'name', 'allergens', 'strictness', 'dietary', 'conditions'];
 
 const FIRST_RUN_STEPS: StepId[] = [
   // Two before a single question is asked. The first says why anyone would
@@ -118,8 +110,6 @@ const FIRST_RUN_STEPS: StepId[] = [
   'label',
   'sources',
   'language',
-  'privacy',
-  'reflect',
 ];
 
 export default function OnboardingScreen() {
@@ -245,7 +235,19 @@ export default function OnboardingScreen() {
       title={content.title}
       body={content.body}
       plate={content.plate}
-      cta={last ? (saving ? t('onboarding.saving') : content.cta) : content.cta}
+      // The last step used to be a summary screen whose own CTA said "See it
+      // work". With that screen gone, whatever question happens to be last has
+      // to end the flow, so the finishing word is set here rather than hidden
+      // in one case of the switch.
+      cta={
+        last
+          ? saving
+            ? t('onboarding.saving')
+            : adding
+              ? t('onboarding.save')
+              : t('onboarding.finish')
+          : content.cta
+      }
       onCta={advance}
       ctaDisabled={
         saving || (step === 'subject' && subject === null) || (step === 'name' && needsName)
@@ -338,7 +340,12 @@ function renderStep(args: {
 
     case 'allergens':
       return {
-        title: t('onboarding.allergensTitle', { name: profileName }),
+        // "Anything Me needs to avoid?" is what the placeholder name produces,
+        // and it reads like a bug. Somebody who never typed a name gets the
+        // question addressed to them instead of to a third person.
+        title: args.name.trim()
+          ? t('onboarding.allergensTitle', { name: profileName })
+          : t('onboarding.allergensTitleSelf'),
         plate: 'allergens',
         body: t('onboarding.allergensBody'),
         cta: t('onboarding.next'),
@@ -422,6 +429,7 @@ function renderStep(args: {
       };
 
     case 'language':
+    default:
       return {
         title: t('onboarding.languageTitle'),
         plate: 'language',
@@ -433,63 +441,7 @@ function renderStep(args: {
           </View>
         ),
       };
-
-    case 'privacy':
-      return {
-        title: t('teach.privacyTitle'),
-        body: t('teach.privacyBody'),
-        cta: t('onboarding.next'),
-        plate: 'privacy',
-        children: <PrivacyPlate />,
-      };
-
-    case 'reflect':
-    default:
-      return {
-        // "That is Me's profile" is what the placeholder name produces, and it
-        // reads like a bug. Somebody who never typed a name gets the sentence
-        // addressed to them instead of to a third person.
-        title: args.name.trim()
-          ? t('onboarding.reflectTitle', { name: profileName })
-          : t('onboarding.reflectTitleSelf'),
-        plate: 'specimen',
-        body: t('onboarding.reflectBody'),
-        // Never "Start scanning". Nothing scans next — an example does, and
-        // then a price. A button that promises a camera it does not open is
-        // the one place in this flow a person would rightly feel tricked.
-        cta: args.adding ? t('onboarding.save') : t('onboarding.finish'),
-        children: (
-          <ReflectPlate name={profileName} lines={reflectLines(args)} />
-        ),
-      };
   }
-}
-
-/** Everything they entered, as sentences rather than as form fields. */
-function reflectLines(args: {
-  t: ReturnType<typeof useTranslation>['t'];
-  allergens: Map<string, ProfileAllergen>;
-  dietary: Set<DietaryRule>;
-  conditions: Set<ProfileCondition>;
-}): string[] {
-  const { t } = args;
-  const lines: string[] = [];
-
-  for (const [allergen, entry] of args.allergens) {
-    lines.push(
-      t('onboarding.reflectAllergen', {
-        allergen: allergenLabel(t, allergen),
-        severity: t(SEVERITY_KEYS[entry.severity]),
-      }),
-    );
-  }
-  for (const rule of args.dietary) {
-    lines.push(t('onboarding.reflectDietary', { rule: t(DIETARY_KEYS[rule]) }));
-  }
-  for (const condition of args.conditions) {
-    lines.push(t('onboarding.reflectCondition', { condition: t(CONDITION_KEYS[condition]) }));
-  }
-  return lines;
 }
 
 const SUBJECT_LABEL = {

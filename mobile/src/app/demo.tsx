@@ -54,9 +54,11 @@ export default function DemoScreen() {
   const alive = useRef(true);
 
   // Onward, from every exit this screen has: Continue, Skip, and the network
-  // failure. /reminder states the trial promise, then hands to the paywall.
+  // failure. /trial names what a subscription includes and that nothing is
+  // charged today, /reminder promises the warning before billing starts, and
+  // then the paywall shows the price.
   function next() {
-    router.replace('/reminder');
+    router.replace('/trial');
   }
 
   useEffect(() => {

@@ -1,7 +1,6 @@
 import { Fragment } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { ApertureMark } from '@/components/aperture-mark';
 import { RiskMark } from '@/components/risk-mark';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Radius, Space, Type, useSurface } from '@/constants/design';
@@ -13,9 +12,14 @@ import { useTranslation } from '@/lib/i18n';
 // only questions gets abandoned around the sixth one; what keeps someone moving
 // is being given something between the asks. Each of these pays out a fact the
 // app can actually back up: what a chemical name turns into, how a label hides
-// an allergen, why a barcode is the wrong thing to read, who the verdicts are
-// quoting, and what happens to the photograph. The length buys understanding
-// rather than just sunk cost.
+// an allergen, why a barcode is the wrong thing to read, and who the verdicts
+// are quoting. The length buys understanding rather than just sunk cost.
+//
+// There were two more. One explained what happens to the photograph and one
+// read the finished profile back, and both were cut for the same reason: they
+// answered questions nobody had asked yet. The privacy claims still hold and
+// still matter — they live in the policy, and on the Account screen, where
+// somebody who wants them goes looking.
 //
 // Everything here is set in type. There is no photograph in any of them, and
 // that is deliberate: a stock shot of a supermarket aisle would say nothing
@@ -206,68 +210,6 @@ export function SourcePlate() {
   );
 }
 
-/**
- * What happens to the photograph.
- *
- * Every line here is checked against what the code does, and the wording is
- * narrower than the wording people expect. "Never leaves your phone" would be
- * FALSE — the image is uploaded to be read. What is true is that it is read
- * and dropped: it is never written to the database, never attached to the
- * account, and the only lasting copy is the one on the device. A privacy
- * promise this app cannot keep is worse than none.
- */
-export function PrivacyPlate() {
-  const { t } = useTranslation();
-  const surface = useSurface();
-
-  const lines = [t('teach.privacyOne'), t('teach.privacyTwo'), t('teach.privacyThree')];
-
-  return (
-    <View style={[styles.card, { backgroundColor: surface.card, borderColor: surface.rule }]}>
-      <ApertureMark size={26} color={surface.inkFaint} />
-      {lines.map((line, index) => (
-        <Fragment key={line}>
-          {index > 0 ? <View style={[styles.rule, { borderTopColor: surface.rule }]} /> : null}
-          <ThemedText style={[Type.body, { color: surface.ink }]}>{line}</ThemedText>
-        </Fragment>
-      ))}
-    </View>
-  );
-}
-
-/**
- * Everything they just entered, read back to them.
- *
- * The commitment beat. Ten screens of answering questions is work, and this is
- * the screen that shows the work added up to something — the profile stated as
- * a standing instruction rather than as a form they filled in.
- */
-export function ReflectPlate({ name, lines }: { name: string; lines: string[] }) {
-  const { t } = useTranslation();
-  const surface = useSurface();
-
-  return (
-    <View style={[styles.card, { backgroundColor: surface.card, borderColor: surface.rule }]}>
-      <View style={styles.reflectHead}>
-        <ApertureMark size={22} color={surface.ink} />
-        <ThemedText style={[Type.title, { color: surface.ink }]}>{name}</ThemedText>
-      </View>
-
-      {lines.length === 0 ? (
-        <ThemedText style={[Type.body, { color: surface.inkMuted }]}>
-          {t('teach.reflectNone')}
-        </ThemedText>
-      ) : (
-        lines.map((line) => (
-          <View key={line} style={[styles.reflectRow, { borderTopColor: surface.rule }]}>
-            <ThemedText style={[Type.body, { color: surface.ink }]}>{line}</ThemedText>
-          </View>
-        ))
-      )}
-    </View>
-  );
-}
-
 const styles = StyleSheet.create({
   card: {
     borderWidth: StyleSheet.hairlineWidth,
@@ -302,6 +244,4 @@ const styles = StyleSheet.create({
   sourceName: { fontFamily: Font.sansSemi, fontSize: 15, lineHeight: 20, letterSpacing: 0.2 },
   sourceWhat: { flex: 1 },
 
-  reflectHead: { flexDirection: 'row', alignItems: 'center', gap: Space.sm },
-  reflectRow: { borderTopWidth: StyleSheet.hairlineWidth, paddingTop: Space.md },
 });

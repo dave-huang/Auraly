@@ -89,7 +89,18 @@ export default function ViewfinderScreen() {
       return () => setScreenFocused(false);
     }, []),
   );
-  const [productType, setProductType] = useState<ProductType>('food');
+  // FOOD ONLY, FOR LAUNCH.
+  //
+  // There was a Food / Skincare toggle over the shutter, and the whole stack
+  // behind it still works: `personal_care` is a live ProductType, the server
+  // reads cosmetic evidence in its own domain (COSING annexes rather than the
+  // food corpus), and the ingredient screen already picks the right one. What
+  // is gone is the CHOICE, because a first release that says two things says
+  // neither, and every line of copy in this app now argues about food.
+  //
+  // Bringing it back is putting the toggle in this bar again. Nothing else has
+  // to be rebuilt, so do not delete the plumbing on the way past.
+  const productType: ProductType = 'food';
   const [profiles, setProfiles] = useState<Profile[] | null>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [phase, setPhase] = useState<'reading' | 'analyzing' | null>(null);
@@ -372,22 +383,6 @@ export default function ViewfinderScreen() {
         </View>
 
         <View style={styles.bottomBar}>
-          <View style={styles.typeToggle}>
-            {(['food', 'personal_care'] as const).map((type) => (
-              <Pressable
-                key={type}
-                style={[styles.typeOption, productType === type && styles.typeOptionActive]}
-                onPress={() => setProductType(type)}
-              >
-                <ThemedText
-                  style={[styles.typeLabel, productType === type && styles.typeLabelActive]}
-                >
-                  {type === 'food' ? t('scan.food') : t('scan.personalCare')}
-                </ThemedText>
-              </Pressable>
-            ))}
-          </View>
-
           <ThemedText style={styles.hint}>{t('scan.hint')}</ThemedText>
 
           <View style={styles.captureRow}>
@@ -528,18 +523,6 @@ const styles = StyleSheet.create({
   br: { bottom: 0, right: 0, borderBottomWidth: RETICLE.stroke, borderRightWidth: RETICLE.stroke },
 
   bottomBar: { alignItems: 'center', gap: Space.lg, paddingBottom: Space.xl },
-  typeToggle: {
-    flexDirection: 'row',
-    backgroundColor: OVER_FRAME.scrim,
-    borderWidth: 1,
-    borderColor: OVER_FRAME.hairline,
-    borderRadius: Radius.pill,
-    padding: 3,
-  },
-  typeOption: { paddingHorizontal: Space.lg, paddingVertical: 7, borderRadius: Radius.pill },
-  typeOptionActive: { backgroundColor: OVER_FRAME.ink },
-  typeLabel: { fontFamily: Font.sansMedium, fontSize: 13, lineHeight: 17, color: OVER_FRAME.ink },
-  typeLabelActive: { color: Paper.ink },
   hint: { fontFamily: Font.mono, fontSize: 11, lineHeight: 15, color: OVER_FRAME.ink },
   captureRow: {
     flexDirection: 'row',
