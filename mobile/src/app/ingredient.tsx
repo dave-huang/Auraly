@@ -61,10 +61,6 @@ export default function IngredientScreen() {
   const focus = getFocusedIngredient();
   const [aliases, setAliases] = useState<string[] | null>(null);
   const [evidence, setEvidence] = useState<SubstanceEvidence | null>(null);
-  // Set only when the lookup actually failed, so "still loading" and "nothing
-  // to show" stay distinguishable without a flag the effect has to set
-  // synchronously on mount.
-  const [evidenceFailed, setEvidenceFailed] = useState(false);
 
   const flag = focus?.flag;
   const profileName = focus?.profileName;
@@ -81,7 +77,10 @@ export default function IngredientScreen() {
     let live = true;
     fetchSubstanceEvidence(substanceId, evidenceDomain)
       .then((data) => live && setEvidence(data))
-      .catch(() => live && setEvidenceFailed(true));
+      // A failure leaves `evidence` null, which renders as the "not checked"
+      // block — the same thing an empty corpus says, and equally true from
+      // the reader's side.
+      .catch(() => {});
     return () => {
       live = false;
     };
@@ -110,25 +109,6 @@ export default function IngredientScreen() {
       : verdictColors[RISK_TO_VERDICT[ingredient.riskLevel]];
 
   const citations = flag?.citations ?? ingredient.citations ?? [];
-
-  /**
-   * Nothing published set this level, so the level is our reading.
-   *
-   * This used to be its own section, under the same "What the sources say"
-   * heading the regulatory record uses, saying that there was no regulatory
-   * record. A heading promising sources above a paragraph explaining that there
-   * are none is a section that exists to disappoint, and it made people think
-   * something had failed to load.
-   *
-   * The admission still has to be made, so it is now a footnote to what the
-   * ingredient IS, which is the thing it actually qualifies. Quieter, and in
-   * the right place.
-   */
-  const unsourced =
-    ingredient.riskSource !== 'record' ||
-    !ingredient.substanceId ||
-    evidenceFailed ||
-    (evidence !== null && evidence.records.length === 0);
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: surface.paper }]}>
@@ -279,24 +259,6 @@ export default function IngredientScreen() {
           {ingredient.riskAdjustmentReason ? (
             <ThemedText style={[Type.meta, { color: surface.inkMuted }]}>
               {ingredient.riskAdjustmentReason}
-            </ThemedText>
-          ) : null}
-
-          {/* Two different admissions, and using the stronger one when it is
-              false made this screen contradict itself: it announced that no
-              published source covered the ingredient, directly above a Sources
-              block listing published sources for it.
-
-              The level and the context come from different places. A knowledge
-              base entry explains an ingredient; only a record in the substance
-              corpus sets its level. When we hold the former but not the latter,
-              the honest sentence is "we rated this, the sources below did not",
-              not "nothing is known". */}
-          {unsourced ? (
-            <ThemedText style={[Type.meta, styles.footnote, { color: surface.inkFaint }]}>
-              {citations.length > 0
-                ? t('ingredient.ourAssessmentWithSources')
-                : t('ingredient.ourAssessment')}
             </ThemedText>
           ) : null}
         </View>

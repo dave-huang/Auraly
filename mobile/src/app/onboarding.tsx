@@ -233,6 +233,7 @@ export default function OnboardingScreen() {
       onLeft={index === 0 ? close : () => setIndex((i) => i - 1)}
       leftGlyph={index === 0 ? '✕' : '‹'}
       leftLabel={index === 0 ? t('common.cancel') : t('common.back')}
+      eyebrow={content.eyebrow}
       title={content.title}
       body={content.body}
       plate={content.plate}
@@ -264,6 +265,12 @@ export default function OnboardingScreen() {
 }
 
 interface StepContent {
+  /**
+   * Set on the four steps that hand over a fact instead of collecting one.
+   * Nothing else in the flow carries it, which is the point: the stamp is how
+   * a lesson announces itself before the title has been read.
+   */
+  eyebrow?: string;
   title: string;
   body?: string;
   cta: string;
@@ -312,6 +319,7 @@ function renderStep(args: {
 
     case 'decode':
       return {
+        eyebrow: t('teach.eyebrow'),
         title: t('teach.decodeTitle'),
         // No plate: three worked examples fill the page, and the frame would
         // drop a drawing anyway.
@@ -393,6 +401,7 @@ function renderStep(args: {
 
     case 'aliases':
       return {
+        eyebrow: t('teach.eyebrow'),
         title: t('teach.aliasTitle'),
         body: t('teach.aliasBody'),
         cta: t('onboarding.next'),
@@ -426,6 +435,7 @@ function renderStep(args: {
 
     case 'label':
       return {
+        eyebrow: t('teach.eyebrow'),
         title: t('teach.labelTitle'),
         body: t('teach.labelBody'),
         cta: t('onboarding.next'),
@@ -437,6 +447,7 @@ function renderStep(args: {
 
     case 'sources':
       return {
+        eyebrow: t('teach.eyebrow'),
         title: t('teach.sourceTitle'),
         body: t('teach.sourceBody'),
         cta: t('onboarding.next'),

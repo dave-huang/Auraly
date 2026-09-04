@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import { StyleSheet, View } from 'react-native';
 
+import { StampTag } from '@/components/onboarding/chrome';
 import { RiskMark } from '@/components/risk-mark';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Radius, Space, Type, useSurface } from '@/constants/design';
@@ -55,9 +56,18 @@ export function AliasPlate() {
 
   return (
     <View style={[styles.card, { backgroundColor: surface.card, borderColor: surface.rule }]}>
-      <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
-        {t('teach.aliasEyebrow')}
-      </ThemedText>
+      {/* THE CARD SAYS IT IS AN EXAMPLE, not just the screen.
+          A packet, an ingredient list and a verdict, laid out exactly the way
+          a real result is: at a glance this is indistinguishable from a scan,
+          and somebody flicking through onboarding could carry away that Revely
+          found milk in something they own. The stamp travels with the card so
+          it survives being screenshotted apart from the page. */}
+      <View style={styles.cardHead}>
+        <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
+          {t('teach.aliasEyebrow')}
+        </ThemedText>
+        <StampTag label={t('teach.exampleTag')} />
+      </View>
 
       {/* Set in mono, like the label transcription on the results screen —
           this is meant to read as something photographed, not as our prose. */}
@@ -116,9 +126,12 @@ export function DecodePlate() {
 
   return (
     <View style={[styles.card, { backgroundColor: surface.card, borderColor: surface.rule }]}>
-      <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
-        {t('teach.decodeEyebrow')}
-      </ThemedText>
+      <View style={styles.cardHead}>
+        <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
+          {t('teach.decodeEyebrow')}
+        </ThemedText>
+        <StampTag label={t('teach.exampleTag')} />
+      </View>
 
       {rows.map(([name, what, level], index) => (
         <Fragment key={name}>
@@ -221,6 +234,8 @@ const styles = StyleSheet.create({
     gap: Space.md,
   },
   rule: { borderTopWidth: StyleSheet.hairlineWidth },
+  // The card's own eyebrow on the left, the Example stamp on the right.
+  cardHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: Space.sm },
 
   labelText: { fontFamily: Font.mono, fontSize: 13, lineHeight: 21 },
   // An underline rather than a highlight: this is a reader's pencil mark on a

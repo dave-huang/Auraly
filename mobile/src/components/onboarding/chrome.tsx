@@ -60,11 +60,34 @@ export const StepType = {
   title: { fontFamily: Font.sansSemi, fontSize: 28, lineHeight: 34, letterSpacing: -0.4 },
 } as const;
 
+/**
+ * The mark that says a page is teaching rather than asking.
+ *
+ * Four of the twelve steps collect nothing; they hand over a fact instead.
+ * Without a marker those four are indistinguishable from the questions until
+ * you have read the whole title and found no controls under it, which is the
+ * moment people start tapping Next to make the reading stop.
+ *
+ * A stamp rather than a coloured banner, and the same stamp the example cards
+ * wear, so "this is not a question" and "this is not a real scan" read as one
+ * family. Uppercased here rather than in the catalogue so the translations stay
+ * ordinary words; a no-op in Chinese, where the box carries it.
+ */
+export function StampTag({ label }: { label: string }) {
+  const surface = useSurface();
+  return (
+    <View style={[styles.stampTag, { borderColor: surface.rule }]}>
+      <ThemedText style={[styles.stampText, { color: surface.inkFaint }]}>{label}</ThemedText>
+    </View>
+  );
+}
+
 export function StepFrame({
   progress,
   onLeft,
   leftGlyph = '‹',
   leftLabel,
+  eyebrow,
   title,
   body,
   plate,
@@ -80,6 +103,8 @@ export function StepFrame({
   onLeft: () => void;
   leftGlyph?: '‹' | '✕';
   leftLabel: string;
+  /** Set on the steps that teach rather than ask. See StampTag. */
+  eyebrow?: string;
   title: string;
   body?: string;
   plate?: PlateName;
@@ -156,6 +181,7 @@ export function StepFrame({
             showsVerticalScrollIndicator={false}
             onContentSizeChange={(_, height) => setContentHeight(height)}
           >
+            {eyebrow ? <StampTag label={eyebrow} /> : null}
             <ThemedText style={[StepType.title, { color: surface.ink }]}>{title}</ThemedText>
             {body ? (
               <ThemedText style={[Type.reason, { color: surface.inkMuted }]}>{body}</ThemedText>
@@ -245,6 +271,23 @@ const styles = StyleSheet.create({
     gap: Space.md,
   },
   slot: { marginTop: Space.lg, gap: Space.md },
+
+  // Sized to the text rather than the column, so it reads as a stamp on the
+  // page and not as a bar across it.
+  stampTag: {
+    alignSelf: 'flex-start',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderRadius: Radius.flat,
+    paddingHorizontal: Space.sm,
+    paddingVertical: 3,
+  },
+  stampText: {
+    fontFamily: Font.monoMedium,
+    fontSize: 10,
+    lineHeight: 14,
+    letterSpacing: 1.4,
+    textTransform: 'uppercase',
+  },
 
   footer: {
     paddingHorizontal: Gutter,
