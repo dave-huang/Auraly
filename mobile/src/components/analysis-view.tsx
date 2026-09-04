@@ -523,11 +523,19 @@ export function AnalysisView({
           was a policy document nobody opens. The sentence belongs where the
           verdict is, which is here.
 
-          Set as a footnote and not as a warning banner, on purpose. A red box
-          on every scan would train people to look past it inside a week, and
-          it would also be the loudest thing on a card whose whole argument is
-          that it is calm. Quiet, present, and in the same place every time is
-          what makes a disclaimer readable rather than furniture.
+          Set as a footnote and not as a warning banner, on purpose. Anything
+          alarm-coloured on every scan would train people to look past it
+          inside a week, and it would also be the loudest thing on a card whose
+          whole argument is that it is calm. Quiet, present, and in the same
+          place every time is what makes a disclaimer readable rather than
+          furniture.
+
+          It also has to say what the app IS before it says what it is not.
+          The first draft opened "We give you ingredient information, not
+          medical advice" and closed by telling anybody with a severe allergy
+          to check the label themselves, which read as the app disclaiming the
+          exact job it exists to do. The full legal version, which does need
+          that shape, is in the Terms.
 
           On every card, not just /results: /demo shows a real verdict and
           /scan-detail shows an old one, and a person cannot be expected to

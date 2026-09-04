@@ -400,7 +400,7 @@ const en = {
   'results.dependOnSourcing': '{count} more depend on sourcing',
   'results.andMore': ' and {count} more',
   'results.disclaimer':
-    'We give you ingredient information, not medical advice. If an allergy is severe, always check the label itself.',
+    'We tell you what is in a product, not what to do about it. That part is for you and your doctor. With a severe allergy, check the pack itself as well.',
   'results.scanAnother': 'Scan another product',
   'share.action': 'Share',
   'share.feed': 'Post',
@@ -893,7 +893,7 @@ const zh: Record<TranslationKey, string> = {
   'results.dependOnSourcing': '另有 {count} 项取决于原料来源',
   'results.andMore': ' 等 {count} 项',
   'results.disclaimer':
-    '我们提供的是成分信息，不是医疗建议。如果过敏严重，请一定核对实体标签。',
+    '我们告诉你产品里有什么，至于要怎么做，那是你和医生的事。如果过敏严重，也请核对一下包装本身。',
   'results.scanAnother': '扫描其他产品',
   'share.action': '分享',
   'share.feed': '帖子',
@@ -1369,7 +1369,7 @@ const es: Record<TranslationKey, string> = {
   'results.dependOnSourcing': '{count} más dependen del origen',
   'results.andMore': ' y {count} más',
   'results.disclaimer':
-    'Te damos información sobre ingredientes, no consejo médico. Si una alergia es grave, comprueba siempre la etiqueta.',
+    'Te decimos qué lleva un producto, no qué hacer al respecto. Eso es cosa tuya y de tu médico. Con una alergia grave, comprueba también el envase.',
   'results.scanAnother': 'Escanear otro producto',
   'share.action': 'Compartir',
   'share.feed': 'Publicación',
