@@ -67,11 +67,13 @@ export function LanguagePicker({ style }: { style?: StyleProp<ViewStyle> }) {
             // Swallows taps so pressing the sheet itself does not dismiss it.
             onPress={() => {}}
           >
-            <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
+            {/* The eyebrow alone. A line under it used to explain that the
+                ingredient explanations arrive in this language too, which is
+                worth saying on the Account screen, where somebody is reading
+                their settings. Here they are mid-tap on a control whose three
+                options are already visible below it. */}
+            <ThemedText style={[Type.eyebrow, styles.eyebrow, { color: surface.inkFaint }]}>
               {t('account.languageLabel')}
-            </ThemedText>
-            <ThemedText style={[Type.body, styles.note, { color: surface.inkMuted }]}>
-              {t('account.languageNote')}
             </ThemedText>
 
             {SUPPORTED_LANGUAGES.map((code) => {
@@ -138,7 +140,8 @@ const styles = StyleSheet.create({
     paddingBottom: Space.xxl + Space.lg,
     gap: Space.sm,
   },
-  note: { marginBottom: Space.sm },
+  // Matches the sign-in drawer, which holds the same gap the same way.
+  eyebrow: { marginBottom: Space.sm },
   option: {
     flexDirection: 'row',
     alignItems: 'center',
