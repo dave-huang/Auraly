@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -36,6 +36,11 @@ import { useTranslation } from '@/lib/i18n';
 // a stranger for their child's allergies, then ask them for money, having
 // never once done the thing it is for.
 
+/** How much of the card to leave above the list once it is scrolled to. */
+const LIST_HEADROOM = 96;
+/** After the sheet has risen, before the teaching ring is drawn on the list. */
+const RISE_SETTLE_MS = 620;
+
 /** Long enough for the sweep to finish its round trip and settle. */
 const FLOOR_MS = 2600;
 /** When the reader "finishes" — cosmetic, and only ever inside the floor. */
@@ -52,6 +57,31 @@ export default function DemoScreen() {
   // Survives the unmount race: the fetch and two timers all resolve after the
   // person may already have tapped Skip.
   const alive = useRef(true);
+
+  // SCROLLING THE LESSON INTO VIEW.
+  //
+  // The card seats at the verdict, and the ingredient list — the thing the
+  // teaching ring points at — starts below the fold. Left alone, the ring
+  // draws itself, waits, and disappears on a part of the screen nobody has
+  // looked at yet. So once the card has risen, the screen scrolls down to the
+  // list itself, and the ring arrives on something already in front of them.
+  //
+  // Both numbers are measured rather than assumed: the banner's height and
+  // where the list starts inside the card both depend on how much text the
+  // current language needed.
+  const scroller = useRef<ScrollView>(null);
+  const bannerHeight = useRef(0);
+  const listOffset = useRef<number | null>(null);
+  const scrolled = useRef(false);
+
+  const revealList = useCallback(() => {
+    if (scrolled.current || listOffset.current === null) return;
+    scrolled.current = true;
+    // Leaves the card's headline partly visible above the list, so the move
+    // reads as scrolling down a card rather than as jumping to a new screen.
+    const y = bannerHeight.current + Space.lg + listOffset.current - LIST_HEADROOM;
+    scroller.current?.scrollTo({ y: Math.max(0, y), animated: true });
+  }, []);
 
   // Onward, from every exit this screen has: Continue, Skip, and the network
   // failure. /trial names what a subscription includes and that nothing is
@@ -128,6 +158,7 @@ export default function DemoScreen() {
 
       <SafeAreaView style={styles.safe} pointerEvents="box-none">
         <ScrollView
+          ref={scroller}
           style={styles.scroll}
           contentContainerStyle={styles.content}
           showsVerticalScrollIndicator={false}
@@ -135,7 +166,12 @@ export default function DemoScreen() {
           {/* Said plainly, above the card, before anyone reads a verdict off
               it. The card's own footer repeats it in small type, but the
               claim belongs here where it cannot be missed or cropped out. */}
-          <View style={styles.banner}>
+          <View
+            style={styles.banner}
+            onLayout={(e) => {
+              bannerHeight.current = e.nativeEvent.layout.height;
+            }}
+          >
             <ThemedText style={styles.bannerEyebrow}>{t('demo.eyebrow')}</ThemedText>
             <ThemedText style={styles.bannerBody}>{t('demo.note')}</ThemedText>
           </View>
@@ -148,6 +184,15 @@ export default function DemoScreen() {
               // it rings the row that set the verdict, says so, and leaves,
               // so what is left is the same card a real scan produces.
               teach={t('demo.teachCaption')}
+              onIngredientsLayout={(y) => {
+                listOffset.current = y;
+                // The rise is 420ms and the ring waits 1400ms after that, so
+                // this lands in the gap between the card settling and the ring
+                // being drawn on it.
+                setTimeout(() => {
+                  if (alive.current) revealList();
+                }, RISE_SETTLE_MS);
+              }}
               profileName={scan.profileName}
               profileAllergens={scan.profileAllergens}
               controls={

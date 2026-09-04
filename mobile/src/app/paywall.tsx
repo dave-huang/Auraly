@@ -90,7 +90,10 @@ export default function PaywallScreen() {
    * who tapped "Subscription" in the menu wants to see their subscription, and
    * bouncing them to the camera would look like the tap did nothing.
    */
-  const gate = useLocalSearchParams<{ gate?: string }>().gate === '1';
+  const params = useLocalSearchParams<{ gate?: string; from?: string }>();
+  const gate = params.gate === '1';
+  /** Reached as the last step of onboarding, so there is a step to go back to. */
+  const fromOnboarding = params.from === 'onboarding';
 
   // What the SERVER says this person already has. Not the store — same rule as
   // everywhere else in the app, and the reason a jailbroken device cannot show
@@ -281,7 +284,21 @@ export default function PaywallScreen() {
    * Opened deliberately from the menu, it still just goes back.
    */
   function leave() {
-    if (gate) router.replace('/welcome');
+    // ONE STEP BACK, INTO THE FLOW THIS CAME FROM.
+    //
+    // A gated paywall used to send everybody to welcome, which meant somebody
+    // who had just built a profile across a dozen screens and wanted a second
+    // look at the trial promise was thrown to the very first screen instead.
+    // That is not a back button, it is an eject button, and on the screen
+    // where people are deciding whether to pay it is the most expensive
+    // possible place to have one.
+    //
+    // So the reminder screen hands over `from=onboarding`, and back means back.
+    // A gate reached any other way — a subscription that lapsed, a sign-out —
+    // has no such step behind it and still goes to welcome, which is correct
+    // for somebody who is not mid-flow.
+    if (fromOnboarding) router.replace('/reminder');
+    else if (gate) router.replace('/welcome');
     else goBackOrHome();
   }
 
@@ -419,10 +436,17 @@ export default function PaywallScreen() {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: surface.paper }]}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Pressable onPress={leave} hitSlop={12} accessibilityRole="button">
-          <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>
-            ✕ {t('common.back')}
-          </ThemedText>
+        {/* The same round control the eleven onboarding steps carry. This
+            screen is the last of them now, and a text "✕ Back" in the corner
+            was the one place the flow's chrome changed shape at the end. */}
+        <Pressable
+          onPress={leave}
+          hitSlop={16}
+          accessibilityRole="button"
+          accessibilityLabel={t('common.back')}
+          style={[styles.back, { borderColor: surface.rule, backgroundColor: surface.card }]}
+        >
+          <ThemedText style={[styles.backGlyph, { color: surface.ink }]}>‹</ThemedText>
         </Pressable>
 
         {/* Tins and a packet, every surface blank. This is the screen where the
@@ -444,31 +468,25 @@ export default function PaywallScreen() {
           <InkWashPlate name="packets" />
         </View>
 
+        {/* ONE SENTENCE, AND IT ANSWERS THE SELECTED PLAN.
+            
+            This was the app's mark over "Subscribe to Revely", a paragraph
+            about what a scan costs us to run, and a four-line list of what the
+            subscription includes. Every part of it was arguing, on a screen
+            reached by somebody who has already watched the product work and is
+            deciding one thing: yes or no. The argument belongs in the eleven
+            screens behind this one, and it is there now.
+            
+            The word "subscribe" is gone with it. Nobody wants a subscription;
+            they want the thing, and the button that starts a free trial should
+            not be labelled with the commitment they are trying to defer. */}
         <View style={styles.head}>
-          <ApertureMark size={48} color={surface.ink} />
-          <ThemedText style={[Type.title, { color: surface.ink }]}>
-            {t('paywall.title')}
-          </ThemedText>
-          <ThemedText style={[Type.reason, { color: surface.inkMuted }]}>
-            {t('paywall.body')}
+          <ThemedText style={[styles.headline, { color: surface.ink }]}>
+            {hasTrial
+              ? t('paywall.headTrial', { days: trialDays })
+              : t('paywall.headNoTrial')}
           </ThemedText>
         </View>
-
-        {/* What the subscription actually funds. The corpus line is the one
-            claim no competitor can make, and it is true. */}
-        <View style={styles.includes}>
-          <Include text={t('paywall.includeUnlimited')} />
-          <Include text={t('paywall.includeProfiles')} />
-          <Include text={t('paywall.includeCitations')} />
-          <Include text={t('paywall.includeHistory')} />
-        </View>
-
-        {/* The timeline that used to sit here — Today / Day 5 / Day 7, and a
-            shorter monthly variant — is gone. It said out loud when money
-            moves, which the plan rows and the fine print below already do, and
-            it changed as you switched plans, so the screen appeared to rewrite
-            itself under your thumb. The commitment it made is kept: the button
-            never says "free trial" for a plan that bills today. */}
 
         {plans === null ? (
           <ActivityIndicator color={surface.ink} />
@@ -481,63 +499,105 @@ export default function PaywallScreen() {
           </View>
         ) : (
           <View style={styles.plans}>
+            {/* Annual first, and it carries the banner. The order is the
+                recommendation: the cheaper-per-month plan is the one with the
+                trial on it, and putting it under the monthly row would be
+                hiding the better deal to look even-handed. */}
             {plans.map((plan) => {
               const active = plan.plan === selected;
-              return (
-                <Pressable
-                  key={plan.plan}
-                  onPress={() => setSelected(plan.plan)}
-                  accessibilityRole="radio"
-                  accessibilityState={{ selected: active }}
-                  style={[
-                    styles.plan,
-                    { borderColor: active ? surface.ink : surface.rule },
-                    active && { backgroundColor: surface.card },
-                  ]}
-                >
-                  <View style={styles.planText}>
-                    <View style={styles.planHeading}>
-                      <ThemedText style={[Type.label, { color: surface.ink }]}>
-                        {t(plan.plan === 'annual' ? 'paywall.annual' : 'paywall.monthly')}
-                      </ThemedText>
-                      {/* Inverted ink, never a verdict colour — the three inks
-                          mean a verdict, and spending one on a badge that
-                          wants your money is how a trusted signal stops being
-                          one. Contrast does the highlighting instead.
+              const annual = plan.plan === 'annual';
+              const banner =
+                annual && plan.trialDays > 0
+                  ? t('paywall.bannerTrial', { days: plan.trialDays })
+                  : annual && annualSaving !== null
+                    ? t('paywall.bannerSave', { percent: annualSaving })
+                    : null;
 
-                          It says what the arithmetic says. "Most popular" would
-                          be an invented claim on the one screen where being
-                          believed is the entire job, and on day one it would
-                          describe nobody. */}
-                      {plan.plan === 'annual' && annualSaving !== null ? (
-                        <View style={[styles.badge, { backgroundColor: surface.ink }]}>
-                          <ThemedText style={[styles.badgeText, { color: surface.paper }]}>
-                            {t('paywall.saveBadge', { percent: annualSaving })}
-                          </ThemedText>
-                        </View>
+              return (
+                <View key={plan.plan} style={styles.planGroup}>
+                  {/* The strip sits ON the card's top edge rather than beside
+                      the title, so the eye reads "3 days free" before it reads
+                      a price. Ink, never a verdict colour: the three risk inks
+                      mean a finding about food, and spending one on a sales
+                      badge is how a signal people trust stops being one. */}
+                  {banner ? (
+                    <View
+                      style={[
+                        styles.banner,
+                        { backgroundColor: active ? surface.ink : surface.inkFaint },
+                      ]}
+                    >
+                      <ThemedText style={[styles.bannerText, { color: surface.paper }]}>
+                        {banner}
+                      </ThemedText>
+                    </View>
+                  ) : null}
+
+                  <Pressable
+                    onPress={() => setSelected(plan.plan)}
+                    accessibilityRole="radio"
+                    accessibilityState={{ selected: active }}
+                    style={[
+                      styles.plan,
+                      banner ? styles.planUnderBanner : null,
+                      {
+                        backgroundColor: surface.card,
+                        borderColor: active ? surface.ink : surface.rule,
+                      },
+                    ]}
+                  >
+                    {/* A filled disc on the left, the way every store's plan
+                        picker does it. The mono tick that used to sit on the
+                        right was quieter than the price beside it, which made
+                        the selected plan hard to be sure of. */}
+                    <View
+                      style={[
+                        styles.radio,
+                        {
+                          borderColor: active ? surface.ink : surface.rule,
+                          backgroundColor: active ? surface.ink : 'transparent',
+                        },
+                      ]}
+                    >
+                      {active ? (
+                        <ThemedText style={[styles.radioTick, { color: surface.paper }]}>
+                          ✓
+                        </ThemedText>
                       ) : null}
                     </View>
-                    <ThemedText style={[Type.meta, { color: surface.inkMuted }]}>
-                      {plan.plan === 'annual'
-                        ? t('paywall.annualDetail', {
-                            price: plan.price,
-                            perMonth: plan.pricePerMonth,
-                          })
-                        : t('paywall.monthlyDetail', { price: plan.price })}
-                    </ThemedText>
-                    {/* Only the plan that HAS a trial says so. Annotating
-                        monthly with its absence was answering a question
-                        nobody asked, and it made the cheaper plan read as the
-                        punished one. The fine print still states the terms. */}
-                    {plan.trialDays > 0 ? (
-                      <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>
-                        {t('paywall.planTrial', { days: plan.trialDays })}
+
+                    <View style={styles.planText}>
+                      <ThemedText
+                        style={[styles.planName, { color: active ? surface.ink : surface.inkMuted }]}
+                      >
+                        {/* "save 0%" is what `?? 0` produced here before the
+                            store had both prices to compare, which is a worse
+                            claim than making none. No figure, no figure. */}
+                        {annual && plan.trialDays > 0
+                          ? annualSaving !== null
+                            ? t('paywall.annualFree', { percent: annualSaving })
+                            : t('paywall.annualFreePlain')
+                          : t(annual ? 'paywall.annual' : 'paywall.monthly')}
                       </ThemedText>
-                    ) : null}
-                  </View>
-                  {/* Selection is a mono mark, never a coloured tick. */}
-                  <ThemedText style={[styles.tick, { color: surface.ink }]}>{active ? '✓' : ''}</ThemedText>
-                </Pressable>
+                      {annual ? (
+                        <ThemedText style={[styles.planSub, { color: surface.inkFaint }]}>
+                          {t('paywall.annualBilled', { price: plan.price })}
+                        </ThemedText>
+                      ) : null}
+                    </View>
+
+                    {/* Both plans priced in the same unit, which is the whole
+                        argument for the annual one and is impossible to see
+                        when one says "a year" and the other says "a month". */}
+                    <ThemedText
+                      style={[styles.planRate, { color: active ? surface.ink : surface.inkFaint }]}
+                    >
+                      {t('paywall.perMonth', {
+                        price: annual ? plan.pricePerMonth : plan.price,
+                      })}
+                    </ThemedText>
+                  </Pressable>
+                </View>
               );
             })}
           </View>
@@ -554,58 +614,37 @@ export default function PaywallScreen() {
           accessibilityRole="button"
         >
           <ThemedText style={[styles.primaryLabel, { color: surface.paper }]}>
-            {busy === 'purchase'
-              ? t('paywall.working')
-              : hasTrial
-                ? t('paywall.cta', { days: trialDays })
-                : t('paywall.ctaNoTrial')}
+            {busy === 'purchase' ? t('paywall.working') : t('paywall.cta')}
           </ThemedText>
         </Pressable>
 
-        {/* Required by Apple, and the real answer to "same person, new phone". */}
-        <Pressable
-          onPress={() => void restore()}
-          disabled={busy !== null}
-          hitSlop={12}
-          style={styles.restore}
-          accessibilityRole="button"
-        >
-          {/* Louder when signed out, and phrased as a question.
-
-              This is the only way an app can find a subscription bought on a
-              phone it has since been deleted from: Apple gives no silent way
-              to ask what an Apple ID owns, and restore is user-initiated by
-              design. A grey afterthought under the button is not an ask, and
-              somebody who does not see it buys a second plan instead. */}
-          <ThemedText
-            style={[
-              Type.meta,
-              { color: user ? surface.inkFaint : surface.ink },
-            ]}
-          >
-            {busy === 'restore'
-              ? t('paywall.working')
-              : user
-                ? t('paywall.restore')
-                : t('paywall.restorePrompt')}
-          </ThemedText>
-        </Pressable>
-
-        <ThemedText style={[Type.meta, styles.fine, { color: surface.inkFaint }]}>
+        <ThemedText style={[styles.fineText, { color: surface.inkFaint }]}>
           {hasTrial ? t('paywall.fine', { days: trialDays }) : t('paywall.fineNoTrial')}
         </ThemedText>
 
         {/*
-          Required by Guideline 3.1.2: both documents must be reachable from
-          the screen where money is asked for, not buried in Settings. They are
-          links rather than a sheet so that a reviewer can confirm in one tap
-          that the URLs actually resolve.
+          Terms and Privacy are required by Guideline 3.1.2 to be reachable
+          from the screen where money is asked for. Restore sits with them
+          rather than under the button: it is not an offer, it is the door for
+          somebody who has already paid, and Apple requires it here too.
+
+          It used to be a full sentence in its own block, louder when signed
+          out. That was right when this screen was a wall of argument; on a
+          screen with one headline and two prices it was the third loudest
+          thing, competing with the button.
         */}
         <View style={styles.legal}>
           <LegalLink label={t('paywall.terms')} url={TERMS_URL} />
-          <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>·</ThemedText>
+          <ThemedText style={[styles.fineText, { color: surface.inkFaint }]}>·</ThemedText>
           <LegalLink label={t('paywall.privacy')} url={PRIVACY_URL} />
+          <ThemedText style={[styles.fineText, { color: surface.inkFaint }]}>·</ThemedText>
+          <Pressable onPress={() => void restore()} disabled={busy !== null} hitSlop={12}>
+            <ThemedText style={[styles.fineText, styles.link, { color: surface.inkMuted }]}>
+              {busy === 'restore' ? t('paywall.working') : t('paywall.restore')}
+            </ThemedText>
+          </Pressable>
         </View>
+
       </ScrollView>
     </SafeAreaView>
   );
@@ -799,7 +838,9 @@ function LegalLink({ label, url }: { label: string; url: string }) {
       hitSlop={12}
       accessibilityRole="link"
     >
-      <ThemedText style={[Type.meta, styles.legalLabel, { color: surface.inkFaint }]}>
+      {/* Sans and 12, matching Restore beside it and the terms above it. In
+          mono these two read as machine output sitting in a row of prose. */}
+      <ThemedText style={[styles.fineText, styles.link, { color: surface.inkMuted }]}>
         {label}
       </ThemedText>
     </Pressable>
@@ -831,6 +872,49 @@ const styles = StyleSheet.create({
   // and nowhere near the prices. Anything sitting behind a number someone is
   // about to be charged is a legibility problem, not a texture.
   head: { gap: Space.md },
+  // Bigger than Type.title, and the only thing on the screen at this weight.
+  // This sentence has to carry a screen that no longer has a paragraph or a
+  // feature list under it, and at 22 it read as a caption for the drawing.
+  headline: { fontFamily: Font.sansSemi, fontSize: 27, lineHeight: 33, letterSpacing: -0.4 },
+  back: {
+    width: 36,
+    height: 36,
+    borderRadius: Radius.pill,
+    borderWidth: StyleSheet.hairlineWidth,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  backGlyph: { fontFamily: Font.sansMedium, fontSize: 17, lineHeight: 20 },
+  // Sans, not the mono of Type.meta. Mono is the machine's voice, and the
+  // billing terms are the company's — the one place on this screen where a
+  // sentence has to read as a promise rather than as a readout.
+  fineText: { fontFamily: Font.sans, fontSize: 12, lineHeight: 17, textAlign: 'center' },
+  link: { textDecorationLine: 'underline' },
+
+  planGroup: { borderRadius: Radius.tile, overflow: 'hidden' },
+  banner: { alignItems: 'center', paddingVertical: 6 },
+  bannerText: {
+    fontFamily: Font.monoMedium,
+    fontSize: 11,
+    lineHeight: 15,
+    letterSpacing: 1.2,
+    textTransform: 'uppercase',
+  },
+  // The card loses its own top corners under a banner, so the two read as one
+  // object rather than a label resting on a box.
+  planUnderBanner: { borderTopLeftRadius: 0, borderTopRightRadius: 0 },
+  radio: {
+    width: 24,
+    height: 24,
+    borderRadius: Radius.pill,
+    borderWidth: 1.5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  radioTick: { fontFamily: Font.sansSemi, fontSize: 13, lineHeight: 16 },
+  planName: { fontFamily: Font.sansSemi, fontSize: 16, lineHeight: 21 },
+  planSub: { fontFamily: Font.sans, fontSize: 13, lineHeight: 18 },
+  planRate: { fontFamily: Font.sansMedium, fontSize: 15, lineHeight: 20 },
   // Short and wide, which is the shape the tins are drawn in.
   plate: { height: 132 },
 
@@ -844,21 +928,13 @@ const styles = StyleSheet.create({
   plan: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    borderWidth: StyleSheet.hairlineWidth,
-    borderRadius: Radius.flat,
-    padding: Space.lg,
+    gap: Space.md,
+    borderWidth: 1.5,
+    borderRadius: Radius.tile,
+    paddingVertical: Space.lg,
+    paddingHorizontal: Space.lg,
   },
-  planText: { gap: Space.xs, flex: 1 },
-  planHeading: { flexDirection: 'row', alignItems: 'center', gap: Space.sm },
-  badge: { paddingHorizontal: Space.sm, paddingVertical: 2, borderRadius: Radius.pill },
-  badgeText: {
-    fontFamily: Font.monoMedium,
-    fontSize: 10,
-    letterSpacing: 0.08 * 10,
-    textTransform: 'uppercase',
-  },
-  tick: { fontFamily: Font.monoMedium, fontSize: 14 },
+  planText: { gap: 2, flex: 1 },
 
   unavailable: {
     borderWidth: StyleSheet.hairlineWidth,

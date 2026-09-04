@@ -10,7 +10,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { ThemedText } from '@/components/themed-text';
-import { Space, Type, useSurface } from '@/constants/design';
+import { Font, Space, useSurface } from '@/constants/design';
 import { useReducedMotion } from '@/lib/reduced-motion';
 
 /**
@@ -120,7 +120,10 @@ export function TeachRing({
         />
       </View>
       <Animated.View style={captionStyle}>
-        <ThemedText style={[Type.meta, styles.caption, { color: surface.inkMuted }]}>
+        {/* Sans, not mono. The ring is the app pointing at something and
+            saying why, which is Revely's own voice; mono in this system is
+            the machine reading a value back. */}
+        <ThemedText style={[styles.caption, { color: surface.inkMuted }]}>
           {caption}
         </ThemedText>
       </Animated.View>
@@ -137,5 +140,11 @@ const styles = StyleSheet.create({
     bottom: 2,
     borderWidth: 2,
   },
-  caption: { paddingTop: Space.sm, paddingBottom: Space.xs },
+  caption: {
+    fontFamily: Font.sans,
+    fontSize: 13,
+    lineHeight: 18,
+    paddingTop: Space.sm,
+    paddingBottom: Space.xs,
+  },
 });

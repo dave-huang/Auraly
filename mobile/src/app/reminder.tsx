@@ -1,12 +1,7 @@
 import { useRouter } from 'expo-router';
-import { Fragment } from 'react';
-import { StyleSheet, View } from 'react-native';
 
 import { StepFrame } from '@/components/onboarding/chrome';
-import { ThemedText } from '@/components/themed-text';
-import { Radius, Space, Type, useSurface } from '@/constants/design';
 import { useTranslation } from '@/lib/i18n';
-import { goBackOrHome } from '@/lib/navigation';
 
 // The last screen before the bill.
 //
@@ -15,6 +10,16 @@ import { goBackOrHome } from '@/lib/navigation';
 // worth it. They are the people who forgot they had started a trial. Saying
 // out loud, before anyone pays, that this phone will warn them costs a screen
 // and prevents the single most common bad outcome of a free trial.
+//
+// ONE SENTENCE, AND NOTHING ELSE.
+//
+// This screen used to carry a three-row timeline (Today / Two days before /
+// When it ends) and a paragraph about how the reminder is scheduled locally.
+// All of it was true and all of it was noise: it turned the last beat before
+// the price into a document, on a screen whose entire job is one promise. The
+// promise is in the title and the line under it. The mechanics stayed in the
+// code, where they belong, and the terms are stated in full on the paywall
+// and in the Terms.
 //
 // EVERYTHING HERE IS A PROMISE THE CODE ALREADY KEEPS
 //
@@ -32,60 +37,26 @@ import { goBackOrHome } from '@/lib/navigation';
 // the paywall — at which point the person has already read this promise and
 // the ask is the app keeping it.
 //
-// Hence "as long as notifications are on", which is not a disclaimer bolted
-// onto a sales line. It is the literal condition, and someone who declines
-// later should not be able to say they were told otherwise.
+// The line that used to spell that condition out went with the rest of the
+// small print. It has not stopped being true, and it is still stated where
+// somebody looking for it will find it: the Terms, and iOS's own permission
+// dialog at the moment the ask is actually made.
 
 export default function ReminderScreen() {
   const router = useRouter();
   const { t } = useTranslation();
-  const surface = useSurface();
-
-  const steps: [string, string][] = [
-    [t('reminder.nowLabel'), t('reminder.nowBody')],
-    [t('reminder.beforeLabel'), t('reminder.beforeBody')],
-    [t('reminder.endsLabel'), t('reminder.endsBody')],
-  ];
 
   return (
     <StepFrame
       // The questions are behind them. A full bar is the honest reading.
       progress={1}
-      onLeft={goBackOrHome}
+      onLeft={() => router.replace('/trial')}
       leftGlyph="‹"
       leftLabel={t('common.back')}
       title={t('reminder.title')}
       body={t('reminder.body')}
       cta={t('reminder.cta')}
-      onCta={() => router.replace('/paywall?gate=1')}
-    >
-      <View style={[styles.card, { backgroundColor: surface.card, borderColor: surface.rule }]}>
-        {steps.map(([label, detail], index) => (
-          <Fragment key={label}>
-            {index > 0 ? <View style={[styles.rule, { borderTopColor: surface.rule }]} /> : null}
-            <View style={styles.row}>
-              <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>{label}</ThemedText>
-              <ThemedText style={[Type.body, { color: surface.ink }]}>{detail}</ThemedText>
-            </View>
-          </Fragment>
-        ))}
-      </View>
-
-      <ThemedText style={[Type.meta, styles.note, { color: surface.inkFaint }]}>
-        {t('reminder.note')}
-      </ThemedText>
-    </StepFrame>
+      onCta={() => router.replace('/paywall?gate=1&from=onboarding')}
+    />
   );
 }
-
-const styles = StyleSheet.create({
-  card: {
-    borderWidth: StyleSheet.hairlineWidth,
-    borderRadius: Radius.flat,
-    padding: Space.lg,
-    gap: Space.md,
-  },
-  rule: { borderTopWidth: StyleSheet.hairlineWidth },
-  row: { gap: Space.xs },
-  note: { marginTop: Space.sm },
-});

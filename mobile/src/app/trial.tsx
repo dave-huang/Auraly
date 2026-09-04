@@ -6,7 +6,6 @@ import { StepFrame } from '@/components/onboarding/chrome';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Radius, Space, Type, useSurface } from '@/constants/design';
 import { useTranslation } from '@/lib/i18n';
-import { goBackOrHome } from '@/lib/navigation';
 
 // Between the example verdict and the bill, part one of two.
 //
@@ -43,7 +42,11 @@ export default function TrialScreen() {
   return (
     <StepFrame
       progress={1}
-      onLeft={goBackOrHome}
+      // Back a step, not out of the flow. Everything from /demo onwards is
+      // reached with replace rather than push — deliberately, so nobody can
+      // swipe back into a paid screen after buying — which means each screen
+      // has to name the one before it rather than lean on a stack.
+      onLeft={() => router.replace('/demo')}
       leftGlyph="‹"
       leftLabel={t('common.back')}
       title={t('trial.title')}

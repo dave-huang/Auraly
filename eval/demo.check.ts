@@ -160,8 +160,11 @@ check('honest/peanut-hedged',
 
 // No profile at all is a legitimate state (someone who skipped every field).
 const bare = scored(null);
+// 'high' is the label's own worst row (titanium dioxide) with nobody's profile
+// applied. The assertion is not about the word: it is that an empty profile
+// produces the plain universal read and invents no personal findings.
 check('honest/no-profile',
-  (bare.personalFlags ?? []).length === 0 && bare.overallRisk === 'moderate',
+  (bare.personalFlags ?? []).length === 0 && bare.overallRisk === 'high',
   'the unpersonalized example stopped being a plain universal read');
 
 if (errors.length > 0) {

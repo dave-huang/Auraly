@@ -86,25 +86,29 @@ export const onVerdictInk = '#F6F1E7';
  * levels apart was the shape.
  *
  * So the list gets its own three, pushed until the hues actually separate:
- * green near 141°, amber near 42°, red near 4°, every one of them holding at
+ * green near 141°, orange near 28°, red near 4°, every one of them holding at
  * least 3:1 against the paper, which is the floor for telling a graphic apart
  * from its background.
  *
- * WHY THE AMBER IS NOT A YELLOW. It reads as one, and it is measured as a gold.
- * A bright yellow is the obvious middle of a traffic light and it cannot be had
- * on this paper: #E0A800 on the cream ground is 1.9:1, and a mark nobody can
- * see is worse than a mark of the wrong hue. Every yellow that clears 3:1 has
- * been darkened until it is a gold anyway. This one sits at 42° — ten degrees
- * further from the red than the orange it replaces — and measures 3.48:1,
- * which is both yellower AND more visible than what it replaces. That is the
- * whole trade, and it is the best the ground allows.
+ * THE MIDDLE IS AN ORANGE, and it has been round the houses. It started as
+ * #C86A00, was pushed to a gold at 42° to get further from the red, and the
+ * gold looked like exactly what it was: a dark yellow on cream, muddy at 12pt
+ * and hard to name. Being further from the red in HUE bought nothing if the
+ * result is a colour nobody recognises as the middle of a traffic light.
+ *
+ * So: #DC6803. Hue 28°, and 3.10:1 against the paper, which clears the 3:1
+ * floor for telling a graphic from its ground with very little to spare. That
+ * is the constraint the whole search kept running into — a genuinely bright
+ * orange or yellow cannot be had on a cream page, and everything that clears
+ * the floor is darker than the idea of it. This is the brightest orange that
+ * still passes, which is the right place to sit.
  *
  * Confined to the ingredient list and the ingredient screen's level rows.
  * A verdict is still spoken in verdict ink.
  */
 export const RiskSignal = {
   low: { ink: '#1B7A3D', wash: '#E0EEE4' },
-  moderate: { ink: '#A8780A', wash: '#F3E4C0' },
+  moderate: { ink: '#DC6803', wash: '#FBE5CC' },
   high: { ink: '#C62317', wash: '#F7DCD8' },
 } as const satisfies Record<'low' | 'moderate' | 'high', VerdictTone>;
 

@@ -97,18 +97,21 @@ export function AliasPlate() {
  * mean something specific here, and seeing all three at once is how somebody
  * learns that the green one is a real answer rather than a blank.
  *
- * The examples are chosen to make that point. One to be careful with, one that
- * is completely fine, and one from the bathroom shelf rather than the kitchen,
- * because this app reads skincare too and nothing else in onboarding says so.
+ * The examples are chosen to make that point, and they run worst first because
+ * that is the order the real list uses. One a regulator has acted on, one to be
+ * careful with, one that is completely fine.
  */
 export function DecodePlate() {
   const { t } = useTranslation();
   const surface = useSurface();
 
+  // Worst first, exactly as a results list is ordered. This screen is a
+  // preview of that screen, and previewing it in a different order teaches the
+  // wrong thing about where to look.
   const rows: [string, string, 'low' | 'moderate' | 'high'][] = [
+    [t('teach.decodeThree'), t('teach.decodeThreeWhat'), 'high'],
     [t('teach.decodeOne'), t('teach.decodeOneWhat'), 'moderate'],
     [t('teach.decodeTwo'), t('teach.decodeTwoWhat'), 'low'],
-    [t('teach.decodeThree'), t('teach.decodeThreeWhat'), 'high'],
   ];
 
   return (

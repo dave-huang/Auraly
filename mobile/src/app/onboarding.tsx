@@ -254,6 +254,9 @@ export default function OnboardingScreen() {
         saving || (step === 'subject' && subject === null) || (step === 'name' && needsName)
       }
       secondary={content.optional ? { label: t('onboarding.skip'), onPress: advance } : undefined}
+      // Skip comes and goes as things are chosen; the space it occupies must
+      // not, or the page shifts under the finger that chose them.
+      reserveSecondary={content.skippable}
     >
       {content.children}
     </StepFrame>
@@ -268,6 +271,12 @@ interface StepContent {
   plate?: PlateName;
   /** Shows a Skip under the button — for the steps nobody has to answer. */
   optional?: boolean;
+  /**
+   * This step can show a Skip, whether or not it is showing one right now.
+   * Distinct from `optional` on purpose: `optional` changes as the person
+   * answers, and the footer's HEIGHT must not.
+   */
+  skippable?: boolean;
 }
 
 function renderStep(args: {
@@ -357,6 +366,7 @@ function renderStep(args: {
         // perfectly good reason to be here, and a required field would make
         // those people invent an answer.
         optional: args.allergens.size === 0,
+        skippable: true,
         children: (
           <AllergenField
             allergens={args.allergens}
@@ -399,6 +409,7 @@ function renderStep(args: {
         body: t('onboarding.dietaryBody'),
         cta: t('onboarding.next'),
         optional: args.dietary.size === 0,
+        skippable: true,
         children: <DietaryField dietary={args.dietary} onChange={args.setDietary} />,
       };
 
@@ -409,6 +420,7 @@ function renderStep(args: {
         body: t('onboarding.conditionsBody'),
         cta: t('onboarding.next'),
         optional: args.conditions.size === 0,
+        skippable: true,
         children: <ConditionsField conditions={args.conditions} onChange={args.setConditions} />,
       };
 

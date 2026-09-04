@@ -46,6 +46,12 @@ import type { AnalysisResult, Ingredient, RiskLevel } from '@shared/schema';
  *   - carmine is an insect
  *   - sesame has only been a declarable US allergen since 2023
  *   - sulphur dioxide is the reason dried fruit stays orange
+ *   - titanium dioxide is a whitener the EU withdrew from food in 2022 and
+ *     the US still permits, which is the clearest single example of the same
+ *     ingredient being answered differently depending on where you stand. It
+ *     is also the label's one HIGH row, which the example scan needs: the
+ *     screen teaches where to look, and a card whose worst row is a caution
+ *     teaches it faintly.
  *
  * Between them they touch milk, tree nuts, soy, sesame, wheat and sulphites,
  * plus vegan, vegetarian, halal, kosher, gluten-free and celiac. Most
@@ -329,6 +335,32 @@ const ROWS: DemoRow[] = [
     },
   },
   {
+    canonical: 'Titanium Dioxide',
+    original: 'Dióxido de Titanio (E171)',
+    riskLevel: 'high',
+    category: 'colour',
+    copy: {
+      en: {
+        name: 'Titanium Dioxide (E171)',
+        summary: 'A whitener the EU withdrew from food in 2022.',
+        details:
+          'Used to make coatings and fillings look opaque and white. EFSA re-evaluated it in 2021 and could not rule out damage to DNA, so the EU stopped allowing it as a food additive from 2022. It is still permitted in food in the United States and across much of Latin America, and it is still used in toothpaste and sunscreen.',
+      },
+      zh: {
+        name: '二氧化钛（E171）',
+        summary: '一种增白剂，欧盟已于 2022 年停止允许用于食品。',
+        details:
+          '用来让糖衣和夹心看起来不透明、发白。欧洲食品安全局在 2021 年重新评估后，无法排除它对 DNA 的损害，因此欧盟自 2022 年起不再允许它作为食品添加剂。它在美国和拉丁美洲多数国家仍可用于食品，也仍用于牙膏和防晒霜。',
+      },
+      es: {
+        name: 'Dióxido de Titanio (E171)',
+        summary: 'Un blanqueador que la UE retiró de los alimentos en 2022.',
+        details:
+          'Se usa para que coberturas y rellenos se vean opacos y blancos. La EFSA lo reevaluó en 2021 y no pudo descartar daños en el ADN, así que la UE dejó de permitirlo como aditivo alimentario desde 2022. Sigue permitido en alimentos en Estados Unidos y en buena parte de Latinoamérica, y se sigue usando en pasta de dientes y protector solar.',
+      },
+    },
+  },
+  {
     canonical: 'Carmine',
     original: 'Carmín (E120)',
     riskLevel: 'low',
@@ -405,9 +437,9 @@ export function demoAnalysis(language: string | undefined): AnalysisResult {
     productType: 'food',
     productName: PRODUCT_NAME[lang],
     ingredients,
-    // Sulphur dioxide alone, before any profile. Personalization only ever
+    // Titanium dioxide alone, before any profile. Personalization only ever
     // raises this.
-    overallRisk: 'moderate',
+    overallRisk: 'high',
     analyzedAt: new Date().toISOString(),
     canonicalIngredients: ROWS.map((row) => row.canonical),
     originalIngredients: ROWS.map((row) => row.original),

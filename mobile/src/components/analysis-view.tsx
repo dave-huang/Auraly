@@ -114,6 +114,7 @@ export function AnalysisView({
   onRetake,
   onPressProfile,
   teach,
+  onIngredientsLayout,
 }: {
   result: AnalysisResult;
   subtitle?: string;
@@ -130,6 +131,15 @@ export function AnalysisView({
    * own output forever.
    */
   teach?: string;
+  /**
+   * Where the ingredient list starts, in this card's own coordinates.
+   *
+   * Only /demo asks. It needs to scroll the list into view before the teaching
+   * ring appears on it, and the list's position depends on how tall the
+   * verdict, the reason and the bilingual block turned out to be in whichever
+   * language is showing — so it is measured rather than guessed.
+   */
+  onIngredientsLayout?: (y: number) => void;
   /** Part 7 of the anatomy. Passed in so the card stays one object while the
    *  host screen decides what "next" means — scan again, or back to history. */
   controls?: ReactNode;
@@ -405,8 +415,11 @@ export function AnalysisView({
         </View>
       ) : null}
 
-      {/* Ingredients: a green, amber or red mark, the name, and the reason. */}
-      <View style={[styles.block, { borderTopColor: surface.rule }]}>
+      {/* Ingredients: a green, orange or red mark, the name, and the reason. */}
+      <View
+        style={[styles.block, { borderTopColor: surface.rule }]}
+        onLayout={(e) => onIngredientsLayout?.(e.nativeEvent.layout.y)}
+      >
         <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
           {t('verdict.ingredientCount', { count: result.ingredients.length })}
         </ThemedText>

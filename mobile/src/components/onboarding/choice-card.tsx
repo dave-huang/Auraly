@@ -41,8 +41,8 @@ export function ChoiceCard({
       accessibilityState={multi ? { checked: selected } : { selected }}
       style={[
         styles.card,
-        { backgroundColor: surface.card, borderColor: surface.rule },
-        selected && { borderColor: surface.ink, borderWidth: 1.5 },
+        // Colour only. The border is 1.5 in both states — see the style below.
+        { backgroundColor: surface.card, borderColor: selected ? surface.ink : surface.rule },
       ]}
     >
       <View style={styles.text}>
@@ -74,14 +74,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: Space.md,
-    borderWidth: StyleSheet.hairlineWidth,
+    // 1.5 WHETHER OR NOT IT IS SELECTED. It used to be a hairline that grew to
+    // 1.5 on selection, and the comment here claimed the padding absorbed the
+    // difference. It did not: every card got about two points taller when
+    // chosen, which pushed everything below it down. Only the colour moves now.
+    borderWidth: 1.5,
     borderRadius: Radius.tile,
     paddingVertical: Space.lg,
     paddingHorizontal: Space.lg,
-    // Selected rows grow their border from hairline to 1.5, which would shift
-    // every sibling by a point. Reserving the difference in padding keeps the
-    // list still as the selection moves down it.
-    marginVertical: 0,
   },
   text: { flex: 1, gap: Space.xs },
 

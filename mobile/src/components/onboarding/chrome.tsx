@@ -73,6 +73,7 @@ export function StepFrame({
   onCta,
   ctaDisabled,
   secondary,
+  reserveSecondary,
 }: {
   /** 0 to 1. Drawn, never announced as "step N of M" — the count is unstable. */
   progress: number;
@@ -88,6 +89,17 @@ export function StepFrame({
   ctaDisabled?: boolean;
   /** A quieter action under the button — "Skip", "Not now". */
   secondary?: { label: string; onPress: () => void };
+  /**
+   * Hold the secondary row's height even while `secondary` is absent.
+   *
+   * THIS IS A REAL BUG FIX, not tidiness. The three optional steps show Skip
+   * only while nothing is chosen, so the first tap on a chip removed a row
+   * from the footer. The footer shrank, the body grew, and the frame recomputed
+   * the plate against a taller viewport — so tapping "Kosher" made the drawing
+   * jump and resize under the thumb that tapped it. Reserving the row means
+   * the footer is the same height whether or not Skip is in it.
+   */
+  reserveSecondary?: boolean;
 }) {
   const surface = useSurface();
 
@@ -173,6 +185,8 @@ export function StepFrame({
                 {secondary.label}
               </ThemedText>
             </Pressable>
+          ) : reserveSecondary ? (
+            <View style={styles.secondary} />
           ) : null}
         </View>
       </KeyboardAvoidingView>
@@ -182,6 +196,9 @@ export function StepFrame({
 
 /** Below this the drawing is a smudge rather than a picture, so it is dropped. */
 const MIN_PLATE_HEIGHT = 132;
+
+/** Space.md above and below one line of Type.meta. See `secondary` in styles. */
+const SECONDARY_HEIGHT = Space.md * 2 + 15;
 
 function clamp(value: number): number {
   if (!Number.isFinite(value)) return 0;
@@ -239,5 +256,10 @@ const styles = StyleSheet.create({
   primary: { borderRadius: Radius.pill, paddingVertical: Space.lg, alignItems: 'center' },
   primaryLabel: { fontFamily: Font.sansSemi, fontSize: 15, lineHeight: 20 },
   disabled: { opacity: 0.4 },
-  secondary: { alignItems: 'center', paddingVertical: Space.md },
+  // A FIXED HEIGHT, not padding. An empty View with vertical padding reserves
+  // the padding and not the line box of the text that is missing, so the first
+  // attempt at holding this row still let the footer shrink by the height of
+  // one line — which is exactly the shift it was meant to stop. Both the real
+  // control and the placeholder use this, so they cannot disagree.
+  secondary: { alignItems: 'center', justifyContent: 'center', height: SECONDARY_HEIGHT },
 });
