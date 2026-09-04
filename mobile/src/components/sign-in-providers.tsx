@@ -47,15 +47,13 @@ import { identifyPurchaser } from '@/lib/purchases';
  */
 export function ProviderButtons({
   onSignedIn,
-  recovering = false,
 }: {
-  onSignedIn: () => void;
   /**
-   * Sent here by someone whose Apple ID already holds a subscription. Their
-   * entitlement is pulled before we hand back, so the next screen already
-   * knows, rather than bouncing them off a paywall one tap later.
+   * Handed `true` when the server, asked directly, says this account is
+   * subscribed. Callers use it to route: somebody who already pays should
+   * never see a price again on their way in.
    */
-  recovering?: boolean;
+  onSignedIn: (subscribed: boolean) => void;
 }) {
   const { setUser } = useAuth();
   const { t } = useTranslation();
@@ -91,9 +89,22 @@ export function ProviderButtons({
       // attributed to the account rather than to an anonymous store id.
       await identifyPurchaser(user.id);
 
-      if (recovering) await refreshEntitlement().catch(() => null);
+      // AND THEN WAIT FOR THE ANSWER, EVERY TIME.
+      //
+      // This used to run only on the recovery path, and the ordinary one —
+      // "I already have an account", from the welcome drawer — raced it. The
+      // logIn above can move a subscription between app user ids, RevenueCat
+      // reports that by webhook a second or two later, and the screen after
+      // this one reads entitlement the moment it mounts. Sign in on a fresh
+      // phone inside that window and a paying subscriber is shown the paywall.
+      //
+      // `refreshEntitlement` closes it deterministically: it makes our server
+      // ask RevenueCat outright rather than wait to be told. One extra request
+      // on a screen that has just done two round trips already, in exchange
+      // for never asking a subscriber to pay twice.
+      const found = await refreshEntitlement().catch(() => null);
 
-      onSignedIn();
+      onSignedIn(Boolean(found?.subscription.active));
     } catch (error: any) {
       if (!(error instanceof SignInCancelledError)) {
         Alert.alert(t('signIn.failed'), error?.message ?? t('common.tryAgain'));

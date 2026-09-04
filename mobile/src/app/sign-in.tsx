@@ -35,11 +35,21 @@ export default function SignInScreen() {
   const saving = params.mode === 'save';
   const recovering = params.recover === '1';
 
-  function done() {
-    // Sent here mid-purchase by the paywall, because an anonymous purchase
-    // cannot be granted. Going to '/' would bounce off the viewfinder's gate
-    // and land back on the paywall anyway, but by way of a screen that exists
-    // to turn people around, which flickers. Go where they were.
+  function done(subscribed: boolean) {
+    // ALREADY PAYING BEATS EVERY OTHER DESTINATION.
+    //
+    // The account this person just signed into holds a live subscription —
+    // the server was asked outright before we got here, so this is not a
+    // guess. Sending them anywhere but the camera means showing a price to
+    // somebody who has already paid it, which is the one thing this screen
+    // must never do.
+    if (subscribed) return router.replace('/');
+
+    // Otherwise: sent here mid-purchase by the paywall, because an anonymous
+    // purchase cannot be granted. Going to '/' would bounce off the
+    // viewfinder's gate and land back on the paywall anyway, but by way of a
+    // screen that exists to turn people around, which flickers. Go where they
+    // were.
     router.replace(params.then === 'paywall' ? '/paywall?gate=1' : '/');
   }
 
@@ -82,7 +92,7 @@ export default function SignInScreen() {
       </View>
 
       <View style={styles.actions}>
-        <ProviderButtons onSignedIn={done} recovering={recovering} />
+        <ProviderButtons onSignedIn={done} />
 
         {/* Only when this is an offer rather than a gate. Someone who came here
             to get their account back has nothing to defer. */}
