@@ -516,6 +516,33 @@ export function AnalysisView({
         <View style={[styles.controls, { borderTopColor: surface.rule }]}>{controls}</View>
       ) : null}
 
+      {/* NOT MEDICAL ADVICE, said on the card rather than only in the terms.
+          
+          This app reads allergen labels for people who have a reason to care
+          what is on them, and until now the only place it said what it is not
+          was a policy document nobody opens. The sentence belongs where the
+          verdict is, which is here.
+
+          Set as a footnote and not as a warning banner, on purpose. A red box
+          on every scan would train people to look past it inside a week, and
+          it would also be the loudest thing on a card whose whole argument is
+          that it is calm. Quiet, present, and in the same place every time is
+          what makes a disclaimer readable rather than furniture.
+
+          On every card, not just /results: /demo shows a real verdict and
+          /scan-detail shows an old one, and a person cannot be expected to
+          remember which screen carried the caveat. */}
+      <View style={[styles.disclaimer, { borderTopColor: surface.rule }]}>
+        {/* Sans, not Type.meta's mono. Mono is the machine's voice in this
+            system — a line count, a transcription, a source id — and this
+            sentence is Revely speaking in the first person about what it is
+            and is not. Setting it in the machine face would file the one
+            human caveat on the card under "readout". */}
+        <ThemedText style={[styles.disclaimerText, { color: surface.inkFaint }]}>
+          {t('results.disclaimer')}
+        </ThemedText>
+      </View>
+
       <View style={[styles.footer, { borderTopColor: surface.rule }]}>
         <View style={styles.footerMark}>
           {/* 14, not 12: the mark carries two bars at every size now, and 12
@@ -801,6 +828,14 @@ const styles = StyleSheet.create({
     gap: Space.md,
     borderTopWidth: StyleSheet.hairlineWidth,
   },
+  disclaimer: {
+    paddingHorizontal: Space.xl,
+    paddingVertical: Space.lg,
+    borderTopWidth: StyleSheet.hairlineWidth,
+  },
+  // Between Type.body and Type.meta: small enough to read as fine print,
+  // large enough that somebody with a severe allergy can actually read it.
+  disclaimerText: { fontFamily: Font.sans, fontSize: 12, lineHeight: 17 },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
