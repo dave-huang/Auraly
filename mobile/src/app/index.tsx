@@ -241,30 +241,34 @@ export default function ViewfinderScreen() {
 
   if (isLoading) return <View style={{ flex: 1, backgroundColor: surface.paper }} />;
 
-  // The first launch is the whole argument for this block.
+  // NO ACCOUNT MEANS WELCOME. One rule, no exceptions, and worth stating
+  // plainly because it has been three different rules already.
   //
-  // This used to be `if (!user) return <Redirect href="/sign-in" />` — cold
-  // start went straight to "Continue with Apple", before the app had shown a
-  // single verdict, and /onboarding was reachable only by tapping a chip that
-  // said "Set up first". Most people never saw it.
+  // It was once `<Redirect href="/sign-in" />`, so a cold start opened on
+  // "Continue with Apple" before the app had shown a single verdict. Then it
+  // was welcome only for somebody who ALSO had no profile, which left the
+  // half-finished cases — a profile built anonymously, or an account signed out
+  // of — landing on the paywall instead, a screen that asks for money from
+  // somebody it cannot even sell to, since entitlement is granted against a
+  // user id and there is no user.
   //
-  // Now: no account and no profile means they have not been through welcome,
-  // so send them there. No account WITH a profile is the normal state during
-  // onboarding — they scan anonymously, and the sign-in ask comes after the
-  // first verdict, when there is something worth saving.
-  //
+  // So: signed out, you get welcome. It is the screen that names the app and
+  // offers the two doors, which is the correct answer to "who are you" every
+  // time it is asked. Nothing is lost by coming through it — the profile built
+  // during onboarding is kept, and signing in from the drawer returns here
+  // knowing who they are.
+  if (!user) return <Redirect href="/welcome" />;
+
   // `profiles === null` means the read has not finished. Holding the blank
   // frame for a beat is right: routing on an unloaded list would bounce someone
-  // who has a profile out to welcome every cold start.
+  // who has a profile out of the app every cold start.
   if (profiles === null) return <View style={{ flex: 1, backgroundColor: surface.paper }} />;
 
-  // No profile means they have not been through the flow. Which flow depends
-  // on whether there is an account: a cold start goes to welcome, and someone
-  // who arrived by signing in — tapped "I already have an account", authorised
-  // with Apple, and turned out not to have one — goes straight to onboarding.
-  // That second case used to land HERE, on a viewfinder, with no profile and
-  // no idea it was supposed to have one.
-  if (profiles.length === 0) return <Redirect href={user ? '/onboarding' : '/welcome'} />;
+  // Signed in with nothing set up. The ordinary way to reach this is to have
+  // tapped "I already have an account", authorised with Apple, and turned out
+  // not to have one. That case used to land HERE, on a viewfinder, with no
+  // profile and no idea it was supposed to have one.
+  if (profiles.length === 0) return <Redirect href="/onboarding" />;
 
   // NO SCANNING BEFORE THE PAYWALL.
   //
@@ -273,20 +277,15 @@ export default function ViewfinderScreen() {
   // correct and the timing was indefensible — it spent someone's effort to
   // make a sale.
   //
-  // Two conditions, and the asymmetry between them is the point:
-  //
-  //   No account. There is no such thing as an entitled anonymous device —
-  //   entitlement is granted by our server against a user id — so this is a
-  //   fact, not a guess.
-  //
-  //   An entitlement that says NO. Affirmative only. `null` means the question
-  //   could not be answered (a network blip, a cold cache), and null must
-  //   never be read as "blocked" — the whole point of routing entitlement
-  //   through one place is that a dropped request cannot put a paywall in
-  //   front of somebody who is paying. Unknown falls through to the camera and
-  //   the shutter's own 402 handling, which is where it was before this gate
-  //   existed.
-  const walled = !user || entitlement?.subscription.active === false;
+  // Everybody here has an account — the signed-out case left for welcome
+  // above — so this is the entitlement question alone, and it is answered
+  // AFFIRMATIVELY ONLY. `null` means the question could not be answered (a
+  // network blip, a cold cache), and null must never be read as "blocked": the
+  // whole point of routing entitlement through one place is that a dropped
+  // request cannot put a paywall in front of somebody who is paying. Unknown
+  // falls through to the camera and the shutter's own 402 handling, which is
+  // where it was before this gate existed.
+  const walled = entitlement?.subscription.active === false;
   if (!entitlementLoading && walled) return <Redirect href="/paywall?gate=1" />;
 
   // Camera priming.

@@ -98,6 +98,9 @@ export const PLATES = {
   /** A pressed sprig on a mounting card. The profile as a finished thing. */
   specimen: { source: require('@/assets/images/inkwash/specimen.png'), plate: 1.00, wash: 0.45 },
   /** A split pod. Looking closely at what a thing is actually made of. */
+  // Currently unplaced: welcome used to carry it, and welcome is now the mark
+  // and two doors with no artwork at all. Kept because the plate itself is
+  // good and the next screen that needs one will want a portrait.
   vanillaPod: { source: require('@/assets/images/inkwash/vanilla-pod.png'), plate: 0.80, wash: 0.27 },
   /** Blank tins. Every product on the shelf, before you know anything about it. */
   packets: { source: require('@/assets/images/inkwash/packets.png'), plate: 0.95, wash: 0.36 },

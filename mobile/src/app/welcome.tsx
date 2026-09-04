@@ -4,27 +4,27 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { RevelyLockup } from '@/components/aperture-mark';
-import { InkWashPlate } from '@/components/inkwash-plate';
 import { LanguagePicker } from '@/components/language-picker';
 import { SignInSheet } from '@/components/sign-in-providers';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Radius, Space, Type, useSurface } from '@/constants/design';
 import { useTranslation } from '@/lib/i18n';
 
-// Screen 00 — Welcome.
+// Screen 00 — Welcome. The first thing anybody without an account sees, every
+// time, including the moment after they sign out.
 //
 // ONE DECISION, TWO DOORS
 //
-// This screen used to argue. It carried a worked example (a real ingredient, a
-// real verdict, the regulator underneath it) and three supporting points, on
-// the theory that showing the product beats describing it. The theory is right
-// and the placement was wrong: all of it landed on somebody who had been in the
-// app for two seconds and had not yet decided to care. It read as dense, and
-// dense on a first screen reads as work.
+// This screen has been talked out of doing anything else twice now. It once
+// carried a worked example — a real ingredient, a real verdict, the regulator
+// underneath it — and three supporting points, on the theory that showing the
+// product beats describing it. The theory is right and the placement was wrong:
+// all of it landed on somebody who had been in the app for two seconds and had
+// not yet decided to care. Then it carried a drawing, which was quieter but
+// still an answer to a question nobody had asked yet.
 //
-// So the argument moved into the flow behind the button, where there is room to
-// make it one idea at a time, and this screen went back to doing the only job a
-// first screen can actually do: name the app, and offer the two doors.
+// What is left is the name, one line saying what the app is for, and the two
+// doors. That is the whole job of a first screen:
 //
 //   Get started  — into onboarding, which ends at the subscription.
 //   Sign in      — a drawer on this same page, not another screen. Somebody
@@ -32,9 +32,8 @@ import { useTranslation } from '@/lib/i18n';
 //                  turn out to have no profile yet, the gate sends them into
 //                  onboarding anyway, so the two doors meet.
 //
-// The drawing is the whole upper half and carries no text over it, which is the
-// rule everywhere in the app now: a plate is either a picture with its own
-// space or it is not worth having.
+// The argument for the product lives in onboarding, one idea at a time, where
+// there is room for it and where somebody has already agreed to look.
 
 export default function WelcomeScreen() {
   const router = useRouter();
@@ -51,19 +50,16 @@ export default function WelcomeScreen() {
         <LanguagePicker />
       </View>
 
-      {/* A split pod: looking closely at what a thing is actually made of,
-          which is the entire product in one drawing. Portrait, because this
-          band is tall and narrow, and a landscape drawing would letterbox into
-          a strip with dead space above and below it. */}
-      <View style={styles.art}>
-        <InkWashPlate name="vanillaPod" />
-      </View>
-
-      <View style={styles.head}>
+      {/* Centred in what is left after the bar and the buttons, so the mark
+          sits at the optical middle of the screen rather than being pushed up
+          by whatever else wanted the space. */}
+      <View style={styles.hero}>
         {/* The lockup, not a serif wordmark: Newsreader belongs to the verdict
             word alone, so the app's own name is set in Instrument Sans. */}
-        <RevelyLockup size={40} color={surface.ink} />
-        <ThemedText style={[styles.tagline, { color: surface.ink }]}>
+        <RevelyLockup size={44} color={surface.ink} />
+        {/* Deliberately smaller than the name. This line is a subtitle to the
+            mark, not a headline competing with it. */}
+        <ThemedText style={[Type.reason, styles.tagline, { color: surface.inkMuted }]}>
           {t('welcome.tagline')}
         </ThemedText>
       </View>
@@ -114,24 +110,19 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   topBar: { flexDirection: 'row', justifyContent: 'flex-end', paddingHorizontal: Gutter },
 
-  // Takes whatever height is left once the name, the tagline and the buttons
-  // have theirs, which on a small phone is less and on a large one is more.
-  // The drawing is contained rather than cropped, so it simply gets smaller
-  // instead of losing its edges.
-  art: { flex: 1, marginHorizontal: Gutter, marginTop: Space.sm, minHeight: 140 },
-
-  head: { paddingHorizontal: Gutter, paddingTop: Space.xl, alignItems: 'center', gap: Space.lg },
-  // Bigger than Type.title and set centred: this is the one sentence the screen
-  // exists to say, and at 22 it looked like a caption for the drawing above it.
-  tagline: {
-    fontFamily: Font.sansSemi,
-    fontSize: 30,
-    lineHeight: 37,
-    letterSpacing: -0.5,
-    textAlign: 'center',
+  hero: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: Gutter,
+    gap: Space.md,
+    // Pulls the pair up off the true centre by a little. An optical centre sits
+    // slightly above a geometric one, and the buttons below weigh the bottom.
+    paddingBottom: Space.xxl,
   },
+  tagline: { textAlign: 'center', maxWidth: 300 },
 
-  footer: { paddingHorizontal: Gutter, paddingTop: Space.xl, paddingBottom: Space.md, gap: Space.sm },
+  footer: { paddingHorizontal: Gutter, paddingBottom: Space.md, gap: Space.sm },
   primary: { borderRadius: Radius.pill, paddingVertical: Space.lg, alignItems: 'center' },
   primaryLabel: { fontFamily: Font.sansSemi, fontSize: 16, lineHeight: 21 },
   secondary: { alignItems: 'center', paddingVertical: Space.md },

@@ -165,8 +165,15 @@ function DevButton({ onPress }: { onPress: () => void }) {
  * button was a page transition doing the work of a sheet, and it made "already
  * have an account" look like a bigger decision than it is.
  *
- * The backdrop dismisses, and so does the close control. A sheet whose only
- * exit is a small mark in the corner is the thing that traps people.
+ * BUILT TO MATCH THE LANGUAGE SHEET, deliberately and down to the details. Two
+ * controls sit within an inch of each other on the welcome screen, and each one
+ * opens a drawer; when one faded in under an eyebrow and the other slid up
+ * under a title with a ✕ in the corner, the screen looked like two screens
+ * built by two people. So this one takes the other's fade, its eyebrow, its
+ * note, and its dismissal: the backdrop is the way out, and there is no close
+ * mark. Whichever of the two you press first teaches you how the other behaves.
+ *
+ * If either sheet's pattern changes, change both.
  */
 export function SignInSheet({
   visible,
@@ -181,28 +188,20 @@ export function SignInSheet({
   const { t } = useTranslation();
 
   return (
-    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
+    <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
+      {/* The backdrop is its own dismiss target, exactly as it is on the
+          language sheet. A drawer with no way out but a small mark in the
+          corner is the thing that traps people. */}
       <Pressable style={styles.backdrop} onPress={onClose} accessibilityLabel={t('common.close')}>
         <Pressable
           style={[styles.sheet, { backgroundColor: surface.card, borderTopColor: surface.rule }]}
+          // Swallows taps so pressing the sheet itself does not dismiss it.
           onPress={() => {}}
         >
-          <View style={styles.sheetHead}>
-            <ThemedText style={[Type.title, { color: surface.ink }]}>
-              {t('signIn.sheetTitle')}
-            </ThemedText>
-            <Pressable
-              onPress={onClose}
-              hitSlop={16}
-              accessibilityRole="button"
-              accessibilityLabel={t('common.close')}
-              style={[styles.close, { borderColor: surface.rule, backgroundColor: surface.paper }]}
-            >
-              <ThemedText style={[styles.closeGlyph, { color: surface.ink }]}>✕</ThemedText>
-            </Pressable>
-          </View>
-
-          <ThemedText style={[Type.body, { color: surface.inkMuted }]}>
+          <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
+            {t('signIn.sheetTitle')}
+          </ThemedText>
+          <ThemedText style={[Type.body, styles.note, { color: surface.inkMuted }]}>
             {t('signIn.sheetBody')}
           </ThemedText>
 
@@ -235,6 +234,7 @@ const styles = StyleSheet.create({
   googleLabel: { fontFamily: Font.sansSemi, fontSize: 17, lineHeight: 22 },
   quiet: { alignItems: 'center', paddingVertical: Space.md, opacity: 0.6 },
 
+  // Backdrop, sheet and note are the language picker's, value for value.
   backdrop: { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(22,19,15,0.45)' },
   sheet: {
     borderTopLeftRadius: Radius.sheet,
@@ -242,17 +242,8 @@ const styles = StyleSheet.create({
     borderTopWidth: StyleSheet.hairlineWidth,
     paddingHorizontal: Gutter,
     paddingTop: Space.xl,
-    paddingBottom: Space.xxl + Space.xl,
-    gap: Space.md,
+    paddingBottom: Space.xxl + Space.lg,
+    gap: Space.sm,
   },
-  sheetHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  close: {
-    width: 32,
-    height: 32,
-    borderRadius: Radius.pill,
-    borderWidth: StyleSheet.hairlineWidth,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  closeGlyph: { fontFamily: Font.sansMedium, fontSize: 15, lineHeight: 18 },
+  note: { marginBottom: Space.sm },
 });

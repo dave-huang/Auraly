@@ -56,7 +56,9 @@ export default function AccountScreen() {
       .catch(() => setDetails(null));
   }, []);
 
-  if (!user) return <Redirect href="/sign-in" />;
+  // Signed out — by this screen's own button, or in another tab while this one
+  // was mounted. Welcome is where anybody without an account belongs.
+  if (!user) return <Redirect href="/welcome" />;
 
   function confirmDelete() {
     Alert.alert(t('account.deleteConfirmTitle'), t('account.deleteConfirmBody'), [
@@ -69,8 +71,10 @@ export default function AccountScreen() {
     setDeleting(true);
     try {
       await deleteAccount();
-      // Replace, not push: there is no account left to come back to.
-      router.replace('/sign-in');
+      // Replace, not push: there is no account left to come back to. Welcome
+      // rather than sign-in, because "make a new account" is one of the two
+      // doors there and "sign back into the one you just deleted" is not.
+      router.replace('/welcome');
     } catch (error: any) {
       // Still signed in, and honest about it — the account was not deleted.
       Alert.alert(t('account.deleteFailed'), error?.message ?? t('common.tryAgain'));
@@ -187,7 +191,9 @@ export default function AccountScreen() {
 
         <Pressable
           style={[styles.action, { borderColor: surface.rule }]}
-          onPress={() => void signOut().then(() => router.replace('/sign-in'))}
+          // Welcome, not sign-in. Signing out and being handed a sign-in
+          // form reads as a rejected login rather than a completed action.
+          onPress={() => void signOut().then(() => router.replace('/welcome'))}
         >
           <ThemedText style={[Type.label, { color: surface.ink }]}>
             {t('home.signOut')}

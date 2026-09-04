@@ -6,55 +6,39 @@ import type { RiskLevel } from '@/lib/types';
 /**
  * The risk mark on an ingredient row: green, amber or red.
  *
- * COLOUR CARRIES THE LEVEL, AND SO DOES SHAPE.
+ * ONE SHAPE, THREE COLOURS.
  *
- * The first version of this leaned entirely on the three verdict inks, and
- * measured against each other they cannot do the job at this size: avoid
- * against caution is a contrast ratio of 1.65:1, avoid against safe is 1.16:1,
- * where 3:1 is the usual floor for telling two graphics apart. They are three
- * dark, similarly heavy inks. Distinguishable side by side in a swatch, and not
- * at 10pt in a list of thirty, which is the only place they actually appear.
+ * This mark has been through both mistakes. It began as three verdict inks and
+ * nothing else, which failed on measurement: avoid against caution is 1.65:1
+ * and avoid against safe is 1.16:1, so at 10pt in a list of thirty the colour
+ * was decorative and the levels were indistinguishable. The fix was to give
+ * each level its own silhouette — a disc, a ring, a rule — and that worked, but
+ * it bought legibility with a vocabulary nobody arrives already knowing. A ring
+ * does not mean "middling" to anyone who has not been told, and the shapes made
+ * three levels look like three different kinds of thing rather than three
+ * points on one scale.
  *
- * The fix at the time was to let SHAPE say it instead, and to accept that the
- * colour was decorative. That was half right. A traffic light is the one visual
- * convention every person on earth already knows, and throwing it away in a
- * list whose entire job is "is this a problem" gave up more than it gained.
+ * A traffic light is the one visual convention every person on earth already
+ * has. So the shapes are gone and the marks are three identical discs, which is
+ * what a scale looks like: same object, moved along it. The work the shapes
+ * were doing is now done by the hues themselves, which were rebuilt for this in
+ * `RiskSignal` — see the note there for why the amber is a gold and not the
+ * yellow it wants to be.
  *
- * So both channels now carry it. The ink comes from RiskSignal, which is
- * pushed until the hues genuinely separate, and the form stays:
- *
- *   high     a filled disc, the heaviest mark on the row
- *   moderate a ring, open in the middle: look at this
- *   low      a short rule, quiet and level
- *
- * Shape is not belt and braces here, it is the accessible channel. Red against
- * amber is the single most common colour confusion there is and it affects
- * around one man in twelve, so the list has to stay readable with the colour
- * removed entirely.
- *
- * The mark is 12pt rather than the 10 it started at, because a hue needs a
- * little more area than a silhouette does before the eye will name it.
+ * COLOUR IS NOT THE ONLY CHANNEL, and it must not be. Red against amber is the
+ * most common colour confusion there is, affecting around one man in twelve,
+ * and three identical discs give that reader nothing. What saves the row is not
+ * this component: it is the note beside it. Every row in the list ends in words
+ * that name the level — "No concern", "Worth watching", "Regulated" — so the
+ * list stays readable with the colour removed entirely. If that note is ever
+ * dropped from a row, this mark has to grow a second channel again.
  */
 export function RiskMark({ level }: { level: RiskLevel }) {
-  const tone = RiskSignal[level];
-
-  if (level === 'high') {
-    return <View style={[styles.disc, { backgroundColor: tone.ink }]} />;
-  }
-  if (level === 'moderate') {
-    // Washed inside as well as ringed: an open circle at 12pt carries very
-    // little of its own colour, and the wash is what makes it read amber at a
-    // glance rather than just "not filled in".
-    return (
-      <View style={[styles.ring, { borderColor: tone.ink, backgroundColor: tone.wash }]} />
-    );
-  }
-  return <View style={[styles.rule, { backgroundColor: tone.ink }]} />;
+  return <View style={[styles.disc, { backgroundColor: RiskSignal[level].ink }]} />;
 }
 
 const styles = StyleSheet.create({
-  // One 12pt box for all three, so the rows' text stays on a single left edge.
+  // 12pt rather than the 10 it started at: a hue needs a little more area than
+  // a silhouette does before the eye will name it.
   disc: { width: 12, height: 12, borderRadius: 6 },
-  ring: { width: 12, height: 12, borderRadius: 6, borderWidth: 3 },
-  rule: { width: 12, height: 3, borderRadius: 1.5, marginVertical: 4.5 },
 });
