@@ -104,12 +104,16 @@ export { ENTITLEMENT_ID } from '@shared/products';
 export { PRODUCT_IDS as PRODUCTS } from '@shared/products';
 
 /**
- * Apple's own subscription management page.
+ * Apple's subscription management page, on the web.
  *
- * Where every change to a live subscription has to happen — upgrading,
- * downgrading, cancelling. StoreKit gives us no way to do any of it in-app, so
- * the honest thing is to send people to the place that can, rather than build
- * controls that only look like they work. Shared by the account screen and the
- * subscription screen so the two cannot point at different URLs.
+ * THE FALLBACK, NOT THE ROUTE. Both screens call
+ * `openManageSubscriptions()` in lib/purchases, which presents Apple's own
+ * sheet over the app; this URL is where that lands when there is no
+ * RevenueCat key to present it with, or when the subscription did not come
+ * from the App Store. Sending somebody out to Safari is the worse answer, and
+ * the page is blind to sandbox purchases besides.
+ *
+ * Still exported from one place rather than written at each use, so the two
+ * screens cannot fall back to different URLs.
  */
 export const APPLE_SUBSCRIPTIONS_URL = 'https://apps.apple.com/account/subscriptions';

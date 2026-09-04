@@ -6,11 +6,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Radius, Space, Type, useSurface, useVerdictColors } from '@/constants/design';
 import { apiFetch } from '@/lib/api';
-import { APPLE_SUBSCRIPTIONS_URL, HEALTH_DATA_URL, PRIVACY_URL, TERMS_URL } from '@/lib/config';
+import { HEALTH_DATA_URL, PRIVACY_URL, TERMS_URL } from '@/lib/config';
 import { useAuth } from '@/lib/auth-context';
 import { trialDaysRemaining, type Entitlement } from '@/lib/entitlement';
 import { LANGUAGE_NAMES, SUPPORTED_LANGUAGES, useTranslation } from '@/lib/i18n';
 import { goBackOrHome } from '@/lib/navigation';
+import { openManageSubscriptions } from '@/lib/purchases';
 
 // Screen 12 — Account.
 //
@@ -141,7 +142,7 @@ export default function AccountScreen() {
             style={[styles.action, { borderColor: surface.rule }]}
             onPress={() =>
               sub?.active
-                ? void Linking.openURL(APPLE_SUBSCRIPTIONS_URL)
+                ? void openManageSubscriptions()
                 : router.push('/paywall')
             }
             accessibilityRole="button"

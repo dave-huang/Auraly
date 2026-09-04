@@ -1,10 +1,17 @@
+import { Linking } from 'react-native';
 import Purchases, {
   PURCHASES_ERROR_CODE,
   type CustomerInfo,
   type PurchasesPackage,
 } from 'react-native-purchases';
 
-import { ENTITLEMENT_ID, PRODUCTS, PURCHASES_ENABLED, REVENUECAT_IOS_KEY } from './config';
+import {
+  APPLE_SUBSCRIPTIONS_URL,
+  ENTITLEMENT_ID,
+  PRODUCTS,
+  PURCHASES_ENABLED,
+  REVENUECAT_IOS_KEY,
+} from './config';
 
 /**
  * StoreKit, through RevenueCat.
@@ -228,6 +235,40 @@ export async function restorePurchases(): Promise<CustomerInfo | null> {
     }
     throw error;
   });
+}
+
+/**
+ * Apple's subscription controls, as a sheet over the app.
+ *
+ * Cancelling, upgrading and downgrading are Apple's to perform and always have
+ * been; StoreKit offers no API to change a subscription, only one to present
+ * the panel that can. That panel is what this opens.
+ *
+ * IT REPLACED A LINK TO apps.apple.com, AND THE DIFFERENCE MATTERS TWICE.
+ *
+ * The link left the app — Safari, then the App Store, then find your way back
+ * — to reach a page that could have been a sheet. And the web page lists
+ * PRODUCTION purchases only, so through TestFlight and sandbox testing it
+ * showed nothing at all: a person who had just subscribed tapped "Manage" and
+ * was told, in effect, that they had not. The native sheet is the only surface
+ * that shows a sandbox subscription, which makes it the only one that can be
+ * tested before release.
+ *
+ * The URL survives as the fallback, for the two cases the sheet cannot serve:
+ * a build with no RevenueCat key, and a subscription that did not come from
+ * the App Store. Failing to open either is silent on purpose: an alert saying
+ * the management panel would not open helps nobody reach it.
+ */
+export async function openManageSubscriptions(): Promise<void> {
+  if (PURCHASES_ENABLED && configured) {
+    try {
+      await Purchases.showManageSubscriptions();
+      return;
+    } catch (error) {
+      console.warn('[PURCHASES] showManageSubscriptions failed', error);
+    }
+  }
+  await Linking.openURL(APPLE_SUBSCRIPTIONS_URL).catch(() => {});
 }
 
 /**

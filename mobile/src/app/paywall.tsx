@@ -7,7 +7,7 @@ import { ApertureMark } from '@/components/aperture-mark';
 import { InkWashPlate } from '@/components/inkwash-plate';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Radius, Space, Type, useSurface } from '@/constants/design';
-import { APPLE_SUBSCRIPTIONS_URL, PRIVACY_URL, PURCHASES_ENABLED, TERMS_URL } from '@/lib/config';
+import { PRIVACY_URL, PURCHASES_ENABLED, TERMS_URL } from '@/lib/config';
 import { useAuth } from '@/lib/auth-context';
 import {
   awaitEntitlement,
@@ -24,6 +24,7 @@ import {
   PurchaseCancelledError,
   ReceiptInUseError,
   getPlans,
+  openManageSubscriptions,
   purchasePlan,
   restorePurchases,
   storeHasSubscription,
@@ -801,7 +802,7 @@ function SubscribedView({
             "spend money"; nothing here should wear that weight. */}
         <Pressable
           style={[styles.secondary, { borderColor: surface.ink }]}
-          onPress={() => void Linking.openURL(APPLE_SUBSCRIPTIONS_URL)}
+          onPress={() => void openManageSubscriptions()}
           accessibilityRole="button"
         >
           <ThemedText style={[styles.primaryLabel, { color: surface.ink }]}>
