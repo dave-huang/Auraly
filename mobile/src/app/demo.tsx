@@ -144,6 +144,10 @@ export default function DemoScreen() {
             <AnalysisView
               result={scan.result}
               subtitle={t('demo.footer')}
+              // The one card in the app that gets a highlight. See TeachRing:
+              // it rings the row that set the verdict, says so, and leaves,
+              // so what is left is the same card a real scan produces.
+              teach={t('demo.teachCaption')}
               profileName={scan.profileName}
               profileAllergens={scan.profileAllergens}
               controls={

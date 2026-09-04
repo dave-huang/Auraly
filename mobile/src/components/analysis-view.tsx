@@ -5,6 +5,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { ApertureMark } from '@/components/aperture-mark';
 import { ApertureFrame, ResolveIn } from '@/components/aperture-reveal';
 import { RiskMark } from '@/components/risk-mark';
+import { TeachRing } from '@/components/teach-ring';
 import { ThemedText } from '@/components/themed-text';
 import { VerdictSeal } from '@/components/verdict-seal';
 import {
@@ -12,6 +13,7 @@ import {
   Font,
   Radius,
   RISK_TO_VERDICT,
+  RiskSignal,
   Space,
   Type,
   verdictTextStyle,
@@ -111,11 +113,23 @@ export function AnalysisView({
   controls,
   onRetake,
   onPressProfile,
+  teach,
 }: {
   result: AnalysisResult;
   subtitle?: string;
   profileName?: string;
   profileAllergens?: string[];
+  /**
+   * Ring the row that set the verdict and say so, once, then let it go.
+   *
+   * Passed by /demo and by nothing else. A first-time reader has no idea which
+   * of thirty rows produced the word at the top of the card, and this points
+   * at it for a few seconds on the one card where they have never seen the
+   * layout before. Absent everywhere else on purpose: a real scan is not a
+   * lesson, and a highlight on every result would be the app annotating its
+   * own output forever.
+   */
+  teach?: string;
   /** Part 7 of the anatomy. Passed in so the card stays one object while the
    *  host screen decides what "next" means — scan again, or back to history. */
   controls?: ReactNode;
@@ -402,6 +416,14 @@ export function AnalysisView({
             still finishes in the same fraction of a second a short one does. */}
         {ordered.map((row, i) => (
           <ResolveIn key={row.key} index={i}>
+          <MaybeTeach
+            // Only the leading row, and only when it earned its place. On a
+            // label of ordinary groceries `ordered[0]` is simply the first of
+            // thirty clean rows, and ringing it while announcing that it set
+            // the verdict would be pointing at nothing.
+            teach={i === 0 && row.ingredient.riskLevel !== 'low' ? teach : undefined}
+            tone={RiskSignal[row.ingredient.riskLevel].ink}
+          >
           <Pressable
             style={[styles.row, { borderBottomColor: surface.sunk }]}
             onPress={() => openIngredient(row)}
@@ -422,6 +444,7 @@ export function AnalysisView({
               {row.note}
             </ThemedText>
           </Pressable>
+          </MaybeTeach>
           </ResolveIn>
         ))}
       </View>
@@ -530,12 +553,15 @@ export function AnalysisView({
           place every time is what makes a disclaimer readable rather than
           furniture.
 
-          It also has to say what the app IS before it says what it is not.
-          The first draft opened "We give you ingredient information, not
-          medical advice" and closed by telling anybody with a severe allergy
-          to check the label themselves, which read as the app disclaiming the
-          exact job it exists to do. The full legal version, which does need
-          that shape, is in the Terms.
+          Written in the register of the Terms rather than in the app's own
+          voice, deliberately. Two friendlier drafts came before this one, and
+          the friendlier they got the more they read as the app hedging about
+          the exact job it exists to do — a conversational caveat invites you
+          to weigh it, while boilerplate is understood as boilerplate and read
+          past. This is a legal notice, so it is written as one, and it uses
+          the Terms' own words: not a medical device, does not diagnose or
+          treat, not a substitute for professional advice, read the physical
+          label if the allergy is serious.
 
           On every card, not just /results: /demo shows a real verdict and
           /scan-detail shows an old one, and a person cannot be expected to
@@ -737,6 +763,30 @@ function buildRows(
       flag,
     };
   });
+}
+
+/**
+ * The ring, or nothing at all.
+ *
+ * A wrapper rather than a conditional in the middle of the list, so the row's
+ * own markup stays written once. Every card except the example passes no
+ * caption and gets its children straight back.
+ */
+function MaybeTeach({
+  teach,
+  tone,
+  children,
+}: {
+  teach?: string;
+  tone: string;
+  children: React.ReactNode;
+}) {
+  if (!teach) return <>{children}</>;
+  return (
+    <TeachRing tone={tone} caption={teach}>
+      {children}
+    </TeachRing>
+  );
 }
 
 const styles = StyleSheet.create({

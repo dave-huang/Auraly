@@ -4,6 +4,7 @@ import { Alert, StyleSheet, View } from 'react-native';
 
 import { LanguagePicker } from '@/components/language-picker';
 import { type PlateName } from '@/components/inkwash-plate';
+import { DecodeLoop } from '@/components/decode-loop';
 import { ChoiceCard } from '@/components/onboarding/choice-card';
 import { StepFrame } from '@/components/onboarding/chrome';
 import {
@@ -291,10 +292,13 @@ function renderStep(args: {
     case 'begin':
       return {
         title: t('onboarding.beginTitle'),
-        // An empty basket. Nothing in it yet, which is where this starts.
-        plate: 'basket',
+        // No plate here any more. The basket was a still drawing of an empty
+        // basket, which is pleasant and says nothing; DecodeLoop shows the
+        // product working, on the one screen where somebody has not yet
+        // decided whether to care.
         body: t('onboarding.beginBody'),
         cta: t('onboarding.beginCta'),
+        children: <DecodeLoop />,
       };
 
     case 'decode':
