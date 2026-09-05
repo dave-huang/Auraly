@@ -7,6 +7,7 @@ import Animated, {
   type SharedValue,
   useAnimatedStyle,
   useSharedValue,
+  withDelay,
   withTiming,
 } from 'react-native-reanimated';
 
@@ -14,7 +15,7 @@ import { AnalysisView } from '@/components/analysis-view';
 import { RisingSheet } from '@/components/rising-sheet';
 import { ScanProgress } from '@/components/scan-progress';
 import { ThemedText } from '@/components/themed-text';
-import { Font, Gutter, Paper, Radius, Space, Type, useSurface } from '@/constants/design';
+import { Font, Gutter, Paper, Radius, Space } from '@/constants/design';
 import { fetchDemoScan, type DemoScan } from '@/lib/demo';
 import { useTranslation } from '@/lib/i18n';
 import { useReducedMotion } from '@/lib/reduced-motion';
@@ -59,6 +60,19 @@ const LIST_HEADROOM = 96;
 const RISE_SETTLE_MS = 620;
 
 /**
+ * When the way out appears, measured from the card landing.
+ *
+ * Late enough that it does not race the sheet rising or the screen scrolling
+ * itself down to the list, early enough that nobody has time to wonder whether
+ * this screen has an exit. It then stays for good; a control that comes and
+ * goes is worse than one that was never there.
+ */
+const FOOTER_IN_MS = 800;
+
+/** Height of that footer, which the scroll has to be able to clear. */
+const FOOTER_CLEARANCE = 80;
+
+/**
  * The lens finding the packet, before anything is read.
  *
  * A demo that opens mid-sweep skips the part of the real experience that
@@ -78,8 +92,8 @@ const READ_MS = 1300;
 export default function DemoScreen() {
   const router = useRouter();
   const { t, language } = useTranslation();
-  const surface = useSurface();
-
+  // No `useSurface` here: every colour on this screen is fixed chrome over a
+  // dark stage, the way the viewfinder's is, rather than the theme's paper.
   const reduced = useReducedMotion();
   const [scan, setScan] = useState<DemoScan | null>(null);
   const [seated, setSeated] = useState(false);
@@ -92,6 +106,8 @@ export default function DemoScreen() {
   // the handover. A value held by the parent survives that; one held by the
   // child would restart the drop-in halfway through the scan.
   const framing = useSharedValue(0);
+  /** 0 while the card is still arriving, 1 once the way out is offered. */
+  const footerIn = useSharedValue(0);
   const [phase, setPhase] = useState<'reading' | 'analyzing'>('reading');
   // Survives the unmount race: the fetch and two timers all resolve after the
   // person may already have tapped Skip.
@@ -112,6 +128,18 @@ export default function DemoScreen() {
   const bannerHeight = useRef(0);
   const listOffset = useRef<number | null>(null);
   const scrolled = useRef(false);
+
+  useEffect(() => {
+    if (!seated) return;
+    footerIn.value = reduced
+      ? 1
+      : withDelay(FOOTER_IN_MS, withTiming(1, { duration: 320, easing: Easing.out(Easing.quad) }));
+  }, [seated, reduced, footerIn]);
+
+  const footerStyle = useAnimatedStyle(() => ({
+    opacity: footerIn.value,
+    transform: [{ translateY: 26 * (1 - footerIn.value) }],
+  }));
 
   const revealList = useCallback(() => {
     if (scrolled.current || listOffset.current === null) return;
@@ -260,20 +288,33 @@ export default function DemoScreen() {
               }}
               profileName={scan.profileName}
               profileAllergens={scan.profileAllergens}
-              controls={
-                <Pressable
-                  style={[styles.inkButton, { backgroundColor: surface.ink }]}
-                  onPress={next}
-                  accessibilityRole="button"
-                >
-                  <ThemedText style={[Type.label, styles.inkLabel, { color: surface.card }]}>
-                    {t('demo.continue')}
-                  </ThemedText>
-                </Pressable>
-              }
+              // No `controls` here on purpose. See the pinned footer below.
             />
           </RisingSheet>
         </ScrollView>
+
+        {/* THE WAY OUT, ALWAYS ON SCREEN.
+            
+            This used to be the analysis card's own footer control, which is
+            the right home for it on a real result — you have read the verdict,
+            you scroll to the end, and the actions are waiting there. It is the
+            wrong home for it here. The card is long, the screen auto-scrolls
+            into the middle of it to show the teaching ring, and the only way
+            onward was buried under an ingredient list somebody has no reason
+            to finish. An onboarding step whose exit has to be discovered is an
+            onboarding step people leave.
+            
+            Paper on dark rather than ink on paper: it floats over the frame
+            with the rest of this screen's chrome, not on the card. */}
+        <Animated.View style={[styles.footer, footerStyle]}>
+          <Pressable
+            style={styles.footerButton}
+            onPress={next}
+            accessibilityRole="button"
+          >
+            <ThemedText style={styles.footerLabel}>{t('demo.continue')}</ThemedText>
+          </Pressable>
+        </Animated.View>
       </SafeAreaView>
     </View>
   );
@@ -360,7 +401,14 @@ const styles = StyleSheet.create({
   scrim: { backgroundColor: 'rgba(22,19,15,0.72)' },
   safe: { flex: 1 },
   scroll: { flex: 1 },
-  content: { padding: Gutter, gap: Space.lg, paddingTop: Space.lg, paddingBottom: Space.xxl },
+  // The bottom padding clears the pinned footer as well as the usual gutter,
+  // so the end of the card can still be scrolled out from under it.
+  content: {
+    padding: Gutter,
+    gap: Space.lg,
+    paddingTop: Space.lg,
+    paddingBottom: Space.xxl + FOOTER_CLEARANCE,
+  },
 
   topBar: { flexDirection: 'row', justifyContent: 'flex-end', paddingHorizontal: Gutter, paddingTop: Space.sm },
   skip: {
@@ -464,6 +512,21 @@ const styles = StyleSheet.create({
   bl: { bottom: 0, left: 0, borderBottomWidth: RETICLE.stroke, borderLeftWidth: RETICLE.stroke },
   br: { bottom: 0, right: 0, borderBottomWidth: RETICLE.stroke, borderRightWidth: RETICLE.stroke },
 
-  inkButton: { borderRadius: Radius.pill, paddingVertical: Space.lg, alignItems: 'center' },
-  inkLabel: { fontFamily: Font.sansSemi, fontSize: 15, lineHeight: 20 },
+  // Sits over the scroll rather than in it, on a band of the stage's own dark
+  // so whatever is passing underneath cannot make the label unreadable.
+  footer: {
+    paddingHorizontal: Gutter,
+    paddingTop: Space.md,
+    paddingBottom: Space.sm,
+    backgroundColor: 'rgba(22,19,15,0.94)',
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: 'rgba(246,241,231,0.14)',
+  },
+  footerButton: {
+    borderRadius: Radius.pill,
+    paddingVertical: Space.lg,
+    alignItems: 'center',
+    backgroundColor: Paper.paper,
+  },
+  footerLabel: { fontFamily: Font.sansSemi, fontSize: 15, lineHeight: 20, color: '#16130F' },
 });
