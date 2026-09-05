@@ -9,6 +9,7 @@ import { SignInSheet } from '@/components/sign-in-providers';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Radius, Space, Type, useSurface } from '@/constants/design';
 import { useTranslation } from '@/lib/i18n';
+import { goHome } from '@/lib/navigation';
 
 // Screen 00 — Welcome. The first thing anybody without an account sees, every
 // time, including the moment after they sign out.
@@ -99,7 +100,7 @@ export default function WelcomeScreen() {
         onClose={() => setSigningIn(false)}
         onSignedIn={() => {
           setSigningIn(false);
-          router.replace('/');
+          goHome();
         }}
       />
     </SafeAreaView>

@@ -16,7 +16,7 @@ import {
   type Entitlement,
 } from '@/lib/entitlement';
 import { useTranslation } from '@/lib/i18n';
-import { goBackOrHome } from '@/lib/navigation';
+import { goBackOrHome, goHome } from '@/lib/navigation';
 import { getActiveProfileId, listProfiles } from '@/lib/profiles';
 import { scheduleTrialReminder } from '@/lib/trialReminder';
 import {
@@ -167,7 +167,7 @@ export default function PaywallScreen() {
           if (found?.subscription.active) {
             // A locked door that turns out to be unlocked: go through it.
             // Anywhere else, stay and show them what they have.
-            if (gate) router.replace('/');
+            if (gate) goHome();
             else void refresh();
             return;
           }
@@ -189,7 +189,7 @@ export default function PaywallScreen() {
     return () => {
       cancelled = true;
     };
-  }, [user, gate, router, refresh]);
+  }, [user, gate, refresh]);
 
   const offer = plans?.find((p) => p.plan === selected) ?? null;
 
@@ -263,7 +263,7 @@ export default function PaywallScreen() {
     // the same question twice in four seconds gets the same answer.
     const found = alreadyPulled ? null : await refreshEntitlement().catch(() => null);
     if (found) {
-      router.replace('/');
+      goHome();
       return true;
     }
     Alert.alert(t('paywall.foundTitle'), t('paywall.foundStuckBody'));
@@ -341,14 +341,14 @@ export default function PaywallScreen() {
             }),
           });
         }
-        router.replace('/');
+        goHome();
         return;
       }
       // Paid, but our side has not caught up. Never say "failed" here — the
       // money moved, and telling someone their purchase failed is how you get a
       // chargeback and a support thread on a purchase that actually worked.
       Alert.alert(t('paywall.pendingTitle'), t('paywall.pendingBody'));
-      router.replace('/');
+      goHome();
     } catch (error: any) {
       // Cancelling out of Apple's sheet is the most common outcome on any
       // paywall. It is not an error and must never produce an alert.
@@ -378,7 +378,7 @@ export default function PaywallScreen() {
         // six seconds polling endpoints that can only answer 401.
         const found = await awaitEntitlement();
         if (found) {
-          router.replace('/');
+          goHome();
           return;
         }
         // It restored, and we still cannot use it. This used to go home

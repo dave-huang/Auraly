@@ -187,15 +187,21 @@ export const Gutter = 24;
 
 export const Motion = {
   /**
-   * The scan line's pass over the frozen frame.
+   * The scan line's travel across the frozen frame, one way.
    *
-   * `ms` down, `back` up — ONE round trip, still not a loop. The design's rule
-   * is that a looping scan line reads as "still trying", and that holds; a
-   * single return pass reads as the eye going back over the label once, which
-   * is what a person does. The return is quicker than the pass so it reads as
-   * coming back rather than as a second scan.
+   * IT NOW LOOPS, and that reverses an earlier rule of this design — that a
+   * repeating scan line reads as "still trying" — because the rule was
+   * answering the wrong complaint. A single pass followed by a motionless
+   * frame does not read as confidence; over a ten-second model call it reads
+   * as a hang, and the caret alone was carrying the whole claim that anything
+   * was still happening. A line that keeps travelling while the status text
+   * keeps naming a new stage is the pair that reads as work in progress.
+   *
+   * One duration, not one down and a quicker one back: the return is a return
+   * only when it happens once. Looping, an asymmetric pendulum reads as a
+   * limp, so the line takes the same time in both directions.
    */
-  sweep: { ms: 1100, back: 850, loops: 1 },
+  sweep: { ms: 1100 },
   /**
    * The reveal — an aperture travelling once down a block of content, which
    * resolves as it passes.

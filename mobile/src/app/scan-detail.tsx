@@ -1,4 +1,4 @@
-import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
+import { useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -6,7 +6,7 @@ import { Image } from 'expo-image';
 
 import { AnalysisView } from '@/components/analysis-view';
 import { ThemedText } from '@/components/themed-text';
-import { goBackOrHome } from '@/lib/navigation';
+import { goBackOrHome, goHome } from '@/lib/navigation';
 import { apiFetch } from '@/lib/api';
 import { deleteScan, scanToAnalysisResult } from '@/lib/history';
 import { deleteLabelThumbnail, labelThumbnailUri } from '@/lib/label-thumbnails';
@@ -26,7 +26,6 @@ type StoredScan = ScanHistory & {
 };
 
 export default function ScanDetailScreen() {
-  const router = useRouter();
   const { t } = useTranslation();
   const surface = useSurface();
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -172,7 +171,7 @@ export default function ScanDetailScreen() {
           controls={
             <Pressable
               style={[styles.primary, { backgroundColor: surface.ink }]}
-              onPress={() => router.replace('/')}
+              onPress={goHome}
             >
               <ThemedText style={[styles.primaryLabel, { color: surface.card }]}>
                 {t('results.scanAnother')}

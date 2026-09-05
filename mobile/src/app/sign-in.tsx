@@ -7,7 +7,8 @@ import { LanguagePicker } from '@/components/language-picker';
 import { ProviderButtons } from '@/components/sign-in-providers';
 import { ThemedText } from '@/components/themed-text';
 import { Space, Type, useSurface } from '@/constants/design';
-import { useTranslation } from '@/lib/i18n';
+import { isPlaceholderName, useTranslation } from '@/lib/i18n';
+import { goHome } from '@/lib/navigation';
 
 /**
  * Sign in, when it is a destination rather than a drawer.
@@ -33,6 +34,8 @@ export default function SignInScreen() {
   const surface = useSurface();
   const params = useLocalSearchParams<{ mode?: string; name?: string; recover?: string; then?: string }>();
   const saving = params.mode === 'save';
+  // Whose profile this is, grammatically. See isPlaceholderName.
+  const named = !isPlaceholderName(params.name);
   const recovering = params.recover === '1';
 
   function done(subscribed: boolean) {
@@ -43,14 +46,28 @@ export default function SignInScreen() {
     // guess. Sending them anywhere but the camera means showing a price to
     // somebody who has already paid it, which is the one thing this screen
     // must never do.
-    if (subscribed) return router.replace('/');
+    if (subscribed) return goHome();
 
     // Otherwise: sent here mid-purchase by the paywall, because an anonymous
     // purchase cannot be granted. Going to '/' would bounce off the
     // viewfinder's gate and land back on the paywall anyway, but by way of a
-    // screen that exists to turn people around, which flickers. Go where they
-    // were.
-    router.replace(params.then === 'paywall' ? '/paywall?gate=1' : '/');
+    // screen that exists to turn people around, which flickers.
+    //
+    // BACK TO THE PAYWALL THAT SENT THEM, not a fresh one.
+    //
+    // This used to replace with '/paywall?gate=1', and the paywall it replaced
+    // was the sign-in screen — which the FIRST paywall had pushed. So choosing
+    // a plan, tapping Continue and signing in produced a second subscription
+    // screen stacked on the first, visibly so, and it was the second one that
+    // took the money. Going back returns to the live screen instead, with the
+    // plan they picked still selected. The fallback only matters if this was
+    // somehow reached cold, where there is nothing behind us to go back to.
+    if (params.then === 'paywall') {
+      if (router.canGoBack()) return router.back();
+      return router.replace('/paywall?gate=1');
+    }
+
+    goHome();
   }
 
   return (
@@ -81,7 +98,9 @@ export default function SignInScreen() {
               {t('signIn.saveTitle')}
             </ThemedText>
             <ThemedText style={[Type.reason, styles.tagline, { color: surface.inkMuted }]}>
-              {t('signIn.saveBody', { name: params.name || t('onboarding.namePlaceholder') })}
+              {named
+                ? t('signIn.saveBody', { name: params.name as string })
+                : t('signIn.saveBodyYours')}
             </ThemedText>
           </>
         ) : (

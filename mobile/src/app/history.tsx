@@ -21,7 +21,7 @@ import {
 } from '@/constants/design';
 import { fetchHistory, scanTitle } from '@/lib/history';
 import { labelThumbnailUri } from '@/lib/label-thumbnails';
-import { goBackOrHome } from '@/lib/navigation';
+import { goBackOrHome, goHome } from '@/lib/navigation';
 import { getActiveProfileId, listProfiles } from '@/lib/profiles';
 import { useTranslation, type TranslationKey } from '@/lib/i18n';
 import type { RiskLevel, ScanHistory } from '@/lib/types';
@@ -253,7 +253,7 @@ export default function HistoryScreen() {
             {filter === 'all' ? t('history.empty') : t('history.emptyFiltered')}
           </ThemedText>
           {filter === 'all' ? (
-            <Pressable onPress={() => router.replace('/')}>
+            <Pressable onPress={goHome}>
               <ThemedText style={[Type.label, { color: surface.ink }]}>
                 {t('history.emptyCta')}
               </ThemedText>
@@ -346,7 +346,7 @@ export default function HistoryScreen() {
       {/* Ways back out. Not a tab bar — the camera is the app's home, and a
           persistent tab bar would make it one destination among three. */}
       <View style={[styles.bottomBar, { borderTopColor: surface.rule }]}>
-        <Pressable style={styles.bottomItem} onPress={() => router.replace('/')}>
+        <Pressable style={styles.bottomItem} onPress={goHome}>
           <ApertureMark size={20} color={surface.ink} />
           <ThemedText style={[Type.meta, { color: surface.ink }]}>{t('history.toScan')}</ThemedText>
         </Pressable>

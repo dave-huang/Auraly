@@ -8,7 +8,8 @@ import { RisingSheet } from '@/components/rising-sheet';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Paper, Radius, Space, Type, useSurface } from '@/constants/design';
 import { useAuth } from '@/lib/auth-context';
-import { useTranslation } from '@/lib/i18n';
+import { isPlaceholderName, useTranslation } from '@/lib/i18n';
+import { goHome } from '@/lib/navigation';
 import { useLastScan } from '@/lib/scan';
 
 // The verdict card rises over the frozen frame — keeping the still behind it
@@ -28,9 +29,11 @@ import { useLastScan } from '@/lib/scan';
 // every one of those areas claims the touch. Losing a verdict mid-read is a
 // far worse failure than having to reach for the ✕.
 //
-// The exit uses `replace`, not `back`: the frozen frame is a moment that has
-// passed, and leaving it on the stack would let a swipe resurrect a verdict
-// the person just dismissed.
+// Every exit here is goHome(), not `back`: the frozen frame is a moment that
+// has passed, and leaving it on the stack would let a swipe resurrect a
+// verdict the person just dismissed. goHome() unwinds to the viewfinder that
+// is already underneath rather than building a second one — see
+// lib/navigation, and the pile of cameras that got this written down.
 
 export default function ResultsScreen() {
   const { user } = useAuth();
@@ -43,7 +46,7 @@ export default function ResultsScreen() {
 
 
   function dismiss() {
-    router.replace('/');
+    goHome();
   }
 
   if (!result) return <Redirect href="/" />;
@@ -84,7 +87,7 @@ export default function ResultsScreen() {
               result={result}
               profileName={profile?.name}
               profileAllergens={profile?.allergens}
-              onRetake={() => router.replace('/')}
+              onRetake={goHome}
               onPressProfile={() => router.push('/profiles')}
               controls={
                 <>
@@ -100,9 +103,9 @@ export default function ResultsScreen() {
                         {t('signIn.saveTitle')}
                       </ThemedText>
                       <ThemedText style={[Type.body, { color: surface.inkMuted }]}>
-                        {t('signIn.saveBody', {
-                          name: profile?.name || t('onboarding.namePlaceholder'),
-                        })}
+                        {isPlaceholderName(profile?.name)
+                          ? t('signIn.saveBodyYours')
+                          : t('signIn.saveBody', { name: profile!.name })}
                       </ThemedText>
                       <Pressable
                         style={[styles.inkButton, { backgroundColor: surface.ink }]}
@@ -123,7 +126,7 @@ export default function ResultsScreen() {
 
                   <Pressable
                     style={[styles.inkButton, { backgroundColor: surface.ink }]}
-                    onPress={() => router.replace('/')}
+                    onPress={goHome}
                   >
                     <ThemedText style={[Type.label, styles.inkLabel, { color: surface.card }]}>
                       {t('results.scanAnother')}

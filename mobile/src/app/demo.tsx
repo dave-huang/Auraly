@@ -84,7 +84,15 @@ const FOOTER_CLEARANCE = 80;
  */
 const FRAME_MS = 900;
 
-/** Long enough for the sweep to finish its round trip and settle. */
+/**
+ * Long enough for the scan to read as a scan.
+ *
+ * It used to be measured against the sweep's single round trip. The sweep now
+ * loops for as long as the frame is up, so there is no round trip to wait for
+ * and this is simply the beat the example holds: two lines of the status
+ * script, which is as much of the wait as an onboarding screen should spend
+ * imitating. A real scan runs long enough to reach all four.
+ */
 const FLOOR_MS = 2600;
 /** When the reader "finishes" — cosmetic, and only ever inside the floor. */
 const READ_MS = 1300;

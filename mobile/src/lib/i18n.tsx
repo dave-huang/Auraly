@@ -277,16 +277,21 @@ const en = {
   'scan.hint': 'Fill the frame with the ingredient list',
   'scan.library': 'Library',
   'scan.menu': 'More',
+  // THE WAIT, NARRATED. Three lines on a clock, then the count when the
+  // server has it. Each one names work that is genuinely happening: the
+  // reader, then the model, which translates and checks against the profile
+  // in the same call. See components/scan-progress.
   'scan.reading': 'Reading the label…',
+  'scan.translating': 'Translating into plain English…',
+  'scan.checking': 'Checking against your safety shield…',
   // Shown once the wait passes STILL_WORKING_AFTER_MS. Not a new pipeline
   // stage — the elapsed time IS the news, and saying so beats a status line
   // that has not changed in fifteen seconds.
   'scan.stillWorking': 'Still working…',
-  'scan.analyzing': 'Analyzing ingredients…',
   'scan.working': 'Working…',
   'scan.failed': 'Scan failed',
   'scan.noLabelFound': 'We couldn’t find an ingredient list in that photo. Fill the frame with the printed list and hold steady.',
-  'scan.foundIngredients': 'Found {count} ingredients',
+  'scan.foundIngredients': 'Found {count} ingredients…',
   'scan.checkingFor': 'Checking against {name}’s profile…',
   'scan.stepRead': 'Read the label',
   'scan.stepAnalyze': 'Analyze ingredients',
@@ -567,7 +572,12 @@ const en = {
   'signIn.recoverTitle': 'Welcome back',
   'signIn.recoverBody': 'Your subscription belongs to your account rather than to this phone. Sign in and it comes back with you.',
   'signIn.saveTitle': 'Save your safety shield.',
+  // TWO SENTENCES, BECAUSE A POSSESSIVE CANNOT BE FAKED WITH A PLACEHOLDER.
+  // Skipping the name question stores the profile under 'Me', so the one
+  // string used to read "An account keeps Me’s profile". Whose profile it is
+  // is a grammatical fact, not a substitution: unnamed, it is yours.
   'signIn.saveBody': 'An account keeps {name}’s profile and every scan you’ve run, on this phone and the next one.',
+  'signIn.saveBodyYours': 'An account keeps your profile and every scan you’ve run, on this phone and the next one.',
   'signIn.later': 'Not now',
   'signIn.saveCta': 'Create account',
 
@@ -784,12 +794,13 @@ const zh: Record<TranslationKey, string> = {
   'scan.library': '相册',
   'scan.menu': '更多',
   'scan.reading': '正在读取标签…',
+  'scan.translating': '正在翻译成大白话…',
+  'scan.checking': '正在对照你的安全屏障检查…',
   'scan.stillWorking': '仍在处理…',
-  'scan.analyzing': '正在分析成分…',
   'scan.working': '处理中…',
   'scan.failed': '扫描失败',
   'scan.noLabelFound': '这张照片里没找到配料表。让印刷的配料表填满取景框，手机拿稳一点。',
-  'scan.foundIngredients': '已识别 {count} 种成分',
+  'scan.foundIngredients': '已识别 {count} 种成分…',
   'scan.checkingFor': '正在对照 {name} 的档案检查…',
   'scan.stepRead': '读取标签',
   'scan.stepAnalyze': '分析成分',
@@ -1050,6 +1061,7 @@ const zh: Record<TranslationKey, string> = {
   'signIn.recoverBody': '你的订阅属于你的账户，而不是这台手机。登录后即可恢复。',
   'signIn.saveTitle': '保存你的安全屏障。',
   'signIn.saveBody': '账户会帮你存住 {name} 的档案和每一次扫描，这台手机和下一台都在。',
+  'signIn.saveBodyYours': '账户会帮你存住你的档案和每一次扫描，这台手机和下一台都在。',
   'signIn.later': '暂不',
   'signIn.saveCta': '创建账户',
 
@@ -1263,12 +1275,13 @@ const es: Record<TranslationKey, string> = {
   'scan.library': 'Galería',
   'scan.menu': 'Más',
   'scan.reading': 'Leyendo la etiqueta…',
+  'scan.translating': 'Traduciendo a lenguaje claro…',
+  'scan.checking': 'Comparando con tu escudo de seguridad…',
   'scan.stillWorking': 'Seguimos trabajando…',
-  'scan.analyzing': 'Analizando ingredientes…',
   'scan.working': 'Procesando…',
   'scan.failed': 'Error al escanear',
   'scan.noLabelFound': 'No encontramos ninguna lista de ingredientes en esa foto. Llena el encuadre con la lista impresa y mantén el pulso firme.',
-  'scan.foundIngredients': '{count} ingredientes encontrados',
+  'scan.foundIngredients': '{count} ingredientes encontrados…',
   'scan.checkingFor': 'Comparando con el perfil de {name}…',
   'scan.stepRead': 'Leer la etiqueta',
   'scan.stepAnalyze': 'Analizar ingredientes',
@@ -1535,6 +1548,7 @@ const es: Record<TranslationKey, string> = {
   'signIn.recoverBody': 'Tu suscripción pertenece a tu cuenta y no a este teléfono. Inicia sesión y vuelve contigo.',
   'signIn.saveTitle': 'Guarda tu escudo de seguridad.',
   'signIn.saveBody': 'Una cuenta conserva el perfil de {name} y todos tus escaneos, en este teléfono y en el siguiente.',
+  'signIn.saveBodyYours': 'Una cuenta conserva tu perfil y todos tus escaneos, en este teléfono y en el siguiente.',
   'signIn.later': 'Ahora no',
   'signIn.saveCta': 'Crear cuenta',
 
@@ -1555,6 +1569,28 @@ export function deviceLanguage(): Language {
     if (code && isSupported(code)) return code;
   }
   return 'en';
+}
+
+/**
+ * Is this profile effectively unnamed?
+ *
+ * Skipping the name question does not leave the field empty — onboarding
+ * stores the placeholder itself, so a profile nobody named is literally called
+ * "Me". Any sentence that puts that name in a possessive then reads as
+ * nonsense ("An account keeps Me’s profile"), and the fix has to happen at the
+ * point the sentence is chosen, not inside the string.
+ *
+ * EVERY LANGUAGE, not just the current one. The placeholder is written in
+ * whatever language the profile was built in, and the app's language can be
+ * changed afterwards — so a profile created in English and read in Spanish
+ * would otherwise slip through and be treated as a real name.
+ */
+export function isPlaceholderName(name: string | null | undefined): boolean {
+  const trimmed = name?.trim();
+  if (!trimmed) return true;
+  return SUPPORTED_LANGUAGES.some(
+    (code) => CATALOGUES[code]['onboarding.namePlaceholder'] === trimmed,
+  );
 }
 
 export function translate(
