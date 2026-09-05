@@ -12,6 +12,7 @@ import { useAuth } from '@/lib/auth-context';
 import {
   awaitEntitlement,
   refreshEntitlement,
+  restoreAndGrant,
   useEntitlement,
   type Entitlement,
 } from '@/lib/entitlement';
@@ -26,7 +27,6 @@ import {
   getPlans,
   openManageSubscriptions,
   purchasePlan,
-  restorePurchases,
   storeHasSubscription,
   storeSaysEntitled,
   type PlanOffer,
@@ -372,22 +372,28 @@ export default function PaywallScreen() {
   async function restore() {
     setBusy('restore');
     try {
-      const info = await restorePurchases();
-      if (storeSaysEntitled(info)) {
-        // Returns immediately when there is no account, rather than spending
-        // six seconds polling endpoints that can only answer 401.
-        const found = await awaitEntitlement();
-        if (found) {
+      // The sequence itself lives in lib/entitlement, because the sign-in
+      // screen has to run it too — see restoreAndGrant, and the second tap
+      // this screen used to demand.
+      switch (await restoreAndGrant(!!user)) {
+        case 'granted':
           goHome();
           return;
-        }
+        // The store has it and there is no account to attach it to. Say so
+        // and offer the one door that works; never a suggestion to buy again.
+        case 'noAccount':
+          offerSignInToRecover();
+          return;
         // It restored, and we still cannot use it. This used to go home
         // anyway, leaving someone holding a valid subscription on a camera
         // that would refuse the next photo without ever saying why.
-        await recoverExisting(true);
-        return;
+        case 'stuck':
+          Alert.alert(t('paywall.foundTitle'), t('paywall.foundStuckBody'));
+          return;
+        case 'nothing':
+          Alert.alert(t('paywall.restoreNoneTitle'), t('paywall.restoreNoneBody'));
+          return;
       }
-      Alert.alert(t('paywall.restoreNoneTitle'), t('paywall.restoreNoneBody'));
     } catch (error: any) {
       if (error instanceof ReceiptInUseError) {
         Alert.alert(t('paywall.receiptInUseTitle'), t('paywall.receiptInUseBody'));

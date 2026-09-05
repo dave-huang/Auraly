@@ -1,5 +1,6 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { useState } from 'react';
+import { ActivityIndicator, Alert, Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { RevelyLockup } from '@/components/aperture-mark';
@@ -7,8 +8,10 @@ import { LanguagePicker } from '@/components/language-picker';
 import { ProviderButtons } from '@/components/sign-in-providers';
 import { ThemedText } from '@/components/themed-text';
 import { Space, Type, useSurface } from '@/constants/design';
+import { restoreAndGrant } from '@/lib/entitlement';
 import { isPlaceholderName, useTranslation } from '@/lib/i18n';
 import { goHome } from '@/lib/navigation';
+import { ReceiptInUseError } from '@/lib/purchases';
 
 /**
  * Sign in, when it is a destination rather than a drawer.
@@ -27,6 +30,8 @@ import { goHome } from '@/lib/navigation';
  *   recover=1   sent from the subscription screen, by someone whose Apple ID
  *               already holds a subscription. They did not come to make an
  *               account; they came to get back something they already pay for.
+ *               So this screen FINISHES that job rather than handing them
+ *               back — see finishRecovery.
  */
 export default function SignInScreen() {
   const router = useRouter();
@@ -37,6 +42,8 @@ export default function SignInScreen() {
   // Whose profile this is, grammatically. See isPlaceholderName.
   const named = !isPlaceholderName(params.name);
   const recovering = params.recover === '1';
+  /** The restore this screen runs for itself, once the account exists. */
+  const [restoring, setRestoring] = useState(false);
 
   function done(subscribed: boolean) {
     // ALREADY PAYING BEATS EVERY OTHER DESTINATION.
@@ -47,6 +54,16 @@ export default function SignInScreen() {
     // somebody who has already paid it, which is the one thing this screen
     // must never do.
     if (subscribed) return goHome();
+
+    // THEY CAME HERE TO GET SOMETHING BACK. FINISH GETTING IT BACK.
+    //
+    // Signing in was never the point of this screen; it was the missing half
+    // of a restore that had already found the subscription. This used to end
+    // by returning them to the paywall, which then had no idea a restore was
+    // half-done and simply showed the plans again — so the only way in was to
+    // tap Restore a second time, with nothing on screen saying so. Whether
+    // one tap or two was needed came down to a webhook race nobody can see.
+    if (recovering) return void finishRecovery();
 
     // Otherwise: sent here mid-purchase by the paywall, because an anonymous
     // purchase cannot be granted. Going to '/' would bounce off the
@@ -68,6 +85,46 @@ export default function SignInScreen() {
     }
 
     goHome();
+  }
+
+  /**
+   * The second half of the restore, run without being asked.
+   *
+   * Signing in tells RevenueCat who this is; it does not hand it the receipt
+   * again, and the receipt was synced under the anonymous id the first restore
+   * ran on. So the restore is genuinely run twice, and the second one is this.
+   *
+   * Failure lands on the paywall rather than in the app, because the paywall
+   * is the screen that can explain the state and offer another try. Nothing
+   * here may ever suggest buying again: the money has already moved.
+   */
+  async function finishRecovery() {
+    setRestoring(true);
+    try {
+      switch (await restoreAndGrant(true)) {
+        case 'granted':
+          goHome();
+          return;
+        case 'stuck':
+          Alert.alert(t('paywall.foundTitle'), t('paywall.foundStuckBody'));
+          break;
+        // 'noAccount' cannot happen — we have just made one — and it is
+        // handled with 'nothing' rather than left to fall through silently.
+        case 'noAccount':
+        case 'nothing':
+          Alert.alert(t('paywall.restoreNoneTitle'), t('paywall.restoreNoneBody'));
+          break;
+      }
+    } catch (error: any) {
+      if (error instanceof ReceiptInUseError) {
+        Alert.alert(t('paywall.receiptInUseTitle'), t('paywall.receiptInUseBody'));
+      } else {
+        Alert.alert(t('paywall.failedTitle'), error?.message ?? t('common.tryAgain'));
+      }
+    } finally {
+      setRestoring(false);
+    }
+    router.replace('/paywall?gate=1');
   }
 
   return (
@@ -111,16 +168,34 @@ export default function SignInScreen() {
       </View>
 
       <View style={styles.actions}>
-        <ProviderButtons onSignedIn={done} />
-
-        {/* Only when this is an offer rather than a gate. Someone who came here
-            to get their account back has nothing to defer. */}
-        {saving && (
-          <Pressable style={styles.later} onPress={() => router.back()} accessibilityRole="button">
+        {restoring ? (
+          /* Holds the row's height, exactly as ProviderButtons does while a
+             provider is working, so the block does not collapse and jump
+             under the thumb that just pressed it. */
+          <View style={styles.working}>
+            <ActivityIndicator color={surface.ink} />
             <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>
-              {t('signIn.later')}
+              {t('signIn.restoring')}
             </ThemedText>
-          </Pressable>
+          </View>
+        ) : (
+          <>
+            <ProviderButtons onSignedIn={done} />
+
+            {/* Only when this is an offer rather than a gate. Someone who came
+                here to get their account back has nothing to defer. */}
+            {saving && (
+              <Pressable
+                style={styles.later}
+                onPress={() => router.back()}
+                accessibilityRole="button"
+              >
+                <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>
+                  {t('signIn.later')}
+                </ThemedText>
+              </Pressable>
+            )}
+          </>
         )}
       </View>
     </SafeAreaView>
@@ -134,4 +209,5 @@ const styles = StyleSheet.create({
   tagline: { textAlign: 'center', maxWidth: 300 },
   actions: { gap: 12, paddingBottom: 24, minHeight: 140, justifyContent: 'flex-end' },
   later: { alignItems: 'center', paddingVertical: 12, opacity: 0.6 },
+  working: { minHeight: 116, alignItems: 'center', justifyContent: 'center', gap: Space.md },
 });

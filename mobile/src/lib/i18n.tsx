@@ -571,6 +571,11 @@ const en = {
   'camera.settings': 'Open Settings',
   'signIn.recoverTitle': 'Welcome back',
   'signIn.recoverBody': 'Your subscription belongs to your account rather than to this phone. Sign in and it comes back with you.',
+  // Shown while the restore this screen now finishes on its own is running.
+  // It can take a few seconds — the receipt goes to Apple and the answer comes
+  // back through our server — and a screen with nothing on it but two sign-in
+  // buttons that have just vanished is how somebody taps something twice.
+  'signIn.restoring': 'Bringing your subscription back…',
   'signIn.saveTitle': 'Save your safety shield.',
   // TWO SENTENCES, BECAUSE A POSSESSIVE CANNOT BE FAKED WITH A PLACEHOLDER.
   // Skipping the name question stores the profile under 'Me', so the one
@@ -1059,6 +1064,7 @@ const zh: Record<TranslationKey, string> = {
   'camera.settings': '打开设置',
   'signIn.recoverTitle': '欢迎回来',
   'signIn.recoverBody': '你的订阅属于你的账户，而不是这台手机。登录后即可恢复。',
+  'signIn.restoring': '正在恢复你的订阅…',
   'signIn.saveTitle': '保存你的安全屏障。',
   'signIn.saveBody': '账户会帮你存住 {name} 的档案和每一次扫描，这台手机和下一台都在。',
   'signIn.saveBodyYours': '账户会帮你存住你的档案和每一次扫描，这台手机和下一台都在。',
@@ -1546,6 +1552,7 @@ const es: Record<TranslationKey, string> = {
   'camera.settings': 'Abrir Ajustes',
   'signIn.recoverTitle': 'Bienvenido de nuevo',
   'signIn.recoverBody': 'Tu suscripción pertenece a tu cuenta y no a este teléfono. Inicia sesión y vuelve contigo.',
+  'signIn.restoring': 'Recuperando tu suscripción…',
   'signIn.saveTitle': 'Guarda tu escudo de seguridad.',
   'signIn.saveBody': 'Una cuenta conserva el perfil de {name} y todos tus escaneos, en este teléfono y en el siguiente.',
   'signIn.saveBodyYours': 'Una cuenta conserva tu perfil y todos tus escaneos, en este teléfono y en el siguiente.',

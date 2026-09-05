@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { apiFetch, getToken } from './api';
+import { restorePurchases, storeSaysEntitled } from './purchases';
 import { cancelTrialReminder } from './trialReminder';
 
 /**
@@ -88,6 +89,43 @@ export async function awaitEntitlement(
   } catch {
     return null;
   }
+}
+
+/**
+ * What a restore turned out to mean.
+ *
+ *   granted    the subscription is attached to the account and the app is open
+ *   noAccount  the Apple ID owns it and there is nowhere to put it yet
+ *   stuck      the Apple ID owns it and our server would not record it
+ *   nothing    this Apple ID owns nothing
+ */
+export type RestoreOutcome = 'granted' | 'noAccount' | 'stuck' | 'nothing';
+
+/**
+ * Restore, and turn that into access. The whole sequence, in one place.
+ *
+ * IT LIVES HERE BECAUSE IT HAS TO HAPPEN TWICE, AND USED TO HAPPEN ONCE.
+ *
+ * Restoring from a fresh install with no account got as far as "you already
+ * have a subscription, sign in" and then stopped. Signing in tells RevenueCat
+ * who this is, which is not the same as handing it the receipt: the receipt
+ * was synced under the anonymous id the restore ran on, and identifying does
+ * not resync it. So the server, asked outright, still saw nothing, and the
+ * person was returned to the paywall with no sign that anything was left to
+ * do — where tapping Restore a SECOND time, now signed in, worked. The tap
+ * they could not have known to make is this function, called again after
+ * sign-in.
+ *
+ * `signedIn` is passed rather than looked up because this is a plain function
+ * and the answer lives in a React context. It only decides which of two true
+ * sentences to tell: there is nowhere to put this yet, or we could not record
+ * it. Never a third about buying again — the money has already moved.
+ */
+export async function restoreAndGrant(signedIn: boolean): Promise<RestoreOutcome> {
+  const info = await restorePurchases();
+  if (!storeSaysEntitled(info)) return 'nothing';
+  if (!signedIn) return 'noAccount';
+  return (await awaitEntitlement()) ? 'granted' : 'stuck';
 }
 
 /**
