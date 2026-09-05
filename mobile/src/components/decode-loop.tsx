@@ -41,11 +41,17 @@ import type { RiskLevel } from '@/lib/types';
  * becoming resolved, which is the same language ResolveIn speaks on the
  * results list.
  *
- * THE PAIRS ARE REAL. Sirop de glucose is glucose syrup and carries no
- * concern; anhydride sulfureux is sulphur dioxide, which is a genuine
- * moderate and is the sulphite that sets off asthma. A teaching animation
- * that invented its own chemistry would be the wrong first impression for an
- * app whose entire claim is that it quotes people.
+ * WORST FIRST, which is the order a real result list uses. This is somebody's
+ * first sight of the thing the app produces, and teaching them to read it
+ * top-down for the worst news is worth more than a pleasing gradient. It also
+ * puts the red mark on the row that resolves first.
+ *
+ * THE PAIRS ARE REAL. Érythrosine (E127) is Red 3, which the FDA revoked for
+ * use in food in January 2025. Anhydride sulfureux is sulphur dioxide, a
+ * genuine moderate and the sulphite that sets off asthma. Sirop de glucose and
+ * lécithine de soja carry no concern and are green because they are green. A
+ * teaching animation that invented its own chemistry would be the wrong first
+ * impression for an app whose entire claim is that it quotes people.
  */
 
 /** One full cycle: the four rows resolving, a beat to read them, then back. */
@@ -63,15 +69,15 @@ interface Line {
   /** As printed on the pack. Constant: this side is the foreign one. */
   printed: string;
   /** What we turn it into, in whichever language the app is set to. */
-  key: 'teach.loopGlucose' | 'teach.loopSulphite' | 'teach.loopLecithin' | 'teach.loopCarmine';
+  key: 'teach.loopRed3' | 'teach.loopSulphite' | 'teach.loopGlucose' | 'teach.loopLecithin';
   level: RiskLevel;
 }
 
 const LINES: Line[] = [
-  { printed: 'Sirop de glucose', key: 'teach.loopGlucose', level: 'low' },
+  { printed: 'Érythrosine (E127)', key: 'teach.loopRed3', level: 'high' },
   { printed: 'Anhydride sulfureux', key: 'teach.loopSulphite', level: 'moderate' },
+  { printed: 'Sirop de glucose', key: 'teach.loopGlucose', level: 'low' },
   { printed: 'Lécithine de soja', key: 'teach.loopLecithin', level: 'low' },
-  { printed: 'Cochenille (E120)', key: 'teach.loopCarmine', level: 'low' },
 ];
 
 export function DecodeLoop() {
