@@ -80,7 +80,27 @@ export default function RootLayout() {
                 <Stack.Screen name="profiles" options={{ presentation: 'modal' }} />
                 <Stack.Screen name="profile-edit" options={{ presentation: 'modal' }} />
                 <Stack.Screen name="ingredient" options={{ presentation: 'modal' }} />
-                <Stack.Screen name="paywall" options={{ presentation: 'modal' }} />
+                {/* A CARD, NOT A SHEET, and it was a sheet for a long time.
+                    The subscription screen is the last of the onboarding
+                    steps — it is reached by replacing the reminder, it carries
+                    the same round ‹ the other eleven carry, and it fades in
+                    the way trial and reminder do. Presenting the last step of
+                    a flow as a modal made it the one screen whose chrome
+                    changed shape at the end, and it is what made a second
+                    paywall stacked on the first visibly an overlay.
+
+                    No back gesture, because a card presentation offers one and
+                    the paywall is the one screen that must not honour it. A
+                    swipe would bypass the screen's own close, which is
+                    deliberate about where a gate goes back to; and at a gate
+                    reached from the camera it would pop to a viewfinder that
+                    redirects straight back here, so the gesture would visibly
+                    fight itself. The steps either side of it have no gesture
+                    either — nothing is behind them. */}
+                <Stack.Screen
+                  name="paywall"
+                  options={{ animation: 'fade', gestureEnabled: false }}
+                />
               </Stack>
             </View>
           </AuthProvider>
