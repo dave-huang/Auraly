@@ -1,5 +1,5 @@
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useIsFocused, useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, Linking, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -18,7 +18,6 @@ import {
 } from '@/lib/entitlement';
 import { useTranslation } from '@/lib/i18n';
 import { goBackOrHome, goHome } from '@/lib/navigation';
-import { getActiveProfileId, listProfiles } from '@/lib/profiles';
 import { scheduleTrialReminder } from '@/lib/trialReminder';
 import {
   AlreadySubscribedError,
@@ -77,6 +76,16 @@ import {
  */
 const ADVERTISED_TRIAL_DAYS = 7;
 
+/**
+ * How long a resumed purchase waits before opening Apple's sheet.
+ *
+ * Long enough for the sign-in screen to finish leaving. Focus comes back the
+ * moment the pop is dispatched rather than when it lands, and presenting a
+ * system sheet into a screen that is still moving is how it fails to present
+ * at all.
+ */
+const RESUME_MS = 450;
+
 export default function PaywallScreen() {
   const surface = useSurface();
   const router = useRouter();
@@ -111,28 +120,15 @@ export default function PaywallScreen() {
   const [checkingStore, setCheckingStore] = useState(PURCHASES_ENABLED);
 
   /**
-   * Who the profile on this device belongs to, for the sign-in ask below.
+   * A purchase interrupted by sign-in, waiting to be picked back up.
    *
-   * Without it, someone who spent eleven screens building a profile for their
-   * daughter and is then sent to sign in gets offered the chance to save "Me's
-   * profile" — the placeholder — over a flow that has been saying Maya
-   * throughout. Best-effort: a failure here costs the name in one sentence,
-   * and sign-in falls back to the placeholder on its own.
+   * A ref rather than state because nothing renders from it, and because it
+   * has to survive being covered: the sign-in screen is pushed OVER this one,
+   * so this component stays mounted throughout and the flag is still here
+   * when it comes back.
    */
-  const [profileName, setProfileName] = useState<string | null>(null);
-  useEffect(() => {
-    let cancelled = false;
-    void Promise.all([listProfiles(), getActiveProfileId()])
-      .then(([list, activeId]) => {
-        if (cancelled) return;
-        const profile = list.find((p) => p.id === activeId) ?? list[0];
-        if (profile) setProfileName(profile.name);
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  const awaitingAccount = useRef(false);
+  const focused = useIsFocused();
 
   const [plans, setPlans] = useState<PlanOffer[] | null>(null);
   const [selected, setSelected] = useState<'monthly' | 'annual'>('annual');
@@ -316,10 +312,8 @@ export default function PaywallScreen() {
     // it. Sign-in first is not friction added to the sale; it is the sale
     // being possible at all.
     if (!user) {
-      router.push({
-        pathname: '/sign-in',
-        params: { mode: 'save', name: profileName ?? '', then: 'paywall' },
-      });
+      awaitingAccount.current = true;
+      router.push({ pathname: '/sign-in', params: { then: 'paywall' } });
       return;
     }
 
@@ -368,6 +362,64 @@ export default function PaywallScreen() {
       setBusy(null);
     }
   }
+
+  /**
+   * The resumed purchase, carrying the guard a hand-made tap gets for free.
+   *
+   * The mount check above asks the store before showing plans, precisely so
+   * nobody can buy on top of a subscription Apple already holds — that is not
+   * a duplicate Apple refuses, it is a plan change it performs, so nothing
+   * downstream can catch it and it has to be caught before the tap. That check
+   * runs again when the account arrives, but on its own clock, and this one is
+   * on a timer. So ask again here rather than hope the two land in the right
+   * order. It is a cache read, and this is the one tap nobody is making by
+   * hand.
+   */
+  async function resume() {
+    if (await storeHasSubscription()) {
+      setStoreSubscribed(true);
+      return;
+    }
+    await startTrial();
+  }
+
+  /**
+   * PICK THE PURCHASE BACK UP, so Continue is pressed once and not twice.
+   *
+   * Tapping Continue with no account used to spend the tap on a detour: sign
+   * in, come back to a paywall with the plan still selected, and press the
+   * same button again for a reason that is entirely our plumbing. The
+   * intention was declared by the first press; the account is the only thing
+   * that was missing, and it is no longer missing.
+   *
+   * THREE CONDITIONS, AND EACH ONE IS LOAD-BEARING.
+   *
+   *   awaitingAccount  only a purchase this screen interrupted resumes. An
+   *                    account arriving any other way must never start one.
+   *   user             the account now exists, which is the whole reason for
+   *                    the detour.
+   *   focused          and the sign-in screen is off. Without this the resume
+   *                    fires far too early: setUser lands before the two
+   *                    network round trips that follow it, so the paywall
+   *                    learns about the account while sign-in is still on top
+   *                    — and Apple's payment sheet would open over it.
+   *
+   * The delay is not padding. Focus returns when the pop is DISPATCHED, not
+   * when it finishes, so this waits out the animation rather than presenting
+   * a system sheet into a moving screen.
+   */
+  useEffect(() => {
+    if (!awaitingAccount.current || !user || !focused) return;
+    awaitingAccount.current = false;
+    const timer = setTimeout(() => void resume(), RESUME_MS);
+    // Cleared on unmount, which is what stops a resume firing into a screen
+    // that has already sent them home — the mount check above can find a
+    // subscription and leave while this is still pending.
+    return () => clearTimeout(timer);
+    // resume is deliberately not a dependency: it is rebuilt every render, and
+    // this must fire on the transition into focus, not on every one.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, focused]);
 
   async function restore() {
     setBusy('restore');

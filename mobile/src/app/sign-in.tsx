@@ -27,6 +27,12 @@ import { ReceiptInUseError } from '@/lib/purchases';
  *               the sentence can name the person whose allergies are about to
  *               be preserved.
  *
+ *   then=paywall  reached mid-purchase, because an anonymous purchase cannot
+ *               be granted. The one case that is over in seconds: signing in
+ *               returns to the paywall, which picks the purchase back up on
+ *               its own, so this screen exists to say WHY it interrupted and
+ *               that nothing has been charged.
+ *
  *   recover=1   sent from the subscription screen, by someone whose Apple ID
  *               already holds a subscription. They did not come to make an
  *               account; they came to get back something they already pay for.
@@ -38,7 +44,10 @@ export default function SignInScreen() {
   const { t } = useTranslation();
   const surface = useSurface();
   const params = useLocalSearchParams<{ mode?: string; name?: string; recover?: string; then?: string }>();
-  const saving = params.mode === 'save';
+  // Mid-purchase beats "save this": the paywall sends both, and someone who
+  // has just tapped Continue on a price is owed the sentence about the price.
+  const purchasing = params.then === 'paywall';
+  const saving = params.mode === 'save' && !purchasing;
   // Whose profile this is, grammatically. See isPlaceholderName.
   const named = !isPlaceholderName(params.name);
   const recovering = params.recover === '1';
@@ -149,6 +158,15 @@ export default function SignInScreen() {
               {t('signIn.recoverBody')}
             </ThemedText>
           </>
+        ) : purchasing ? (
+          <>
+            <ThemedText style={[Type.title, styles.tagline, { color: surface.ink }]}>
+              {t('signIn.buyTitle')}
+            </ThemedText>
+            <ThemedText style={[Type.reason, styles.tagline, { color: surface.inkMuted }]}>
+              {t('signIn.buyBody')}
+            </ThemedText>
+          </>
         ) : saving ? (
           <>
             <ThemedText style={[Type.title, styles.tagline, { color: surface.ink }]}>
@@ -183,8 +201,10 @@ export default function SignInScreen() {
             <ProviderButtons onSignedIn={done} />
 
             {/* Only when this is an offer rather than a gate. Someone who came
-                here to get their account back has nothing to defer. */}
-            {saving && (
+                here to get their account back has nothing to defer — but
+                somebody mid-purchase does, and this is their only way out:
+                the screen has no other back control. */}
+            {(saving || purchasing) && (
               <Pressable
                 style={styles.later}
                 onPress={() => router.back()}
