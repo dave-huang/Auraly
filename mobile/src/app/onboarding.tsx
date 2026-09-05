@@ -308,10 +308,11 @@ function renderStep(args: {
     case 'begin':
       return {
         title: t('onboarding.beginTitle'),
-        // No plate here any more. The basket was a still drawing of an empty
-        // basket, which is pleasant and says nothing; DecodeLoop shows the
-        // product working, on the one screen where somebody has not yet
-        // decided whether to care.
+        // The basket used to sit here: a still drawing of an empty basket,
+        // pleasant and saying nothing. This one answers the question a first
+        // screen actually gets asked — what am I supposed to do with this —
+        // by showing the gesture, under a loop showing the result.
+        plate: 'scanning',
         body: t('onboarding.beginBody'),
         cta: t('onboarding.beginCta'),
         children: <DecodeLoop />,

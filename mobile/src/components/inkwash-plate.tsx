@@ -75,6 +75,23 @@ interface Plate {
 }
 
 export const PLATES = {
+  /**
+   * A hand holding a phone at the back of a snack pouch. How to use the app,
+   * shown rather than described.
+   *
+   * THE ONE PLATE WITH A PERSON IN IT, and the exception is deliberate: this
+   * one exists to show a gesture, and no arrangement of objects performs a
+   * gesture. It is a bare hand and nothing else — no face, no arm, no sleeve —
+   * so it still never depicts whose child this is.
+   *
+   * The lettering on the pouch is abstract on purpose. The drawing came back
+   * with invented words on it ("Nutrition Facst", "MAGAEINE VABES"), which is
+   * the one thing on a picture a reader can catch us getting wrong and the
+   * exact fault that retired the halftone packets plate. Every word legible at
+   * the size this is delivered has been replaced with the dash runs the
+   * drawing already used elsewhere.
+   */
+  scanning: { source: require('@/assets/images/inkwash/scanning.png'), plate: 1.00, wash: 0.40 },
   /** Three graduated bowls. A household, without depicting anybody in it. */
   bowls: { source: require('@/assets/images/inkwash/bowls.png'), plate: 0.90, wash: 0.30 },
   /** A blank paper tag: the object that exists to carry a name. */
@@ -91,8 +108,16 @@ export const PLATES = {
   conditions: { source: require('@/assets/images/inkwash/conditions.png'), plate: 0.90, wash: 0.35 },
   /** Bound reports, covers blank. The documents the verdicts quote. */
   sources: { source: require('@/assets/images/inkwash/sources.png'), plate: 0.90, wash: 0.32 },
-  /** A folded map: contour lines, no place names. Elsewhere, without words. */
-  language: { source: require('@/assets/images/inkwash/language.png'), plate: 1.00, wash: 0.80 },
+  /**
+   * A desk globe in its meridian ring. Elsewhere, without words.
+   *
+   * It replaced a folded contour map, which drew the right idea and the wrong
+   * object: a map is a place, and the question this screen asks is which
+   * language to answer in. Its numbers are not the map's — a globe is a much
+   * denser drawing, and inheriting 1.00/0.80 would have landed it at nearly
+   * twice the weight of anything else in the set.
+   */
+  language: { source: require('@/assets/images/inkwash/language.png'), plate: 0.83, wash: 0.31 },
   /** A sheet caught mid-fall, read and then dropped. Not a padlock. */
   privacy: { source: require('@/assets/images/inkwash/privacy.png'), plate: 1.00, wash: 0.51 },
   /** A pressed sprig on a mounting card. The profile as a finished thing. */

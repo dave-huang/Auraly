@@ -25,3 +25,7 @@ secrets.env.txt
 
 # Expo local env
 mobile/.env
+
+# Source drawings for the ink wash plates. The app ships the alpha-only
+# PNGs beside them; these are multi-megabyte originals kept for re-conversion.
+mobile/assets/images/inkwash/src/
