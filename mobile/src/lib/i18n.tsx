@@ -557,8 +557,12 @@ const en = {
   'paywall.manageNote': 'Changing plans and cancelling both happen in your Apple account. This opens Apple\u2019s own controls.',
   // The store already sold this Apple ID a subscription — see recoverExisting.
   'paywall.foundTitle': 'You already have a subscription',
-  'paywall.foundBody': 'This Apple ID is already subscribed to Revely. Your subscription belongs to your account rather than to this phone, so signing in is what brings it back, and you won’t be charged again.',
-  'paywall.foundCta': 'Sign in',
+  // The whole recovery, on one screen, in two sentences. It used to run to
+  // four clauses about Apple IDs, accounts and phones, and then a second
+  // screen said it all again. The title carries "already"; this says what
+  // to do and answers the only question anybody actually has, which is
+  // whether they are about to pay twice.
+  'paywall.foundBody': 'Sign in and it comes with you. You won’t be charged again.',
   'paywall.foundRetry': 'Try again',
   'paywall.restorePrompt': 'Already subscribed? Restore it',
   'paywall.foundStuckBody': 'This Apple ID is already subscribed, but we couldn’t attach it to your account just now. Please try again in a moment. You won’t be charged twice.',
@@ -571,25 +575,10 @@ const en = {
   'camera.captureFailed': 'The camera wasn’t ready. Try that again.',
   'camera.deniedBody': 'Camera access is off. You can turn it back on in Settings, or pick a photo from your library.',
   'camera.settings': 'Open Settings',
-  'signIn.recoverTitle': 'Welcome back',
-  // TWO SENTENCES, AND THE FIRST ONE IS THE IMPORTANT ONE.
-  //
-  // Where a subscription lives is our problem, not theirs, so the clauses
-  // about accounts and phones are gone. What replaced them is not more
-  // explanation: it is the state. A page headed "Welcome back" over two
-  // buttons reading "Sign in with Apple" is the universal shape of signing UP,
-  // and somebody who reads it that way is being asked to buy a subscription
-  // they already own. Saying "already" first is what stops that.
-  //
-  // The screen before this one carries the money sentence in full — see
-  // paywall.foundBody, "you won't be charged again" — so this does not need to
-  // say it a third time. It needs to agree with it.
-  'signIn.recoverBody': 'You’re already subscribed. Sign in and it comes with you.',
   // Shown while the restore this screen now finishes on its own is running.
   // It can take a few seconds — the receipt goes to Apple and the answer comes
   // back through our server — and a screen with nothing on it but two sign-in
   // buttons that have just vanished is how somebody taps something twice.
-  'signIn.restoring': 'Bringing your subscription back…',
 
 } as const;
 
@@ -1053,8 +1042,7 @@ const zh: Record<TranslationKey, string> = {
   'paywall.manageCta': '管理订阅',
   'paywall.manageNote': '更改方案和取消订阅都在你的 Apple 账户中完成。这里会打开 Apple 自己的管理界面。',
   'paywall.foundTitle': '你已经有订阅了',
-  'paywall.foundBody': '此 Apple ID 已订阅 Revely。订阅属于你的账户，而不是这台手机，因此登录即可恢复，不会重复扣款。',
-  'paywall.foundCta': '登录',
+  'paywall.foundBody': '登录后即可恢复，不会重复扣款。',
   'paywall.foundRetry': '重试',
   'paywall.restorePrompt': '已经订阅过？点此恢复',
   'paywall.foundStuckBody': '此 Apple ID 已订阅，但暂时无法关联到你的账户。请稍后重试，不会重复扣款。',
@@ -1067,9 +1055,6 @@ const zh: Record<TranslationKey, string> = {
   'camera.captureFailed': '相机尚未就绪，请再试一次。',
   'camera.deniedBody': '相机权限已关闭。你可以在「设置」中重新开启，或从相册中选择照片。',
   'camera.settings': '打开设置',
-  'signIn.recoverTitle': '欢迎回来',
-  'signIn.recoverBody': '你已经订阅了。登录后即可恢复。',
-  'signIn.restoring': '正在恢复你的订阅…',
 
 };
 
@@ -1536,8 +1521,7 @@ const es: Record<TranslationKey, string> = {
   'paywall.manageCta': 'Gestionar suscripción',
   'paywall.manageNote': 'Cambiar de plan y cancelar se hacen en tu cuenta de Apple. Esto abre los controles de Apple.',
   'paywall.foundTitle': 'Ya tienes una suscripción',
-  'paywall.foundBody': 'Este Apple ID ya está suscrito a Revely. Tu suscripción pertenece a tu cuenta y no a este teléfono, así que iniciar sesión es lo que la recupera; no se te cobrará de nuevo.',
-  'paywall.foundCta': 'Iniciar sesión',
+  'paywall.foundBody': 'Inicia sesión y la recuperas. No se te cobrará de nuevo.',
   'paywall.foundRetry': 'Reintentar',
   'paywall.restorePrompt': '¿Ya estás suscrito? Restaurar',
   'paywall.foundStuckBody': 'Este Apple ID ya está suscrito, pero no hemos podido vincularlo a tu cuenta ahora mismo. Inténtalo de nuevo en un momento; no se te cobrará dos veces.',
@@ -1550,9 +1534,6 @@ const es: Record<TranslationKey, string> = {
   'camera.captureFailed': 'La cámara no estaba lista. Inténtalo de nuevo.',
   'camera.deniedBody': 'El acceso a la cámara está desactivado. Puedes reactivarlo en Ajustes o elegir una foto de tu galería.',
   'camera.settings': 'Abrir Ajustes',
-  'signIn.recoverTitle': 'Bienvenido de nuevo',
-  'signIn.recoverBody': 'Ya tienes una suscripción. Inicia sesión y la recuperas.',
-  'signIn.restoring': 'Recuperando tu suscripción…',
 
 };
 

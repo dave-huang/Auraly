@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ApertureMark } from '@/components/aperture-mark';
 import { InkWashPlate } from '@/components/inkwash-plate';
-import { SignInSheet } from '@/components/sign-in-providers';
+import { ProviderButtons, SignInSheet } from '@/components/sign-in-providers';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Radius, Space, Type, useSurface } from '@/constants/design';
 import { PRIVACY_URL, PURCHASES_ENABLED, TERMS_URL } from '@/lib/config';
@@ -253,17 +253,62 @@ export default function PaywallScreen() {
    * SIGNED IN. Rarer, and genuinely our problem: the receipt exists, we asked
    * RevenueCat, and we still could not record it. Never suggest buying again.
    */
-  function offerSignInToRecover() {
-    Alert.alert(t('paywall.foundTitle'), t('paywall.foundBody'), [
-      { text: t('common.cancel'), style: 'cancel' },
-      { text: t('paywall.foundCta'), onPress: () => router.replace('/sign-in?recover=1') },
-    ]);
+  function showRecovery() {
+    // An alert used to stand here, carrying this same sentence and a Sign in
+    // button that pushed a screen carrying it a THIRD time. Three tellings of
+    // one fact, two of them with nothing to press but Continue.
+    //
+    // RecoverView is that fact with the buttons attached, so this just shows
+    // it. The alert was the odd one out anyway: the comment on RecoverView
+    // says why this must not be an alert over a screen full of prices.
+    setStoreSubscribed(true);
+  }
+
+  /**
+   * The second half of the restore, run without being asked.
+   *
+   * Moved here from the sign-in screen, which is the screen this one replaced.
+   * Signing in tells RevenueCat who this is; it does not hand it the receipt
+   * again, and the receipt was synced under the anonymous id the first restore
+   * ran on. So the restore is genuinely run twice, and the second one is this.
+   *
+   * Failure stays put rather than navigating. `user` is set by now, so the
+   * screen behind this call has already re-rendered as the signed-in variant:
+   * the stuck sentence, and a Retry that runs the whole thing again. Nothing
+   * here may ever suggest buying again — the money has already moved.
+   */
+  async function finishRecovery() {
+    setBusy('restore');
+    try {
+      switch (await restoreAndGrant(true)) {
+        case 'granted':
+          goHome();
+          return;
+        case 'stuck':
+          Alert.alert(t('paywall.foundTitle'), t('paywall.foundStuckBody'));
+          return;
+        // 'noAccount' cannot happen — we have just made one — and it is
+        // handled with 'nothing' rather than left to fall through silently.
+        case 'noAccount':
+        case 'nothing':
+          Alert.alert(t('paywall.restoreNoneTitle'), t('paywall.restoreNoneBody'));
+          return;
+      }
+    } catch (error: any) {
+      if (error instanceof ReceiptInUseError) {
+        Alert.alert(t('paywall.receiptInUseTitle'), t('paywall.receiptInUseBody'));
+        return;
+      }
+      Alert.alert(t('paywall.failedTitle'), error?.message ?? t('common.tryAgain'));
+    } finally {
+      setBusy(null);
+    }
   }
 
   /** Shared tail of both recovery paths. Returns true if it got them in. */
   async function recoverExisting(alreadyPulled: boolean): Promise<boolean> {
     if (!user) {
-      offerSignInToRecover();
+      showRecovery();
       return false;
     }
     // `alreadyPulled` is set by callers that have just been through
@@ -468,7 +513,7 @@ export default function PaywallScreen() {
         // The store has it and there is no account to attach it to. Say so
         // and offer the one door that works; never a suggestion to buy again.
         case 'noAccount':
-          offerSignInToRecover();
+          showRecovery();
           return;
         // It restored, and we still cannot use it. This used to go home
         // anyway, leaving someone holding a valid subscription on a camera
@@ -519,7 +564,12 @@ export default function PaywallScreen() {
         // viewfinder's gate will refuse them, bounce them straight back here,
         // and the close control becomes a button that visibly does nothing.
         onClose={leave}
-        onSignIn={() => router.replace('/sign-in?recover=1')}
+        // Straight into the second restore. Somebody who already pays is not
+        // being sold anything, so there is no plan to pick back up and no
+        // reason to route this through the purchase resume.
+        onSignedIn={(alreadyGranted) =>
+          alreadyGranted ? goHome() : void finishRecovery()
+        }
         onRetry={() => void restore()}
         busy={busy === 'restore'}
       />
@@ -778,13 +828,14 @@ function RecoverView({
   signedIn,
   busy,
   onClose,
-  onSignIn,
+  onSignedIn,
   onRetry,
 }: {
   signedIn: boolean;
   busy: boolean;
   onClose: () => void;
-  onSignIn: () => void;
+  /** Handed the server's own answer to whether this account already pays. */
+  onSignedIn: (alreadyGranted: boolean) => void;
   onRetry: () => void;
 }) {
   const surface = useSurface();
@@ -809,20 +860,24 @@ function RecoverView({
           </ThemedText>
         </View>
 
-        <Pressable
-          style={[styles.primary, { backgroundColor: surface.ink }, busy && styles.disabled]}
-          disabled={busy}
-          onPress={signedIn ? onRetry : onSignIn}
-          accessibilityRole="button"
-        >
-          <ThemedText style={[styles.primaryLabel, { color: surface.paper }]}>
-            {busy
-              ? t('paywall.working')
-              : signedIn
-                ? t('paywall.foundRetry')
-                : t('paywall.foundCta')}
-          </ThemedText>
-        </Pressable>
+        {/* THE BUTTONS ARE ON THIS SCREEN, not on one behind a Sign in.
+            There used to be a Sign in here, and it opened a page that said
+            the same thing again above the same two buttons. The sentence
+            above is the argument; these are the way to act on it. */}
+        {signedIn ? (
+          <Pressable
+            style={[styles.primary, { backgroundColor: surface.ink }, busy && styles.disabled]}
+            disabled={busy}
+            onPress={onRetry}
+            accessibilityRole="button"
+          >
+            <ThemedText style={[styles.primaryLabel, { color: surface.paper }]}>
+              {busy ? t('paywall.working') : t('paywall.foundRetry')}
+            </ThemedText>
+          </Pressable>
+        ) : (
+          <ProviderButtons onSignedIn={onSignedIn} />
+        )}
 
         <View style={styles.legal}>
           <LegalLink label={t('paywall.terms')} url={TERMS_URL} />
