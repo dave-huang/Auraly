@@ -572,11 +572,19 @@ const en = {
   'camera.deniedBody': 'Camera access is off. You can turn it back on in Settings, or pick a photo from your library.',
   'camera.settings': 'Open Settings',
   'signIn.recoverTitle': 'Welcome back',
-  // Where a subscription lives is our problem, not theirs. This said it out
-  // loud for two clauses before getting to the point, and the point was
-  // always the second half. "Comes with you" rather than "comes back",
-  // because the title above already said back.
-  'signIn.recoverBody': 'Sign in and your subscription comes with you.',
+  // TWO SENTENCES, AND THE FIRST ONE IS THE IMPORTANT ONE.
+  //
+  // Where a subscription lives is our problem, not theirs, so the clauses
+  // about accounts and phones are gone. What replaced them is not more
+  // explanation: it is the state. A page headed "Welcome back" over two
+  // buttons reading "Sign in with Apple" is the universal shape of signing UP,
+  // and somebody who reads it that way is being asked to buy a subscription
+  // they already own. Saying "already" first is what stops that.
+  //
+  // The screen before this one carries the money sentence in full — see
+  // paywall.foundBody, "you won't be charged again" — so this does not need to
+  // say it a third time. It needs to agree with it.
+  'signIn.recoverBody': 'You’re already subscribed. Sign in and it comes with you.',
   // Shown while the restore this screen now finishes on its own is running.
   // It can take a few seconds — the receipt goes to Apple and the answer comes
   // back through our server — and a screen with nothing on it but two sign-in
@@ -1060,7 +1068,7 @@ const zh: Record<TranslationKey, string> = {
   'camera.deniedBody': '相机权限已关闭。你可以在「设置」中重新开启，或从相册中选择照片。',
   'camera.settings': '打开设置',
   'signIn.recoverTitle': '欢迎回来',
-  'signIn.recoverBody': '登录后，你的订阅就会回来。',
+  'signIn.recoverBody': '你已经订阅了。登录后即可恢复。',
   'signIn.restoring': '正在恢复你的订阅…',
 
 };
@@ -1543,7 +1551,7 @@ const es: Record<TranslationKey, string> = {
   'camera.deniedBody': 'El acceso a la cámara está desactivado. Puedes reactivarlo en Ajustes o elegir una foto de tu galería.',
   'camera.settings': 'Abrir Ajustes',
   'signIn.recoverTitle': 'Bienvenido de nuevo',
-  'signIn.recoverBody': 'Inicia sesión y tu suscripción vuelve contigo.',
+  'signIn.recoverBody': 'Ya tienes una suscripción. Inicia sesión y la recuperas.',
   'signIn.restoring': 'Recuperando tu suscripción…',
 
 };
