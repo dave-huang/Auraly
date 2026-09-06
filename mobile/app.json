@@ -10,7 +10,7 @@
     "userInterfaceStyle": "light",
     "ios": {
       "icon": {
-        "light": "./assets/images/icon.png",
+        "light": "./assets/images/icon-light.png",
         "dark": "./assets/images/icon-dark.png",
         "tinted": "./assets/images/icon-tinted.png"
       },
