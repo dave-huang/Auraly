@@ -1,10 +1,11 @@
-import { useIsFocused, useLocalSearchParams, useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, Linking, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ApertureMark } from '@/components/aperture-mark';
 import { InkWashPlate } from '@/components/inkwash-plate';
+import { SignInSheet } from '@/components/sign-in-providers';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Radius, Space, Type, useSurface } from '@/constants/design';
 import { PRIVACY_URL, PURCHASES_ENABLED, TERMS_URL } from '@/lib/config';
@@ -79,10 +80,11 @@ const ADVERTISED_TRIAL_DAYS = 7;
 /**
  * How long a resumed purchase waits before opening Apple's sheet.
  *
- * Long enough for the sign-in screen to finish leaving. Focus comes back the
- * moment the pop is dispatched rather than when it lands, and presenting a
- * system sheet into a screen that is still moving is how it fails to present
- * at all.
+ * Long enough for the sign-in drawer to finish fading out. Presenting a system
+ * sheet into a screen that is still moving is how it fails to present at all,
+ * and the two sheets cannot overlap: iOS will not put StoreKit's up while
+ * another modal is on its way down. It was the same number when sign-in was a
+ * pushed screen rather than a drawer, for the same reason.
  */
 const RESUME_MS = 450;
 
@@ -122,13 +124,23 @@ export default function PaywallScreen() {
   /**
    * A purchase interrupted by sign-in, waiting to be picked back up.
    *
-   * A ref rather than state because nothing renders from it, and because it
-   * has to survive being covered: the sign-in screen is pushed OVER this one,
-   * so this component stays mounted throughout and the flag is still here
-   * when it comes back.
+   * A ref rather than state because nothing renders from it. It is what
+   * separates "an account arrived because somebody was buying" from "an
+   * account arrived", and only the first may start a purchase.
    */
   const awaitingAccount = useRef(false);
-  const focused = useIsFocused();
+  const [signingIn, setSigningIn] = useState(false);
+
+  /**
+   * Sign-in reported finished, and what it found.
+   *
+   * State rather than a ref because it has to WAKE the resume effect, and
+   * separate from `user` because the two arrive at different moments: setUser
+   * lands first, and two network round trips follow it. Resuming on the
+   * account alone would open Apple's payment sheet while RevenueCat was still
+   * being told who this is.
+   */
+  const [arrival, setArrival] = useState<{ subscribed: boolean } | null>(null);
 
   const [plans, setPlans] = useState<PlanOffer[] | null>(null);
   const [selected, setSelected] = useState<'monthly' | 'annual'>('annual');
@@ -311,9 +323,21 @@ export default function PaywallScreen() {
     // refuses — money taken, nothing unlocked, and no screen able to explain
     // it. Sign-in first is not friction added to the sale; it is the sale
     // being possible at all.
+    // SIGN-IN HAPPENS HERE, ON THIS SCREEN, IN A DRAWER.
+    //
+    // It used to push /sign-in, which spent the tap on a page transition and
+    // then needed a second tap's worth of machinery to get back. The drawer is
+    // the same component the welcome screen opens, so a returning user and a
+    // buying user meet the same two buttons in the same sheet.
+    //
+    // What it must NOT become is one button that both signs in and charges.
+    // Apple's is a native view whose label is one of three fixed strings, none
+    // of which can carry a price, so a merged button would take money from a
+    // control that never named a sum. The price stays on the button above,
+    // which is the one that charges.
     if (!user) {
       awaitingAccount.current = true;
-      router.push({ pathname: '/sign-in', params: { then: 'paywall' } });
+      setSigningIn(true);
       return;
     }
 
@@ -375,7 +399,12 @@ export default function PaywallScreen() {
    * order. It is a cache read, and this is the one tap nobody is making by
    * hand.
    */
-  async function resume() {
+  async function resume(subscribed: boolean) {
+    // The server was asked outright during sign-in, and it says this account
+    // already pays. There is nothing to sell. The mount effect above is
+    // already re-running on the new user and will take them through.
+    if (subscribed) return;
+
     if (await storeHasSubscription()) {
       setStoreSubscribed(true);
       return;
@@ -396,30 +425,35 @@ export default function PaywallScreen() {
    *
    *   awaitingAccount  only a purchase this screen interrupted resumes. An
    *                    account arriving any other way must never start one.
-   *   user             the account now exists, which is the whole reason for
-   *                    the detour.
-   *   focused          and the sign-in screen is off. Without this the resume
-   *                    fires far too early: setUser lands before the two
-   *                    network round trips that follow it, so the paywall
-   *                    learns about the account while sign-in is still on top
-   *                    — and Apple's payment sheet would open over it.
+   *   user             the account now exists in React state, which is what
+   *                    startTrial reads. Resuming from the drawer's callback
+   *                    instead would read the `user` its closure was built
+   *                    with, find null, and open the drawer a second time.
+   *   arrival          and sign-in says it has FINISHED. This replaced a
+   *                    check on screen focus, which was a proxy for the same
+   *                    fact back when sign-in was a screen you came back
+   *                    from. A drawer never takes focus away, so the proxy
+   *                    would have read true throughout and fired the resume
+   *                    while RevenueCat was still being told who this is.
+   *                    The callback fires after identifyPurchaser and
+   *                    refreshEntitlement have both returned, which is the
+   *                    real signal the old one was standing in for.
    *
-   * The delay is not padding. Focus returns when the pop is DISPATCHED, not
-   * when it finishes, so this waits out the animation rather than presenting
-   * a system sheet into a moving screen.
+   * The delay is not padding: it waits out the drawer's fade, rather than
+   * presenting a system sheet into a moving screen.
    */
   useEffect(() => {
-    if (!awaitingAccount.current || !user || !focused) return;
+    if (!awaitingAccount.current || !user || !arrival) return;
     awaitingAccount.current = false;
-    const timer = setTimeout(() => void resume(), RESUME_MS);
+    const timer = setTimeout(() => void resume(arrival.subscribed), RESUME_MS);
     // Cleared on unmount, which is what stops a resume firing into a screen
     // that has already sent them home — the mount check above can find a
     // subscription and leave while this is still pending.
     return () => clearTimeout(timer);
     // resume is deliberately not a dependency: it is rebuilt every render, and
-    // this must fire on the transition into focus, not on every one.
+    // this must fire on the arrival, not on every one.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, focused]);
+  }, [user, arrival]);
 
   async function restore() {
     setBusy('restore');
@@ -705,6 +739,25 @@ export default function PaywallScreen() {
         </View>
 
       </ScrollView>
+
+      {/* Opened only by the button above, and only when there is no account.
+          Its eyebrow is not the welcome screen's: somebody who got here is
+          making an account in order to buy, not returning to one. */}
+      <SignInSheet
+        visible={signingIn}
+        title={t('signIn.sheetTitleCreate')}
+        // Dismissing the drawer abandons the purchase it interrupted. Without
+        // clearing the flag, an account arriving later by any other route
+        // would be read as consent to charge.
+        onClose={() => {
+          awaitingAccount.current = false;
+          setSigningIn(false);
+        }}
+        onSignedIn={(subscribed) => {
+          setSigningIn(false);
+          setArrival({ subscribed });
+        }}
+      />
     </SafeAreaView>
   );
 }

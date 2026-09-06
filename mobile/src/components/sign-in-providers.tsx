@@ -190,10 +190,23 @@ export function SignInSheet({
   visible,
   onClose,
   onSignedIn,
+  title,
 }: {
   visible: boolean;
   onClose: () => void;
-  onSignedIn: () => void;
+  /**
+   * Handed the server's own answer to "does this account already pay?", so a
+   * caller that was about to sell something can stop. Welcome ignores it; the
+   * paywall must not.
+   */
+  onSignedIn: (subscribed: boolean) => void;
+  /**
+   * Overrides the eyebrow. "Welcome back" is right on the welcome screen and
+   * wrong on the paywall, where the sheet opens to MAKE an account rather than
+   * to return to one. Optional rather than required, because the returning-user
+   * case is the one this sheet was built for and should stay the default.
+   */
+  title?: string;
 }) {
   const surface = useSurface();
   const { t } = useTranslation();
@@ -215,7 +228,7 @@ export function SignInSheet({
               "already have an account" has decided, and is looking for the
               button. */}
           <ThemedText style={[Type.eyebrow, styles.eyebrow, { color: surface.inkFaint }]}>
-            {t('signIn.sheetTitle')}
+            {title ?? t('signIn.sheetTitle')}
           </ThemedText>
 
           <ProviderButtons onSignedIn={onSignedIn} />
