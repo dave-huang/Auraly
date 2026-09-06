@@ -155,14 +155,11 @@ export default function SignInScreen() {
             </ThemedText>
           </>
         ) : purchasing ? (
-          <>
-            <ThemedText style={[Type.title, styles.tagline, { color: surface.ink }]}>
-              {t('signIn.buyTitle')}
-            </ThemedText>
-            <ThemedText style={[Type.reason, styles.tagline, { color: surface.inkMuted }]}>
-              {t('signIn.buyBody')}
-            </ThemedText>
-          </>
+          /* The ask on its own. Everything that used to sit under it was
+             explanation, and this is the last screen before somebody pays. */
+          <ThemedText style={[Type.title, styles.tagline, { color: surface.ink }]}>
+            {t('signIn.buyTitle')}
+          </ThemedText>
         ) : (
           <ThemedText style={[Type.reason, styles.tagline, { color: surface.inkMuted }]}>
             {t('signIn.tagline')}

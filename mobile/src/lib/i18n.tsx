@@ -575,17 +575,20 @@ const en = {
   // back through our server — and a screen with nothing on it but two sign-in
   // buttons that have just vanished is how somebody taps something twice.
   'signIn.restoring': 'Bringing your subscription back…',
-  // MID-PURCHASE, AND THE LAST STEP BEFORE SOMEBODY PAYS, so it says as
-  // little as it can get away with. The first version of these two lines
-  // explained where a subscription lives and what Apple would do next, which
-  // is all true and all our plumbing; on the screen standing between a person
-  // and the thing they just chose to buy, an explanation is a reason to stop.
+  // MID-PURCHASE, AND THE LAST STEP BEFORE SOMEBODY PAYS, so it is one line
+  // and no more. It started as three clauses explaining where a subscription
+  // lives and what Apple would do next, then lost two of them, then lost the
+  // reassurance underneath as well. All of it was true and none of it was
+  // wanted: on the screen standing between a person and the thing they just
+  // chose to buy, every extra sentence is another reason to stop.
   //
-  // What is left is the ask and one clause of reassurance. Nothing about a
-  // payment sheet, because the sheet introduces itself half a second later
-  // and does it better than a sentence could.
+  // Nothing warns about the payment sheet, deliberately. It opens half a
+  // second after this screen leaves and introduces itself better than a line
+  // of ours could.
+  //
+  // NO BODY KEY. The purchasing branch renders a title alone, which is why
+  // there is nothing here called buyBody.
   'signIn.buyTitle': 'Let’s create your account.',
-  'signIn.buyBody': 'Nothing’s charged yet.',
   'signIn.later': 'Not now',
 
 } as const;
@@ -1067,7 +1070,6 @@ const zh: Record<TranslationKey, string> = {
   'signIn.recoverBody': '你的订阅属于你的账户，而不是这台手机。登录后即可恢复。',
   'signIn.restoring': '正在恢复你的订阅…',
   'signIn.buyTitle': '先创建你的账户吧。',
-  'signIn.buyBody': '还没有扣款。',
   'signIn.later': '暂不',
 
 };
@@ -1552,7 +1554,6 @@ const es: Record<TranslationKey, string> = {
   'signIn.recoverBody': 'Tu suscripción pertenece a tu cuenta y no a este teléfono. Inicia sesión y vuelve contigo.',
   'signIn.restoring': 'Recuperando tu suscripción…',
   'signIn.buyTitle': 'Vamos a crear tu cuenta.',
-  'signIn.buyBody': 'Todavía no se ha cobrado nada.',
   'signIn.later': 'Ahora no',
 
 };
