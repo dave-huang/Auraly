@@ -1,6 +1,6 @@
 # Ink wash sources
 
-The originals. Fourteen brush studies, one per plate, kept here out of the app
+The originals. One brush study per plate, kept here out of the app
 bundle. What ships is in `mobile/assets/images/inkwash/` — transparent PNGs
 whose alpha is the ink, colour channels discarded, tinted live from the theme.
 
@@ -15,6 +15,21 @@ whose alpha is the ink, colour channels discarded, tinted live from the theme.
 1200. One exception: `specimen` came back with a flat #E9E9E9 panel behind the
 sprig, which at 246 converts to a solid grey slab. Its white point is 231, just
 under the panel, so the panel drops out and every stroke survives.
+
+One further exception: `watch` came back on textured watercolour paper with a
+vignette, paper running 250 at the top left down to 239 at the bottom right and
+grain overlapping the lightest washes. No single white point separates that
+paper from the drawing, so this one source is flat-fielded first and then
+converted at the standard 246:
+
+    small = g.resize((W//24, H//24)).filter(MaxFilter(5)).filter(GaussianBlur(3))
+    bg    = small.resize((W, H), BICUBIC)          # the paper, estimated locally
+    flat  = clip(g / bg * 252, 0, 255)
+
+Dividing by a local estimate of the paper removes the gradient and the grain
+together. After it, the four corners of the shipped PNG measure alpha 1, 5, 10
+and 7 out of 255, which is nothing. Ask any future render for plain white paper
+and this step is not needed.
 
 ## Then crop to the drawing
 

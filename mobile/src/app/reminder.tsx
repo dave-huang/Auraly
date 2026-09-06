@@ -55,6 +55,10 @@ export default function ReminderScreen() {
       leftLabel={t('common.back')}
       title={t('reminder.title')}
       body={t('reminder.body')}
+      // Two lines of content leave most of this page empty, and an empty page
+      // is the one place a drawing belongs. See PLATES.watch for why it is a
+      // watch and not an hourglass.
+      plate="watch"
       cta={t('reminder.cta')}
       onCta={() => router.replace('/paywall?gate=1&from=onboarding')}
     />

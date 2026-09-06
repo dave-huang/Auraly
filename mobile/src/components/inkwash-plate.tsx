@@ -44,7 +44,7 @@ import { useSurface } from '@/constants/design';
 //
 // HOW THE TWO NUMBERS WERE ARRIVED AT
 //
-// Not by eye, and not by one rule for all fourteen. Each file was measured on
+// Not by eye, and not by one rule for the whole set. Each file was measured on
 // two things: its MEAN alpha over the whole canvas, which is how heavy the
 // drawing feels, and the alpha of its darkest strokes, which is how black its
 // darkest line will go. Those pull in opposite directions. A drawing can be
@@ -57,7 +57,7 @@ import { useSurface } from '@/constants/design';
 //
 // The measured means run from 1.2% (the paper tag, which is mostly outline) to
 // 7.6% (the basket, a dense weave), six to one. That spread is why one number
-// could never have fitted all fourteen, and it is also why most of these land
+// could never have fitted the whole set, and it is also why most of these land
 // near the top of the range: these are pale wash drawings, and the first
 // version of this component was quietly holding them at a fifth of their
 // strength.
@@ -127,6 +127,23 @@ export const PLATES = {
   // and two doors with no artwork at all. Kept because the plate itself is
   // good and the next screen that needs one will want a portrait.
   vanillaPod: { source: require('@/assets/images/inkwash/vanilla-pod.png'), plate: 0.80, wash: 0.27 },
+  /**
+   * An open pocket watch, lid hinged back, chain trailing. The promise that
+   * something will speak up before the trial ends.
+   *
+   * The object was chosen for what it does rather than what it measures: this
+   * is not a clock face counting down, which is the anxiety the screen exists
+   * to remove. It is the instrument you carry so that you are told in time.
+   *
+   * ITS DIAL IS DELIBERATELY BLANK except for tick marks. Numerals are the
+   * `scanning` fault waiting to happen — a watch face is the most numeral-
+   * dense thing in the set, and a garbled dial is exactly the mistake a reader
+   * can catch us making. There is nothing on it to get wrong.
+   *
+   * The widest plate in the set at 1.89:1, and comfortably so: a landscape
+   * drawing is the shape of the band left under a two-line step.
+   */
+  watch: { source: require('@/assets/images/inkwash/watch.png'), plate: 0.88, wash: 0.32 },
   /** Blank tins. Every product on the shelf, before you know anything about it. */
   packets: { source: require('@/assets/images/inkwash/packets.png'), plate: 0.95, wash: 0.36 },
   /** An empty basket. Nothing scanned yet. */
