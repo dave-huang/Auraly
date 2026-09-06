@@ -9,7 +9,7 @@ import { ProviderButtons } from '@/components/sign-in-providers';
 import { ThemedText } from '@/components/themed-text';
 import { Space, Type, useSurface } from '@/constants/design';
 import { restoreAndGrant } from '@/lib/entitlement';
-import { isPlaceholderName, useTranslation } from '@/lib/i18n';
+import { useTranslation } from '@/lib/i18n';
 import { goHome } from '@/lib/navigation';
 import { ReceiptInUseError } from '@/lib/purchases';
 
@@ -20,12 +20,6 @@ import { ReceiptInUseError } from '@/lib/purchases';
  * without leaving the page, which is what somebody reinstalling actually wants.
  * What is left here are the two moments that deserve their own page because
  * they carry their own argument:
- *
- *   mode=save   reached from the first verdict, once a profile exists and they
- *               have seen it work. The honest framing is not "sign in to
- *               continue" but "keep this", and the profile name is passed so
- *               the sentence can name the person whose allergies are about to
- *               be preserved.
  *
  *   then=paywall  reached mid-purchase, because an anonymous purchase cannot
  *               be granted. The one case that is over in seconds: signing in
@@ -43,14 +37,16 @@ export default function SignInScreen() {
   const router = useRouter();
   const { t } = useTranslation();
   const surface = useSurface();
-  const params = useLocalSearchParams<{ mode?: string; name?: string; recover?: string; then?: string }>();
-  // Mid-purchase beats "save this": the paywall sends both, and someone who
-  // has just tapped Continue on a price is owed the sentence about the price.
+  const params = useLocalSearchParams<{ recover?: string; then?: string }>();
   const purchasing = params.then === 'paywall';
-  const saving = params.mode === 'save' && !purchasing;
-  // Whose profile this is, grammatically. See isPlaceholderName.
-  const named = !isPlaceholderName(params.name);
   const recovering = params.recover === '1';
+
+  // A THIRD VARIANT USED TO LIVE HERE, mode=save: "keep this", offered over a
+  // verdict or beside the add-a-profile row. Both of those sit behind the
+  // camera and the camera is behind an account, so it was written for a
+  // version of the app where you could scan without one and it rendered for
+  // nobody. Somebody anonymous still has a way to make an account: the drawer
+  // on Welcome, which is where "I already have one" was always going to look.
   /** The restore this screen runs for itself, once the account exists. */
   const [restoring, setRestoring] = useState(false);
 
@@ -167,17 +163,6 @@ export default function SignInScreen() {
               {t('signIn.buyBody')}
             </ThemedText>
           </>
-        ) : saving ? (
-          <>
-            <ThemedText style={[Type.title, styles.tagline, { color: surface.ink }]}>
-              {t('signIn.saveTitle')}
-            </ThemedText>
-            <ThemedText style={[Type.reason, styles.tagline, { color: surface.inkMuted }]}>
-              {named
-                ? t('signIn.saveBody', { name: params.name as string })
-                : t('signIn.saveBodyYours')}
-            </ThemedText>
-          </>
         ) : (
           <ThemedText style={[Type.reason, styles.tagline, { color: surface.inkMuted }]}>
             {t('signIn.tagline')}
@@ -200,11 +185,10 @@ export default function SignInScreen() {
           <>
             <ProviderButtons onSignedIn={done} />
 
-            {/* Only when this is an offer rather than a gate. Someone who came
-                here to get their account back has nothing to defer — but
-                somebody mid-purchase does, and this is their only way out:
-                the screen has no other back control. */}
-            {(saving || purchasing) && (
+            {/* Mid-purchase only, and it is their only way out: this screen
+                has no other back control. Somebody who came here to get their
+                account back has nothing to defer. */}
+            {purchasing && (
               <Pressable
                 style={styles.later}
                 onPress={() => router.back()}

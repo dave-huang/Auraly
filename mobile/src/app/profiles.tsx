@@ -16,7 +16,6 @@ import {
   useVerdictColors,
 } from '@/constants/design';
 import { goBackOrHome } from '@/lib/navigation';
-import { useAuth } from '@/lib/auth-context';
 import { useTranslation } from '@/lib/i18n';
 import { getActiveProfileId, listProfiles, setActiveProfileId } from '@/lib/profiles';
 import { getLastProfile, getLastResult, personalizeAnalysis, replaceLastVerdict } from '@/lib/scan';
@@ -40,7 +39,6 @@ import { localizeAllergen } from '@/lib/verdict';
 export default function ProfileSwitcherScreen() {
   const surface = useSurface();
   const verdict = useVerdictColors();
-  const { user } = useAuth();
   const router = useRouter();
   const { t } = useTranslation();
 
@@ -198,36 +196,21 @@ export default function ProfileSwitcherScreen() {
             );
           })}
 
-          {/* Adding a second profile needs an account.
-              Not a paywall move — there is physically nowhere to put it. Before
-              sign-in the app holds exactly ONE profile, in the keychain, and
-              sending an anonymous user to onboarding here would silently
-              overwrite the allergies they already entered. So this row offers
-              the thing that actually unblocks them. */}
+          {/* `mode=add` — the same questions without the first-run
+              introduction, and it ends back here rather than at the paywall.
+              Somebody who already pays for this, adding their second child,
+              must not be sold to again.
+
+              This row used to fork on whether there was an account, and offer
+              sign-in when there was not. Both doors into this screen are
+              behind the camera, and the camera is behind an account, so the
+              other half of that fork never ran. */}
           <Pressable
             style={[styles.addRow, { borderColor: surface.rule }]}
-            onPress={() =>
-              user
-                ? // `mode=add` — the same questions without the first-run
-                  // introduction, and it ends back here rather than at the
-                  // paywall. Somebody who already pays for this, adding their
-                  // second child, must not be sold to again.
-                  router.push('/onboarding?mode=add')
-                : router.push({
-                    pathname: '/sign-in',
-                    // Name the person whose profile is about to be preserved.
-                    // Without it the sign-in screen falls back to the "Me"
-                    // placeholder and offers to save "Me's profile" to someone
-                    // looking at a card that says Maya.
-                    params: {
-                      mode: 'save',
-                      name: profiles.find((p) => p.id === activeId)?.name ?? '',
-                    },
-                  })
-            }
+            onPress={() => router.push('/onboarding?mode=add')}
           >
             <ThemedText style={[Type.label, { color: surface.ink }]}>
-              {user ? t('profiles.add') : t('profiles.addNeedsAccount')}
+              {t('profiles.add')}
             </ThemedText>
           </Pressable>
         </ScrollView>

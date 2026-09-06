@@ -301,7 +301,6 @@ const en = {
   'profiles.title': 'Who is this for?',
   'profiles.subtitle': 'Switching re-checks this scan, so you don’t need to take it again.',
   'profiles.add': '＋ Add a profile',
-  'profiles.addNeedsAccount': 'Create an account to add more people',
   'profiles.switchFailed': 'Could not switch profile',
   'profiles.edit': 'Edit',
   'profiles.editLabel': 'Edit {name}',
@@ -586,15 +585,7 @@ const en = {
   // arriving on its own read as intended rather than as an ambush.
   'signIn.buyTitle': 'First, an account.',
   'signIn.buyBody': 'A subscription belongs to your account rather than to this phone, so there has to be one before anything is bought. Nothing has been charged yet — Apple’s payment sheet comes next.',
-  'signIn.saveTitle': 'Save your safety shield.',
-  // TWO SENTENCES, BECAUSE A POSSESSIVE CANNOT BE FAKED WITH A PLACEHOLDER.
-  // Skipping the name question stores the profile under 'Me', so the one
-  // string used to read "An account keeps Me’s profile". Whose profile it is
-  // is a grammatical fact, not a substitution: unnamed, it is yours.
-  'signIn.saveBody': 'An account keeps {name}’s profile and every scan you’ve run, on this phone and the next one.',
-  'signIn.saveBodyYours': 'An account keeps your profile and every scan you’ve run, on this phone and the next one.',
   'signIn.later': 'Not now',
-  'signIn.saveCta': 'Create account',
 
 } as const;
 
@@ -825,7 +816,6 @@ const zh: Record<TranslationKey, string> = {
   'profiles.title': '为谁检查？',
   'profiles.subtitle': '切换后这次扫描会重新判定，不用再拍一遍。',
   'profiles.add': '＋ 添加档案',
-  'profiles.addNeedsAccount': '创建账户以添加更多成员',
   'profiles.switchFailed': '无法切换档案',
   'profiles.edit': '编辑',
   'profiles.editLabel': '编辑{name}',
@@ -1077,11 +1067,7 @@ const zh: Record<TranslationKey, string> = {
   'signIn.restoring': '正在恢复你的订阅…',
   'signIn.buyTitle': '先创建账户。',
   'signIn.buyBody': '订阅属于你的账户，而不是这台手机，所以购买之前得先有一个。目前还没有扣款，接下来会出现 Apple 的付款界面。',
-  'signIn.saveTitle': '保存你的安全屏障。',
-  'signIn.saveBody': '账户会帮你存住 {name} 的档案和每一次扫描，这台手机和下一台都在。',
-  'signIn.saveBodyYours': '账户会帮你存住你的档案和每一次扫描，这台手机和下一台都在。',
   'signIn.later': '暂不',
-  'signIn.saveCta': '创建账户',
 
 };
 
@@ -1309,7 +1295,6 @@ const es: Record<TranslationKey, string> = {
   'profiles.title': '¿Para quién es?',
   'profiles.subtitle': 'Al cambiar se vuelve a evaluar este escaneo, así que no hace falta repetir la foto.',
   'profiles.add': '＋ Añadir perfil',
-  'profiles.addNeedsAccount': 'Crea una cuenta para añadir más personas',
   'profiles.switchFailed': 'No se pudo cambiar de perfil',
   'profiles.edit': 'Editar',
   'profiles.editLabel': 'Editar {name}',
@@ -1567,11 +1552,7 @@ const es: Record<TranslationKey, string> = {
   'signIn.restoring': 'Recuperando tu suscripción…',
   'signIn.buyTitle': 'Primero, una cuenta.',
   'signIn.buyBody': 'Una suscripción pertenece a tu cuenta y no a este teléfono, así que hace falta una antes de comprar nada. Todavía no se ha cobrado nada: el panel de pago de Apple viene después.',
-  'signIn.saveTitle': 'Guarda tu escudo de seguridad.',
-  'signIn.saveBody': 'Una cuenta conserva el perfil de {name} y todos tus escaneos, en este teléfono y en el siguiente.',
-  'signIn.saveBodyYours': 'Una cuenta conserva tu perfil y todos tus escaneos, en este teléfono y en el siguiente.',
   'signIn.later': 'Ahora no',
-  'signIn.saveCta': 'Crear cuenta',
 
 };
 
@@ -1590,28 +1571,6 @@ export function deviceLanguage(): Language {
     if (code && isSupported(code)) return code;
   }
   return 'en';
-}
-
-/**
- * Is this profile effectively unnamed?
- *
- * Skipping the name question does not leave the field empty — onboarding
- * stores the placeholder itself, so a profile nobody named is literally called
- * "Me". Any sentence that puts that name in a possessive then reads as
- * nonsense ("An account keeps Me’s profile"), and the fix has to happen at the
- * point the sentence is chosen, not inside the string.
- *
- * EVERY LANGUAGE, not just the current one. The placeholder is written in
- * whatever language the profile was built in, and the app's language can be
- * changed afterwards — so a profile created in English and read in Spanish
- * would otherwise slip through and be treated as a real name.
- */
-export function isPlaceholderName(name: string | null | undefined): boolean {
-  const trimmed = name?.trim();
-  if (!trimmed) return true;
-  return SUPPORTED_LANGUAGES.some(
-    (code) => CATALOGUES[code]['onboarding.namePlaceholder'] === trimmed,
-  );
 }
 
 export function translate(
