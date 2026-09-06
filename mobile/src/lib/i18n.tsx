@@ -562,7 +562,7 @@ const en = {
   // screen said it all again. The title carries "already"; this says what
   // to do and answers the only question anybody actually has, which is
   // whether they are about to pay twice.
-  'paywall.foundBody': 'Sign in and it comes with you. You won’t be charged again.',
+  'paywall.foundBody': 'Sign in and it comes back with you. You won’t be charged again.',
   'paywall.foundRetry': 'Try again',
   'paywall.restorePrompt': 'Already subscribed? Restore it',
   'paywall.foundStuckBody': 'This Apple ID is already subscribed, but we couldn’t attach it to your account just now. Please try again in a moment. You won’t be charged twice.',
