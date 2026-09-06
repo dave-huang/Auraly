@@ -1,6 +1,6 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
-import { ActivityIndicator, Alert, Pressable, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Alert, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { RevelyLockup } from '@/components/aperture-mark';
@@ -18,27 +18,29 @@ import { ReceiptInUseError } from '@/lib/purchases';
  *
  * The common case is no longer this screen. Welcome offers sign-in in a sheet
  * without leaving the page, which is what somebody reinstalling actually wants.
- * What is left here are the two moments that deserve their own page because
- * they carry their own argument:
+ * What is left are the two arrivals that are nobody's choice:
  *
- *   then=paywall  reached mid-purchase, because an anonymous purchase cannot
- *               be granted. The one case that is over in seconds: signing in
- *               returns to the paywall, which picks the purchase back up on
- *               its own, so this screen exists to say WHY it interrupted and
- *               that nothing has been charged.
+ *   no params   a claimed device that has been signed out, sent here by the
+ *               viewfinder when the server refuses a scan. The person has an
+ *               account and simply has to be back in it.
  *
  *   recover=1   sent from the subscription screen, by someone whose Apple ID
  *               already holds a subscription. They did not come to make an
  *               account; they came to get back something they already pay for.
  *               So this screen FINISHES that job rather than handing them
  *               back — see finishRecovery.
+ *
+ * A THIRD VARIANT USED TO LIVE HERE, then=paywall: reached mid-purchase,
+ * because an anonymous purchase cannot be granted. The paywall now opens the
+ * same drawer Welcome does rather than sending anybody here, so buying no
+ * longer costs a page transition and this screen no longer has to explain an
+ * interruption it does not cause.
  */
 export default function SignInScreen() {
   const router = useRouter();
   const { t } = useTranslation();
   const surface = useSurface();
-  const params = useLocalSearchParams<{ recover?: string; then?: string }>();
-  const purchasing = params.then === 'paywall';
+  const params = useLocalSearchParams<{ recover?: string }>();
   const recovering = params.recover === '1';
 
   // A THIRD VARIANT USED TO LIVE HERE, mode=save: "keep this", offered over a
@@ -70,25 +72,9 @@ export default function SignInScreen() {
     // one tap or two was needed came down to a webhook race nobody can see.
     if (recovering) return void finishRecovery();
 
-    // Otherwise: sent here mid-purchase by the paywall, because an anonymous
-    // purchase cannot be granted. Going to '/' would bounce off the
-    // viewfinder's gate and land back on the paywall anyway, but by way of a
-    // screen that exists to turn people around, which flickers.
-    //
-    // BACK TO THE PAYWALL THAT SENT THEM, not a fresh one.
-    //
-    // This used to replace with '/paywall?gate=1', and the paywall it replaced
-    // was the sign-in screen — which the FIRST paywall had pushed. So choosing
-    // a plan, tapping Continue and signing in produced a second subscription
-    // screen stacked on the first, visibly so, and it was the second one that
-    // took the money. Going back returns to the live screen instead, with the
-    // plan they picked still selected. The fallback only matters if this was
-    // somehow reached cold, where there is nothing behind us to go back to.
-    if (params.then === 'paywall') {
-      if (router.canGoBack()) return router.back();
-      return router.replace('/paywall?gate=1');
-    }
-
+    // Otherwise they were signed out and are now signed back in, so the answer
+    // is the camera. goHome rather than a back(): the screen behind this one is
+    // the viewfinder that refused the scan that sent them here.
     goHome();
   }
 
@@ -154,12 +140,6 @@ export default function SignInScreen() {
               {t('signIn.recoverBody')}
             </ThemedText>
           </>
-        ) : purchasing ? (
-          /* The ask on its own. Everything that used to sit under it was
-             explanation, and this is the last screen before somebody pays. */
-          <ThemedText style={[Type.title, styles.tagline, { color: surface.ink }]}>
-            {t('signIn.buyTitle')}
-          </ThemedText>
         ) : (
           <ThemedText style={[Type.reason, styles.tagline, { color: surface.inkMuted }]}>
             {t('signIn.tagline')}
@@ -179,24 +159,10 @@ export default function SignInScreen() {
             </ThemedText>
           </View>
         ) : (
-          <>
-            <ProviderButtons onSignedIn={done} />
-
-            {/* Mid-purchase only, and it is their only way out: this screen
-                has no other back control. Somebody who came here to get their
-                account back has nothing to defer. */}
-            {purchasing && (
-              <Pressable
-                style={styles.later}
-                onPress={() => router.back()}
-                accessibilityRole="button"
-              >
-                <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>
-                  {t('signIn.later')}
-                </ThemedText>
-              </Pressable>
-            )}
-          </>
+          /* No "Not now" and no back control. Both arrivals here are somebody
+             being let back into an account they already have, and there is
+             nothing to defer. */
+          <ProviderButtons onSignedIn={done} />
         )}
       </View>
     </SafeAreaView>
@@ -209,6 +175,5 @@ const styles = StyleSheet.create({
   hero: { flex: 1, justifyContent: 'center', alignItems: 'center', gap: 12 },
   tagline: { textAlign: 'center', maxWidth: 300 },
   actions: { gap: 12, paddingBottom: 24, minHeight: 140, justifyContent: 'flex-end' },
-  later: { alignItems: 'center', paddingVertical: 12, opacity: 0.6 },
   working: { minHeight: 116, alignItems: 'center', justifyContent: 'center', gap: Space.md },
 });
