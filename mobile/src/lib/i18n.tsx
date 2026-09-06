@@ -575,16 +575,17 @@ const en = {
   // back through our server — and a screen with nothing on it but two sign-in
   // buttons that have just vanished is how somebody taps something twice.
   'signIn.restoring': 'Bringing your subscription back…',
-  // MID-PURCHASE, and its own pair of sentences rather than a reuse of the
-  // save copy below. That copy is written for the moment after a verdict,
-  // where "keep this" is the true sentence. Somebody who has just tapped
-  // Continue on a yearly price is not asking about saving a profile; they are
-  // asking why they are not looking at a payment sheet. So this says why an
-  // account has to exist first, that nothing has been charged, and what
-  // happens next — which is the sentence that makes the payment sheet
-  // arriving on its own read as intended rather than as an ambush.
-  'signIn.buyTitle': 'First, an account.',
-  'signIn.buyBody': 'A subscription belongs to your account rather than to this phone, so there has to be one before anything is bought. Nothing has been charged yet — Apple’s payment sheet comes next.',
+  // MID-PURCHASE, AND THE LAST STEP BEFORE SOMEBODY PAYS, so it says as
+  // little as it can get away with. The first version of these two lines
+  // explained where a subscription lives and what Apple would do next, which
+  // is all true and all our plumbing; on the screen standing between a person
+  // and the thing they just chose to buy, an explanation is a reason to stop.
+  //
+  // What is left is the ask and one clause of reassurance. Nothing about a
+  // payment sheet, because the sheet introduces itself half a second later
+  // and does it better than a sentence could.
+  'signIn.buyTitle': 'Let’s create your account.',
+  'signIn.buyBody': 'Nothing’s charged yet.',
   'signIn.later': 'Not now',
 
 } as const;
@@ -1065,8 +1066,8 @@ const zh: Record<TranslationKey, string> = {
   'signIn.recoverTitle': '欢迎回来',
   'signIn.recoverBody': '你的订阅属于你的账户，而不是这台手机。登录后即可恢复。',
   'signIn.restoring': '正在恢复你的订阅…',
-  'signIn.buyTitle': '先创建账户。',
-  'signIn.buyBody': '订阅属于你的账户，而不是这台手机，所以购买之前得先有一个。目前还没有扣款，接下来会出现 Apple 的付款界面。',
+  'signIn.buyTitle': '先创建你的账户吧。',
+  'signIn.buyBody': '还没有扣款。',
   'signIn.later': '暂不',
 
 };
@@ -1550,8 +1551,8 @@ const es: Record<TranslationKey, string> = {
   'signIn.recoverTitle': 'Bienvenido de nuevo',
   'signIn.recoverBody': 'Tu suscripción pertenece a tu cuenta y no a este teléfono. Inicia sesión y vuelve contigo.',
   'signIn.restoring': 'Recuperando tu suscripción…',
-  'signIn.buyTitle': 'Primero, una cuenta.',
-  'signIn.buyBody': 'Una suscripción pertenece a tu cuenta y no a este teléfono, así que hace falta una antes de comprar nada. Todavía no se ha cobrado nada: el panel de pago de Apple viene después.',
+  'signIn.buyTitle': 'Vamos a crear tu cuenta.',
+  'signIn.buyBody': 'Todavía no se ha cobrado nada.',
   'signIn.later': 'Ahora no',
 
 };
