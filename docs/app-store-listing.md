@@ -85,7 +85,7 @@ That's your shield. Every label you scan gets checked against it, and we flag wh
 
 YOU DON'T NEED AN ALLERGY TO WANT ONE
 
-Many of the words on an ingredient list aren't ones most people would recognise. Some of them are ingredients the FDA, EFSA, IARC or the WHO have taken a position on, and there's no way to tell which while you're standing in an aisle holding the packet. We'll tell you, before it goes in the basket.
+Many of the words on an ingredient list aren't ones most people would recognize. Some of them are ingredients the FDA, EFSA, IARC or the WHO have taken a position on, and there's no way to tell which while you're standing in an aisle holding the package. We'll tell you, before it goes in the cart.
 
 WE SHOW YOU WHO SAYS SO
 
@@ -97,7 +97,7 @@ Most people set Revely up for themselves. Your allergies and how strict to be ab
 
 AND ANYONE ELSE YOU SHOP FOR
 
-Shopping for a child, a partner, a parent you cook for? Give them a profile of their own. Switch between profiles and the scan already on screen is re-checked straight away, so you don't have to take the photo again.
+Shopping for a child, a partner, a parent you cook for? Give them a profile of their own. Switch between profiles and the scan already on screen is rechecked right away, so you don't have to take the photo again.
 
 WHAT YOU GET
 

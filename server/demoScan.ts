@@ -188,7 +188,7 @@ const ROWS: DemoRow[] = [
         name: 'Dried Cranberries',
         summary: 'Dried fruit, almost always sweetened.',
         details:
-          'Cranberries are too sour to dry unsweetened, so they are steeped in sugar or apple juice first. Dried fruit is also the usual reason a sulphite preservative appears further down a list.',
+          'Cranberries are too sour to dry unsweetened, so they are steeped in sugar or apple juice first. Dried fruit is also the usual reason a sulfite preservative appears further down a list.',
       },
       zh: {
         name: '蔓越莓干',
@@ -205,14 +205,14 @@ const ROWS: DemoRow[] = [
     },
   },
   {
-    canonical: 'Sulphur Dioxide',
+    canonical: 'Sulfur Dioxide',
     original: 'Dióxido de Azufre (E220)',
     riskLevel: 'moderate',
     category: 'preservative',
     copy: {
       en: {
-        name: 'Sulphur Dioxide (E220)',
-        summary: 'A sulphite preservative that can set off asthma.',
+        name: 'Sulfur Dioxide (E220)',
+        summary: 'A sulfite preservative that can set off asthma.',
         details:
           'Used to stop dried fruit browning. The EU and UK require it to be declared above 10 mg/kg specifically because a minority of people with asthma react to it, sometimes severely. It is one of the fourteen allergens named in EU law.',
       },
@@ -266,7 +266,7 @@ const ROWS: DemoRow[] = [
         name: 'Sesame Seeds',
         summary: 'A major allergen, required on US labels only since 2023.',
         details:
-          'The FASTER Act made sesame the ninth allergen US labels must declare, effective January 2023. Before that it could legally hide inside "spices" or "natural flavour", which is exactly how people were caught out.',
+          'The FASTER Act made sesame the ninth allergen US labels must declare, effective January 2023. Before that it could legally hide inside "spices" or "natural flavor", which is exactly how people were caught out.',
       },
       zh: {
         name: '芝麻',
@@ -368,7 +368,7 @@ const ROWS: DemoRow[] = [
     copy: {
       en: {
         name: 'Carmine (E120)',
-        summary: 'A red colour made from insects.',
+        summary: 'A red color made from insects.',
         details:
           'Also printed as cochineal or carminic acid. It is produced from the dried bodies of the cochineal scale insect, around 70,000 of them per kilogram. Not vegan or vegetarian, and a rare allergen in its own right.',
       },
@@ -396,7 +396,7 @@ const PRODUCT_NAME: Record<DemoLanguage, string> = {
 
 /** What the packet itself declares, in the two lines EU labels print. */
 const DECLARED = {
-  contains: ['milk', 'almonds', 'soy', 'sesame', 'wheat', 'sulphur dioxide'],
+  contains: ['milk', 'almonds', 'soy', 'sesame', 'wheat', 'sulfur dioxide'],
   // Kept because it is true of this kind of product, and because a profile
   // this list does not touch still deserves an honest hedge rather than a
   // clean verdict the label does not support.
