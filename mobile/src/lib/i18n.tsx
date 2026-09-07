@@ -526,8 +526,17 @@ const en = {
   'welcome.haveAccount': 'Already have an account?',
   'welcome.signIn': 'Sign in',
   'paywall.includeUnlimited': 'Unlimited scans',
-  'paywall.includeProfiles': 'A profile for everyone in the house',
-  'paywall.includeCitations': 'The source behind every verdict',
+  // "Everyone in the house" put the household first, on a screen read mostly
+  // by somebody buying this for themselves. Onboarding already knows better:
+  // its first option is "Myself", hinted "The usual reason people are here."
+  'paywall.includeProfiles': 'A profile for you, and anyone you shop for',
+  // NOT "the source behind every verdict". Not every verdict has one. An
+  // ingredient with no published finding is answered without a citation, and
+  // the ingredient screen shows a review status on each source precisely so
+  // an AI-seeded entry cannot borrow the authority of a reviewed one. A bullet
+  // sold immediately before payment must not promise what that screen refuses
+  // to imply.
+  'paywall.includeCitations': 'Sources you can read yourself',
   'paywall.includeHistory': 'Your full scan history',
   'paywall.annual': 'Annual',
   'paywall.annualDetail': '{price} a year · {perMonth} a month',
@@ -1013,8 +1022,8 @@ const zh: Record<TranslationKey, string> = {
   'welcome.haveAccount': '已有账户？',
   'welcome.signIn': '登录',
   'paywall.includeUnlimited': '无限次扫描',
-  'paywall.includeProfiles': '为家中每位成员建立档案',
-  'paywall.includeCitations': '每条结论背后的依据来源',
+  'paywall.includeProfiles': '为你，以及你照顾的每个人，各建一份档案',
+  'paywall.includeCitations': '你可以自己查阅的资料来源',
   'paywall.includeHistory': '完整的扫描记录',
   'paywall.annual': '年付',
   'paywall.annualDetail': '{price} / 年 · 相当于 {perMonth} / 月',
@@ -1492,8 +1501,8 @@ const es: Record<TranslationKey, string> = {
   'welcome.haveAccount': '¿Ya tienes cuenta?',
   'welcome.signIn': 'Iniciar sesión',
   'paywall.includeUnlimited': 'Escaneos ilimitados',
-  'paywall.includeProfiles': 'Un perfil para cada persona de la casa',
-  'paywall.includeCitations': 'La fuente detrás de cada veredicto',
+  'paywall.includeProfiles': 'Un perfil para ti y para quien tú compres',
+  'paywall.includeCitations': 'Fuentes que puedes consultar',
   'paywall.includeHistory': 'Tu historial completo de escaneos',
   'paywall.annual': 'Anual',
   'paywall.annualDetail': '{price} al año · {perMonth} al mes',
