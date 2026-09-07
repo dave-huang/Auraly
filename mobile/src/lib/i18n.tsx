@@ -226,8 +226,14 @@ const en = {
   'teach.aliasLabel': 'Sugar, palm oil, *sodium caseinate*, glucose syrup, soy lecithin, *whey powder*, salt, natural flavoring.',
   'teach.aliasVerdict': 'Both of those are milk.',
   'teach.aliasWords': 'We know ten more words for it: whey, casein, lactose, butter, cream, cheese, yogurt, ghee, dairy, curd.',
-  'teach.sourceTitle': 'Every verdict names the agency behind it.',
-  'teach.sourceBody': 'No invented scores. We quote the agency that made the ruling, and link the document.',
+  // NOT "every verdict names the agency". Not every verdict has one: an
+  // ingredient with no published finding is answered without a citation, and
+  // the ingredient screen marks the review status on each source it does have
+  // so an AI-seeded entry cannot borrow a reviewed one's authority. This is
+  // the third place that promise was made and the last one left; the paywall
+  // bullet and the App Store description were corrected first.
+  'teach.sourceTitle': 'When an agency has ruled, we quote it.',
+  'teach.sourceBody': 'No invented scores. You get the ruling itself, and a link to the document.',
   'teach.sourceFda': 'U.S. Food and Drug Administration (FDA)',
   'teach.sourceFdaWhat': 'Additive limits, recalls, and what may be sold in the United States at all.',
   'teach.sourceEfsa': 'European Food Safety Authority (EFSA)',
@@ -756,8 +762,8 @@ const zh: Record<TranslationKey, string> = {
   'teach.aliasLabel': '白砂糖、棕榈油、*酪蛋白酸钠*、葡萄糖浆、大豆卵磷脂、*乳清粉*、食盐、食用香精。',
   'teach.aliasVerdict': '这两样都是奶。',
   'teach.aliasWords': '我们还认得另外十种说法：乳清、酪蛋白、乳糖、黄油、奶油、奶酪、酸奶、酥油、乳制品、凝乳。',
-  'teach.sourceTitle': '每一条结论都写明出自哪个机构。',
-  'teach.sourceBody': '不自编评分。我们引用作出裁定的机构，并附上原始文件。',
+  'teach.sourceTitle': '有机构裁定时，我们直接引用。',
+  'teach.sourceBody': '不自编评分。你看到的是裁定原文，并附上原始文件链接。',
   'teach.sourceFda': '美国食品药品监督管理局（FDA）',
   'teach.sourceFdaWhat': '添加剂限量、召回，以及在美国什么才允许上市销售。',
   'teach.sourceEfsa': '欧洲食品安全局（EFSA）',
@@ -1229,8 +1235,8 @@ const es: Record<TranslationKey, string> = {
   'teach.aliasLabel': 'Azúcar, aceite de palma, *caseinato de sodio*, jarabe de glucosa, lecitina de soja, *suero de leche en polvo*, sal, aroma natural.',
   'teach.aliasVerdict': 'Las dos cosas son leche.',
   'teach.aliasWords': 'Conocemos otras diez palabras para lo mismo: suero, caseína, lactosa, mantequilla, nata, queso, yogur, ghee, lácteos, cuajada.',
-  'teach.sourceTitle': 'Cada veredicto nombra al organismo que lo respalda.',
-  'teach.sourceBody': 'Sin notas inventadas. Citamos al organismo que dictó la norma y enlazamos el documento.',
+  'teach.sourceTitle': 'Cuando un organismo se pronuncia, lo citamos.',
+  'teach.sourceBody': 'Sin notas inventadas. Lees la norma tal cual, con enlace al documento.',
   'teach.sourceFda': 'Administración de Alimentos y Medicamentos de EE. UU. (FDA)',
   'teach.sourceFdaWhat': 'Límites de aditivos, retiradas y qué puede venderse en Estados Unidos.',
   'teach.sourceEfsa': 'Autoridad Europea de Seguridad Alimentaria (EFSA)',
