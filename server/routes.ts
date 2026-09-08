@@ -7,6 +7,7 @@ import { eq, sql, gte, and, count, desc, inArray } from "drizzle-orm";
 import { setupAuth, isAuthenticated } from "./localAuth";
 import { setupRevenueCatWebhook } from "./revenueCatWebhook";
 import { registerLegalRoutes } from "./legal";
+import { registerHomeRoutes } from "./home";
 import { fetchSubscriber, RevenueCatNotConfigured } from "./services/revenueCatApi";
 import { resolveFromSubscriber } from "./services/revenueCatState";
 import { ENTITLEMENT_ID } from "@shared/products";
@@ -57,7 +58,6 @@ import { getSubstanceRegistry } from "./services/substances/identity";
 import { getEvidenceStore } from "./services/substances/evidence";
 import { applyPolicy, POLICY_VERSION } from "./services/substances/policy";
 import { ALLERGEN_KEYWORDS, type MajorAllergen } from "./services/allergenMatcher";
-import { getUncachableStripeClient } from "./stripeClient";
 
 // In-memory store for analysis requests (for background processing)
 interface AnalysisRequest {
@@ -177,6 +177,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // the URLs an App Store submission is rejected for missing, and because the
   // paywall links to them (Guideline 3.1.2). See server/legal.ts.
   registerLegalRoutes(app);
+
+  // The marketing page at "/", and the images and fonts it loads from /media.
+  // Same ordering rule as the legal pages: everything here has to be claimed
+  // before serveStatic()'s catch-all. See server/home.ts.
+  registerHomeRoutes(app);
 
   // Liveness. This is what the platform health check hits, and it answers 200
   // whenever the process can serve HTTP at all.
@@ -1387,93 +1392,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // ==========================================
-  // FEEDBACK ENDPOINT (using Replit Resend integration)
+  // SCAN QUOTA
   // ==========================================
-  
-  const feedbackSchema = z.object({
-    type: z.enum(['bug', 'improvement', 'positive']),
-    email: z.string().email().optional(),
-    message: z.string().min(1).max(5000)
-  });
+  //
+  // Two things used to live here and no longer do.
+  //
+  // The FEEDBACK endpoint mailed a fixed inbox through Resend. No screen in the
+  // iOS app ever called it; its only client was the retired web build under
+  // client/. STRIPE billing (a publishable key, a checkout, an admin customer
+  // sweep) was the same story, and production has held no Stripe key since the
+  // move off Replit, so it failed closed on every path. Both meant naming a
+  // processor in the privacy policy for something nobody could reach.
 
-  // Deliberately open to signed-out callers — someone who cannot sign in is
-  // exactly the person with a bug to report. But it sends mail through our
-  // Resend account to a fixed inbox, so unmetered it is a way to flood that
-  // inbox and get the sending domain marked as a spam source.
-  app.post("/api/feedback", rateLimit({ windowMs: 60 * 60 * 1000, max: 5, name: "feedback" }), async (req: any, res) => {
-    try {
-      const { type, email, message } = feedbackSchema.parse(req.body);
-      const userId = req.user?.claims?.sub || 'Anonymous';
-      const userEmail = req.user?.claims?.email || 'Anonymous';
-      
-      // Import and use Replit Resend integration
-      const { getResendClient } = await import('./services/resend');
-      const { client, fromEmail } = await getResendClient();
-      
-      const YOUR_EMAIL = process.env.FEEDBACK_EMAIL || 'davehuang01@gmail.com';
-      
-      const typeLabels: Record<string, string> = {
-        bug: 'Bug Report',
-        improvement: 'Improvement Suggestion',
-        positive: 'Positive Feedback'
-      };
-      
-      const emailContent = `
-New ${typeLabels[type]} from Revely
-
-User ID: ${userId}
-User Email: ${userEmail}
-Feedback Type: ${typeLabels[type]}
-Contact Email: ${email || 'Not provided'}
-
-Message:
-${message}
-
----
-Sent from Revely Feedback System
-      `.trim();
-      
-      console.log(`[FEEDBACK] Attempting to send email from: ${fromEmail} to: ${YOUR_EMAIL}`);
-      
-      const result = await client.emails.send({
-        from: fromEmail || 'Revely Feedback <onboarding@resend.dev>',
-        to: YOUR_EMAIL,
-        replyTo: email || undefined,
-        subject: `[Revely] ${typeLabels[type]} from ${userEmail}`,
-        text: emailContent
-      });
-      
-      console.log('[FEEDBACK] Resend response:', JSON.stringify(result, null, 2));
-      
-      if (result.error) {
-        console.error('[FEEDBACK] Resend API error:', result.error);
-        return res.status(500).json({ error: 'Failed to send feedback' });
-      }
-      
-      console.log(`[FEEDBACK] Sent ${type} feedback from user ${userId}, email id: ${result.data?.id}`);
-      res.json({ success: true });
-    } catch (error: any) {
-      console.error('[FEEDBACK] Error:', error);
-      res.status(500).json({ error: error.message || 'Failed to send feedback' });
-    }
-  });
-
-  // ==========================================
-  // SCAN PURCHASE & BILLING ENDPOINTS
-  // ==========================================
-
-  app.get('/api/stripe/publishable-key', async (_req, res) => {
-    try {
-      const publishableKey = process.env.STRIPE_LIVE_PUBLISHABLE_KEY || process.env.STRIPE_PUBLISHABLE_KEY;
-      if (!publishableKey) {
-        return res.status(500).json({ error: 'Stripe publishable key not configured' });
-      }
-      res.json({ publishableKey });
-    } catch (error: any) {
-      console.error('Error getting publishable key:', error);
-      res.status(500).json({ error: 'Failed to get Stripe key' });
-    }
-  });
 
   app.get('/api/scan/quota', isAuthenticated, async (req: any, res) => {
     try {
@@ -1486,108 +1416,6 @@ Sent from Revely Feedback System
     }
   });
 
-  app.post('/api/scan/purchase', isAuthenticated, async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-
-      const stripe = await getUncachableStripeClient();
-      const user = await storage.getUser(userId);
-      if (!user) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-
-      let customerId: string | null = null;
-      let needsMetadataUpdate = false;
-      
-      const existingByUserId = await stripe.customers.search({
-        query: `metadata['userId']:'${userId}'`,
-        limit: 10,
-      });
-      
-      for (const customer of existingByUserId.data) {
-        if (!customer.deleted) {
-          customerId = customer.id;
-          console.log(`[CHECKOUT] Found existing Stripe customer ${customerId} for user ${userId} (by userId metadata)`);
-          break;
-        }
-      }
-      
-      if (!customerId && user.email) {
-        const existingByEmail = await stripe.customers.search({
-          query: `email:'${user.email}'`,
-          limit: 10,
-        });
-        
-        for (const customer of existingByEmail.data) {
-          if (!customer.deleted) {
-            customerId = customer.id;
-            needsMetadataUpdate = true;
-            console.log(`[CHECKOUT] Found existing Stripe customer ${customerId} for user ${userId} (by email fallback)`);
-            break;
-          }
-        }
-        
-        if (customerId && needsMetadataUpdate) {
-          await stripe.customers.update(customerId, {
-            metadata: { userId },
-          });
-          console.log(`[CHECKOUT] Updated customer ${customerId} with userId metadata`);
-        }
-      }
-      
-      if (!customerId) {
-        const customer = await stripe.customers.create(
-          {
-            email: user.email || undefined,
-            metadata: { userId },
-          },
-          {
-            idempotencyKey: `customer-create-${userId}`,
-          }
-        );
-        customerId = customer.id;
-        console.log(`[CHECKOUT] Created new Stripe customer ${customerId} for user ${userId}`);
-      }
-      
-      if (user.stripeCustomerId !== customerId) {
-        await db.update(users)
-          .set({ stripeCustomerId: customerId, updatedAt: new Date() })
-          .where(eq(users.id, userId));
-      }
-
-      const successUrl = `${req.protocol}://${req.get('host')}/upload?payment=success`;
-      const cancelUrl = `${req.protocol}://${req.get('host')}/upload`;
-
-      const session = await stripe.checkout.sessions.create({
-        customer: customerId,
-        payment_method_types: ['card'],
-        line_items: [{
-          price_data: {
-            unit_amount: 299,
-            currency: 'usd',
-            product_data: {
-              name: '10 Scan Bundle',
-            },
-          },
-          quantity: 1,
-        }],
-        mode: 'payment',
-        success_url: successUrl,
-        cancel_url: cancelUrl,
-        metadata: {
-          userId,
-          scansToAdd: '10',
-        },
-      });
-
-      await subscriptionService.logPurchaseClick(userId, 'scan_bundle_10');
-
-      res.json({ url: session.url });
-    } catch (error: any) {
-      console.error('Error creating checkout session:', error);
-      res.status(500).json({ error: 'Failed to create checkout session' });
-    }
-  });
 
   // Open so the paywall can be measured before sign-in. Each call writes a
   // row, so without a limit an anonymous caller can grow the table for free.
@@ -1971,56 +1799,6 @@ Sent from Revely Feedback System
     } catch (error: any) {
       console.error('Clear cache error:', error);
       res.status(500).json({ error: 'Failed to clear cache' });
-    }
-  });
-
-  // Admin endpoint to clean up stale Stripe customers that no longer exist in Stripe
-  app.post('/api/admin/cleanup-stripe-customers', isAuthenticated, isAdmin, async (req: any, res) => {
-    try {
-      const stripe = await getUncachableStripeClient();
-      
-      // Get all customers from our stripe.customers table
-      const localCustomers = await db.execute(sql`SELECT id, email, metadata FROM stripe.customers`);
-      
-      const results: { id: string; status: string; email?: string }[] = [];
-      const staleCustomerIds: string[] = [];
-      
-      for (const customer of localCustomers.rows as any[]) {
-        try {
-          const stripeCustomer = await stripe.customers.retrieve(customer.id);
-          if ((stripeCustomer as any).deleted) {
-            results.push({ id: customer.id, status: 'deleted_in_stripe', email: customer.email });
-            staleCustomerIds.push(customer.id);
-          } else {
-            results.push({ id: customer.id, status: 'active', email: customer.email });
-          }
-        } catch (err: any) {
-          if (err.code === 'resource_missing') {
-            results.push({ id: customer.id, status: 'not_found_in_stripe', email: customer.email });
-            staleCustomerIds.push(customer.id);
-          } else {
-            results.push({ id: customer.id, status: `error: ${err.message}`, email: customer.email });
-          }
-        }
-      }
-      
-      // Clear stale customer IDs from users table
-      if (staleCustomerIds.length > 0) {
-        await db.update(users)
-          .set({ stripeCustomerId: null, updatedAt: new Date() })
-          .where(inArray(users.stripeCustomerId, staleCustomerIds));
-      }
-      
-      console.log(`[ADMIN] Stripe customer cleanup by ${req.user.claims.sub}:`, results);
-      res.json({ 
-        success: true, 
-        results,
-        staleCustomersCleared: staleCustomerIds.length,
-        message: `Found ${staleCustomerIds.length} stale customers. Cleared from users table. Note: stripe.customers table is read-only and managed by stripe-replit-sync.`
-      });
-    } catch (error: any) {
-      console.error('Stripe customer cleanup error:', error);
-      res.status(500).json({ error: 'Failed to cleanup Stripe customers: ' + error.message });
     }
   });
 

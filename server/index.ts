@@ -7,9 +7,6 @@ import express, { type Request, Response, NextFunction } from "express";
 import cors from "cors";
 import { registerRoutes } from "./routes";
 import { serveStatic, log } from "./static";
-import { runMigrations } from 'stripe-replit-sync';
-import { getStripeSync, isStripeConfigured } from './stripeClient';
-import { WebhookHandlers } from './webhookHandlers';
 
 // Global error handlers to prevent server crashes
 process.on('uncaughtException', (error) => {
@@ -74,96 +71,15 @@ app.use(
   })
 );
 
-async function initStripe() {
-  const databaseUrl = process.env.DATABASE_URL;
-
-  if (!databaseUrl) {
-    console.log('DATABASE_URL not found, skipping Stripe initialization');
-    return;
-  }
-
-  if (!isStripeConfigured()) {
-    console.log('STRIPE_SECRET_KEY not set, skipping Stripe initialization (billing disabled)');
-    return;
-  }
-
-  try {
-    console.log('Initializing Stripe schema...');
-    await runMigrations({ 
-      databaseUrl
-    });
-    console.log('Stripe schema ready');
-
-    const stripeSync = await getStripeSync();
-
-    // Public base URL for Stripe webhooks. Set PUBLIC_BASE_URL when deployed
-    // (e.g. https://api.revely.app); unset locally, webhook setup is skipped
-    // (use `stripe listen --forward-to localhost:5000/api/stripe/webhook` instead).
-    const publicBaseUrl =
-      process.env.PUBLIC_BASE_URL ||
-      (process.env.REPLIT_DOMAINS ? `https://${process.env.REPLIT_DOMAINS.split(',')[0]}` : undefined);
-    if (!publicBaseUrl) {
-      console.log('PUBLIC_BASE_URL not set, skipping webhook configuration');
-    } else {
-      try {
-        console.log('Setting up managed webhook...');
-        const webhookBaseUrl = publicBaseUrl;
-        const { webhook, uuid } = await stripeSync.findOrCreateManagedWebhook(
-          `${webhookBaseUrl}/api/stripe/webhook`,
-          {
-            enabled_events: ['*'],
-            description: 'Revely managed webhook for Stripe sync',
-          }
-        );
-        console.log(`Webhook configured: ${webhook.url} (UUID: ${uuid})`);
-      } catch (webhookError) {
-        console.error('Failed to configure webhook (non-fatal):', webhookError);
-      }
-    }
-
-    console.log('Syncing Stripe data...');
-    stripeSync.syncBackfill()
-      .then(() => {
-        console.log('Stripe data synced');
-      })
-      .catch((err: any) => {
-        console.error('Error syncing Stripe data:', err);
-      });
-  } catch (error) {
-    console.error('Failed to initialize Stripe:', error);
-  }
-}
-
-initStripe();
-
-app.post(
-  '/api/stripe/webhook/:uuid',
-  express.raw({ type: 'application/json' }),
-  async (req, res) => {
-    const signature = req.headers['stripe-signature'];
-
-    if (!signature) {
-      return res.status(400).json({ error: 'Missing stripe-signature' });
-    }
-
-    try {
-      const sig = Array.isArray(signature) ? signature[0] : signature;
-
-      if (!Buffer.isBuffer(req.body)) {
-        console.error('STRIPE WEBHOOK ERROR: req.body is not a Buffer.');
-        return res.status(500).json({ error: 'Webhook processing error' });
-      }
-
-      const { uuid } = req.params;
-      await WebhookHandlers.processWebhook(req.body as Buffer, sig, uuid);
-
-      res.status(200).json({ received: true });
-    } catch (error: any) {
-      console.error('Webhook error:', error.message);
-      res.status(400).json({ error: 'Webhook processing error' });
-    }
-  }
-);
+// Stripe is gone. It was the Replit-era web app's billing: a schema migration
+// at boot, a signed webhook endpoint, and a checkout flow. The iOS app bills
+// through Apple and RevenueCat and never called any of it, and production has
+// carried no Stripe key since the move off Replit, so every path through it
+// failed closed. Dead code that accepts a signed webhook and creates customer
+// records is worse than dead code: it is an undisclosed processor one
+// environment variable away from being live. The stripe_customer_id column
+// and the purchases table are LEFT ALONE deliberately; dropping columns is a
+// migration, and this was a deletion.
 
 // Increase body size limit to handle base64-encoded images (up to 50MB)
 app.use(express.json({

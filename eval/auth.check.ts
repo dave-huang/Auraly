@@ -55,16 +55,13 @@ const INTENTIONALLY_PUBLIC: Record<string, string> = {
   'GET /api/login': 'guarded separately — must be dead in production',
   'GET /api/callback': 'redirect stub for stored OIDC URLs; reads nothing',
   'GET /api/logout': 'destroys the caller\'s own session',
-  'POST /api/feedback': 'someone who cannot sign in is who most needs to report a bug',
-  'GET /api/stripe/publishable-key': 'publishable by definition',
   'POST /api/analytics/purchase-prompt-view': 'paywall views are counted before sign-in',
   'POST /api/crash': 'a release that dies at startup files nothing if a token is required — which is exactly the release you need to hear about; rate-limited and size-capped instead',
-  'POST /api/stripe/webhook/:uuid': 'called by Stripe; authenticated by signature, not session',
   'POST /api/webhooks/revenuecat': 'called by RevenueCat, which holds no user session; authenticated by a constant-time shared-secret check on the Authorization header, and refuses everything when REVENUECAT_WEBHOOK_SECRET is unset',
   'POST /api/scan-and-analyze': 'scanning works before sign-in so the app can prove itself, and so a reviewer can use it without an account — see server/anonymousAccess.ts. Guarded instead by allowAnonymousScan + requireScanQuota: a device with no free scans left is refused with 402 before any work is done',
   'GET /api/analysis-status/:requestId': 'polls a scan that may have been started anonymously. Guarded by allowAnonymousScan, and the result is released only to the namespaced owner key that started it',
   'POST /api/demo-scan': 'the example verdict at the end of onboarding, which runs before anyone has an account or an entitlement. The label is a server-held fixture, so there is no vision call, no quota spent and no user data involved; allowAnonymousScan is there only so the caller has to be one of ours',
-  'GET /': 'the public home page — Google\'s OAuth consent screen requires a reachable application home page before the app can be published, and it is the App Store listing\'s marketing URL. Carries no user data and reads nothing',
+  'GET /': 'the marketing home page — Google\'s OAuth consent screen requires a reachable application home page before the app can be published, and it is the App Store listing\'s marketing URL. Carries no user data and reads nothing',
   'GET /privacy': 'the privacy policy — App Store Connect fetches this URL unauthenticated at every submission, and the paywall links to it before anyone has an account',
   'GET /terms': 'the terms of use — same reason; Guideline 3.1.2 requires it reachable from the purchase screen',
   'GET /health-data-privacy': 'the Washington My Health My Data Act policy — RCW 19.373.020 requires it publicly linked and distinct from the general privacy policy',
@@ -211,6 +208,7 @@ const routes = [
   ...findRoutes('server/index.ts'),
   ...findRoutes('server/revenueCatWebhook.ts'),
   ...findRoutes('server/legal.ts'),
+  ...findRoutes('server/home.ts'),
 ];
 
 console.log(`\n[AUTH] ${routes.length} routes found`);
