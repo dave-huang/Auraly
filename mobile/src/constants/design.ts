@@ -1,5 +1,3 @@
-import { useColorScheme } from 'react-native';
-
 export type VerdictLevel = 'safe' | 'caution' | 'avoid';
 
 // Revely design system — "a field guide, not a dashboard".
@@ -11,6 +9,10 @@ export type VerdictLevel = 'safe' | 'caution' | 'avoid';
 // else. Buttons are ink. Links are ink. A colour outside a verdict is a bug.
 
 export const Paper = {
+  // Light, as a surface. Not a glow — a glow is chrome, and this system has
+  // none. Light here is simply the brightest ground in the palette, used only
+  // inside an aperture to say "this part is resolved".
+  lift: '#FFFFFF',
   card: '#FFFCF6',
   paper: '#F6F1E7',
   sunk: '#EDE6D8',
@@ -22,6 +24,9 @@ export const Paper = {
 
 // Lamplight — the same logic, read by lamp.
 export const Lamplight = {
+  // Lifted by lamp: still the brightest ground here, but reached by opening
+  // up rather than by adding white, so the dark theme never goes grey.
+  lift: '#2A241C',
   card: '#1E1A15',
   paper: '#16130F',
   sunk: '#241F19',
@@ -32,6 +37,7 @@ export const Lamplight = {
 } as const;
 
 export interface Surface {
+  lift: string;
   card: string;
   paper: string;
   sunk: string;
@@ -60,6 +66,51 @@ export const VerdictDark = {
 } as const;
 
 export const onVerdictInk = '#F6F1E7';
+
+/**
+ * Risk signal ink — green, amber, red, at traffic-light strength.
+ *
+ * This is a deliberate exception to "the verdict inks are the only saturated
+ * colour", and it is worth writing down why rather than quietly widening the
+ * rule.
+ *
+ * The verdict inks are chosen to be READ AT SIZE: a 56pt word, a seal, a 6pt
+ * card edge. At that scale a deep field green and an oxide red are unmistakably
+ * different, and their restraint is most of what stops the app looking like a
+ * dashboard.
+ *
+ * An ingredient row is not that. It is a 10pt mark in a list of thirty, glanced
+ * at while somebody stands in an aisle holding the packet, and at that size the
+ * three verdict inks measure 1.16:1 to 1.65:1 against each other. They are
+ * three dark inks. The colour was doing no work, and the only thing telling the
+ * levels apart was the shape.
+ *
+ * So the list gets its own three, pushed until the hues actually separate:
+ * green near 141°, orange near 28°, red near 4°, every one of them holding at
+ * least 3:1 against the paper, which is the floor for telling a graphic apart
+ * from its background.
+ *
+ * THE MIDDLE IS AN ORANGE, and it has been round the houses. It started as
+ * #C86A00, was pushed to a gold at 42° to get further from the red, and the
+ * gold looked like exactly what it was: a dark yellow on cream, muddy at 12pt
+ * and hard to name. Being further from the red in HUE bought nothing if the
+ * result is a colour nobody recognises as the middle of a traffic light.
+ *
+ * So: #DC6803. Hue 28°, and 3.10:1 against the paper, which clears the 3:1
+ * floor for telling a graphic from its ground with very little to spare. That
+ * is the constraint the whole search kept running into — a genuinely bright
+ * orange or yellow cannot be had on a cream page, and everything that clears
+ * the floor is darker than the idea of it. This is the brightest orange that
+ * still passes, which is the right place to sit.
+ *
+ * Confined to the ingredient list and the ingredient screen's level rows.
+ * A verdict is still spoken in verdict ink.
+ */
+export const RiskSignal = {
+  low: { ink: '#1B7A3D', wash: '#E0EEE4' },
+  moderate: { ink: '#DC6803', wash: '#FBE5CC' },
+  high: { ink: '#C62317', wash: '#F7DCD8' },
+} as const satisfies Record<'low' | 'moderate' | 'high', VerdictTone>;
 
 /** The app's risk levels map onto the design's verdict vocabulary. */
 export const RISK_TO_VERDICT = {
@@ -135,18 +186,57 @@ export const Radius = { flat: 0, tile: 4, sheet: 28, pill: 999 } as const;
 export const Gutter = 24;
 
 export const Motion = {
-  sweep: { ms: 1100, loops: 1 },
+  /**
+   * The scan line's travel across the frozen frame, one way.
+   *
+   * IT NOW LOOPS, and that reverses an earlier rule of this design — that a
+   * repeating scan line reads as "still trying" — because the rule was
+   * answering the wrong complaint. A single pass followed by a motionless
+   * frame does not read as confidence; over a ten-second model call it reads
+   * as a hang, and the caret alone was carrying the whole claim that anything
+   * was still happening. A line that keeps travelling while the status text
+   * keeps naming a new stage is the pair that reads as work in progress.
+   *
+   * One duration, not one down and a quicker one back: the return is a return
+   * only when it happens once. Looping, an asymmetric pendulum reads as a
+   * limp, so the line takes the same time in both directions.
+   */
+  sweep: { ms: 1100 },
+  /**
+   * The reveal — an aperture travelling once down a block of content, which
+   * resolves as it passes.
+   *
+   * `settle` is not optional decoration. A permanently masked block is
+   * permanently unreadable, so the reveal must always END fully resolved; the
+   * aperture is a transition into clarity, never a state the reader is left
+   * in.
+   */
+  reveal: { ms: 900, settle: 320, window: 132 },
   rise: { ms: 420, dy: 46 },
   seal: { ms: 450, delay: 200, rotate: -4 },
   press: { ms: 120 },
 } as const;
 
+/**
+ * The app is light only, for now.
+ *
+ * Lamplight and VerdictDark are still here, still correct, and still the
+ * palette a dark build would use. They are unhooked rather than deleted: every
+ * screen already reads its colours through these two functions, so switching
+ * the product back is these two lines and nothing else. Deleting the tokens
+ * would mean rebuilding a whole second palette from scratch to get it back.
+ *
+ * Paired with `userInterfaceStyle: "light"` in app.json, which is what stops
+ * iOS handing the app a dark scheme in the first place. Both are needed: the
+ * manifest setting governs native chrome (keyboards, action sheets, the status
+ * bar), and this governs everything we draw ourselves.
+ */
 export function useSurface(): Surface {
-  return useColorScheme() === 'dark' ? Lamplight : Paper;
+  return Paper;
 }
 
 export function useVerdictColors(): VerdictPalette {
-  return useColorScheme() === 'dark' ? VerdictDark : Verdict;
+  return Verdict;
 }
 
 /** Below three of five confidence segments, show the uncertain state. */

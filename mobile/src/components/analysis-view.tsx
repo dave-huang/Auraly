@@ -3,6 +3,9 @@ import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { ApertureMark } from '@/components/aperture-mark';
+import { ApertureFrame, ResolveIn } from '@/components/aperture-reveal';
+import { RiskMark } from '@/components/risk-mark';
+import { TeachRing } from '@/components/teach-ring';
 import { ThemedText } from '@/components/themed-text';
 import { VerdictSeal } from '@/components/verdict-seal';
 import {
@@ -10,6 +13,7 @@ import {
   Font,
   Radius,
   RISK_TO_VERDICT,
+  RiskSignal,
   Space,
   Type,
   verdictTextStyle,
@@ -23,6 +27,7 @@ import {
   isProminentRank,
   localizeAllergen,
   localizeProfileTerm,
+  nativeListSeparator,
   useVerdictCopy,
 } from '@/lib/verdict';
 import type { AnalysisResult, Ingredient, PersonalFlag } from '@/lib/types';
@@ -42,13 +47,27 @@ import type { AnalysisResult, Ingredient, PersonalFlag } from '@/lib/types';
 // The card is FLAT (Radius.flat). Roundness in this system means "you can
 // press this" or "this is a sheet"; the card is neither.
 
-/** Five ink segments, never a percentage — a number invites arguing. */
+/**
+ * Five ink segments, never a percentage — a number invites arguing.
+ *
+ * The filled segments arrive one at a time, left to right, which is the
+ * machine counting rather than announcing. Only the FILLED ones animate: the
+ * empty segments are the measure the filled ones are read against, so they are
+ * present from the first frame. A meter that drew its own scale as it went
+ * would make four-of-five look like four-of-four until it finished.
+ */
 function ConfidenceMeter({ segments, color, faint }: { segments: number; color: string; faint: string }) {
   return (
     <View style={styles.meter}>
-      {Array.from({ length: CONFIDENCE_SEGMENTS }).map((_, i) => (
-        <View key={i} style={[styles.segment, { backgroundColor: i < segments ? color : faint }]} />
-      ))}
+      {Array.from({ length: CONFIDENCE_SEGMENTS }).map((_, i) =>
+        i < segments ? (
+          <ResolveIn key={i} index={i} style={styles.segment}>
+            <View style={[styles.segmentFill, { backgroundColor: color }]} />
+          </ResolveIn>
+        ) : (
+          <View key={i} style={[styles.segment, { backgroundColor: faint }]} />
+        ),
+      )}
     </View>
   );
 }
@@ -58,7 +77,6 @@ interface Row {
   name: string;
   original?: string;
   note: string;
-  dotColor: string;
   flagged: boolean;
   /** Position as analysed, so ties keep the label's own order. */
   index: number;
@@ -95,11 +113,33 @@ export function AnalysisView({
   controls,
   onRetake,
   onPressProfile,
+  teach,
+  onIngredientsLayout,
 }: {
   result: AnalysisResult;
   subtitle?: string;
   profileName?: string;
   profileAllergens?: string[];
+  /**
+   * Ring the row that set the verdict and say so, once, then let it go.
+   *
+   * Passed by /demo and by nothing else. A first-time reader has no idea which
+   * of thirty rows produced the word at the top of the card, and this points
+   * at it for a few seconds on the one card where they have never seen the
+   * layout before. Absent everywhere else on purpose: a real scan is not a
+   * lesson, and a highlight on every result would be the app annotating its
+   * own output forever.
+   */
+  teach?: string;
+  /**
+   * Where the ingredient list starts, in this card's own coordinates.
+   *
+   * Only /demo asks. It needs to scroll the list into view before the teaching
+   * ring appears on it, and the list's position depends on how tall the
+   * verdict, the reason and the bilingual block turned out to be in whichever
+   * language is showing — so it is measured rather than guessed.
+   */
+  onIngredientsLayout?: (y: number) => void;
   /** Part 7 of the anatomy. Passed in so the card stays one object while the
    *  host screen decides what "next" means — scan again, or back to history. */
   controls?: ReactNode;
@@ -130,7 +170,7 @@ export function AnalysisView({
     ? profileAllergens.map((a) => localizeAllergen(t, a)).join(' · ')
     : t('verdict.noAllergens');
 
-  const native = result.originalIngredients?.join('、') ?? '';
+  const native = result.originalIngredients?.join(nativeListSeparator(result.sourceLanguage)) ?? '';
   const english = result.canonicalIngredients?.join(', ') ?? '';
   // Only a genuine translation earns the block. On an English label the two
   // columns are the same words with different separators, which reads as a
@@ -140,7 +180,7 @@ export function AnalysisView({
   );
   const showBilingual = Boolean(native && english && translated);
 
-  const rows = buildRows(result, flags, verdictColors, surface.rule, t, translated);
+  const rows = buildRows(result, flags, t, translated);
   // The list is the evidence for the verdict, so it is ordered by how much each
   // row contributed to it.
   //
@@ -300,14 +340,23 @@ export function AnalysisView({
           </ThemedText>
           <View style={[styles.quote, { backgroundColor: surface.paper, borderColor: surface.rule }]}>
             {uncertain ? (
-              <View style={styles.redacted}>
-                {[0.92, 0.78, 0.85, 0.4].map((width, i) => (
-                  <View
-                    key={i}
-                    style={[styles.redactedBar, { width: `${width * 100}%`, backgroundColor: surface.rule }]}
-                  />
-                ))}
-              </View>
+              /* The aperture, held still over the part that would not come
+                 clear. Everywhere else in the app it sweeps and resolves;
+                 here it must not, because the read genuinely failed and an
+                 animation that resolved would be claiming otherwise. Static
+                 brackets say only "this is where we looked", which is the
+                 whole of what we can honestly say. Drawn faint, and never in
+                 a verdict ink — uncertain carries no verdict colour. */
+              <ApertureFrame style={styles.redactedFrame} color={surface.inkFaint}>
+                <View style={styles.redacted}>
+                  {[0.92, 0.78, 0.85, 0.4].map((width, i) => (
+                    <View
+                      key={i}
+                      style={[styles.redactedBar, { width: `${width * 100}%`, backgroundColor: surface.rule }]}
+                    />
+                  ))}
+                </View>
+              </ApertureFrame>
             ) : (
               <View style={styles.bilingual}>
                 <ThemedText style={[Type.body, styles.bilingualCol, { color: surface.ink }]}>
@@ -366,18 +415,33 @@ export function AnalysisView({
         </View>
       ) : null}
 
-      {/* Ingredients — 6px verdict dot, name, and the reason it matched. */}
-      <View style={[styles.block, { borderTopColor: surface.rule }]}>
+      {/* Ingredients: a green, orange or red mark, the name, and the reason. */}
+      <View
+        style={[styles.block, { borderTopColor: surface.rule }]}
+        onLayout={(e) => onIngredientsLayout?.(e.nativeEvent.layout.y)}
+      >
         <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
           {t('verdict.ingredientCount', { count: result.ingredients.length })}
         </ThemedText>
-        {ordered.map((row) => (
+        {/* Read line by line, and shown that way. The rows come into focus in
+            order rather than all at once — the app's own act, said as motion.
+            The stagger is capped inside ResolveIn, so a forty-ingredient label
+            still finishes in the same fraction of a second a short one does. */}
+        {ordered.map((row, i) => (
+          <ResolveIn key={row.key} index={i}>
+          <MaybeTeach
+            // Only the leading row, and only when it earned its place. On a
+            // label of ordinary groceries `ordered[0]` is simply the first of
+            // thirty clean rows, and ringing it while announcing that it set
+            // the verdict would be pointing at nothing.
+            teach={i === 0 && row.ingredient.riskLevel !== 'low' ? teach : undefined}
+            tone={RiskSignal[row.ingredient.riskLevel].ink}
+          >
           <Pressable
-            key={row.key}
             style={[styles.row, { borderBottomColor: surface.sunk }]}
             onPress={() => openIngredient(row)}
           >
-            <View style={[styles.dot, { backgroundColor: row.dotColor }]} />
+            <RiskMark level={row.ingredient.riskLevel} />
             <View style={styles.rowText}>
               <ThemedText style={[Type.label, { color: surface.ink }]}>{row.name}</ThemedText>
               {/* The printed name under the translation. Someone comparing the
@@ -393,6 +457,8 @@ export function AnalysisView({
               {row.note}
             </ThemedText>
           </Pressable>
+          </MaybeTeach>
+          </ResolveIn>
         ))}
       </View>
 
@@ -486,9 +552,49 @@ export function AnalysisView({
         <View style={[styles.controls, { borderTopColor: surface.rule }]}>{controls}</View>
       ) : null}
 
+      {/* NOT MEDICAL ADVICE, said on the card rather than only in the terms.
+          
+          This app reads allergen labels for people who have a reason to care
+          what is on them, and until now the only place it said what it is not
+          was a policy document nobody opens. The sentence belongs where the
+          verdict is, which is here.
+
+          Set as a footnote and not as a warning banner, on purpose. Anything
+          alarm-coloured on every scan would train people to look past it
+          inside a week, and it would also be the loudest thing on a card whose
+          whole argument is that it is calm. Quiet, present, and in the same
+          place every time is what makes a disclaimer readable rather than
+          furniture.
+
+          Written in the register of the Terms rather than in the app's own
+          voice, deliberately. Two friendlier drafts came before this one, and
+          the friendlier they got the more they read as the app hedging about
+          the exact job it exists to do — a conversational caveat invites you
+          to weigh it, while boilerplate is understood as boilerplate and read
+          past. This is a legal notice, so it is written as one, and it uses
+          the Terms' own words: not a medical device, does not diagnose or
+          treat, not a substitute for professional advice, read the physical
+          label if the allergy is serious.
+
+          On every card, not just /results: /demo shows a real verdict and
+          /scan-detail shows an old one, and a person cannot be expected to
+          remember which screen carried the caveat. */}
+      <View style={[styles.disclaimer, { borderTopColor: surface.rule }]}>
+        {/* Sans, not Type.meta's mono. Mono is the machine's voice in this
+            system — a line count, a transcription, a source id — and this
+            sentence is Revely speaking in the first person about what it is
+            and is not. Setting it in the machine face would file the one
+            human caveat on the card under "readout". */}
+        <ThemedText style={[styles.disclaimerText, { color: surface.inkFaint }]}>
+          {t('results.disclaimer')}
+        </ThemedText>
+      </View>
+
       <View style={[styles.footer, { borderTopColor: surface.rule }]}>
         <View style={styles.footerMark}>
-          <ApertureMark size={12} color={surface.inkFaint} />
+          {/* 14, not 12: the mark carries two bars at every size now, and 12
+              was the one place where the pair started closing into a slab. */}
+          <ApertureMark size={14} color={surface.inkFaint} />
           <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>Revely</ThemedText>
         </View>
         <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>{subtitle ?? ''}</ThemedText>
@@ -585,8 +691,6 @@ function unflaggedNote(
 function buildRows(
   result: AnalysisResult,
   flags: PersonalFlag[],
-  verdictColors: ReturnType<typeof useVerdictColors>,
-  clearColor: string,
   t: (key: any, params?: Record<string, string | number>) => string,
   translated: boolean,
 ): Row[] {
@@ -612,10 +716,12 @@ function buildRows(
       return f.ingredientName.toLowerCase() === ing.name.toLowerCase();
     });
 
-    // A personally flagged ingredient takes the flag's colour, not the
+    // A personally flagged ingredient carries the flag's level, not the
     // population-level risk. Peanut butter is "low risk" in general and an
-    // avoid for someone with a peanut allergy — showing it green because the
+    // avoid for someone with a peanut allergy, and showing it green because the
     // base analysis says low would contradict the verdict directly above it.
+    // `ing.riskLevel` is already the level in force (personal where one
+    // applies, universal otherwise), so the mark needs no branch for it.
     //
     // Which colour comes from the flag's own `impact`, not from its type. The
     // old test — allergen means avoid, everything else means caution — was
@@ -633,13 +739,6 @@ function buildRows(
     // arguing with itself.
     const personal = ing.personalRiskLevel;
     const leadWithFlag = Boolean(flag) && Boolean(personal);
-
-    // riskLevel is already the level in force — personal where one applies,
-    // universal otherwise — so the dot needs no separate branch for it.
-    const dotColor =
-      ing.riskLevel === 'low'
-        ? clearColor
-        : verdictColors[RISK_TO_VERDICT[ing.riskLevel]].ink;
 
     return {
       key: `${ing.name}-${i}`,
@@ -671,13 +770,36 @@ function buildRows(
       note: leadWithFlag
         ? t('verdict.noteForYou', { reason: rowNote(t, flag!) })
         : unflaggedNote(t, ing),
-      dotColor,
       flagged: Boolean(flag),
       index: i,
       ingredient: ing,
       flag,
     };
   });
+}
+
+/**
+ * The ring, or nothing at all.
+ *
+ * A wrapper rather than a conditional in the middle of the list, so the row's
+ * own markup stays written once. Every card except the example passes no
+ * caption and gets its children straight back.
+ */
+function MaybeTeach({
+  teach,
+  tone,
+  children,
+}: {
+  teach?: string;
+  tone: string;
+  children: React.ReactNode;
+}) {
+  if (!teach) return <>{children}</>;
+  return (
+    <TeachRing tone={tone} caption={teach}>
+      {children}
+    </TeachRing>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -712,6 +834,7 @@ const styles = StyleSheet.create({
   bilingual: { flexDirection: 'row', gap: Space.md, alignItems: 'flex-start' },
   bilingualCol: { flex: 1 },
   hairline: { width: StyleSheet.hairlineWidth, alignSelf: 'stretch' },
+  redactedFrame: { paddingVertical: Space.sm, paddingHorizontal: Space.md },
   redacted: { gap: 6, paddingVertical: 2 },
   redactedBar: { height: 9 },
 
@@ -742,7 +865,6 @@ const styles = StyleSheet.create({
     paddingVertical: Space.md,
     borderBottomWidth: 1,
   },
-  dot: { width: 6, height: 6, borderRadius: 3 },
   rowText: { flex: 1, gap: 1 },
   rowOriginal: { fontFamily: Font.mono, fontSize: 11, lineHeight: 15 },
   rowNote: { textAlign: 'right', maxWidth: '38%' },
@@ -768,12 +890,23 @@ const styles = StyleSheet.create({
     marginTop: Space.xs,
   },
   segment: { flex: 1, height: 3 },
+  // The fill inside an animated segment: the wrapper owns the track's width,
+  // this owns the ink.
+  segmentFill: { flex: 1, height: 3 },
 
   controls: {
     padding: Space.xl,
     gap: Space.md,
     borderTopWidth: StyleSheet.hairlineWidth,
   },
+  disclaimer: {
+    paddingHorizontal: Space.xl,
+    paddingVertical: Space.lg,
+    borderTopWidth: StyleSheet.hairlineWidth,
+  },
+  // Between Type.body and Type.meta: small enough to read as fine print,
+  // large enough that somebody with a severe allergy can actually read it.
+  disclaimerText: { fontFamily: Font.sans, fontSize: 12, lineHeight: 17 },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',

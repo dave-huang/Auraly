@@ -2,6 +2,7 @@ import { ImageManipulator, SaveFormat } from 'expo-image-manipulator';
 import { useSyncExternalStore } from 'react';
 
 import { ApiError, apiFetch } from './api';
+import { getLocalProfile, isLocalProfileId } from './profiles';
 import type { AnalysisResult, ProductType } from './types';
 
 // Scan pipeline client: compress the photo, submit for analysis, poll until
@@ -47,13 +48,30 @@ export async function submitScan(params: {
   language: string;
   profileId?: string;
 }): Promise<string> {
+  // A profile built during onboarding lives only on this device, so the server
+  // has nothing to look up. Send it inline instead — otherwise the very first
+  // verdict someone sees is the generic one, which is precisely the answer the
+  // app exists not to give.
+  const local = isLocalProfileId(params.profileId) ? await getLocalProfile() : null;
+
   const { requestId } = await apiFetch<ScanSubmission>('/api/scan-and-analyze', {
     method: 'POST',
     body: JSON.stringify({
       imageData: params.imageDataUrl,
       productType: params.productType,
       userLanguage: params.language,
-      profileId: params.profileId,
+      // Never send a local id as profileId: the server would look it up, find
+      // nothing, and return a generic verdict to someone who believes they set
+      // up an allergy.
+      profileId: local ? undefined : params.profileId,
+      profile: local
+        ? {
+            name: local.name,
+            allergens: local.allergens,
+            dietaryRules: local.dietaryRules,
+            conditions: local.conditions,
+          }
+        : undefined,
     }),
   });
   return requestId;

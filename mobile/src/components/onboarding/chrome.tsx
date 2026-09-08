@@ -1,0 +1,308 @@
+import { ReactNode, useState } from 'react';
+import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { InkWashPlate, type PlateName } from '@/components/inkwash-plate';
+import { ThemedText } from '@/components/themed-text';
+import { Font, Gutter, Radius, Space, Type, useSurface } from '@/constants/design';
+
+// The frame every onboarding step is poured into.
+//
+// It exists because the flow went from four steps to eleven. Four steps could
+// live as four branches inside one screen; eleven cannot, and the moment the
+// chrome is copied per step it starts drifting — a title one size larger here,
+// a footer one gap tighter there — which is exactly how a flow stops feeling
+// like one flow.
+//
+// WHY THE HEADER CARRIES BACK, AND THE FOOTER DOES NOT
+//
+// Back used to sit in the footer next to Next, so the two most different
+// actions on the screen were adjacent and the same size. It is now top-left,
+// where a back control lives on every other screen of every other app, and the
+// footer belongs entirely to the one thing we want pressed.
+//
+// WHERE THE DRAWING GOES
+//
+// The plate used to sit at full bleed behind the whole step, which meant the
+// interesting part of the drawing was under the title on a short step and
+// under the button on every step. It was also faint enough to read through,
+// which is another way of saying it was too faint to see.
+//
+// Now the frame measures itself. It knows how tall the scrolling area is and
+// how tall the content inside it turned out to be, and the difference is the
+// empty space at the bottom of the page. If there is enough of it, the drawing
+// goes there, at full strength, with nothing printed on top. If there is not,
+// there is no drawing: a step with a long list of allergens does not need one,
+// and squeezing it in would put it back under the text.
+//
+// This is why the plate is a prop rather than something each step positions.
+// A step knows which drawing belongs to it; only the frame knows whether the
+// page has room.
+//
+// WHY THE PROGRESS BAR IS CONTINUOUS
+//
+// It was segmented, borrowing the confidence meter's language. That reads well
+// at four segments and reads as a barcode at eleven — and the flow's length is
+// no longer fixed anyway (the strictness step only appears if there is
+// something to be strict about). A filled proportion states the same fact and
+// survives the count changing.
+
+/**
+ * Step titles are bigger than Type.title.
+ *
+ * Type.title is 22 and is sized to sit INSIDE a card, next to other things. An
+ * onboarding step is one question alone on a page, and at 22 it looked like a
+ * section heading for content that never arrived. Scoped here rather than
+ * added to the type scale: this is a property of this flow, not a new rung
+ * every screen may reach for.
+ */
+export const StepType = {
+  title: { fontFamily: Font.sansSemi, fontSize: 28, lineHeight: 34, letterSpacing: -0.4 },
+} as const;
+
+/**
+ * The mark that says a page is teaching rather than asking.
+ *
+ * Four of the twelve steps collect nothing; they hand over a fact instead.
+ * Without a marker those four are indistinguishable from the questions until
+ * you have read the whole title and found no controls under it, which is the
+ * moment people start tapping Next to make the reading stop.
+ *
+ * A stamp rather than a coloured banner, and the same stamp the example cards
+ * wear, so "this is not a question" and "this is not a real scan" read as one
+ * family. Uppercased here rather than in the catalogue so the translations stay
+ * ordinary words; a no-op in Chinese, where the box carries it.
+ */
+export function StampTag({ label }: { label: string }) {
+  const surface = useSurface();
+  return (
+    <View style={[styles.stampTag, { borderColor: surface.rule }]}>
+      <ThemedText style={[styles.stampText, { color: surface.inkFaint }]}>{label}</ThemedText>
+    </View>
+  );
+}
+
+export function StepFrame({
+  progress,
+  onLeft,
+  leftGlyph = '‹',
+  leftLabel,
+  eyebrow,
+  title,
+  body,
+  plate,
+  children,
+  cta,
+  onCta,
+  ctaDisabled,
+  secondary,
+  reserveSecondary,
+}: {
+  /** 0 to 1. Drawn, never announced as "step N of M" — the count is unstable. */
+  progress: number;
+  onLeft: () => void;
+  leftGlyph?: '‹' | '✕';
+  leftLabel: string;
+  /** Set on the steps that teach rather than ask. See StampTag. */
+  eyebrow?: string;
+  title: string;
+  body?: string;
+  plate?: PlateName;
+  children?: ReactNode;
+  cta: string;
+  onCta: () => void;
+  ctaDisabled?: boolean;
+  /** A quieter action under the button — "Skip", "Not now". */
+  secondary?: { label: string; onPress: () => void };
+  /**
+   * Hold the secondary row's height even while `secondary` is absent.
+   *
+   * THIS IS A REAL BUG FIX, not tidiness. The three optional steps show Skip
+   * only while nothing is chosen, so the first tap on a chip removed a row
+   * from the footer. The footer shrank, the body grew, and the frame recomputed
+   * the plate against a taller viewport — so tapping "Kosher" made the drawing
+   * jump and resize under the thumb that tapped it. Reserving the row means
+   * the footer is the same height whether or not Skip is in it.
+   */
+  reserveSecondary?: boolean;
+}) {
+  const surface = useSurface();
+
+  // The scrolling area's height, and the height the content turned out to be.
+  // Both arrive after the first paint, so the plate appears on the second one.
+  // That is invisible in practice and much cheaper than guessing.
+  const [viewport, setViewport] = useState(0);
+  const [contentHeight, setContentHeight] = useState(0);
+
+  // What is left at the bottom once the content has had its space.
+  const blank = viewport - contentHeight;
+  const plateHeight = Math.min(blank - Space.md, viewport * 0.52);
+  const showPlate = Boolean(plate) && plateHeight >= MIN_PLATE_HEIGHT;
+
+  return (
+    <SafeAreaView style={[styles.container, { backgroundColor: surface.paper }]}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
+        <View style={styles.header}>
+          <Pressable
+            onPress={onLeft}
+            hitSlop={16}
+            accessibilityRole="button"
+            accessibilityLabel={leftLabel}
+            style={[styles.leftControl, { borderColor: surface.rule, backgroundColor: surface.card }]}
+          >
+            <ThemedText style={[styles.leftGlyph, { color: surface.ink }]}>{leftGlyph}</ThemedText>
+          </Pressable>
+
+          <View style={[styles.track, { backgroundColor: surface.rule }]}>
+            <View
+              style={[
+                styles.fill,
+                { backgroundColor: surface.ink, width: `${Math.round(clamp(progress) * 100)}%` },
+              ]}
+            />
+          </View>
+        </View>
+
+        <View style={styles.body} onLayout={(e) => setViewport(e.nativeEvent.layout.height)}>
+          {/* Behind the scroll view, in the space the content did not use.
+              Full strength, because nothing is printed over it. */}
+          {plate && showPlate ? (
+            <View style={[styles.plateSlot, { height: plateHeight }]} pointerEvents="none">
+              <InkWashPlate name={plate} />
+            </View>
+          ) : null}
+
+          <ScrollView
+            contentContainerStyle={styles.content}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+            onContentSizeChange={(_, height) => setContentHeight(height)}
+          >
+            {eyebrow ? <StampTag label={eyebrow} /> : null}
+            <ThemedText style={[StepType.title, { color: surface.ink }]}>{title}</ThemedText>
+            {body ? (
+              <ThemedText style={[Type.reason, { color: surface.inkMuted }]}>{body}</ThemedText>
+            ) : null}
+            {children ? <View style={styles.slot}>{children}</View> : null}
+          </ScrollView>
+        </View>
+
+        <View style={[styles.footer, { borderTopColor: surface.rule }]}>
+          <Pressable
+            style={[styles.primary, { backgroundColor: surface.ink }, ctaDisabled && styles.disabled]}
+            disabled={ctaDisabled}
+            onPress={onCta}
+            accessibilityRole="button"
+          >
+            <ThemedText style={[styles.primaryLabel, { color: surface.card }]}>{cta}</ThemedText>
+          </Pressable>
+
+          {secondary ? (
+            <Pressable
+              onPress={secondary.onPress}
+              hitSlop={12}
+              style={styles.secondary}
+              accessibilityRole="button"
+            >
+              <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>
+                {secondary.label}
+              </ThemedText>
+            </Pressable>
+          ) : reserveSecondary ? (
+            <View style={styles.secondary} />
+          ) : null}
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
+  );
+}
+
+/** Below this the drawing is a smudge rather than a picture, so it is dropped. */
+const MIN_PLATE_HEIGHT = 132;
+
+/** Space.md above and below one line of Type.meta. See `secondary` in styles. */
+const SECONDARY_HEIGHT = Space.md * 2 + 15;
+
+function clamp(value: number): number {
+  if (!Number.isFinite(value)) return 0;
+  return Math.min(1, Math.max(0, value));
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1 },
+
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Space.lg,
+    paddingHorizontal: Gutter,
+    paddingTop: Space.md,
+  },
+  // A round control, which is the one place this flow rounds anything that is
+  // not a button — it IS a button, and Cal-AI-style flows put it in a circle
+  // because at 36pt a square back arrow reads as a card with a glyph in it.
+  leftControl: {
+    width: 36,
+    height: 36,
+    borderRadius: Radius.pill,
+    borderWidth: StyleSheet.hairlineWidth,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  leftGlyph: { fontFamily: Font.sansMedium, fontSize: 17, lineHeight: 20 },
+
+  track: { flex: 1, height: 3, overflow: 'hidden' },
+  fill: { height: 3 },
+
+  // The scrolling area and the plate share this box, which is what lets the
+  // plate be measured against the space the content left behind.
+  body: { flex: 1 },
+  // Sits on the floor of that box. Inset by the gutter so a wide drawing does
+  // not run into the edge of the screen.
+  plateSlot: { position: 'absolute', left: Gutter, right: Gutter, bottom: 0 },
+
+  content: {
+    paddingHorizontal: Gutter,
+    paddingTop: Space.xl,
+    paddingBottom: Space.xxl,
+    gap: Space.md,
+  },
+  slot: { marginTop: Space.lg, gap: Space.md },
+
+  // Sized to the text rather than the column, so it reads as a stamp on the
+  // page and not as a bar across it.
+  stampTag: {
+    alignSelf: 'flex-start',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderRadius: Radius.flat,
+    paddingHorizontal: Space.sm,
+    paddingVertical: 3,
+  },
+  stampText: {
+    fontFamily: Font.monoMedium,
+    fontSize: 10,
+    lineHeight: 14,
+    letterSpacing: 1.4,
+    textTransform: 'uppercase',
+  },
+
+  footer: {
+    paddingHorizontal: Gutter,
+    paddingTop: Space.md,
+    paddingBottom: Space.sm,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    gap: Space.xs,
+  },
+  primary: { borderRadius: Radius.pill, paddingVertical: Space.lg, alignItems: 'center' },
+  primaryLabel: { fontFamily: Font.sansSemi, fontSize: 15, lineHeight: 20 },
+  disabled: { opacity: 0.4 },
+  // A FIXED HEIGHT, not padding. An empty View with vertical padding reserves
+  // the padding and not the line box of the text that is missing, so the first
+  // attempt at holding this row still let the footer shrink by the height of
+  // one line — which is exactly the shift it was meant to stop. Both the real
+  // control and the placeholder use this, so they cannot disagree.
+  secondary: { alignItems: 'center', justifyContent: 'center', height: SECONDARY_HEIGHT },
+});

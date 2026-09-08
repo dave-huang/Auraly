@@ -5,6 +5,18 @@ import z from "zod";
 import crypto from "crypto";
 import { eq, sql, gte, and, count, desc, inArray } from "drizzle-orm";
 import { setupAuth, isAuthenticated } from "./localAuth";
+import { setupRevenueCatWebhook } from "./revenueCatWebhook";
+import { registerLegalRoutes } from "./legal";
+import { registerHomeRoutes } from "./home";
+import { fetchSubscriber, RevenueCatNotConfigured } from "./services/revenueCatApi";
+import { resolveFromSubscriber } from "./services/revenueCatState";
+import { ENTITLEMENT_ID } from "@shared/products";
+import {
+  allowAnonymousScan,
+  requireScanQuota,
+  consumeForPrincipal,
+  type ScanPrincipal,
+} from "./anonymousAccess";
 import { rateLimit } from "./rateLimit";
 import { storage } from "./storage";
 import { db } from "./db";
@@ -29,27 +41,23 @@ import {
   type RiskLevel,
   productTypes,
   productCategories,
-  getDailyFreeScansRemaining,
+  freeScansRemaining,
   getTotalScansAvailable,
   canUserScan,
-  getDailyFreeScansLimit,
-  promoCodes,
-  promoRedemptions,
-  insertPromoCodeSchema,
-  referrals,
-  REFERRAL_REWARD_SCANS,
+  FREE_SCAN_GRANT,
+  hasActiveSubscription,
   upsertProfileSchema,
   crashReports,
   crashReportInputSchema,
 } from "@shared/schema";
 import { applyProfileToAnalysis, annotateWithCitations, maxRisk } from "./services/personalRisk";
 import { withLabelRanks } from "./services/labelRank";
+import { demoAnalysis } from "./demoScan";
 import { applyPopulationRisk, domainForProductType } from "./services/substances/classify";
 import { getSubstanceRegistry } from "./services/substances/identity";
 import { getEvidenceStore } from "./services/substances/evidence";
 import { applyPolicy, POLICY_VERSION } from "./services/substances/policy";
 import { ALLERGEN_KEYWORDS, type MajorAllergen } from "./services/allergenMatcher";
-import { getUncachableStripeClient } from "./stripeClient";
 
 // In-memory store for analysis requests (for background processing)
 interface AnalysisRequest {
@@ -58,7 +66,13 @@ interface AnalysisRequest {
   // signed-in caller holding a request id could read someone else's label
   // text and analysis. The id is 64 bits of randomness so guessing one is not
   // practical, but "hard to guess" is not an access control.
-  userId: string;
+  //
+  // A scan can now be started before sign-in, so this is "user:<id>" or
+  // "device:<id>" rather than a bare user id. Comparing the whole string keeps
+  // the two namespaces from ever colliding.
+  ownerKey: string;
+  /** Present only for a signed-in scan. */
+  userId?: string;
   status: 'processing' | 'ocr_complete' | 'completed' | 'failed';
   result?: AnalysisResult;
   error?: string;
@@ -75,6 +89,36 @@ interface AnalysisRequest {
 }
 
 const analysisRequests = new Map<string, AnalysisRequest>();
+
+/**
+ * Validate a profile sent inline with a scan.
+ *
+ * Same schema the stored profiles are written through, so an onboarding scan
+ * cannot express anything a saved profile could not. Returns undefined on
+ * anything malformed rather than throwing: a bad profile must degrade to a
+ * generic verdict, never fail the scan.
+ */
+function parseInlineProfile(raw: unknown): any | undefined {
+  const parsed = upsertProfileSchema.safeParse(raw);
+  if (!parsed.success) return undefined;
+  return {
+    id: 'inline',
+    userId: 'inline',
+    name: parsed.data.name,
+    isDefault: true,
+    allergens: parsed.data.allergens,
+    dietaryRules: parsed.data.dietaryRules,
+    conditions: parsed.data.conditions,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+}
+
+/** Namespaced owner key for an in-flight scan. See AnalysisRequest.ownerKey. */
+function principalKey(principal: ScanPrincipal | undefined): string {
+  if (!principal) return '';
+  return principal.kind === 'user' ? `user:${principal.userId}` : `device:${principal.deviceId}`;
+}
 
 // Global OCR cache - keyed by image content hash (language-independent)
 interface OCRCacheEntry {
@@ -129,6 +173,16 @@ setInterval(() => {
 const upload = multer({ storage: multer.memoryStorage() });
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Privacy policy and terms of use. Registered first because they are two of
+  // the URLs an App Store submission is rejected for missing, and because the
+  // paywall links to them (Guideline 3.1.2). See server/legal.ts.
+  registerLegalRoutes(app);
+
+  // The marketing page at "/", and the images and fonts it loads from /media.
+  // Same ordering rule as the legal pages: everything here has to be claimed
+  // before serveStatic()'s catch-all. See server/home.ts.
+  registerHomeRoutes(app);
+
   // Liveness. This is what the platform health check hits, and it answers 200
   // whenever the process can serve HTTP at all.
   //
@@ -191,6 +245,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Setup authentication
   await setupAuth(app);
+
+  // Subscription state, pushed by RevenueCat. Registered after auth so the
+  // bearer middleware has run, though the route itself deliberately does not
+  // use it — RevenueCat authenticates with a shared secret, not a user token.
+  setupRevenueCatWebhook(app);
 
   // Auth endpoint
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
@@ -496,6 +555,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // POST /api/demo-scan - the example verdict shown at the end of onboarding
+  //
+  // No quota, no vision call, no cost: the label is a fixture (server/demoScan.ts).
+  // The VERDICT is not — it goes through the same chain a live scan does, so
+  // what the app tells someone about their own allergies here is produced by
+  // the real matcher and is true of the label it is shown against.
+  //
+  // Behind allowAnonymousScan but NOT requireScanQuota. The whole point is to
+  // run before anyone has an account or an entitlement; the middleware is here
+  // only so a caller has to be one of ours, and it spends nothing.
+  app.post('/api/demo-scan', allowAnonymousScan, async (req: any, res) => {
+    try {
+      const { language, profile: inlineProfile } = req.body ?? {};
+
+      let result = annotateWithCitations(demoAnalysis(language));
+      result = withLabelRanks(result);
+
+      // Same two-way resolution as a real scan, minus the stored-profile path:
+      // by definition nobody has reached this endpoint with a saved profile.
+      const profile = inlineProfile ? parseInlineProfile(inlineProfile) : undefined;
+      if (profile) {
+        result = applyProfileToAnalysis(result, profile);
+      } else if (inlineProfile) {
+        console.warn('[DEMO] inline profile could not be parsed; serving the generic example');
+      }
+
+      res.json(result);
+    } catch (error: any) {
+      console.error('[DEMO] Failed to build the example scan:', error?.message);
+      res.status(500).json({ message: 'Failed to build the example scan' });
+    }
+  });
+
   // ==========================================
   // ACCOUNT MANAGEMENT ENDPOINTS
   // ==========================================
@@ -517,16 +609,54 @@ export async function registerRoutes(app: Express): Promise<Server> {
         firstName: user.firstName,
         lastName: user.lastName,
         createdAt: user.createdAt,
-        dailyFreeScansUsed: quota.dailyFreeScansUsed,
-        dailyFreeScansLimit: quota.dailyFreeScansLimit,
-        dailyFreeScansRemaining: quota.dailyFreeScansRemaining,
+        freeScansRemaining: quota.freeScansRemaining,
+        freeScanGrant: quota.freeScanGrant,
         purchasedScanBalance: quota.purchasedScanBalance,
+        // null means unlimited. The client renders the word, not the number.
         totalScansAvailable: quota.totalScansAvailable,
-        nextDailyReset: quota.nextDailyReset,
+        subscription: quota.subscription,
       });
     } catch (error: any) {
       console.error("Error fetching scan balance:", error);
       res.status(500).json({ message: "Failed to fetch scan balance" });
+    }
+  });
+
+  // POST /api/account/refresh-entitlement — ask RevenueCat, do not wait to be told
+  //
+  // The webhook is the normal path and stays the authority. This is the
+  // recovery path for when a push is lost: a wrong secret, an outage, a deploy
+  // landing between the purchase and the notification. Without it, someone who
+  // has paid is stuck unsubscribed until some future event happens to arrive,
+  // which is the worst support case a paid app has.
+  //
+  // The client may ask, but still does not decide — it triggers a question we
+  // put to RevenueCat, and we write the answer. A device claiming to be
+  // subscribed is worth exactly as much here as it was before.
+  app.post('/api/account/refresh-entitlement', isAuthenticated, async (req: any, res) => {
+    const userId = req.user.claims.sub;
+    try {
+      const subscriber = await fetchSubscriber(userId);
+      const state = resolveFromSubscriber(subscriber, ENTITLEMENT_ID);
+
+      await subscriptionService.applySubscriptionState(userId, {
+        ...state,
+        revenueCatCustomerId: subscriber?.original_app_user_id,
+      });
+      console.log(`[RC-REFRESH] ${userId} is ${state.status}${state.plan ? ` (${state.plan})` : ''}`);
+
+      const quota = await subscriptionService.getUserQuotaStatus(userId);
+      res.json({ subscription: quota.subscription });
+    } catch (error: any) {
+      if (error instanceof RevenueCatNotConfigured) {
+        console.warn('[RC-REFRESH] REVENUECAT_SECRET_KEY is not set');
+        return res.status(503).json({ message: 'Subscription lookup is unavailable' });
+      }
+      // 502, and NOTHING written. Failing to reach RevenueCat is not evidence
+      // that someone is unsubscribed, and writing `none` on a timeout would
+      // cancel a subscription somebody is paying for.
+      console.error('[RC-REFRESH] lookup failed:', error?.message);
+      res.status(502).json({ message: 'Could not reach the store' });
     }
   });
 
@@ -536,18 +666,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // an account must let them delete it from inside the app, not by emailing
   // support.
   //
-  // Everything goes in one statement — profiles, scan history, usage and
-  // purchase logs, and promo redemptions all cascade from users.id, and
-  // analytics events detach to a null user rather than following the person out
-  // (see storage.deleteUser). There is no soft-delete: someone asking to be
-  // forgotten is not asking to be marked inactive.
+  // Everything goes in one statement — profiles, scan history, and usage and
+  // purchase logs all cascade from users.id, and analytics events detach to a
+  // null user rather than following the person out (see storage.deleteUser).
+  // There is no soft-delete: someone asking to be forgotten is not asking to
+  // be marked inactive.
   //
   // The bearer token survives cryptographically but stops working immediately,
   // because bearerAuthMiddleware looks the user up on every request and bails
   // when the row is gone.
   //
-  // Nothing recurring needs cancelling first: purchases here are one-time scan
-  // packs, and the user row holds a Stripe customer id but no subscription.
+  // NOTE: this does not cancel an active subscription, and it cannot. The
+  // subscription belongs to the Apple ID, not to this row — only the person
+  // holding it can cancel, in their Apple ID settings. Deleting here removes
+  // our record of the entitlement while Apple keeps billing, so both legal
+  // documents say so in as many words (see server/legal.ts). If we ever want
+  // to do better than a warning, the move is to surface it on the Account
+  // screen before the confirm, not to fake a cancellation we cannot perform.
   app.delete('/api/account', isAuthenticated, async (req: any, res) => {
     try {
       // A deliberate hurdle on an irreversible endpoint. The client shows its
@@ -633,13 +768,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Check analysis status (for polling from mobile when tab is backgrounded) (protected)
-  app.get("/api/analysis-status/:requestId", isAuthenticated, (req: any, res) => {
+  app.get("/api/analysis-status/:requestId", allowAnonymousScan, (req: any, res) => {
     const { requestId } = req.params;
     const request = analysisRequests.get(requestId);
 
     // Someone else's request is reported as missing rather than forbidden: a
     // 403 would confirm the id is real, which is itself worth not saying.
-    if (!request || request.userId !== req.user.claims.sub) {
+    if (!request || request.ownerKey !== principalKey(req.scanPrincipal)) {
       return res.status(404).json({ error: 'Analysis request not found' });
     }
 
@@ -671,7 +806,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Combined OCR + Analysis endpoint (returns request ID immediately for mobile resilience) (protected)
-  app.post("/api/scan-and-analyze", isAuthenticated, async (req, res) => {
+  app.post("/api/scan-and-analyze", allowAnonymousScan, requireScanQuota, async (req, res) => {
     const body = req.body;
     
     // Validate required fields
@@ -683,11 +818,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
     // Generate request ID
     const requestId = crypto.randomBytes(8).toString('hex');
-    const userId: string | undefined = (req as any).user?.claims?.sub;
+    const principal: ScanPrincipal = (req as any).scanPrincipal;
+    const userId: string | undefined =
+      principal.kind === 'user' ? principal.userId : undefined;
     const analysisRequest: AnalysisRequest = {
       id: requestId,
-      // isAuthenticated has already run, so claims.sub is present.
-      userId: userId as string,
+      ownerKey: principalKey(principal),
+      userId,
       status: 'processing',
       timestamp: Date.now()
     };
@@ -711,7 +848,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let analysisStage: 'pending' | 'success' | 'failed' = 'pending';
 
       try {
-        const { imageData, productType, userLanguage, ocrText: cachedOcrText, profileId } = body;
+        const {
+          imageData, productType, userLanguage, ocrText: cachedOcrText, profileId,
+          profile: inlineProfile,
+        } = body;
 
         // Step 1: Read the label (multimodal-first) or use cached/client-provided text.
         // Label reading is language-independent — same result serves all languages.
@@ -871,15 +1011,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
           // Apply the personal profile AFTER analysis/cache retrieval so the
           // cached analysis stays profile-agnostic and serves every profile.
-          if (profileId && userId) {
-            const profile = await storage.getProfile(profileId, userId);
-            if (profile) {
-              analysisResult = applyProfileToAnalysis(analysisResult, profile);
-              const flagCount = analysisResult.personalFlags?.length ?? 0;
-              console.log(`[PERSONAL-RISK-${requestId}] Applied profile "${profile.name}": ${flagCount} personal flags, overall risk ${analysisResult.overallRisk}`);
-            } else {
-              console.warn(`[PERSONAL-RISK-${requestId}] profileId ${profileId} not found for user, skipping personalization`);
-            }
+          //
+          // Two ways in. A signed-in scan names a stored profile by id. A scan
+          // made during onboarding, before there is an account, sends the
+          // profile INLINE — it exists only on that device, so there is nothing
+          // here to look up.
+          //
+          // The inline profile is validated and used for this one analysis and
+          // never written anywhere. That is the whole point: someone who has
+          // not signed in has not agreed to us storing their child's allergies,
+          // and the first scan still has to be about that child or the app has
+          // shown them the generic answer it is trying to prove it is better
+          // than.
+          const resolvedProfile = profileId && userId
+            ? await storage.getProfile(profileId, userId)
+            : inlineProfile
+              ? parseInlineProfile(inlineProfile)
+              : undefined;
+
+          if (resolvedProfile) {
+            analysisResult = applyProfileToAnalysis(analysisResult, resolvedProfile);
+            const flagCount = analysisResult.personalFlags?.length ?? 0;
+            console.log(`[PERSONAL-RISK-${requestId}] Applied profile "${resolvedProfile.name}": ${flagCount} personal flags, overall risk ${analysisResult.overallRisk}`);
+          } else if (profileId || inlineProfile) {
+            console.warn(`[PERSONAL-RISK-${requestId}] profile could not be resolved, skipping personalization`);
           }
 
           // Store completed result
@@ -887,6 +1042,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
           analysisRequest.result = analysisResult;
           analysisRequest.ocrText = ocrText;
           analysisRequest.timestamp = Date.now();
+
+          // Spend the scan HERE, on success, and nowhere else.
+          //
+          // It used to be spent when the client saved the scan to history,
+          // inside a try/catch that logged the failure and carried on. Three
+          // things were wrong with that: an anonymous scan never reaches the
+          // history route at all, a client that simply never called it scanned
+          // for free forever, and a user at zero still got their analysis
+          // because the check ran after we had already paid for it.
+          //
+          // Still swallowed on failure, but for the opposite reason: the person
+          // has their verdict, and taking it away because a counter would not
+          // increment is a worse outcome than one uncounted scan.
+          try {
+            await consumeForPrincipal(principal, productType);
+          } catch (quotaError: any) {
+            console.error(`[QUOTA-${requestId}] consume failed:`, quotaError?.message);
+          }
           
         } catch (analysisError: any) {
           analysisStage = 'failed';
@@ -960,14 +1133,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const scan = await storage.createScanHistory(scanData);
       console.log(`[HISTORY] Saved scan ${scan.id} for user ${userId}`);
       
-      // Consume a scan from user's quota (tracks free scans / premium rate limits)
-      try {
-        await subscriptionService.consumeScan(userId, data.productCategory);
-        console.log(`[HISTORY] Consumed scan for user ${userId}`);
-      } catch (scanError: any) {
-        console.error(`[HISTORY] Failed to consume scan for user ${userId}:`, scanError.message);
-        // Don't fail the request - scan is already saved
-      }
+      // Quota is NOT spent here. Saving to history is a separate act from
+      // scanning — the client can retry it, skip it, or call it twice — and
+      // metering on it charged people for the wrong thing. See the consume call
+      // in /api/scan-and-analyze.
       
       res.status(201).json({ success: true, scanId: scan.id });
     } catch (error: any) {
@@ -1223,93 +1392,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // ==========================================
-  // FEEDBACK ENDPOINT (using Replit Resend integration)
+  // SCAN QUOTA
   // ==========================================
-  
-  const feedbackSchema = z.object({
-    type: z.enum(['bug', 'improvement', 'positive']),
-    email: z.string().email().optional(),
-    message: z.string().min(1).max(5000)
-  });
+  //
+  // Two things used to live here and no longer do.
+  //
+  // The FEEDBACK endpoint mailed a fixed inbox through Resend. No screen in the
+  // iOS app ever called it; its only client was the retired web build under
+  // client/. STRIPE billing (a publishable key, a checkout, an admin customer
+  // sweep) was the same story, and production has held no Stripe key since the
+  // move off Replit, so it failed closed on every path. Both meant naming a
+  // processor in the privacy policy for something nobody could reach.
 
-  // Deliberately open to signed-out callers — someone who cannot sign in is
-  // exactly the person with a bug to report. But it sends mail through our
-  // Resend account to a fixed inbox, so unmetered it is a way to flood that
-  // inbox and get the sending domain marked as a spam source.
-  app.post("/api/feedback", rateLimit({ windowMs: 60 * 60 * 1000, max: 5, name: "feedback" }), async (req: any, res) => {
-    try {
-      const { type, email, message } = feedbackSchema.parse(req.body);
-      const userId = req.user?.claims?.sub || 'Anonymous';
-      const userEmail = req.user?.claims?.email || 'Anonymous';
-      
-      // Import and use Replit Resend integration
-      const { getResendClient } = await import('./services/resend');
-      const { client, fromEmail } = await getResendClient();
-      
-      const YOUR_EMAIL = process.env.FEEDBACK_EMAIL || 'davehuang01@gmail.com';
-      
-      const typeLabels: Record<string, string> = {
-        bug: 'Bug Report',
-        improvement: 'Improvement Suggestion',
-        positive: 'Positive Feedback'
-      };
-      
-      const emailContent = `
-New ${typeLabels[type]} from Revely
-
-User ID: ${userId}
-User Email: ${userEmail}
-Feedback Type: ${typeLabels[type]}
-Contact Email: ${email || 'Not provided'}
-
-Message:
-${message}
-
----
-Sent from Revely Feedback System
-      `.trim();
-      
-      console.log(`[FEEDBACK] Attempting to send email from: ${fromEmail} to: ${YOUR_EMAIL}`);
-      
-      const result = await client.emails.send({
-        from: fromEmail || 'Revely Feedback <onboarding@resend.dev>',
-        to: YOUR_EMAIL,
-        replyTo: email || undefined,
-        subject: `[Revely] ${typeLabels[type]} from ${userEmail}`,
-        text: emailContent
-      });
-      
-      console.log('[FEEDBACK] Resend response:', JSON.stringify(result, null, 2));
-      
-      if (result.error) {
-        console.error('[FEEDBACK] Resend API error:', result.error);
-        return res.status(500).json({ error: 'Failed to send feedback' });
-      }
-      
-      console.log(`[FEEDBACK] Sent ${type} feedback from user ${userId}, email id: ${result.data?.id}`);
-      res.json({ success: true });
-    } catch (error: any) {
-      console.error('[FEEDBACK] Error:', error);
-      res.status(500).json({ error: error.message || 'Failed to send feedback' });
-    }
-  });
-
-  // ==========================================
-  // SCAN PURCHASE & BILLING ENDPOINTS
-  // ==========================================
-
-  app.get('/api/stripe/publishable-key', async (_req, res) => {
-    try {
-      const publishableKey = process.env.STRIPE_LIVE_PUBLISHABLE_KEY || process.env.STRIPE_PUBLISHABLE_KEY;
-      if (!publishableKey) {
-        return res.status(500).json({ error: 'Stripe publishable key not configured' });
-      }
-      res.json({ publishableKey });
-    } catch (error: any) {
-      console.error('Error getting publishable key:', error);
-      res.status(500).json({ error: 'Failed to get Stripe key' });
-    }
-  });
 
   app.get('/api/scan/quota', isAuthenticated, async (req: any, res) => {
     try {
@@ -1322,108 +1416,6 @@ Sent from Revely Feedback System
     }
   });
 
-  app.post('/api/scan/purchase', isAuthenticated, async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-
-      const stripe = await getUncachableStripeClient();
-      const user = await storage.getUser(userId);
-      if (!user) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-
-      let customerId: string | null = null;
-      let needsMetadataUpdate = false;
-      
-      const existingByUserId = await stripe.customers.search({
-        query: `metadata['userId']:'${userId}'`,
-        limit: 10,
-      });
-      
-      for (const customer of existingByUserId.data) {
-        if (!customer.deleted) {
-          customerId = customer.id;
-          console.log(`[CHECKOUT] Found existing Stripe customer ${customerId} for user ${userId} (by userId metadata)`);
-          break;
-        }
-      }
-      
-      if (!customerId && user.email) {
-        const existingByEmail = await stripe.customers.search({
-          query: `email:'${user.email}'`,
-          limit: 10,
-        });
-        
-        for (const customer of existingByEmail.data) {
-          if (!customer.deleted) {
-            customerId = customer.id;
-            needsMetadataUpdate = true;
-            console.log(`[CHECKOUT] Found existing Stripe customer ${customerId} for user ${userId} (by email fallback)`);
-            break;
-          }
-        }
-        
-        if (customerId && needsMetadataUpdate) {
-          await stripe.customers.update(customerId, {
-            metadata: { userId },
-          });
-          console.log(`[CHECKOUT] Updated customer ${customerId} with userId metadata`);
-        }
-      }
-      
-      if (!customerId) {
-        const customer = await stripe.customers.create(
-          {
-            email: user.email || undefined,
-            metadata: { userId },
-          },
-          {
-            idempotencyKey: `customer-create-${userId}`,
-          }
-        );
-        customerId = customer.id;
-        console.log(`[CHECKOUT] Created new Stripe customer ${customerId} for user ${userId}`);
-      }
-      
-      if (user.stripeCustomerId !== customerId) {
-        await db.update(users)
-          .set({ stripeCustomerId: customerId, updatedAt: new Date() })
-          .where(eq(users.id, userId));
-      }
-
-      const successUrl = `${req.protocol}://${req.get('host')}/upload?payment=success`;
-      const cancelUrl = `${req.protocol}://${req.get('host')}/upload`;
-
-      const session = await stripe.checkout.sessions.create({
-        customer: customerId,
-        payment_method_types: ['card'],
-        line_items: [{
-          price_data: {
-            unit_amount: 299,
-            currency: 'usd',
-            product_data: {
-              name: '10 Scan Bundle',
-            },
-          },
-          quantity: 1,
-        }],
-        mode: 'payment',
-        success_url: successUrl,
-        cancel_url: cancelUrl,
-        metadata: {
-          userId,
-          scansToAdd: '10',
-        },
-      });
-
-      await subscriptionService.logPurchaseClick(userId, 'scan_bundle_10');
-
-      res.json({ url: session.url });
-    } catch (error: any) {
-      console.error('Error creating checkout session:', error);
-      res.status(500).json({ error: 'Failed to create checkout session' });
-    }
-  });
 
   // Open so the paywall can be measured before sign-in. Each call writes a
   // row, so without a limit an anonymous caller can grow the table for free.
@@ -1650,7 +1642,8 @@ Sent from Revely Feedback System
             replitId: u.id,
             email: u.email || '',
             name: `${u.firstName || ''} ${u.lastName || ''}`.trim() || 'Unknown',
-            dailyFreeScansUsed: u.dailyFreeScansUsed || 0,
+            freeScansUsed: u.freeScansUsed || 0,
+            subscriptionStatus: u.subscriptionStatus,
             purchasedScanBalance: u.purchasedScanBalance || 0,
             createdAt: u.createdAt?.toString() || '',
             scansToday: scanCounts.today,
@@ -1778,240 +1771,24 @@ Sent from Revely Feedback System
     }
   });
 
-  // ==========================================
-  // REFERRAL ROUTES
-  // ==========================================
-
-  app.get('/api/referral', isAuthenticated, async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
-      if (!user) return res.status(404).json({ error: 'User not found' });
-
-      const [stats] = await db.select({ count: sql<number>`count(*)::int` })
-        .from(referrals)
-        .where(and(eq(referrals.referrerId, userId), eq(referrals.rewardGranted, true)));
-
-      res.json({
-        referralCode: user.referralCode,
-        successfulReferrals: stats?.count ?? 0,
-        rewardPerReferral: REFERRAL_REWARD_SCANS,
-      });
-    } catch (error: any) {
-      console.error('Get referral info error:', error);
-      res.status(500).json({ error: 'Failed to get referral info' });
-    }
-  });
-
-  app.post('/api/referral/process', isAuthenticated, async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-      const { referralCode } = req.body;
-      if (!referralCode || typeof referralCode !== 'string') {
-        return res.status(400).json({ error: 'Referral code is required' });
-      }
-
-      const code = referralCode.toUpperCase().trim();
-
-      const currentUser = await storage.getUser(userId);
-      if (!currentUser) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-
-      const accountAge = Date.now() - new Date(currentUser.createdAt!).getTime();
-      const ONE_HOUR = 60 * 60 * 1000;
-      if (accountAge > ONE_HOUR) {
-        return res.status(400).json({ error: 'Referrals can only be applied to new accounts' });
-      }
-
-      const [referrer] = await db.select().from(users).where(eq(users.referralCode, code));
-      if (!referrer) {
-        return res.status(404).json({ error: 'Invalid referral code' });
-      }
-      if (referrer.id === userId) {
-        return res.status(400).json({ error: 'You cannot refer yourself' });
-      }
-
-      await db.transaction(async (tx) => {
-        try {
-          await tx.insert(referrals).values({
-            referrerId: referrer.id,
-            referredId: userId,
-            rewardGranted: true,
-          });
-        } catch (e: any) {
-          if (e.code === '23505') {
-            throw new Error('ALREADY_REFERRED');
-          }
-          throw e;
-        }
-
-        await tx.update(users)
-          .set({ purchasedScanBalance: sql`COALESCE(purchased_scan_balance, 0) + ${REFERRAL_REWARD_SCANS}`, updatedAt: new Date() })
-          .where(eq(users.id, referrer.id));
-
-        await tx.update(users)
-          .set({ purchasedScanBalance: sql`COALESCE(purchased_scan_balance, 0) + ${REFERRAL_REWARD_SCANS}`, updatedAt: new Date() })
-          .where(eq(users.id, userId));
-      });
-
-      console.log(`[REFERRAL] User ${userId} referred by ${referrer.id} (code: ${code}). Both granted ${REFERRAL_REWARD_SCANS} scans.`);
-      res.json({ success: true, scansGranted: REFERRAL_REWARD_SCANS });
-    } catch (error: any) {
-      if (error.message === 'ALREADY_REFERRED') {
-        return res.status(400).json({ error: 'You have already been referred' });
-      }
-      console.error('Process referral error:', error);
-      res.status(500).json({ error: 'Failed to process referral' });
-    }
-  });
-
-  // ==========================================
-  // PROMO CODE ROUTES
-  // ==========================================
-  
-  app.post('/api/scan/redeem', isAuthenticated, async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-      const { code } = req.body;
-      if (!code || typeof code !== 'string') {
-        return res.status(400).json({ error: 'Promo code is required' });
-      }
-
-      const normalizedCode = code.toUpperCase().trim();
-
-      const [promo] = await db.select().from(promoCodes).where(eq(promoCodes.code, normalizedCode));
-      if (!promo) {
-        return res.status(404).json({ error: 'Invalid promo code' });
-      }
-      if (!promo.isActive) {
-        return res.status(400).json({ error: 'This promo code is no longer active' });
-      }
-      if (new Date(promo.expiresAt) < new Date()) {
-        return res.status(400).json({ error: 'This promo code has expired' });
-      }
-      if (promo.totalRedemptions >= promo.maxRedemptions) {
-        return res.status(400).json({ error: 'This promo code has reached its redemption limit' });
-      }
-
-      const [existing] = await db.select().from(promoRedemptions)
-        .where(and(
-          eq(promoRedemptions.promoCodeId, promo.id),
-          eq(promoRedemptions.userId, userId)
-        ));
-      if (existing) {
-        return res.status(400).json({ error: 'You have already redeemed this promo code' });
-      }
-
-      await db.transaction(async (tx) => {
-        await tx.insert(promoRedemptions).values({
-          promoCodeId: promo.id,
-          userId,
-        });
-        await tx.update(promoCodes)
-          .set({ totalRedemptions: promo.totalRedemptions + 1 })
-          .where(eq(promoCodes.id, promo.id));
-        const user = await storage.getUser(userId);
-        const newBalance = (user?.purchasedScanBalance || 0) + promo.scansGranted;
-        await tx.update(users)
-          .set({ purchasedScanBalance: newBalance, updatedAt: new Date() })
-          .where(eq(users.id, userId));
-      });
-
-      console.log(`[PROMO] User ${userId} redeemed code "${normalizedCode}" for ${promo.scansGranted} scans`);
-      res.json({ success: true, scansGranted: promo.scansGranted });
-    } catch (error: any) {
-      console.error('Promo redemption error:', error);
-      res.status(500).json({ error: 'Failed to redeem promo code' });
-    }
-  });
-
-  // Admin: List promo codes
-  app.get('/api/admin/promo-codes', isAuthenticated, isAdmin, async (req: any, res) => {
-    try {
-      const codes = await db.select().from(promoCodes).orderBy(desc(promoCodes.createdAt));
-      res.json(codes);
-    } catch (error: any) {
-      console.error('List promo codes error:', error);
-      res.status(500).json({ error: 'Failed to list promo codes' });
-    }
-  });
-
-  // Admin: Create promo code
-  app.post('/api/admin/promo-codes', isAuthenticated, isAdmin, async (req: any, res) => {
-    try {
-      const parsed = insertPromoCodeSchema.safeParse(req.body);
-      if (!parsed.success) {
-        return res.status(400).json({ error: 'Invalid input', details: parsed.error.flatten() });
-      }
-
-      const { code, scansGranted, maxRedemptions, expiresAt } = parsed.data;
-
-      const [existingCode] = await db.select().from(promoCodes).where(eq(promoCodes.code, code));
-      if (existingCode) {
-        return res.status(409).json({ error: 'A promo code with this name already exists' });
-      }
-
-      const [created] = await db.insert(promoCodes).values({
-        code,
-        scansGranted,
-        maxRedemptions,
-        expiresAt: new Date(expiresAt),
-      }).returning();
-
-      console.log(`[ADMIN] Promo code created by ${req.user.claims.sub}: ${code}`);
-      res.json(created);
-    } catch (error: any) {
-      console.error('Create promo code error:', error);
-      res.status(500).json({ error: 'Failed to create promo code' });
-    }
-  });
-
-  // Admin: Update promo code (toggle active, update expiration/max)
-  app.patch('/api/admin/promo-codes/:id', isAuthenticated, isAdmin, async (req: any, res) => {
-    try {
-      const { id } = req.params;
-      const { isActive, maxRedemptions, expiresAt } = req.body;
-
-      const updates: Record<string, any> = {};
-      if (typeof isActive === 'boolean') updates.isActive = isActive;
-      if (typeof maxRedemptions === 'number' && maxRedemptions > 0) updates.maxRedemptions = maxRedemptions;
-      if (expiresAt) updates.expiresAt = new Date(expiresAt);
-
-      if (Object.keys(updates).length === 0) {
-        return res.status(400).json({ error: 'No valid fields to update' });
-      }
-
-      const [updated] = await db.update(promoCodes)
-        .set(updates)
-        .where(eq(promoCodes.id, id))
-        .returning();
-
-      if (!updated) {
-        return res.status(404).json({ error: 'Promo code not found' });
-      }
-
-      res.json(updated);
-    } catch (error: any) {
-      console.error('Update promo code error:', error);
-      res.status(500).json({ error: 'Failed to update promo code' });
-    }
-  });
-
-  // Admin: Delete promo code
-  app.delete('/api/admin/promo-codes/:id', isAuthenticated, isAdmin, async (req: any, res) => {
-    try {
-      const { id } = req.params;
-      const result = await db.delete(promoCodes).where(eq(promoCodes.id, id)).returning();
-      if (result.length === 0) {
-        return res.status(404).json({ error: 'Promo code not found' });
-      }
-      res.json({ success: true });
-    } catch (error: any) {
-      console.error('Delete promo code error:', error);
-      res.status(500).json({ error: 'Failed to delete promo code' });
-    }
-  });
+  // The promo codes and the referral scheme that used to live here are gone.
+  //
+  // Both handed out `purchasedScanBalance`, which was the currency of the model
+  // this app has left: ten scans for $2.99, packs that never expire. A promo
+  // code granted some; referring a friend granted ten to each of you.
+  //
+  // Under a subscription the app no longer sells packs, and the viewfinder's
+  // gate asks `subscription.active` and never looks at how many scans are
+  // banked. So both schemes credited scans the holder could not spend: the
+  // server would have allowed the scan and the app would still have sent them
+  // to the paywall. Nothing in the mobile app called either one, so nobody
+  // found out.
+  //
+  // Removed rather than repointed at subscriptions, because the thing worth
+  // building instead is a comp entitlement, and that is a different shape: it
+  // grants subscription TIME, it has to survive RevenueCat overwriting the
+  // subscription columns on every refresh, and it wants no redeem field in the
+  // app at all.
 
   // Clear ingredient cache (admin only - use when AI prompts change)
   app.post('/api/admin/clear-cache', isAuthenticated, isAdmin, async (req: any, res) => {
@@ -2022,56 +1799,6 @@ Sent from Revely Feedback System
     } catch (error: any) {
       console.error('Clear cache error:', error);
       res.status(500).json({ error: 'Failed to clear cache' });
-    }
-  });
-
-  // Admin endpoint to clean up stale Stripe customers that no longer exist in Stripe
-  app.post('/api/admin/cleanup-stripe-customers', isAuthenticated, isAdmin, async (req: any, res) => {
-    try {
-      const stripe = await getUncachableStripeClient();
-      
-      // Get all customers from our stripe.customers table
-      const localCustomers = await db.execute(sql`SELECT id, email, metadata FROM stripe.customers`);
-      
-      const results: { id: string; status: string; email?: string }[] = [];
-      const staleCustomerIds: string[] = [];
-      
-      for (const customer of localCustomers.rows as any[]) {
-        try {
-          const stripeCustomer = await stripe.customers.retrieve(customer.id);
-          if ((stripeCustomer as any).deleted) {
-            results.push({ id: customer.id, status: 'deleted_in_stripe', email: customer.email });
-            staleCustomerIds.push(customer.id);
-          } else {
-            results.push({ id: customer.id, status: 'active', email: customer.email });
-          }
-        } catch (err: any) {
-          if (err.code === 'resource_missing') {
-            results.push({ id: customer.id, status: 'not_found_in_stripe', email: customer.email });
-            staleCustomerIds.push(customer.id);
-          } else {
-            results.push({ id: customer.id, status: `error: ${err.message}`, email: customer.email });
-          }
-        }
-      }
-      
-      // Clear stale customer IDs from users table
-      if (staleCustomerIds.length > 0) {
-        await db.update(users)
-          .set({ stripeCustomerId: null, updatedAt: new Date() })
-          .where(inArray(users.stripeCustomerId, staleCustomerIds));
-      }
-      
-      console.log(`[ADMIN] Stripe customer cleanup by ${req.user.claims.sub}:`, results);
-      res.json({ 
-        success: true, 
-        results,
-        staleCustomersCleared: staleCustomerIds.length,
-        message: `Found ${staleCustomerIds.length} stale customers. Cleared from users table. Note: stripe.customers table is read-only and managed by stripe-replit-sync.`
-      });
-    } catch (error: any) {
-      console.error('Stripe customer cleanup error:', error);
-      res.status(500).json({ error: 'Failed to cleanup Stripe customers: ' + error.message });
     }
   });
 

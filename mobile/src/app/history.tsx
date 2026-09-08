@@ -1,9 +1,12 @@
 import { useFocusEffect, useRouter } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { ActivityIndicator, FlatList, Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Image } from 'expo-image';
 
 import { ApertureMark } from '@/components/aperture-mark';
+import { ApertureFrame } from '@/components/aperture-reveal';
+import { InkWashPlate } from '@/components/inkwash-plate';
 import { ThemedText } from '@/components/themed-text';
 import { VerdictSeal } from '@/components/verdict-seal';
 import {
@@ -17,7 +20,8 @@ import {
   useVerdictColors,
 } from '@/constants/design';
 import { fetchHistory, scanTitle } from '@/lib/history';
-import { goBackOrHome } from '@/lib/navigation';
+import { labelThumbnailUri } from '@/lib/label-thumbnails';
+import { goBackOrHome, goHome } from '@/lib/navigation';
 import { getActiveProfileId, listProfiles } from '@/lib/profiles';
 import { useTranslation, type TranslationKey } from '@/lib/i18n';
 import type { RiskLevel, ScanHistory } from '@/lib/types';
@@ -168,6 +172,15 @@ export default function HistoryScreen() {
     void load(scans.length, filter);
   }
 
+  // Resolved once per page of scans, never per render: each lookup is a
+  // synchronous filesystem check, and doing that inside renderItem would put
+  // one on the JS thread for every tile of every frame while scrolling.
+  const thumbnails = useMemo(() => {
+    const map: Record<string, string | null> = {};
+    for (const scan of scans) map[scan.id] = labelThumbnailUri(scan.id);
+    return map;
+  }, [scans]);
+
   const items = toItems(scans, t);
 
   return (
@@ -216,12 +229,31 @@ export default function HistoryScreen() {
           <ThemedText style={[Type.body, { color: surface.ink }]}>{error}</ThemedText>
         </View>
       ) : scans.length === 0 ? (
+        /* An empty aperture, at the size of the tile that will fill it.
+           The brackets are the mark's own, drawn faint because nothing has
+           been caught in them yet — a slot waiting for the first scan rather
+           than a sentence apologising for the absence of one. Curiosity, not
+           fear: the frame invites, it does not explain. */
         <View style={styles.centered}>
-          <ThemedText style={[Type.body, { color: surface.inkMuted }]}>
+          {/* An empty basket, above the empty frame. A page with genuinely
+              nothing on it is the one place a drawing is doing work rather than
+              decorating: it gives the eye somewhere to rest that is not an
+              apology for the absence of scans.
+
+              In its own band rather than washed behind the frame and the
+              sentence. Behind them it had to be faint enough to read through,
+              and it sat directly under the words. */}
+          <View style={styles.emptyPlate}>
+            <InkWashPlate name="basket" />
+          </View>
+          <ApertureFrame style={styles.emptySlot} color={surface.inkFaint}>
+            <ApertureMark size={28} color={surface.inkFaint} />
+          </ApertureFrame>
+          <ThemedText style={[Type.body, styles.emptyText, { color: surface.inkMuted }]}>
             {filter === 'all' ? t('history.empty') : t('history.emptyFiltered')}
           </ThemedText>
           {filter === 'all' ? (
-            <Pressable onPress={() => router.replace('/')}>
+            <Pressable onPress={goHome}>
               <ThemedText style={[Type.label, { color: surface.ink }]}>
                 {t('history.emptyCta')}
               </ThemedText>
@@ -254,6 +286,37 @@ export default function HistoryScreen() {
                       style={[styles.tile, { backgroundColor: surface.card, borderColor: surface.rule }]}
                       onPress={() => router.push({ pathname: '/scan-detail', params: { id: scan.id } })}
                     >
+                      {/* The specimen itself, behind its own record.
+
+                          This is the app's most credible image and it was
+                          already being taken and thrown away — a grid about
+                          products somebody physically held, rendered entirely
+                          in type. The photograph never left the phone and does
+                          not start now; it is a local cache keyed to the scan
+                          id, absent on a second device, and the tile is built
+                          to read with or without it.
+
+                          Held well back. It is the ground the record sits on,
+                          not the subject — at full strength a snapshot of a
+                          crumpled packet would out-shout the verdict seal,
+                          which is the one thing on this tile that has to be
+                          legible at a glance. */}
+                      {thumbnails[scan.id] ? (
+                        <>
+                          <Image
+                            source={{ uri: thumbnails[scan.id]! }}
+                            style={StyleSheet.absoluteFill}
+                            contentFit="cover"
+                            transition={220}
+                          />
+                          <View
+                            style={[
+                              StyleSheet.absoluteFill,
+                              { backgroundColor: surface.card, opacity: 0.86 },
+                            ]}
+                          />
+                        </>
+                      ) : null}
                       <View style={[styles.tileEdge, { backgroundColor: tone.ink }]} />
                       <View style={styles.tileBody}>
                         <VerdictSeal
@@ -283,7 +346,7 @@ export default function HistoryScreen() {
       {/* Ways back out. Not a tab bar — the camera is the app's home, and a
           persistent tab bar would make it one destination among three. */}
       <View style={[styles.bottomBar, { borderTopColor: surface.rule }]}>
-        <Pressable style={styles.bottomItem} onPress={() => router.replace('/')}>
+        <Pressable style={styles.bottomItem} onPress={goHome}>
           <ApertureMark size={20} color={surface.ink} />
           <ThemedText style={[Type.meta, { color: surface.ink }]}>{t('history.toScan')}</ThemedText>
         </Pressable>
@@ -299,6 +362,16 @@ export default function HistoryScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   centered: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: Space.md, padding: Gutter },
+  // Wide and short, which is how the basket is drawn.
+  emptyPlate: { alignSelf: 'stretch', height: 150, marginBottom: Space.sm },
+  emptySlot: {
+    width: 132,
+    height: 132,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: Space.sm,
+  },
+  emptyText: { textAlign: 'center' },
   header: {
     paddingHorizontal: Gutter,
     paddingTop: Space.sm,

@@ -35,6 +35,12 @@ COPY --from=build /app/dist ./dist
 # alone, silently losing the sourced layer.
 COPY server/data ./server/data
 
+# The marketing page's images and fonts. Read from disk by an express.static
+# mount rather than bundled, because esbuild does not copy assets and 1MB of
+# base64 in a JavaScript string would be paid for on every request. Without
+# this the home page renders as unstyled text with broken images.
+COPY server/web ./server/web
+
 # Fly injects PORT; 8080 is the default the fly.toml expects.
 ENV PORT=8080
 EXPOSE 8080

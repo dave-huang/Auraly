@@ -16,16 +16,32 @@ import { ThemedText } from '@/components/themed-text';
  * dependency for it.
  *
  * Two optical sizes, not one scaled shape — strokes thicken as the mark
- * shrinks. At and above 44pt it is the full two-bar mark at the 100-grid
- * weights; below that the second bar drops and the strokes go heavier, or the
- * whole thing turns to mush at icon sizes.
+ * shrinks, because a hairline that reads at 48pt disappears at 14pt.
+ *
+ * BOTH SIZES CARRY BOTH BARS.
+ *
+ * The small variant used to drop the second bar, which made the app show two
+ * different marks depending on where you were standing — one bar in the
+ * viewfinder chip and the history header, two on the paywall. A logo that
+ * changes shape is not a logo. The fix is to redraw the small size so two bars
+ * survive at 12pt rather than to delete one of them: the bars go taller, the
+ * gap between them stays close to a bar's own height so it cannot read as a
+ * single thick slab, and the short bar shortens a little to keep the pair
+ * legible as two.
  */
 
 // Both variants share an outer bracket edge at 11.5% and a top bar spanning
 // 27%–73%, so the mark keeps its silhouette across the size break.
 const LARGE = { bracket: 25, stroke: 5, bar: 6, barTop: 41, secondBarTop: 55, barWidth: 46, shortBarWidth: 32 };
-const SMALL = { bracket: 29, stroke: 9, bar: 10, barTop: 45, barWidth: 46 };
+const SMALL = { bracket: 29, stroke: 9, bar: 8, barTop: 39, secondBarTop: 54, barWidth: 46, shortBarWidth: 30 };
 
+/**
+ * Where the mark switches to its heavier optical size.
+ *
+ * No longer where it loses a bar — both sizes have two. It is now only the
+ * point at which the strokes thicken, which is why nothing needs to be sized
+ * around it any more.
+ */
 export const APERTURE_BAR_BREAK = 44;
 
 export function ApertureMark({
@@ -38,8 +54,7 @@ export function ApertureMark({
   style?: StyleProp<ViewStyle>;
 }) {
   const u = size / 100;
-  const twoBars = size >= APERTURE_BAR_BREAK;
-  const g = twoBars ? LARGE : SMALL;
+  const g = size >= APERTURE_BAR_BREAK ? LARGE : SMALL;
 
   const arm: ViewStyle = {
     position: 'absolute',
@@ -67,18 +82,16 @@ export function ApertureMark({
           backgroundColor: color,
         }}
       />
-      {twoBars ? (
-        <View
-          style={{
-            position: 'absolute',
-            left: 27 * u,
-            top: LARGE.secondBarTop * u,
-            width: LARGE.shortBarWidth * u,
-            height: LARGE.bar * u,
-            backgroundColor: color,
-          }}
-        />
-      ) : null}
+      <View
+        style={{
+          position: 'absolute',
+          left: 27 * u,
+          top: g.secondBarTop * u,
+          width: g.shortBarWidth * u,
+          height: g.bar * u,
+          backgroundColor: color,
+        }}
+      />
     </View>
   );
 }

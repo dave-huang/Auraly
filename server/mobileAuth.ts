@@ -1,6 +1,8 @@
 import type { Express, RequestHandler } from "express";
 import { createRemoteJWKSet, jwtVerify, SignJWT } from "jose";
 import { storage } from "./storage";
+import { readDeviceId } from "./anonymousAccess";
+import { subscriptionService } from "./services/subscription";
 
 // Roll-your-own mobile auth: the app performs native Sign in with Apple /
 // Google, sends the resulting identity token here, and we verify it against
@@ -31,8 +33,32 @@ export interface VerifiedIdentity {
   provider: "apple" | "google";
   providerUserId: string;
   email?: string;
+  /**
+   * Whether the PROVIDER says it has verified this address.
+   *
+   * This is the field account linking turns on, which makes it a security
+   * control rather than a detail: see resolveUser. An unverified address is
+   * still stored on a new account as a contact, and is never used to find an
+   * existing one.
+   */
+  emailVerified: boolean;
   firstName?: string;
   lastName?: string;
+}
+
+/**
+ * Read the `email_verified` claim.
+ *
+ * Apple sends it as a JSON boolean on some tokens and as the STRING "true" on
+ * others — both are documented, and a strict `=== true` silently treats half
+ * of Apple's own tokens as unverified. Google sends a boolean.
+ *
+ * Absent counts as unverified. Both providers send the claim whenever they
+ * send an email, so a missing one means something unexpected, and the safe
+ * reading of "unexpected" here is "do not link accounts on it".
+ */
+function emailIsVerified(claim: unknown): boolean {
+  return claim === true || claim === "true";
 }
 
 async function verifyAppleToken(identityToken: string): Promise<VerifiedIdentity> {
@@ -48,6 +74,7 @@ async function verifyAppleToken(identityToken: string): Promise<VerifiedIdentity
     provider: "apple",
     providerUserId: payload.sub as string,
     email: typeof payload.email === "string" ? payload.email : undefined,
+    emailVerified: emailIsVerified(payload.email_verified),
   };
 }
 
@@ -64,13 +91,11 @@ async function verifyGoogleToken(idToken: string): Promise<VerifiedIdentity> {
     issuer: GOOGLE_ISSUERS,
     audience: audiences,
   });
-  if (payload.email && payload.email_verified === false) {
-    throw new Error("Google account email is not verified");
-  }
   return {
     provider: "google",
     providerUserId: payload.sub as string,
     email: typeof payload.email === "string" ? payload.email : undefined,
+    emailVerified: emailIsVerified(payload.email_verified),
     firstName: typeof payload.given_name === "string" ? payload.given_name : undefined,
     lastName: typeof payload.family_name === "string" ? payload.family_name : undefined,
   };
@@ -79,16 +104,30 @@ async function verifyGoogleToken(idToken: string): Promise<VerifiedIdentity> {
 /**
  * Resolve a verified provider identity to a user row.
  *
- * Account linking is by verified email: signing in with Google and Apple using
- * the same verified address lands on one account. Apple's "Hide My Email"
- * yields a per-app relay address, which is stable for that user, so it simply
- * behaves as a distinct account — correct, if occasionally surprising.
+ * Account linking is by VERIFIED email: sign in with Google and with Apple on
+ * the same verified address and you land on one account, with one scan history
+ * and one subscription. That is what people expect, and the alternative —
+ * silently handing someone a second, empty account they cannot tell apart from
+ * their first — generates support mail that is very hard to answer.
+ *
+ * THE `emailVerified` CHECK IS LOAD-BEARING.
+ *
+ * Linking on an address makes that address a credential: whoever can prove
+ * control of it inherits the account behind it. That is safe only while the
+ * provider is the one attesting to it. An identity token carrying an
+ * unverified address must therefore never be allowed to FIND an account —
+ * it can only make one, which is why the lookup is gated and the upsert
+ * below is not.
+ *
+ * Apple's "Hide My Email" yields a per-app relay address, stable for that
+ * user, so it simply behaves as a distinct account — correct, if occasionally
+ * surprising, and nothing can link it because nothing else ever sees it.
  *
  * NOTE: user IDs are provider-prefixed for new accounts. Existing accounts
  * (Replit-era numeric IDs) are adopted by email so scan history survives.
  */
 async function resolveUser(identity: VerifiedIdentity) {
-  if (identity.email) {
+  if (identity.email && identity.emailVerified) {
     const existing = await storage.getUserByEmail(identity.email);
     if (existing) return existing;
   }
@@ -163,6 +202,21 @@ export function setupMobileAuth(app: Express) {
           lastName: identity.lastName ?? user.lastName,
           profileImageUrl: user.profileImageUrl,
         });
+      }
+
+      // Carry the free scans this device already spent onto the account.
+      //
+      // Without it, signing in hands everybody a second grant: spend three
+      // anonymously, sign in, get three more. The grant is meant to follow the
+      // person, not the credential. Never fatal — a sign-in that works is worth
+      // more than a counter that is exactly right.
+      const deviceId = readDeviceId(req);
+      if (deviceId) {
+        try {
+          await subscriptionService.claimDevice(deviceId, user.id);
+        } catch (claimError: any) {
+          console.error(`[MOBILE-AUTH] device claim failed:`, claimError?.message);
+        }
       }
 
       const { token, expiresAt } = await issueToken(user.id);

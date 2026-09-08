@@ -65,6 +65,21 @@ export function annotateWithCitations(result: AnalysisResult): AnalysisResult {
   return any ? { ...result, ingredients } : result;
 }
 
+/**
+ * The stronger of two concept matches, reading the same ingredient in two
+ * languages. `definite` always beats `verify` — the concept layer already
+ * orders them within one call, and this extends that across the pair.
+ */
+function strongerHit<T extends { certainty: 'definite' | 'verify' }>(
+  a: T | undefined | null,
+  b: T | undefined | null,
+): T | undefined {
+  if (!a) return b ?? undefined;
+  if (!b) return a;
+  if (a.certainty === 'definite') return a;
+  return b.certainty === 'definite' ? b : a;
+}
+
 export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile): AnalysisResult {
   const flags: PersonalFlag[] = [];
   let overallRisk = result.overallRisk;
@@ -169,7 +184,26 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
     }
   }
 
+  // Do the localized display names line up with the English canonical ones?
+  // Only then can a row be read in both languages, and the guard matters: an
+  // unaligned index attributes a finding to the wrong ingredient, which is the
+  // failure ingredientIndex exists to prevent.
+  const alignedByIndex = canonical.length === result.ingredients.length;
+
   const ingredients = result.ingredients.map((ing, ingIndex) => {
+    // The SAME ingredient, in English.
+    //
+    // Dietary rules and condition advisories are English vocabularies —
+    // 'gelatin', 'carmine', 'aspartame'. `ing.name` is whatever language the
+    // reader asked for, so on a Spanish or Chinese label these matched nothing
+    // at all: a vegan profile came back "vegan: checked, not found" on a
+    // product containing gelatin and carmine, which is not a silent miss but an
+    // affirmative false statement, on the exact cross-language scan this app
+    // exists for. The allergen loop above was fixed for this long ago; these
+    // two were not.
+    const canonicalName = alignedByIndex ? canonical[ingIndex] : undefined;
+    const readInEnglish = canonicalName && canonicalName !== ing.name ? canonicalName : undefined;
+
     // The universal level — risk to most people — is the floor. Personal
     // factors can only raise it: an allergy makes peanuts worse for you, it
     // cannot make trans fat better. `personalRisk` stays undefined unless
@@ -213,7 +247,10 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
       // One call, because the concept layer already orders definite above
       // verify — it returns the strongest available match rather than the
       // first one to fire.
-      const hit = matchConcept(ing.name, spec);
+      const hit = strongerHit(
+        matchConcept(ing.name, spec),
+        readInEnglish ? matchConcept(readInEnglish, spec) : undefined,
+      );
       const definite = hit?.certainty === 'definite' ? hit.evidence : undefined;
       const verify = hit?.certainty === 'verify' ? hit.evidence : undefined;
       if (definite) {
@@ -247,7 +284,9 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
     //    personal match is allowed to reach `high`. Aspartame for someone with
     //    PKU is not a caution.
     for (const condition of profileConditions(profile.conditions)) {
-      const matched = matchAdvisory(ing.name, condition, domain);
+      const matched =
+        matchAdvisory(ing.name, condition, domain) ??
+        (readInEnglish ? matchAdvisory(readInEnglish, condition, domain) : undefined);
       if (!matched) continue;
       const { advisory, term } = matched;
       const flagRisk = impactToRisk(advisory.impact);

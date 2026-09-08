@@ -286,6 +286,12 @@ export interface ReadLabelOptions {
  * because a live credential behind unreachable code is a liability with no
  * upside. Restoring a fallback is therefore two steps and still no deploy: set
  * the provider's key, then set LABEL_PROVIDER_CHAIN, e.g. "gemini,openai".
+ *
+ * DOING SO CHANGES WHAT THE PRIVACY POLICY HAS TO SAY. Production runs OpenAI
+ * alone, and both /privacy and /health-data-privacy name OpenAI as the only
+ * company a label photo reaches. Putting gemini or ocr into the live chain
+ * sends photographs to Google and makes those two documents false, so it is a
+ * legal change before it is a config change: server/legal.ts first.
  */
 const DEFAULT_PROVIDER_CHAIN: LabelProvider[] = ['openai'];
 

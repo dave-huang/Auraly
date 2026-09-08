@@ -2,8 +2,8 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 import * as Haptics from 'expo-haptics';
 import * as ImagePicker from 'expo-image-picker';
 import { Redirect, useFocusEffect, useRouter } from 'expo-router';
-import { useCallback, useRef, useState } from 'react';
-import { Alert, Modal, Pressable, StyleSheet, View } from 'react-native';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Alert, AppState, Linking, Modal, Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ApertureMark, RevelyLockup } from '@/components/aperture-mark';
@@ -11,8 +11,10 @@ import { ScanProgress } from '@/components/scan-progress';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Lamplight, Paper, Radius, Space, Type, useSurface } from '@/constants/design';
 import { useAuth } from '@/lib/auth-context';
+import { useEntitlement } from '@/lib/entitlement';
 import { fireVerdictHaptic } from '@/lib/haptics';
 import { saveScan } from '@/lib/history';
+import { pruneLabelThumbnails, saveLabelThumbnail } from '@/lib/label-thumbnails';
 import { useTranslation } from '@/lib/i18n';
 import { getActiveProfileId, listProfiles } from '@/lib/profiles';
 import { pollAnalysis, prepareImage, setLastResult, submitScan } from '@/lib/scan';
@@ -50,19 +52,71 @@ export default function ViewfinderScreen() {
 
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
-  const [productType, setProductType] = useState<ProductType>('food');
+
+  /**
+   * Whether the camera session should be running.
+   *
+   * iOS interrupts the capture session when the app leaves the foreground and
+   * does not resume it on return, which left the preview frozen on a stale
+   * frame — live enough to look working, dead enough that takePictureAsync
+   * rejects. `active` is expo-camera's own switch for exactly this: it tears
+   * the session down and builds a fresh one rather than leaving an interrupted
+   * one on screen.
+   *
+   * Screen focus counts too: the camera has no business holding the hardware
+   * while someone reads a verdict on another screen.
+   */
+  const [appForeground, setAppForeground] = useState(AppState.currentState === 'active');
+  const [screenFocused, setScreenFocused] = useState(true);
+  const cameraActive = appForeground && screenFocused;
+
+  /** Guards against a second shutter press before the first photo returns. */
+  const [capturing, setCapturing] = useState(false);
+
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (next) => {
+      setAppForeground(next === 'active');
+      // A capture in flight when the app backgrounds never settles, and a
+      // stuck flag is indistinguishable from a broken button.
+      if (next !== 'active') setCapturing(false);
+    });
+    return () => sub.remove();
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      setScreenFocused(true);
+      return () => setScreenFocused(false);
+    }, []),
+  );
+  // FOOD ONLY, FOR LAUNCH.
+  //
+  // There was a Food / Skincare toggle over the shutter, and the whole stack
+  // behind it still works: `personal_care` is a live ProductType, the server
+  // reads cosmetic evidence in its own domain (COSING annexes rather than the
+  // food corpus), and the ingredient screen already picks the right one. What
+  // is gone is the CHOICE, because a first release that says two things says
+  // neither, and every line of copy in this app now argues about food.
+  //
+  // Bringing it back is putting the toggle in this bar again. Nothing else has
+  // to be rebuilt, so do not delete the plumbing on the way past.
+  const productType: ProductType = 'food';
   const [profiles, setProfiles] = useState<Profile[] | null>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [phase, setPhase] = useState<'reading' | 'analyzing' | null>(null);
   const [ingredientCount, setIngredientCount] = useState<number | undefined>();
   const [previewUri, setPreviewUri] = useState<string | undefined>();
   const [menuOpen, setMenuOpen] = useState(false);
+  // Only meaningful with an account — the anonymous grant is counted per device
+  // on the server, and this endpoint requires a token.
+  const { entitlement, loading: entitlementLoading } = useEntitlement(Boolean(user));
 
   useFocusEffect(
     useCallback(() => {
-      if (!user) return;
-      // Re-read on focus so a switch made in the profile sheet is reflected
-      // the moment the viewfinder comes back.
+      // Runs signed in OR not. Before sign-in `listProfiles` returns the one
+      // profile onboarding built on this device, which is what lets the very
+      // first scan be about a person rather than about the average human.
+      // Gating this on `user` was what made onboarding unreachable.
       Promise.all([listProfiles(), getActiveProfileId()])
         .then(([list, stored]) => {
           setProfiles(list);
@@ -74,7 +128,7 @@ export default function ViewfinderScreen() {
           );
         })
         .catch(() => setProfiles([]));
-    }, [user]),
+    }, []),
   );
 
   const activeProfile = profiles?.find((p) => p.id === activeId) ?? null;
@@ -111,13 +165,45 @@ export default function ViewfinderScreen() {
       // Haptic fires before the card is readable — the body knows the answer
       // a beat before the eyes do.
       void fireVerdictHaptic(result.overallRisk, result.readConfidence);
-      saveScan({ result, productType, language }).catch((e) =>
-        console.warn('[SCAN] Failed to save to history:', e?.message),
-      );
+      // Keep the label photograph against the scan it belongs to, so history
+      // can show the specimen rather than only describing it. On this device
+      // only — see lib/label-thumbnails. Chained off the save because the
+      // scan's id is what the two are keyed by, and still fire-and-forget:
+      // the verdict is already on screen and neither of these may delay it or
+      // fail in front of it.
+      saveScan({ result, productType, language })
+        .then(async (saved) => {
+          // `scanId`, not `id`: the endpoint replies { success, scanId } and
+          // never a ScanHistory row.
+          if (!saved?.scanId) return;
+          await saveLabelThumbnail(saved.scanId, uri);
+          pruneLabelThumbnails();
+        })
+        .catch((e) => console.warn('[SCAN] Failed to save to history:', e?.message));
       setPhase(null);
       router.push('/results');
     } catch (error: any) {
       setPhase(null);
+
+      // Out of scans. Not a failure, and it must not read as one — the app is
+      // working exactly as designed, and an "Error" alert here trains people to
+      // dismiss alerts. Straight to the paywall instead.
+      if (error?.status === 402 || error?.code === 'no_scans') {
+        // gate=1: opened as a locked door, not on purpose. If the subscription
+        // screen finds this person is in fact subscribed — a webhook we never
+        // received — it sends them straight back here rather than showing them
+        // a status page they did not ask for.
+        router.push('/paywall?gate=1');
+        return;
+      }
+      // A claimed device signed out on this install: the person HAS an account
+      // and the useful answer is to get them back into it, not to sell them a
+      // second subscription.
+      if (error?.code === 'sign_in_required') {
+        router.push('/sign-in');
+        return;
+      }
+
       // "No label found" is the one failure the person can actually fix, and
       // it is common — so it gets a written sentence in their language, not the
       // server's English "OCR failed:" prose. Anything else is genuinely
@@ -132,9 +218,25 @@ export default function ViewfinderScreen() {
   }
 
   async function capture() {
-    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    const photo = await cameraRef.current?.takePictureAsync({ quality: 1 });
-    if (photo?.uri) await analyze(photo.uri);
+    // Two ways this used to do nothing at all. The camera could be mid-restart
+    // after the app came back, so takePictureAsync rejected — and the rejection
+    // went nowhere, because the caller is `void capture()`. And a double tap
+    // fired a second capture over the first. Both looked identical from the
+    // outside: a shutter that swallows presses.
+    if (capturing || !cameraActive) return;
+    setCapturing(true);
+    try {
+      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      const photo = await cameraRef.current?.takePictureAsync({ quality: 1 });
+      if (photo?.uri) await analyze(photo.uri);
+    } catch (error: any) {
+      // analyze() handles its own failures; reaching here means the camera
+      // itself refused. Say so rather than leaving the button looking broken.
+      console.warn('[CAMERA] capture failed', error?.message);
+      Alert.alert(t('scan.failed'), t('camera.captureFailed'));
+    } finally {
+      setCapturing(false);
+    }
   }
 
   async function pickFromLibrary() {
@@ -149,26 +251,93 @@ export default function ViewfinderScreen() {
   }
 
   if (isLoading) return <View style={{ flex: 1, backgroundColor: surface.paper }} />;
-  if (!user) return <Redirect href="/sign-in" />;
 
+  // NO ACCOUNT MEANS WELCOME. One rule, no exceptions, and worth stating
+  // plainly because it has been three different rules already.
+  //
+  // It was once `<Redirect href="/sign-in" />`, so a cold start opened on
+  // "Continue with Apple" before the app had shown a single verdict. Then it
+  // was welcome only for somebody who ALSO had no profile, which left the
+  // half-finished cases — a profile built anonymously, or an account signed out
+  // of — landing on the paywall instead, a screen that asks for money from
+  // somebody it cannot even sell to, since entitlement is granted against a
+  // user id and there is no user.
+  //
+  // So: signed out, you get welcome. It is the screen that names the app and
+  // offers the two doors, which is the correct answer to "who are you" every
+  // time it is asked. Nothing is lost by coming through it — the profile built
+  // during onboarding is kept, and signing in from the drawer returns here
+  // knowing who they are.
+  if (!user) return <Redirect href="/welcome" />;
+
+  // `profiles === null` means the read has not finished. Holding the blank
+  // frame for a beat is right: routing on an unloaded list would bounce someone
+  // who has a profile out of the app every cold start.
+  if (profiles === null) return <View style={{ flex: 1, backgroundColor: surface.paper }} />;
+
+  // Signed in with nothing set up. The ordinary way to reach this is to have
+  // tapped "I already have an account", authorised with Apple, and turned out
+  // not to have one. That case used to land HERE, on a viewfinder, with no
+  // profile and no idea it was supposed to have one.
+  if (profiles.length === 0) return <Redirect href="/onboarding" />;
+
+  // NO SCANNING BEFORE THE PAYWALL.
+  //
+  // The camera used to be reachable by anyone: you framed a label, pressed the
+  // shutter, waited, and only then found out you had no scans. The refusal was
+  // correct and the timing was indefensible — it spent someone's effort to
+  // make a sale.
+  //
+  // Everybody here has an account — the signed-out case left for welcome
+  // above — so this is the entitlement question alone, and it is answered
+  // AFFIRMATIVELY ONLY. `null` means the question could not be answered (a
+  // network blip, a cold cache), and null must never be read as "blocked": the
+  // whole point of routing entitlement through one place is that a dropped
+  // request cannot put a paywall in front of somebody who is paying. Unknown
+  // falls through to the camera and the shutter's own 402 handling, which is
+  // where it was before this gate existed.
+  const walled = entitlement?.subscription.active === false;
+  if (!entitlementLoading && walled) return <Redirect href="/paywall?gate=1" />;
+
+  // Camera priming.
+  //
+  // iOS gives an app exactly one chance at the system dialog. A denial is
+  // effectively permanent — it can only be undone in Settings, which almost
+  // nobody finds — so the ask is explained BEFORE it is made, and the two
+  // states are told apart: `canAskAgain` false means the dialog is spent and
+  // the honest next step is Settings, not a button that does nothing.
   if (!permission?.granted) {
+    const spent = permission != null && !permission.canAskAgain;
     return (
       <SafeAreaView style={[styles.permission, { backgroundColor: surface.paper }]}>
         <RevelyLockup size={22} color={surface.ink} />
+        <ThemedText style={[Type.title, styles.center, { color: surface.ink }]}>
+          {t('camera.title')}
+        </ThemedText>
         <ThemedText style={[Type.body, styles.center, { color: surface.inkMuted }]}>
-          {t('scan.permissionBody')}
+          {spent ? t('camera.deniedBody') : t('camera.body')}
         </ThemedText>
         <Pressable
           style={[styles.inkButton, { backgroundColor: surface.ink }]}
-          onPress={() => void requestPermission()}
+          onPress={() => (spent ? void Linking.openSettings() : void requestPermission())}
+          accessibilityRole="button"
         >
           <ThemedText style={[Type.label, { color: surface.card }]}>
-            {t('scan.allowCamera')}
+            {spent ? t('camera.settings') : t('camera.allow')}
           </ThemedText>
         </Pressable>
-        <Pressable onPress={() => void pickFromLibrary()}>
+        {/* hitSlop and padding are not decoration here. This is 11px mono type,
+            which gives a tap target about 15 points tall against Apple's 44pt
+            minimum — and it is the ONLY way forward for someone who has denied
+            the camera. Missing it looks to them like the app is simply broken. */}
+        <Pressable
+          onPress={() => void pickFromLibrary()}
+          hitSlop={{ top: 16, bottom: 16, left: 24, right: 24 }}
+          style={styles.permissionSecondary}
+          accessibilityRole="button"
+        >
           <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>
-            {t('scan.chooseInstead')}
+            {t('camera.library')}
           </ThemedText>
         </Pressable>
       </SafeAreaView>
@@ -177,7 +346,7 @@ export default function ViewfinderScreen() {
 
   return (
     <View style={styles.container}>
-      <CameraView ref={cameraRef} style={StyleSheet.absoluteFill} facing="back" />
+      <CameraView ref={cameraRef} style={StyleSheet.absoluteFill} facing="back" active={cameraActive} />
 
       {/* Vignette — pulls the eye to the middle of the frame and gives the
           paper chrome something to sit on at the edges. */}
@@ -214,22 +383,6 @@ export default function ViewfinderScreen() {
         </View>
 
         <View style={styles.bottomBar}>
-          <View style={styles.typeToggle}>
-            {(['food', 'personal_care'] as const).map((type) => (
-              <Pressable
-                key={type}
-                style={[styles.typeOption, productType === type && styles.typeOptionActive]}
-                onPress={() => setProductType(type)}
-              >
-                <ThemedText
-                  style={[styles.typeLabel, productType === type && styles.typeLabelActive]}
-                >
-                  {type === 'food' ? t('scan.food') : t('scan.personalCare')}
-                </ThemedText>
-              </Pressable>
-            ))}
-          </View>
-
           <ThemedText style={styles.hint}>{t('scan.hint')}</ThemedText>
 
           <View style={styles.captureRow}>
@@ -243,7 +396,13 @@ export default function ViewfinderScreen() {
               <View style={styles.galleryFront} />
             </Pressable>
 
-            <Pressable style={styles.shutter} onPress={() => void capture()}>
+            <Pressable
+              style={[styles.shutter, (capturing || !cameraActive) && styles.shutterBusy]}
+              onPress={() => void capture()}
+              disabled={capturing || !cameraActive}
+              accessibilityRole="button"
+              accessibilityState={{ disabled: capturing || !cameraActive }}
+            >
               <View style={styles.shutterInner} />
             </Pressable>
 
@@ -274,7 +433,16 @@ export default function ViewfinderScreen() {
               [
                 ['history.title', () => router.push('/history')],
                 ['scan.switchProfile', openProfiles],
-                ['paywall.menuItem', () => router.push('/paywall')],
+                [
+                  // Subscribers see "Subscription"; everyone else sees
+                  // "Subscribe". There is no count to show any more — the free
+                  // grant is zero, so the row names the door instead of what is
+                  // left behind it.
+                  entitlement?.subscription.active
+                    ? 'paywall.menuItemPlus'
+                    : 'paywall.menuItem',
+                  () => router.push('/paywall'),
+                ],
                 // Sign-out moved inside Account: deletion needs a screen that
                 // can say what it removes before it removes it, and a menu row
                 // cannot.
@@ -313,6 +481,7 @@ const styles = StyleSheet.create({
     gap: Space.lg,
     padding: Space.xl,
   },
+  permissionSecondary: { paddingVertical: Space.md, paddingHorizontal: Space.xl },
   center: { textAlign: 'center' },
   inkButton: { paddingHorizontal: Space.xl, paddingVertical: Space.md, borderRadius: Radius.pill },
 
@@ -354,18 +523,6 @@ const styles = StyleSheet.create({
   br: { bottom: 0, right: 0, borderBottomWidth: RETICLE.stroke, borderRightWidth: RETICLE.stroke },
 
   bottomBar: { alignItems: 'center', gap: Space.lg, paddingBottom: Space.xl },
-  typeToggle: {
-    flexDirection: 'row',
-    backgroundColor: OVER_FRAME.scrim,
-    borderWidth: 1,
-    borderColor: OVER_FRAME.hairline,
-    borderRadius: Radius.pill,
-    padding: 3,
-  },
-  typeOption: { paddingHorizontal: Space.lg, paddingVertical: 7, borderRadius: Radius.pill },
-  typeOptionActive: { backgroundColor: OVER_FRAME.ink },
-  typeLabel: { fontFamily: Font.sansMedium, fontSize: 13, lineHeight: 17, color: OVER_FRAME.ink },
-  typeLabelActive: { color: Paper.ink },
   hint: { fontFamily: Font.mono, fontSize: 11, lineHeight: 15, color: OVER_FRAME.ink },
   captureRow: {
     flexDirection: 'row',
@@ -414,6 +571,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  // Visibly unavailable while the session restarts or a capture is in flight.
+  // A shutter that refuses a press must look like it is refusing.
+  shutterBusy: { opacity: 0.4 },
   shutterInner: {
     width: SHUTTER.fill,
     height: SHUTTER.fill,

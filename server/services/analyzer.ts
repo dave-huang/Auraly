@@ -4,6 +4,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { openai } from '../openai';
 import { analysisResultSchema, type ProductType, type AnalysisResult, type RiskLevel, type Ingredient } from '@shared/schema';
+import { orderBatchResults } from './batchOrder';
 import { getCachedIngredientAnalysis, setCachedIngredientAnalysis } from './cache';
 import {
   applyPopulationRisk,
@@ -1364,10 +1365,12 @@ export async function analyzeIngredientsParallel(
       }
     }
     
-    // If all cached, return immediately
+    // If all cached, return immediately. Through the same ordering helper as
+    // every other exit, so there is one place where batch order is established
+    // rather than three places that have to agree.
     if (missingIngredients.length === 0) {
       console.log(`[PARALLEL-BATCH-${batchIdx}] All ingredients cached, returning ${cachedResults.length} results`);
-      return cachedResults.map(r => r.data);
+      return orderBatchResults(batch, cachedResults, [], []);
     }
     
     // Query GPT only for missing ingredients
@@ -1508,8 +1511,9 @@ IMPORTANT: Return ONLY this JSON array, nothing else:
         const batchDuration = ((Date.now() - batchStartTime) / 1000).toFixed(2);
         console.log(`[PARALLEL-BATCH-${batchIdx}] Completed in ${batchDuration}s: ${cachedResults.length} cached + ${freshResults.length} fresh`);
         
-        // Return all results for this batch
-        return [...cachedResults.map(r => r.data), ...freshResults];
+        // In the order the batch was asked for, NOT cached-then-fresh: the
+        // reader's list is lined up with this one by position downstream.
+        return orderBatchResults(batch, cachedResults, missingIngredients, freshResults);
       } catch (error) {
         lastError = error;
         if (retryAttempt < MAX_RETRIES - 1) {
@@ -1637,7 +1641,10 @@ IMPORTANT: Return ONLY this JSON array:
       }
     }
     
-    const allResults = [...cachedResults.map(r => r.data), ...individualResults];
+    // One push per missing ingredient above, success or fallback, so these are
+    // positionally aligned with `missingIngredients` and can be put back in
+    // batch order the same way the fast path is.
+    const allResults = orderBatchResults(batch, cachedResults, missingIngredients, individualResults);
     const batchDuration = ((Date.now() - batchStartTime) / 1000).toFixed(2);
     console.log(`[PARALLEL-BATCH-${batchIdx}] Completed in ${batchDuration}s (after individual retry): ${cachedResults.length} cached + ${individualResults.length} individual (total: ${allResults.length})`);
     return allResults;

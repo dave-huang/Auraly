@@ -371,14 +371,6 @@
     "scans": "次扫描",
     "buyMoreScans": "购买更多扫描"
   },
-  "referral": {
-    "title": "邀请好友",
-    "description": "分享你的链接，当好友注册时，你和好友都能获得 {{count}} 次免费扫描！",
-    "successfulReferrals": "成功推荐",
-    "yourLink": "你的推荐链接",
-    "copied": "链接已复制！",
-    "copiedDescription": "分享给朋友即可获得免费扫描。"
-  },
   "subscription": {
     "scanLeft": "次扫描剩余",
     "scansLeft": "次扫描剩余",
@@ -392,15 +384,6 @@
     "neverExpire": "购买的扫描次数永不过期",
     "buyNow": "立即购买",
     "notNow": "暂时不用"
-  },
-  "promo": {
-    "label": "有促销码？",
-    "placeholder": "输入促销码",
-    "redeem": "兑换",
-    "successTitle": "促销码已兑换！",
-    "successDesc": "已添加 {{count}} 次扫描到您的余额。",
-    "errorTitle": "无效促销码",
-    "errorGeneric": "兑换促销码失败"
   },
   "welcome": {
     "title": "欢迎来到 Auraly",

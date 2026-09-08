@@ -1,13 +1,15 @@
-import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
+import { useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Image } from 'expo-image';
 
 import { AnalysisView } from '@/components/analysis-view';
 import { ThemedText } from '@/components/themed-text';
-import { goBackOrHome } from '@/lib/navigation';
+import { goBackOrHome, goHome } from '@/lib/navigation';
 import { apiFetch } from '@/lib/api';
 import { deleteScan, scanToAnalysisResult } from '@/lib/history';
+import { deleteLabelThumbnail, labelThumbnailUri } from '@/lib/label-thumbnails';
 import { Font, Gutter, Radius, Space, Type, useSurface } from '@/constants/design';
 import { useTranslation } from '@/lib/i18n';
 import { getActiveProfileId, listProfiles } from '@/lib/profiles';
@@ -24,7 +26,6 @@ type StoredScan = ScanHistory & {
 };
 
 export default function ScanDetailScreen() {
-  const router = useRouter();
   const { t } = useTranslation();
   const surface = useSurface();
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -98,6 +99,8 @@ export default function ScanDetailScreen() {
         onPress: async () => {
           try {
             await deleteScan(id);
+            // The photo is a cache of this record; the record is gone.
+            deleteLabelThumbnail(id);
             goBackOrHome();
           } catch (e: any) {
             Alert.alert(t('history.deleteFailed'), e.message);
@@ -126,8 +129,24 @@ export default function ScanDetailScreen() {
     );
   }
 
+  // The label photograph this scan was read from, if this device still holds
+  // it. Absent on another device by design — it is a local cache, not part of
+  // the record — so the screen is built to read either way.
+  const frame = labelThumbnailUri(id);
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: surface.paper }]}>
+      {/* The frozen frame, as the results screen shows it. A replayed scan is
+          the same object as a fresh one and should arrive looking like it —
+          the card over its own specimen, not over blank paper. */}
+      {frame ? (
+        <>
+          <Image source={{ uri: frame }} style={StyleSheet.absoluteFill} contentFit="cover" />
+          <View
+            style={[StyleSheet.absoluteFill, { backgroundColor: surface.paper, opacity: 0.9 }]}
+          />
+        </>
+      ) : null}
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.topBar}>
           <Pressable onPress={goBackOrHome} hitSlop={12}>
@@ -152,7 +171,7 @@ export default function ScanDetailScreen() {
           controls={
             <Pressable
               style={[styles.primary, { backgroundColor: surface.ink }]}
-              onPress={() => router.replace('/')}
+              onPress={goHome}
             >
               <ThemedText style={[styles.primaryLabel, { color: surface.card }]}>
                 {t('results.scanAnother')}

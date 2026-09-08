@@ -1,7 +1,8 @@
 {
   "cli": {
     "version": ">= 16.0.0",
-    "appVersionSource": "remote"
+    "appVersionSource": "remote",
+    "promptToConfigurePushNotifications": false
   },
   "build": {
     "simulator": {
@@ -10,7 +11,10 @@
         "simulator": true
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://revely-api.fly.dev"
+        "EXPO_PUBLIC_API_URL": "https://revely-api.fly.dev",
+        "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_vFVQuKaKQzfbnoaUFVphFZhTUzh",
+        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "937721168112-n1gj0lbqle47husqo1tb3dq8snmtfoks.apps.googleusercontent.com",
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "937721168112-apvin1j082tra5u0nh5rddc9lv66mjc7.apps.googleusercontent.com"
       }
     },
     "preview": {
@@ -19,7 +23,10 @@
         "resourceClass": "m-medium"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://revely-api.fly.dev"
+        "EXPO_PUBLIC_API_URL": "https://revely-api.fly.dev",
+        "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_vFVQuKaKQzfbnoaUFVphFZhTUzh",
+        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "937721168112-n1gj0lbqle47husqo1tb3dq8snmtfoks.apps.googleusercontent.com",
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "937721168112-apvin1j082tra5u0nh5rddc9lv66mjc7.apps.googleusercontent.com"
       }
     },
     "production": {
@@ -28,7 +35,10 @@
         "resourceClass": "m-medium"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://revely-api.fly.dev"
+        "EXPO_PUBLIC_API_URL": "https://revely-api.fly.dev",
+        "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_vFVQuKaKQzfbnoaUFVphFZhTUzh",
+        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "937721168112-n1gj0lbqle47husqo1tb3dq8snmtfoks.apps.googleusercontent.com",
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "937721168112-apvin1j082tra5u0nh5rddc9lv66mjc7.apps.googleusercontent.com"
       }
     }
   },

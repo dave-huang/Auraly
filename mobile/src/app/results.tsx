@@ -1,18 +1,15 @@
 import { Image } from 'expo-image';
 import { Redirect, useRouter } from 'expo-router';
-import { useRef, useState } from 'react';
-import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AnalysisView } from '@/components/analysis-view';
 import { RisingSheet } from '@/components/rising-sheet';
-import { ShareCard, type ShareFormat } from '@/components/share-card';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Paper, Radius, Space, Type, useSurface } from '@/constants/design';
 import { useTranslation } from '@/lib/i18n';
+import { goHome } from '@/lib/navigation';
 import { useLastScan } from '@/lib/scan';
-import { captureAndShare, shareLayoutSize } from '@/lib/share';
-import { useVerdictCopy } from '@/lib/verdict';
 
 // The verdict card rises over the frozen frame — keeping the still behind it
 // is what makes the card read as an object laid over the moment of capture,
@@ -31,9 +28,11 @@ import { useVerdictCopy } from '@/lib/verdict';
 // every one of those areas claims the touch. Losing a verdict mid-read is a
 // far worse failure than having to reach for the ✕.
 //
-// The exit uses `replace`, not `back`: the frozen frame is a moment that has
-// passed, and leaving it on the stack would let a swipe resurrect a verdict
-// the person just dismissed.
+// Every exit here is goHome(), not `back`: the frozen frame is a moment that
+// has passed, and leaving it on the stack would let a swipe resurrect a
+// verdict the person just dismissed. goHome() unwinds to the viewfinder that
+// is already underneath rather than building a second one — see
+// lib/navigation, and the pile of cameras that got this written down.
 
 export default function ResultsScreen() {
   const router = useRouter();
@@ -43,28 +42,12 @@ export default function ResultsScreen() {
   // scan behind the sheet, and the card has to follow.
   const { result, profile, frame } = useLastScan();
 
-  const feedRef = useRef<View>(null);
-  const storyRef = useRef<View>(null);
-  const [sharing, setSharing] = useState<ShareFormat | null>(null);
-
-  const copy = useVerdictCopy(result ?? ({} as any), profile?.name);
 
   function dismiss() {
-    router.replace('/');
+    goHome();
   }
 
   if (!result) return <Redirect href="/" />;
-
-  async function share(format: ShareFormat) {
-    setSharing(format);
-    try {
-      await captureAndShare(format === 'feed' ? feedRef : storyRef, format);
-    } catch (e: any) {
-      Alert.alert(t('share.failed'), e?.message ?? t('common.tryAgain'));
-    } finally {
-      setSharing(null);
-    }
-  }
 
   return (
     <View style={styles.root}>
@@ -102,40 +85,23 @@ export default function ResultsScreen() {
               result={result}
               profileName={profile?.name}
               profileAllergens={profile?.allergens}
-              onRetake={() => router.replace('/')}
+              onRetake={goHome}
               onPressProfile={() => router.push('/profiles')}
               controls={
                 <>
+                  {/* THE SIGN-IN ASK USED TO LIVE HERE, and it could not fire.
+                      It was written for a camera anyone could use, where a
+                      verdict was the first honest moment to say "keep this".
+                      Scanning is behind an account now, so nobody ever reached
+                      a verdict without one and the card rendered for nobody. */}
                   <Pressable
                     style={[styles.inkButton, { backgroundColor: surface.ink }]}
-                    onPress={() => router.replace('/')}
+                    onPress={goHome}
                   >
                     <ThemedText style={[Type.label, styles.inkLabel, { color: surface.card }]}>
                       {t('results.scanAnother')}
                     </ThemedText>
                   </Pressable>
-
-                  <View style={styles.shareRow}>
-                    {(['feed', 'story'] as const).map((format) => (
-                      <Pressable
-                        key={format}
-                        style={[
-                          styles.shareButton,
-                          { borderColor: surface.rule, backgroundColor: surface.paper },
-                        ]}
-                        disabled={sharing !== null}
-                        onPress={() => void share(format)}
-                      >
-                        {sharing === format ? (
-                          <ActivityIndicator size="small" color={surface.ink} />
-                        ) : (
-                          <ThemedText style={[Type.label, { color: surface.ink }]}>
-                            ↗ {t(format === 'feed' ? 'share.feed' : 'share.story')}
-                          </ThemedText>
-                        )}
-                      </Pressable>
-                    ))}
-                  </View>
                 </>
               }
             />
@@ -143,35 +109,6 @@ export default function ResultsScreen() {
         </ScrollView>
       </SafeAreaView>
 
-      {/* Off-screen render targets. Positioned far off-canvas rather than
-          hidden with opacity/display, because captureRef needs a laid-out,
-          drawable view — a display:none subtree captures blank. */}
-      <View style={styles.offscreen} pointerEvents="none">
-        <View ref={feedRef} collapsable={false} style={shareLayoutSize('feed')}>
-          <ShareCard
-            format="feed"
-            result={result}
-            word={copy.word}
-            reason={copy.why}
-            sealLines={copy.sealLines}
-            neutral={copy.uncertain || copy.unsettled}
-            profileName={profile?.name}
-            profileAllergens={profile?.allergens}
-          />
-        </View>
-        <View ref={storyRef} collapsable={false} style={shareLayoutSize('story')}>
-          <ShareCard
-            format="story"
-            result={result}
-            word={copy.word}
-            reason={copy.why}
-            sealLines={copy.sealLines}
-            neutral={copy.uncertain || copy.unsettled}
-            profileName={profile?.name}
-            profileAllergens={profile?.allergens}
-          />
-        </View>
-      </View>
     </View>
   );
 }
@@ -196,16 +133,6 @@ const styles = StyleSheet.create({
   },
   closeGlyph: { fontFamily: Font.sansSemi, fontSize: 15, lineHeight: 20, color: Paper.paper },
   content: { padding: Gutter, gap: Space.lg, paddingTop: Space.lg, paddingBottom: Space.xxl },
-  shareRow: { flexDirection: 'row', gap: Space.md },
-  shareButton: {
-    flex: 1,
-    borderRadius: Radius.pill,
-    borderWidth: StyleSheet.hairlineWidth,
-    paddingVertical: Space.md,
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: 44,
-  },
   inkButton: { borderRadius: Radius.pill, paddingVertical: Space.lg, alignItems: 'center' },
   // The design specifies the primary control at 600/15, a step up from Type.label.
   inkLabel: { fontFamily: Font.sansSemi, fontSize: 15, lineHeight: 20 },

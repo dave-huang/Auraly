@@ -14,10 +14,13 @@
     "eval:check": "tsx eval/scoring.check.ts",
     "risk:check": "tsx eval/risk.check.ts",
     "auth:check": "tsx eval/auth.check.ts",
-    "check:all": "tsc && npm run eval:check && npm run risk:check && npm run substances:check && npm run auth:check",
+    "alignment:check": "tsx eval/alignment.check.ts",
+    "check:all": "tsc && npm run eval:check && npm run risk:check && npm run substances:check && npm run entitlement:check && npm run auth:check && npm run alignment:check",
     "substances:ingest": "tsx server/services/substances/ingest/run.ts",
     "substances:check": "tsx server/services/substances/check.ts",
-    "scans:backfill": "tsx server/scripts/backfillModelRisk.ts"
+    "scans:backfill": "tsx server/scripts/backfillModelRisk.ts",
+    "entitlement:check": "tsx eval/entitlement.check.ts",
+    "demo:check": "tsx eval/demo.check.ts"
   },
   "dependencies": {
     "@capacitor/app": "^8.1.0",
@@ -99,9 +102,6 @@
     "react-icons": "^5.4.0",
     "react-resizable-panels": "^2.1.7",
     "recharts": "^2.15.2",
-    "resend": "^4.0.0",
-    "stripe": "^20.0.0",
-    "stripe-replit-sync": "^0.0.12",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "tesseract.js": "^6.0.1",

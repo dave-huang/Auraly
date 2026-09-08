@@ -2,6 +2,9 @@ import { z } from "zod";
 import { sql } from 'drizzle-orm';
 import { boolean, index, integer, jsonb, pgTable, text, timestamp, uniqueIndex, varchar } from "drizzle-orm/pg-core";
 
+// Local binding: a re-export does not put the name in this file's scope.
+import type { SubscriptionPlan } from "./products";
+
 // Sessions table (REQUIRED for Replit Auth)
 export const sessions = pgTable(
   "sessions",
@@ -153,6 +156,37 @@ export const defaultRiskPreferences: RiskPreferences = {
   silicones: "no_preference",
 };
 
+/**
+ * Subscription state, mirrored from RevenueCat.
+ *
+ *   none      — never subscribed, or a trial that lapsed without converting
+ *   trialing  — inside the 7-day free trial
+ *   active    — paying
+ *   grace     — payment failed, Apple is retrying, access continues
+ *   expired   — was subscribed, no longer entitled
+ *
+ * `grace` exists as its own state rather than collapsing into `active` because
+ * a card that stopped working is a person to talk to, not a person to lock out
+ * mid-scan. It entitles exactly as `active` does and reads differently in the UI.
+ */
+export const subscriptionStatuses = ["none", "trialing", "active", "grace", "expired"] as const;
+export type SubscriptionStatus = typeof subscriptionStatuses[number];
+
+// Subscription plans, product ids and the entitlement name live in
+// shared/products.ts, which has no imports on purpose: the app imports them at
+// runtime, and anything reachable from here drags drizzle-orm and zod into an
+// iOS bundle. Re-exported so server code has one import for schema things.
+export {
+  subscriptionPlans,
+  PRODUCT_IDS,
+  PLAN_BY_PRODUCT,
+  ENTITLEMENT_ID,
+  type SubscriptionPlan,
+} from "./products";
+
+/** Statuses that entitle, subject to the expiry date still being in the future. */
+const ENTITLING_STATUSES = new Set<SubscriptionStatus>(["trialing", "active", "grace"]);
+
 // Users table (REQUIRED for Replit Auth)
 export const users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
@@ -172,10 +206,32 @@ export const users = pgTable("users", {
   lastDailyReset: timestamp("last_daily_reset").defaultNow(),
   
   // Purchased scan balance (never expires)
+  //
+  // GRANDFATHERED. This is the consumable scan-pack model the app shipped
+  // before subscriptions, and the paywall promised in writing that packs never
+  // expire and never auto-renew. Anyone holding a balance keeps spending it
+  // alongside — or instead of — a subscription. New packs are no longer sold.
   purchasedScanBalance: integer("purchased_scan_balance").default(0),
-  
-  // Referral code (unique per user, auto-generated)
-  referralCode: varchar("referral_code").unique(),
+
+  // ---- subscription ----
+  // Mirrored from RevenueCat by the webhook in server/webhookHandlers.ts. The
+  // client is never the authority on any of this: a device that says it is
+  // subscribed is a device that has been tampered with.
+  subscriptionStatus: varchar("subscription_status")
+    .$type<SubscriptionStatus>().notNull().default("none"),
+  subscriptionPlan: varchar("subscription_plan").$type<SubscriptionPlan | null>(),
+  // When the current period ends. Entitlement is status AND this date, because
+  // a cancelled subscription stays entitled until the period it paid for runs
+  // out, and a webhook we never received must not silently extend access.
+  subscriptionExpiresAt: timestamp("subscription_expires_at"),
+  // One trial per person, ever. Apple enforces this per Apple ID; we enforce it
+  // per account so a second Apple ID on the same account cannot re-trial.
+  trialUsed: boolean("trial_used").notNull().default(false),
+  revenueCatCustomerId: varchar("revenue_cat_customer_id"),
+
+  // Lifetime free scans consumed, across anonymous use and this account. Not a
+  // daily counter: see FREE_SCAN_GRANT below for why the daily model went away.
+  freeScansUsed: integer("free_scans_used").notNull().default(0),
   
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
@@ -184,30 +240,113 @@ export const users = pgTable("users", {
 export type User = typeof users.$inferSelect;
 export type UpsertUser = typeof users.$inferInsert;
 
-const DAILY_FREE_SCANS = 2;
+/**
+ * Free scans a person gets before they are asked for anything, ever.
+ *
+ * THE ONE NUMBER TO TURN. The app sells a subscription with a 7-day trial, and
+ * past that trial there is no free tier — a deliberate commercial decision,
+ * taken knowing App Store Review Guideline 5.1.1(v) is unfriendly to a scanner
+ * that requires an account and a payment to do the thing it advertises.
+ *
+ * This grant is the whole defence. It is spent anonymously, before sign-in,
+ * which means a reviewer can install the app and get real verdicts without an
+ * account or a card. If review pushes back anyway, RAISE THIS NUMBER — that is
+ * the entire fix, and nothing else has to move.
+ *
+ * It replaced a 2-per-day allowance. Daily refills and a hard paywall are
+ * incoherent together: the refill IS a free tier, and a person who waits until
+ * tomorrow never has a reason to subscribe.
+ */
+/**
+ * Scans granted before anyone pays. Zero: Revely is subscription-only.
+ *
+ * This was 3, and the argument for a free tier was that people with a serious
+ * allergy will not trust an app they have not watched get their own condition
+ * right. The counter-argument won: the 7-day trial is the taste, and a second
+ * kind of free muddles what the product costs.
+ *
+ * THE TRIAL IS ON THE ANNUAL PLAN ONLY, so with no free scans the only way to
+ * try Revely without paying today is to choose annual. Monthly is pay-first.
+ * That is a funnel decision, not an accident — if it should change, the fix is
+ * an introductory offer on the monthly product in App Store Connect, and the
+ * app will follow without a release.
+ *
+ * Changing this number needs no app release: nothing in the mobile copy writes
+ * it down, every screen reads it from the server. Raising it to 1 or 3 is a
+ * deploy. Which also means the reverse — shipping a build whose RevenueCat key
+ * is missing now leaves the app with no way in at all, where free scans used to
+ * be the safety net. PURCHASES_ENABLED being false is a broken build, not a
+ * degraded one.
+ */
+export const FREE_SCAN_GRANT = 0;
 
-export function getDailyFreeScansLimit(): number {
-  return DAILY_FREE_SCANS;
+/** Scans left in the free grant. Independent of any subscription. */
+export function freeScansRemaining(user: User): number {
+  return Math.max(0, FREE_SCAN_GRANT - (user.freeScansUsed || 0));
 }
 
-export function needsDailyReset(user: User): boolean {
-  if (!user.lastDailyReset) return true;
-  const lastReset = new Date(user.lastDailyReset);
-  const now = new Date();
-  return lastReset.toDateString() !== now.toDateString();
+/**
+ * Is this user entitled to unlimited scanning right now?
+ *
+ * Status AND expiry, never status alone. A `cancelled` subscription in
+ * RevenueCat is still entitled until the period it already paid for runs out,
+ * and — the case that matters — a webhook we never received would otherwise
+ * leave someone entitled forever on a stale `active`.
+ */
+export function hasActiveSubscription(user: User): boolean {
+  if (!ENTITLING_STATUSES.has(user.subscriptionStatus)) return false;
+  if (!user.subscriptionExpiresAt) return false;
+  return new Date(user.subscriptionExpiresAt).getTime() > Date.now();
 }
 
-export function getDailyFreeScansRemaining(user: User): number {
-  if (needsDailyReset(user)) return DAILY_FREE_SCANS;
-  return Math.max(0, DAILY_FREE_SCANS - (user.dailyFreeScansUsed || 0));
-}
-
-export function getTotalScansAvailable(user: User): number {
-  return getDailyFreeScansRemaining(user) + (user.purchasedScanBalance || 0);
+/**
+ * Total scans available, where `null` means unlimited.
+ *
+ * Null rather than Infinity or a large integer: a subscriber has no count, and
+ * every screen that renders a number has to decide what to show instead. Making
+ * that explicit in the type is what stops "unlimited" being displayed as 999.
+ */
+export function getTotalScansAvailable(user: User): number | null {
+  if (hasActiveSubscription(user)) return null;
+  return freeScansRemaining(user) + (user.purchasedScanBalance || 0);
 }
 
 export function canUserScan(user: User): boolean {
-  return getTotalScansAvailable(user) > 0;
+  const available = getTotalScansAvailable(user);
+  return available === null || available > 0;
+}
+
+// ---------------------------------------------------------------------------
+// Anonymous devices
+//
+// A person can build a profile and scan before they have an account. This is
+// the server side of that: a device-scoped row holding what an unsigned-in
+// device has spent, so the free grant cannot be reset by deleting the app's
+// data — and so those scans FOLLOW the person into their account rather than
+// resetting, which would hand out a second grant to everyone who signs up.
+//
+// It holds no profile and no scan content. The profile a person builds before
+// signing in stays on their device until they choose to save it.
+// ---------------------------------------------------------------------------
+export const anonymousDevices = pgTable("anonymous_devices", {
+  // Client-generated UUID, held in the device keychain.
+  id: varchar("id").primaryKey(),
+  freeScansUsed: integer("free_scans_used").notNull().default(0),
+  // Set once, when the device signs in. A claimed device stops being able to
+  // scan anonymously; the account is the authority from then on.
+  claimedByUserId: varchar("claimed_by_user_id").references(() => users.id, {
+    onDelete: "cascade",
+  }),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export type AnonymousDevice = typeof anonymousDevices.$inferSelect;
+
+export function deviceScansRemaining(device: AnonymousDevice | undefined): number {
+  if (!device) return FREE_SCAN_GRANT;
+  if (device.claimedByUserId) return 0;
+  return Math.max(0, FREE_SCAN_GRANT - device.freeScansUsed);
 }
 
 // Scan usage logs table (for analytics)
@@ -215,9 +354,14 @@ export const scanUsageLogs = pgTable(
   "scan_usage_logs",
   {
     id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-    userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+    // Nullable since anonymous scanning shipped: a scan made before sign-in has
+    // no user, and dropping those rows would understate usage by exactly the
+    // scans that decide whether onboarding works.
+    userId: varchar("user_id").references(() => users.id, { onDelete: "cascade" }),
+    /** Set instead of userId for a pre-sign-in scan. */
+    deviceId: varchar("device_id"),
     action: varchar("action").notNull(), // 'scan_attempt', 'scan_success', 'scan_blocked', 'scan_error'
-    scanSource: varchar("scan_source"), // 'free', 'purchased'
+    scanSource: varchar("scan_source"), // 'free', 'purchased', 'subscription'
     productType: varchar("product_type"),
     metadata: jsonb("metadata"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -374,6 +518,12 @@ export type DietaryRule = typeof dietaryRuleTypes[number];
 export const profileConditionTypes = [
   "pregnancy", "breastfeeding", "celiac", "eczema",
   "pku", "g6pd_deficiency", "hypertension", "diabetes", "kidney_disease",
+  // "infant" is the profile's SUBJECT being under 12 months, not a diagnosis.
+  // It sits here rather than in a separate axis because it behaves identically:
+  // a property of the person that changes what an ingredient does to them, and
+  // one no regulator expresses as a restriction on the substance. Honey is
+  // approved everywhere and causes infant botulism.
+  "infant",
 ] as const;
 export type ProfileCondition = typeof profileConditionTypes[number];
 /** Stored shape while the strictness control existed. Read, never written. */
@@ -1315,70 +1465,19 @@ export const ingredientCache = pgTable(
 export type IngredientCacheEntry = typeof ingredientCache.$inferSelect;
 export type InsertIngredientCacheEntry = typeof ingredientCache.$inferInsert;
 
-export const promoCodes = pgTable(
-  "promo_codes",
-  {
-    id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-    code: varchar("code").notNull().unique(),
-    scansGranted: integer("scans_granted").notNull().default(10),
-    maxRedemptions: integer("max_redemptions").notNull().default(100),
-    totalRedemptions: integer("total_redemptions").notNull().default(0),
-    expiresAt: timestamp("expires_at").notNull(),
-    isActive: boolean("is_active").notNull().default(true),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-  },
-  (table) => [
-    index("IDX_promo_code").on(table.code),
-  ]
-);
+// Two scan-granting schemes used to be modelled here and are not any more:
+// `promo_codes` + `promo_redemptions` (a code worth N scans) and `referrals`
+// (ten scans each to referrer and referred, keyed off a `referral_code` column
+// on users). Both paid out in `purchasedScanBalance`.
+//
+// They belonged to the pack model, which the app no longer sells, and by the
+// end they granted something unreachable: the viewfinder gates on
+// `subscription.active` and never looks at a scan balance, so what they handed
+// out could not be spent.
+//
+// All three tables and the `users.referral_code` column still EXIST in
+// Postgres. Dropping them is a separate, deliberate act rather than a side
+// effect of a code change, and `db:push` will offer to do it the next time it
+// runs. Note that `referral_code` is a column on a live table, so that one is a
+// heavier decision than the two orphan tables.
 
-export type PromoCode = typeof promoCodes.$inferSelect;
-export type InsertPromoCode = typeof promoCodes.$inferInsert;
-
-export const insertPromoCodeSchema = z.object({
-  code: z.string().min(3).max(30).transform(v => v.toUpperCase().trim()),
-  scansGranted: z.number().int().min(1).max(100).default(10),
-  maxRedemptions: z.number().int().min(1).max(100000).default(100),
-  expiresAt: z.string().or(z.date()),
-});
-
-export type InsertPromoCodeInput = z.infer<typeof insertPromoCodeSchema>;
-
-export const promoRedemptions = pgTable(
-  "promo_redemptions",
-  {
-    id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-    promoCodeId: varchar("promo_code_id").notNull().references(() => promoCodes.id, { onDelete: "cascade" }),
-    userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
-    redeemedAt: timestamp("redeemed_at").defaultNow().notNull(),
-  },
-  (table) => [
-    index("IDX_promo_redemption_user").on(table.userId),
-    index("IDX_promo_redemption_code").on(table.promoCodeId),
-  ]
-);
-
-export type PromoRedemption = typeof promoRedemptions.$inferSelect;
-
-// ==========================================
-// REFERRALS
-// ==========================================
-
-export const referrals = pgTable(
-  "referrals",
-  {
-    id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-    referrerId: varchar("referrer_id").notNull().references(() => users.id, { onDelete: "cascade" }),
-    referredId: varchar("referred_id").notNull().references(() => users.id, { onDelete: "cascade" }),
-    rewardGranted: boolean("reward_granted").notNull().default(false),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-  },
-  (table) => [
-    index("IDX_referral_referrer").on(table.referrerId),
-    index("IDX_referral_referred").on(table.referredId),
-  ]
-);
-
-export type Referral = typeof referrals.$inferSelect;
-
-export const REFERRAL_REWARD_SCANS = 10;

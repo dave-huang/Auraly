@@ -8,6 +8,13 @@
       "when": 1787594726169,
       "tag": "0000_diagnose",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1787777762423,
+      "tag": "0001_add_subscriptions_and_anonymous_devices",
+      "breakpoints": true
     }
   ]
 }

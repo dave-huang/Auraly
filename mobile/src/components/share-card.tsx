@@ -5,7 +5,7 @@ import { ThemedText } from '@/components/themed-text';
 import { Font, Paper, RISK_TO_VERDICT, Space, Verdict, verdictTextStyle } from '@/constants/design';
 import { useTranslation } from '@/lib/i18n';
 import type { AnalysisResult, RiskLevel } from '@/lib/types';
-import { localizeAllergen } from '@/lib/verdict';
+import { localizeAllergen, nativeListSeparator } from '@/lib/verdict';
 
 // The exported share object — a composed image, NOT a screenshot of the app.
 //
@@ -118,7 +118,7 @@ export function ShareCard({
     : verdictTone;
   const size = shareLayoutSize(format);
 
-  const native = result.originalIngredients?.join('、') ?? '';
+  const native = result.originalIngredients?.join(nativeListSeparator(result.sourceLanguage)) ?? '';
   const english = result.canonicalIngredients?.join(', ') ?? '';
   // Same rule as the in-app card: only a genuine translation earns the block,
   // or an English label exports two identical columns and reads as a bug.

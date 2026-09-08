@@ -371,14 +371,6 @@
     "scans": "scans",
     "buyMoreScans": "Buy More Scans"
   },
-  "referral": {
-    "title": "Refer Friends",
-    "description": "Share your link and both you and your friend get {{count}} free scans when they sign up!",
-    "successfulReferrals": "Successful Referrals",
-    "yourLink": "Your Referral Link",
-    "copied": "Link copied!",
-    "copiedDescription": "Share it with friends to earn free scans."
-  },
   "subscription": {
     "scanLeft": "scan left",
     "scansLeft": "scans left",
@@ -392,15 +384,6 @@
     "neverExpire": "Purchased scans never expire",
     "buyNow": "Buy Now",
     "notNow": "Not Now"
-  },
-  "promo": {
-    "label": "Have a promo code?",
-    "placeholder": "Enter code",
-    "redeem": "Redeem",
-    "successTitle": "Promo Code Redeemed!",
-    "successDesc": "{{count}} scans have been added to your balance.",
-    "errorTitle": "Invalid Code",
-    "errorGeneric": "Failed to redeem promo code"
   },
   "welcome": {
     "title": "Welcome to Auraly",

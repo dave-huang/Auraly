@@ -99,8 +99,8 @@ export const CONDITION_ADVISORIES: ConditionAdvisory[] = [
     },
   },
 
-  // ---- coeliac disease ----
-  // Raised from the seed list's blanket "caution" to avoid. For coeliac disease
+  // ---- celiac disease ----
+  // Raised from the seed list's blanket "caution" to avoid. For celiac disease
   // gluten is not a substance to watch, it is the thing that causes the damage —
   // the same standing an allergen has, and it should read that way on the card.
   {
@@ -113,7 +113,7 @@ export const CONDITION_ADVISORIES: ConditionAdvisory[] = [
     impact: 'avoid',
     domain: 'food',
     reasonKey: 'advisory.celiac.gluten',
-    reason: 'Contains or derives from a gluten grain, which damages the small intestine in coeliac disease.',
+    reason: 'Contains or derives from a gluten grain, which damages the small intestine in celiac disease.',
     source: {
       org: 'American College of Gastroenterology',
       title: 'ACG Clinical Guidelines: Diagnosis and Management of Celiac Disease',
@@ -362,6 +362,126 @@ export const CONDITION_ADVISORIES: ConditionAdvisory[] = [
     source: {
       org: 'American Academy of Dermatology',
       title: 'Guidelines of care for the management of atopic dermatitis',
+    },
+  },
+
+  // ---- infant, under 12 months ----
+  //
+  // The only entry here whose subject is not the account holder. A parent
+  // scanning for a baby is reading the same label as everyone else and asking a
+  // different question, and until now the app answered the adult's.
+  //
+  // Honey is the case that justifies the condition, and it is the cleanest
+  // example in the whole table of what the substance corpus structurally cannot
+  // see: honey is an unrestricted food in every market on earth, sits on no
+  // prohibition list, has no ADI, and hospitalises infants. There is no
+  // enforcement action to find because there is nothing wrong with the honey.
+  //
+  // Deliberately food-only. Baby skincare is a real question with real
+  // authorities behind it, but none I could cite tonight without guessing, and
+  // the eczema advisory already carries the contact sensitisers.
+  {
+    id: 'infant.honey',
+    condition: 'infant',
+    terms: ['honey'],
+    impact: 'avoid',
+    domain: 'food',
+    reasonKey: 'advisory.infant.honey',
+    reason:
+      'Honey can carry Clostridium botulinum spores. An infant gut cannot suppress them, and they produce the toxin that causes infant botulism. Not before 12 months, in any amount, cooked or raw.',
+    source: {
+      org: 'US Centers for Disease Control and Prevention',
+      title: 'Botulism: Prevention — Infant Botulism',
+    },
+  },
+  {
+    id: 'infant.unpasteurised',
+    condition: 'infant',
+    terms: ['unpasteurized', 'unpasteurised', 'raw milk'],
+    impact: 'avoid',
+    domain: 'food',
+    reasonKey: 'advisory.infant.rawMilk',
+    reason:
+      'Unpasteurised dairy can carry listeria, salmonella and E. coli. Infants are among the groups most likely to be hospitalised by them.',
+    source: {
+      org: 'US Centers for Disease Control and Prevention',
+      title: 'Food Safety and Raw Milk',
+    },
+  },
+  // Sodium is caution, not avoid, for the same reason it is on hypertension:
+  // salt is in nearly everything, and an Avoid on every jar of pasta sauce
+  // teaches a parent to swipe past the honey warning.
+  {
+    id: 'infant.sodium',
+    condition: 'infant',
+    terms: [
+      'salt', 'sea salt', 'table salt', 'rock salt', 'sodium chloride',
+      'monosodium glutamate', 'msg', 'soy sauce', 'fish sauce', 'stock cube', 'bouillon',
+    ],
+    impact: 'caution',
+    domain: 'food',
+    reasonKey: 'advisory.infant.sodium',
+    reason:
+      'A sodium source. Infant kidneys clear sodium poorly; NHS advice is under 1 g of salt a day before 12 months, which most adult food exceeds in a serving.',
+    source: {
+      org: 'UK National Health Service',
+      title: 'Foods to avoid giving babies and young children',
+    },
+  },
+  // Honey is deliberately absent from this list — it is a free sugar, but the
+  // botulism advisory above already claims it, and repeating it here would only
+  // produce a term the coverage check reports as permanently shadowed.
+  {
+    id: 'infant.added_sugars',
+    condition: 'infant',
+    terms: [
+      'sugar', 'sucrose', 'glucose syrup', 'glucose fructose syrup', 'high fructose corn syrup',
+      'corn syrup', 'dextrose', 'invert sugar', 'maltose', 'molasses',
+      'agave syrup', 'agave nectar', 'fruit juice concentrate', 'maltodextrin',
+    ],
+    impact: 'caution',
+    domain: 'food',
+    reasonKey: 'advisory.infant.addedSugars',
+    reason:
+      'An added sugar. US federal dietary guidance is to avoid added sugars entirely before age 2 — there is no recommended amount, only less.',
+    source: {
+      org: 'US Departments of Agriculture and Health and Human Services',
+      title: 'Dietary Guidelines for Americans, 2020-2025 — Birth Through 23 Months',
+      year: 2020,
+    },
+  },
+  {
+    id: 'infant.caffeine',
+    condition: 'infant',
+    terms: ['caffeine', 'guarana', 'coffee'],
+    impact: 'caution',
+    domain: 'food',
+    reasonKey: 'advisory.infant.caffeine',
+    reason:
+      'A stimulant with no established safe intake for young children. Paediatric guidance is that caffeine has no place in a child\'s diet.',
+    source: {
+      org: 'American Academy of Pediatrics',
+      title: 'Clinical Report: Sports Drinks and Energy Drinks for Children and Adolescents',
+      year: 2011,
+    },
+  },
+  // Rice takes up inorganic arsenic from soil, and rice drinks concentrate it
+  // in a form small children drink by the cup. This is the one arsenic claim
+  // narrow enough to cite without overreaching: the NHS names rice drinks
+  // specifically. Rice flour and brown rice syrup are a real question the same
+  // source does not answer, so they are not here.
+  {
+    id: 'infant.rice_drinks',
+    condition: 'infant',
+    terms: ['rice drink', 'rice milk', 'rice beverage'],
+    impact: 'caution',
+    domain: 'food',
+    reasonKey: 'advisory.infant.riceDrinks',
+    reason:
+      'Rice drinks carry inorganic arsenic. NHS advice is that children under 5 should not have them.',
+    source: {
+      org: 'UK National Health Service',
+      title: 'Foods to avoid giving babies and young children',
     },
   },
 ];
