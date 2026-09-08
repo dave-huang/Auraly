@@ -29,3 +29,7 @@ mobile/.env
 # Source drawings for the ink wash plates. The app ships the alpha-only
 # PNGs beside them; these are multi-megabyte originals kept for re-conversion.
 mobile/assets/images/inkwash/src/
+
+# Generated App Store plates. The captures and the compose script are tracked;
+# the composited output is not, since it is one command away.
+docs/appstore/out-*/
