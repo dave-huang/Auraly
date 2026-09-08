@@ -24,8 +24,13 @@ already ships, so the site cannot drift away from the product it advertises:
     whose pitch is that it does not hand you to third parties, and a page that
     phones Google on load to render its own headline argues the other way.
 
-  * The OG CARD is composed here rather than exported by hand, so it cannot
-    fall out of step with the headline it is supposed to preview.
+  * The OG CARDS, one per language, are composed here rather than exported by
+    hand, so they cannot fall out of step with the headlines they preview.
+    The Chinese one needs a Han face, which no package in this repo ships, so
+    it comes from the host: Heiti SC, out of macOS. This script is a developer
+    tool whose output is committed, so a macOS-only dependency costs nothing
+    at runtime, but it does mean the step fails loudly rather than quietly
+    drawing tofu if the font is not where it expects.
 
   * The APP STORE BADGES are downloaded from Apple's own marketing tools API
     and written to disk byte for byte. Apple's guidelines require their
@@ -137,8 +142,20 @@ def build_icons():
     return total
 
 
-def build_og_card(headline, wordmark='Revely'):
-    """The 1200x630 link preview: paper, the headline, and the scanning plate."""
+# The headline each language's card carries, matching COPY in server/siteCopy.ts.
+OG_HEADLINES = {
+    'en': ['Shop anywhere.', 'Know what you\u2019re eating.'],
+    'es': ['Compra donde sea.', 'Entiende lo que comes.'],
+    'zh': ['\u5728\u54ea\u4e70\u90fd\u884c\uff0c', '\u5403\u4ec0\u4e48\u5fc3\u91cc\u6709\u6570\u3002'],
+}
+
+# Heiti SC Medium, which is index 1 of the TrueType collection; index 0 is the
+# Traditional cut and would set the wrong characters for Simplified copy.
+CJK_FONT = ('/System/Library/Fonts/STHeiti Medium.ttc', 1)
+
+
+def build_og_card(lang, wordmark='Revely'):
+    """One 1200x630 link preview: paper, the headline, and the scanning plate."""
     from PIL import ImageDraw, ImageFont
     W, H, M = 1200, 630, 72
     card = Image.new('RGB', (W, H), (0xF6, 0xF1, 0xE7))
@@ -151,8 +168,19 @@ def build_og_card(headline, wordmark='Revely'):
         return ImageFont.truetype(os.path.join(FONTS, pkg, weight, stem + '.ttf'), size)
 
     fw = face('instrument-sans', '600SemiBold', 'InstrumentSans_600SemiBold', 30)
-    fh = face('instrument-sans', '600SemiBold', 'InstrumentSans_600SemiBold', 56)
     fm = face('ibm-plex-mono', '400Regular', 'IBMPlexMono_400Regular', 20)
+
+    if lang == 'zh':
+        path, index = CJK_FONT
+        if not os.path.exists(path):
+            raise SystemExit(f'{path} is missing; the Chinese card needs a Han face')
+        # Han characters fill their square, so the same optical size reads
+        # larger than Latin at the same pixel height. 52 against 56 matches.
+        fh = ImageFont.truetype(path, 52, index=index)
+        step = 74
+    else:
+        fh = face('instrument-sans', '600SemiBold', 'InstrumentSans_600SemiBold', 56)
+        step = 70
 
     # The mark, drawn from the same geometry as the inline SVG on the page.
     x, y, s = M, M - 6, 40
@@ -168,14 +196,14 @@ def build_og_card(headline, wordmark='Revely'):
     d.text((x + s + 16, y + 3), wordmark, font=fw, fill=ink)
 
     yy = 262
-    for line in headline:
+    for line in OG_HEADLINES[lang]:
         d.text((M, yy), line, font=fh, fill=ink)
-        yy += 70
+        yy += step
     d.text((M, H - M - 8), 'revely.life', font=fm, fill=(0x8A, 0x81, 0x75))
 
-    dst = os.path.join(OUT, 'og-card.png')
+    dst = os.path.join(OUT, f'og-card-{lang}.png')
     card.save(dst, optimize=True)
-    print(f'  og-card.png  {os.path.getsize(dst) // 1024}K')
+    print(f'  og-card-{lang}.png  {os.path.getsize(dst) // 1024}K')
     return os.path.getsize(dst)
 
 
@@ -199,6 +227,18 @@ def build_badges():
             f.write(body)
         total += len(body)
         print(f'  appstore-badge-{colour}.svg  {len(body) // 1024}K')
+    return total
+
+
+def build_og_cards():
+    total = 0
+    for lang in OG_HEADLINES:
+        total += build_og_card(lang)
+    # Kept as a copy of the English card so links shared before the site went
+    # multilingual still resolve an image.
+    import shutil
+    shutil.copyfile(os.path.join(OUT, 'og-card-en.png'), os.path.join(OUT, 'og-card.png'))
+    print('  og-card.png  (copy of en, for links shared earlier)')
     return total
 
 
@@ -229,7 +269,7 @@ def main():
     total += build_fonts()
     total += build_icons()
     total += build_badges()
-    total += build_og_card(["Shop anywhere.", "Know what you\u2019re eating."])
+    total += build_og_cards()
 
     print(f'\n{total//1024}K total')
 

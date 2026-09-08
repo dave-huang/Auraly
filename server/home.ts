@@ -3,14 +3,23 @@ import express from "express";
 import path from "path";
 
 import {
-  CONTACT_EMAIL,
   FONT_FACES,
-  LEGAL_ENTITY,
-  LOCKUP_LINK,
+  HEAD_COMMON,
   PAPER_TOKENS,
   TYPE_TOKENS,
   footerInner,
+  lockupLink,
 } from "./siteTheme";
+import {
+  COPY,
+  HTML_LANG,
+  LANGUAGE_CODES,
+  LANGUAGE_NAMES,
+  SITE_LANGUAGES,
+  isLang,
+  type Copy,
+  type Lang,
+} from "./siteCopy";
 
 /**
  * revely.life, the marketing page.
@@ -53,6 +62,20 @@ import {
  */
 
 const APP_STORE_URL = "https://apps.apple.com/app/id6799481205";
+
+/** Absolute, because canonical, hreflang and og:url all have to be. */
+const SITE_ORIGIN = "https://revely.life";
+
+/**
+ * Open Graph wants a territory with the language. These are the ones the app
+ * was written for, and they are a scrape hint rather than a claim about who
+ * the copy is for: the Spanish is not written for Spain in particular.
+ */
+const OG_LOCALE: Record<Lang, string> = {
+  en: "en_US",
+  zh: "zh_CN",
+  es: "es_ES",
+};
 
 
 
@@ -168,9 +191,52 @@ a { color: var(--ink); text-underline-offset: 3px; }
 /* ---- header ----------------------------------------------------------- */
 
 .top { padding: 30px 0 0; }
+.top-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
 .lockup { display: inline-flex; align-items: center; gap: 11px; text-decoration: none; color: var(--ink); }
 .lockup .mark { width: 26px; height: 26px; flex: none; }
 .lockup b { font-weight: 600; font-size: 1.125rem; letter-spacing: -0.02em; }
+
+/* ---- the language switcher -------------------------------------------- */
+/*
+ * Three links rather than a menu, and the current one filled the same way an
+ * active agency chip is, so the page has one vocabulary for "this is the one
+ * you are on".
+ */
+.langs { display: flex; align-items: center; gap: 2px; flex: none; }
+.lang {
+  font-family: var(--mono); font-size: 0.6875rem; font-weight: 500;
+  letter-spacing: 0.1em; line-height: 1; color: var(--ink-faint);
+  text-decoration: none; padding: 8px 10px; border-radius: 999px;
+  transition: color .12s ease, background-color .12s ease;
+}
+.lang:hover { color: var(--ink); }
+.lang.on { color: var(--paper); background: var(--ink); }
+/* 中文 is two wide glyphs; letter-spacing built for EN and ES pulls it apart. */
+.lang[lang="zh-Hans"] { letter-spacing: 0.02em; }
+
+.legal-note { margin: -12px 0 22px; }
+
+/* ---- Chinese ---------------------------------------------------------- */
+/*
+ * The Latin type here runs at negative tracking, which is right for a
+ * grotesque at display sizes and wrong for Han characters: they are drawn on
+ * a fixed square and tightening them closes gaps the glyphs need. The same
+ * goes the other way for the mono labels, where 0.17em between two ideographs
+ * reads as two separate words. Chinese also wants a looser line, because the
+ * characters carry more ink per line than an alphabet does.
+ *
+ * Scoped to the document language rather than the font, so it cannot leak
+ * onto the English and Spanish pages.
+ */
+html[lang="zh-Hans"] h1, html[lang="zh-Hans"] h2, html[lang="zh-Hans"] h3,
+html[lang="zh-Hans"] .stat-line { letter-spacing: 0; }
+html[lang="zh-Hans"] h1 { line-height: 1.22; }
+html[lang="zh-Hans"] h2 { line-height: 1.34; }
+html[lang="zh-Hans"] body { line-height: 1.85; }
+html[lang="zh-Hans"] .lede { line-height: 1.75; }
+html[lang="zh-Hans"] .eyebrow, html[lang="zh-Hans"] .cue,
+html[lang="zh-Hans"] .num, html[lang="zh-Hans"] .agency,
+html[lang="zh-Hans"] .agency-full { letter-spacing: 0.06em; }
 
 /* ---- hero ------------------------------------------------------------- */
 
@@ -393,98 +459,12 @@ a { color: var(--ink); text-underline-offset: 3px; }
 }
 `;
 
-/**
- * PLACEHOLDER TESTIMONIALS. NOT REAL PEOPLE, NOT REAL QUOTES.
- *
- * Written to hold the shape of the section while the app is in review and
- * there is nobody to quote yet. Every one of them has to be replaced with a
- * real, attributable quote from a real user before this page is published,
- * or it is a fabricated endorsement on the marketing site of a health
- * product, which is both a lie and the kind of lie a regulator has a name
- * for. If real quotes are not ready on launch day, DELETE THE SECTION. An
- * absent testimonial costs a little momentum; an invented one costs the
- * only thing this product is selling, which is that we do not make things up.
- *
- * Dave asked for them on the page on 2026-09-08, having been told twice that
- * they are invented. That is his call to make and this comment is not an
- * argument with it, but the next person to open this file should know what
- * they are reading: nobody said any of this. Replace all three the moment
- * there are real users to quote.
- */
-const TESTIMONIALS = [
-  {
-    quote:
-      "My son reacts to tree nuts, and cashew hides under about six different names. I stopped trusting myself to catch all of them at four in the afternoon with a cart. Now I just scan it.",
-    name: "Maya R.",
-    detail: "Parent of two",
-  },
-  {
-    quote:
-      "I lived in Spain for a year and never once read a label properly. Revely puts the printed Spanish next to the English and I can finally see what I have been eating.",
-    name: "Tom W.",
-    detail: "Uses it abroad",
-  },
-  {
-    quote:
-      "I am not allergic to anything. I just wanted to know what half the words meant. It tells me who looked at an ingredient and what they found, and then it leaves me alone to decide.",
-    name: "Priya S.",
-    detail: "Reads everything",
-  },
-];
-
-/**
- * The four bodies whose findings the app quotes.
- *
- * Their initials are not common knowledge, and a row of four acronyms is a
- * claim a reader cannot evaluate. Each one says what the body is and what its
- * decisions actually mean here.
- *
- * The IARC entry earns its length. Its groups grade how good the EVIDENCE is
- * that something can cause cancer, not how dangerous it is at the amounts a
- * person eats, and the two are confused constantly, usually in the direction
- * of alarm. A page that names IARC without saying which of the two it measures
- * is trading on the confusion.
- */
-const AGENCIES = [
-  {
-    id: "fda",
-    full: "US Food and Drug Administration",
-    body:
-      "Decides which additives may be used in food sold in the United States, " +
-      "and in what quantity. When it withdraws an approval or requires a " +
-      "warning on a label, that decision is what we quote.",
-  },
-  {
-    id: "efsa",
-    full: "European Food Safety Authority",
-    body:
-      "Gives the EU its scientific advice on food risk, and re-examines " +
-      "additives that are already on sale. It is usually the reason the same " +
-      "ingredient is treated one way in Europe and another in the US.",
-  },
-  {
-    id: "iarc",
-    full: "International Agency for Research on Cancer",
-    body:
-      "Part of the WHO. It grades how strong the evidence is that something " +
-      "can cause cancer, which is not the same as how risky it is in the " +
-      "amounts you would actually eat. We quote the grade and say which of " +
-      "the two it measures.",
-  },
-  {
-    id: "who",
-    full: "World Health Organization",
-    body:
-      "Sets the international guidance that most national advice on diet is " +
-      "built from, including the limits on things like sodium and free sugars.",
-  },
-] as const;
 
 /** Black on the paper ground, white on the ink band. */
-const badge = (colour: "black" | "white") =>
+const badge = (colour: "black" | "white", alt: string) =>
   `<a class="badge" href="${APP_STORE_URL}">` +
   `<img src="/media/appstore-badge-${colour}.svg" width="162" height="54"` +
-  ` alt="Download on the App Store"></a>`;
+  ` alt="${alt}"></a>`;
 
 /*
  * Intrinsic sizes, so a plate reserves its box before it arrives. Without
@@ -501,36 +481,63 @@ const PLATE_SIZE: Record<string, [number, number]> = {
   specimen: [390, 468], tag: [560, 380],
 };
 
+/**
+ * The language switcher.
+ *
+ * Three links, not a <select>: with three options a menu costs a click to
+ * reveal what a row shows for free, and a link is a real URL somebody can
+ * bookmark or send. Written in each language's own script and never as a
+ * flag, for the reason set out beside LANGUAGE_CODES: a flag is a country and
+ * a language is not.
+ *
+ * It sits in the masthead. The brief for above the fold was a headline, a line
+ * under it, one button and one picture, and this is a fifth thing, which I
+ * think it earns: somebody who cannot read the page cannot act on any of the
+ * other four, and a switcher only in the footer is a switcher most people
+ * never find. It is small, quiet, and in the mono voice the rest of the
+ * furniture uses.
+ */
+function switcher(current: Lang, label: string): string {
+  const links = SITE_LANGUAGES.map((code) => {
+    const on = code === current;
+    return `<a class="lang${on ? " on" : ""}" href="/${code}" hreflang="${HTML_LANG[code]}"` +
+      ` lang="${HTML_LANG[code]}"${on ? ' aria-current="true"' : ""}` +
+      ` title="${LANGUAGE_NAMES[code]}">${LANGUAGE_CODES[code]}</a>`;
+  }).join("");
+  return `<nav class="langs" aria-label="${label}">${links}</nav>`;
+}
+
 const plate = (name: string, alt = "") => {
   const [w, h] = PLATE_SIZE[name];
   return `<img src="/media/plates/${name}.webp" width="${w}" height="${h}"` +
     ` alt="${alt}" loading="lazy" decoding="async">`;
 };
 
-const BODY = `
+/** The page, in one language. */
+function body(c: Copy, lang: Lang): string {
+  return `
 <header class="top">
-  <div class="shell">
-    ${LOCKUP_LINK}
+  <div class="shell top-row">
+    ${lockupLink(`/${lang}`, c.homeLabel)}
+    ${switcher(lang, c.switcherLabel)}
   </div>
 </header>
 
 <main>
 
-  <!-- Hook. Headline, one line under it, one button, one picture. Nothing
-       else is allowed above the fold; every extra thing here is a thing
-       somebody reads instead of the headline. -->
+  <!-- Hook. Headline, one line under it, one button, one picture. The
+       switcher above is the only other thing, and the note beside it explains
+       why it is allowed to be. -->
   <section class="shell hero">
-    <h1>Shop anywhere.<br>Know what you&rsquo;re eating.</h1>
+    <h1>${c.heroTitle}</h1>
     <div class="hero-copy">
-      <p class="lede">Point your camera at any ingredient list, in any
-      language. We&rsquo;ll tell you what it means for you, and for anyone you
-      shop for.</p>
-      ${badge("black")}
-      <p class="meta terms">For iPhone. The annual plan starts with a 7-day free trial.</p>
-      <a class="cue" href="#aisle"><span class="cue-rail" aria-hidden="true"></span>Why this is hard</a>
+      <p class="lede">${c.heroLede}</p>
+      ${badge("black", c.badgeAlt)}
+      <p class="meta terms">${c.terms}</p>
+      <a class="cue" href="#aisle"><span class="cue-rail" aria-hidden="true"></span>${c.cue}</a>
     </div>
     <div class="hero-plate">
-      <img src="/media/plates/scanning.webp" width="1200" height="682" alt="A hand holding a phone up to the back of a snack pouch." fetchpriority="high" decoding="async">
+      <img src="/media/plates/scanning.webp" width="1200" height="682" alt="${c.heroAlt}" fetchpriority="high" decoding="async">
     </div>
   </section>
 
@@ -540,43 +547,29 @@ const BODY = `
   <section class="band sunk" id="aisle">
     <div class="shell">
       <div class="band-head rise">
-        <p class="eyebrow">The aisle</p>
-        <h2>You turn the packet over, and you&rsquo;re none the wiser.</h2>
-        <p class="lede">Twelve lines of small print, half of them words nobody
-        uses outside a laboratory. Somewhere in there is the thing you avoid,
-        or there isn&rsquo;t. There is no way to tell while you are standing
-        there holding it.</p>
+        <p class="eyebrow">${c.aisleEyebrow}</p>
+        <h2>${c.aisleTitle}</h2>
+        <p class="lede">${c.aisleLede}</p>
       </div>
 
       <div class="stat rise">
-        <p class="stat-line">Ingredient labels aren&rsquo;t always easy to decode.</p>
-        <p>You shouldn&rsquo;t have to Google every ingredient just to understand
-        what you&rsquo;re buying.</p>
+        <p class="stat-line">${c.pivotLine}</p>
+        <p>${c.pivotBody}</p>
       </div>
 
       <div class="cards rise">
-        <div class="card">
-          <div class="plate">${plate("milk")}</div>
-          <h3>One ingredient, a dozen names.</h3>
-          <p>Whey. Casein. Lactose. Sodium caseinate. Every one of them is
-          milk, and only one of them says so.</p>
-        </div>
-        <div class="card">
-          <div class="plate">${plate("tag")}</div>
-          <h3>The rules keep moving.</h3>
-          <p>Sesame only became a required allergen label in the US in 2023.
-          The EU pulled titanium dioxide out of food in 2022. The US still
-          allows it.</p>
-        </div>
-        <div class="card">
-          <div class="plate">${plate("language")}</div>
-          <h3>And it isn&rsquo;t always in your language.</h3>
-          <p>A jar from the Asian grocery. A snack somebody brought back. A
-          pack printed for a market that isn&rsquo;t yours.</p>
-        </div>
+        ${["milk", "tag", "language"]
+          .map(
+            (name, i) => `<div class="card">
+          <div class="plate">${plate(name)}</div>
+          <h3>${c.cards[i].title}</h3>
+          <p>${c.cards[i].body}</p>
+        </div>`,
+          )
+          .join("\n        ")}
       </div>
 
-      <p class="aside rise">So you put it back on the shelf. Or you buy it and hope.</p>
+      <p class="aside rise">${c.aside}</p>
     </div>
   </section>
 
@@ -585,34 +578,22 @@ const BODY = `
   <section class="band">
     <div class="shell">
       <div class="band-head rise">
-        <p class="eyebrow">What Revely does</p>
-        <h2>Tell us once. We check every label against it.</h2>
-        <p class="lede">Setting it up takes about a minute. After that the
-        camera does the work.</p>
+        <p class="eyebrow">${c.doesEyebrow}</p>
+        <h2>${c.doesTitle}</h2>
+        <p class="lede">${c.doesLede}</p>
       </div>
 
       <div class="steps">
-        <div class="step rise">
-          <img class="screen" src="/media/screens/04-who.webp" width="660" height="1434" loading="lazy" decoding="async" alt="A Revely screen headed &quot;Who are we checking for?&quot; offering Myself, My child, and Someone I care for.">
-          <span class="num meta">Step one</span>
-          <h3>Say who it&rsquo;s for.</h3>
-          <p>You, your child, a partner, a parent you cook for. Everyone gets a
-          profile of their own.</p>
-        </div>
-        <div class="step rise">
-          <img class="screen" src="/media/screens/05-allergens.webp" width="660" height="1434" loading="lazy" decoding="async" alt="A Revely screen headed &quot;What's off-limits for Jane?&quot; with allergens listed as tappable chips.">
-          <span class="num meta">Step two</span>
-          <h3>Say what to watch for.</h3>
-          <p>Allergies, and how strict to be about each one. Conditions
-          you&rsquo;re managing. Diets you keep to.</p>
-        </div>
-        <div class="step rise">
-          <img class="screen" src="/media/screens/01-verdict.webp" width="660" height="1434" loading="lazy" decoding="async" alt="A Revely verdict card reading Avoid, because tree nuts are on Jane's list, with the Spanish label printed beside its English translation.">
-          <span class="num meta">Step three</span>
-          <h3>Then point the camera.</h3>
-          <p>One word, and the reason under it. The printed label on one side,
-          your language on the other.</p>
-        </div>
+        ${["04-who", "05-allergens", "01-verdict"]
+          .map(
+            (file, i) => `<div class="step rise">
+          <img class="screen" src="/media/screens/${file}.webp" width="660" height="1434" loading="lazy" decoding="async" alt="${c.steps[i].alt}">
+          <span class="num meta">${c.steps[i].num}</span>
+          <h3>${c.steps[i].title}</h3>
+          <p>${c.steps[i].body}</p>
+        </div>`,
+          )
+          .join("\n        ")}
       </div>
     </div>
   </section>
@@ -622,24 +603,26 @@ const BODY = `
     <div class="shell rows">
       <div class="row rise">
         <div>
-          <h3>We show you who says so.</h3>
-          <p>Where there is a published finding on an ingredient, we quote it
-          and name who published it. Their words, not our summary of them. You
-          read it, and you decide.</p>
+          <h3>${c.sourcesTitle}</h3>
+          <p>${c.sourcesBody}</p>
           <ul class="agencies">
-            ${AGENCIES.map(
-              (a, i) => `<li><button class="agency${i === 0 ? " on" : ""}" type="button" data-agency="${a.id}"
+            ${c.agencies
+              .map(
+                (a, i) => `<li><button class="agency${i === 0 ? " on" : ""}" type="button" data-agency="${a.id}"
               aria-pressed="${i === 0}"
               aria-controls="agency-detail">${a.id.toUpperCase()}</button></li>`,
-            ).join("\n            ")}
+              )
+              .join("\n            ")}
           </ul>
           <div class="agency-detail" id="agency-detail">
-            ${AGENCIES.map(
-              (a, i) => `<div class="agency-panel${i === 0 ? " on" : ""}" data-agency="${a.id}">
+            ${c.agencies
+              .map(
+                (a, i) => `<div class="agency-panel${i === 0 ? " on" : ""}" data-agency="${a.id}">
               <p class="agency-full">${a.full}</p>
               <p class="agency-body">${a.body}</p>
             </div>`,
-            ).join("\n            ")}
+              )
+              .join("\n            ")}
           </div>
         </div>
         <div class="row-plate">${plate("sources")}</div>
@@ -647,42 +630,39 @@ const BODY = `
 
       <div class="row flip rise">
         <div>
-          <h3>One photo, everybody&rsquo;s answer.</h3>
-          <p>Switch to another profile and the scan already on screen is
-          rechecked straight away. You don&rsquo;t have to take the picture
-          again.</p>
+          <h3>${c.profilesTitle}</h3>
+          <p>${c.profilesBody}</p>
         </div>
         <div class="row-plate">${plate("bowls")}</div>
       </div>
 
       <div class="row rise">
         <div>
-          <h3>Your photo is used once, then it&rsquo;s gone.</h3>
-          <p>It isn&rsquo;t kept after it has been read. No advertising, no
-          trackers, nothing sold. What we collect and every company that
-          receives anything is written out in the
-          <a href="/privacy">privacy policy</a>.</p>
+          <h3>${c.photoTitle}</h3>
+          <p>${c.photoBodyBefore}<a href="/privacy">${c.photoLink}</a>${c.photoBodyAfter}</p>
         </div>
         <div class="row-plate">${plate("privacy")}</div>
       </div>
     </div>
   </section>
 
-  <!-- Social proof. See the note above TESTIMONIALS: these are placeholders
-       and every one of them needs replacing with a real quote. -->
+  <!-- Social proof. See the note above the testimonials in siteCopy.ts: these
+       are placeholders and every one of them needs replacing. -->
   <section class="band sunk">
     <div class="shell">
       <div class="band-head rise">
-        <p class="eyebrow">What people say</p>
-        <h2>The aisle gets a lot quieter.</h2>
+        <p class="eyebrow">${c.quotesEyebrow}</p>
+        <h2>${c.quotesTitle}</h2>
       </div>
       <div class="quotes rise">
-        ${TESTIMONIALS.map(
-          (t) => `<figure class="quote">
+        ${c.testimonials
+          .map(
+            (t) => `<figure class="quote">
           <blockquote>&ldquo;${t.quote}&rdquo;</blockquote>
           <figcaption><strong>${t.name}</strong><br><span class="meta">${t.detail}</span></figcaption>
         </figure>`,
-        ).join("\n        ")}
+          )
+          .join("\n        ")}
       </div>
     </div>
   </section>
@@ -693,11 +673,10 @@ const BODY = `
     <div class="close-plate">${plate("basket-lift")}</div>
     <div class="shell">
       <div class="close-inner">
-        <h2>Know what you&rsquo;re eating.</h2>
-        <p class="lede" style="margin:20px 0 34px">Set up a profile, see an
-        example scan, and take it to the shops.</p>
-        ${badge("white")}
-        <p class="meta terms">For iPhone. The annual plan starts with a 7-day free trial.</p>
+        <h2>${c.closeTitle}</h2>
+        <p class="lede" style="margin:20px 0 34px">${c.closeLede}</p>
+        ${badge("white", c.badgeAlt)}
+        <p class="meta terms">${c.terms}</p>
       </div>
     </div>
   </section>
@@ -706,7 +685,7 @@ const BODY = `
 
 <footer class="foot">
   <div class="shell">
-${footerInner()}
+${footerInner(c)}
   </div>
 </footer>
 
@@ -793,41 +772,92 @@ ${footerInner()}
     });
   })();
 </script>`;
+}
 
-const TITLE = "Revely · Scan any food label, in any language";
-const DESCRIPTION =
-  "Point your camera at any ingredient list, in any language. Revely reads it " +
-  "and tells you what it means for your allergies, your conditions, and " +
-  "anyone you shop for.";
+/**
+ * The document, in one language.
+ *
+ * Every language's canonical URL is its own /<code> path, including English.
+ * "/" is a negotiated alias that points its canonical at whichever of the
+ * three it served, so the two are byte-identical and one render covers both.
+ * hreflang lists all three on every page plus an x-default of English, which
+ * is what tells a crawler these are translations of one page rather than
+ * three pages that happen to rhyme.
+ */
+function page(lang: Lang): string {
+  const c = COPY[lang];
+  const alternates = SITE_LANGUAGES.map(
+    (code) =>
+      `<link rel="alternate" hreflang="${HTML_LANG[code]}" href="${SITE_ORIGIN}/${code}">`,
+  ).join("\n");
 
-const HOME = `<!doctype html>
-<html lang="en">
+  return `<!doctype html>
+<html lang="${HTML_LANG[lang]}">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${TITLE}</title>
-<meta name="description" content="${DESCRIPTION}">
-<link rel="canonical" href="https://revely.life/">
+${HEAD_COMMON}
+<title>${c.title}</title>
+<meta name="description" content="${c.description}">
+<link rel="canonical" href="${SITE_ORIGIN}/${lang}">
+${alternates}
+<link rel="alternate" hreflang="x-default" href="${SITE_ORIGIN}/en">
 <meta name="theme-color" content="#F6F1E7">
-<link rel="icon" href="/media/favicon.png" sizes="48x48">
-<link rel="apple-touch-icon" href="/media/apple-touch-icon.png">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://revely.life/">
+<meta property="og:url" content="${SITE_ORIGIN}/${lang}">
 <meta property="og:site_name" content="Revely">
-<meta property="og:title" content="Shop anywhere. Know what you’re eating.">
-<meta property="og:description" content="${DESCRIPTION}">
-<meta property="og:image" content="https://revely.life/media/og-card.png">
+<meta property="og:locale" content="${OG_LOCALE[lang]}">
+${SITE_LANGUAGES.filter((l) => l !== lang)
+  .map((l) => `<meta property="og:locale:alternate" content="${OG_LOCALE[l]}">`)
+  .join("\n")}
+<meta property="og:title" content="${c.ogTitle}">
+<meta property="og:description" content="${c.description}">
+<meta property="og:image" content="${SITE_ORIGIN}/media/og-card-${lang}.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preload" as="font" type="font/woff2" href="/media/fonts/instrument-sans-600.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/media/fonts/instrument-sans-400.woff2" crossorigin>
 <style>${STYLE}</style>
 </head>
 <body>
-${BODY}
+${body(c, lang)}
 </body>
 </html>`;
+}
+
+/** Rendered once at boot. The pages are static; only the copy differs. */
+const PAGES: Record<Lang, string> = {
+  en: page("en"),
+  zh: page("zh"),
+  es: page("es"),
+};
+
+/**
+ * Best supported match for an Accept-Language header, English otherwise.
+ *
+ * Matches on the primary subtag only, which is what the app does in
+ * deviceLanguage(): a zh-TW or zh-Hant reader gets our Simplified Chinese
+ * rather than English. That is the same compromise the app makes and it is
+ * the better of the two, but it is a compromise, and a Traditional catalogue
+ * is the fix rather than a smarter parse here.
+ */
+function negotiate(header: string | undefined): Lang {
+  if (!header) return "en";
+  const ranked = header
+    .split(",")
+    .map((part) => {
+      const [tag, ...params] = part.trim().split(";");
+      const q = params.find((x) => x.trim().startsWith("q="));
+      const weight = q ? Number.parseFloat(q.split("=")[1]) : 1;
+      return { tag: tag.trim().toLowerCase(), weight };
+    })
+    .filter((r) => r.tag && Number.isFinite(r.weight) && r.weight > 0)
+    .sort((a, b) => b.weight - a.weight);
+
+  for (const { tag } of ranked) {
+    if (tag === "*") break;
+    const base = tag.split("-")[0];
+    if (isLang(base)) return base;
+  }
+  return "en";
+}
 
 /**
  * Mount the home page and the images it needs.
@@ -852,7 +882,32 @@ export function registerHomeRoutes(app: Express): void {
     }),
   );
 
-  app.get("/", (_req, res) => {
-    res.type("html").send(HOME);
+  // One canonical URL per language.
+  //
+  // Written out rather than looped over SITE_LANGUAGES so that the route
+  // audit in eval/auth.check.ts can see them. It reads the source for literal
+  // paths, which is the right way round: a route it cannot name is a route
+  // nobody is checking is public on purpose.
+  app.get("/en", (_req, res) => res.type("html").send(PAGES.en));
+  app.get("/es", (_req, res) => res.type("html").send(PAGES.es));
+  app.get("/zh", (_req, res) => res.type("html").send(PAGES.zh));
+
+  /**
+   * The root negotiates rather than redirecting.
+   *
+   * A redirect here would bounce the App Store's marketing URL and Google's
+   * OAuth home page URL through a 302 on every visit, and it would put a
+   * round trip in front of the first paint for the sake of a path segment.
+   * Serving the negotiated language directly costs nothing and the canonical
+   * tag points at the stable URL, so a crawler still indexes three pages
+   * rather than four.
+   *
+   * Vary matters: without it any cache in front of this would serve the first
+   * visitor's language to everyone behind it.
+   */
+  app.get("/", (req, res) => {
+    const lang = negotiate(req.headers["accept-language"]);
+    res.setHeader("Vary", "Accept-Language");
+    res.type("html").send(PAGES[lang]);
   });
 }

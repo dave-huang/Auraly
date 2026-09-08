@@ -6,11 +6,12 @@ import {
   HEAD_COMMON,
   LAMPLIGHT_TOKENS,
   LEGAL_ENTITY,
-  LOCKUP_LINK,
+  lockupLink,
   PAPER_TOKENS,
   TYPE_TOKENS,
   footerInner,
 } from "./siteTheme";
+import { COPY } from "./siteCopy";
 
 /**
  * The three legal documents.
@@ -198,7 +199,7 @@ ${HEAD_COMMON}
 </head>
 <body>
 <header class="top">
-  <div class="shell">${LOCKUP_LINK}</div>
+  <div class="shell">${lockupLink("/", COPY.en.homeLabel)}</div>
 </header>
 <main class="shell">
 <div class="masthead">
@@ -208,7 +209,7 @@ ${body}
 </main>
 <footer class="foot">
   <div class="shell">
-${footerInner()}
+${footerInner(COPY.en)}
   </div>
 </footer>
 </body>
