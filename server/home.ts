@@ -62,7 +62,7 @@ const STYLE = `${FONT_FACES}
 ${PAPER_TOKENS}${TYPE_TOKENS}
   --shell: 1120px;
   --gutter: 24px;
-  --band: clamp(76px, 9vw, 132px);
+  --band: clamp(72px, 8vw, 116px);
 }
 
 * { box-sizing: border-box; }
@@ -130,6 +130,41 @@ a { color: var(--ink); text-underline-offset: 3px; }
 
 .terms { margin-top: 16px; }
 
+/* ---- the scroll cue --------------------------------------------------- */
+/*
+ * A hairline with a short ink segment that travels down it once and stays
+ * there. Once, because the system's own rule for anything that reveals is
+ * that it ends resolved: a loop reads as still trying, which is why the
+ * scanner in the app sweeps a single time.
+ *
+ * It sits in the gap under the hero copy, which the taller plate column
+ * already pays for, so it costs the hero no height on desktop and cannot push
+ * the very fold it exists to advertise further down. Below the two-column
+ * breakpoint there is no gap to borrow and no need for the hint, since a
+ * stacked hero is visibly cut off on its own.
+ */
+.cue { display: none; }
+@media (min-width: 880px) {
+  .cue {
+    display: inline-flex; align-items: center; gap: 14px;
+    margin-top: 40px; text-decoration: none; color: var(--ink-faint);
+    font-family: var(--mono); font-size: 0.6875rem; font-weight: 500;
+    letter-spacing: 0.17em; text-transform: uppercase;
+  }
+}
+.cue:hover { color: var(--ink-muted); }
+.cue-rail {
+  position: relative; display: block; width: 1px; height: 52px;
+  background: var(--rule); overflow: hidden; flex: none;
+}
+.cue-rail::after {
+  content: ""; position: absolute; left: 0; width: 1px; height: 18px;
+  background: var(--ink); top: 34px;
+  animation: cue-run 1.5s cubic-bezier(.16, 1, .3, 1) .9s 1 backwards;
+}
+@keyframes cue-run { from { top: -18px; } to { top: 34px; } }
+@media (prefers-reduced-motion: reduce) { .cue-rail::after { animation: none; } }
+
 /* ---- header ----------------------------------------------------------- */
 
 .top { padding: 30px 0 0; }
@@ -149,7 +184,7 @@ a { color: var(--ink); text-underline-offset: 3px; }
 .hero {
   display: grid; gap: clamp(24px, 2.6vw, 34px) clamp(28px, 4vw, 56px);
   grid-template-columns: 1fr;
-  padding-block: clamp(44px, 6vw, 76px) clamp(60px, 7.5vw, 96px);
+  padding-block: clamp(36px, 4.4vw, 60px) clamp(48px, 5.4vw, 72px);
 }
 .hero h1 { grid-column: 1 / -1; }
 .hero .lede { margin: 0 0 32px; }
@@ -233,13 +268,44 @@ a { color: var(--ink); text-underline-offset: 3px; }
 .row h3 { font-size: clamp(1.45rem, 2.3vw, 1.85rem); letter-spacing: -0.025em; margin-bottom: 14px; }
 .row p { max-width: 40ch; }
 
+/*
+ * The chips are buttons, not decoration, and they answer in a panel below
+ * rather than a floating tooltip. A tooltip would have to be positioned,
+ * clipped and re-positioned near the viewport edge, and on a phone it has no
+ * hover to open it at all. One panel under the row has none of those problems
+ * and is reachable by tap, click and keyboard identically.
+ */
 .agencies { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; list-style: none; padding: 0; }
-.agencies li {
+.agency {
   font-family: var(--mono); font-size: 0.6875rem; font-weight: 500;
   letter-spacing: 0.12em; color: var(--ink-muted);
   border: 1px solid var(--rule); background: var(--card);
-  padding: 7px 12px; border-radius: 999px;
+  padding: 8px 13px; border-radius: 999px; cursor: pointer;
+  transition: color .12s ease, border-color .12s ease, background-color .12s ease;
 }
+.agency:hover { color: var(--ink); border-color: var(--ink-faint); }
+.agency[aria-expanded="true"] {
+  color: var(--paper); background: var(--ink); border-color: var(--ink);
+}
+.agency:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+/*
+ * The panel reserves its own height so opening one does not shove the ink wash
+ * plate beside it down the page. min-height is the tallest entry at the
+ * narrowest column this row ever has.
+ */
+.agency-detail {
+  margin-top: 18px; padding: 16px 18px;
+  background: var(--card); border: 1px solid var(--rule);
+  max-width: 42ch;
+}
+.agency-full {
+  font-family: var(--mono); font-size: 0.6875rem; font-weight: 500;
+  letter-spacing: 0.11em; text-transform: uppercase; color: var(--ink-faint);
+  margin-bottom: 8px;
+}
+.agency-body { font-size: 0.9375rem; line-height: 1.55; color: var(--ink-muted); }
+@media (min-width: 820px) { .agency-detail { min-height: 148px; } }
 
 /* ---- testimonials ----------------------------------------------------- */
 
@@ -339,14 +405,80 @@ const TESTIMONIALS = [
   },
 ];
 
+/**
+ * The four bodies whose findings the app quotes.
+ *
+ * Their initials are not common knowledge, and a row of four acronyms is a
+ * claim a reader cannot evaluate. Each one says what the body is and what its
+ * decisions actually mean here.
+ *
+ * The IARC entry earns its length. Its groups grade how good the EVIDENCE is
+ * that something can cause cancer, not how dangerous it is at the amounts a
+ * person eats, and the two are confused constantly, usually in the direction
+ * of alarm. A page that names IARC without saying which of the two it measures
+ * is trading on the confusion.
+ */
+const AGENCIES = [
+  {
+    id: "fda",
+    full: "US Food and Drug Administration",
+    body:
+      "Decides which additives may be used in food sold in the United States, " +
+      "and in what quantity. When it withdraws an approval or requires a " +
+      "warning on a label, that decision is what we quote.",
+  },
+  {
+    id: "efsa",
+    full: "European Food Safety Authority",
+    body:
+      "Gives the EU its scientific advice on food risk, and re-examines " +
+      "additives that are already on sale. It is usually the reason the same " +
+      "ingredient is treated one way in Europe and another in the US.",
+  },
+  {
+    id: "iarc",
+    full: "International Agency for Research on Cancer",
+    body:
+      "Part of the WHO. It grades how strong the evidence is that something " +
+      "can cause cancer, which is not the same as how risky it is in the " +
+      "amounts you would actually eat. We quote the grade and say which of " +
+      "the two it measures.",
+  },
+  {
+    id: "who",
+    full: "World Health Organization",
+    body:
+      "Sets the international guidance that most national advice on diet is " +
+      "built from, including the limits on things like sodium and free sugars.",
+  },
+] as const;
+
 /** Black on the paper ground, white on the ink band. */
 const badge = (colour: "black" | "white") =>
   `<a class="badge" href="${APP_STORE_URL}">` +
   `<img src="/media/appstore-badge-${colour}.svg" width="162" height="54"` +
   ` alt="Download on the App Store"></a>`;
 
-const plate = (name: string, alt = "") =>
-  `<img src="/media/plates/${name}.webp" alt="${alt}" loading="lazy" decoding="async">`;
+/*
+ * Intrinsic sizes, so a plate reserves its box before it arrives. Without
+ * these a lazily loaded image is zero pixels tall until it lands, and every
+ * section under it jumps when it does. On a phone that is text moving under
+ * somebody's eyes as they read, and it also means the fold is in a different
+ * place before and after the images load, which is the last thing a page with
+ * a fold problem needs.
+ */
+const PLATE_SIZE: Record<string, [number, number]> = {
+  allergens: [587, 477], basket: [556, 399], "basket-lift": [556, 399],
+  bowls: [596, 500], language: [760, 687], milk: [535, 379],
+  privacy: [553, 507], scanning: [1200, 682], sources: [571, 391],
+  specimen: [390, 468], tag: [560, 380],
+};
+
+const plate = (name: string, alt = "") => {
+  const [w, h] = PLATE_SIZE[name];
+  return `<img src="/media/plates/${name}.webp" width="${w}" height="${h}"` +
+    ` alt="${alt}" loading="lazy" decoding="async">`;
+};
 
 const BODY = `
 <header class="top">
@@ -368,6 +500,7 @@ const BODY = `
       shop for.</p>
       ${badge("black")}
       <p class="meta terms">For iPhone. The annual plan starts with a 7-day free trial.</p>
+      <a class="cue" href="#aisle"><span class="cue-rail" aria-hidden="true"></span>Why this is hard</a>
     </div>
     <div class="hero-plate">
       <img src="/media/plates/scanning.webp" width="1200" height="682" alt="A hand holding a phone up to the back of a snack pouch." fetchpriority="high" decoding="async">
@@ -377,7 +510,7 @@ const BODY = `
   <!-- Problem. The aisle, and why it is genuinely hard rather than a thing
        careless people get wrong. Each of the three cards is a fact that can
        be checked, not a worry. -->
-  <section class="band sunk">
+  <section class="band sunk" id="aisle">
     <div class="shell">
       <div class="band-head rise">
         <p class="eyebrow">The aisle</p>
@@ -466,7 +599,16 @@ const BODY = `
           <p>Where there is a published finding on an ingredient, we quote it
           and name who published it. Their words, not our summary of them. You
           read it, and you decide.</p>
-          <ul class="agencies"><li>FDA</li><li>EFSA</li><li>IARC</li><li>WHO</li></ul>
+          <ul class="agencies">
+            ${AGENCIES.map(
+              (a) => `<li><button class="agency" type="button" data-agency="${a.id}"
+              aria-expanded="false" aria-controls="agency-detail">${a.id.toUpperCase()}</button></li>`,
+            ).join("\n            ")}
+          </ul>
+          <div class="agency-detail" id="agency-detail" hidden>
+            <p class="agency-full"></p>
+            <p class="agency-body"></p>
+          </div>
         </div>
         <div class="row-plate">${plate("sources")}</div>
       </div>
@@ -537,20 +679,94 @@ ${footerInner()}
 </footer>
 
 <script>
-  // Everything the reveal needs, and nothing it doesn't. The class goes on
-  // first so a browser without IntersectionObserver, or with scripting off,
-  // never hides anything it cannot then show.
+  // The reveal.
+  //
+  // Three rules, all learned from the same bug. The class goes on from script,
+  // so a reader with no JavaScript or no IntersectionObserver never has
+  // anything hidden from them. There is no bottom inset. And a sweep resolves
+  // anything already on screen, run again after load and after the webfonts
+  // settle, because both move the fold.
+  //
+  // The bug: the slice of the next section showing under the hero is the main
+  // signal that the page continues, and its heading sits only a few pixels
+  // inside the first screen. An earlier version hid the bottom 12% from the
+  // observer, then 8%, and both swallowed exactly that heading, so the fold
+  // was a band of flat colour with nothing in it. Anything that decides what
+  // is visible at the fold has to be deterministic rather than dependent on a
+  // frame having been painted at a particular moment.
   (function () {
-    if (!("IntersectionObserver" in window)) return;
+    var els = [].slice.call(document.querySelectorAll(".rise"));
+    if (!els.length || !("IntersectionObserver" in window)) return;
     document.documentElement.classList.add("js");
+
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (!e.isIntersecting) return;
         e.target.classList.add("in");
         io.unobserve(e.target);
       });
-    }, { rootMargin: "0px 0px -12% 0px", threshold: 0.06 });
-    document.querySelectorAll(".rise").forEach(function (el) { io.observe(el); });
+    }, { rootMargin: "0px", threshold: 0 });
+
+    function sweep() {
+      // A zero height means the page has not been sized yet, which some
+      // headless and prerender contexts report while scripts are running.
+      // Resolve everything rather than measure against nothing: the failure
+      // that matters here is content staying invisible, so when the viewport
+      // cannot be trusted the safe direction is to show it.
+      var vh = window.innerHeight || document.documentElement.clientHeight;
+      els.forEach(function (el) {
+        if (el.classList.contains("in")) return;
+        if (!vh || el.getBoundingClientRect().top < vh) {
+          el.classList.add("in");
+          io.unobserve(el);
+        }
+      });
+    }
+
+    els.forEach(function (el) { io.observe(el); });
+    sweep();
+    window.addEventListener("load", sweep);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(sweep);
+  })();
+
+  // The agency chips. Click or tap pins one open; a pointer hovering another
+  // previews it and falls back to the pinned one on the way out, so a mouse
+  // can read all four without clicking and a finger, which has no hover at
+  // all, gets the same content from a tap.
+  (function () {
+    var detail = document.getElementById("agency-detail");
+    if (!detail) return;
+    var full = detail.querySelector(".agency-full");
+    var body = detail.querySelector(".agency-body");
+    var chips = [].slice.call(document.querySelectorAll(".agency"));
+    var copy = ${JSON.stringify(
+      Object.fromEntries(AGENCIES.map((a) => [a.id, [a.full, a.body]])),
+    )};
+    var pinned = null;
+
+    function render(id) {
+      if (!id) { detail.hidden = true; }
+      else { full.textContent = copy[id][0]; body.textContent = copy[id][1]; detail.hidden = false; }
+      chips.forEach(function (c) {
+        c.setAttribute("aria-expanded", String(c.dataset.agency === pinned));
+      });
+    }
+
+    chips.forEach(function (chip) {
+      var id = chip.dataset.agency;
+      chip.addEventListener("click", function () {
+        pinned = pinned === id ? null : id;
+        render(pinned);
+      });
+      chip.addEventListener("mouseenter", function () { render(id); });
+      chip.addEventListener("mouseleave", function () { render(pinned); });
+      chip.addEventListener("focus", function () { render(id); });
+      chip.addEventListener("blur", function () { render(pinned); });
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && pinned) { pinned = null; render(null); }
+    });
   })();
 </script>`;
 
