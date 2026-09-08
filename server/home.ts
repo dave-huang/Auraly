@@ -284,28 +284,55 @@ a { color: var(--ink); text-underline-offset: 3px; }
   transition: color .12s ease, border-color .12s ease, background-color .12s ease;
 }
 .agency:hover { color: var(--ink); border-color: var(--ink-faint); }
-.agency[aria-expanded="true"] {
+/*
+ * .on is the chip whose text is on screen; aria-pressed is the one actually
+ * chosen. They are usually the same and deliberately come apart while a
+ * pointer is previewing another, because the fill should follow what you are
+ * reading, and a pressed state that flips on hover would be a lie to anything
+ * listening to it.
+ */
+.agency.on {
   color: var(--paper); background: var(--ink); border-color: var(--ink);
 }
 .agency:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
 /*
- * The panel reserves its own height so opening one does not shove the ink wash
- * plate beside it down the page. min-height is the tallest entry at the
- * narrowest column this row ever has.
+ * All four entries live in ONE grid cell, stacked, and the cell is therefore
+ * always as tall as the longest of them. Only opacity changes, so moving from
+ * chip to chip cannot move anything on the page.
+ *
+ * The first version reserved space with a min-height instead, which was wrong
+ * twice over: it only applied above 820px, and the panel started hidden, so
+ * the first hover grew the box from nothing and leaving collapsed it again.
+ * Every hover in and out shoved the rest of the page. A guessed height is also
+ * a guess about a font that had not loaded yet and a column width that varies;
+ * the tallest child measures itself and is right at every width.
+ *
+ * One entry is shown from the start. An empty box waiting to be discovered is
+ * both a worse resting state and a second thing to size around.
  */
 .agency-detail {
+  display: grid;
   margin-top: 18px; padding: 16px 18px;
   background: var(--card); border: 1px solid var(--rule);
   max-width: 42ch;
 }
+.agency-panel {
+  grid-area: 1 / 1;
+  opacity: 0; visibility: hidden;
+  transition: opacity .16s ease, visibility 0s linear .16s;
+}
+.agency-panel.on {
+  opacity: 1; visibility: visible;
+  transition: opacity .16s ease, visibility 0s;
+}
+@media (prefers-reduced-motion: reduce) { .agency-panel { transition: none; } }
 .agency-full {
   font-family: var(--mono); font-size: 0.6875rem; font-weight: 500;
   letter-spacing: 0.11em; text-transform: uppercase; color: var(--ink-faint);
   margin-bottom: 8px;
 }
-.agency-body { font-size: 0.9375rem; line-height: 1.55; color: var(--ink-muted); }
-@media (min-width: 820px) { .agency-detail { min-height: 148px; } }
+.agency-body { font-size: 0.9375rem; line-height: 1.55; color: var(--ink-muted); margin: 0; }
 
 /* ---- testimonials ----------------------------------------------------- */
 
@@ -601,13 +628,18 @@ const BODY = `
           read it, and you decide.</p>
           <ul class="agencies">
             ${AGENCIES.map(
-              (a) => `<li><button class="agency" type="button" data-agency="${a.id}"
-              aria-expanded="false" aria-controls="agency-detail">${a.id.toUpperCase()}</button></li>`,
+              (a, i) => `<li><button class="agency${i === 0 ? " on" : ""}" type="button" data-agency="${a.id}"
+              aria-pressed="${i === 0}"
+              aria-controls="agency-detail">${a.id.toUpperCase()}</button></li>`,
             ).join("\n            ")}
           </ul>
-          <div class="agency-detail" id="agency-detail" hidden>
-            <p class="agency-full"></p>
-            <p class="agency-body"></p>
+          <div class="agency-detail" id="agency-detail">
+            ${AGENCIES.map(
+              (a, i) => `<div class="agency-panel${i === 0 ? " on" : ""}" data-agency="${a.id}">
+              <p class="agency-full">${a.full}</p>
+              <p class="agency-body">${a.body}</p>
+            </div>`,
+            ).join("\n            ")}
           </div>
         </div>
         <div class="row-plate">${plate("sources")}</div>
@@ -729,43 +761,35 @@ ${footerInner()}
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(sweep);
   })();
 
-  // The agency chips. Click or tap pins one open; a pointer hovering another
-  // previews it and falls back to the pinned one on the way out, so a mouse
-  // can read all four without clicking and a finger, which has no hover at
-  // all, gets the same content from a tap.
+  // The agency chips.
+  //
+  // One is always chosen, so there is no empty state to fall back into and
+  // nothing collapses when the pointer leaves. Hovering another previews it
+  // and moving away returns to the chosen one, which a mouse can use to read
+  // all four without clicking; a finger, which has no hover, gets the same
+  // content from a tap. Every panel is already in the DOM and stacked in one
+  // grid cell, so this only ever changes which is opaque.
   (function () {
-    var detail = document.getElementById("agency-detail");
-    if (!detail) return;
-    var full = detail.querySelector(".agency-full");
-    var body = detail.querySelector(".agency-body");
     var chips = [].slice.call(document.querySelectorAll(".agency"));
-    var copy = ${JSON.stringify(
-      Object.fromEntries(AGENCIES.map((a) => [a.id, [a.full, a.body]])),
-    )};
-    var pinned = null;
+    var panels = [].slice.call(document.querySelectorAll(".agency-panel"));
+    if (!chips.length || !panels.length) return;
+    var chosen = chips[0].dataset.agency;
 
-    function render(id) {
-      if (!id) { detail.hidden = true; }
-      else { full.textContent = copy[id][0]; body.textContent = copy[id][1]; detail.hidden = false; }
+    function show(id) {
+      panels.forEach(function (p) { p.classList.toggle("on", p.dataset.agency === id); });
       chips.forEach(function (c) {
-        c.setAttribute("aria-expanded", String(c.dataset.agency === pinned));
+        c.classList.toggle("on", c.dataset.agency === id);
+        c.setAttribute("aria-pressed", String(c.dataset.agency === chosen));
       });
     }
 
     chips.forEach(function (chip) {
       var id = chip.dataset.agency;
-      chip.addEventListener("click", function () {
-        pinned = pinned === id ? null : id;
-        render(pinned);
-      });
-      chip.addEventListener("mouseenter", function () { render(id); });
-      chip.addEventListener("mouseleave", function () { render(pinned); });
-      chip.addEventListener("focus", function () { render(id); });
-      chip.addEventListener("blur", function () { render(pinned); });
-    });
-
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && pinned) { pinned = null; render(null); }
+      chip.addEventListener("click", function () { chosen = id; show(id); });
+      chip.addEventListener("mouseenter", function () { show(id); });
+      chip.addEventListener("focus", function () { show(id); });
+      chip.addEventListener("mouseleave", function () { show(chosen); });
+      chip.addEventListener("blur", function () { show(chosen); });
     });
   })();
 </script>`;
