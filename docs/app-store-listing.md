@@ -141,6 +141,11 @@ Contact: your name, your phone number, hello@dozylabs.net
 
 ### Notes (4,000 char limit)
 
+Superseded by docs/appstore/review-reply.md, written for Apple's Guideline
+2.1 information request on build 32. That file answers all seven of their
+questions and is the version to paste. What follows is the original, kept
+because the sections below it are still accurate.
+
 HOW TO SIGN IN
 
 Revely has no passwords, so there is no demo account to hand over. Please sign in with Apple, using your own Apple Account or a sandbox account. The button is on the first screen and again on the subscription screen. Sign in with Google also works.
@@ -161,7 +166,7 @@ HOW TO TEST THE APP ITSELF
 
 Point the camera at the ingredient list on any packaged food, filling the frame with the list. A product containing the allergen entered during setup is the clearest test: the verdict names the ingredient it found, where it sits on the list, and the published source behind the finding.
 
-If photographing a product is not practical, there is an option to type an ingredient list in by hand.
+If photographing a product is not practical, the camera screen has "Choose a photo instead" below the shutter. Any saved photograph of an ingredient list can be selected from the photo library, and the scan is identical.
 
 ACCOUNT DELETION
 
