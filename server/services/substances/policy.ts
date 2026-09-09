@@ -8,8 +8,11 @@ import type { EvidenceRecord, UseDomain } from './evidence';
  * verdict looks wrong, exactly one rule fired and produced it, and the fix is a
  * rule change plus a version bump — not a hand-edit of a substance.
  *
- * `POLICY_VERSION` is part of the ingredient cache key, so bumping it retires
- * every cached risk level that the old rules produced.
+ * `POLICY_VERSION` is half of `analysisVersion()` in analyzer.ts, which both
+ * caches stamp their entries with, so bumping it retires every cached risk
+ * level the old rules produced. Until 2026-09-08 that was true of the
+ * whole-label cache alone: the shared ingredient rows carried no version at
+ * all and kept serving pre-bump levels for up to twelve months.
  */
 /**
  * What this scale measures — restated, because it changed.
