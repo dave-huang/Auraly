@@ -1,7 +1,4 @@
 import crypto from 'crypto';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import { openai } from '../openai';
 import { analysisResultSchema, type ProductType, type AnalysisResult, type RiskLevel, type Ingredient } from '@shared/schema';
 import { orderBatchResults } from './batchOrder';
@@ -17,50 +14,25 @@ import { POLICY_VERSION } from './substances/policy';
 // OpenAI model for ingredient analysis
 const ANALYSIS_MODEL = "gpt-5.6-luna";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-// Store cache in the project root for better persistence
-const cacheFilePath = path.join(process.cwd(), 'analysis_cache.json');
-
-// In-memory cache for full analysis results (keyed by hash of ingredient text + product type + language)
+/*
+ * The in-memory whole-label cache, keyed by normalised text + product type +
+ * language + policy version + corpus version.
+ *
+ * It does NOT survive a restart, and it used to pretend otherwise. There were
+ * a loadCacheFromDisk() that ran at boot and a saveCacheToDisk() that nothing
+ * ever called, writing analysis_cache.json into the working directory. Three
+ * things made that theatre rather than persistence: nothing invoked the save,
+ * the file is in .dockerignore so the image never carried one, and the machine
+ * has no volume mounted, so the working directory is gone on every deploy. All
+ * it did was log "No cache file found" at every boot and leave the next reader
+ * believing there was a durable cache here.
+ *
+ * The durable, cross-customer cache is the ingredient_cache table in Postgres.
+ * This map is a per-machine short-cut in front of it and nothing more. If a
+ * label-level cache is ever wanted across restarts, it belongs in the database
+ * beside the ingredient one, not on a disk that evaporates.
+ */
 const analysisCache = new Map<string, { result: AnalysisResult; timestamp: number; ocrText: string }>();
-
-// Load cache from disk on startup
-function loadCacheFromDisk(): void {
-  try {
-    console.log(`[CACHE] Attempting to load from: ${cacheFilePath}`);
-    if (fs.existsSync(cacheFilePath)) {
-      const data = fs.readFileSync(cacheFilePath, 'utf-8');
-      const entries = JSON.parse(data) as Array<[string, { result: AnalysisResult; timestamp: number; ocrText?: string }]>;
-      for (const [key, value] of entries) {
-        // Ensure ocrText is always present
-        analysisCache.set(key, {
-          ...value,
-          ocrText: value.ocrText || ''
-        });
-      }
-      console.log(`[CACHE] ✓ Successfully loaded ${analysisCache.size} analysis results from disk`);
-    } else {
-      console.log(`[CACHE] No cache file found at ${cacheFilePath} - starting with empty cache`);
-    }
-  } catch (error) {
-    console.error('[CACHE] Error loading cache from disk:', error);
-  }
-}
-
-// Save cache to disk
-function saveCacheToDisk(): void {
-  try {
-    console.log(`[CACHE] Saving ${analysisCache.size} entries to disk...`);
-    const entries = Array.from(analysisCache.entries());
-    fs.writeFileSync(cacheFilePath, JSON.stringify(entries, null, 2), 'utf-8');
-    console.log(`[CACHE] ✓ Successfully saved cache to ${cacheFilePath}`);
-  } catch (error) {
-    console.error('[CACHE] Error saving cache to disk:', error);
-  }
-}
-
-// Initialize cache on module load
-loadCacheFromDisk();
 
 // Normalize ingredients text for cache key - handles OCR variations
 function normalizeTextForCaching(text: string): string {
@@ -383,17 +355,25 @@ function calculateSimilarity(str1: string, str2: string): number {
   return similarity;
 }
 
+/**
+ * The rules that decided an answer, and the corpus they read.
+ *
+ * A cached verdict is only valid for both, so a rule change or a source
+ * ingestion has to retire the old answers rather than apply to new scans
+ * only, which would leave two people seeing different results for the same
+ * product. BOTH caches derive their version from here, which is the point of
+ * it being a function: they disagreed for months because each computed its
+ * own idea of freshness and only one of them was right.
+ */
+export function analysisVersion(): string {
+  return `${POLICY_VERSION}__${getEvidenceStore().version || 'empty'}`;
+}
+
 // Generate cache key from ingredient text, product type, and language
 function getCacheKey(ingredientsText: string, productType: string, userLanguage: string): string {
   const normalizedText = normalizeTextForCaching(ingredientsText);
-  // Both the rules AND the evidence they read are part of the key. A cached
-  // verdict is only valid for the policy that decided it and the corpus it was
-  // decided from — so a rule change or a source ingestion retires the old
-  // answers instead of shipping to new scans only, which would leave two users
-  // seeing different results for the same product.
-  const corpusVersion = getEvidenceStore().version || 'empty';
   const hash = crypto.createHash('sha256')
-    .update(`${normalizedText}__${productType}__${userLanguage}__${POLICY_VERSION}__${corpusVersion}`)
+    .update(`${normalizedText}__${productType}__${userLanguage}__${analysisVersion()}`)
     .digest('hex');
   return hash;
 }
@@ -1351,7 +1331,7 @@ export async function analyzeIngredientsParallel(
     const missingIngredients: string[] = [];
     
     for (const ingredient of batch) {
-      const cached = await getCachedIngredientAnalysis(ingredient, productType, userLanguage);
+      const cached = await getCachedIngredientAnalysis(ingredient, productType, userLanguage, analysisVersion());
       if (cached) {
         cachedResults.push({
           name: ingredient,
@@ -1498,13 +1478,15 @@ IMPORTANT: Return ONLY this JSON array, nothing else:
         });
         
         // Classify before caching, so the cached row carries the policy's level
-        // rather than the model's. The cache key includes POLICY_VERSION, so a
-        // rule change retires these entries rather than serving stale verdicts.
+        // rather than the model's, and stamp the row with the version that
+        // produced it so a rule change retires it. That stamp is new: this
+        // comment used to claim the key already carried POLICY_VERSION, which
+        // was true of the whole-label cache above and had never been true here.
         freshResults = freshResults.map((r) => applyPopulationRisk(r, domainForProductType(productType)));
         
         // Cache fresh results with language tag
         for (const result of freshResults) {
-          await setCachedIngredientAnalysis(result.name, productType, JSON.stringify(result), userLanguage);
+          await setCachedIngredientAnalysis(result.name, productType, JSON.stringify(result), userLanguage, analysisVersion());
           console.log(`[PARALLEL-BATCH-${batchIdx}] Cached: ${result.name} (${userLanguage})`);
         }
         
@@ -1620,8 +1602,12 @@ IMPORTANT: Return ONLY this JSON array:
               domainForProductType(productType),
             );
 
-            // Cache it (with the policy's risk level, not the model's)
-            await setCachedIngredientAnalysis(normalized.name, productType, JSON.stringify(normalized), userLanguage);
+            // Cache it, with the policy's risk level rather than the model's,
+            // and stamped with the version that produced it. The retry path
+            // writes to the same shared rows as the batch path above, so it
+            // has to stamp them the same way or it reintroduces the bug on
+            // exactly the ingredients that were hardest to analyse.
+            await setCachedIngredientAnalysis(normalized.name, productType, JSON.stringify(normalized), userLanguage, analysisVersion());
             individualResults.push(normalized);
             console.log(`[PARALLEL-BATCH-${batchIdx}] Individual analysis succeeded: ${singleIngredient} → ${normalized.name}`);
             singleSuccess = true;

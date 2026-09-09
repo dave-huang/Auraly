@@ -2,8 +2,67 @@ import { db } from '../db';
 import { ingredientCache } from '@shared/schema';
 import { eq, and, sql } from 'drizzle-orm';
 
+/**
+ * The shared ingredient cache. Cross-customer by design: an ingredient any
+ * person scans is analysed once and read back by everybody after them.
+ *
+ * WHAT A ROW IS SAFE TO HOLD
+ *
+ * Population-level only. `applyProfileToAnalysis` runs later, in routes.ts,
+ * never inside the analyzer, so nothing here has ever seen a profile and one
+ * person's allergies cannot arrive in another person's verdict. Keep it that
+ * way: the moment anything personal is cached under a shared key, this table
+ * becomes a leak rather than a saving.
+ *
+ * WHY THE VERSION IS IN THE VALUE AND NOT THE KEY
+ *
+ * A cached level is only valid for the rules that decided it and the corpus
+ * they read. The whole-label cache in analyzer.ts has always keyed on both;
+ * this one did not, and for a long time a comment here and another in
+ * policy.ts claimed otherwise. A rule change therefore retired one cache and
+ * left the other serving the old answers for up to twelve months, which is
+ * the precise failure the label key exists to prevent, with the added
+ * unpleasantness that two people could get different levels for one
+ * ingredient depending on who scanned it first.
+ *
+ * The version could have gone into the lookup key, which would have wanted a
+ * column and a migration. It is in the stored value instead, and the read
+ * treats a mismatch as a miss. That costs one indexed row read that gets
+ * thrown away, and buys a table that heals itself: the miss falls through to
+ * a fresh analysis, and the write UPDATEs the row in place. No generation of
+ * orphans accumulates behind a version bump, which is what a key column would
+ * have left to clean up.
+ */
+
 let cacheHitCount = 0;
 let cacheMissCount = 0;
+
+/**
+ * The envelope a row's `analysis` column holds.
+ *
+ * Rows written before versioning hold a bare analysis string instead. They
+ * parse as legacy, count as a miss, and are overwritten on the way past, so
+ * there is nothing to migrate.
+ */
+interface CachedEnvelope {
+  version: string;
+  analysis: string;
+}
+
+function readEnvelope(stored: string): CachedEnvelope | null {
+  try {
+    const parsed = JSON.parse(stored);
+    if (
+      parsed && typeof parsed === 'object' &&
+      typeof parsed.version === 'string' && typeof parsed.analysis === 'string'
+    ) {
+      return parsed as CachedEnvelope;
+    }
+  } catch {
+    // Not JSON at all. Legacy, same as any other shape we do not recognise.
+  }
+  return null;
+}
 
 function normalizeIngredient(ingredient: string): string {
   return ingredient
@@ -23,7 +82,9 @@ function shouldRefreshCache(lastUpdated: Date | string): boolean {
 export async function getCachedIngredientAnalysis(
   ingredient: string,
   category: string,
-  language: string = 'en'
+  language: string = 'en',
+  /** POLICY_VERSION + corpus version. A row from any other is not a hit. */
+  version?: string,
 ): Promise<{ analysis: string; fromCache: boolean } | null> {
   const normalizedIngredient = normalizeIngredient(ingredient);
   
@@ -51,10 +112,25 @@ export async function getCachedIngredientAnalysis(
       return null;
     }
     
+    const envelope = readEnvelope(entry.analysis);
+    if (!envelope) {
+      console.log(`[CACHE] Legacy (unversioned): ${normalizedIngredient}__${category}__${language}`);
+      cacheMissCount++;
+      return null;
+    }
+    if (version !== undefined && envelope.version !== version) {
+      console.log(
+        `[CACHE] Superseded: ${normalizedIngredient}__${category}__${language} ` +
+        `(cached under ${envelope.version}, current ${version})`,
+      );
+      cacheMissCount++;
+      return null;
+    }
+
     console.log(`[CACHE] Hit: ${normalizedIngredient}__${category}__${language}`);
     cacheHitCount++;
     return {
-      analysis: entry.analysis,
+      analysis: envelope.analysis,
       fromCache: true
     };
   } catch (error) {
@@ -68,10 +144,13 @@ export async function setCachedIngredientAnalysis(
   ingredient: string,
   category: string,
   analysis: string,
-  language: string = 'en'
+  language: string = 'en',
+  /** POLICY_VERSION + corpus version, stamped so a later read can check it. */
+  version: string = 'unversioned',
 ): Promise<void> {
   const normalizedIngredient = normalizeIngredient(ingredient);
   const now = new Date();
+  const stored = JSON.stringify({ version, analysis } satisfies CachedEnvelope);
   
   try {
     const existing = await db.select({ id: ingredientCache.id })
@@ -86,7 +165,7 @@ export async function setCachedIngredientAnalysis(
     if (existing.length > 0) {
       await db.update(ingredientCache)
         .set({ 
-          analysis,
+          analysis: stored,
           lastUpdated: now
         })
         .where(eq(ingredientCache.id, existing[0].id));
@@ -95,7 +174,7 @@ export async function setCachedIngredientAnalysis(
         ingredient: normalizedIngredient,
         category,
         language,
-        analysis,
+        analysis: stored,
         createdAt: now,
         lastUpdated: now
       });
@@ -107,46 +186,14 @@ export async function setCachedIngredientAnalysis(
   }
 }
 
-export async function batchAnalyzeIngredientsWithCache(
-  ingredients: string[],
-  category: string,
-  analyzeFunction: (ingredient: string) => Promise<string>
-): Promise<Array<{ ingredient: string; analysis: string; fromCache: boolean }>> {
-  const uniqueIngredients = Array.from(new Set(ingredients.map(normalizeIngredient)));
-  
-  console.log(`[CACHE-BATCH] Processing ${uniqueIngredients.length} unique ingredients for category: ${category}`);
-  
-  const results = await Promise.all(
-    uniqueIngredients.map(async (ingredient) => {
-      try {
-        const cached = await getCachedIngredientAnalysis(ingredient, category);
-        if (cached) {
-          return {
-            ingredient,
-            analysis: cached.analysis,
-            fromCache: true
-          };
-        }
-        
-        console.log(`[CACHE-BATCH] Analyzing: ${ingredient}`);
-        const analysis = await analyzeFunction(ingredient);
-        
-        await setCachedIngredientAnalysis(ingredient, category, analysis);
-        
-        return {
-          ingredient,
-          analysis,
-          fromCache: false
-        };
-      } catch (error) {
-        console.error(`[CACHE-BATCH] Error analyzing ${ingredient}:`, error);
-        throw new Error(`Failed to analyze ingredient "${ingredient}": ${(error as any).message}`);
-      }
-    })
-  );
-  
-  return results;
-}
+/*
+ * batchAnalyzeIngredientsWithCache lived here and nothing ever called it. It
+ * was a second, simpler implementation of the read-then-analyse loop that
+ * analyzer.ts already does properly, and it had drifted: no language in its
+ * cache key and no version in it either, so anybody who had reached for it
+ * would have got cross-language collisions on top of the staleness bug.
+ * Deleted rather than repaired. One loop.
+ */
 
 export async function clearExpiredCache(): Promise<number> {
   const twelveMonthsMs = 365 * 24 * 60 * 60 * 1000;
@@ -238,11 +285,20 @@ export async function clearAllCache(): Promise<number> {
   }
 }
 
+/**
+ * Every row, for the admin viewer.
+ *
+ * Unwraps the envelope so the viewer shows the analysis rather than the
+ * storage format wrapped around it, and surfaces the version beside it, since
+ * "which rules produced this" is the first thing worth knowing when a cached
+ * level looks wrong. A row from before versioning reports itself as legacy.
+ */
 export async function getAllCacheEntries(): Promise<Array<{
   key: string;
   ingredient: string;
   category: string;
   language: string;
+  version: string;
   analysis: string;
   createdAt: number;
   lastUpdated: number;
@@ -250,15 +306,19 @@ export async function getAllCacheEntries(): Promise<Array<{
   try {
     const entries = await db.select().from(ingredientCache);
     
-    return entries.map(entry => ({
-      key: `${entry.ingredient}__${entry.category}__${entry.language}`,
-      ingredient: entry.ingredient,
-      category: entry.category,
-      language: entry.language,
-      analysis: entry.analysis,
-      createdAt: entry.createdAt.getTime(),
-      lastUpdated: entry.lastUpdated.getTime()
-    }));
+    return entries.map(entry => {
+      const envelope = readEnvelope(entry.analysis);
+      return {
+        key: `${entry.ingredient}__${entry.category}__${entry.language}`,
+        ingredient: entry.ingredient,
+        category: entry.category,
+        language: entry.language,
+        version: envelope ? envelope.version : 'legacy (unversioned)',
+        analysis: envelope ? envelope.analysis : entry.analysis,
+        createdAt: entry.createdAt.getTime(),
+        lastUpdated: entry.lastUpdated.getTime()
+      };
+    });
   } catch (error) {
     console.error('[CACHE] Error getting all entries:', error);
     return [];

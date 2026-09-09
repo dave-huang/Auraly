@@ -21,6 +21,5 @@ design_handoff_revely
 eval
 
 # Local scratch
-analysis_cache.json
 *.log
 .DS_Store
