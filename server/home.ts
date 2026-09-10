@@ -123,7 +123,7 @@ p  { margin: 0; color: var(--ink-muted); }
 /*
  * Faint ink on paper is 3.3:1, which the app can carry at arm's length on a
  * phone and a web page cannot. Anything in .meta says something a reader may
- * actually need (billing terms, who published a figure, who is speaking), so
+ * actually need (who is speaking, who published a figure), so
  * it takes the muted ink and clears 4.5:1. The eyebrow keeps the faint ink:
  * it is a label whose words are repeated by the heading directly under it,
  * and it is the pairing the product itself ships.
@@ -151,8 +151,6 @@ a { color: var(--ink); text-underline-offset: 3px; }
 .badge:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
 .close .badge:focus-visible { outline-color: var(--paper); }
 
-.terms { margin-top: 16px; }
-
 /* ---- the scroll cue --------------------------------------------------- */
 /*
  * A hairline with a short ink segment that travels down it once and stays
@@ -165,11 +163,19 @@ a { color: var(--ink); text-underline-offset: 3px; }
  * the very fold it exists to advertise further down. Below the two-column
  * breakpoint there is no gap to borrow and no need for the hint, since a
  * stacked hero is visibly cut off on its own.
+ *
+ * FLEX, NOT INLINE-FLEX, AND THAT DISTINCTION IS THE WHOLE BUG. The badge above
+ * is inline-block. While a paragraph of subscription terms sat between the two
+ * it did not matter, because a block element forced the line break. Once that
+ * paragraph was deleted an inline-level cue flowed up onto the badge's line,
+ * and a 52px vertical hairline that reads as a scroll hint under the copy
+ * reads as a divider welded to the CTA when it sits beside it. Block-level
+ * flex keeps the row layout the rail needs and the line break it needs.
  */
 .cue { display: none; }
 @media (min-width: 880px) {
   .cue {
-    display: inline-flex; align-items: center; gap: 14px;
+    display: flex; width: max-content; align-items: center; gap: 14px;
     margin-top: 40px; text-decoration: none; color: var(--ink-faint);
     font-family: var(--mono); font-size: 0.6875rem; font-weight: 500;
     letter-spacing: 0.17em; text-transform: uppercase;
@@ -425,7 +431,6 @@ html[lang="zh-Hans"] .agency-full { letter-spacing: 0.06em; }
 .close p { color: #B8AD99; }
 .close .shell { position: relative; }
 .close-inner { max-width: 34rem; }
-.close .terms { color: #8A8175; }
 .close-plate {
   position: absolute; right: -26px; bottom: 10px; width: min(400px, 42%);
   opacity: .28; pointer-events: none; user-select: none;
@@ -527,13 +532,19 @@ function body(c: Copy, lang: Lang): string {
 
   <!-- Hook. Headline, one line under it, one button, one picture. The
        switcher above is the only other thing, and the note beside it explains
-       why it is allowed to be. -->
+       why it is allowed to be.
+
+       NO SUBSCRIPTION TERMS ANYWHERE ON THIS PAGE, DELIBERATELY. Nothing is
+       sold here: the trial is disclosed where the money actually moves, on the
+       paywall and in Apple's sheet, both of which state the price, the renewal
+       and how to cancel. A half-line that named the trial without naming the
+       price was a claim needing its own qualifier, so it bought no compliance
+       and spent attention the CTA needed. -->
   <section class="shell hero">
     <h1>${c.heroTitle}</h1>
     <div class="hero-copy">
       <p class="lede">${c.heroLede}</p>
       ${badge("black", c.badgeAlt)}
-      <p class="meta terms">${c.terms}</p>
       <a class="cue" href="#aisle"><span class="cue-rail" aria-hidden="true"></span>${c.cue}</a>
     </div>
     <div class="hero-plate">
@@ -676,7 +687,6 @@ function body(c: Copy, lang: Lang): string {
         <h2>${c.closeTitle}</h2>
         <p class="lede" style="margin:20px 0 34px">${c.closeLede}</p>
         ${badge("white", c.badgeAlt)}
-        <p class="meta terms">${c.terms}</p>
       </div>
     </div>
   </section>
