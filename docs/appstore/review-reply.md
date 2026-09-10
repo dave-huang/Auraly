@@ -4,15 +4,21 @@ Apple has not found a bug. This is the standard information request sent to a
 developer account with no review history, and every item on it is answered with
 words and one video. Nothing in the app has to change.
 
-Three things are needed from you before this can be sent:
+Prices are taken from App Store Connect, not invented here: $39.99 a year with
+one week free, and $7.99 a month with no introductory offer. Both are confirmed
+against the subscription records, and the monthly plan genuinely has no
+introductory offer configured, which is what the app already tells people.
 
-1. The screen recording. Shot list is at the end of this file. It has to be a
-   real device, not the simulator, and Apple will check.
-2. The two subscription prices, which live in App Store Connect and are marked
-   PRICE HERE below.
-3. A confirmation in App Store Connect that both in-app purchases are attached
-   to this version and submitted with it, not sitting in "Ready to Submit" on
-   their own. Apple raised that in their Prevent Common Issues list.
+One thing is still needed before this can be sent: the screen recording. The
+shot list is at the end of this file. It has to be a real device, not the
+simulator, and Apple will check.
+
+The in-app purchases are fine. Submission 04f73c64 contains four items: both
+subscriptions, the subscription group, and the app version. The subscriptions
+read "Ready for Review" rather than "In Review" only because the app version
+was rejected, and App Store Connect will not review the rest of a submission
+once one item fails. The 3.1.1 line in Apple's message is boilerplate that
+ships with every 2.1 letter, not a finding against this submission.
 
 There is no demo account to hand over, and there must not be one. Revely has no
 passwords: it authenticates only through Sign in with Apple and Google Sign-In.
@@ -23,189 +29,65 @@ this plainly in its first paragraph, which is where a reviewer looks.
 
 ---
 
-## Part 1. Paste into Resolution Center
+## Part 1. The Resolution Center reply
 
-Hello, and thank you for the detailed list. Answers to all seven items follow.
+SAVED AS A DRAFT IN APP STORE CONNECT ON 9 SEPTEMBER 2026, NOT SENT. It is on
+submission 04f73c64, under Messages, with Continue Draft and Delete Draft
+beside it. Sending it is one click, and the only thing missing is the video
+link.
 
-SIGNING IN, BEFORE ANYTHING ELSE
+The reply box holds 4,000 characters, which is why this is terser than it
+would otherwise be: the first draft ran to 8,389 and had to come down by more
+than half. App Store Connect counts a line break as one character, and this
+text left 48 characters spare. Anything added here has to displace something.
+The fuller wording lives in Part 2, which Apple also asked for and which has
+its own 4,000 character field.
 
-Revely has no username and password, so we cannot supply demo credentials. The
-app authenticates only through Sign in with Apple and Google Sign-In. Please
-sign in with Apple, using your own Apple Account or a sandbox account. The
-button appears on the first screen and again when a purchase begins. No email
-address, name or password is ever typed into the app.
+Replace VIDEO LINK HERE before sending.
 
-1. SCREEN RECORDING
+Thank you for the list. All seven answers follow, and are now also in the App Review Information notes.
 
-A recording made on a physical iPhone running the current iOS is here:
+SIGNING IN. Revely has no username or password, so there are no demo credentials: it uses only Sign in with Apple and Google Sign-In. Please sign in with Apple, with your own Apple Account or a sandbox account. The button is on the first screen and again when a purchase begins.
 
-    VIDEO LINK HERE
+1. RECORDING. On a physical iPhone, current iOS: VIDEO LINK HERE. From launch it shows onboarding, sign-in, the subscription screen with both plans and prices, a purchase, a live scan, the result, history and account deletion.
 
-It begins at app launch and shows, in order: onboarding, Sign in with Apple,
-the subscription screen with both plans and their prices, a purchase, a live
-scan of a product's ingredient list, the result, scan history, and account
-deletion.
+2. PURPOSE AND AUDIENCE. Revely reads the ingredient list on packaged food and explains it. The problem: ingredient lists are unreadable in practice, in small print, often another language, and written in synonyms that hide allergens.
 
-2. WHAT THE APP IS FOR, AND WHO FOR
+You tell Revely once what you would rather not eat: allergies, a condition, a diet, additives. Point the camera at any ingredient list and it transcribes, translates and explains each ingredient, then checks the list against your profile. The verdict names the ingredient found, where it sits in the list, quotes the published finding, and names who published it.
 
-Revely reads the ingredient list on packaged food and explains it.
+For people with food allergies or intolerances, anyone managing a condition or diet, carers shopping for others, and travellers facing unfamiliar labels. Not directed at children.
 
-The problem: an ingredient list is the one piece of health information people
-are handed at the moment of purchase and cannot read. It is printed small,
-often in another language, and written in a vocabulary of additives, E numbers
-and chemical synonyms that almost nobody recognises. An allergen can appear
-under a name that does not contain the allergen's word at all.
+3. SETUP. 1) Get started. 2) Onboarding asks who the profile is for: choose Myself; one allergy, say peanuts, is enough. 3) An example scan runs, then two trial screens. 4) Choose a plan on the subscription screen and tap the button. 5) Sign in with Apple; the purchase sheet follows and completes free in the sandbox. 6) The camera opens.
 
-What Revely does: you tell it once what you would rather not eat, which can be
-allergies, a condition you are managing, a diet you keep to, or additives you
-avoid. You then point the camera at any ingredient list. The app transcribes it,
-translates it if it is not in your language, explains each ingredient, and
-checks the whole list against your profile. The verdict names the ingredient it
-found, where it sits in the list, and quotes the published finding behind it,
-naming who published it.
+Point the camera at an ingredient list; a product containing the allergy from step 2 is clearest. With none to hand, tap "Choose a photo instead" below the shutter and pick any saved label photo. History, Profiles, Subscription and Account are in the camera menu; deletion is Account, then Delete account.
 
-Who it is for: people with food allergies or intolerances, people managing a
-condition with a dietary component, people keeping to a diet for religious or
-personal reasons, parents and carers who shop for someone else, and travellers
-facing labels in a language they do not read. Profiles cover the last case:
-you can hold a profile for a child or a parent and switch between them, and the
-scan already on screen is rechecked immediately.
+4. EXTERNAL SERVICES. OpenAI reads the label and analyses ingredients, via the business API, which does not train on the data. Apple and Google verify sign-in tokens only. Apple In-App Purchase handles all billing. RevenueCat carries subscription status. Neon hosts the database, Fly.io the servers. The same list is at https://revely.life/privacy.
 
-Revely is for a general audience and is not directed at children.
+Ingredient findings are quoted from the FDA, EFSA, the IARC, the EU CosIng annexes and California Proposition 65. A label photo is used for that one scan and not retained.
 
-3. SETTING UP AND REACHING THE MAIN FEATURES
+5. REGIONS. Identical everywhere: no geographic gating, no region-specific content. The interface follows the device locale in English, Spanish or Simplified Chinese; prices are Apple's local equivalents of our tier; findings are not filtered by country.
 
-    1. Launch the app and tap Get started.
-    2. Onboarding asks who the profile is for. Choose Myself. Adding one
-       allergy, for example peanuts, is enough to make the result obvious.
-    3. An example scan runs on a sample label, checked against the profile you
-       just built, followed by two short screens about the free trial.
-    4. The subscription screen appears. Choose a plan and tap the button.
-    5. Sign in with Apple in the sheet that appears. Apple's purchase sheet
-       follows on its own. In the sandbox environment it completes at no charge.
-    6. The camera opens. This is the app's home screen.
+6. REGULATION AND THIRD-PARTY MATERIAL. Revely provides ingredient information only. It is not a medical device, does not diagnose or treat any condition, and is not a substitute for professional medical advice; that appears on every result screen and in our Terms of Use. The regulatory sources in item 4 are public documents, quoted with attribution and needing no licence. We claim no endorsement and show none of their logos. Health data customers enter is covered by https://revely.life/health-privacy.
 
-To test a scan, point the camera at the ingredient list on any packaged food,
-filling the frame with the list. A product containing the allergy you entered
-gives the clearest result.
+7. IN-APP PURCHASE. One auto-renewing subscription in two durations, no free tier, no consumables. It unlocks unlimited scans, profiles for others, history and the sources behind each verdict.
 
-If you do not have packaged food to hand, the camera screen has "Choose a photo
-instead" below the shutter. Save any photograph of an ingredient list to the
-device's photo library and select it there. The scan is identical.
+revely.annual, $39.99 per year, after a 7-day free trial
+revely.monthly, $7.99 per month, billed immediately
 
-Everything else is behind the menu on the camera screen: History, Profiles,
-Subscription and Account.
+The screen appears at the end of onboarding (step 4) and afterwards from the camera menu under Subscribe. Both show each plan's title, duration and price from StoreKit in local currency and say when money moves. Restore Purchases, Terms of Use and Privacy Policy sit under the plans.
 
-4. EXTERNAL SERVICES
-
-    OpenAI          Reads the label from the photo and analyses the
-                    ingredients. Used through the business API, which does not
-                    train on the data sent to it.
-    Apple           Sign in with Apple, for authentication.
-    Google          Google Sign-In, for authentication. Token verification
-                    only.
-    Apple           In-App Purchase. All billing, without exception. Revely
-                    takes no payment by any other route and holds no card
-                    details.
-    RevenueCat      Subscription status, so an entitlement follows the account
-                    across devices.
-    Neon            PostgreSQL database hosting.
-    Fly.io          Application hosting.
-
-That list is the same one published in our privacy policy at
-https://revely.life/privacy, which names every recipient and what each one
-receives.
-
-The ingredient findings the app quotes come from published regulatory and
-scientific sources: the US FDA's Substances Added to Food inventory, EFSA's
-OpenFoodTox, the IARC monographs, the EU CosIng annexes, and California
-Proposition 65. These are public government and intergovernmental
-publications.
-
-A label photograph is used for the one scan it was taken for and is not
-retained.
-
-5. REGIONAL DIFFERENCES
-
-The app behaves identically in every region. There is no geographic gating, no
-region-specific content, and no feature available in one country and not
-another.
-
-Two things do vary, neither of them by our choice of region:
-
-    The interface language follows the device locale, and is English, Spanish
-    or Simplified Chinese. The three are equivalent in function; the same
-    screens and the same findings appear in each.
-
-    Subscription prices are Apple's local equivalents for the tier we set, in
-    the customer's own currency. The app never prints a price of its own. It
-    displays whatever StoreKit reports for that storefront.
-
-The ingredient findings themselves are not filtered by country. If the FDA and
-EFSA have both published on an ingredient, both are shown, wherever the
-customer is, and each is attributed.
-
-6. REGULATED INDUSTRY AND THIRD-PARTY MATERIAL
-
-Revely provides ingredient information only. It is not a medical device, does
-not diagnose, treat, cure or prevent any condition, and is not a substitute for
-professional medical advice. That statement appears on every result screen in
-the app, not only in the listing, and it is repeated in our Terms of Use.
-
-The app makes no clinical claim, offers no diagnosis, and provides no treatment
-or dosing guidance. It reports what a published source says about an ingredient
-and names the source, so the customer reads the finding and decides. It does not
-assert conclusions of its own beyond matching an ingredient list against
-preferences the customer entered themselves.
-
-The material we quote is published by the FDA, EFSA, the IARC, the European
-Commission and the State of California. These are public regulatory
-publications, quoted with attribution. No licence is required to cite them, we
-claim no endorsement by any of these bodies, and the app does not display their
-logos or marks or suggest any affiliation.
-
-Health information the customer enters, such as allergies and conditions, is
-covered by a separate Consumer Health Data Privacy Policy at
-https://revely.life/health-privacy.
-
-7. IN-APP PURCHASE
-
-Revely sells one auto-renewing subscription in two durations. There is no free
-tier and no consumable purchase. The subscription unlocks the app itself:
-unlimited scans, profiles for other people, scan history, and the published
-sources behind each verdict.
-
-    revely.annual    PRICE HERE per year, after a 7-day free trial
-    revely.monthly   PRICE HERE per month, billed immediately
-
-Reaching the purchase flow, by either route:
-
-    At the end of onboarding, the subscription screen appears on its own, as
-    step 4 in section 3 above. This is the route almost everyone takes.
-
-    At any time afterwards, from the menu on the camera screen, by tapping
-    Subscribe.
-
-Both screens show each plan's title, duration and price, taken from StoreKit in
-the customer's currency, and state when money moves before any purchase begins:
-the annual plan shows a timeline saying the trial is free today, that a
-reminder arrives before it ends, and on which day of the trial the charge
-lands unless it is cancelled; the monthly plan says it bills today. Restore Purchases sits under the plans, next to links
-to the Terms of Use and the Privacy Policy.
-
-Subscriptions are managed and cancelled in Apple Account settings. The app links
-there from the Account screen rather than asking anyone to cancel through us.
-
-We have added all of the above to the App Review Information notes for future
-submissions. Any questions, please write to hello@dozylabs.net and we will
-answer the same day.
+Questions to hello@dozylabs.net.
 
 ---
 
-## Part 2. Paste into the Notes field, App Review Information
+## Part 2. The App Review Information notes
 
-Apple asked for this to be stored there as well as replied. Under the 4,000
-character limit. Keep the two in agreement: if one changes, change both.
+ALREADY SAVED IN APP STORE CONNECT ON 9 SEPTEMBER 2026, on iOS App Version
+1.0, under App Review Information. It replaced the older notes, which told
+Apple an ingredient list could be typed in by hand. 3,541 of the 4,000
+characters.
+
+Keep this and Part 1 in agreement: if one changes, change both.
 
     HOW TO SIGN IN
 
@@ -246,8 +128,8 @@ character limit. Keep the two in agreement: if one changes, change both.
     One auto-renewing subscription, two durations, no free tier and no
     consumables. It unlocks unlimited scans, profiles, history and sources.
 
-    revely.annual, PRICE HERE per year, after a 7-day free trial
-    revely.monthly, PRICE HERE per month, billed immediately
+    revely.annual, $39.99 per year, after a 7-day free trial
+    revely.monthly, $7.99 per month, billed immediately
 
     The purchase screen appears at the end of onboarding, and afterwards from
     the camera menu under Subscribe. Both show each plan's title, duration and
@@ -344,3 +226,116 @@ before the confirmation goes through: the confirmed deletion is the shot.
 
 Upload it somewhere Apple can reach without an account, and put the link in the
 reply where it says VIDEO LINK HERE.
+
+---
+
+## Part 4. Dry run notes, iPhone 17 Pro simulator, 9 September 2026
+
+Walked in the simulator on a dev build to de-risk the real take. Everything
+below is observed, not assumed.
+
+### The sequence, verified
+
+Thirteen screens from launch to the paywall. A human moving at a readable pace
+gets there in roughly ninety seconds.
+
+     1  Welcome           Wordmark, "Your ingredient guardian.", Get started
+     2  Shop anywhere     Card animates: a fourth ingredient appears as the
+                          FR to EN translation lands. Let it finish. CTA is
+                          "Let's do it"
+     3  Green means fine  The three risk inks, with an EXAMPLE badge
+     4  Who are we        Myself / My child / Someone I care for. NEXT IS
+        checking for      DISABLED until one is picked
+     5  What should we    Free text, defaults to "Me"
+        call you
+     6  What's off-limits Allergen chips. Pick the one your product contains
+     7  How careful       Severity per allergen, Allergy preselected
+     8  Different names   The alias card: "Both of those are milk"
+     9  Any diet          Chips, skippable
+    10  Pregnant, nursing Conditions, skippable. This is the health data the
+                          Consumer Health Data Privacy Policy covers
+    11  Reads the label   Barcode versus printed list
+    12  When an agency    FDA, EFSA, IARC, WHO, each with one line on what it
+        has ruled         rules on
+    13  Which language    EN chip. CTA is "See it work"
+
+Then the example scan, two trial screens, and the paywall.
+
+### Three screens are worth holding on
+
+The example scan is the strongest thing in the recording and it arrives before
+any purchase. The verdict read "Avoid" in the serif, with a chip saying
+"Dave . Peanut", a stamp reading CHECK DAVE, and the reason written out: "The
+label warns this may contain traces of Peanut, from shared equipment." Below
+it the Spanish label sits beside its English translation, twelve ingredients,
+titanium dioxide flagged high risk and sulfur dioxide worth a look. It caught
+the peanut from the label's own "may contain" declaration rather than from an
+ingredient name, which is the whole argument for the product. Scroll it slowly.
+
+Screen 12 answers Apple's question 6 visually: four agencies named, one line
+each, no invented score. Screen 13 answers question 5.
+
+### Where the dry run stops, and why
+
+The paywall renders its furniture but no plans: "Subscriptions aren't live in
+this build yet." A dev build has no RevenueCat key, so PURCHASES_ENABLED is
+false, no offerings load, and Continue is disabled.
+
+Everything after the purchase is therefore unreachable here. The camera screen
+redirects to the paywall whenever entitlement is inactive, at
+mobile/src/app/index.tsx:300, so the live scan, the result, the photo library
+route, history, profiles and account deletion cannot be rehearsed on this
+build. Steps 6 through 13 of Part 3 have to be done cold, on TestFlight.
+
+That is the argument for installing build 32 from TestFlight rather than
+recording from a dev build: it is not only that Apple wants the binary they
+are reviewing, it is that a dev build physically cannot show them the four
+things they asked to see.
+
+The paywall's static half is correct and worth knowing before you record it:
+the heading reads "Start your 7-day free trial to continue", the billing
+sentence underneath reads "Free for 7 days, then the plan you picked, billed
+to your Apple ID. Renews until canceled. Cancel any time in Settings, at least
+24 hours before the trial ends", and Terms of Use, Privacy Policy and Restore
+purchases sit in one row below that. So the reply's claim about this screen is
+accurate; only the prices were missing here.
+
+### Traps, all of which I walked into
+
+THE SIGN IN LINK SITS DIRECTLY UNDER GET STARTED. I hit it twice. It opens a
+"Welcome back" sheet with a lone Sign in with Apple button, which on a
+recording looks like a wrong turn or a bug. Aim at the upper half of the
+button, and if the sheet does open, tap the dimmed area above it and start the
+take again rather than trying to recover on camera.
+
+THE NEXT BUTTON MOVES. On the two skippable screens, diet and conditions, a
+Skip link sits below Next, which pushes Next about 40 points higher than on
+every other screen. On the allergen screen the Skip link disappears the moment
+you select a chip, so Next moves down mid-screen. Recording by muscle memory
+produces mis-taps here.
+
+THE NAME FIELD NEEDS A DELIBERATE PACE. Typing fast dropped a character for me,
+and the name is not cosmetic: the next heading reads "What's off-limits for
+Dave?" and the verdict card is stamped with it. A truncated name is visible for
+the rest of the recording.
+
+THE DEV WARNING TOAST SITS ON TOP OF THE CTA. Dev builds only, and another
+reason to record from TestFlight, but if you do end up in a dev build, dismiss
+it before you start or it covers the button you are about to press.
+
+### One thing to fix, but not now
+
+The in-app Terms and Privacy links open revely-api.fly.dev, not revely.life.
+Every EAS profile including production sets EXPO_PUBLIC_API_URL to
+https://revely-api.fly.dev, and mobile/src/lib/config.ts derives the legal URLs
+from it.
+
+Both hosts serve the same Fly app, and I checked: /terms is byte-identical on
+each, same SHA-256. So Guideline 3.1.2 is satisfied, the links work, and there
+is no contradiction of substance with the reply or with the Privacy Policy URL
+in App Store Connect. It is a cosmetic mismatch: a reviewer who compares the
+in-app link against the listed policy URL sees two hostnames for one document.
+
+Not worth a new build in the middle of a review, and repointing
+EXPO_PUBLIC_API_URL would move all API traffic as a side effect. The clean fix
+is a separate SITE_URL constant for the legal pages, in the next version.
