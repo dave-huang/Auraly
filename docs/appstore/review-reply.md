@@ -9,9 +9,49 @@ one week free, and $7.99 a month with no introductory offer. Both are confirmed
 against the subscription records, and the monthly plan genuinely has no
 introductory offer configured, which is what the app already tells people.
 
-One thing is still needed before this can be sent: the screen recording. The
-shot list is at the end of this file. It has to be a real device, not the
-simulator, and Apple will check.
+STATUS, 11 SEPTEMBER 2026: SENT AND RESUBMITTED. The reply went on 10 September
+with the recording attached, and the submission was resubmitted on 11 September
+at 3:18 PM. All four items read Waiting for Review. Release is set to automatic,
+deliberately, so approval puts Revely on the App Store immediately.
+
+## After replying, you still have to resubmit
+
+This is the step that cost two days, and it is the one to remember next time.
+
+Replying in the message thread does not put a rejected version back in front of
+a reviewer. That holds even for a Guideline 2.1 information request like this
+one, where there is nothing in the app to change. The version stays Rejected,
+the submission stays at Unresolved Issues, and no reviewer is holding it. Apple
+says as much: you can correspond "until you resubmit to App Review", so the
+reply goes alongside a resubmission, never instead of one.
+
+The sequence, from Apple's page on managing a submission with unresolved
+issues:
+
+1. Open the submission and click Edit beside the rejected app version. It opens
+   the version page.
+2. Click Update Review. Apple's documentation calls this Add for Review; in this
+   interface it is labelled Update Review because the version already belongs
+   to the submission. The button reads Processing, then returns you to the
+   submission, where the version now reads Ready for Review and the red banner
+   is gone.
+3. Click Resubmit to App Review. The submission and every item in it change to
+   Waiting for Review.
+
+A GREYED-OUT RESUBMIT BUTTON MEANS STEP 2 HAS NOT HAPPENED. It does not mean
+Apple has the submission. That misreading is exactly what happened here: the
+disabled button was taken as a sign the ball was in Apple's court, and the
+reply sat on a closed submission for two days while nobody read it.
+
+Two practical notes. Apple allows one edit per item before resubmission, so
+finish the notes and attachments before clicking Update Review. And confirm the
+state after every click rather than trusting it: the first Update Review click
+here did nothing at all, with no dialog and no error, and only the second one
+went through.
+
+Apple's pages:
+https://developer.apple.com/help/app-store-connect/manage-submissions-to-app-review/manage-a-submission-with-unresolved-issues
+https://developer.apple.com/help/app-store-connect/manage-submissions-to-app-review/reply-to-app-review-messages
 
 The in-app purchases are fine. Submission 04f73c64 contains four items: both
 subscriptions, the subscription group, and the app version. The subscriptions
@@ -31,10 +71,9 @@ this plainly in its first paragraph, which is where a reviewer looks.
 
 ## Part 1. The Resolution Center reply
 
-SAVED AS A DRAFT IN APP STORE CONNECT ON 9 SEPTEMBER 2026, NOT SENT. It is on
-submission 04f73c64, under Messages, with Continue Draft and Delete Draft
-beside it. Sending it is one click, and the only thing missing is the video
-link.
+SENT ON 10 SEPTEMBER 2026 on submission 04f73c64, with the recording attached as
+"Revely Demo Video.MP4". The text below is what went, with the video placeholder
+replaced by "attached here".
 
 The reply box holds 4,000 characters, which is why this is terser than it
 would otherwise be: the first draft ran to 8,389 and had to come down by more
@@ -43,13 +82,11 @@ text left 48 characters spare. Anything added here has to displace something.
 The fuller wording lives in Part 2, which Apple also asked for and which has
 its own 4,000 character field.
 
-Replace VIDEO LINK HERE before sending.
-
 Thank you for the list. All seven answers follow, and are now also in the App Review Information notes.
 
 SIGNING IN. Revely has no username or password, so there are no demo credentials: it uses only Sign in with Apple and Google Sign-In. Please sign in with Apple, with your own Apple Account or a sandbox account. The button is on the first screen and again when a purchase begins.
 
-1. RECORDING. On a physical iPhone, current iOS: VIDEO LINK HERE. From launch it shows onboarding, sign-in, the subscription screen with both plans and prices, a purchase, a live scan, the result, history and account deletion.
+1. RECORDING. On a physical iPhone, current iOS, attached here. From launch it shows onboarding, sign-in, the subscription screen with both plans and prices, a purchase, a live scan, the result, history and account deletion.
 
 2. PURPOSE AND AUDIENCE. Revely reads the ingredient list on packaged food and explains it. The problem: ingredient lists are unreadable in practice, in small print, often another language, and written in synonyms that hide allergens.
 
@@ -82,10 +119,12 @@ Questions to hello@dozylabs.net.
 
 ## Part 2. The App Review Information notes
 
-ALREADY SAVED IN APP STORE CONNECT ON 9 SEPTEMBER 2026, on iOS App Version
-1.0, under App Review Information. It replaced the older notes, which told
-Apple an ingredient list could be typed in by hand. 3,541 of the 4,000
-characters.
+SAVED IN APP STORE CONNECT ON 9 SEPTEMBER 2026 and later superseded. Before
+resubmitting, the Notes field was replaced with the Part 1 reply text itself,
+prefixed "In response to your App Review message:", 3,991 of the 4,000
+characters, and the recording was also attached to the version's own
+Attachment field. The text below is kept because it is the fuller wording, and
+because it is the better starting point for the next version's notes.
 
 Keep this and Part 1 in agreement: if one changes, change both.
 
@@ -224,8 +263,11 @@ Step 12 genuinely deletes the account. That is what Apple is asking to see, and
 the account is a sandbox one, so let it delete. Do not stop the recording
 before the confirmation goes through: the confirmed deletion is the shot.
 
-Upload it somewhere Apple can reach without an account, and put the link in the
-reply where it says VIDEO LINK HERE.
+Attach the file directly rather than hosting it and pasting a link. Both the
+reply dialog (Attach File) and the version's App Review Information section
+(Attachment) take a video, and this recording went into both. A direct
+attachment cannot expire, cannot sit behind a login, and stays with the
+submission.
 
 ---
 
