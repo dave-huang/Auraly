@@ -15,9 +15,11 @@
         "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_vFVQuKaKQzfbnoaUFVphFZhTUzh",
         "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "937721168112-n1gj0lbqle47husqo1tb3dq8snmtfoks.apps.googleusercontent.com",
         "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "937721168112-apvin1j082tra5u0nh5rddc9lv66mjc7.apps.googleusercontent.com"
-      }
+      },
+      "channel": "simulator"
     },
     "preview": {
+      "channel": "preview",
       "distribution": "internal",
       "ios": {
         "resourceClass": "m-medium"
@@ -30,6 +32,7 @@
       }
     },
     "production": {
+      "channel": "production",
       "autoIncrement": true,
       "ios": {
         "resourceClass": "m-medium"
