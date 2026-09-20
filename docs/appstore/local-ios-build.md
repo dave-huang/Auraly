@@ -1,0 +1,178 @@
+# Building and shipping iOS from this Mac, without EAS Build
+
+Used for the first time on 1.0.1, build 33, on 19 September 2026.
+
+The EAS free plan gives 15 iOS builds a year, and ours ran out. The counter
+resets on 1 October 2026. Until then every release is archived here in Xcode
+instead. Only the build moves: the upload still goes through EAS Submit, which
+holds the App Store Connect API key, so no Apple password is typed anywhere in
+this process.
+
+The whole thing takes about 25 minutes, most of it compiling.
+
+No em dashes anywhere in this file.
+
+## Before the first local build, once
+
+These four are already done on this Mac. They are written down because each one
+fails in a way that does not say what is wrong, and because a new Mac needs all
+four again.
+
+**Sign in to Xcode and create a distribution certificate.** Xcode, Settings,
+Accounts, add the Apple ID, then Manage Certificates and add an Apple
+Distribution certificate. The private key lives in the login keychain and never
+leaves this Mac. Do not revoke the EAS certificate to make room: EAS still owns
+its own, and revoking it breaks every EAS build. Apple allows two distribution
+certificates per account, which is exactly enough.
+
+**Install the WWDR G3 intermediate certificate.** A certificate issued today is
+signed by Apple Worldwide Developer Relations Certification Authority G3, and a
+Mac that has only the old intermediate, which expired in February 2023, cannot
+build the chain. Signing then fails with `unable to build chain to self-signed
+root` and `errSecInternalComponent`, and `security find-identity -v` silently
+omits the identity, which makes it look as though the certificate was never
+created. Download `AppleWWDRCAG3.cer` from
+https://www.apple.com/certificateauthority/ and add it to the **login**
+keychain, not System and not iCloud.
+
+Both certificates are healthy when this lists two valid identities:
+
+    security find-identity -v -p codesigning
+
+**Register one device with the team.** This is the surprising one. Archiving
+with automatic signing signs the intermediate archive with a *development*
+profile before the export re-signs it for the App Store, and Apple will not
+issue a development profile to a team with no registered devices. Every earlier
+build ran on EAS with distribution credentials only, so the team had none, and
+the archive died at GatherProvisioningInputs with "Your team has no devices from
+which to generate a provisioning profile" and "No profiles for 'life.revely.app'
+were found".
+
+Connect the iPhone by cable, unlock it, trust the Mac, wait for it in Xcode
+under Window, Devices and Simulators, then open the Revely target, Signing and
+Capabilities, and click Register Device if it offers. Developer Mode on the
+phone is not needed, because nothing is being installed on it. The phone can be
+unplugged immediately afterwards and is not needed again until the development
+profile expires, about a year later.
+
+**Know that the IPA is still a real distribution build.** The development
+profile exists only inside the archive. The exported IPA is signed by Apple
+Distribution: Dozy Labs LLC and carries the App Store profile, with no devices
+in it.
+
+## Every release
+
+### 1. Set the version and the build number
+
+`mobile/app.json` has to carry both, because a local build reads them from there
+rather than from EAS, which is where `autoIncrement` normally does this:
+
+    "version": "1.0.1",
+    "ios": { "buildNumber": "33" }
+
+The build number must be higher than anything App Store Connect has already
+accepted for this version string. Check the remote counter first so the two do
+not drift apart:
+
+    cd mobile && npx eas-cli build:version:get --platform ios
+
+### 2. Regenerate the native project
+
+`mobile/ios` is not in git. It is generated, so anything changed by hand inside
+it is lost here, with the single exception of signing settings, which live per
+machine in Xcode rather than in the project file.
+
+    cd mobile
+    npx expo prebuild -p ios --clean
+    export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
+    cd ios && pod install
+
+The locale exports are not decoration. On Ruby 4.0 CocoaPods otherwise stops
+with `Unicode Normalization not appropriate for ASCII-8BIT`.
+
+### 3. Export the app's environment variables
+
+Anything named `EXPO_PUBLIC_*` is inlined into the JavaScript bundle while it is
+built, so these have to be in the shell before the archive starts. EAS reads
+them from `eas.json`, and so should we, rather than retyping them and risking a
+build that points at localhost:
+
+    cd mobile
+    eval "$(python3 -c "import json,shlex;e=json.load(open('eas.json'))['build']['production']['env'];print('\n'.join(f'export {k}={shlex.quote(v)}' for k,v in e.items()))")"
+
+That covers the API URL, the RevenueCat public key and the two Google client
+IDs. None of them are secrets. The RevenueCat secret key and the Google web
+client secret must never appear in `eas.json` or anywhere else in this repo.
+
+### 4. Archive and export
+
+From `mobile/ios`, with the locale and the `EXPO_PUBLIC_*` variables still
+exported, and `OUT` pointing anywhere outside the repository:
+
+    OUT=~/revely-builds/1.0.1-33
+    mkdir -p "$OUT"
+
+    xcodebuild -workspace Revely.xcworkspace -scheme Revely \
+      -configuration Release -destination "generic/platform=iOS" \
+      -derivedDataPath "$OUT/dd" -archivePath "$OUT/Revely.xcarchive" \
+      -allowProvisioningUpdates DEVELOPMENT_TEAM=H6R2W747LZ \
+      CODE_SIGN_STYLE=Automatic archive
+
+    xcodebuild -exportArchive -archivePath "$OUT/Revely.xcarchive" \
+      -exportPath "$OUT/export" -allowProvisioningUpdates \
+      -exportOptionsPlist ../../docs/appstore/ExportOptions.plist
+
+Compiling takes roughly ten minutes. Partway through, macOS asks for permission
+to use the Apple Distribution key: that prompt wants the Mac login password, and
+the answer is Always Allow, because plain Allow asks again for every file being
+signed.
+
+`ExportOptions.plist` is committed next to this file. It asks for
+`app-store-connect`, team H6R2W747LZ, automatic signing and symbol upload.
+
+### 5. Check the IPA before it goes anywhere
+
+Four things are worth confirming, and all four have been wrong at some point:
+
+    cd "$OUT" && mkdir -p chk && cd chk && unzip -q ../export/Revely.ipa
+    A=$(ls -d Payload/*.app)
+    plutil -extract CFBundleShortVersionString raw $A/Info.plist
+    plutil -extract CFBundleVersion raw $A/Info.plist
+    codesign -dvv $A 2>&1 | grep -E "Authority|TeamIdentifier"
+    security cms -D -i $A/embedded.mobileprovision | plutil -extract Name raw -
+    plutil -extract EXUpdatesRuntimeVersion raw $A/Expo.plist
+    codesign --verify --deep --strict $A && echo VERIFY_OK
+
+Expected: the version and build from step 1, `Apple Distribution: Dozy Labs LLC
+(H6R2W747LZ)` with `TeamIdentifier=H6R2W747LZ`, a Team Store provisioning
+profile, a runtime version equal to the app version, and VERIFY_OK.
+
+Do not try to confirm a URL by grepping the bundle. Hermes packs and overlaps
+its string table, so a URL assembled from a template literal never appears
+contiguously, and a known-good URL comes back with zero hits too.
+
+### 6. Upload
+
+EAS Submit accepts a local file, and uses the App Store Connect API key it
+already stores, so there is no password and no two-factor prompt:
+
+    cd mobile
+    npx eas-cli submit -p ios --path "$OUT/export/Revely.ipa"
+
+On the free plan this queues for a submitter, which took about fifteen minutes
+on 19 September. Apple then processes the build for another ten to thirty
+minutes before it appears under the version's Build section and in TestFlight.
+
+### 7. Keep the artifacts
+
+The build ran in a scratch directory that gets cleared. Copy the IPA and the
+xcarchive to `~/revely-builds/<version>-<build>/`, which is outside the working
+tree on purpose, in the same spirit as `~/revely-backups`. The xcarchive holds
+the dSYMs, which are the only way to read a crash report from that build later.
+
+## What still has to happen in App Store Connect
+
+Attaching the build, updating the App Review notes and submitting are covered in
+[review-reply.md](review-reply.md), including the part that cost two days: a
+reply to App Review does not restart the review, and a rejected version needs
+Update Review and then Resubmit.
