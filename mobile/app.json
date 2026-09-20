@@ -3,7 +3,7 @@
     "name": "Revely",
     "slug": "revely",
     "owner": "dozy-labs",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "revely",
@@ -21,7 +21,8 @@
         "NSCameraUsageDescription": "Revely uses the camera to read product ingredient labels.",
         "NSPhotoLibraryUsageDescription": "Revely can read an ingredient label from a photo you choose.",
         "ITSAppUsesNonExemptEncryption": false
-      }
+      },
+      "buildNumber": "33"
     },
     "android": {
       "package": "life.revely.app",
@@ -68,6 +69,12 @@
       "eas": {
         "projectId": "d6bfe56f-09a6-4bbf-a26f-a7198a47027d"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/d6bfe56f-09a6-4bbf-a26f-a7198a47027d"
     }
   }
 }

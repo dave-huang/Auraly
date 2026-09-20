@@ -1,7 +1,7 @@
 # App Store listing copy, Revely 1.0
 
-Paste-ready. Prices are the only placeholders; fill them from the values you
-set in App Store Connect.
+Paste-ready. Prices are filled in from App Store Connect: $39.99 a year with a
+7-day free trial, $7.99 a month.
 
 No em dashes anywhere in this file, in the copy or in the notes around it.
 
@@ -73,53 +73,61 @@ Point your camera at any ingredient list. Revely reads it, translates it, and te
 
 ## Description (4,000 char limit)
 
+Live on version 1.0.1, saved in App Store Connect on 15 September 2026. 1.0
+shipped with $X.XX where the prices go, and with the plan bullets and the two
+legal links run together onto single lines. Keep every bullet and each link on
+its own line: the field keeps single line breaks when they are there, and
+shows exactly that run-together mess when they are not.
+
 Shop anywhere. Know what you're eating.
 
-Point your camera at any ingredient list, in any language, and we'll explain it. What's in it, what it means for you, and who says so.
+Point your camera at any ingredient list, in any language. Revely reads it, translates it, and tells you what it means for you and for everyone you shop for.
 
-YOUR SAFETY SHIELD
+YOUR LIST, CHECKED ON EVERY LABEL
 
-Tell us once what you'd rather not eat. Allergies, if you have them. A condition you're managing. A diet you keep to. The dyes, sweeteners and preservatives you'd rather leave on the shelf.
+Tell Revely once what you'd rather not eat: allergies, a condition you're managing, a diet you keep to, or the dyes, sweeteners and preservatives you'd rather leave on the shelf. Every label you scan is checked against that list, and anything on it is flagged by name.
 
-That's your shield. Every label you scan gets checked against it, and we flag what matters the second the camera reads it.
+ONE WORD, AND THE REASON UNDER IT
 
-YOU DON'T NEED AN ALLERGY TO WANT ONE
+Every scan ends in a clear verdict, with the ingredient behind it and where it sits on the label. No mystery scores. You see exactly why.
 
-Many of the words on an ingredient list aren't ones most people would recognize. Some of them are ingredients the FDA, EFSA, IARC or the WHO have taken a position on, and there's no way to tell which while you're standing in an aisle holding the package. We'll tell you, before it goes in the cart.
+IT KNOWS THE OTHER NAMES
+
+Sodium caseinate is milk. Lecithin is often soy. Labels hide everyday foods behind technical words, and Revely knows them, so nothing on your list slips past.
 
 WE SHOW YOU WHO SAYS SO
 
-Where there's a published finding on an ingredient, we quote it and name who published it. Their words, not our summary of them. You read it, and you decide.
+Plenty of ingredients are ones the FDA, EFSA, IARC or the WHO have taken a position on, and there's no way to tell which while you're standing in the aisle. Where there's a published finding, Revely shows it and names who published it. You read it, and you decide.
 
-START WITH YOURSELF
+ANY LABEL, ANY LANGUAGE
 
-Most people set Revely up for themselves. Your allergies and how strict to be about each one, your conditions, the diets you follow. Every answer comes back with your name on it, so you always know who it's for.
+Travelling, or shopping at an international market? Revely reads the label as printed and explains it in English, Spanish or Chinese.
 
-AND ANYONE ELSE YOU SHOP FOR
+FOR YOU, AND ANYONE YOU SHOP FOR
 
-Shopping for a child, a partner, a parent you cook for? Give them a profile of their own. Switch between profiles and the scan already on screen is rechecked right away, so you don't have to take the photo again.
+Shopping for a child, a partner, or a parent you cook for? Give each of them a profile. Switch profiles and the scan on screen is rechecked right away, with no second photo needed.
 
 WHAT YOU GET
 
 • Unlimited scans
-• A profile for you, and one for anyone else you shop for
-• The published sources behind the verdicts
+• Profiles for you and everyone you shop for
+• The published sources behind each verdict
 • Your full scan history, filterable by verdict
 
 YOUR PHOTOS STAY YOURS
 
-Your photo is used for that one scan and isn't kept. What we collect, what we never collect, and every company that receives anything is written out in full in the privacy policy.
-
-Available in English, Spanish and Chinese.
+Your photo is used for that one scan and isn't kept. Everything we collect, and every company that receives any of it, is listed in our privacy policy.
 
 Revely provides ingredient information only. It is not a medical device, does not diagnose or treat any condition, and is not a substitute for professional medical advice.
 
 SUBSCRIPTION
 
-Revely is an auto-renewing subscription. The annual plan starts with a 7-day free trial; the monthly plan bills immediately.
+Revely is an auto-renewing subscription with two plans:
 
-• Annual: $X.XX per year, after a 7-day free trial
-• Monthly: $X.XX per month
+• Annual: $39.99 per year, starting with a 7-day free trial
+• Monthly: $7.99 per month, billed immediately
+
+Prices are in US dollars. Your local price is shown in the app before you subscribe.
 
 Payment is charged to your Apple Account at confirmation of purchase. The subscription renews automatically unless auto-renew is turned off at least 24 hours before the end of the current period. Your account is charged for renewal within 24 hours before the end of the current period. You can manage your subscription and turn off auto-renew in your Apple Account settings after purchase. If you start a free trial, any unused portion is forfeited when you buy a subscription.
 
@@ -141,6 +149,11 @@ Contact: your name, your phone number, hello@dozylabs.net
 
 ### Notes (4,000 char limit)
 
+Superseded by docs/appstore/review-reply.md, written for Apple's Guideline
+2.1 information request on build 32. That file answers all seven of their
+questions and is the version to paste. What follows is the original, kept
+because the sections below it are still accurate.
+
 HOW TO SIGN IN
 
 Revely has no passwords, so there is no demo account to hand over. Please sign in with Apple, using your own Apple Account or a sandbox account. The button is on the first screen and again on the subscription screen. Sign in with Google also works.
@@ -161,7 +174,7 @@ HOW TO TEST THE APP ITSELF
 
 Point the camera at the ingredient list on any packaged food, filling the frame with the list. A product containing the allergen entered during setup is the clearest test: the verdict names the ingredient it found, where it sits on the list, and the published source behind the finding.
 
-If photographing a product is not practical, there is an option to type an ingredient list in by hand.
+If photographing a product is not practical, the camera screen has "Choose a photo instead" below the shutter. Any saved photograph of an ingredient list can be selected from the photo library, and the scan is identical.
 
 ACCOUNT DELETION
 

@@ -30,15 +30,38 @@ function resolveApiBaseUrl(): string {
 export const API_BASE_URL = resolveApiBaseUrl();
 
 /**
- * The legal pages, served by the API host — see server/legal.ts.
+ * Where the public site lives: the legal pages, and anything else a person is
+ * sent to read outside the app.
+ *
+ * SEPARATE FROM API_BASE_URL, ON PURPOSE. The two are the same Fly app, but they
+ * are not the same address. Production API traffic goes to revely-api.fly.dev,
+ * while the documents App Store Connect lists, and the ones a reviewer compares
+ * the purchase screen against, are published on revely.life. Deriving the links
+ * from the API host meant the paywall opened revely-api.fly.dev/terms: the
+ * byte-identical document, under a hostname nobody recognises.
+ *
+ * Resolution, in order: EXPO_PUBLIC_SITE_URL when set, so a staging build can
+ * link staging's documents; the API host in development, because the local
+ * server renders these pages and revely.life would show production's instead;
+ * and revely.life otherwise.
+ */
+function resolveSiteUrl(): string {
+  const explicit = process.env.EXPO_PUBLIC_SITE_URL;
+  if (explicit) return explicit.replace(/\/$/, '');
+  if (__DEV__) return API_BASE_URL;
+  return 'https://revely.life';
+}
+
+export const SITE_URL = resolveSiteUrl();
+
+/**
+ * The legal pages, served by server/legal.ts on the site host.
  *
  * Guideline 3.1.2 requires both to be reachable from the purchase screen, and
- * App Store Connect re-fetches the privacy URL at every submission. Derived
- * from API_BASE_URL rather than written out, so a build pointed at staging
- * shows staging's documents instead of silently linking production.
+ * App Store Connect re-fetches the privacy URL at every submission.
  */
-export const PRIVACY_URL = `${API_BASE_URL}/privacy`;
-export const TERMS_URL = `${API_BASE_URL}/terms`;
+export const PRIVACY_URL = `${SITE_URL}/privacy`;
+export const TERMS_URL = `${SITE_URL}/terms`;
 
 /**
  * The Washington My Health My Data Act policy.
@@ -47,7 +70,7 @@ export const TERMS_URL = `${API_BASE_URL}/terms`;
  * be exactly that — linked distinctly rather than folded into the general
  * privacy policy. Keep it a peer of the other two wherever it appears.
  */
-export const HEALTH_DATA_URL = `${API_BASE_URL}/health-data-privacy`;
+export const HEALTH_DATA_URL = `${SITE_URL}/health-data-privacy`;
 
 export const GOOGLE_IOS_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID;
 export const GOOGLE_WEB_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID;

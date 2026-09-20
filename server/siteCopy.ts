@@ -100,7 +100,6 @@ export interface Copy {
 
   heroTitle: string;
   heroLede: string;
-  terms: string;
   cue: string;
   heroAlt: string;
   badgeAlt: string;
@@ -173,7 +172,6 @@ const en: Copy = {
   heroLede:
     "Point your camera at any ingredient list, in any language. We’ll tell " +
     "you what it means for you, and for anyone you shop for.",
-  terms: "For iPhone. The annual plan starts with a 7-day free trial.",
   cue: "Why this is hard",
   heroAlt: "A hand holding a phone up to the back of a snack pouch.",
   badgeAlt: "Download on the App Store",
@@ -358,7 +356,6 @@ const es: Copy = {
   heroLede:
     "Apunta la cámara a cualquier lista de ingredientes, en cualquier idioma. " +
     "Te decimos qué significa para ti, y para quien tú compras.",
-  terms: "Para iPhone. El plan anual empieza con 7 días de prueba gratis.",
   cue: "Por qué cuesta tanto",
   heroAlt: "Una mano sostiene un teléfono frente al reverso de una bolsa de snacks.",
   badgeAlt: "Consíguelo en el App Store",
@@ -548,7 +545,6 @@ const zh: Copy = {
   heroLede:
     "把相机对准任何一份配料表，不管是什么语言。我们会告诉你它对你意味着什么，" +
     "也告诉你它对你替之购物的人意味着什么。",
-  terms: "仅限 iPhone。年度方案包含 7 天免费试用。",
   cue: "为什么这件事不容易",
   heroAlt: "一只手举着手机，对着一袋零食的背面。",
   badgeAlt: "从 App Store 下载",
