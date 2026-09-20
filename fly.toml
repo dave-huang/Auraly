@@ -35,6 +35,10 @@ primary_region = "ord"
     # Liveness, not readiness — this stays 200 when Postgres is down, so a
     # database problem does not present as "deploy timed out" and does not
     # block deploying the fix. /api/readyz is the strict one.
+    #
+    # Never point this at a route that queries the database. At this interval
+    # it is 86,400 queries a month, regular enough that Neon's compute never
+    # idles out, and on the free plan that alone exhausted the compute hours.
     path = "/api/healthz"
 
 [[vm]]

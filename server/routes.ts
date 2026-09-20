@@ -189,18 +189,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // It deliberately does NOT fail when Postgres is unreachable. An earlier
   // version did, which meant a database problem presented as "deployment timed
   // out waiting for health checks" — indistinguishable from a container that
-  // never booted — and, worse, blocked deploying the fix. Database state is
-  // reported in the body for humans and monitoring; use /api/readyz to gate on
-  // it. Registered before auth so it answers even if the session store is
-  // unhappy.
-  app.get('/api/healthz', async (_req, res) => {
-    let database = 'up';
-    try {
-      await db.execute(sql`select 1`);
-    } catch (error: any) {
-      database = 'down';
-      console.error('Health check: database unreachable:', error?.message ?? error);
-    }
+  // never booted — and, worse, blocked deploying the fix. It does not touch
+  // Postgres at all now, for the reason below; /api/readyz is where database
+  // state is reported and where monitoring should point. Registered before
+  // auth so it answers even if the session store is unhappy.
+  app.get('/api/healthz', (_req, res) => {
+    // This used to `select 1` here, purely to report database state in the
+    // body. Fly polls this route every 30 seconds, which is 86,400 queries a
+    // month arriving too regularly for Neon's compute to ever idle out: the
+    // branch stayed awake 16 hours a day with no users at all, and burned the
+    // plan's compute hours until the database was cut off mid App Review.
+    //
+    // A liveness probe that wakes the thing it is watching is not free, and
+    // this one was not even using the answer — the response is 200 either way.
+    // The check belongs on /api/readyz, which is called deliberately rather
+    // than on a timer.
 
     // The corpus ships inside the image, read from disk at boot. Reporting its
     // version here is the only way to confirm a deploy actually carried the
@@ -213,7 +216,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
     res.json({
       status: 'ok',
-      database,
+      // Not reported here on purpose: see the note above, and /api/readyz.
+      database: 'see /api/readyz',
       uptimeSeconds: Math.round(process.uptime()),
       corpus: {
         registryVersion: registry.version,
