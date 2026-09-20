@@ -431,7 +431,7 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
 //
 // Trader Joe's coffee-glazed pretzels — four printed ingredients, three of
 // them compound, one bracket nested two deep. Kept as a fixture because it is
-// the shape that broke: flattened, this label is 25 ingredients, and the old
+// the shape that broke: flattened, this label is 24 ingredients, and the old
 // reader reported it as such.
 //
 // The composition here is exactly what the reader now returns for it.
@@ -440,7 +440,7 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
   const label = [
     { name: 'White Candy Coating', parts: ['Sugar', 'Palm Kernel Oil', 'Nonfat Milk Powder', 'Whole Milk Powder', 'Whey Powder', 'Palm Oil', 'Soy Lecithin', 'Natural Vanilla Flavor'] },
     { name: 'Pretzels', parts: ['Unbleached Enriched Flour', 'Wheat Flour', 'Niacin', 'Reduced Iron', 'Thiamine Mononitrate', 'Riboflavin', 'Folic Acid', 'Malted Barley Flour', 'Salt', 'Soybean Oil'] },
-    { name: 'Dark Chocolatey Drizzle', parts: ['Sugar', 'Palm Kernel Oil', 'Palm Oil', 'Cocoa Powder', 'Whey Powder', 'Soy Lecithin', 'Natural Vanilla Flavor'] },
+    { name: 'Dark Chocolatey Drizzle', parts: ['Sugar', 'Palm Kernel Oil', 'Palm Oil', 'Cocoa Powder', 'Cocoa Powder Processed With Alkali', 'Whey Powder', 'Soy Lecithin', 'Natural Vanilla Flavor'] },
     { name: 'Ground Coffee Beans', parts: [] },
   ];
 
@@ -470,6 +470,17 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
   check('real-label/no-sub-ingredient-ranked',
     ['Wheat Flour', 'Niacin', 'Folic Acid', 'Soybean Oil'].every((n) => rankOf(n) === undefined),
     'a sub-ingredient was given a position on this label');
+
+  // The drizzle prints "Cocoa Powder, Cocoa Powder Processed With Alkali":
+  // natural and dutched cocoa, two ingredients, confirmed against the photo.
+  // The reader used to strip the processing note, which made them the same
+  // name twice, and deduplication then ate one of them. An ingredient printed
+  // on the packet vanished, and the label eval still passed at 23 of 24
+  // because its own truth file had been written from that reader's output.
+  const cocoas = analysed.filter((n) => n.toLowerCase().startsWith('cocoa powder'));
+  check('real-label/treated-form-is-its-own-ingredient',
+    cocoas.length === 2 && cocoas.some((n) => /alkali/i.test(n)),
+    `the alkali-processed cocoa was folded into plain cocoa powder: ${JSON.stringify(cocoas)}`);
 
   // Four printed entries, so the top two speak and the rest stay quiet.
   // "White Candy Coating, 1st of 4" is the whole story about this product —
