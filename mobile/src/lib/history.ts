@@ -137,11 +137,20 @@ export function scanTitle(scan: Pick<ScanHistory, 'productName' | 'detectedIngre
  */
 export function scanToAnalysisResult(scan: ScanHistory): AnalysisResult {
   const stored = (scan.analysisResults ?? []) as AnalysisResult['ingredients'];
+  // The label as printed, stored since 2026-09-20 and absent on everything
+  // saved before it. Without this the card counts the flattened list and drops
+  // every "inside Enriched Flour" line, which is the entire reason the column
+  // exists: the structure reached the database and stopped one step short of
+  // the screen.
+  const composition = Array.isArray(scan.composition)
+    ? (scan.composition as AnalysisResult['composition'])
+    : undefined;
   return {
     productType: (scan.productCategory as ProductType) ?? 'food',
     productName: scanTitle(scan),
     ingredients: stored.map((i) => ({ ...i, category: i.category ?? null })),
     overallRisk: scan.overallRisk as RiskLevel,
     analyzedAt: new Date(scan.createdAt).toISOString(),
+    ...(composition?.length ? { composition } : {}),
   };
 }

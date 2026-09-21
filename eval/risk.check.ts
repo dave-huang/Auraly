@@ -543,6 +543,26 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
   check('rank/client-copy-agrees',
     fn.includes(`< ${MIN_LIST_FOR_RANK}`) && fn.includes('>= 5 ? 3 : 2'),
     'mobile/src/lib/verdict.ts no longer matches the server prominence rule');
+
+  // Composition has to survive being stored and read back, and the last step
+  // is the one that got missed: the column was added, the API returned it, and
+  // scanToAnalysisResult rebuilt the card without it. A reopened scan then
+  // counted the flattened list and dropped every "inside X" line, with nothing
+  // failing anywhere. The round trip is only proven at the point it reaches
+  // the screen.
+  const historyLib = fs.readFileSync(path.join(root, 'mobile/src/lib/history.ts'), 'utf8');
+  const rebuild = historyLib.slice(historyLib.indexOf('export function scanToAnalysisResult'));
+  // Deliberately the RETURNED object, not the function body. Checking the
+  // body passes on the local variable that prepares the value, so the one
+  // edit that breaks this — dropping it from the return — went undetected the
+  // first time this check was written.
+  const returned = rebuild.slice(rebuild.indexOf('return {'), rebuild.indexOf('\n}'));
+  check('composition/survives-reopening-a-scan',
+    /composition/.test(returned),
+    'scanToAnalysisResult returns without composition, so a reopened scan loses its brackets');
+  check('composition/is-sent-when-saving',
+    /composition: result\.composition/.test(historyLib),
+    'saveScan no longer sends composition, so nothing reaches the new column');
 }
 
 // ---------------------------------------------------------------------------
