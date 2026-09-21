@@ -211,6 +211,34 @@ export function detectAllergens(ingredients: string[]): Set<MajorAllergen> {
 }
 
 /**
+ * Allergen words as LABELS print them, in the languages we see most.
+ *
+ * ALLERGEN_KEYWORDS above is English, which is right for ingredient names:
+ * those arrive translated by the reader. A declaration can arrive untranslated
+ * — the backstop in labelReader.ts lifts "CONTAINS..." statements out of the
+ * verbatim transcription precisely so they do not depend on the model having
+ * structured them — and "含有大豆" must map to soy without an English word
+ * anywhere in it.
+ *
+ * Deliberately short. These are the words that appear in a declaration line,
+ * not every synonym an ingredient list might use: the cost of a wrong entry
+ * here is telling someone a product is safe for them when it is not.
+ */
+const DECLARATION_TERMS: Partial<Record<MajorAllergen, string[]>> = {
+  milk: ['leche', 'lacteo', 'lactea', '牛奶', '乳', '乳成分', 'молоко', 'молока'],
+  egg: ['huevo', '鸡蛋', '蛋', '卵', 'яйцо', 'яйца'],
+  fish: ['pescado', '鱼', '魚', 'рыба'],
+  shellfish: ['marisco', 'camaron', 'gamba', '虾', 'えび', 'カニ', '蟹', 'креветка', 'краб'],
+  tree_nuts: ['nuez', 'nueces', 'almendra', 'avellana', 'anacardo', '坚果', '杏仁', 'ナッツ', 'アーモンド', 'орех'],
+  peanut: ['cacahuete', 'cacahuate', 'mani', '花生', '落花生', 'ピーナッツ', 'арахис'],
+  wheat: ['trigo', '小麦', 'пшеница'],
+  soy: ['soja', '大豆', '黄豆', 'соя', 'сои', 'сою', 'соев'],
+  sesame: ['sesamo', 'ajonjoli', '芝麻', 'ごま', 'кунжут'],
+  molluscs: ['molusco', '贝', '牡蛎', 'あわび', 'いか', 'моллюск'],
+  buckwheat: ['alforfon', '荞麦', 'そば', 'гречиха'],
+};
+
+/**
  * Map a label's own "contains" declaration to canonical allergens.
  *
  * Necessary because ingredient names alone under-report: a label may list
@@ -225,7 +253,9 @@ export function allergensFromDeclaration(declared: string[]): Set<MajorAllergen>
     if (!n) continue;
     for (const allergen of MAJOR_ALLERGENS) {
       const canonical = allergen.replace(/_/g, ' ');
-      if (n.includes(canonical) || ALLERGEN_KEYWORDS[allergen].some(kw => n.includes(kw))) {
+      if (n.includes(canonical) ||
+          ALLERGEN_KEYWORDS[allergen].some(kw => n.includes(kw)) ||
+          (DECLARATION_TERMS[allergen] ?? []).some(kw => n.includes(kw))) {
         found.add(allergen);
       }
     }

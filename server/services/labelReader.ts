@@ -3,6 +3,7 @@ import { gemini } from '../gemini';
 import { openai } from '../openai';
 import { extractTextWithGoogleVision } from './googleVisionOcr';
 import { extractIngredientsFromText } from './analyzer';
+import { containsStatementsFromText } from './declarations';
 
 // Multimodal-first label reading: one vision-model call extracts, translates,
 // and structures the ingredient list straight from the photo — replacing the
@@ -135,8 +136,22 @@ function toResult(
     ingredients.push(ing.english.trim());
     ingredientsOriginal.push(ing.original.trim());
   }
+  const rawText = parsed.raw_ingredients_text || ingredientsOriginal.join(', ');
+  const contains = parsed.declared_allergens.contains.map(a => a.trim()).filter(Boolean);
+
+  // The backstop. Anything the transcription declares and the model did not
+  // structure is added, never removed: this can only widen what the label is
+  // taken to say about itself.
+  const seenContains = new Set(contains.map(c => c.toLowerCase()));
+  for (const statement of containsStatementsFromText(rawText)) {
+    if (seenContains.has(statement.toLowerCase())) continue;
+    seenContains.add(statement.toLowerCase());
+    contains.push(statement);
+    console.log(`[LABEL-READER] Declaration recovered from transcription: "${statement}"`);
+  }
+
   return {
-    rawText: parsed.raw_ingredients_text || ingredientsOriginal.join(', '),
+    rawText,
     ingredients,
     ingredientsOriginal,
     productName: parsed.product_name || undefined,
@@ -145,7 +160,7 @@ function toResult(
     lineCount: toLineCount(parsed.lines_read, parsed.lines_total),
     method,
     declaredAllergens: {
-      contains: parsed.declared_allergens.contains.map(a => a.trim()).filter(Boolean),
+      contains,
       mayContain: parsed.declared_allergens.may_contain.map(a => a.trim()).filter(Boolean),
     },
   };

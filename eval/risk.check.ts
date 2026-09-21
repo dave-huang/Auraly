@@ -17,8 +17,10 @@ import { applyPopulationRisk, domainForProductType } from '../server/services/su
 import {
   ALLERGEN_KEYWORDS,
   MAJOR_ALLERGENS,
+  allergensFromDeclaration,
   ingredientMatchesAllergen,
 } from '../server/services/allergenMatcher';
+import { containsStatementsFromText } from '../server/services/declarations';
 import {
   CONCEPT_IDENTIFIERS_FOR_CHECK,
   getConcept,
@@ -768,6 +770,61 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
     'a condition stored with strictness: relaxed stayed quieter than a bare one');
 
   notes.push('bare and entry-shaped profiles behave identically; a stored strictness is ignored');
+}
+
+// ---------------------------------------------------------------------------
+// M4. A printed "CONTAINS" line survives the model forgetting to structure it.
+//
+// The reader returns declared allergens as a structured field, and returns
+// them most of the time. Reading one chocolate bar five times produced the soy
+// declaration four times and nothing the fifth, with no error and no
+// difference in the response otherwise. The ingredient list said "lecithin",
+// which is exactly the name a soy declaration exists to disambiguate.
+//
+// So the verbatim transcription is parsed too. These cases are the contract:
+// what must be recovered, and what must never be promoted.
+// ---------------------------------------------------------------------------
+{
+  const recovered = (text: string) =>
+    [...allergensFromDeclaration(containsStatementsFromText(text))].sort();
+
+  const cases: [string, string, string[]][] = [
+    ['english', 'INGREDIENTS: SUGAR, LECITHIN. CONTAINS MILK, SOY, WHEAT.', ['milk', 'soy', 'wheat']],
+    ['english-colon', 'Contains: Peanuts and Almonds', ['peanut', 'tree_nuts']],
+    ['spanish', 'INGREDIENTES: AZUCAR, LECITINA. CONTIENE LECHE Y SOJA.', ['milk', 'soy']],
+    ['chinese', '配料：白砂糖、卵磷脂。含有大豆、小麦。', ['soy', 'wheat']],
+    ['japanese', '原材料：砂糖、植物油脂（一部に小麦・乳成分・大豆を含む）', ['milk', 'soy', 'wheat']],
+    ['russian', 'СОСТАВ: САХАР, ЛЕЦИТИН. СОДЕРЖИТ МОЛОКО И СОЮ.', ['milk', 'soy']],
+  ];
+  for (const [name, text, expected] of cases) {
+    check(`declaration-backstop/${name}`,
+      JSON.stringify(recovered(text)) === JSON.stringify(expected.sort()),
+      `expected ${JSON.stringify(expected)}, recovered ${JSON.stringify(recovered(text))} from ${text}`);
+  }
+
+  // A hedge is not a declaration. Promoting these would mark most of a
+  // supermarket unsafe for anyone with a serious allergy, which is the fastest
+  // way to teach someone to ignore the warnings that matter.
+  const hedges: [string, string][] = [
+    ['english', 'MAY CONTAIN PEANUTS, TREE NUTS.'],
+    ['english-traces', 'May contain traces of milk.'],
+    ['spanish', 'Puede contener leche.'],
+    ['chinese', '可能含有花生。'],
+    ['russian', 'Может содержать молоко.'],
+  ];
+  for (const [name, text] of hedges) {
+    check(`declaration-backstop/hedge-ignored-${name}`,
+      recovered(text).length === 0,
+      `a "may contain" line was promoted to a declaration: ${text} -> ${JSON.stringify(recovered(text))}`);
+  }
+
+  // Both statements on one label: the declaration is taken, the hedge is not.
+  const mixed = recovered('CONTAINS MILK. MAY CONTAIN PEANUTS.');
+  check('declaration-backstop/declaration-and-hedge-together',
+    JSON.stringify(mixed) === JSON.stringify(['milk']),
+    `expected ["milk"] only, got ${JSON.stringify(mixed)}`);
+
+  notes.push(`declaration backstop reads ${cases.length} languages out of the raw transcription, and ignores every hedge`);
 }
 
 // ---------------------------------------------------------------------------
