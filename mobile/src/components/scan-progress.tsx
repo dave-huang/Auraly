@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
 import { useEffect, useState, type ReactNode } from 'react';
-import { StyleSheet, View, useWindowDimensions } from 'react-native';
+import { ScrollView, StyleSheet, View, useWindowDimensions } from 'react-native';
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -10,6 +10,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
+import { ResolveIn } from '@/components/aperture-reveal';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Motion, Space } from '@/constants/design';
 import { useTranslation, type TranslationKey } from '@/lib/i18n';
@@ -82,6 +83,8 @@ export function ScanProgress({
   imageUri,
   backdrop,
   phase,
+  ingredients,
+  ingredientsOriginal,
 }: {
   imageUri?: string;
   /** Anything to sweep over instead of a photo. The onboarding example passes
@@ -90,6 +93,16 @@ export function ScanProgress({
    *  stock photo would be. */
   backdrop?: ReactNode;
   phase: 'reading' | 'analyzing';
+  /**
+   * The label's ingredients, once the reader has them, which is about fifteen
+   * seconds before the first verdict. Shown as they are: no levels, no
+   * colours, nothing claimed about them yet. The reading is finished and this
+   * is what it found, which is the one honest thing to put on screen while the
+   * analysis runs.
+   */
+  ingredients?: string[];
+  /** The label's own words, shown under the English where they differ. */
+  ingredientsOriginal?: string[];
 }) {
   const { t } = useTranslation();
   const { height } = useWindowDimensions();
@@ -182,9 +195,36 @@ export function ScanProgress({
         <Image source={{ uri: imageUri }} style={StyleSheet.absoluteFill} contentFit="contain" />
       ) : null}
       {backdrop ? <View style={StyleSheet.absoluteFill}>{backdrop}</View> : null}
-      <View style={styles.scrim} />
+      <View style={[styles.scrim, ingredients?.length ? styles.scrimDeep : null]} />
 
       {!reduced ? <Animated.View style={[styles.sweepLine, sweepStyle]} /> : null}
+
+      {/* The label, as read, while the verdicts are still being worked out.
+          Rows arrive staggered, in the order the label prints them, and carry
+          no dot and no level: nothing here has been judged yet, and colouring
+          a row before it has been would be the app guessing out loud. */}
+      {ingredients?.length ? (
+        <ScrollView
+          style={styles.readList}
+          contentContainerStyle={styles.readListContent}
+          showsVerticalScrollIndicator={false}
+        >
+          {ingredients.map((name, i) => {
+            const original = ingredientsOriginal?.[i];
+            const showOriginal = original && original.toLowerCase() !== name.toLowerCase();
+            return (
+              <ResolveIn key={`${name}-${i}`} index={i}>
+                <View style={styles.readRow}>
+                  <ThemedText style={styles.readName}>{name}</ThemedText>
+                  {showOriginal ? (
+                    <ThemedText style={styles.readOriginal}>{original}</ThemedText>
+                  ) : null}
+                </View>
+              </ResolveIn>
+            );
+          })}
+        </ScrollView>
+      ) : null}
 
       <View style={styles.statusWrap}>
         <View style={styles.statusRow}>
@@ -201,6 +241,10 @@ export function ScanProgress({
 const styles = StyleSheet.create({
   container: { ...StyleSheet.absoluteFill, backgroundColor: '#16130F' },
   scrim: { ...StyleSheet.absoluteFill, backgroundColor: 'rgba(22,19,15,0.55)' },
+  // Once the list is up, the photo is context rather than the subject, and
+  // sixteen-point type over a lit supermarket label needs the ground quieter
+  // than a single status line did.
+  scrimDeep: { backgroundColor: 'rgba(22,19,15,0.82)' },
   sweepLine: {
     position: 'absolute',
     left: 0,
@@ -212,6 +256,35 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     shadowRadius: 12,
     shadowOffset: { width: 0, height: 0 },
+  },
+  // Sits above the status chip and below the top of the frame. The photo
+  // stays visible behind it: the list is what was read OFF that picture, and
+  // covering the picture entirely would break the connection.
+  readList: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: Space.xxl * 2,
+    bottom: Space.xxl * 3.5,
+  },
+  readListContent: {
+    paddingHorizontal: Space.xl,
+    paddingBottom: Space.xl,
+  },
+  readRow: {
+    paddingVertical: Space.xs,
+  },
+  readName: {
+    fontFamily: Font.sans,
+    fontSize: 16,
+    lineHeight: 22,
+    color: '#F6F1E7',
+  },
+  readOriginal: {
+    fontFamily: Font.mono,
+    fontSize: 11,
+    lineHeight: 15,
+    color: 'rgba(246,241,231,0.62)',
   },
   statusWrap: {
     position: 'absolute',

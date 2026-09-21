@@ -4,6 +4,7 @@ import { openai } from '../openai';
 import { extractTextWithGoogleVision } from './googleVisionOcr';
 import { extractIngredientsFromText } from './analyzer';
 import { containsStatementsFromText } from './declarations';
+import { completeIngredientsInBuffer } from './partialJson';
 
 // Multimodal-first label reading: one vision-model call extracts, translates,
 // and structures the ingredient list straight from the photo — replacing the
@@ -35,6 +36,15 @@ export interface LabelEntry {
   /** Sub-ingredients printed in brackets after it. Usually empty. */
   parts: { english: string; original: string }[];
 }
+
+/**
+ * Called as ingredient names arrive, while the read is still running. Each
+ * call carries every name found SO FAR, in label order, not just the new ones:
+ * a client that missed a call is then never behind.
+ */
+export type PartialReadListener = (
+  ingredients: { original: string; english: string }[],
+) => void;
 
 export interface LabelReadResult {
   /** Verbatim transcription of the ingredient-list section (original language) */
@@ -315,22 +325,53 @@ async function readWithGemini(imageData: string): Promise<LabelReadResult> {
   return toResult(parseModelJson(text), 'multimodal-gemini');
 }
 
-async function readWithOpenAI(imageData: string): Promise<LabelReadResult> {
+
+async function readWithOpenAI(
+  imageData: string,
+  onPartial?: PartialReadListener,
+): Promise<LabelReadResult> {
   const url = imageData.startsWith('data:')
     ? imageData
     : `data:image/jpeg;base64,${imageData}`;
-  const response = await openai.chat.completions.create({
+  const request = {
     model: VISION_MODEL_OPENAI,
     messages: [{
-      role: 'user',
+      role: 'user' as const,
       content: [
-        { type: 'text', text: EXTRACTION_PROMPT },
-        { type: 'image_url', image_url: { url } },
+        { type: 'text' as const, text: EXTRACTION_PROMPT },
+        { type: 'image_url' as const, image_url: { url } },
       ],
     }],
-    response_format: { type: 'json_object' },
-  });
-  return toResult(parseModelJson(response.choices[0]?.message?.content ?? ''), 'multimodal-openai');
+    response_format: { type: 'json_object' as const },
+  };
+
+  // Without a listener, nothing would be done with the chunks, and a single
+  // response is one less thing to go wrong. The text is identical either way.
+  if (!onPartial) {
+    const response = await openai.chat.completions.create(request);
+    return toResult(parseModelJson(response.choices[0]?.message?.content ?? ''), 'multimodal-openai');
+  }
+
+  const stream = await openai.chat.completions.create({ ...request, stream: true });
+  let buffer = '';
+  let announced = 0;
+
+  for await (const chunk of stream) {
+    const delta = chunk.choices?.[0]?.delta?.content;
+    if (!delta) continue;
+    buffer += delta;
+
+    // Re-scanning the whole buffer each chunk is O(n^2) in principle and
+    // irrelevant in practice: the document is a few kilobytes and the model
+    // spends far longer producing each chunk than this takes to read.
+    const found = completeIngredientsInBuffer(buffer);
+    if (found.length > announced) {
+      announced = found.length;
+      onPartial(found);
+    }
+  }
+
+  return toResult(parseModelJson(buffer), 'multimodal-openai');
 }
 
 async function readWithLegacyOcr(imageData: string): Promise<LabelReadResult> {
@@ -366,6 +407,12 @@ export type LabelProvider = 'gemini' | 'openai' | 'ocr';
 export interface ReadLabelOptions {
   /** Restrict the provider chain, e.g. ['openai'] to eval a single provider */
   providers?: LabelProvider[];
+  /**
+   * Called with the names found so far, while the read is still running.
+   * Only the OpenAI reader streams; the others ignore it and the caller sees
+   * nothing until the read finishes, which is what happened before.
+   */
+  onPartial?: PartialReadListener;
 }
 
 /**
@@ -436,7 +483,10 @@ function configuredChain(): LabelProvider[] {
 export async function readLabelFromImage(imageData: string, options?: ReadLabelOptions): Promise<LabelReadResult> {
   const available: Record<LabelProvider, { enabled: boolean; run: (d: string) => Promise<LabelReadResult> }> = {
     gemini: { enabled: geminiConfigured(), run: readWithGemini },
-    openai: { enabled: Boolean(process.env.OPENAI_API_KEY), run: readWithOpenAI },
+    openai: {
+      enabled: Boolean(process.env.OPENAI_API_KEY),
+      run: (d) => readWithOpenAI(d, options?.onPartial),
+    },
     ocr: { enabled: Boolean(process.env.GOOGLE_CLOUD_VISION_API_KEY), run: readWithLegacyOcr },
   };
 

@@ -84,6 +84,23 @@ interface AnalysisRequest {
   // client can show real progress during the ~20-30s wait instead of a bare
   // spinner.
   ingredientCount?: number;
+  /**
+   * The label's ingredients, in the order printed, as soon as the reader has
+   * them. Available roughly 15 seconds before any verdict is.
+   *
+   * The names alone are worth showing: they are what the person pointed the
+   * camera at, and seeing their own label come back is the moment the app
+   * stops looking like it might have failed. Verdicts land on top of these
+   * rows afterwards.
+   *
+   * English canonical names, alongside the label's own words where the two
+   * differ, because a bilingual pair is what the card shows and the pair is
+   * the app's claim to have read rather than guessed.
+   */
+  ingredients?: string[];
+  ingredientsOriginal?: string[];
+  /** The bracket structure, so the pending rows can say "inside X" too. */
+  composition?: { name: string; parts: string[] }[];
   productName?: string;
   timestamp: number;
 }
@@ -785,13 +802,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
 
     if (request.status === 'processing') {
-      return res.status(202).json({ status: 'processing' });
+      // Partial names when the reader has begun producing them. The status is
+      // still 'processing': nothing has been analysed, and the client shows
+      // the list without a verdict against any of it.
+      return res.status(202).json({
+        status: 'processing',
+        ingredients: request.ingredients,
+        ingredientsOriginal: request.ingredientsOriginal,
+      });
     }
     
     if (request.status === 'ocr_complete') {
       return res.status(202).json({
         status: 'ocr_complete',
         ingredientCount: request.ingredientCount,
+        ingredients: request.ingredients,
+        ingredientsOriginal: request.ingredientsOriginal,
+        composition: request.composition,
       });
     }
     
@@ -886,7 +913,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
             // Cache miss - read the label once, reused for all language variants
             console.log(`[SCAN-AND-ANALYZE-${requestId}] Label cache MISS - running multimodal label reader`);
             try {
-              const labelResult = await readLabelFromImage(imageData);
+              const labelResult = await readLabelFromImage(imageData, {
+                // Names reach the client while the read is still running.
+                // The reader spends most of a scan composing one response and
+                // the names are in it long before it ends, so holding them
+                // back bought nothing but a longer blank screen.
+                onPartial: (found) => {
+                  analysisRequest.ingredients = found.map((f) => f.english);
+                  analysisRequest.ingredientsOriginal = found.map((f) => f.original);
+                },
+              });
               ocrDuration = ((Date.now() - startTime) / 1000).toFixed(2);
               console.log(`[TIMING] [LABEL-READ-SUCCESS-${requestId}] Label read via ${labelResult.method} in ${ocrDuration}s`);
               ocrStage = 'success';
@@ -946,11 +982,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Update status to indicate OCR is complete, now analyzing
         analysisRequest.status = 'ocr_complete';
         analysisRequest.timestamp = Date.now();
-        // Everything the scan will list. Nothing displays this during a scan
-        // any more, and it is reported for parity with what the results
-        // screen and the saved row count.
+        // Everything the scan will list, published now rather than at the
+        // end: the names are already known, and the wait that follows is the
+        // analysis, not the reading.
         if (structuredIngredients?.length) {
           analysisRequest.ingredientCount = structuredIngredients.length;
+          analysisRequest.ingredients = structuredIngredients;
+          analysisRequest.ingredientsOriginal = originalIngredients;
+          analysisRequest.composition = composition;
         }
         console.log(`[SCAN-AND-ANALYZE-${requestId}] OCR phase complete, starting analysis phase`);
         

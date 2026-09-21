@@ -35,10 +35,17 @@ export interface AnalysisStatus {
   status: 'processing' | 'ocr_complete' | 'completed' | 'failed';
   analysis?: AnalysisResult;
   ocrText?: string;
-  /** Available from 'ocr_complete' onward. The server reports the label's
-   *  PRINTED count here. Not shown during a scan any more: it disagreed on
-   *  sight with the results list, which shows every ingredient analysed. */
+  /** Available from 'ocr_complete' onward. Not shown as a number during a
+   *  scan any more: it disagreed on sight with the results list. */
   ingredientCount?: number;
+  /**
+   * The label's ingredients, from 'ocr_complete' onward, which is roughly
+   * fifteen seconds before any verdict exists. Shown immediately: the reading
+   * is done by then, and the rest of the wait is the analysis.
+   */
+  ingredients?: string[];
+  ingredientsOriginal?: string[];
+  composition?: { name: string; parts: string[] }[];
   error?: string;
   /** Machine-readable failure reason; the UI writes the sentence from this. */
   code?: string;
@@ -94,8 +101,17 @@ const POLL_SCHEDULE_MS = [400, 400, 600, 600, 800, 1000, 1500] as const;
 const POLL_INTERVAL_MAX_MS = 2500;
 const POLL_TIMEOUT_MS = 150_000;
 
-function pollDelayMs(attempt: number): number {
-  return POLL_SCHEDULE_MS[attempt] ?? POLL_INTERVAL_MAX_MS;
+/**
+ * While the reader is streaming names, the poll is what paces them onto the
+ * screen: back off to 2.5s and the list arrives in four lumps instead of
+ * filling. A second is close enough to continuous to read as the app working
+ * through the label, and the status route is a map lookup answering in ~13ms.
+ */
+const POLL_INTERVAL_WHILE_READING_MS = 1000;
+
+function pollDelayMs(attempt: number, namesArriving: boolean): number {
+  const scheduled = POLL_SCHEDULE_MS[attempt] ?? POLL_INTERVAL_MAX_MS;
+  return namesArriving ? Math.min(scheduled, POLL_INTERVAL_WHILE_READING_MS) : scheduled;
 }
 
 export async function pollAnalysis(
@@ -104,9 +120,12 @@ export async function pollAnalysis(
 ): Promise<AnalysisResult> {
   const deadline = Date.now() + POLL_TIMEOUT_MS;
   let attempt = 0;
+  let namesSoFar = 0;
   while (Date.now() < deadline) {
     const status = await apiFetch<AnalysisStatus>(`/api/analysis-status/${requestId}`);
     onStatus?.(status);
+    const namesArriving = (status.ingredients?.length ?? 0) > namesSoFar;
+    namesSoFar = status.ingredients?.length ?? namesSoFar;
     if (status.status === 'completed' && status.analysis) return status.analysis;
     if (status.status === 'failed') {
       // Preserved as an ApiError so the code survives to the screen that has to
@@ -114,7 +133,7 @@ export async function pollAnalysis(
       // throws inside apiFetch; this covers a failed status arriving with 200.)
       throw new ApiError(400, status.error || 'Analysis failed.', status.code);
     }
-    await new Promise((resolve) => setTimeout(resolve, pollDelayMs(attempt)));
+    await new Promise((resolve) => setTimeout(resolve, pollDelayMs(attempt, namesArriving)));
     attempt += 1;
   }
   throw new Error('Analysis timed out. Please try again.');

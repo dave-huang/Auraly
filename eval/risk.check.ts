@@ -21,6 +21,7 @@ import {
   ingredientMatchesAllergen,
 } from '../server/services/allergenMatcher';
 import { containsStatementsFromText } from '../server/services/declarations';
+import { completeIngredientsInBuffer } from '../server/services/partialJson';
 import {
   CONCEPT_IDENTIFIERS_FOR_CHECK,
   getConcept,
@@ -1063,6 +1064,65 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
     `expected ["milk"] only, got ${JSON.stringify(mixed)}`);
 
   notes.push(`declaration backstop reads ${cases.length} languages out of the raw transcription, and ignores every hedge`);
+}
+
+
+// ---------------------------------------------------------------------------
+// M5. A half-written name never reaches the screen.
+//
+// The reader streams, so the app shows ingredients while the model is still
+// writing the document they live in. The one thing that must not happen is a
+// name appearing and then changing: the app's claim is that it READ the
+// label, and "Wheat Fl" turning into "Wheat Flour" undercuts that more than a
+// slower list ever would.
+// ---------------------------------------------------------------------------
+{
+  const doc = JSON.stringify({
+    label_found: true,
+    ingredients: [
+      { original: 'Sugar', english: 'Sugar' },
+      { original: 'Sel de mer', english: 'Sea Salt' },
+      // Braces and quotes inside a name are why this is a scanner and not a
+      // regular expression.
+      { original: 'Aroma {natural}', english: 'Natural "Flavor"' },
+    ],
+    confidence: 'high',
+  });
+
+  const namesAt = (cut: number) =>
+    completeIngredientsInBuffer(doc.slice(0, cut)).map((i) => i.english);
+
+  check('streaming/whole-document',
+    JSON.stringify(namesAt(doc.length)) ===
+      JSON.stringify(['Sugar', 'Sea Salt', 'Natural "Flavor"']),
+    `the finished document did not parse: ${JSON.stringify(namesAt(doc.length))}`);
+
+  // Every truncation of the document, one character at a time. Each must
+  // return a prefix of the real list and nothing else: no partial name, no
+  // invented one, and never a name that later changes.
+  let previous: string[] = [];
+  for (let cut = 0; cut <= doc.length; cut++) {
+    const names = namesAt(cut);
+    const isPrefixOfTruth = names.every(
+      (n, i) => n === ['Sugar', 'Sea Salt', 'Natural "Flavor"'][i]);
+    check('streaming/only-complete-names',
+      isPrefixOfTruth,
+      `a partial or invented name appeared at ${cut} characters: ${JSON.stringify(names)}`);
+    check('streaming/names-never-change',
+      names.length >= previous.length &&
+        previous.every((n, i) => names[i] === n),
+      `the list went backwards at ${cut} characters: ${JSON.stringify(previous)} -> ${JSON.stringify(names)}`);
+    previous = names;
+  }
+
+  check('streaming/nothing-before-the-key',
+    completeIngredientsInBuffer('{"label_found":true').length === 0,
+    'names were reported before the ingredients key arrived');
+  check('streaming/empty-list',
+    completeIngredientsInBuffer('{"ingredients":[]}').length === 0,
+    'an empty ingredient list produced names');
+
+  notes.push(`streaming: every one of ${doc.length} truncations of the document yields a clean prefix`);
 }
 
 // ---------------------------------------------------------------------------

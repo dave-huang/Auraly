@@ -105,6 +105,8 @@ export default function ViewfinderScreen() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [phase, setPhase] = useState<'reading' | 'analyzing' | null>(null);
   const [previewUri, setPreviewUri] = useState<string | undefined>();
+  const [readIngredients, setReadIngredients] = useState<string[] | undefined>();
+  const [readOriginal, setReadOriginal] = useState<string[] | undefined>();
   const [menuOpen, setMenuOpen] = useState(false);
   // Only meaningful with an account — the anonymous grant is counted per device
   // on the server, and this endpoint requires a token.
@@ -136,6 +138,8 @@ export default function ViewfinderScreen() {
     try {
       setPreviewUri(uri);
       setPhase('reading');
+      setReadIngredients(undefined);
+      setReadOriginal(undefined);
       const imageDataUrl = await prepareImage(uri);
       const requestId = await submitScan({
         imageDataUrl,
@@ -144,8 +148,14 @@ export default function ViewfinderScreen() {
         profileId: activeId ?? undefined,
       });
       const result = await pollAnalysis(requestId, (status) => {
-        if (status.status === 'ocr_complete') {
-          setPhase('analyzing');
+        if (status.status === 'ocr_complete') setPhase('analyzing');
+        // Names arrive DURING the read, not after it: the reader streams them
+        // as the model writes them, so they are set on every status that
+        // carries any. Waiting for 'ocr_complete' would have held the whole
+        // list back until the moment it stopped being the slow part.
+        if (status.ingredients?.length) {
+          setReadIngredients(status.ingredients);
+          setReadOriginal(status.ingredientsOriginal);
         }
       });
       setLastResult(
@@ -417,7 +427,12 @@ export default function ViewfinderScreen() {
       </SafeAreaView>
 
       {phase ? (
-        <ScanProgress imageUri={previewUri} phase={phase} />
+        <ScanProgress
+          imageUri={previewUri}
+          phase={phase}
+          ingredients={readIngredients}
+          ingredientsOriginal={readOriginal}
+        />
       ) : null}
 
       <Modal visible={menuOpen} animationType="fade" transparent onRequestClose={() => setMenuOpen(false)}>
