@@ -1036,6 +1036,27 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
       `expected ${JSON.stringify(expected)}, recovered ${JSON.stringify(recovered(text))} from ${text}`);
   }
 
+  // Two lines from a real chocolate bar, the second of which declares
+  // nothing: it describes the factory. Both use 含有. Reading the second as a
+  // declaration tells someone allergic to peanuts that this bar has peanuts
+  // in it, which is the failure that erodes trust in every other warning.
+  const twoLine = '敏感提示: 含有大豆制品\n本生产线也生产含有乳制品，花生，坚果的产品。';
+  check('declaration-backstop/shared-line-is-not-a-declaration',
+    JSON.stringify(recovered(twoLine)) === JSON.stringify(['soy']),
+    `expected ["soy"] only, got ${JSON.stringify(recovered(twoLine))} from the two-line block`);
+
+  const sharedLineOnly: [string, string][] = [
+    ['chinese-line', '本生产线也生产含有花生的产品。'],
+    ['chinese-equipment', '同一设备生产含有乳制品的产品。'],
+    ['english-facility', 'Made in a facility that also handles peanuts and contains tree nuts.'],
+    ['spanish-equipo', 'Elaborado en equipo que tambien procesa y contiene leche.'],
+  ];
+  for (const [name, text] of sharedLineOnly) {
+    check(`declaration-backstop/shared-line-${name}`,
+      recovered(text).length === 0,
+      `a shared-equipment warning was read as a declaration: ${text} -> ${JSON.stringify(recovered(text))}`);
+  }
+
   // A hedge is not a declaration. Promoting these would mark most of a
   // supermarket unsafe for anyone with a serious allergy, which is the fastest
   // way to teach someone to ignore the warnings that matter.

@@ -38,6 +38,26 @@ export function containsStatementsFromText(rawText: string): string[] {
   // product unsafe on the strength of the word that says it is not certain.
   const CJK_HEDGE = /可能|微量|或含/;
 
+  // "Made on a line that also makes..." is a warning about the factory, not
+  // about what is in the packet, and several languages phrase it with the
+  // same word they use to declare presence. A real chocolate bar carries
+  // both, one under the other:
+  //
+  //   敏感提示: 含有大豆制品
+  //   本生产线也生产含有乳制品，花生，坚果的产品。
+  //
+  // The first line is a declaration and the second is not, and both contain
+  // 含有. Read the second as a declaration and someone allergic to peanuts is
+  // told this bar has peanuts in it.
+  const SHARED_LINE = new RegExp([
+    '生产线', '生產線', '共线', '共用', '也生产', '也生產', '也加工',
+    '同一(设备|設備|车间|車間|工场|工場)',
+    '同じ(製造)?ライン', '同一工場',
+    'facility', 'equipment', 'production line', 'same line',
+    'instalaciones', 'equipo', 'misma linea', 'misma línea',
+    'оборудовани', 'производств',
+  ].join('|'), 'i');
+
   // A category is not an allergen, and is not expanded into one. The sacha
   // tofu label declares 含麩質的穀類, "grains containing gluten", which covers
   // wheat, barley and rye: reading wheat out of it would be an inference, and
@@ -71,8 +91,13 @@ export function containsStatementsFromText(rawText: string): string[] {
   const found: string[] = [];
   for (const { pattern, hedges, rejectIn, rejectAfter } of markers) {
     for (const match of rawText.matchAll(pattern)) {
-      const before = rawText.slice(Math.max(0, match.index - 24), match.index);
+      // The preceding text on THIS line only. A declaration on the line
+      // above must not lend its words to the line below, which is exactly
+      // how the two-line allergen block reads.
+      const window = rawText.slice(Math.max(0, match.index - 60), match.index);
+      const before = window.slice(window.lastIndexOf('\n') + 1);
       if (hedges.test(before.trim())) continue;
+      if (SHARED_LINE.test(before)) continue;
       const after = rawText.slice(match.index + match[0].length, match.index + match[0].length + 24);
       if (rejectAfter?.test(after.trim())) continue;
       const statement = match[1].trim();

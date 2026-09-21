@@ -107,6 +107,10 @@ const labelExtractionSchema = z.object({
     contains: z.array(z.string()).default([]),
     may_contain: z.array(z.string()).default([]),
   }).default({ contains: [], may_contain: [] }),
+  // The allergen lines as printed. Separate from declared_allergens because
+  // that field is the model's reading of them and this is the text itself,
+  // which is what the backstop re-reads when the reading goes missing.
+  allergen_statements_verbatim: z.string().nullish(),
   confidence: z.enum(['high', 'medium', 'low']).default('medium'),
   lines_total: z.number().int().min(0).nullish(),
   lines_read: z.number().int().min(0).nullish(),
@@ -131,6 +135,7 @@ Return ONLY a JSON object with this exact shape:
     "contains": [string],        // declared as PRESENT, e.g. "Contains: milk, soy" / "含有大豆制品" / "過敏原資訊：本產品含有..."
     "may_contain": [string]      // cross-contamination only, e.g. "May contain traces of nuts" / "本生产线也生产..." / "может содержать"
   },
+  "allergen_statements_verbatim": string, // those same lines transcribed word for word, in the label's language, both kinds, empty string if the label carries none
   "confidence": "high"|"medium"|"low", // how certain you are the transcription is complete and correct
   "lines_total": number,         // printed lines of text in the ingredient-list block, as laid out on the packaging
   "lines_read": number           // of those, how many you transcribed with FULL confidence (<= lines_total)
@@ -149,6 +154,7 @@ Rules:
 - Deduplicate only exact repeats: if the identical ingredient name appears twice, list it once. Two items that read differently are two ingredients, even when one is a treated form of the other.
 - Do NOT guess ingredients that are not legible. If the list is cut off, transcribe what is visible and set confidence accordingly.
 - If no ingredient list is legible anywhere in the image, set label_found=false and leave ingredients empty.
+- Transcribe every allergen statement into "allergen_statements_verbatim" exactly as printed, in the label's own language and script, including both the "contains" and the "may contain" lines. This is a copy of the words on the packet, not a reading of them, and it is what a person checking your work would compare against.
 - Allergen statements stay OUT of "ingredients" and go in "declared_allergens" instead. Use lowercase canonical English allergen names where they map to common allergens (milk, egg, fish, shellfish, tree nuts, peanut, wheat, soy, sesame); otherwise use the plain English term.
 - Distinguishing "contains" from "may contain" matters: only put an allergen in "contains" when the label states it is present, and in "may_contain" when the label hedges (traces, shared line/equipment, "may contain").
 - If the same product's label is printed in more than one language, read them together and merge into ONE deduplicated result — do not list an ingredient twice because it appears in two scripts.
@@ -239,11 +245,21 @@ function toResult(
   const rawText = parsed.raw_ingredients_text || ingredientsOriginal.join(', ');
   const contains = parsed.declared_allergens.contains.map(a => a.trim()).filter(Boolean);
 
-  // The backstop. Anything the transcription declares and the model did not
-  // structure is added, never removed: this can only widen what the label is
-  // taken to say about itself.
+  // The backstop, over the allergen lines as printed AND the ingredient
+  // transcription. The verbatim field is the one that matters: the prompt
+  // tells the model to keep allergen statements out of the ingredient text,
+  // so for most labels there is nothing in `rawText` to fall back on, and a
+  // backstop reading only that was thinner than it looked. Both are scanned
+  // because a label that prints its declaration inside the ingredient block
+  // exists too.
+  //
+  // Anything declared here and not structured by the model is added, never
+  // removed: this can only widen what the label is taken to say about itself.
+  const declarationText = [parsed.allergen_statements_verbatim ?? '', rawText]
+    .filter(Boolean)
+    .join('\n');
   const seenContains = new Set(contains.map(c => c.toLowerCase()));
-  for (const statement of containsStatementsFromText(rawText)) {
+  for (const statement of containsStatementsFromText(declarationText)) {
     if (seenContains.has(statement.toLowerCase())) continue;
     seenContains.add(statement.toLowerCase());
     contains.push(statement);
