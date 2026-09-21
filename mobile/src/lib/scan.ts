@@ -35,7 +35,9 @@ export interface AnalysisStatus {
   status: 'processing' | 'ocr_complete' | 'completed' | 'failed';
   analysis?: AnalysisResult;
   ocrText?: string;
-  /** Available from 'ocr_complete' onward — lets the UI show real progress. */
+  /** Available from 'ocr_complete' onward. The server reports the label's
+   *  PRINTED count here. Not shown during a scan any more: it disagreed on
+   *  sight with the results list, which shows every ingredient analysed. */
   ingredientCount?: number;
   error?: string;
   /** Machine-readable failure reason; the UI writes the sentence from this. */

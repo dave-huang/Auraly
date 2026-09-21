@@ -104,7 +104,6 @@ export default function ViewfinderScreen() {
   const [profiles, setProfiles] = useState<Profile[] | null>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [phase, setPhase] = useState<'reading' | 'analyzing' | null>(null);
-  const [ingredientCount, setIngredientCount] = useState<number | undefined>();
   const [previewUri, setPreviewUri] = useState<string | undefined>();
   const [menuOpen, setMenuOpen] = useState(false);
   // Only meaningful with an account — the anonymous grant is counted per device
@@ -137,7 +136,6 @@ export default function ViewfinderScreen() {
     try {
       setPreviewUri(uri);
       setPhase('reading');
-      setIngredientCount(undefined);
       const imageDataUrl = await prepareImage(uri);
       const requestId = await submitScan({
         imageDataUrl,
@@ -148,7 +146,6 @@ export default function ViewfinderScreen() {
       const result = await pollAnalysis(requestId, (status) => {
         if (status.status === 'ocr_complete') {
           setPhase('analyzing');
-          setIngredientCount(status.ingredientCount);
         }
       });
       setLastResult(
@@ -420,7 +417,7 @@ export default function ViewfinderScreen() {
       </SafeAreaView>
 
       {phase ? (
-        <ScanProgress imageUri={previewUri} phase={phase} ingredientCount={ingredientCount} />
+        <ScanProgress imageUri={previewUri} phase={phase} />
       ) : null}
 
       <Modal visible={menuOpen} animationType="fade" transparent onRequestClose={() => setMenuOpen(false)}>

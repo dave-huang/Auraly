@@ -33,14 +33,10 @@ import { useReducedMotion } from '@/lib/reduced-motion';
 //   Reading the label…
 //   Translating into plain English…
 //   Checking against your safety shield…
-//   Found 14 ingredients…
 //
-// Each line is true when it is shown. The first three name work that is
-// genuinely in flight — the reader, then the model, which translates and
-// checks against the profile inside one call — and none of them claims a stage
-// has FINISHED. The fourth is the only one carrying a fact, so it is the only
-// one that has to be earned: it appears when the server has actually counted,
-// and until then the script simply holds on the third line.
+// Each line is true when it is shown, and none of them claims a stage has
+// FINISHED. None of them carries a number either: a fourth line used to
+// report the ingredients found, and it is gone. See SCRIPT below.
 //
 // The script runs on a clock rather than on the pipeline's own two phases
 // because the phases are the problem. OCR can take five seconds by itself, and
@@ -67,9 +63,14 @@ const STILL_WORKING_AFTER_MS = 12_000;
 /**
  * The written script, in order.
  *
- * The count is not in this list. It is the step AFTER the last of these, and
- * it is the one step that can be reached only when there is something true to
- * put in it — see `step` below.
+ * It used to end on a count: "Found 14 ingredients…". That number counted the
+ * label's printed entries, while the results screen lists every ingredient
+ * analysed, sub-ingredients included, so a bracketed label promised 3 and then
+ * showed 5 rows. Both numbers were right and the pair read as a bug.
+ *
+ * Saying nothing is better than saying two true things that appear to
+ * disagree. The progress line describes what is happening; the results screen
+ * is where counting belongs, beside the list being counted.
  */
 const SCRIPT: readonly TranslationKey[] = [
   'scan.reading',
@@ -81,7 +82,6 @@ export function ScanProgress({
   imageUri,
   backdrop,
   phase,
-  ingredientCount,
 }: {
   imageUri?: string;
   /** Anything to sweep over instead of a photo. The onboarding example passes
@@ -90,7 +90,6 @@ export function ScanProgress({
    *  stock photo would be. */
   backdrop?: ReactNode;
   phase: 'reading' | 'analyzing';
-  ingredientCount?: number;
 }) {
   const { t } = useTranslation();
   const { height } = useWindowDimensions();
@@ -142,11 +141,8 @@ export function ScanProgress({
 
   // THE CLOCK, AND ONLY THE CLOCK.
   //
-  // Counting beats rather than steps keeps the cadence honest: the count can
-  // arrive at any moment and lengthen the script by one, and a timer that
-  // restarted whenever that happened would stretch whichever line was on
-  // screen. This one never restarts. It stops itself at the last possible
-  // step, where React drops the identical state and stops re-rendering.
+  // The timer never restarts, and stops itself at the last step, where React
+  // drops the identical state and stops re-rendering.
   const [beat, setBeat] = useState(0);
 
   useEffect(() => {
@@ -157,14 +153,13 @@ export function ScanProgress({
     return () => clearInterval(timer);
   }, []);
 
-  // One past the script is the count, and it is out of reach until we have one.
-  const step = Math.min(beat, ingredientCount ? SCRIPT.length : SCRIPT.length - 1);
-  const onCount = step >= SCRIPT.length;
+  // The script's last line is where it rests.
+  const step = Math.min(beat, SCRIPT.length - 1);
 
   // Elapsed time is its own signal, and it outranks the script's last line.
-  // The script parks on "Checking against your safety shield…" when no count
-  // ever arrives, and a line that has not moved in fifteen seconds reads as a
-  // hang whether or not it is one.
+  // The script parks on "Checking against your safety shield…", and a line
+  // that has not moved in twelve seconds reads as a hang whether or not it
+  // is one.
   //
   // Stores WHICH phase ran long, rather than a boolean plus a reset. Reaching
   // a new phase is fresh evidence of progress and should clear the message —
@@ -179,13 +174,7 @@ export function ScanProgress({
 
   const longWait = longWaitPhase === phase;
 
-  // The count is the most informative thing we can say, so a long wait never
-  // overwrites it — "Found 14 ingredients…" outranks "Still working…".
-  const status = onCount
-    ? t('scan.foundIngredients', { count: ingredientCount as number })
-    : longWait
-      ? t('scan.stillWorking')
-      : t(SCRIPT[step]);
+  const status = longWait ? t('scan.stillWorking') : t(SCRIPT[step]);
 
   return (
     <View style={styles.container}>

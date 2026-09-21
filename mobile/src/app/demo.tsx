@@ -237,7 +237,6 @@ export default function DemoScreen() {
         ) : (
           <ScanProgress
             phase={phase}
-            ingredientCount={phase === 'analyzing' ? scan?.result.ingredients.length : undefined}
             backdrop={<DemoLabel scan={scan} framing={framing} />}
           />
         )}
