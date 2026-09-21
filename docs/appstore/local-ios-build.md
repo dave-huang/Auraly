@@ -92,6 +92,37 @@ machine in Xcode rather than in the project file.
 The locale exports are not decoration. On Ruby 4.0 CocoaPods otherwise stops
 with `Unicode Normalization not appropriate for ASCII-8BIT`.
 
+### 2b. Check the update channel is in the binary
+
+Build 33 shipped without one, and the consequence was silent: two updates were
+published, the dashboard showed them live, and no phone could ever have
+received them. A build asks for updates by channel name, and that name is
+compiled in. EAS Build injects it from the `channel` field in `eas.json`, and a
+local build never runs that step, so it is set in `app.json` instead:
+
+    "updates": {
+      "url": "https://u.expo.dev/d6bfe56f-09a6-4bbf-a26f-a7198a47027d",
+      "requestHeaders": { "expo-channel-name": "production" }
+    }
+
+Prebuild writes that into the plist. Confirm it before going any further,
+because nothing later fails when it is missing:
+
+    plutil -p ios/Revely/Supporting/Expo.plist
+
+`EXUpdatesRequestHeaders` must be there with `expo-channel-name => production`.
+If it is not, the archive will build, sign, upload and pass review, and then
+ignore every update ever published to it.
+
+The channel also has to exist on the server, pointing at the branch updates are
+published to. It does now, and `npx eas-cli channel:view production` says so;
+`npx eas-cli channel:create production` is what created it.
+
+UNRESOLVED: whether EAS Build overrides `requestHeaders` with the build
+profile's own channel when the quota returns in October. The documentation does
+not say. Check the plist of the first EAS build rather than assuming, and write
+the answer down here.
+
 ### 3. Export the app's environment variables
 
 Anything named `EXPO_PUBLIC_*` is inlined into the JavaScript bundle while it is
