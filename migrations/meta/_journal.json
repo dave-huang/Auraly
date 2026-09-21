@@ -15,6 +15,13 @@
       "when": 1787777762423,
       "tag": "0001_add_subscriptions_and_anonymous_devices",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1789961835018,
+      "tag": "0002_add_scan_composition",
+      "breakpoints": true
     }
   ]
 }

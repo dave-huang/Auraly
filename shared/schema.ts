@@ -437,6 +437,18 @@ export const scanHistory = pgTable(
     language: varchar("language").notNull().default("en"),
     isUpdatedFromCache: boolean("is_updated_from_cache").notNull().default(false),
     ingredientCount: integer("ingredient_count").notNull().default(0),
+    /**
+     * The label as PRINTED: entries in label order, each with its bracketed
+     * parts. `detectedIngredients` above is the flattened list, which is what
+     * was analysed and cannot be turned back into this — a flat list cannot
+     * say which names came out of which bracket.
+     *
+     * Nullable, and null for every scan saved before 2026-09-20, plus every
+     * scan read by the OCR fallback, which splits on commas and so never sees
+     * a bracket. Null means "no structure known" and readers fall back to the
+     * flat list, exactly as they did before this column existed.
+     */
+    composition: jsonb("composition"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
   },
   (table) => [

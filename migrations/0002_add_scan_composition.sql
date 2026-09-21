@@ -1,0 +1,26 @@
+-- The label as printed, stored alongside the flattened list that gets
+-- analysed. Nullable on purpose: every scan saved before this, and every scan
+-- read by the OCR fallback, has no structure to record, and null is how a
+-- reader is told to fall back to the flat list.
+ALTER TABLE "scan_history" ADD COLUMN "composition" jsonb;
+
+-- WHAT WAS REMOVED FROM THIS FILE, AND WHY
+--
+-- drizzle-kit generated four more statements alongside the one above:
+--
+--   DROP TABLE promo_codes, promo_redemptions, referrals
+--   ALTER TABLE users DROP COLUMN referral_code
+--
+-- They are real drift, not a mistake: those tables left shared/schema.ts when
+-- the scan-pack model was dropped, and the note at the end of that file
+-- records that all three still exist in Postgres and that removing them is a
+-- separate, deliberate act. `referral_code` in particular is a column on the
+-- live users table.
+--
+-- A migration adding one nullable column is not the place to drop three
+-- tables, and irreversible statements should never arrive as a side effect of
+-- an unrelated change. Whoever decides to drop them should write that
+-- migration on its own, having first confirmed the tables are empty.
+--
+-- The same trap sits in `npm run db:push`, which offers the drops
+-- interactively. Apply this file directly instead.

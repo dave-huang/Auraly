@@ -1138,12 +1138,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     isUpdatedFromCache: z.boolean().optional().default(false),
     /**
      * The label as printed, sent so the saved count matches the card it was
-     * saved from.
-     *
-     * NOT PERSISTED, deliberately — there is no column for it yet, and adding
-     * one on this branch would collide with the migration already in flight on
-     * the launch branch. Only its length is used, to set `ingredientCount`.
-     * When a column does exist, the data is already arriving.
+     * saved from, and so reopening the scan can still say which bracket a
+     * sub-ingredient came out of. Stored since 2026-09-20.
      */
     composition: z
       .array(z.object({ name: z.string(), parts: z.array(z.string()).default([]) }))
@@ -1170,6 +1166,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // card it was saved from agree. `detectedIngredients` is the flattened
         // list, which counts every sub-ingredient as an ingredient of its own.
         ingredientCount: data.composition?.length ?? data.detectedIngredients.length,
+        // Null rather than an empty array when the reader found no structure:
+        // an empty array would claim the label prints nothing, and the count
+        // above would then disagree with it.
+        composition: data.composition?.length ? data.composition : null,
       };
       
       const scan = await storage.createScanHistory(scanData);
@@ -1225,6 +1225,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       ingredients,
       overallRisk: scan.overallRisk,
       analyzedAt: scan.createdAt.toISOString(),
+      // Absent on scans saved before the column existed, which is the same
+      // thing a fresh OCR-fallback scan reports, so the card already knows
+      // how to show a list with no structure behind it.
+      ...(Array.isArray(scan.composition) && scan.composition.length
+        ? { composition: scan.composition }
+        : {}),
     } as any;
 
     if (profile) {
