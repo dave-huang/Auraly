@@ -427,14 +427,17 @@ export function AnalysisView({
         onLayout={(e) => onIngredientsLayout?.(e.nativeEvent.layout.y)}
       >
         <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
-          {/* What the LABEL prints, not what was analysed.
-              The two differ by every sub-ingredient: the analysis walks into
-              brackets because that is where allergens hide, so a packet
-              printing 12 ingredients came back saying 31. That is a number
-              somebody can check against the jar in their hand. */}
-          {t('verdict.ingredientCount', {
-            count: result.composition?.length ?? result.ingredients.length,
-          })}
+          {/* Counts the rows below, which is also what the packet prints.
+              This briefly counted the label's top-level entries instead, on
+              the theory that a bracket hides what is inside it. It does not:
+              every name in "White Candy Coating (Sugar, Palm Kernel Oil, …)"
+              is printed on the bag in the same type as the rest. Grouping is
+              not concealment, so counting groups reported 4 above a list of
+              24 and disagreed with both the screen and the packet.
+              Where the grouping genuinely matters, the rows say so
+              themselves: "inside White Candy Coating" on each part, and
+              "#1 of 4" where position carries weight. */}
+          {t('verdict.ingredientCount', { count: result.ingredients.length })}
         </ThemedText>
         {/* Read line by line, and shown that way. The rows come into focus in
             order rather than all at once — the app's own act, said as motion.

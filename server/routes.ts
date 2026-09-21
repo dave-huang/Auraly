@@ -946,14 +946,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Update status to indicate OCR is complete, now analyzing
         analysisRequest.status = 'ocr_complete';
         analysisRequest.timestamp = Date.now();
-        // Count what the label PRINTS, not what the analysis walks. The two
-        // differ by every sub-ingredient on the label, so a biscuit whose
-        // packaging lists 12 ingredients was telling the person mid-scan that
-        // it had 31 — a number they can check against the jar in their hand,
-        // and which was wrong.
-        const printedCount = composition?.length ?? structuredIngredients?.length;
-        if (printedCount) {
-          analysisRequest.ingredientCount = printedCount;
+        // Everything the scan will list. Nothing displays this during a scan
+        // any more, and it is reported for parity with what the results
+        // screen and the saved row count.
+        if (structuredIngredients?.length) {
+          analysisRequest.ingredientCount = structuredIngredients.length;
         }
         console.log(`[SCAN-AND-ANALYZE-${requestId}] OCR phase complete, starting analysis phase`);
         
@@ -1162,10 +1159,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         overallRisk: data.overallRisk,
         language: data.language || "en",
         isUpdatedFromCache: data.isUpdatedFromCache || false,
-        // The printed count where the client had one, so a saved scan and the
-        // card it was saved from agree. `detectedIngredients` is the flattened
-        // list, which counts every sub-ingredient as an ingredient of its own.
-        ingredientCount: data.composition?.length ?? data.detectedIngredients.length,
+        // Every ingredient the scan lists, which is what the card shows and
+        // what the packet prints: a bracket groups names, it does not hide
+        // them. Composition still travels, for the rank and the "inside X"
+        // lines, but it is not what gets counted.
+        ingredientCount: data.detectedIngredients.length,
         // Null rather than an empty array when the reader found no structure:
         // an empty array would claim the label prints nothing, and the count
         // above would then disagree with it.
