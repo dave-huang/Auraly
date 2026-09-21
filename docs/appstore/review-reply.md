@@ -9,10 +9,14 @@ one week free, and $7.99 a month with no introductory offer. Both are confirmed
 against the subscription records, and the monthly plan genuinely has no
 introductory offer configured, which is what the app already tells people.
 
-STATUS, 11 SEPTEMBER 2026: SENT AND RESUBMITTED. The reply went on 10 September
-with the recording attached, and the submission was resubmitted on 11 September
-at 3:18 PM. All four items read Waiting for Review. Release is set to automatic,
-deliberately, so approval puts Revely on the App Store immediately.
+STATUS, 20 SEPTEMBER 2026: CLOSED. The reply went on 10 September with the
+recording attached, the submission was resubmitted on 11 September at 3:18 PM,
+and 1.0 was approved. Version 1.0.1 followed with build 33, submitted on
+19 September and approved and released on 20 September.
+
+This file is kept as the record of what was answered, because the next
+information request will ask the same seven things and the answers are still
+the answers. Part 2 is the wording to start the next version's notes from.
 
 ## After replying, you still have to resubmit
 

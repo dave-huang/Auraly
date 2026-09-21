@@ -1,6 +1,8 @@
 # Building and shipping iOS from this Mac, without EAS Build
 
-Used for the first time on 1.0.1, build 33, on 19 September 2026.
+Used for the first time on 1.0.1, build 33, on 19 September 2026. That build
+was approved and released on 20 September, so the process below is proven end
+to end: archived here, uploaded through EAS Submit, and on the App Store.
 
 The EAS free plan gives 15 iOS builds a year, and ours ran out. The counter
 resets on 1 October 2026. Until then every release is archived here in Xcode

@@ -1,7 +1,16 @@
-# App Store listing copy, Revely 1.0
+# App Store listing copy, Revely
+
+Live on 1.0.1, approved and released 20 September 2026. What is here is what
+the App Store shows, so an edit to this file is a change to make in App Store
+Connect, not a draft.
 
 Paste-ready. Prices are filled in from App Store Connect: $39.99 a year with a
 7-day free trial, $7.99 a month.
+
+Name, subtitle, description, keywords and screenshots are locked to a version:
+changing any of them needs a new version number AND a new build, since App
+Store Connect will not accept a version string without a binary behind it.
+Promotional text is the exception and can be edited at any time.
 
 No em dashes anywhere in this file, in the copy or in the notes around it.
 
