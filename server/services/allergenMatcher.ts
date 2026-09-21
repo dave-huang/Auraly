@@ -224,18 +224,30 @@ export function detectAllergens(ingredients: string[]): Set<MajorAllergen> {
  * not every synonym an ingredient list might use: the cost of a wrong entry
  * here is telling someone a product is safe for them when it is not.
  */
+// Simplified and traditional are both listed, never one as a stand-in for the
+// other. The app's own Chinese is simplified, which is what made this easy to
+// get wrong: a Taiwanese tofu label declares 堅果類, 魚類 and 甲殼類, and the
+// simplified 坚果, 鱼, 虾 match none of them. The eval caught it on the one
+// case in the set printed in traditional characters, after twelve green
+// checks written against simplified text had said the vocabulary was fine.
 const DECLARATION_TERMS: Partial<Record<MajorAllergen, string[]>> = {
   milk: ['leche', 'lacteo', 'lactea', '牛奶', '乳', '乳成分', 'молоко', 'молока'],
-  egg: ['huevo', '鸡蛋', '蛋', '卵', 'яйцо', 'яйца'],
+  egg: ['huevo', '鸡蛋', '雞蛋', '蛋', '卵', 'яйцо', 'яйца'],
   fish: ['pescado', '鱼', '魚', 'рыба'],
-  shellfish: ['marisco', 'camaron', 'gamba', '虾', 'えび', 'カニ', '蟹', 'креветка', 'краб'],
-  tree_nuts: ['nuez', 'nueces', 'almendra', 'avellana', 'anacardo', '坚果', '杏仁', 'ナッツ', 'アーモンド', 'орех'],
+  shellfish: [
+    'marisco', 'camaron', 'gamba', '虾', '蝦', '蟹', '甲壳类', '甲殼類',
+    'えび', 'カニ', 'креветка', 'краб',
+  ],
+  tree_nuts: [
+    'nuez', 'nueces', 'almendra', 'avellana', 'anacardo',
+    '坚果', '堅果', '杏仁', '腰果', '核桃', 'ナッツ', 'アーモンド', 'орех',
+  ],
   peanut: ['cacahuete', 'cacahuate', 'mani', '花生', '落花生', 'ピーナッツ', 'арахис'],
-  wheat: ['trigo', '小麦', 'пшеница'],
-  soy: ['soja', '大豆', '黄豆', 'соя', 'сои', 'сою', 'соев'],
+  wheat: ['trigo', '小麦', '小麥', 'пшеница'],
+  soy: ['soja', '大豆', '黄豆', '黃豆', 'соя', 'сои', 'сою', 'соев'],
   sesame: ['sesamo', 'ajonjoli', '芝麻', 'ごま', 'кунжут'],
-  molluscs: ['molusco', '贝', '牡蛎', 'あわび', 'いか', 'моллюск'],
-  buckwheat: ['alforfon', '荞麦', 'そば', 'гречиха'],
+  molluscs: ['molusco', '贝', '貝', '牡蛎', '牡蠣', '蚵', 'あわび', 'いか', 'моллюск'],
+  buckwheat: ['alforfon', '荞麦', '蕎麥', 'そば', 'гречиха'],
 };
 
 /**

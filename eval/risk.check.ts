@@ -793,6 +793,15 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
     ['english-colon', 'Contains: Peanuts and Almonds', ['peanut', 'tree_nuts']],
     ['spanish', 'INGREDIENTES: AZUCAR, LECITINA. CONTIENE LECHE Y SOJA.', ['milk', 'soy']],
     ['chinese', '配料：白砂糖、卵磷脂。含有大豆、小麦。', ['soy', 'wheat']],
+    // The sacha tofu label, in traditional characters, with the allergens
+    // listed straight after 過敏原資訊 and no 含有 in the line at all. Both
+    // halves of that broke: the marker and every term it needed.
+    ['chinese-traditional',
+      '成分：豆乾、沙茶醬。過敏原資訊：本產品含有大豆、魚類、甲殼類、小麥、堅果類、芝麻。',
+      ['fish', 'sesame', 'shellfish', 'soy', 'tree_nuts', 'wheat']],
+    ['chinese-traditional-bare-heading',
+      '過敏原資訊：大豆、魚類、芝麻',
+      ['fish', 'sesame', 'soy']],
     ['japanese', '原材料：砂糖、植物油脂（一部に小麦・乳成分・大豆を含む）', ['milk', 'soy', 'wheat']],
     ['russian', 'СОСТАВ: САХАР, ЛЕЦИТИН. СОДЕРЖИТ МОЛОКО И СОЮ.', ['milk', 'soy']],
   ];
@@ -810,6 +819,11 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
     ['english-traces', 'May contain traces of milk.'],
     ['spanish', 'Puede contener leche.'],
     ['chinese', '可能含有花生。'],
+    // The heading is a declaration heading, but what follows it is a hedge.
+    // Reading the allergens out regardless would turn every "may contain"
+    // block on a Taiwanese label into a statement of presence.
+    ['chinese-traditional-heading-then-hedge', '過敏原資訊：本產品可能含有花生、堅果類。'],
+    ['japanese', '本品は落花生を含む可能性があります。'],
     ['russian', 'Может содержать молоко.'],
   ];
   for (const [name, text] of hedges) {

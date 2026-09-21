@@ -32,24 +32,53 @@ export function containsStatementsFromText(rawText: string): string[] {
   // declaration printed at the very start of a transcription.
   const NEVER = /(?!)/;
 
-  const markers: { pattern: RegExp; hedges: RegExp }[] = [
+  // A hedge inside the captured statement, for scripts where the hedge sits
+  // after the marker rather than before it: "過敏原資訊：本產品可能含有花生"
+  // is a warning about traces, and reading it as a declaration would mark the
+  // product unsafe on the strength of the word that says it is not certain.
+  const CJK_HEDGE = /可能|微量|或含/;
+
+  // A category is not an allergen, and is not expanded into one. The sacha
+  // tofu label declares 含麩質的穀類, "grains containing gluten", which covers
+  // wheat, barley and rye: reading wheat out of it would be an inference, and
+  // on a barley-only product it would be a wrong one. Wheat on that label is
+  // found the ordinary way, from 小麥麩皮 in the ingredient list. The backstop
+  // reports what a declaration says, and declines to interpret it.
+
+  const markers: {
+    pattern: RegExp;
+    /** A hedge in the text BEFORE the marker: "may contains". */
+    hedges: RegExp;
+    /** A hedge INSIDE the captured statement: "過敏原資訊：本產品可能含有". */
+    rejectIn?: RegExp;
+    /** A hedge AFTER the marker, which is where Japanese puts it: "を含む可能性があります". */
+    rejectAfter?: RegExp;
+  }[] = [
     { pattern: /contains\s*:?\s*([^.\n;)]{2,120})/gi, hedges: /\b(may|might|could|possible|traces?\s+of)\s*$/i },
     { pattern: /contiene\s*:?\s*([^.\n;)]{2,120})/gi, hedges: /\b(puede|podria|trazas\s+de)\s*$/i },
     { pattern: /содержит\s*:?\s*([^.\n;)]{2,120})/gi, hedges: /\b(может|возможно)\s*$/i },
     // CJK declarations carry no spaces and the hedge sits inline, so the
     // marker itself is written to exclude it: 可能含有 is "may contain".
-    { pattern: /(?<!可能)含有\s*[:：]?\s*([^。\n；)）]{1,60})/g, hedges: NEVER },
+    { pattern: /(?<!可能)含有\s*[:：]?\s*([^。\n；)）]{1,60})/g, hedges: NEVER, rejectIn: CJK_HEDGE },
+    // Taiwan and Hong Kong head the block with 過敏原資訊 and often list the
+    // allergens straight after it, with no 含有 anywhere: the case that broke
+    // the sacha tofu label. Simplified 过敏原 is the same shape.
+    { pattern: /(?:過敏原|过敏原)(?:資訊|資料|信息)?\s*[:：]\s*([^。\n；)）]{1,60})/g, hedges: NEVER, rejectIn: CJK_HEDGE },
     // Japanese puts the allergens first: "(一部に小麦・乳成分・大豆を含む)".
-    { pattern: /([^。\n；)）]{1,60})を含む/g, hedges: NEVER },
+    { pattern: /([^。\n；)）]{1,60})を含む/g, hedges: NEVER, rejectAfter: /^(?:可能性|場合)/ },
   ];
 
   const found: string[] = [];
-  for (const { pattern, hedges } of markers) {
+  for (const { pattern, hedges, rejectIn, rejectAfter } of markers) {
     for (const match of rawText.matchAll(pattern)) {
       const before = rawText.slice(Math.max(0, match.index - 24), match.index);
       if (hedges.test(before.trim())) continue;
+      const after = rawText.slice(match.index + match[0].length, match.index + match[0].length + 24);
+      if (rejectAfter?.test(after.trim())) continue;
       const statement = match[1].trim();
-      if (statement) found.push(statement);
+      if (!statement) continue;
+      if (rejectIn?.test(statement)) continue;
+      found.push(statement);
     }
   }
   return found;
