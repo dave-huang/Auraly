@@ -76,6 +76,12 @@ interface Row {
   key: string;
   name: string;
   original?: string;
+  /**
+   * The printed ingredient this one was found inside, when it came out of a
+   * bracket. Undefined for anything printed at top level, which is nearly
+   * every row.
+   */
+  parent?: string;
   note: string;
   flagged: boolean;
   /** Position as analysed, so ties keep the label's own order. */
@@ -421,7 +427,14 @@ export function AnalysisView({
         onLayout={(e) => onIngredientsLayout?.(e.nativeEvent.layout.y)}
       >
         <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
-          {t('verdict.ingredientCount', { count: result.ingredients.length })}
+          {/* What the LABEL prints, not what was analysed.
+              The two differ by every sub-ingredient: the analysis walks into
+              brackets because that is where allergens hide, so a packet
+              printing 12 ingredients came back saying 31. That is a number
+              somebody can check against the jar in their hand. */}
+          {t('verdict.ingredientCount', {
+            count: result.composition?.length ?? result.ingredients.length,
+          })}
         </ThemedText>
         {/* Read line by line, and shown that way. The rows come into focus in
             order rather than all at once — the app's own act, said as motion.
@@ -450,6 +463,17 @@ export function AnalysisView({
               {row.original && row.original !== row.name ? (
                 <ThemedText style={[styles.rowOriginal, { color: surface.inkFaint }]}>
                   {row.original}
+                </ThemedText>
+              ) : null}
+              {/* Where the label actually printed it.
+                  Sub-ingredients are analysed and ranked like any other row,
+                  and the list is sorted by risk rather than by label order, so
+                  a wheat flour hidden inside "Enriched Flour" can and should
+                  rise to the top. Without this line it arrives there looking
+                  like something printed on its own. */}
+              {row.parent ? (
+                <ThemedText style={[styles.rowOriginal, { color: surface.inkFaint }]}>
+                  {t('verdict.insideIngredient', { parent: row.parent })}
                 </ThemedText>
               ) : null}
             </View>
@@ -695,6 +719,25 @@ function buildRows(
   translated: boolean,
 ): Row[] {
   const sameLength = result.canonicalIngredients?.length === result.ingredients.length;
+
+  // english sub-ingredient name -> the printed entry it belongs to.
+  //
+  // Matched on the canonical English names the reader produced, which is the
+  // only key both sides share: `ing.name` is localized on a translated card,
+  // and composition is always English. On a localized card the lookup simply
+  // misses and the line is omitted, which is the right failure — a wrong
+  // parent would tell somebody an allergen came from the wrong ingredient.
+  const parentOf = new Map<string, string>();
+  for (const entry of result.composition ?? []) {
+    for (const part of entry.parts) {
+      const key = part.trim().toLowerCase();
+      // First parent wins, so an ingredient printed inside two different
+      // brackets is attributed to the earlier (heavier) one rather than
+      // flickering between them.
+      if (key && !parentOf.has(key)) parentOf.set(key, entry.name);
+    }
+  }
+
   return result.ingredients.map((ing, i) => {
     // Pair a flag to its row by the index the server tagged it with, and
     // otherwise by an exact name match.
@@ -745,6 +788,7 @@ function buildRows(
       name: ing.name,
       original:
         translated && sameLength ? result.originalIngredients?.[i] : undefined,
+      parent: parentOf.get(ing.name.trim().toLowerCase()),
       // An unflagged row still has to agree with its own dot: an amber dot
       // beside the word "clear" is the row arguing with itself.
       //

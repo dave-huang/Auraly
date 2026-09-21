@@ -74,6 +74,11 @@ export function saveScan(params: {
       productName: result.productName || 'Unnamed Product',
       productCategory: productType,
       detectedIngredients: result.ingredients.map((i) => i.name),
+      // The label as printed, sent so the saved scan's count matches the card
+      // it was saved from. `detectedIngredients` above is everything that was
+      // analysed, sub-ingredients included, so counting it says a packet has
+      // 31 ingredients when its label prints 12.
+      composition: result.composition,
       analysisResults: result.ingredients.map((i) => ({
         name: i.name,
         // The MODEL's rating, not the level on screen.
@@ -132,11 +137,20 @@ export function scanTitle(scan: Pick<ScanHistory, 'productName' | 'detectedIngre
  */
 export function scanToAnalysisResult(scan: ScanHistory): AnalysisResult {
   const stored = (scan.analysisResults ?? []) as AnalysisResult['ingredients'];
+  // The label as printed, stored since 2026-09-20 and absent on everything
+  // saved before it. Without this the card counts the flattened list and drops
+  // every "inside Enriched Flour" line, which is the entire reason the column
+  // exists: the structure reached the database and stopped one step short of
+  // the screen.
+  const composition = Array.isArray(scan.composition)
+    ? (scan.composition as AnalysisResult['composition'])
+    : undefined;
   return {
     productType: (scan.productCategory as ProductType) ?? 'food',
     productName: scanTitle(scan),
     ingredients: stored.map((i) => ({ ...i, category: i.category ?? null })),
     overallRisk: scan.overallRisk as RiskLevel,
     analyzedAt: new Date(scan.createdAt).toISOString(),
+    ...(composition?.length ? { composition } : {}),
   };
 }

@@ -31,7 +31,7 @@ import {
 } from '../server/services/concepts';
 import { getSubstanceRegistry } from '../server/services/substances/identity';
 import { applyProfileToAnalysis } from '../server/services/personalRisk';
-import { withLabelRanks } from '../server/services/labelRank';
+import { MIN_LIST_FOR_RANK, isProminent, withLabelRanks } from '../server/services/labelRank';
 import {
   defaultTracePolicy,
   riskLevels,
@@ -369,6 +369,230 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
     'assigning label ranks changed a risk level');
   const withRank = ranked.ingredients.filter((i) => i.labelRank);
   notes.push(`label rank assigned to ${withRank.length}/${names.length} ingredients on a ${names.length}-item list`);
+}
+
+// ---------------------------------------------------------------------------
+// M2. Sub-ingredients are never given a position on the printed list.
+//
+// A label reading "Enriched Flour (Wheat Flour, Niacin, Reduced Iron), Sugar,
+// Palm Oil, Salt, Cocoa" prints FIVE ingredients. The analysis walks into the
+// bracket, because that is where allergens hide, and so sees eight.
+//
+// Ranking against the eight made niacin the third ingredient of the product —
+// a trace fortifier inside the first, reported as one of the three heaviest
+// things in the jar, on a card whose whole claim is that position means dose.
+// Nothing caught it: the reader and the analyzer agreed on the same flattened
+// list, so they lined up perfectly and the rank was confidently wrong.
+// ---------------------------------------------------------------------------
+{
+  const printed = ['Enriched Flour', 'Sugar', 'Palm Oil', 'Salt', 'Cocoa'];
+  const parts = ['Wheat Flour', 'Niacin', 'Reduced Iron'];
+  // The analyser's view: every printed entry plus everything in the bracket.
+  const analysed = [printed[0], ...parts, ...printed.slice(1)];
+
+  const flat = result(analysed.map((n) => ing(n, 'low')));
+  const nested = withLabelRanks({
+    ...flat,
+    composition: [
+      { name: 'Enriched Flour', parts },
+      ...printed.slice(1).map((name) => ({ name, parts: [] })),
+    ],
+  } as AnalysisResult);
+
+  const rankOf = (name: string) =>
+    nested.ingredients.find((i) => i.name === name)?.labelRank;
+
+  check('composition/sub-ingredient-unranked',
+    parts.every((name) => rankOf(name) === undefined),
+    `a sub-ingredient was given a position on the printed list: ${
+      parts.map((n) => `${n}=${JSON.stringify(rankOf(n))}`).join(', ')}`);
+
+  check('composition/parent-keeps-its-rank',
+    rankOf('Enriched Flour')?.rank === 1,
+    `the bracketed parent lost its own position: ${JSON.stringify(rankOf('Enriched Flour'))}`);
+
+  check('composition/total-is-the-printed-count',
+    rankOf('Sugar')?.total === printed.length,
+    `rank total counted sub-ingredients: ${JSON.stringify(rankOf('Sugar'))}`);
+
+  check('composition/order-survives-the-bracket',
+    rankOf('Sugar')?.rank === 2 && rankOf('Cocoa')?.rank === printed.length,
+    `positions shifted around the bracket: sugar=${JSON.stringify(rankOf('Sugar'))} cocoa=${JSON.stringify(rankOf('Cocoa'))}`);
+
+  // The old behaviour, kept as the thing being guarded against: with no
+  // composition the flat list is all there is, and niacin lands third.
+  const legacy = withLabelRanks(flat);
+  const niacin = legacy.ingredients.find((i) => i.name === 'Niacin')?.labelRank;
+  notes.push(`without composition, "Niacin" ranks ${niacin ? `${niacin.rank} of ${niacin.total}` : 'unranked'} — the behaviour composition exists to fix`);
+}
+
+// ---------------------------------------------------------------------------
+// M2b. A real label, transcribed from the packet.
+//
+// Trader Joe's coffee-glazed pretzels — four printed ingredients, three of
+// them compound, one bracket nested two deep. Kept as a fixture because it is
+// the shape that broke: flattened, this label is 24 ingredients, and the old
+// reader reported it as such.
+//
+// The composition here is exactly what the reader now returns for it.
+// ---------------------------------------------------------------------------
+{
+  const label = [
+    { name: 'White Candy Coating', parts: ['Sugar', 'Palm Kernel Oil', 'Nonfat Milk Powder', 'Whole Milk Powder', 'Whey Powder', 'Palm Oil', 'Soy Lecithin', 'Natural Vanilla Flavor'] },
+    { name: 'Pretzels', parts: ['Unbleached Enriched Flour', 'Wheat Flour', 'Niacin', 'Reduced Iron', 'Thiamine Mononitrate', 'Riboflavin', 'Folic Acid', 'Malted Barley Flour', 'Salt', 'Soybean Oil'] },
+    { name: 'Dark Chocolatey Drizzle', parts: ['Sugar', 'Palm Kernel Oil', 'Palm Oil', 'Cocoa Powder', 'Cocoa Powder Processed With Alkali', 'Whey Powder', 'Soy Lecithin', 'Natural Vanilla Flavor'] },
+    { name: 'Ground Coffee Beans', parts: [] },
+  ];
+
+  // Everything analysed: each printed entry plus every name in its bracket,
+  // deduplicated the way the reader deduplicates.
+  const analysed: string[] = [];
+  for (const entry of label) {
+    for (const name of [entry.name, ...entry.parts]) {
+      if (!analysed.some((n) => n.toLowerCase() === name.toLowerCase())) analysed.push(name);
+    }
+  }
+
+  const ranked = withLabelRanks({
+    ...result(analysed.map((n) => ing(n, 'low'))),
+    composition: label,
+  } as AnalysisResult);
+  const rankOf = (name: string) =>
+    ranked.ingredients.find((i) => i.name === name)?.labelRank;
+
+  check('real-label/printed-count',
+    label.length === 4,
+    `expected 4 printed ingredients, got ${label.length}`);
+  check('real-label/analysis-still-sees-every-leaf',
+    ['Wheat Flour', 'Soy Lecithin', 'Whey Powder', 'Palm Oil'].every((n) =>
+      analysed.some((a) => a.toLowerCase() === n.toLowerCase())),
+    'an allergen-bearing sub-ingredient did not reach the analysis');
+  check('real-label/no-sub-ingredient-ranked',
+    ['Wheat Flour', 'Niacin', 'Folic Acid', 'Soybean Oil'].every((n) => rankOf(n) === undefined),
+    'a sub-ingredient was given a position on this label');
+
+  // The drizzle prints "Cocoa Powder, Cocoa Powder Processed With Alkali":
+  // natural and dutched cocoa, two ingredients, confirmed against the photo.
+  // The reader used to strip the processing note, which made them the same
+  // name twice, and deduplication then ate one of them. An ingredient printed
+  // on the packet vanished, and the label eval still passed at 23 of 24
+  // because its own truth file had been written from that reader's output.
+  const cocoas = analysed.filter((n) => n.toLowerCase().startsWith('cocoa powder'));
+  check('real-label/treated-form-is-its-own-ingredient',
+    cocoas.length === 2 && cocoas.some((n) => /alkali/i.test(n)),
+    `the alkali-processed cocoa was folded into plain cocoa powder: ${JSON.stringify(cocoas)}`);
+
+  // Four printed entries, so the top two speak and the rest stay quiet.
+  // "White Candy Coating, 1st of 4" is the whole story about this product —
+  // there is more coating in the bag than pretzel.
+  check('real-label/first-ingredient-speaks',
+    isProminent(rankOf('White Candy Coating')) && rankOf('White Candy Coating')?.rank === 1,
+    `the first printed ingredient is not shown as prominent: ${JSON.stringify(rankOf('White Candy Coating'))}`);
+  check('real-label/third-of-four-stays-quiet',
+    rankOf('Dark Chocolatey Drizzle')?.rank === 3 &&
+      !isProminent(rankOf('Dark Chocolatey Drizzle')),
+    `third of four should carry a rank but not be called prominent: ${JSON.stringify(rankOf('Dark Chocolatey Drizzle'))}`);
+
+  notes.push(`real label: ${label.length} printed ingredients, ${analysed.length} analysed — the old reader called all ${analysed.length} of them ingredients`);
+}
+
+// ---------------------------------------------------------------------------
+// M2c. Which positions are allowed to speak, as a table.
+//
+// Two numbers decide it and both were retuned when the count became the
+// PRINTED count rather than the flattened one. A short list only speaks for
+// its top two: third of fourteen is a statement about a product, third of four
+// is nearly the end of the list.
+// ---------------------------------------------------------------------------
+{
+  const cases: [number, number, boolean][] = [
+    // [rank, total, shown]
+    [1, 2, false],  // no list to have a position in
+    [1, 3, true],   // shortest list that says anything
+    [2, 3, true],
+    [3, 3, false],  // last of three is not prominence
+    [1, 4, true],
+    [2, 4, true],
+    [3, 4, false],  // the case the retune deliberately excludes
+    [1, 5, true],
+    [3, 5, true],   // third of five and up is worth naming
+    [4, 5, false],
+    [3, 14, true],
+    [11, 14, false],
+  ];
+  for (const [rank, total, expected] of cases) {
+    check('rank/prominence-table',
+      isProminent({ rank, total }) === expected,
+      `${rank} of ${total} should ${expected ? '' : 'not '}be shown`);
+  }
+  notes.push(`prominence: lists of ${MIN_LIST_FOR_RANK}+ speak, top 2 on a short list and top 3 from 5 up`);
+}
+
+// ---------------------------------------------------------------------------
+// M2d. The app's copy of that rule agrees with the server's.
+//
+// mobile/src/lib/verdict.ts reimplements it, because the app cannot import
+// server modules. Two copies of a threshold drift silently and the symptom is
+// a rank note appearing on one screen and not another, which nobody reports.
+// ---------------------------------------------------------------------------
+{
+  const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+  const client = fs.readFileSync(path.join(root, 'mobile/src/lib/verdict.ts'), 'utf8');
+  const body = client.slice(client.indexOf('export function isProminentRank'));
+  const fn = body.slice(0, body.indexOf('\n}'));
+  check('rank/client-copy-agrees',
+    fn.includes(`< ${MIN_LIST_FOR_RANK}`) && fn.includes('>= 5 ? 3 : 2'),
+    'mobile/src/lib/verdict.ts no longer matches the server prominence rule');
+
+  // Composition has to survive being stored and read back, and the last step
+  // is the one that got missed: the column was added, the API returned it, and
+  // scanToAnalysisResult rebuilt the card without it. A reopened scan then
+  // counted the flattened list and dropped every "inside X" line, with nothing
+  // failing anywhere. The round trip is only proven at the point it reaches
+  // the screen.
+  const historyLib = fs.readFileSync(path.join(root, 'mobile/src/lib/history.ts'), 'utf8');
+  const rebuild = historyLib.slice(historyLib.indexOf('export function scanToAnalysisResult'));
+  // Deliberately the RETURNED object, not the function body. Checking the
+  // body passes on the local variable that prepares the value, so the one
+  // edit that breaks this — dropping it from the return — went undetected the
+  // first time this check was written.
+  const returned = rebuild.slice(rebuild.indexOf('return {'), rebuild.indexOf('\n}'));
+  check('composition/survives-reopening-a-scan',
+    /composition/.test(returned),
+    'scanToAnalysisResult returns without composition, so a reopened scan loses its brackets');
+  check('composition/is-sent-when-saving',
+    /composition: result\.composition/.test(historyLib),
+    'saveScan no longer sends composition, so nothing reaches the new column');
+}
+
+// ---------------------------------------------------------------------------
+// M3. A sub-ingredient that is ALSO printed on its own keeps its own rank.
+//
+// "Peanut Butter (Peanuts, Salt), Sugar, Salt, Cocoa, Oil" prints salt twice:
+// once inside the peanut butter and once in its own right. The second is a
+// real position on the label and must not be suppressed just because the name
+// also appears in a bracket.
+// ---------------------------------------------------------------------------
+{
+  const printed = ['Peanut Butter', 'Sugar', 'Salt', 'Cocoa', 'Oil'];
+  const analysed = ['Peanut Butter', 'Peanuts', 'Salt', 'Sugar', 'Cocoa', 'Oil'];
+  const ranked = withLabelRanks({
+    ...result(analysed.map((n) => ing(n, 'low'))),
+    composition: [
+      { name: 'Peanut Butter', parts: ['Peanuts', 'Salt'] },
+      ...printed.slice(1).map((name) => ({ name, parts: [] })),
+    ],
+  } as AnalysisResult);
+
+  const rankOf = (name: string) =>
+    ranked.ingredients.find((i) => i.name === name)?.labelRank;
+
+  check('composition/shared-name-keeps-printed-rank',
+    rankOf('Salt')?.rank === 3,
+    `salt is printed third in its own right but ranked ${JSON.stringify(rankOf('Salt'))}`);
+  check('composition/bracket-only-name-unranked',
+    rankOf('Peanuts') === undefined,
+    `peanuts is only inside a bracket but was ranked ${JSON.stringify(rankOf('Peanuts'))}`);
 }
 
 // ---------------------------------------------------------------------------

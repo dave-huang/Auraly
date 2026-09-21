@@ -131,6 +131,8 @@ interface OCRCacheEntry {
   sourceLanguage?: string;
   declaredAllergens?: { contains: string[]; mayContain: string[] };
   originalIngredients?: string[];
+  // The printed list, before sub-ingredients were flattened into `ingredients`.
+  composition?: { name: string; parts: string[] }[];
   readConfidence?: 'high' | 'medium' | 'low';
   lineCount?: { read: number; total: number };
 }
@@ -844,6 +846,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let structuredIngredients: string[] | undefined;
       let declaredAllergens: { contains: string[]; mayContain: string[] } | undefined;
       let originalIngredients: string[] | undefined;
+      let composition: { name: string; parts: string[] }[] | undefined;
       let readConfidence: 'high' | 'medium' | 'low' | undefined;
       let lineCount: { read: number; total: number } | undefined;
       let sourceLanguage: string | undefined;
@@ -874,6 +877,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             structuredIngredients = cachedOCREntry.ingredients;
             declaredAllergens = cachedOCREntry.declaredAllergens;
             originalIngredients = cachedOCREntry.originalIngredients;
+            composition = cachedOCREntry.composition;
             readConfidence = cachedOCREntry.readConfidence;
             lineCount = cachedOCREntry.lineCount;
             sourceLanguage = cachedOCREntry.sourceLanguage;
@@ -896,6 +900,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
               }
               declaredAllergens = labelResult.declaredAllergens;
               originalIngredients = labelResult.ingredientsOriginal;
+              // The label as printed. Empty on the OCR fallback, which splits
+              // on commas and so never had a bracket to lose.
+              composition = labelResult.entries.length
+                ? labelResult.entries.map((entry) => ({
+                    name: entry.english,
+                    parts: entry.parts.map((part) => part.english),
+                  }))
+                : undefined;
               readConfidence = labelResult.confidence;
               lineCount = labelResult.lineCount;
               sourceLanguage = labelResult.sourceLanguage;
@@ -911,6 +923,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 sourceLanguage: labelResult.sourceLanguage,
                 declaredAllergens,
                 originalIngredients,
+                composition,
                 readConfidence: labelResult.confidence,
                 lineCount: labelResult.lineCount,
                 timestamp: Date.now()
@@ -933,8 +946,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Update status to indicate OCR is complete, now analyzing
         analysisRequest.status = 'ocr_complete';
         analysisRequest.timestamp = Date.now();
-        if (structuredIngredients?.length) {
-          analysisRequest.ingredientCount = structuredIngredients.length;
+        // Count what the label PRINTS, not what the analysis walks. The two
+        // differ by every sub-ingredient on the label, so a biscuit whose
+        // packaging lists 12 ingredients was telling the person mid-scan that
+        // it had 31 — a number they can check against the jar in their hand,
+        // and which was wrong.
+        const printedCount = composition?.length ?? structuredIngredients?.length;
+        if (printedCount) {
+          analysisRequest.ingredientCount = printedCount;
         }
         console.log(`[SCAN-AND-ANALYZE-${requestId}] OCR phase complete, starting analysis phase`);
         
@@ -1007,10 +1026,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
             sourceLanguage,
             readConfidence,
             lineCount,
+            // The label as printed. Travels alongside the flat list rather
+            // than replacing it: the flat list is what was analysed, and this
+            // is what the label actually says.
+            composition,
           };
           // Position on the printed list. Must run after canonicalIngredients
-          // is attached above — that list is the label's own order, and the
-          // analyzer's is not guaranteed to be.
+          // and composition are attached above — those carry the label's own
+          // order, and the analyzer's is not guaranteed to be.
           analysisResult = withLabelRanks(analysisResult);
 
           // Apply the personal profile AFTER analysis/cache retrieval so the
@@ -1113,6 +1136,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     overallRisk: z.enum(["low", "moderate", "high"]),
     language: z.string().optional().default("en"),
     isUpdatedFromCache: z.boolean().optional().default(false),
+    /**
+     * The label as printed, sent so the saved count matches the card it was
+     * saved from, and so reopening the scan can still say which bracket a
+     * sub-ingredient came out of. Stored since 2026-09-20.
+     */
+    composition: z
+      .array(z.object({ name: z.string(), parts: z.array(z.string()).default([]) }))
+      .optional(),
   });
 
   // POST /api/history - Save a new scan to history
@@ -1131,7 +1162,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
         overallRisk: data.overallRisk,
         language: data.language || "en",
         isUpdatedFromCache: data.isUpdatedFromCache || false,
-        ingredientCount: data.detectedIngredients.length,
+        // The printed count where the client had one, so a saved scan and the
+        // card it was saved from agree. `detectedIngredients` is the flattened
+        // list, which counts every sub-ingredient as an ingredient of its own.
+        ingredientCount: data.composition?.length ?? data.detectedIngredients.length,
+        // Null rather than an empty array when the reader found no structure:
+        // an empty array would claim the label prints nothing, and the count
+        // above would then disagree with it.
+        composition: data.composition?.length ? data.composition : null,
       };
       
       const scan = await storage.createScanHistory(scanData);
@@ -1187,6 +1225,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       ingredients,
       overallRisk: scan.overallRisk,
       analyzedAt: scan.createdAt.toISOString(),
+      // Absent on scans saved before the column existed, which is the same
+      // thing a fresh OCR-fallback scan reports, so the card already knows
+      // how to show a list with no structure behind it.
+      ...(Array.isArray(scan.composition) && scan.composition.length
+        ? { composition: scan.composition }
+        : {}),
     } as any;
 
     if (profile) {
