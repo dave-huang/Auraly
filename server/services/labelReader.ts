@@ -15,7 +15,15 @@ import { completeIngredientsInBuffer } from './partialJson';
 // Three readers are implemented here; only OpenAI is called. See
 // DEFAULT_PROVIDER_CHAIN below for why, and for how to turn the others back on.
 
-const VISION_MODEL_OPENAI = process.env.LABEL_VISION_MODEL_OPENAI || 'gpt-5.6-luna';
+// gpt-6-luna since 2026-09-22, chosen for speed with its accuracy cost known.
+// Measured against gpt-5.6-luna over three paired passes of every eval case:
+// reading 21.4s -> 14.8s median, whole scan 26.4s -> 17.8s. Ingredient recall
+// fell 98.4% -> 93.2%, all of it on the Chinese labels, and it missed the
+// Spartak bar's soy declaration in 2 of 3 passes (gpt-5.6-luna: 0 of 3).
+// "[LABEL-READER] No allergen statement" in the logs is how that shows up in
+// production. Setting LABEL_VISION_MODEL_OPENAI=gpt-5.6-luna reverts it
+// without a code change.
+const VISION_MODEL_OPENAI = process.env.LABEL_VISION_MODEL_OPENAI || 'gpt-6-luna';
 const VISION_MODEL_GEMINI = process.env.LABEL_VISION_MODEL_GEMINI || 'gemini-3-flash-preview';
 
 /**
