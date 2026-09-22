@@ -21,6 +21,9 @@ import { pollAnalysis, prepareImage, setLastResult, submitScan } from '@/lib/sca
 import type { Profile, ProductType } from '@/lib/types';
 import { localizeAllergen } from '@/lib/verdict';
 
+/** How long a fully checked list holds before the verdict replaces it. */
+const FINISHED_LIST_HOLD_MS = 350;
+
 // Screen 01 — Launch · Viewfinder.
 //
 // Camera first, zero taps: cold start lands on a live frame, with no splash
@@ -107,6 +110,10 @@ export default function ViewfinderScreen() {
   const [previewUri, setPreviewUri] = useState<string | undefined>();
   const [readIngredients, setReadIngredients] = useState<string[] | undefined>();
   const [readOriginal, setReadOriginal] = useState<string[] | undefined>();
+  // Names whose analysis has come back, and whether ALL of it has: the
+  // 'completed' status carries the result rather than a final checked list.
+  const [checkedNames, setCheckedNames] = useState<string[]>([]);
+  const [allChecked, setAllChecked] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   // Only meaningful with an account — the anonymous grant is counted per device
   // on the server, and this endpoint requires a token.
@@ -140,6 +147,8 @@ export default function ViewfinderScreen() {
       setPhase('reading');
       setReadIngredients(undefined);
       setReadOriginal(undefined);
+      setCheckedNames([]);
+      setAllChecked(false);
       const imageDataUrl = await prepareImage(uri);
       const requestId = await submitScan({
         imageDataUrl,
@@ -147,6 +156,7 @@ export default function ViewfinderScreen() {
         language,
         profileId: activeId ?? undefined,
       });
+      let listShown = false;
       const result = await pollAnalysis(requestId, (status) => {
         if (status.status === 'ocr_complete') setPhase('analyzing');
         // Names arrive DURING the read, not after it: the reader streams them
@@ -154,10 +164,20 @@ export default function ViewfinderScreen() {
         // carries any. Waiting for 'ocr_complete' would have held the whole
         // list back until the moment it stopped being the slow part.
         if (status.ingredients?.length) {
+          listShown = true;
           setReadIngredients(status.ingredients);
           setReadOriginal(status.ingredientsOriginal);
         }
+        if (status.checked?.length) setCheckedNames(status.checked);
       });
+      // The last batches usually finish between two polls, so the list would
+      // otherwise cut to the verdict with a few rows still unticked. Tick them
+      // (the analysis is complete, so they are all checked) and hold one beat,
+      // so the verdict rises over a list that visibly got finished.
+      if (listShown) {
+        setAllChecked(true);
+        await new Promise((resolve) => setTimeout(resolve, FINISHED_LIST_HOLD_MS));
+      }
       setLastResult(
         result,
         activeProfile
@@ -432,6 +452,8 @@ export default function ViewfinderScreen() {
           phase={phase}
           ingredients={readIngredients}
           ingredientsOriginal={readOriginal}
+          checked={checkedNames}
+          allChecked={allChecked}
         />
       ) : null}
 

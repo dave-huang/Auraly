@@ -294,6 +294,8 @@ const en = {
   'scan.reading': 'Reading the label…',
   'scan.translating': 'Translating into plain English…',
   'scan.checking': 'Checking against your safety shield…',
+  'scan.checkingEach': 'Checking each ingredient…',
+  'scan.rowChecked': 'checked',
   // Shown once the wait passes STILL_WORKING_AFTER_MS. Not a new pipeline
   // stage — the elapsed time IS the news, and saying so beats a status line
   // that has not changed in fifteen seconds.
@@ -812,6 +814,8 @@ const zh: Record<TranslationKey, string> = {
   'scan.reading': '正在读取标签…',
   'scan.translating': '正在翻译成大白话…',
   'scan.checking': '正在对照你的安全屏障检查…',
+  'scan.checkingEach': '正在逐一检查成分…',
+  'scan.rowChecked': '已检查',
   'scan.stillWorking': '仍在处理…',
   'scan.working': '处理中…',
   'scan.failed': '扫描失败',
@@ -1285,6 +1289,8 @@ const es: Record<TranslationKey, string> = {
   'scan.reading': 'Leyendo la etiqueta…',
   'scan.translating': 'Traduciendo a lenguaje claro…',
   'scan.checking': 'Comparando con tu escudo de seguridad…',
+  'scan.checkingEach': 'Revisando cada ingrediente…',
+  'scan.rowChecked': 'revisado',
   'scan.stillWorking': 'Seguimos trabajando…',
   'scan.working': 'Procesando…',
   'scan.failed': 'Error al escanear',

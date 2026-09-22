@@ -1,16 +1,17 @@
 import { Image } from 'expo-image';
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { ScrollView, StyleSheet, View, useWindowDimensions } from 'react-native';
 import Animated, {
   Easing,
   useAnimatedStyle,
   useSharedValue,
+  withDelay,
   withRepeat,
   withSequence,
+  withSpring,
   withTiming,
 } from 'react-native-reanimated';
 
-import { ResolveIn } from '@/components/aperture-reveal';
 import { ThemedText } from '@/components/themed-text';
 import { Font, Motion, Space } from '@/constants/design';
 import { useTranslation, type TranslationKey } from '@/lib/i18n';
@@ -28,20 +29,37 @@ import { useReducedMotion } from '@/lib/reduced-motion';
 // them the screen was a motionless photograph with one unchanged line of mono
 // type on it, which does not read as confidence. It reads as a hang.
 //
-// So the line now travels for as long as the frame is up, and the status text
-// walks a written script on a 1.5-second clock:
+// So the line now travels for as long as the frame is up. While the label is
+// being read, the status text walks a short script on a 1.5-second clock,
+// because reading is one long model call with nothing to report partway:
 //
 //   Reading the label…
 //   Translating into plain English…
-//   Checking against your safety shield…
 //
-// Each line is true when it is shown, and none of them claims a stage has
-// FINISHED. None of them carries a number either: a fourth line used to
-// report the ingredients found, and it is gone. See SCRIPT below.
+// Once reading is done the status follows the work itself, since from there
+// the work reports its own progress:
 //
-// The script runs on a clock rather than on the pipeline's own two phases
-// because the phases are the problem. OCR can take five seconds by itself, and
-// a status line pinned to it sits unchanged for all five.
+//   Checking each ingredient…              rows are being ticked off
+//   Checking against your safety shield…   every row is back
+//
+// Each line is true when it is shown, and none of them carries a number: a
+// line used to report the ingredients found, and it disagreed with the
+// results list. See READING_SCRIPT below.
+//
+// THE LEDGER. The label's ingredients sit on the frame as a checklist. A row
+// arrives faint beside an empty square: found, not yet checked. When the
+// server's analysis of that ingredient returns, the row comes up to full ink,
+// a check draws into the square, and the mark's four corner brackets catch
+// the row for a moment. Rows are ticked in the order the work finished, not
+// the order printed, because that is the order it happened in: ingredients
+// the cache already knows come back in a burst, and unusual ones take longer.
+// Ticking top to bottom would be a performance of progress rather than a
+// report of it.
+//
+// No row carries a colour, before or after its check. A row's own risk is not
+// the verdict (milk is harmless until it meets a milk allergy), and a green
+// row under an Avoid card is the honest-signal bug this design has been
+// bitten by before. Checked means checked. The verdict is where colour lives.
 //
 // The photo is CONTAINED, not cropped to fill. A library photo is rarely the
 // screen's aspect ratio, so filling the frame cut the top and bottom off the
@@ -73,11 +91,18 @@ const STILL_WORKING_AFTER_MS = 12_000;
  * disagree. The progress line describes what is happening; the results screen
  * is where counting belongs, beside the list being counted.
  */
-const SCRIPT: readonly TranslationKey[] = [
+const READING_SCRIPT: readonly TranslationKey[] = [
   'scan.reading',
   'scan.translating',
-  'scan.checking',
 ];
+
+/** How faint a row is while it is found but not yet checked. */
+const PENDING_OPACITY = 0.42;
+/** Rows that tick together ripple rather than land as one block. */
+const CHECK_RIPPLE_MS = 40;
+const CHECK_RIPPLE_CAP = 6;
+/** How long the corner brackets hold on a row as it is checked. */
+const CATCH_HOLD_MS = 260;
 
 export function ScanProgress({
   imageUri,
@@ -85,6 +110,8 @@ export function ScanProgress({
   phase,
   ingredients,
   ingredientsOriginal,
+  checked,
+  allChecked,
 }: {
   imageUri?: string;
   /** Anything to sweep over instead of a photo. The onboarding example passes
@@ -103,6 +130,10 @@ export function ScanProgress({
   ingredients?: string[];
   /** The label's own words, shown under the English where they differ. */
   ingredientsOriginal?: string[];
+  /** Names whose analysis has returned, in the order they finished. */
+  checked?: string[];
+  /** The whole analysis is back, so every row is checked. */
+  allChecked?: boolean;
 }) {
   const { t } = useTranslation();
   const { height } = useWindowDimensions();
@@ -160,34 +191,69 @@ export function ScanProgress({
 
   useEffect(() => {
     const timer = setInterval(
-      () => setBeat((n) => (n >= SCRIPT.length ? n : n + 1)),
+      () => setBeat((n) => (n >= READING_SCRIPT.length ? n : n + 1)),
       STEP_MS,
     );
     return () => clearInterval(timer);
   }, []);
 
   // The script's last line is where it rests.
-  const step = Math.min(beat, SCRIPT.length - 1);
+  const step = Math.min(beat, READING_SCRIPT.length - 1);
+
+  // Which rows are checked, and in what order they finished: each row's
+  // position in `checked`, then any rows ticked only because the whole
+  // analysis came back, in label order.
+  const finishOrder = useMemo(() => {
+    const order = new Map<number, number>();
+    const rows = (ingredients ?? []).map((n) => n.toLowerCase());
+    for (const name of checked ?? []) {
+      const lower = name.toLowerCase();
+      rows.forEach((row, i) => {
+        if (row === lower && !order.has(i)) order.set(i, order.size);
+      });
+    }
+    if (allChecked) rows.forEach((_, i) => { if (!order.has(i)) order.set(i, order.size); });
+    return order;
+  }, [ingredients, checked, allChecked]);
+
+  const rowCount = ingredients?.length ?? 0;
+  const checkedCount = finishOrder.size;
+  const everyRowChecked = rowCount > 0 && checkedCount === rowCount;
+
+  // A burst of rows checked in one poll fans out rather than landing as one
+  // block. A row's place in the ripple is its finish position counted from
+  // where the previous burst ended, tracked by adjusting state during render
+  // when the count moves, which is React's own pattern for "what changed".
+  const [ripple, setRipple] = useState({ count: 0, base: 0 });
+  if (ripple.count !== checkedCount) setRipple({ count: checkedCount, base: ripple.count });
+  const checkDelayFor = (i: number) =>
+    Math.min(Math.max((finishOrder.get(i) ?? 0) - ripple.base, 0), CHECK_RIPPLE_CAP) * CHECK_RIPPLE_MS;
 
   // Elapsed time is its own signal, and it outranks the script's last line.
-  // The script parks on "Checking against your safety shield…", and a line
-  // that has not moved in twelve seconds reads as a hang whether or not it
-  // is one.
+  // A line that has not moved in twelve seconds reads as a hang whether or
+  // not it is one.
   //
-  // Stores WHICH phase ran long, rather than a boolean plus a reset. Reaching
-  // a new phase is fresh evidence of progress and should clear the message —
-  // and comparing against the current phase does that for free, with no
-  // synchronous setState in the effect to cascade a render.
-  const [longWaitPhase, setLongWaitPhase] = useState<typeof phase | null>(null);
+  // Stores WHICH moment ran long, rather than a boolean plus a reset. A new
+  // phase, or another row checked, is fresh evidence of progress and should
+  // clear the message, and comparing against the current moment does that
+  // for free, with no synchronous setState in the effect to cascade a render.
+  const moment = `${phase}:${checkedCount}`;
+  const [longWaitMoment, setLongWaitMoment] = useState<string | null>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLongWaitPhase(phase), STILL_WORKING_AFTER_MS);
+    const timer = setTimeout(() => setLongWaitMoment(moment), STILL_WORKING_AFTER_MS);
     return () => clearTimeout(timer);
-  }, [phase]);
+  }, [moment]);
 
-  const longWait = longWaitPhase === phase;
+  const longWait = longWaitMoment === moment;
 
-  const status = longWait ? t('scan.stillWorking') : t(SCRIPT[step]);
+  const workingKey: TranslationKey =
+    phase === 'reading'
+      ? READING_SCRIPT[step]
+      : rowCount > 0 && !everyRowChecked
+        ? 'scan.checkingEach'
+        : 'scan.checking';
+  const status = longWait ? t('scan.stillWorking') : t(workingKey);
 
   return (
     <View style={styles.container}>
@@ -199,10 +265,9 @@ export function ScanProgress({
 
       {!reduced ? <Animated.View style={[styles.sweepLine, sweepStyle]} /> : null}
 
-      {/* The label, as read, while the verdicts are still being worked out.
-          Rows arrive staggered, in the order the label prints them, and carry
-          no dot and no level: nothing here has been judged yet, and colouring
-          a row before it has been would be the app guessing out loud. */}
+      {/* The label, as read, as a checklist. Rows arrive in the order the
+          label prints them and are ticked in the order the work finishes.
+          See THE LEDGER above. */}
       {ingredients?.length ? (
         <ScrollView
           style={styles.readList}
@@ -211,16 +276,26 @@ export function ScanProgress({
         >
           {ingredients.map((name, i) => {
             const original = ingredientsOriginal?.[i];
+            // Keyed by name and which occurrence of it this is, NOT by
+            // position. While the label is read the list streams top-level
+            // names only; when reading finishes the full list lands with
+            // sub-ingredients inserted under their parents. Keyed by
+            // position, every row below an insertion remounted and faded in
+            // a second time. Keyed by name, they stay put and only the
+            // inserted rows arrive.
+            const occurrence = ingredients.slice(0, i).filter((n) => n === name).length;
             const showOriginal = original && original.toLowerCase() !== name.toLowerCase();
             return (
-              <ResolveIn key={`${name}-${i}`} index={i}>
-                <View style={styles.readRow}>
-                  <ThemedText style={styles.readName}>{name}</ThemedText>
-                  {showOriginal ? (
-                    <ThemedText style={styles.readOriginal}>{original}</ThemedText>
-                  ) : null}
-                </View>
-              </ResolveIn>
+              <LedgerRow
+                key={`${name}#${occurrence}`}
+                index={i}
+                name={name}
+                original={showOriginal ? original : undefined}
+                checked={finishOrder.has(i)}
+                checkDelay={checkDelayFor(i)}
+                reduced={reduced}
+                checkedLabel={t('scan.rowChecked')}
+              />
             );
           })}
         </ScrollView>
@@ -235,6 +310,105 @@ export function ScanProgress({
         </View>
       </View>
     </View>
+  );
+}
+
+/**
+ * One line of the ledger. Faint beside an empty square until its analysis is
+ * back, then full ink, a check drawn in, and the corner brackets catching it.
+ *
+ * The brackets are the Aperture's own corners, the mark doing what it depicts:
+ * the reticle closes on the thing it has just finished looking at. They hold
+ * for a beat and go. A row stays caught only for the moment of the check,
+ * because a permanent bracket is a permanent mask (see aperture-reveal).
+ */
+function LedgerRow({
+  index,
+  name,
+  original,
+  checked,
+  checkDelay,
+  reduced,
+  checkedLabel,
+}: {
+  index: number;
+  name: string;
+  original?: string;
+  checked: boolean;
+  checkDelay: number;
+  reduced: boolean;
+  checkedLabel: string;
+}) {
+  // Arrival: up from nothing to PENDING, lifted a few points, staggered by
+  // position when a list lands at once. Checked: PENDING to full ink.
+  const arrive = useSharedValue(reduced ? 1 : 0);
+  const done = useSharedValue(checked ? 1 : 0);
+  const tick = useSharedValue(checked ? 1 : 0);
+  const caught = useSharedValue(0);
+  // The check plays once. Later renders can hand this row a different ripple
+  // delay, and replaying the catch on a row already ticked would read as a
+  // second, different event.
+  const ticked = useRef(checked);
+
+  useEffect(() => {
+    if (reduced) return;
+    arrive.value = withDelay(
+      Math.min(index, 12) * 34,
+      withTiming(1, { duration: 260, easing: Easing.bezier(0.16, 1, 0.3, 1) }),
+    );
+  }, [reduced, index, arrive]);
+
+  useEffect(() => {
+    if (!checked) return;
+    const firstTick = !ticked.current;
+    ticked.current = true;
+    if (reduced || !firstTick) {
+      done.value = 1;
+      tick.value = 1;
+      return;
+    }
+    done.value = withDelay(checkDelay, withTiming(1, { duration: 220, easing: Easing.out(Easing.quad) }));
+    tick.value = withDelay(checkDelay, withSpring(1, { damping: 11, stiffness: 260, mass: 0.6 }));
+    caught.value = withDelay(
+      checkDelay,
+      withSequence(
+        withTiming(1, { duration: 90 }),
+        withTiming(1, { duration: CATCH_HOLD_MS }),
+        withTiming(0, { duration: 320, easing: Easing.in(Easing.quad) }),
+      ),
+    );
+  }, [checked, reduced, checkDelay, done, tick, caught]);
+
+  const rowStyle = useAnimatedStyle(() => ({
+    opacity: arrive.value * (PENDING_OPACITY + (1 - PENDING_OPACITY) * done.value),
+    transform: [{ translateY: (1 - arrive.value) * 6 }],
+  }));
+  const tickStyle = useAnimatedStyle(() => ({
+    opacity: tick.value > 0.01 ? 1 : 0,
+    transform: [{ rotate: '45deg' }, { scale: tick.value }],
+  }));
+  const catchStyle = useAnimatedStyle(() => ({ opacity: caught.value }));
+
+  return (
+    <Animated.View
+      style={[styles.readRow, rowStyle]}
+      accessible
+      accessibilityLabel={checked ? `${name}, ${checkedLabel}` : name}
+    >
+      <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill, catchStyle]}>
+        <View style={[styles.catch, styles.catchTL]} />
+        <View style={[styles.catch, styles.catchTR]} />
+        <View style={[styles.catch, styles.catchBL]} />
+        <View style={[styles.catch, styles.catchBR]} />
+      </Animated.View>
+      <View style={styles.box}>
+        <Animated.View style={[styles.tick, tickStyle]} />
+      </View>
+      <View style={styles.readText}>
+        <ThemedText style={styles.readName}>{name}</ThemedText>
+        {original ? <ThemedText style={styles.readOriginal}>{original}</ThemedText> : null}
+      </View>
+    </Animated.View>
   );
 }
 
@@ -271,9 +445,48 @@ const styles = StyleSheet.create({
     paddingHorizontal: Space.xl,
     paddingBottom: Space.xl,
   },
+  // Padded sideways and pulled back by the same amount, so the corner
+  // brackets have room to sit outside the text without shifting the column.
   readRow: {
-    paddingVertical: Space.xs,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: Space.md,
+    paddingVertical: Space.xs + 2,
+    paddingHorizontal: Space.sm,
+    marginHorizontal: -Space.sm,
   },
+  readText: { flex: 1 },
+  // Square, like everything else in this system. Sits on the name's first
+  // line, whatever the original beneath it wraps to.
+  box: {
+    width: 11,
+    height: 11,
+    marginTop: 5,
+    borderWidth: 1.2,
+    borderColor: 'rgba(246,241,231,0.7)',
+  },
+  // A check drawn as two sides of a rotated rectangle, so no icon font and no
+  // SVG: a short stroke and a long one, meeting at the bottom corner.
+  tick: {
+    position: 'absolute',
+    left: 2.6,
+    top: -1.5,
+    width: 4,
+    height: 8,
+    borderRightWidth: 1.6,
+    borderBottomWidth: 1.6,
+    borderColor: '#F6F1E7',
+  },
+  catch: {
+    position: 'absolute',
+    width: 9,
+    height: 9,
+    borderColor: '#F6F1E7',
+  },
+  catchTL: { left: 0, top: 0, borderLeftWidth: 1.5, borderTopWidth: 1.5 },
+  catchTR: { right: 0, top: 0, borderRightWidth: 1.5, borderTopWidth: 1.5 },
+  catchBL: { left: 0, bottom: 0, borderLeftWidth: 1.5, borderBottomWidth: 1.5 },
+  catchBR: { right: 0, bottom: 0, borderRightWidth: 1.5, borderBottomWidth: 1.5 },
   readName: {
     fontFamily: Font.sans,
     fontSize: 16,

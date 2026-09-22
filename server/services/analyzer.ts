@@ -1226,7 +1226,14 @@ export async function analyzeIngredientsParallel(
   productType: ProductType,
   ingredientsText: string,
   userLanguage: string = 'en',
-  preExtractedIngredients?: string[]
+  preExtractedIngredients?: string[],
+  /**
+   * Called as each batch finishes, with the names it covered. Batches run in
+   * parallel and finish in whatever order the model and the cache allow, so
+   * this is the one honest per-ingredient progress signal: the scan screen
+   * marks a row checked when, and only when, its batch has returned.
+   */
+  onBatchDone?: (names: string[]) => void
 ): Promise<AnalysisResult> {
   const startTime = Date.now();
   console.log(`[PARALLEL-ANALYZER] Starting micro-batched analysis for ${productType} in ${userLanguage}`);
@@ -1637,7 +1644,12 @@ IMPORTANT: Return ONLY this JSON array:
   });
   
   // Wait for all batches to complete in parallel
-  const allBatchResults = await Promise.all(batchPromises);
+  const allBatchResults = await Promise.all(
+    batchPromises.map((p, i) => p.then((results) => {
+      onBatchDone?.(batches[i]);
+      return results;
+    })),
+  );
   // Re-classify everything after the merge, which also covers rows that came
   // back from the ingredient cache under an older policy version.
   const allIngredients = allBatchResults

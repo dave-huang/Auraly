@@ -46,6 +46,11 @@ export interface AnalysisStatus {
   ingredients?: string[];
   ingredientsOriginal?: string[];
   composition?: { name: string; parts: string[] }[];
+  /**
+   * Names whose analysis has returned, from 'ocr_complete' onward, in the
+   * order they finished. The scan screen checks off exactly these rows.
+   */
+  checked?: string[];
   error?: string;
   /** Machine-readable failure reason; the UI writes the sentence from this. */
   code?: string;
@@ -109,8 +114,17 @@ const POLL_TIMEOUT_MS = 150_000;
  */
 const POLL_INTERVAL_WHILE_READING_MS = 1000;
 
-function pollDelayMs(attempt: number, namesArriving: boolean): number {
+/**
+ * While ingredients are being checked, each poll is what ticks rows off. By
+ * then the schedule has usually backed off to 2.5s, which would land the
+ * checks in two or three lumps over a window only a few seconds long. The
+ * window is short, so polling it closely costs a handful of requests.
+ */
+const POLL_INTERVAL_WHILE_CHECKING_MS = 600;
+
+function pollDelayMs(attempt: number, namesArriving: boolean, checking: boolean): number {
   const scheduled = POLL_SCHEDULE_MS[attempt] ?? POLL_INTERVAL_MAX_MS;
+  if (checking) return Math.min(scheduled, POLL_INTERVAL_WHILE_CHECKING_MS);
   return namesArriving ? Math.min(scheduled, POLL_INTERVAL_WHILE_READING_MS) : scheduled;
 }
 
@@ -133,7 +147,7 @@ export async function pollAnalysis(
       // throws inside apiFetch; this covers a failed status arriving with 200.)
       throw new ApiError(400, status.error || 'Analysis failed.', status.code);
     }
-    await new Promise((resolve) => setTimeout(resolve, pollDelayMs(attempt, namesArriving)));
+    await new Promise((resolve) => setTimeout(resolve, pollDelayMs(attempt, namesArriving, status.status === 'ocr_complete')));
     attempt += 1;
   }
   throw new Error('Analysis timed out. Please try again.');

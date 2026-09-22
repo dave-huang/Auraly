@@ -98,6 +98,12 @@ interface AnalysisRequest {
    * the app's claim to have read rather than guessed.
    */
   ingredients?: string[];
+  /**
+   * Names whose analysis has returned, in the order they finished. Not the
+   * label's order: batches run in parallel, and ones the cache already knows
+   * finish first. The scan screen marks exactly these rows as checked.
+   */
+  checked?: string[];
   ingredientsOriginal?: string[];
   /** The bracket structure, so the pending rows can say "inside X" too. */
   composition?: { name: string; parts: string[] }[];
@@ -819,6 +825,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         ingredients: request.ingredients,
         ingredientsOriginal: request.ingredientsOriginal,
         composition: request.composition,
+        checked: request.checked ?? [],
       });
     }
     
@@ -1031,7 +1038,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Step 2b: Run Parallel Micro-Batched Analysis (using pre-extracted ingredients)
         const analysisStartTime = Date.now();
         try {
-          let analysisResult = await analyzeIngredientsParallel(productType as ProductType, ocrText!, userLanguage, extractedIngredients);
+          let analysisResult = await analyzeIngredientsParallel(
+            productType as ProductType, ocrText!, userLanguage, extractedIngredients,
+            (names) => { analysisRequest.checked = [...(analysisRequest.checked ?? []), ...names]; },
+          );
           analysisStage = 'success';
           const analysisDuration = ((Date.now() - analysisStartTime) / 1000).toFixed(2);
           const totalDuration = ((Date.now() - startTime) / 1000).toFixed(2);
