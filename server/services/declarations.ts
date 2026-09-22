@@ -100,7 +100,16 @@ export function containsStatementsFromText(rawText: string): string[] {
       if (SHARED_LINE.test(before)) continue;
       const after = rawText.slice(match.index + match[0].length, match.index + match[0].length + 24);
       if (rejectAfter?.test(after.trim())) continue;
-      const statement = match[1].trim();
+      let statement = match[1].trim();
+      // The same two sentences, transcribed onto ONE line: "含有大豆制品，本生产线
+      // 也生产含有乳制品、花生、坚果的产品". The line check above cannot see the
+      // factory clause, because it sits inside the capture, after the marker.
+      // Keep the statement up to the clause boundary before it and drop the rest.
+      const shared = statement.search(SHARED_LINE);
+      if (shared >= 0) {
+        const cut = Math.max(...[...'，,；;'].map(sep => statement.lastIndexOf(sep, shared)));
+        statement = (cut >= 0 ? statement.slice(0, cut) : '').trim();
+      }
       if (!statement) continue;
       if (rejectIn?.test(statement)) continue;
       found.push(statement);

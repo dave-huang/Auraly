@@ -266,6 +266,21 @@ function toResult(
     console.log(`[LABEL-READER] Declaration recovered from transcription: "${statement}"`);
   }
 
+  // A read that found no allergen statement of any kind. Plenty of labels
+  // genuinely print none, so one of these is not a bug. It is also exactly
+  // what the rare miss on the Spartak bar looks like (soy stated only in the
+  // declaration, and the whole declaration gone), which could not be
+  // reproduced in 24 probes. Counting these against the "succeeded" lines
+  // gives the real rate across real labels, where re-running one photo could
+  // not. The product and language say which kind of label it happens on.
+  const mayContain = parsed.declared_allergens.may_contain.map(a => a.trim()).filter(Boolean);
+  if (!contains.length && !mayContain.length && !parsed.allergen_statements_verbatim?.trim()) {
+    console.log(
+      `[LABEL-READER] No allergen statement: product="${parsed.product_name ?? ''}" ` +
+      `lang=${parsed.source_language ?? 'unknown'} ingredients=${ingredients.length} method=${method}`,
+    );
+  }
+
   return {
     rawText,
     ingredients,
@@ -278,7 +293,7 @@ function toResult(
     method,
     declaredAllergens: {
       contains,
-      mayContain: parsed.declared_allergens.may_contain.map(a => a.trim()).filter(Boolean),
+      mayContain,
     },
   };
 }

@@ -1045,6 +1045,14 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
     JSON.stringify(recovered(twoLine)) === JSON.stringify(['soy']),
     `expected ["soy"] only, got ${JSON.stringify(recovered(twoLine))} from the two-line block`);
 
+  // The same block as the model actually transcribed it on 2026-09-21: one
+  // line, so the factory clause lands inside the first capture. This reached
+  // production and told the app the bar contains milk, peanuts and tree nuts.
+  const oneLine = '敏感提示: 含有大豆制品，本生产线也生产含有乳制品、花生、坚果的产品';
+  check('declaration-backstop/shared-line-on-the-same-line',
+    JSON.stringify(recovered(oneLine)) === JSON.stringify(['soy']),
+    `expected ["soy"] only, got ${JSON.stringify(recovered(oneLine))} from the one-line block`);
+
   const sharedLineOnly: [string, string][] = [
     ['chinese-line', '本生产线也生产含有花生的产品。'],
     ['chinese-equipment', '同一设备生产含有乳制品的产品。'],
