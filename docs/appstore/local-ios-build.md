@@ -203,6 +203,50 @@ xcarchive to `~/revely-builds/<version>-<build>/`, which is outside the working
 tree on purpose, in the same spirit as `~/revely-backups`. The xcarchive holds
 the dSYMs, which are the only way to read a crash report from that build later.
 
+## Publishing an over-the-air update
+
+Proven on 1.0.2 build 34, on 22 September 2026: the ingredient checklist was
+published as an update and appeared on a real phone on the second launch.
+Build 33 could never have received one (see step 2b).
+
+An update can only change JavaScript and assets. Anything native (a new
+package with native code, a permission, an app.json change prebuild acts on)
+needs a new build and a new version number instead, because the runtime
+version is the app version and an update never crosses it.
+
+**Export the same settings the build used, every time.** This is the trap.
+`eas update` does not read the `env` block in `eas.json`, there is no
+`mobile/.env`, and the production environment on EAS holds no variables.
+Published from a bare shell, the bundle has no server address, and
+`config.ts` deliberately throws on launch when it is missing, so every phone
+on that version would crash on open until the update was replaced. Export
+exactly as in step 3:
+
+    cd mobile
+    eval "$(python3 -c "import json,shlex;e=json.load(open('eas.json'))['build']['production']['env'];print('\n'.join(f'export {k}={shlex.quote(v)}' for k,v in e.items()))")"
+
+Then publish. `--environment` is required in non-interactive mode; it finds
+nothing on EAS and leaves the exported variables in place:
+
+    npx eas-cli update --channel production --platform ios \
+      --environment production --message "..." --non-interactive
+
+**Check the bundle that was uploaded.** It is left in `mobile/dist`
+(gitignored). Unlike the step 5 warning about URLs built from template
+literals, these are plain inlined strings and do survive into the bytecode:
+
+    H=$(ls dist/_expo/static/js/ios/*.hbc)
+    strings -n 8 $H | grep -c revely-api.fly.dev                  # 1
+    strings -n 8 $H | grep -c "must be set for production builds" # 0
+
+The second line reads 0 because the throwing branch is compiled out once the
+address is defined. If it reads 1, the address is missing: publish again
+with the variables exported, straight away.
+
+**How a phone picks it up.** The app checks on launch and downloads in the
+background, then runs the new bundle on the NEXT launch. Open, wait a few
+seconds, close fully, open again.
+
 ## What still has to happen in App Store Connect
 
 Attaching the build, updating the App Review notes and submitting are covered in
