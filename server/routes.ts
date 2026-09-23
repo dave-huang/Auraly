@@ -8,6 +8,7 @@ import { setupAuth, isAuthenticated } from "./localAuth";
 import { setupRevenueCatWebhook } from "./revenueCatWebhook";
 import { registerLegalRoutes } from "./legal";
 import { registerHomeRoutes } from "./home";
+import { isLang } from "./siteCopy";
 import { fetchSubscriber, RevenueCatNotConfigured } from "./services/revenueCatApi";
 import { resolveFromSubscriber } from "./services/revenueCatState";
 import { ENTITLEMENT_ID } from "@shared/products";
@@ -49,6 +50,8 @@ import {
   upsertProfileSchema,
   crashReports,
   crashReportInputSchema,
+  androidWaitlist,
+  androidWaitlistInputSchema,
 } from "@shared/schema";
 import { applyProfileToAnalysis, annotateWithCitations, maxRisk } from "./services/personalRisk";
 import { withLabelRanks } from "./services/labelRank";
@@ -1594,6 +1597,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // must not then retry, or a bad release turns into a write storm.
         console.error('Error storing crash report:', error.message);
         res.status(204).end();
+      }
+    },
+  );
+
+  // The Android waitlist on revely.life. Public, because the people it is for
+  // have no way to hold an account: there is no app on their phone to sign in
+  // with. Guarded instead by a tight per-address limit and a hidden field.
+  //
+  // The address is never logged. The count is, so the log alone says whether
+  // the offer is being taken up without saying by whom.
+  app.post(
+    '/api/waitlist/android',
+    rateLimit({ windowMs: 10 * 60 * 1000, max: 5, name: "android-waitlist" }),
+    async (req, res) => {
+      const parsed = androidWaitlistInputSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ error: 'Invalid email address' });
+      }
+      const { email, lang, website } = parsed.data;
+      // A bot that filled the trap is told it succeeded, so it has no reason
+      // to try again with the field left empty.
+      if (website) return res.status(204).end();
+      const pageLang = lang && isLang(lang) ? lang : 'en';
+      try {
+        const inserted = await db
+          .insert(androidWaitlist)
+          .values({ email, lang: pageLang })
+          .onConflictDoNothing()
+          .returning({ email: androidWaitlist.email });
+        console.log(`[WAITLIST] android ${inserted.length ? 'joined' : 'repeat'} lang=${pageLang}`);
+        res.status(204).end();
+      } catch (error: any) {
+        console.error('Error storing waitlist address:', error.message);
+        res.status(500).json({ error: 'Could not save' });
       }
     },
   );

@@ -54,8 +54,15 @@ import { COPY } from "./siteCopy";
 const GOVERNING_LAW =
   process.env.LEGAL_GOVERNING_LAW || "the State of Washington, USA";
 
-/** Shown as "last updated". Bump when the text changes in substance. */
+/**
+ * Shown as "last updated". Bump when the text changes in substance, and only
+ * on the document that changed: a terms page claiming a new date for text
+ * nobody touched sends readers hunting for a change that is not there.
+ */
 const LAST_UPDATED = "8 September 2026";
+
+/** The Android waitlist on revely.life was added to the privacy policy. */
+const PRIVACY_UPDATED = "22 September 2026";
 
 // ---------------------------------------------------------------------------
 // Page shell
@@ -217,12 +224,12 @@ ${footerInner(COPY.en)}
 }
 
 /** A legal document: title, and the date it last changed. */
-function page(title: string, description: string, body: string): string {
+function page(title: string, description: string, body: string, updated = LAST_UPDATED): string {
   return shell(
     `${title} · Revely`,
     description,
     `  <h1>${title}</h1>
-  <p class="updated">Last updated ${LAST_UPDATED}</p>`,
+  <p class="updated">Last updated ${updated}</p>`,
     body,
   );
 }
@@ -311,6 +318,14 @@ The report is scrubbed on your device first, and it carries the screen's
 profile contents. We also count a small number of product events, such as the
 paywall being shown, to understand whether the app works.</p>
 
+<h3>If you ask to hear about Android</h3>
+<p>There is no Android app yet. If you leave your email address on revely.life to
+be told when there is one, we keep that address and the language you were
+reading the page in, and nothing else. It is not linked to an account. We use it
+to send <strong>one email</strong>, when the Android app is released, and then we
+delete it. It is never used for anything else, and you can ask us to delete it
+sooner by writing to <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a>.</p>
+
 <h2>What we never do</h2>
 <ul>
   <li>We never sell or rent your personal information to anyone.</li>
@@ -350,6 +365,8 @@ from elsewhere, your information is transferred there to run the service.</p>
   <li><strong>Crash reports and product events:</strong> kept for troubleshooting
   and then discarded. Crash reports lose their link to your account when the
   account is deleted; product events do the same.</li>
+  <li><strong>An Android waitlist address:</strong> until the one email it was
+  left for has been sent, then deleted.</li>
   <li><strong>Backups:</strong> deletions reach our backups as those backups
   age out on their normal schedule.</li>
 </ul>
@@ -403,6 +420,7 @@ Revely afterwards means the new version applies.</p>
 <h2>Contact</h2>
 <p>${LEGAL_ENTITY}, <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a></p>
 `,
+  PRIVACY_UPDATED,
 );
 
 // ---------------------------------------------------------------------------

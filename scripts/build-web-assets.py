@@ -144,9 +144,9 @@ def build_icons():
 
 # The headline each language's card carries, matching COPY in server/siteCopy.ts.
 OG_HEADLINES = {
-    'en': ['Shop anywhere.', 'Know what you\u2019re eating.'],
-    'es': ['Compra donde sea.', 'Entiende lo que comes.'],
-    'zh': ['\u5728\u54ea\u4e70\u90fd\u884c\uff0c', '\u5403\u4ec0\u4e48\u5fc3\u91cc\u6709\u6570\u3002'],
+    'en': ['Scan any food label,', 'in any language.'],
+    'es': ['Escanea cualquier etiqueta,', 'en cualquier idioma.'],
+    'zh': ['任何语言的食品标签，', '扫一下就能读懂。'],
 }
 
 # Heiti SC Medium, which is index 1 of the TrueType collection; index 0 is the
@@ -242,6 +242,64 @@ def build_og_cards():
     return total
 
 
+# Where the QR code points. A path on our own domain rather than the App Store
+# URL, for two reasons: /get sends an Android phone to the waitlist instead of
+# to a store page it cannot use, and the day there is an Android app the
+# redirect changes and every printed code keeps working.
+QR_TARGET = 'https://revely.life/get'
+
+QR_SWIFT = r'''
+import CoreImage
+import Foundation
+let f = CIFilter(name: "CIQRCodeGenerator")!
+f.setValue(CommandLine.arguments[1].data(using: .utf8), forKey: "inputMessage")
+f.setValue("M", forKey: "inputCorrectionLevel")
+let img = f.outputImage!
+let w = Int(img.extent.width), h = Int(img.extent.height)
+var px = [UInt8](repeating: 0, count: w * h * 4)
+CIContext().render(img, toBitmap: &px, rowBytes: w * 4, bounds: img.extent,
+                   format: .RGBA8, colorSpace: CGColorSpaceCreateDeviceRGB())
+for y in 0..<h { print((0..<w).map { px[($0 + y * w) * 4] < 128 ? "1" : "0" }.joined()) }
+'''
+
+
+def build_qr():
+    """The QR code, encoded by macOS's own CoreImage and drawn as SVG.
+
+    No QR package in this repo, and encoding one by hand is exactly the kind
+    of code that looks right and scans wrong. CoreImage is on every Mac this
+    script runs on. Its output carries a one-module border, which is cut and
+    replaced with the four-module quiet zone the standard asks for.
+    """
+    import subprocess, tempfile
+    with tempfile.NamedTemporaryFile('w', suffix='.swift', delete=False) as f:
+        f.write(QR_SWIFT)
+    rows = subprocess.run(['swift', f.name, QR_TARGET], check=True,
+                          capture_output=True, text=True).stdout.split()
+    rows = [r[1:-1] for r in rows[1:-1]]
+    n, q = len(rows), 4
+    d = []
+    for y, r in enumerate(rows):
+        x = 0
+        while x < n:
+            if r[x] == '1':
+                s = x
+                while x < n and r[x] == '1':
+                    x += 1
+                d.append(f'M{s + q} {y + q}h{x - s}v1h-{x - s}z')
+            else:
+                x += 1
+    N = n + 2 * q
+    svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {N} {N}" '
+           f'shape-rendering="crispEdges"><rect width="{N}" height="{N}" fill="#FFFCF6"/>'
+           f'<path fill="#16130F" d="{"".join(d)}"/></svg>\n')
+    dst = os.path.join(OUT, 'qr-get.svg')
+    with open(dst, 'w') as f:
+        f.write(svg)
+    print(f'  qr-get.svg  {n}x{n} modules  {len(svg)} bytes')
+    return len(svg)
+
+
 def main():
     os.makedirs(os.path.join(OUT, 'plates'), exist_ok=True)
     os.makedirs(os.path.join(OUT, 'screens'), exist_ok=True)
@@ -266,6 +324,7 @@ def main():
         total += os.path.getsize(dst)
         print(f'  screens/{name}.webp  {os.path.getsize(dst)//1024}K')
 
+    total += build_qr()
     total += build_fonts()
     total += build_icons()
     total += build_badges()

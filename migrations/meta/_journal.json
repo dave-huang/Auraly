@@ -22,6 +22,13 @@
       "when": 1789961835018,
       "tag": "0002_add_scan_composition",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1790134654336,
+      "tag": "0003_add_android_waitlist",
+      "breakpoints": true
     }
   ]
 }

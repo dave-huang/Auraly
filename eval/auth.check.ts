@@ -64,6 +64,8 @@ const INTENTIONALLY_PUBLIC: Record<string, string> = {
   'GET /en': 'the marketing home page in English. Carries no user data and reads nothing',
   'GET /es': 'the marketing home page in Spanish. Same',
   'GET /zh': 'the marketing home page in Chinese. Same',
+  'GET /get': 'the short link the site\'s QR code encodes. Redirects to the App Store, or an Android phone to the waitlist; reads nothing',
+  'POST /api/waitlist/android': 'the Android waitlist on the marketing page. Its users have no app and so no account to sign in with. Rate-limited per address and trapped against bots; stores an email and a language, nothing else',
   'GET /': 'the marketing home page — Google\'s OAuth consent screen requires a reachable application home page before the app can be published, and it is the App Store listing\'s marketing URL. Carries no user data and reads nothing',
   'GET /privacy': 'the privacy policy — App Store Connect fetches this URL unauthenticated at every submission, and the paywall links to it before anyone has an account',
   'GET /terms': 'the terms of use — same reason; Guideline 3.1.2 requires it reachable from the purchase screen',

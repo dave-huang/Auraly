@@ -12,11 +12,12 @@
  *
  * WHERE THE ENGLISH CAME FROM, AND THE OTHER TWO
  *
- * Four of these strings are not new. The hero headline and its line beneath,
- * "Who are we checking for?" and "What's off-limits for you?" are already in
- * the app catalogue in all three languages, so the site uses those exact
- * translations rather than a second opinion on the same sentence. Somebody who
- * reads the page in Spanish and then opens the app should meet the same words.
+ * The closing headline, "Know what you're eating.", is the app's own welcome
+ * line in all three languages, so the site uses those exact translations
+ * rather than a second opinion on the same sentence. The hero used to carry
+ * the whole of that line too. It moved to the close on 2026-09-22, after a
+ * conversion review pointed out that "Shop anywhere" evokes the app without
+ * saying what it does, and the page's own <title> already said it better.
  *
  * The rest I translated, in the register the catalogue already set: second
  * person, informal "tú" in Spanish, plain and unadorned in Chinese, and no em
@@ -84,10 +85,10 @@ interface Agency {
   full: string;
   body: string;
 }
-interface Testimonial {
-  quote: string;
-  name: string;
-  detail: string;
+interface Question {
+  q: string;
+  /** May carry a link. Stripped to text for the structured data. */
+  a: string;
 }
 
 export interface Copy {
@@ -103,12 +104,21 @@ export interface Copy {
   cue: string;
   heroAlt: string;
   badgeAlt: string;
+  qrCaption: string;
+
+  androidSummary: string;
+  emailLabel: string;
+  androidSubmit: string;
+  androidNote: string;
+  androidThanks: string;
+  androidInvalid: string;
+  androidFailed: string;
+  /** The same offer, shortened to fit the bar that follows the page down. */
+  dockAndroid: string;
 
   aisleEyebrow: string;
   aisleTitle: string;
   aisleLede: string;
-  pivotLine: string;
-  pivotBody: string;
   cards: [Card, Card, Card];
   aside: string;
 
@@ -117,6 +127,7 @@ export interface Copy {
   doesLede: string;
   steps: [Step, Step, Step];
 
+  proofEyebrow: string;
   sourcesTitle: string;
   sourcesBody: string;
   agencies: Agency[];
@@ -129,9 +140,9 @@ export interface Copy {
   photoLink: string;
   photoBodyAfter: string;
 
-  quotesEyebrow: string;
-  quotesTitle: string;
-  testimonials: Testimonial[];
+  faqEyebrow: string;
+  faqTitle: string;
+  faq: Question[];
 
   closeTitle: string;
   closeLede: string;
@@ -144,18 +155,25 @@ export interface Copy {
   legalNote?: string;
 }
 
-/**
- * PLACEHOLDER TESTIMONIALS, IN THREE LANGUAGES NOW.
+/*
+ * WHERE THE TESTIMONIALS WENT
  *
- * Nobody said any of this. Dave asked for them on the page on 2026-09-08
- * having been told twice that they are invented, which is his call, and this
- * note is not an argument with it. It is here so the next person to open the
- * file knows what they are reading.
+ * Three invented quotes sat here from 2026-09-08 to 2026-09-22, and the page
+ * source carried a comment saying so to anyone who looked. They were replaced
+ * by the questions below. Beyond the credibility problem, fake consumer
+ * testimonials are exactly what the FTC's 2024 rule on reviews prohibits.
  *
  * When real quotes arrive they should probably NOT be translated. A quote is
  * somebody's own words, and putting a sentence in their mouth in a language
  * they did not say it in is a different kind of invention. Show the original
  * and, if it matters, a translation beside it.
+ *
+ * THE PRICE QUESTION. The page used to say nothing about money at all, on the
+ * reasoning that half a line naming the trial without the price is a claim
+ * needing its own qualifier. The answer below is the whole of it instead:
+ * what is free, what needs a subscription, which plan has the trial, where
+ * the price is shown and where you cancel. It names no figure, because the
+ * figure differs by country and the app shows the real one before anyone pays.
  */
 const en: Copy = {
   title: "Revely · Scan any food label, in any language",
@@ -163,29 +181,36 @@ const en: Copy = {
     "Point your camera at any ingredient list, in any language. Revely reads " +
     "it and tells you what it means for your allergies, your conditions, and " +
     "anyone you shop for.",
-  ogTitle: "Shop anywhere. Know what you’re eating.",
+  ogTitle: "Scan any food label, in any language.",
 
   switcherLabel: "Language",
   homeLabel: "Revely, home",
 
-  heroTitle: "Shop anywhere.<br>Know what you’re eating.",
+  heroTitle: "Scan any food label,<br>in any language.",
   heroLede:
-    "Point your camera at any ingredient list, in any language. We’ll tell " +
-    "you what it means for you, and for anyone you shop for.",
-  cue: "Why this is hard",
+    "Point your camera at the ingredients. Revely reads them, translates " +
+    "them, and tells you what they mean for your allergies, your diet, and " +
+    "anyone you shop for.",
+  cue: "See how it works",
   heroAlt: "A hand holding a phone up to the back of a snack pouch.",
   badgeAlt: "Download on the App Store",
+  qrCaption: "Or scan this with your iPhone camera.",
+
+  androidSummary: "On Android? Get told when it’s ready.",
+  emailLabel: "Email address",
+  androidSubmit: "Notify me",
+  androidNote: "One email when it’s out, then we delete your address.",
+  androidThanks: "Done. We’ll write once, when Revely is on Android.",
+  androidInvalid: "That doesn’t look like an email address. Check it and try again.",
+  androidFailed: "That didn’t go through. Try again in a moment.",
+  dockAndroid: "Notify me",
 
   aisleEyebrow: "The aisle",
-  aisleTitle: "You turn the packet over, and you’re none the wiser.",
+  aisleTitle: "Reading a label shouldn’t be this hard.",
   aisleLede:
-    "Twelve lines of small print, half of them words nobody uses outside a " +
-    "laboratory. Somewhere in there is the thing you avoid, or there isn’t. " +
-    "There is no way to tell while you are standing there holding it.",
-  pivotLine: "Ingredient labels aren’t always easy to decode.",
-  pivotBody:
-    "You shouldn’t have to Google every ingredient just to understand what " +
-    "you’re buying.",
+    "Twelve lines of small print, half of them words from a lab. What you " +
+    "avoid might be in there, or it might not. Standing in the aisle, " +
+    "there’s no way to tell.",
   cards: [
     {
       title: "One ingredient, a dozen names.",
@@ -208,7 +233,7 @@ const en: Copy = {
   ],
   aside: "So you put it back on the shelf. Or you buy it and hope.",
 
-  doesEyebrow: "What Revely does",
+  doesEyebrow: "How it works",
   doesTitle: "Tell us once. We check every label against it.",
   doesLede:
     "Setting it up takes about a minute. After that the camera does the work.",
@@ -246,11 +271,12 @@ const en: Copy = {
     },
   ],
 
+  proofEyebrow: "Who we quote",
   sourcesTitle: "We show you who says so.",
   sourcesBody:
     "Where there is a published finding on an ingredient, we quote it and " +
-    "name who published it. Their words, not our summary of them. You read " +
-    "it, and you decide.",
+    "name who published it. Their words, not our summary. You read it, and " +
+    "you decide.",
   agencies: [
     {
       id: "fda",
@@ -288,43 +314,61 @@ const en: Copy = {
 
   profilesTitle: "One photo, everybody’s answer.",
   profilesBody:
-    "Switch to another profile and the scan already on screen is rechecked " +
-    "straight away. You don’t have to take the picture again.",
+    "Switch to another profile and the scan on screen is checked again " +
+    "straight away. No second photo.",
 
   photoTitle: "Your photo is used once, then it’s gone.",
   photoBodyBefore:
-    "It isn’t kept after it has been read. No advertising, no trackers, " +
-    "nothing sold. What we collect and every company that receives anything " +
-    "is written out in the ",
+    "No advertising, no trackers, nothing sold. What we collect and every " +
+    "company that receives anything is written out in the ",
   photoLink: "privacy policy",
   photoBodyAfter: ".",
 
-  quotesEyebrow: "What people say",
-  quotesTitle: "The aisle gets a lot quieter.",
-  testimonials: [
+  faqEyebrow: "Questions",
+  faqTitle: "Before you download.",
+  faq: [
     {
-      quote:
-        "My son reacts to tree nuts, and cashew hides under about six " +
-        "different names. I stopped trusting myself to catch all of them at " +
-        "four in the afternoon with a cart. Now I just scan it.",
-      name: "Maya R.",
-      detail: "Parent of two",
+      q: "How accurate is it?",
+      a:
+        "Revely reads the list printed on the pack in your hand, so a quiet " +
+        "recipe change can’t slip past it. A photo can still lose a word to " +
+        "glare or a crease, so for a severe allergy, use Revely as a second " +
+        "check, not the only one.",
     },
     {
-      quote:
-        "I lived in Spain for a year and never once read a label properly. " +
-        "Revely puts the printed Spanish next to the English and I can " +
-        "finally see what I have been eating.",
-      name: "Tom W.",
-      detail: "Uses it abroad",
+      q: "Does it work without a signal?",
+      a:
+        "No. Labels are read on our servers, not on the phone, so scanning " +
+        "needs a data connection.",
     },
     {
-      quote:
-        "I am not allergic to anything. I just wanted to know what half the " +
-        "words meant. It tells me who looked at an ingredient and what they " +
-        "found, and then it leaves me alone to decide.",
-      name: "Priya S.",
-      detail: "Reads everything",
+      q: "What happens to my photo?",
+      a:
+        "It’s read, then deleted. It isn’t kept on our servers or in your " +
+        "history. We keep only a fingerprint of the image, which can’t be " +
+        "turned back into the photo. The details are in the " +
+        "<a href=\"/privacy\">privacy policy</a>.",
+    },
+    {
+      q: "What does it cost?",
+      a:
+        "Setting up profiles is free, and you’ll see an example scan before " +
+        "you pay anything. Scanning your own labels needs a monthly or annual " +
+        "subscription, and the annual plan starts with a free trial. The " +
+        "price in your currency is shown before you buy, and you can cancel " +
+        "any time in your Apple ID settings.",
+    },
+    {
+      q: "Which languages can it read?",
+      a:
+        "Labels in most languages, shown next to a translation in yours. The " +
+        "app itself is in English, Simplified Chinese, and Spanish.",
+    },
+    {
+      q: "Is there an Android version?",
+      a:
+        "Not yet. <a href=\"#android\">Leave your email</a> and we’ll send one " +
+        "message when it’s out, then delete your address.",
     },
   ],
 
@@ -346,30 +390,36 @@ const es: Copy = {
     "Apunta la cámara a cualquier lista de ingredientes, en cualquier idioma. " +
     "Revely la lee y te dice qué significa para tus alergias, tus " +
     "condiciones y para quien tú compras.",
-  // From the app catalogue, so the page and the app say the same sentence.
-  ogTitle: "Compra donde sea. Entiende lo que comes.",
+  ogTitle: "Escanea cualquier etiqueta, en cualquier idioma.",
 
   switcherLabel: "Idioma",
   homeLabel: "Revely, inicio",
 
-  heroTitle: "Compra donde sea.<br>Entiende lo que comes.",
+  heroTitle: "Escanea cualquier etiqueta,<br>en cualquier idioma.",
   heroLede:
-    "Apunta la cámara a cualquier lista de ingredientes, en cualquier idioma. " +
-    "Te decimos qué significa para ti, y para quien tú compras.",
-  cue: "Por qué cuesta tanto",
+    "Apunta la cámara a los ingredientes. Revely los lee, los traduce y te " +
+    "dice qué significan para tus alergias, tu dieta y para quien tú compras.",
+  cue: "Mira cómo funciona",
   heroAlt: "Una mano sostiene un teléfono frente al reverso de una bolsa de snacks.",
   badgeAlt: "Consíguelo en el App Store",
+  qrCaption: "O escanea esto con la cámara del iPhone.",
+
+  androidSummary: "¿Tienes Android? Te avisamos cuando esté lista.",
+  emailLabel: "Correo electrónico",
+  androidSubmit: "Avísame",
+  androidNote: "Un solo correo cuando salga, y después borramos tu dirección.",
+  androidThanks: "Listo. Te escribiremos una vez, cuando Revely llegue a Android.",
+  androidInvalid:
+    "Eso no parece un correo electrónico. Revísalo y vuelve a intentarlo.",
+  androidFailed: "No se ha podido enviar. Inténtalo de nuevo en un momento.",
+  dockAndroid: "Avísame",
 
   aisleEyebrow: "El pasillo",
-  aisleTitle: "Le das la vuelta al paquete y sigues igual que antes.",
+  aisleTitle: "Leer una etiqueta no debería ser tan difícil.",
   aisleLede:
-    "Doce líneas de letra pequeña, la mitad con palabras que nadie usa fuera " +
-    "de un laboratorio. En algún lugar de ahí está lo que evitas, o no está. " +
-    "No hay manera de saberlo mientras lo tienes en la mano.",
-  pivotLine: "Las etiquetas de ingredientes no siempre son fáciles de descifrar.",
-  pivotBody:
-    "No deberías tener que buscar cada ingrediente en Google solo para " +
-    "entender lo que estás comprando.",
+    "Doce líneas de letra pequeña, la mitad con palabras de laboratorio. Lo " +
+    "que evitas puede estar ahí, o no. De pie en el pasillo, no hay forma " +
+    "de saberlo.",
   cards: [
     {
       title: "Un ingrediente, doce nombres.",
@@ -393,7 +443,7 @@ const es: Copy = {
   ],
   aside: "Así que lo dejas en el estante. O lo compras y cruzas los dedos.",
 
-  doesEyebrow: "Qué hace Revely",
+  doesEyebrow: "Cómo funciona",
   doesTitle: "Dínoslo una vez. Revisamos cada etiqueta con eso en mano.",
   doesLede:
     "Configurarlo lleva un minuto. Después, la cámara hace el trabajo.",
@@ -431,11 +481,12 @@ const es: Copy = {
     },
   ],
 
+  proofEyebrow: "A quién citamos",
   sourcesTitle: "Te mostramos quién lo dice.",
   sourcesBody:
     "Cuando existe un dictamen publicado sobre un ingrediente, lo citamos y " +
-    "decimos quién lo publicó. Sus palabras, no nuestro resumen de ellas. Tú " +
-    "lo lees y tú decides.",
+    "decimos quién lo publicó. Sus palabras, no nuestro resumen. Tú lo lees " +
+    "y tú decides.",
   agencies: [
     {
       id: "fda",
@@ -475,44 +526,61 @@ const es: Copy = {
 
   profilesTitle: "Una foto, la respuesta de cada uno.",
   profilesBody:
-    "Cambia a otro perfil y el escaneo que ya tienes en pantalla se revisa de " +
-    "nuevo al instante. No hace falta volver a hacer la foto.",
+    "Cambia a otro perfil y el escaneo que tienes en pantalla se revisa de " +
+    "nuevo al instante. Sin repetir la foto.",
 
   photoTitle: "Tu foto se usa una vez y desaparece.",
   photoBodyBefore:
-    "No se guarda después de leerla. Sin publicidad, sin rastreadores, sin " +
-    "vender nada. Lo que recogemos y cada empresa que recibe algo está " +
-    "escrito en la ",
+    "Sin publicidad, sin rastreadores, sin vender nada. Lo que recogemos y " +
+    "cada empresa que recibe algo está escrito en la ",
   photoLink: "política de privacidad",
   photoBodyAfter: ".",
 
-  quotesEyebrow: "Lo que dice la gente",
-  quotesTitle: "El pasillo se vuelve mucho más tranquilo.",
-  testimonials: [
+  faqEyebrow: "Preguntas",
+  faqTitle: "Antes de descargarla.",
+  faq: [
     {
-      quote:
-        "Mi hijo reacciona a los frutos secos de árbol, y el anacardo se " +
-        "esconde bajo unos seis nombres distintos. Dejé de confiar en que los " +
-        "vería todos a las cuatro de la tarde con el carrito. Ahora " +
-        "simplemente lo escaneo.",
-      name: "Maya R.",
-      detail: "Madre de dos",
+      q: "¿Es fiable?",
+      a:
+        "Revely lee la lista impresa en el paquete que tienes en la mano, así " +
+        "que un cambio discreto de receta no se le escapa. Aun así, un " +
+        "reflejo o una arruga pueden tapar una palabra, así que si tu alergia " +
+        "es grave, usa Revely como una segunda revisión, no como la única.",
     },
     {
-      quote:
-        "Viví un año en España y nunca leí bien una etiqueta. Revely pone el " +
-        "español impreso junto al inglés y por fin veo lo que he estado " +
-        "comiendo.",
-      name: "Tom W.",
-      detail: "Lo usa en el extranjero",
+      q: "¿Funciona sin cobertura?",
+      a:
+        "No. Las etiquetas se leen en nuestros servidores, no en el teléfono, " +
+        "así que para escanear necesitas conexión de datos.",
     },
     {
-      quote:
-        "No soy alérgico a nada. Solo quería saber qué significaba la mitad " +
-        "de las palabras. Me dice quién examinó un ingrediente y qué " +
-        "encontró, y luego me deja decidir en paz.",
-      name: "Priya S.",
-      detail: "Lo lee todo",
+      q: "¿Qué pasa con mi foto?",
+      a:
+        "Se lee y se borra. No se guarda en nuestros servidores ni en tu " +
+        "historial. Solo guardamos una huella de la imagen, que no permite " +
+        "reconstruir la foto. Los detalles están en la " +
+        "<a href=\"/privacy\">política de privacidad</a> (en inglés).",
+    },
+    {
+      q: "¿Cuánto cuesta?",
+      a:
+        "Crear perfiles es gratis, y verás un escaneo de ejemplo antes de " +
+        "pagar nada. Para escanear tus propias etiquetas necesitas una " +
+        "suscripción mensual o anual, y la anual empieza con una prueba " +
+        "gratuita. Verás el precio en tu moneda antes de comprar, y puedes " +
+        "cancelar cuando quieras en los ajustes de tu Apple ID.",
+    },
+    {
+      q: "¿Qué idiomas puede leer?",
+      a:
+        "Etiquetas en la mayoría de los idiomas, junto a una traducción al " +
+        "tuyo. La app está en inglés, chino simplificado y español.",
+    },
+    {
+      q: "¿Hay versión para Android?",
+      a:
+        "Todavía no. <a href=\"#android\">Deja tu correo</a> y te enviaremos " +
+        "un solo mensaje cuando salga. Después borramos tu dirección.",
     },
   ],
 
@@ -535,27 +603,34 @@ const zh: Copy = {
   description:
     "把相机对准任何一份配料表，不管是什么语言。Revely 会读出来，" +
     "并告诉你它对你的过敏、你的身体状况，以及你替谁买东西意味着什么。",
-  // From the app catalogue, so the page and the app say the same sentence.
-  ogTitle: "在哪买都行，吃什么心里有数。",
+  ogTitle: "任何语言的食品标签，扫一下就能读懂。",
 
   switcherLabel: "语言",
   homeLabel: "Revely，首页",
 
-  heroTitle: "在哪买都行，<br>吃什么心里有数。",
+  heroTitle: "任何语言的食品标签，<br>扫一下就能读懂。",
   heroLede:
-    "把相机对准任何一份配料表，不管是什么语言。我们会告诉你它对你意味着什么，" +
-    "也告诉你它对你替之购物的人意味着什么。",
-  cue: "为什么这件事不容易",
+    "把相机对准配料表。Revely 会读出来、翻译成你的语言，" +
+    "并告诉你它对你的过敏、饮食，以及你替之购物的人意味着什么。",
+  cue: "看看怎么用",
   heroAlt: "一只手举着手机，对着一袋零食的背面。",
   badgeAlt: "从 App Store 下载",
+  qrCaption: "也可以用 iPhone 相机扫这个码。",
+
+  androidSummary: "用安卓手机？上线时通知你。",
+  emailLabel: "邮箱地址",
+  androidSubmit: "通知我",
+  androidNote: "上线时发一封邮件，然后删除你的地址。",
+  androidThanks: "好了。Revely 上线安卓时，我们会给你发一封邮件。",
+  androidInvalid: "这看起来不像邮箱地址，请检查后再试。",
+  androidFailed: "没有提交成功，请稍后再试。",
+  dockAndroid: "上线通知我",
 
   aisleEyebrow: "货架前",
-  aisleTitle: "包装翻到背面，你还是不知道里面是什么。",
+  aisleTitle: "看懂配料表，不该这么难。",
   aisleLede:
-    "十二行小字，一半是实验室以外没人会用的词。你要避开的东西也许就在里面，" +
-    "也许根本没有。站在货架前拿着它的时候，你没有办法判断。",
-  pivotLine: "配料表并不总是容易看懂。",
-  pivotBody: "只是想知道自己买的是什么，不该需要把每一种成分都上网查一遍。",
+    "十二行小字，一半是实验室里的词。你要避开的东西可能在里面，也可能不在。" +
+    "站在货架前，你没法判断。",
   cards: [
     {
       title: "同一种东西，十几个名字。",
@@ -574,7 +649,7 @@ const zh: Copy = {
   ],
   aside: "于是你把它放回货架。或者买下来，然后指望没事。",
 
-  doesEyebrow: "Revely 做什么",
+  doesEyebrow: "怎么用",
   doesTitle: "告诉我们一次，之后每一张标签我们都照着核对。",
   doesLede: "设置大约需要一分钟。之后交给相机。",
   steps: [
@@ -600,6 +675,7 @@ const zh: Copy = {
     },
   ],
 
+  proofEyebrow: "我们引用谁",
   sourcesTitle: "我们告诉你这是谁说的。",
   sourcesBody:
     "只要某种成分有已发表的结论，我们就把它引出来，并写明是谁发表的。" +
@@ -637,39 +713,54 @@ const zh: Copy = {
   ],
 
   profilesTitle: "一张照片，每个人都有自己的答案。",
-  profilesBody:
-    "切换到另一份档案，屏幕上已有的扫描结果会立刻重新核对一遍。不用再拍一次。",
+  profilesBody: "切换到另一份档案，屏幕上的扫描结果会立刻重新核对。不用再拍一次。",
 
   photoTitle: "你的照片只用一次，然后就没了。",
   photoBodyBefore:
-    "读完之后不会保留。没有广告，没有追踪，什么都不出售。" +
+    "没有广告，没有追踪，什么都不出售。" +
     "我们收集什么、以及每一家会收到任何东西的公司，都写在",
   photoLink: "隐私政策",
   photoBodyAfter: "里。",
 
-  quotesEyebrow: "大家怎么说",
-  quotesTitle: "在货架前，心里安静多了。",
-  testimonials: [
+  faqEyebrow: "常见问题",
+  faqTitle: "下载之前。",
+  faq: [
     {
-      quote:
-        "我儿子对坚果有反应，而腰果能藏在六七个不同的名字底下。" +
-        "下午四点推着购物车的时候，我不再相信自己每一个都能看出来。现在我直接扫一下。",
-      name: "Maya R.",
-      detail: "两个孩子的家长",
+      q: "准确吗？",
+      a:
+        "Revely 读的是你手里这包东西上印着的配料表，所以配方悄悄改了也瞒不过它。" +
+        "不过照片里的字可能被反光或折痕挡住。如果过敏很严重，" +
+        "请把 Revely 当作多一道检查，而不是唯一的检查。",
     },
     {
-      quote:
-        "我在西班牙住过一年，从来没有真正读懂过一张标签。" +
-        "Revely 把印着的西班牙文和英文并排放在一起，我终于看清自己一直在吃什么。",
-      name: "Tom W.",
-      detail: "在国外使用",
+      q: "没有信号能用吗？",
+      a: "不能。标签是在我们的服务器上读取的，不在手机上，所以扫描时需要网络连接。",
     },
     {
-      quote:
-        "我什么都不过敏，只是想知道那一半的词到底是什么意思。" +
-        "它告诉我谁研究过某种成分、结论是什么，然后就让我自己安静地决定。",
-      name: "Priya S.",
-      detail: "什么都要读一遍",
+      q: "我的照片会怎样？",
+      a:
+        "读完就删除。我们的服务器和你的扫描记录都不会保留。" +
+        "我们只保留图片的一个指纹，它无法还原成照片。" +
+        "详情见<a href=\"/privacy\">隐私政策</a>（英文）。",
+    },
+    {
+      q: "要花钱吗？",
+      a:
+        "建档案是免费的，付费之前你会先看到一次示例扫描。" +
+        "扫描你自己的标签需要按月或按年订阅，年订阅从免费试用开始。" +
+        "购买前会显示你所在地区货币的价格，你可以随时在 Apple ID 设置里取消。",
+    },
+    {
+      q: "能读哪些语言？",
+      a:
+        "大多数语言的标签都能读，原文旁边附上你的语言的译文。" +
+        "App 本身支持英文、简体中文和西班牙文。",
+    },
+    {
+      q: "有安卓版吗？",
+      a:
+        "还没有。<a href=\"#android\">留下邮箱</a>，" +
+        "上线时我们发一封邮件，然后删除你的地址。",
     },
   ],
 

@@ -639,6 +639,32 @@ export const crashReports = pgTable(
 export type CrashReportRow = typeof crashReports.$inferSelect;
 
 /**
+ * People who asked, on revely.life, to hear when there is an Android app.
+ *
+ * Deliberately not linked to users: this is somebody on a website, not an
+ * account, and the address is the whole of what we know about them. The page
+ * promises one email and then deletion, so the table is meant to be emptied
+ * the day it is used, not kept as a mailing list. The privacy policy says the
+ * same.
+ *
+ * The address is the key, lower-cased, so asking twice is one row and not a
+ * second email.
+ */
+export const androidWaitlist = pgTable("android_waitlist", {
+  email: varchar("email", { length: 254 }).primaryKey(),
+  /** The page's language, so the one email can be written in it. */
+  lang: varchar("lang", { length: 8 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const androidWaitlistInputSchema = z.object({
+  email: z.string().trim().toLowerCase().email().max(254),
+  lang: z.string().max(8).optional(),
+  /** The field no person sees. Anything that fills it is not a person. */
+  website: z.string().max(200).optional(),
+});
+
+/**
  * What a device is allowed to send.
  *
  * Unknown keys are stripped rather than rejected, because a slightly newer app

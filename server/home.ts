@@ -5,6 +5,7 @@ import path from "path";
 import {
   FONT_FACES,
   HEAD_COMMON,
+  LOCKUP,
   PAPER_TOKENS,
   TYPE_TOKENS,
   footerInner,
@@ -85,12 +86,13 @@ const STYLE = `${FONT_FACES}
 ${PAPER_TOKENS}${TYPE_TOKENS}
   --shell: 1120px;
   --gutter: 24px;
-  --band: clamp(72px, 8vw, 116px);
+  --band: clamp(60px, 8vw, 116px);
+  --dock: 64px;
 }
 
 * { box-sizing: border-box; }
 
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: var(--dock); }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
 body {
@@ -106,15 +108,20 @@ body {
 
 .shell { max-width: var(--shell); margin: 0 auto; padding-inline: var(--gutter); }
 
+.sr {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
 /* ---- type ------------------------------------------------------------- */
 
 h1, h2, h3 { margin: 0; font-weight: 600; text-wrap: balance; }
-h1 { font-size: clamp(2.55rem, 6.1vw, 4.3rem); line-height: 1.03; letter-spacing: -0.035em; }
-h2 { font-size: clamp(1.95rem, 3.7vw, 2.9rem); line-height: 1.1;  letter-spacing: -0.03em; }
+h1 { font-size: clamp(2.25rem, 6.1vw, 4.3rem); line-height: 1.04; letter-spacing: -0.035em; }
+h2 { font-size: clamp(1.85rem, 3.7vw, 2.9rem); line-height: 1.1;  letter-spacing: -0.03em; }
 h3 { font-size: 1.3125rem; line-height: 1.3; letter-spacing: -0.02em; }
 p  { margin: 0; color: var(--ink-muted); }
 
-.lede { font-size: clamp(1.125rem, 1.5vw, 1.3125rem); line-height: 1.55; max-width: 34ch; }
+.lede { font-size: clamp(1.0625rem, 1.5vw, 1.3125rem); line-height: 1.55; max-width: 36ch; }
 .eyebrow {
   font-family: var(--mono); font-size: 0.6875rem; font-weight: 500;
   letter-spacing: 0.17em; text-transform: uppercase; color: var(--ink-faint);
@@ -140,16 +147,50 @@ a { color: var(--ink); text-underline-offset: 3px; }
  * Apple's own badge, served byte for byte as downloaded. Their guidelines
  * require the artwork unmodified, so there is deliberately no hover tint, no
  * scale on press and no recolouring here: every one of those is a change to
- * the badge. Height is 54px, comfortably over their 40px floor, and the
- * spacing around it clears a tenth of its height on every side.
+ * the badge. Height is 54px on the page and 40px in the bar, which is exactly
+ * their floor and no lower, and the spacing around it clears a tenth of its
+ * height on every side.
  *
  * This is the one thing on the page that is not ours and does not obey the
  * system. It earns the exception by being the control people already know.
  */
-.badge { display: inline-block; line-height: 0; border-radius: 10px; }
+.badge { display: inline-block; line-height: 0; border-radius: 10px; flex: none; }
 .badge img { display: block; height: 54px; width: auto; }
 .badge:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
 .close .badge:focus-visible { outline-color: var(--paper); }
+
+/*
+ * Nobody on Android can use that badge, and until 2026-09-22 it was the only
+ * thing either button offered them. On an Android phone the script marks the
+ * document and every badge gives way to the waitlist. Without script the
+ * badge stays, which is the old behaviour and no worse than it was.
+ */
+.android-cta { display: none; }
+.android .badge { display: none; }
+.android .android-cta {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px;
+  border-radius: 999px; font-weight: 600; font-size: 0.9375rem; text-decoration: none;
+  background: var(--ink); color: var(--paper);
+}
+.close .android-cta { background: var(--paper); color: var(--ink); }
+
+/* ---- the QR code ------------------------------------------------------ */
+/*
+ * For somebody reading on a laptop, whose phone is in their pocket. Only where
+ * there is a fine pointer and room for it: on a phone a code on the screen is
+ * a code nobody can scan. It points at /get rather than the App Store, so an
+ * Android phone that scans it lands on the waitlist instead of a dead end.
+ */
+.qr { display: none; }
+@media (min-width: 880px) and (hover: hover) and (pointer: fine) {
+  .qr { display: flex; align-items: center; gap: 14px; }
+  .qr img { display: block; width: 76px; height: 76px; border: 1px solid var(--rule); }
+  .qr p { font-family: var(--mono); font-size: 0.6875rem; line-height: 1.5; letter-spacing: 0.02em; max-width: 15ch; color: var(--ink-muted); }
+  .hero .qr { padding-left: 22px; border-left: 1px solid var(--rule); }
+  .close .qr img { width: 96px; height: 96px; border: 0; }
+  .close .qr p { color: #B8AD99; }
+  .android .qr { display: none; }
+}
 
 /* ---- the scroll cue --------------------------------------------------- */
 /*
@@ -158,45 +199,42 @@ a { color: var(--ink); text-underline-offset: 3px; }
  * that it ends resolved: a loop reads as still trying, which is why the
  * scanner in the app sweeps a single time.
  *
- * It sits in the gap under the hero copy, which the taller plate column
- * already pays for, so it costs the hero no height on desktop and cannot push
- * the very fold it exists to advertise further down. Below the two-column
- * breakpoint there is no gap to borrow and no need for the hint, since a
- * stacked hero is visibly cut off on its own.
+ * It points at how the app works, not at the problem section in between: a
+ * visitor who wants to know more before downloading wants to see the product.
+ * On a phone the rail goes and the words stay, as a plain link with a
+ * finger-sized target, because a stacked hero has no gap to hang a rail in.
  *
- * FLEX, NOT INLINE-FLEX, AND THAT DISTINCTION IS THE WHOLE BUG. The badge above
- * is inline-block. While a paragraph of subscription terms sat between the two
- * it did not matter, because a block element forced the line break. Once that
- * paragraph was deleted an inline-level cue flowed up onto the badge's line,
- * and a 52px vertical hairline that reads as a scroll hint under the copy
- * reads as a divider welded to the CTA when it sits beside it. Block-level
- * flex keeps the row layout the rail needs and the line break it needs.
+ * FLEX, NOT INLINE-FLEX. An inline cue flows up onto the badge's line, and a
+ * vertical hairline beside the CTA reads as a divider welded to it.
  */
-.cue { display: none; }
+.cue {
+  display: flex; width: max-content; align-items: center; gap: 14px;
+  min-height: 44px; margin-top: 4px; text-decoration: none; color: var(--ink-muted);
+  font-family: var(--mono); font-size: 0.6875rem; font-weight: 500;
+  letter-spacing: 0.17em; text-transform: uppercase;
+}
+.cue:hover { color: var(--ink); }
+.cue-rail { display: none; }
+.cue::after { content: "\\2193"; font-family: var(--sans); letter-spacing: 0; }
 @media (min-width: 880px) {
-  .cue {
-    display: flex; width: max-content; align-items: center; gap: 14px;
-    margin-top: 40px; text-decoration: none; color: var(--ink-faint);
-    font-family: var(--mono); font-size: 0.6875rem; font-weight: 500;
-    letter-spacing: 0.17em; text-transform: uppercase;
+  .cue { margin-top: 28px; color: var(--ink-faint); }
+  .cue::after { content: none; }
+  .cue-rail {
+    position: relative; display: block; width: 1px; height: 52px;
+    background: var(--rule); overflow: hidden; flex: none;
   }
-}
-.cue:hover { color: var(--ink-muted); }
-.cue-rail {
-  position: relative; display: block; width: 1px; height: 52px;
-  background: var(--rule); overflow: hidden; flex: none;
-}
-.cue-rail::after {
-  content: ""; position: absolute; left: 0; width: 1px; height: 18px;
-  background: var(--ink); top: 34px;
-  animation: cue-run 1.5s cubic-bezier(.16, 1, .3, 1) .9s 1 backwards;
+  .cue-rail::after {
+    content: ""; position: absolute; left: 0; width: 1px; height: 18px;
+    background: var(--ink); top: 34px;
+    animation: cue-run 1.5s cubic-bezier(.16, 1, .3, 1) .9s 1 backwards;
+  }
 }
 @keyframes cue-run { from { top: -18px; } to { top: 34px; } }
 @media (prefers-reduced-motion: reduce) { .cue-rail::after { animation: none; } }
 
 /* ---- header ----------------------------------------------------------- */
 
-.top { padding: 30px 0 0; }
+.top { padding: 18px 0 0; }
 .top-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
 .lockup { display: inline-flex; align-items: center; gap: 11px; text-decoration: none; color: var(--ink); }
 .lockup .mark { width: 26px; height: 26px; flex: none; }
@@ -207,20 +245,52 @@ a { color: var(--ink); text-underline-offset: 3px; }
  * Three links rather than a menu, and the current one filled the same way an
  * active agency chip is, so the page has one vocabulary for "this is the one
  * you are on".
+ *
+ * The pill is drawn on the inner span and the link around it is 44px square
+ * at least. The pill alone was 27px tall, under the size a thumb can hit
+ * reliably, and making the pill itself 44px would have made the masthead
+ * shout. The target grows; the picture does not.
  */
-.langs { display: flex; align-items: center; gap: 2px; flex: none; }
+.langs { display: flex; align-items: center; flex: none; margin-right: -6px; }
 .lang {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 44px; min-height: 44px; padding: 0 1px;
   font-family: var(--mono); font-size: 0.6875rem; font-weight: 500;
-  letter-spacing: 0.1em; line-height: 1; color: var(--ink-faint);
-  text-decoration: none; padding: 8px 10px; border-radius: 999px;
-  transition: color .12s ease, background-color .12s ease;
+  letter-spacing: 0.1em; line-height: 1; color: var(--ink-faint); text-decoration: none;
 }
+.lang span { padding: 8px 10px; border-radius: 999px; transition: color .12s ease, background-color .12s ease; }
 .lang:hover { color: var(--ink); }
-.lang.on { color: var(--paper); background: var(--ink); }
+.lang.on span { color: var(--paper); background: var(--ink); }
+.lang:focus-visible { outline: 0; }
+.lang:focus-visible span { outline: 2px solid var(--ink); outline-offset: 2px; }
 /* 中文 is two wide glyphs; letter-spacing built for EN and ES pulls it apart. */
 .lang[lang="zh-Hans"] { letter-spacing: 0.02em; }
 
 .legal-note { margin: -12px 0 22px; }
+
+/* ---- the bar that follows the page down ------------------------------- */
+/*
+ * The page is five or six screens long and the badge used to appear twice,
+ * at the top and at the bottom, with nowhere to act in between. This bar
+ * slides in once the hero's button has scrolled away and slides out again
+ * when the closing band, which has its own, comes into view. It never sits
+ * on top of a badge that is already on screen.
+ *
+ * It starts inert and hidden, so without script it simply never appears.
+ */
+.dock {
+  position: fixed; inset: 0 0 auto; z-index: 20;
+  background: rgba(246, 241, 231, .94);
+  -webkit-backdrop-filter: saturate(1.2) blur(10px); backdrop-filter: saturate(1.2) blur(10px);
+  border-bottom: 1px solid var(--rule);
+  transform: translateY(-101%); visibility: hidden;
+  transition: transform .32s cubic-bezier(.16,1,.3,1), visibility 0s linear .32s;
+}
+.dock.on { transform: none; visibility: visible; transition: transform .32s cubic-bezier(.16,1,.3,1), visibility 0s; }
+@media (prefers-reduced-motion: reduce) { .dock, .dock.on { transition: none; } }
+.dock-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: var(--dock); }
+.dock .badge img { height: 40px; }
+.dock .android-cta { min-height: 40px; }
 
 /* ---- Chinese ---------------------------------------------------------- */
 /*
@@ -235,7 +305,7 @@ a { color: var(--ink); text-underline-offset: 3px; }
  * onto the English and Spanish pages.
  */
 html[lang="zh-Hans"] h1, html[lang="zh-Hans"] h2, html[lang="zh-Hans"] h3,
-html[lang="zh-Hans"] .stat-line { letter-spacing: 0; }
+html[lang="zh-Hans"] .qa summary { letter-spacing: 0; }
 html[lang="zh-Hans"] h1 { line-height: 1.22; }
 html[lang="zh-Hans"] h2 { line-height: 1.34; }
 html[lang="zh-Hans"] body { line-height: 1.85; }
@@ -245,21 +315,25 @@ html[lang="zh-Hans"] .num, html[lang="zh-Hans"] .agency,
 html[lang="zh-Hans"] .agency-full { letter-spacing: 0.06em; }
 
 /* ---- hero ------------------------------------------------------------- */
-
 /*
  * The headline spans both columns and the picture sits beside the paragraph,
  * not beside the headline. Setting them side by side halved the measure, and
- * "Know what you're eating." wants about eleven ems: in half a shell that
- * caps the type at 49px, which is a subheading pretending to be a headline.
- * Given the whole page it runs at full size on two lines, which is the line.
+ * the headline wants about eleven ems: in half a shell that caps the type at
+ * 49px, which is a subheading pretending to be a headline. Given the whole
+ * page it runs at full size on two lines, which is the line.
+ *
+ * The drawing stays, rather than a screenshot of a verdict. A phone mockup
+ * was tried on 2026-09-22 and taken out the same day at Dave's call; the real
+ * screens are three scrolls down, in the order a person meets them.
  */
 .hero {
-  display: grid; gap: clamp(24px, 2.6vw, 34px) clamp(28px, 4vw, 56px);
+  display: grid; gap: clamp(22px, 2.6vw, 34px) clamp(28px, 4vw, 56px);
   grid-template-columns: 1fr;
-  padding-block: clamp(36px, 4.4vw, 60px) clamp(48px, 5.4vw, 72px);
+  padding-block: clamp(28px, 4.4vw, 60px) clamp(48px, 5.4vw, 72px);
 }
 .hero h1 { grid-column: 1 / -1; }
-.hero .lede { margin: 0 0 32px; }
+.hero .lede { margin: 0 0 26px; }
+.hero .cta { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 22px; }
 .hero-plate { justify-self: center; width: 100%; max-width: 580px; }
 .hero-plate img { display: block; width: 100%; height: auto; }
 
@@ -269,57 +343,108 @@ html[lang="zh-Hans"] .agency-full { letter-spacing: 0.06em; }
   .hero-plate { justify-self: end; align-self: start; margin: -22px -3% 0 0; }
 }
 
+/* ---- the Android waitlist --------------------------------------------- */
+/*
+ * A disclosure rather than a form sitting open under the badge. Most
+ * visitors are on an iPhone or a laptop and the offer is one line to them.
+ * On Android the script opens it, because for that visitor it is the only
+ * thing on the page they can act on.
+ *
+ * What is promised under the field is what the server does: one email, then
+ * the address is deleted. It is written into the privacy policy as well.
+ */
+.android-box { margin-top: 10px; }
+.android-box summary {
+  display: inline-flex; align-items: center; min-height: 44px; cursor: pointer;
+  list-style: none; font-size: 0.9375rem; color: var(--ink-muted);
+  text-decoration: underline; text-decoration-color: var(--rule);
+  text-decoration-thickness: 1px; text-underline-offset: 4px;
+}
+.android-box summary::-webkit-details-marker { display: none; }
+.android-box summary:hover { color: var(--ink); text-decoration-color: currentColor; }
+.android .android-box summary { color: var(--ink); font-weight: 500; text-decoration: none; cursor: default; }
+.notify { margin-top: 6px; max-width: 26rem; }
+.notify-row { display: flex; gap: 8px; }
+.notify input[type="email"] {
+  flex: 1; min-width: 0; height: 48px; padding: 0 18px;
+  font: inherit; font-size: 1rem; color: var(--ink);
+  background: var(--card); border: 1px solid var(--rule); border-radius: 999px;
+}
+.notify input[type="email"]::placeholder { color: var(--ink-faint); }
+.notify input[type="email"]:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+.notify button {
+  flex: none; height: 48px; padding: 0 22px; border: 0; border-radius: 999px;
+  font: inherit; font-size: 0.9375rem; font-weight: 600; cursor: pointer;
+  background: var(--ink); color: var(--paper);
+}
+.notify button:disabled { opacity: .55; cursor: progress; }
+.notify-note { margin-top: 10px; }
+.notify-status { margin-top: 8px; font-size: 0.9375rem; color: var(--ink); }
+.notify-status:empty { display: none; }
+.notify.done .notify-row, .notify.done .notify-note { display: none; }
+/* A field no person sees. Anything that fills it in is not a person. */
+.notify .trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+
 /* ---- bands ------------------------------------------------------------ */
 
 .band { padding-block: var(--band); }
 .band.sunk { background: var(--sunk); }
 .band.ruled { border-top: 1px solid var(--rule); }
 .band-head { max-width: 40rem; }
-.band-head .lede { max-width: 46ch; margin-top: 20px; }
-
-/* ---- the pivot -------------------------------------------------------- */
-/*
- * This held a cited statistic and now holds a plain statement, which is why
- * there is no mono attribution line beside it any more: nothing here is
- * quoting anybody, so nothing here should be dressed as a quotation.
- */
-
-.stat {
-  margin: clamp(40px, 5vw, 60px) 0 0;
-  padding: 26px 0 0; border-top: 1px solid var(--rule);
-  max-width: 48ch;
-}
-.stat-line {
-  font-size: clamp(1.25rem, 2.2vw, 1.6rem); font-weight: 500; line-height: 1.28;
-  letter-spacing: -0.02em; color: var(--ink); text-wrap: balance;
-  margin-bottom: 12px;
-}
+.band-head .lede { max-width: 46ch; margin-top: 18px; }
 
 /* ---- plate cards ------------------------------------------------------ */
-
-.cards { display: grid; gap: 1px; margin-top: clamp(36px, 4vw, 52px); background: var(--rule); border: 1px solid var(--rule); }
-@media (min-width: 760px) { .cards { grid-template-columns: repeat(3, 1fr); } }
-.card { background: var(--card); padding: 26px 26px 30px; display: flex; flex-direction: column; }
-.card .plate { height: 138px; margin: 2px 0 24px; display: flex; align-items: flex-end; }
-.card .plate img { height: 100%; width: auto; max-width: 100%; object-fit: contain; object-position: left bottom; }
-.card h3 { margin-bottom: 10px; }
+/*
+ * Three across on a wide screen. On a phone each card lays its plate beside
+ * its text instead of above it, which roughly halves the section's height:
+ * three plates stacked at full size were three screens of scrolling for
+ * three sentences.
+ */
+.cards { display: grid; gap: 1px; margin-top: clamp(30px, 4vw, 52px); background: var(--rule); border: 1px solid var(--rule); }
+.card { background: var(--card); padding: 20px; display: grid; grid-template-columns: 76px minmax(0, 1fr); column-gap: 18px; align-items: start; }
+.card .plate { grid-row: span 2; height: 64px; display: flex; align-items: flex-start; }
+.card .plate img { height: 100%; width: 100%; object-fit: contain; object-position: left top; }
+.card h3 { font-size: 1.125rem; margin-bottom: 6px; }
 .card p { font-size: 0.9375rem; line-height: 1.55; }
+@media (min-width: 760px) {
+  .cards { grid-template-columns: repeat(3, 1fr); }
+  .card { padding: 26px 26px 30px; display: flex; flex-direction: column; }
+  .card .plate { height: 138px; margin: 2px 0 24px; align-items: flex-end; }
+  .card .plate img { width: auto; max-width: 100%; object-position: left bottom; }
+  .card h3 { font-size: 1.3125rem; margin-bottom: 10px; }
+}
 
-.aside { margin-top: 30px; font-size: 1.0625rem; color: var(--ink); }
+.aside { margin-top: 26px; font-size: 1.0625rem; color: var(--ink); }
 
 /* ---- the three screens ------------------------------------------------ */
-
-.steps { display: grid; gap: clamp(38px, 4vw, 46px); margin-top: clamp(44px, 5vw, 64px); }
-@media (min-width: 760px) { .steps { grid-template-columns: repeat(3, 1fr); } }
+/*
+ * Side by side on a wide screen. On a phone they become a row you swipe, with
+ * the next screen showing at the edge so it is obvious there is one: three
+ * full-height phone screenshots stacked were the longest stretch of the page.
+ * The row bleeds to the screen edges and snaps to the gutter.
+ */
+.steps { display: grid; gap: clamp(38px, 4vw, 46px); margin-top: clamp(36px, 5vw, 64px); }
 .step img.screen {
   display: block; width: 100%; height: auto;
   border-radius: 12.5% / 5.75%;
   border: 1px solid var(--rule);
   box-shadow: 0 1px 2px rgba(22,19,15,.09), 0 22px 40px -18px rgba(22,19,15,.34);
 }
-.step .num { display: block; margin: 24px 0 8px; }
+.step .num { display: block; margin: 22px 0 8px; }
 .step h3 { margin-bottom: 8px; }
 .step p { font-size: 0.9375rem; line-height: 1.55; }
+@media (max-width: 759px) {
+  .steps {
+    grid-auto-flow: column; grid-auto-columns: 74%; gap: 16px;
+    overflow-x: auto; overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter);
+    margin-inline: calc(-1 * var(--gutter)); padding: 0 var(--gutter) 30px;
+    margin-bottom: -30px; scrollbar-width: none;
+  }
+  .steps::-webkit-scrollbar { display: none; }
+  .step { scroll-snap-align: start; }
+}
+@media (min-width: 760px) { .steps { grid-template-columns: repeat(3, 1fr); } }
 
 /* ---- feature rows ----------------------------------------------------- */
 
@@ -328,17 +453,24 @@ html[lang="zh-Hans"] .agency-full { letter-spacing: 0.06em; }
    it reads as a mistake rather than as two rules. */
 .row:first-child { border-top: 0; padding-top: 0; }
 .row {
-  display: grid; gap: clamp(24px, 4vw, 64px); align-items: center;
-  padding: clamp(44px, 5vw, 64px) 0; border-top: 1px solid var(--rule);
+  display: grid; gap: clamp(20px, 4vw, 64px); align-items: center;
+  padding: clamp(40px, 5vw, 64px) 0; border-top: 1px solid var(--rule);
 }
 @media (min-width: 820px) {
   .row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .row.flip .row-plate { order: -1; }
 }
 .row-plate { display: flex; justify-content: center; }
-.row-plate img { display: block; max-width: min(300px, 78%); height: auto; }
+.row-plate img { display: block; max-width: min(200px, 60%); height: auto; }
+@media (min-width: 820px) { .row-plate img { max-width: min(300px, 78%); } }
 .row h3 { font-size: clamp(1.45rem, 2.3vw, 1.85rem); letter-spacing: -0.025em; margin-bottom: 14px; }
 .row p { max-width: 40ch; }
+
+/* ---- proof ------------------------------------------------------------ */
+
+.proof { display: grid; gap: clamp(28px, 4vw, 64px); align-items: center; }
+@media (min-width: 820px) { .proof { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+.proof .lede { max-width: 42ch; margin-top: 18px; }
 
 /*
  * The chips are buttons, not decoration, and they answer in a panel below
@@ -352,7 +484,7 @@ html[lang="zh-Hans"] .agency-full { letter-spacing: 0.06em; }
   font-family: var(--mono); font-size: 0.6875rem; font-weight: 500;
   letter-spacing: 0.12em; color: var(--ink-muted);
   border: 1px solid var(--rule); background: var(--card);
-  padding: 8px 13px; border-radius: 999px; cursor: pointer;
+  min-height: 36px; padding: 8px 14px; border-radius: 999px; cursor: pointer;
   transition: color .12s ease, border-color .12s ease, background-color .12s ease;
 }
 .agency:hover { color: var(--ink); border-color: var(--ink-faint); }
@@ -371,17 +503,9 @@ html[lang="zh-Hans"] .agency-full { letter-spacing: 0.06em; }
 /*
  * All four entries live in ONE grid cell, stacked, and the cell is therefore
  * always as tall as the longest of them. Only opacity changes, so moving from
- * chip to chip cannot move anything on the page.
- *
- * The first version reserved space with a min-height instead, which was wrong
- * twice over: it only applied above 820px, and the panel started hidden, so
- * the first hover grew the box from nothing and leaving collapsed it again.
- * Every hover in and out shoved the rest of the page. A guessed height is also
- * a guess about a font that had not loaded yet and a column width that varies;
- * the tallest child measures itself and is right at every width.
- *
- * One entry is shown from the start. An empty box waiting to be discovered is
- * both a worse resting state and a second thing to size around.
+ * chip to chip cannot move anything on the page. A reserved min-height was
+ * tried first and shoved the page on every hover; the tallest child measures
+ * itself and is right at every width.
  */
 .agency-detail {
   display: grid;
@@ -406,31 +530,47 @@ html[lang="zh-Hans"] .agency-full { letter-spacing: 0.06em; }
 }
 .agency-body { font-size: 0.9375rem; line-height: 1.55; color: var(--ink-muted); margin: 0; }
 
-/* ---- testimonials ----------------------------------------------------- */
-
-.quotes { display: grid; gap: 20px; margin-top: clamp(38px, 4vw, 54px); }
-@media (min-width: 820px) { .quotes { grid-template-columns: repeat(3, 1fr); } }
-.quote {
-  /* <figure> carries a UA margin of 1em 40px. Without this the cards are
-     inset forty pixels on each side and nothing lines up with the heading. */
-  margin: 0;
-  background: var(--card); border: 1px solid var(--rule);
-  padding: 28px 26px 26px; display: flex; flex-direction: column;
+/* ---- questions -------------------------------------------------------- */
+/*
+ * Native disclosures, so they open by keyboard, by screen reader and by the
+ * browser's own find-in-page with no script at all. The plus is two bars and
+ * the vertical one lies down when the answer is open.
+ */
+.faq-grid { display: grid; gap: 30px; }
+@media (min-width: 880px) {
+  .faq-grid { grid-template-columns: minmax(0, .8fr) minmax(0, 1.4fr); gap: 64px; align-items: start; }
 }
-.quote blockquote { margin: 0 0 20px; font-size: 1.0625rem; line-height: 1.55; color: var(--ink); }
-.quote figcaption { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--rule); }
+.faq { border-top: 1px solid var(--rule); }
+.qa { border-bottom: 1px solid var(--rule); }
+.qa summary {
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  min-height: 44px; padding: 18px 0; cursor: pointer; list-style: none;
+  font-size: 1.125rem; font-weight: 500; line-height: 1.35; letter-spacing: -0.01em; color: var(--ink);
+}
+.qa summary::-webkit-details-marker { display: none; }
+.qa summary i { position: relative; width: 14px; height: 14px; flex: none; }
+.qa summary i::before, .qa summary i::after {
+  content: ""; position: absolute; left: 0; top: 6px; width: 14px; height: 2px;
+  background: var(--ink); transition: transform .2s cubic-bezier(.16,1,.3,1);
+}
+.qa summary i::after { transform: rotate(90deg); }
+.qa[open] summary i::after { transform: rotate(0deg); }
+@media (prefers-reduced-motion: reduce) { .qa summary i::after { transition: none; } }
+.qa p { padding: 0 34px 22px 0; max-width: 60ch; font-size: 1rem; }
 
 /* ---- closing band ----------------------------------------------------- */
 
 .close {
   position: relative; overflow: hidden;
   background: var(--ink); color: var(--paper);
-  padding-block: clamp(80px, 10vw, 136px);
+  padding-block: clamp(72px, 10vw, 136px);
 }
 .close h2 { color: var(--paper); }
 .close p { color: #B8AD99; }
 .close .shell { position: relative; }
-.close-inner { max-width: 34rem; }
+.close-inner { max-width: 36rem; }
+.close .lede { margin: 18px 0 32px; }
+.close .cta { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; }
 .close-plate {
   position: absolute; right: -26px; bottom: 10px; width: min(400px, 42%);
   opacity: .28; pointer-events: none; user-select: none;
@@ -471,6 +611,15 @@ const badge = (colour: "black" | "white", alt: string) =>
   `<img src="/media/appstore-badge-${colour}.svg" width="162" height="54"` +
   ` alt="${alt}"></a>`;
 
+/**
+ * The QR code, for desktop visitors. Decorative to a screen reader, because
+ * the badge beside it is the same destination as a link somebody can follow;
+ * the caption is visible text for everybody else.
+ */
+const qr = (caption: string) =>
+  `<div class="qr"><img src="/media/qr-get.svg" width="76" height="76" alt="">` +
+  `<p>${caption}</p></div>`;
+
 /*
  * Intrinsic sizes, so a plate reserves its box before it arrives. Without
  * these a lazily loaded image is zero pixels tall until it lands, and every
@@ -495,19 +644,16 @@ const PLATE_SIZE: Record<string, [number, number]> = {
  * flag, for the reason set out beside LANGUAGE_CODES: a flag is a country and
  * a language is not.
  *
- * It sits in the masthead. The brief for above the fold was a headline, a line
- * under it, one button and one picture, and this is a fifth thing, which I
- * think it earns: somebody who cannot read the page cannot act on any of the
- * other four, and a switcher only in the footer is a switcher most people
- * never find. It is small, quiet, and in the mono voice the rest of the
- * furniture uses.
+ * It sits in the masthead, because somebody who cannot read the page cannot
+ * act on anything else on it, and a switcher only in the footer is a switcher
+ * most people never find.
  */
 function switcher(current: Lang, label: string): string {
   const links = SITE_LANGUAGES.map((code) => {
     const on = code === current;
     return `<a class="lang${on ? " on" : ""}" href="/${code}" hreflang="${HTML_LANG[code]}"` +
       ` lang="${HTML_LANG[code]}"${on ? ' aria-current="true"' : ""}` +
-      ` title="${LANGUAGE_NAMES[code]}">${LANGUAGE_CODES[code]}</a>`;
+      ` title="${LANGUAGE_NAMES[code]}"><span>${LANGUAGE_CODES[code]}</span></a>`;
   }).join("");
   return `<nav class="langs" aria-label="${label}">${links}</nav>`;
 }
@@ -518,34 +664,93 @@ const plate = (name: string, alt = "") => {
     ` alt="${alt}" loading="lazy" decoding="async">`;
 };
 
+/**
+ * The waitlist form. One per page: every other Android prompt is a link to
+ * #android, which the script turns into "open this and put the cursor in it".
+ * The messages ride on data attributes so the script needs no copy of its own
+ * and says them in the page's language.
+ */
+function androidBox(c: Copy, lang: Lang): string {
+  return `<details class="android-box" id="android">
+        <summary>${c.androidSummary}</summary>
+        <form class="notify" data-lang="${lang}" data-thanks="${c.androidThanks}"
+          data-invalid="${c.androidInvalid}" data-failed="${c.androidFailed}" novalidate>
+          <div class="notify-row">
+            <label class="sr" for="notify-email">${c.emailLabel}</label>
+            <input id="notify-email" name="email" type="email" inputmode="email"
+              autocomplete="email" autocapitalize="off" spellcheck="false"
+              maxlength="254" placeholder="you@example.com" required>
+            <button type="submit">${c.androidSubmit}</button>
+          </div>
+          <input class="trap" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <p class="notify-note meta">${c.androidNote}</p>
+          <p class="notify-status" role="status" aria-live="polite"></p>
+        </form>
+      </details>`;
+}
+
+/** Answers carry the odd link; the structured data wants plain text. */
+const plain = (html: string) => html.replace(/<[^>]+>/g, "");
+
+/**
+ * The questions again, as FAQPage structured data. Google stopped showing FAQ
+ * rich results for most sites in 2023, so this is not a bet on a snippet; it
+ * is the cheapest way to tell any crawler, including the ones answering
+ * questions directly, what the page says about price, privacy and accuracy.
+ * `<` is escaped so no answer can ever close the script element early.
+ */
+function faqSchema(c: Copy, lang: Lang): string {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    inLanguage: HTML_LANG[lang],
+    mainEntity: c.faq.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: plain(item.a) },
+    })),
+  };
+  return `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, "\\u003c")}</script>`;
+}
+
 /** The page, in one language. */
 function body(c: Copy, lang: Lang): string {
   return `
-<header class="top">
+<header class="top" id="top">
   <div class="shell top-row">
     ${lockupLink(`/${lang}`, c.homeLabel)}
     ${switcher(lang, c.switcherLabel)}
   </div>
 </header>
 
+<div class="dock" inert>
+  <div class="shell dock-row">
+    <a class="lockup" href="#top" aria-label="${c.homeLabel}">${LOCKUP}</a>
+    <div>
+      <a class="badge" href="${APP_STORE_URL}"><img src="/media/appstore-badge-black.svg" width="120" height="40" alt="${c.badgeAlt}"></a>
+      <a class="android-cta" href="#android">${c.dockAndroid}</a>
+    </div>
+  </div>
+</div>
+
 <main>
 
-  <!-- Hook. Headline, one line under it, one button, one picture. The
-       switcher above is the only other thing, and the note beside it explains
-       why it is allowed to be.
+  <!-- Hook. Headline, one line under it, the button, and one picture.
 
-       NO SUBSCRIPTION TERMS ANYWHERE ON THIS PAGE, DELIBERATELY. Nothing is
-       sold here: the trial is disclosed where the money actually moves, on the
-       paywall and in Apple's sheet, both of which state the price, the renewal
-       and how to cancel. A half-line that named the trial without naming the
-       price was a claim needing its own qualifier, so it bought no compliance
-       and spent attention the CTA needed. -->
+       Price is answered once, in full, in the questions near the end: what is
+       free, which plan has the trial, where the price is shown and where you
+       cancel. Not up here, where half a line naming the trial without the
+       price would be a claim needing its own qualifier. -->
   <section class="shell hero">
     <h1>${c.heroTitle}</h1>
     <div class="hero-copy">
       <p class="lede">${c.heroLede}</p>
-      ${badge("black", c.badgeAlt)}
-      <a class="cue" href="#aisle"><span class="cue-rail" aria-hidden="true"></span>${c.cue}</a>
+      <div class="cta">
+        ${badge("black", c.badgeAlt)}
+        ${qr(c.qrCaption)}
+      </div>
+      ${androidBox(c, lang)}
+      <a class="cue" href="#how"><span class="cue-rail" aria-hidden="true"></span>${c.cue}</a>
     </div>
     <div class="hero-plate">
       <img src="/media/plates/scanning.webp" width="1200" height="682" alt="${c.heroAlt}" fetchpriority="high" decoding="async">
@@ -561,11 +766,6 @@ function body(c: Copy, lang: Lang): string {
         <p class="eyebrow">${c.aisleEyebrow}</p>
         <h2>${c.aisleTitle}</h2>
         <p class="lede">${c.aisleLede}</p>
-      </div>
-
-      <div class="stat rise">
-        <p class="stat-line">${c.pivotLine}</p>
-        <p>${c.pivotBody}</p>
       </div>
 
       <div class="cards rise">
@@ -586,7 +786,7 @@ function body(c: Copy, lang: Lang): string {
 
   <!-- Solution. The three screens are real captures of the shipping build,
        in the order a person actually meets them. -->
-  <section class="band">
+  <section class="band" id="how">
     <div class="shell">
       <div class="band-head rise">
         <p class="eyebrow">${c.doesEyebrow}</p>
@@ -594,10 +794,10 @@ function body(c: Copy, lang: Lang): string {
         <p class="lede">${c.doesLede}</p>
       </div>
 
-      <div class="steps">
+      <div class="steps rise">
         ${["04-who", "05-allergens", "01-verdict"]
           .map(
-            (file, i) => `<div class="step rise">
+            (file, i) => `<div class="step">
           <img class="screen" src="/media/screens/${file}.webp" width="660" height="1434" loading="lazy" decoding="async" alt="${c.steps[i].alt}">
           <span class="num meta">${c.steps[i].num}</span>
           <h3>${c.steps[i].title}</h3>
@@ -609,37 +809,10 @@ function body(c: Copy, lang: Lang): string {
     </div>
   </section>
 
-  <!-- The three things that actually separate this from a barcode lookup. -->
+  <!-- Solution, continued. What separates this from a barcode lookup. -->
   <section class="band ruled">
     <div class="shell rows">
       <div class="row rise">
-        <div>
-          <h3>${c.sourcesTitle}</h3>
-          <p>${c.sourcesBody}</p>
-          <ul class="agencies">
-            ${c.agencies
-              .map(
-                (a, i) => `<li><button class="agency${i === 0 ? " on" : ""}" type="button" data-agency="${a.id}"
-              aria-pressed="${i === 0}"
-              aria-controls="agency-detail">${a.id.toUpperCase()}</button></li>`,
-              )
-              .join("\n            ")}
-          </ul>
-          <div class="agency-detail" id="agency-detail">
-            ${c.agencies
-              .map(
-                (a, i) => `<div class="agency-panel${i === 0 ? " on" : ""}" data-agency="${a.id}">
-              <p class="agency-full">${a.full}</p>
-              <p class="agency-body">${a.body}</p>
-            </div>`,
-              )
-              .join("\n            ")}
-          </div>
-        </div>
-        <div class="row-plate">${plate("sources")}</div>
-      </div>
-
-      <div class="row flip rise">
         <div>
           <h3>${c.profilesTitle}</h3>
           <p>${c.profilesBody}</p>
@@ -647,7 +820,7 @@ function body(c: Copy, lang: Lang): string {
         <div class="row-plate">${plate("bowls")}</div>
       </div>
 
-      <div class="row rise">
+      <div class="row flip rise">
         <div>
           <h3>${c.photoTitle}</h3>
           <p>${c.photoBodyBefore}<a href="/privacy">${c.photoLink}</a>${c.photoBodyAfter}</p>
@@ -657,24 +830,66 @@ function body(c: Copy, lang: Lang): string {
     </div>
   </section>
 
-  <!-- Social proof. See the note above the testimonials in siteCopy.ts: these
-       are placeholders and every one of them needs replacing. -->
-  <section class="band sunk">
-    <div class="shell">
+  <!-- Questions, as the last part of the solution rather than a stage of
+       their own. Accuracy, signal, the photo, the price, the languages and
+       Android are all "how does this work for me", so they are answered while
+       the product is still being explained. Placed after the proof instead,
+       they would push the page's strongest trust signal away from the button
+       it exists to support. -->
+  <section class="band sunk" id="faq">
+    <div class="shell faq-grid">
       <div class="band-head rise">
-        <p class="eyebrow">${c.quotesEyebrow}</p>
-        <h2>${c.quotesTitle}</h2>
+        <p class="eyebrow">${c.faqEyebrow}</p>
+        <h2>${c.faqTitle}</h2>
       </div>
-      <div class="quotes rise">
-        ${c.testimonials
+      <div class="faq rise">
+        ${c.faq
           .map(
-            (t) => `<figure class="quote">
-          <blockquote>&ldquo;${t.quote}&rdquo;</blockquote>
-          <figcaption><strong>${t.name}</strong><br><span class="meta">${t.detail}</span></figcaption>
-        </figure>`,
+            (item) => `<details class="qa">
+          <summary>${item.q}<i aria-hidden="true"></i></summary>
+          <p>${item.a}</p>
+        </details>`,
           )
           .join("\n        ")}
       </div>
+    </div>
+  </section>
+
+  <!-- Social proof. The page runs hook, pain, solution, proof, action, and
+       this is the proof: until there are real reviews, the strongest reason
+       to believe what the app says is who it quotes. It sits directly above
+       the button on purpose.
+
+       When there is an App Store rating worth showing, and real quotes from
+       real people, they go in this band beside the sources. Three invented
+       testimonials held this position until 2026-09-22; see siteCopy.ts. -->
+  <section class="band" id="sources">
+    <div class="shell proof">
+      <div class="rise">
+        <p class="eyebrow">${c.proofEyebrow}</p>
+        <h2>${c.sourcesTitle}</h2>
+        <p class="lede">${c.sourcesBody}</p>
+        <ul class="agencies">
+          ${c.agencies
+            .map(
+              (a, i) => `<li><button class="agency${i === 0 ? " on" : ""}" type="button" data-agency="${a.id}"
+            aria-pressed="${i === 0}"
+            aria-controls="agency-detail">${a.id.toUpperCase()}</button></li>`,
+            )
+            .join("\n            ")}
+        </ul>
+        <div class="agency-detail" id="agency-detail">
+          ${c.agencies
+            .map(
+              (a, i) => `<div class="agency-panel${i === 0 ? " on" : ""}" data-agency="${a.id}">
+            <p class="agency-full">${a.full}</p>
+            <p class="agency-body">${a.body}</p>
+          </div>`,
+            )
+            .join("\n            ")}
+        </div>
+      </div>
+      <div class="row-plate rise">${plate("sources")}</div>
     </div>
   </section>
 
@@ -685,8 +900,12 @@ function body(c: Copy, lang: Lang): string {
     <div class="shell">
       <div class="close-inner">
         <h2>${c.closeTitle}</h2>
-        <p class="lede" style="margin:20px 0 34px">${c.closeLede}</p>
-        ${badge("white", c.badgeAlt)}
+        <p class="lede">${c.closeLede}</p>
+        <div class="cta">
+          ${badge("white", c.badgeAlt)}
+          <a class="android-cta" href="#android">${c.dockAndroid}</a>
+          ${qr(c.qrCaption).replace('width="76" height="76"', 'width="96" height="96"')}
+        </div>
       </div>
     </div>
   </section>
@@ -700,6 +919,95 @@ ${footerInner(c)}
 </footer>
 
 <script>
+  // Android first, before anything measures the page: marking the document
+  // swaps every badge for the waitlist, which changes heights.
+  //
+  // User agent sniffing is crude, and here crude is enough. The worst a wrong
+  // answer does is show an Android visitor the App Store badge they saw
+  // before this existed, or show an iPhone visitor a waitlist link.
+  (function () {
+    var box = document.getElementById("android");
+    if (!box) return;
+    if (/Android/i.test(navigator.userAgent)) {
+      document.documentElement.classList.add("android");
+      box.open = true;
+    }
+    if (location.hash === "#android") box.open = true;
+
+    var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var form = box.querySelector("form");
+    var input = form.querySelector('input[type="email"]');
+    var button = form.querySelector("button");
+    var status = form.querySelector(".notify-status");
+
+    // Every "Android?" link on the page lands here, opened, with the cursor in
+    // the field, rather than jumping to a closed disclosure somebody then has
+    // to find and open.
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest('a[href="#android"]');
+      if (!a) return;
+      e.preventDefault();
+      box.open = true;
+      box.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+      try { input.focus({ preventScroll: true }); } catch (_) { input.focus(); }
+      if (history.replaceState) history.replaceState(null, "", "#android");
+    });
+
+    function say(text) { status.textContent = text; }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var email = input.value.trim();
+      if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) {
+        say(form.dataset.invalid);
+        input.focus();
+        return;
+      }
+      button.disabled = true;
+      say("");
+      fetch("/api/waitlist/android", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email, lang: form.dataset.lang, website: form.website.value }),
+      })
+        .then(function (r) {
+          if (r.status === 400) throw new Error("invalid");
+          if (!r.ok) throw new Error("failed");
+          form.classList.add("done");
+          say(form.dataset.thanks);
+        })
+        .catch(function (err) {
+          say(err && err.message === "invalid" ? form.dataset.invalid : form.dataset.failed);
+        })
+        .then(function () { button.disabled = false; });
+    });
+  })();
+
+  // The bar that follows the page down.
+  //
+  // Shown only while the hero's call to action is above the screen and the
+  // closing band's is not yet on it, so there is never a second button beside
+  // one already visible. Inert whenever it is hidden, so it is never in the
+  // tab order or read aloud while nobody can see it.
+  (function () {
+    var dock = document.querySelector(".dock");
+    var hero = document.querySelector(".hero-copy");
+    var close = document.querySelector(".close");
+    if (!dock || !hero || !close || !("IntersectionObserver" in window)) return;
+    var heroGone = false, closeHere = false;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.target === hero) heroGone = !e.isIntersecting && e.boundingClientRect.top < 0;
+        else closeHere = e.isIntersecting;
+      });
+      var on = heroGone && !closeHere;
+      dock.classList.toggle("on", on);
+      if (on) dock.removeAttribute("inert"); else dock.setAttribute("inert", "");
+    });
+    io.observe(hero);
+    io.observe(close);
+  })();
+
   // The reveal.
   //
   // Three rules, all learned from the same bug. The class goes on from script,
@@ -824,6 +1132,7 @@ ${SITE_LANGUAGES.filter((l) => l !== lang)
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+${faqSchema(c, lang)}
 <style>${STYLE}</style>
 </head>
 <body>
@@ -901,6 +1210,27 @@ export function registerHomeRoutes(app: Express): void {
   app.get("/en", (_req, res) => res.type("html").send(PAGES.en));
   app.get("/es", (_req, res) => res.type("html").send(PAGES.es));
   app.get("/zh", (_req, res) => res.type("html").send(PAGES.zh));
+
+  /**
+   * Where the QR code points, and a short link worth printing.
+   *
+   * An iPhone, or anything that is not Android, goes to the App Store. An
+   * Android phone goes to the waitlist on the home page, in its own language,
+   * rather than to a store listing it cannot install from. The day there is
+   * an Android app this sends it to Google Play instead, and every code
+   * already printed keeps working.
+   *
+   * 302, not 301: a permanent redirect is cached by the browser, and this
+   * one is written to change.
+   */
+  app.get("/get", (req, res) => {
+    res.setHeader("Vary", "User-Agent, Accept-Language");
+    if (/android/i.test(req.headers["user-agent"] ?? "")) {
+      const lang = negotiate(req.headers["accept-language"]);
+      return res.redirect(302, `/${lang}#android`);
+    }
+    res.redirect(302, APP_STORE_URL);
+  });
 
   /**
    * The root negotiates rather than redirecting.
