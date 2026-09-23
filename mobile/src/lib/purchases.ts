@@ -272,6 +272,53 @@ export async function openManageSubscriptions(): Promise<void> {
 }
 
 /**
+ * Apple's offer code sheet: a code typed into Apple's own UI, redeemed by
+ * Apple, for a subscription offer set up in App Store Connect.
+ *
+ * This is how a free year reaches friends and family without breaking
+ * Guideline 3.1.1. The app never sees or checks the code. A field of our own
+ * that unlocked access would be exactly the "license key" the guideline bans,
+ * and it would be a second way into the app the server knows nothing about.
+ *
+ * FIRE AND FORGET, BECAUSE STOREKIT IS. The call returns once the sheet is up,
+ * not when a code is redeemed, and there is no callback for success. A
+ * redemption arrives like any other transaction: StoreKit hands it to
+ * RevenueCat, which updates CustomerInfo, which is what `onStoreEntitled`
+ * below listens for. Cancelling the sheet produces nothing at all.
+ *
+ * Returns false when there is no sheet to show, so the caller can say so
+ * rather than leave a tap that did nothing.
+ */
+export async function presentRedeemSheet(): Promise<boolean> {
+  if (!PURCHASES_ENABLED || !configured) return false;
+  try {
+    await Purchases.presentCodeRedemptionSheet();
+    return true;
+  } catch (error) {
+    console.warn('[PURCHASES] presentCodeRedemptionSheet failed', error);
+    return false;
+  }
+}
+
+/**
+ * Call `onEntitled` the next time the store reports this person entitled.
+ *
+ * For purchases that finish somewhere the app did not start them and cannot
+ * await: the offer code sheet above, today. Returns the unsubscribe, which the
+ * caller must run on unmount.
+ */
+export function onStoreEntitled(onEntitled: () => void): () => void {
+  if (!PURCHASES_ENABLED || !configured) return () => {};
+  const listener = (info: CustomerInfo) => {
+    if (storeSaysEntitled(info)) onEntitled();
+  };
+  Purchases.addCustomerInfoUpdateListener(listener);
+  return () => {
+    Purchases.removeCustomerInfoUpdateListener(listener);
+  };
+}
+
+/**
  * Whether the STORE already believes this device is subscribed.
  *
  * Cheap and silent — `getCustomerInfo` reads the SDK's cache and never shows

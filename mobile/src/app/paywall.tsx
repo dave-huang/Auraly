@@ -25,7 +25,9 @@ import {
   PurchaseCancelledError,
   ReceiptInUseError,
   getPlans,
+  onStoreEntitled,
   openManageSubscriptions,
+  presentRedeemSheet,
   purchasePlan,
   storeHasSubscription,
   storeSaysEntitled,
@@ -144,7 +146,21 @@ export default function PaywallScreen() {
 
   const [plans, setPlans] = useState<PlanOffer[] | null>(null);
   const [selected, setSelected] = useState<'monthly' | 'annual'>('annual');
-  const [busy, setBusy] = useState<'purchase' | 'restore' | null>(null);
+  const [busy, setBusy] = useState<'purchase' | 'restore' | 'redeem' | null>(null);
+
+  /**
+   * An offer code redemption interrupted by sign-in, the same way a purchase
+   * can be. A separate flag from awaitingAccount, because the thing to resume
+   * is a different sheet, and neither may ever be mistaken for the other.
+   */
+  const awaitingRedeem = useRef(false);
+
+  /**
+   * Apple's code sheet has been shown, so a redemption may arrive. Only then
+   * does this screen listen for the store: StoreKit reports a redeemed code
+   * as a transaction, not as an answer to the call that opened the sheet.
+   */
+  const [watchingRedeem, setWatchingRedeem] = useState(false);
 
   useEffect(() => {
     void getPlans().then(setPlans);
@@ -458,6 +474,28 @@ export default function PaywallScreen() {
   }
 
   /**
+   * Redeem an offer code: a free year for friends and family, set up in App
+   * Store Connect and typed into Apple's own sheet.
+   *
+   * Sign-in first, for the reason a purchase needs it: access is granted by
+   * our server against an account, and a code redeemed with no account would
+   * land on the store identity alone, leaving the camera locked with nothing
+   * able to explain why.
+   */
+  async function redeem() {
+    if (!user) {
+      awaitingRedeem.current = true;
+      setSigningIn(true);
+      return;
+    }
+    if (await presentRedeemSheet()) {
+      setWatchingRedeem(true);
+      return;
+    }
+    Alert.alert(t('paywall.redeemUnavailableTitle'), t('paywall.redeemUnavailableBody'));
+  }
+
+  /**
    * PICK THE PURCHASE BACK UP, so Continue is pressed once and not twice.
    *
    * Tapping Continue with no account used to spend the tap on a detour: sign
@@ -488,7 +526,17 @@ export default function PaywallScreen() {
    * presenting a system sheet into a moving screen.
    */
   useEffect(() => {
-    if (!awaitingAccount.current || !user || !arrival) return;
+    if (!user || !arrival) return;
+    // A code, not a purchase, was waiting on the account. The server said
+    // during sign-in that this account already pays, so there is no free year
+    // to give; the mount check will take them through instead.
+    if (awaitingRedeem.current) {
+      awaitingRedeem.current = false;
+      if (arrival.subscribed) return;
+      const timer = setTimeout(() => void redeem(), RESUME_MS);
+      return () => clearTimeout(timer);
+    }
+    if (!awaitingAccount.current) return;
     awaitingAccount.current = false;
     const timer = setTimeout(() => void resume(arrival.subscribed), RESUME_MS);
     // Cleared on unmount, which is what stops a resume firing into a screen
@@ -499,6 +547,33 @@ export default function PaywallScreen() {
     // this must fire on the arrival, not on every one.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, arrival]);
+
+  /**
+   * The redemption arriving. Same rule as a purchase: the store saying
+   * entitled is only the signal to ask OUR server, which is what grants
+   * access. Handled once, however many updates the store sends after it.
+   */
+  useEffect(() => {
+    if (!watchingRedeem) return;
+    let handled = false;
+    return onStoreEntitled(() => {
+      if (handled) return;
+      handled = true;
+      void (async () => {
+        setBusy('redeem');
+        try {
+          if (!(await awaitEntitlement())) {
+            // Redeemed, and our side has not caught up. Never "failed": the
+            // code is spent, and it will reach the account.
+            Alert.alert(t('paywall.redeemPendingTitle'), t('paywall.redeemPendingBody'));
+          }
+          goHome();
+        } finally {
+          setBusy(null);
+        }
+      })();
+    });
+  }, [watchingRedeem, t]);
 
   async function restore() {
     setBusy('restore');
@@ -776,14 +851,32 @@ export default function PaywallScreen() {
           screen with one headline and two prices it was the third loudest
           thing, competing with the button.
         */}
-        <View style={styles.legal}>
-          <LegalLink label={t('paywall.terms')} url={TERMS_URL} />
-          <ThemedText style={[styles.fineText, { color: surface.inkFaint }]}>·</ThemedText>
-          <LegalLink label={t('paywall.privacy')} url={PRIVACY_URL} />
-          <ThemedText style={[styles.fineText, { color: surface.inkFaint }]}>·</ThemedText>
-          <Pressable onPress={() => void restore()} disabled={busy !== null} hitSlop={12}>
+        <View style={styles.footerLinks}>
+          <View style={styles.legal}>
+            <LegalLink label={t('paywall.terms')} url={TERMS_URL} />
+            <ThemedText style={[styles.fineText, { color: surface.inkFaint }]}>·</ThemedText>
+            <LegalLink label={t('paywall.privacy')} url={PRIVACY_URL} />
+            <ThemedText style={[styles.fineText, { color: surface.inkFaint }]}>·</ThemedText>
+            <Pressable onPress={() => void restore()} disabled={busy !== null} hitSlop={12}>
+              <ThemedText style={[styles.fineText, styles.link, { color: surface.inkMuted }]}>
+                {busy === 'restore' ? t('paywall.working') : t('paywall.restore')}
+              </ThemedText>
+            </Pressable>
+          </View>
+
+          {/* Offer codes: how friends and family get a free year. On a line of
+              its own because a fourth item does not fit the row above in
+              Spanish, and below Restore, which Apple requires on this screen
+              and this is not. */}
+          <Pressable
+            onPress={() => void redeem()}
+            disabled={busy !== null}
+            hitSlop={12}
+            style={styles.redeem}
+            accessibilityRole="button"
+          >
             <ThemedText style={[styles.fineText, styles.link, { color: surface.inkMuted }]}>
-              {busy === 'restore' ? t('paywall.working') : t('paywall.restore')}
+              {busy === 'redeem' ? t('paywall.working') : t('paywall.redeem')}
             </ThemedText>
           </Pressable>
         </View>
@@ -801,6 +894,7 @@ export default function PaywallScreen() {
         // would be read as consent to charge.
         onClose={() => {
           awaitingAccount.current = false;
+          awaitingRedeem.current = false;
           setSigningIn(false);
         }}
         onSignedIn={(subscribed) => {
@@ -1122,6 +1216,10 @@ const styles = StyleSheet.create({
   waiting: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   disabled: { opacity: 0.4 },
   restore: { alignItems: 'center', paddingVertical: Space.sm },
+  // The legal row and the code link read as one footer, not two sections the
+  // screen's own 24pt gap would hold apart.
+  footerLinks: { gap: Space.md },
+  redeem: { alignSelf: 'center' },
   legal: {
     flexDirection: 'row',
     justifyContent: 'center',
