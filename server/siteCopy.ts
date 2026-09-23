@@ -311,7 +311,7 @@ const en: Copy = {
     "straight away. No second photo.",
 
   faqEyebrow: "Questions",
-  faqTitle: "Before you download.",
+  faqTitle: "Good to know.",
   faq: [
     {
       q: "How accurate is it?",
@@ -515,7 +515,7 @@ const es: Copy = {
     "nuevo al instante. Sin repetir la foto.",
 
   faqEyebrow: "Preguntas",
-  faqTitle: "Antes de descargarla.",
+  faqTitle: "Bueno saberlo.",
   faq: [
     {
       q: "¿Es fiable?",
@@ -693,7 +693,7 @@ const zh: Copy = {
   profilesBody: "切换到另一份档案，屏幕上的扫描结果会立刻重新核对。不用再拍一次。",
 
   faqEyebrow: "常见问题",
-  faqTitle: "下载之前。",
+  faqTitle: "你可能想知道。",
   faq: [
     {
       q: "准确吗？",

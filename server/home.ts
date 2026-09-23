@@ -822,40 +822,14 @@ function body(c: Copy, lang: Lang): string {
     </div>
   </section>
 
-  <!-- Questions, as the last part of the solution rather than a stage of
-       their own. Accuracy, signal, the photo, the price, the languages and
-       Android are all "how does this work for me", so they are answered while
-       the product is still being explained. Placed after the proof instead,
-       they would push the page's strongest trust signal away from the button
-       it exists to support. -->
-  <section class="band sunk" id="faq">
-    <div class="shell faq-grid">
-      <div class="band-head rise">
-        <p class="eyebrow">${c.faqEyebrow}</p>
-        <h2>${c.faqTitle}</h2>
-      </div>
-      <div class="faq rise">
-        ${c.faq
-          .map(
-            (item) => `<details class="qa">
-          <summary>${item.q}<i aria-hidden="true"></i></summary>
-          <p>${item.a}</p>
-        </details>`,
-          )
-          .join("\n        ")}
-      </div>
-    </div>
-  </section>
-
   <!-- Social proof. The page runs hook, pain, solution, proof, action, and
        this is the proof: until there are real reviews, the strongest reason
-       to believe what the app says is who it quotes. It sits directly above
-       the button on purpose.
+       to believe what the app says is who it quotes.
 
        When there is an App Store rating worth showing, and real quotes from
        real people, they go in this band beside the sources. Three invented
        testimonials held this position until 2026-09-22; see siteCopy.ts. -->
-  <section class="band" id="sources">
+  <section class="band ruled" id="sources">
     <div class="shell proof">
       <div class="rise">
         <p class="eyebrow">${c.proofEyebrow}</p>
@@ -882,6 +856,28 @@ function body(c: Copy, lang: Lang): string {
         </div>
       </div>
       <div class="row-plate rise">${plate("sources")}</div>
+    </div>
+  </section>
+
+  <!-- Questions, after the proof and before the button, at Dave's call on
+       2026-09-23. They answer what is left once somebody is persuaded:
+       accuracy, signal, the photo, the price, the languages and Android. -->
+  <section class="band sunk" id="faq">
+    <div class="shell faq-grid">
+      <div class="band-head rise">
+        <p class="eyebrow">${c.faqEyebrow}</p>
+        <h2>${c.faqTitle}</h2>
+      </div>
+      <div class="faq rise">
+        ${c.faq
+          .map(
+            (item) => `<details class="qa">
+          <summary>${item.q}<i aria-hidden="true"></i></summary>
+          <p>${item.a}</p>
+        </details>`,
+          )
+          .join("\n        ")}
+      </div>
     </div>
   </section>
 
