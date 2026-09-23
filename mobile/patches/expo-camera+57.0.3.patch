@@ -1,0 +1,66 @@
+diff --git a/node_modules/expo-camera/ios/Common/DeviceDiscovery.swift b/node_modules/expo-camera/ios/Common/DeviceDiscovery.swift
+index 89fdca0..c8f1b79 100644
+--- a/node_modules/expo-camera/ios/Common/DeviceDiscovery.swift
++++ b/node_modules/expo-camera/ios/Common/DeviceDiscovery.swift
+@@ -107,6 +107,20 @@ class DeviceDiscovery {
+   }
+ 
+   var defaultBackCamera: AVCaptureDevice? {
++    // Revely patch: prefer the virtual camera that includes the ultra-wide.
++    // Its constituent switching is what gives the system Camera app macro:
++    // bring a label closer than the main lens can focus and iOS moves to the
++    // ultra-wide, cropped to the same framing. The single wide-angle device
++    // this used to return can only go soft. CameraSessionManager.updateZoom
++    // opens it at the wide lens's own field of view, so the preview looks
++    // exactly as before. See mobile/patches/ for why this is a patch.
++    for type in [AVCaptureDevice.DeviceType.builtInTripleCamera, .builtInDualWideCamera] {
++      if let virtual = AVCaptureDevice.default(type, for: .video, position: .back),
++         self.backCameraLenses.contains(virtual) {
++        return virtual
++      }
++    }
++
+     if let standardBack = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) {
+       if self.backCameraLenses.contains(standardBack) {
+         return standardBack
+diff --git a/node_modules/expo-camera/ios/Current/CameraSessionManager.swift b/node_modules/expo-camera/ios/Current/CameraSessionManager.swift
+index 403e033..b65593c 100644
+--- a/node_modules/expo-camera/ios/Current/CameraSessionManager.swift
++++ b/node_modules/expo-camera/ios/Current/CameraSessionManager.swift
+@@ -217,13 +217,34 @@ class CameraSessionManager: NSObject, DeviceDiscoveryDelegate {
+     do {
+       try device.lockForConfiguration()
+       defer { device.unlockForConfiguration() }
+-      let minZoom = 1.0
+-      device.videoZoomFactor = minZoom * pow(device.activeFormat.videoMaxZoomFactor / minZoom, delegate.zoom)
++      // Revely patch: on a virtual camera that includes the ultra-wide, a
++      // factor of 1.0 IS the ultra-wide, so zoom 0 would open at 0.5x. Start
++      // from the first switch-over factor instead, which is the wide lens: the
++      // Camera app's "1x". Every other device keeps the original 1.0.
++      let minZoom = Self.wideLensZoomFactor(for: device)
++      if #available(iOS 15.0, *), device.isVirtualDevice {
++        // The default already, and stated anyway: `.auto` is the behaviour
++        // that switches to the ultra-wide when the subject is too close for
++        // the wide lens to focus. A restricted mode would bring the blur back.
++        device.setPrimaryConstituentDeviceSwitchingBehavior(.auto, restrictedSwitchingBehaviorConditions: [])
++      }
++      let factor = minZoom * pow(device.activeFormat.videoMaxZoomFactor / minZoom, delegate.zoom)
++      device.videoZoomFactor = min(max(factor, device.minAvailableVideoZoomFactor), device.maxAvailableVideoZoomFactor)
+     } catch {
+       log.info("\(#function): \(error.localizedDescription)")
+     }
+   }
+ 
++  /// Revely patch: the zoom factor at which a virtual camera that includes
++  /// the ultra-wide hands over to the wide lens, or 1.0 for anything else.
++  static func wideLensZoomFactor(for device: AVCaptureDevice) -> CGFloat {
++    guard device.deviceType == .builtInTripleCamera || device.deviceType == .builtInDualWideCamera,
++          let first = device.virtualDeviceSwitchOverVideoZoomFactors.first else {
++      return 1.0
++    }
++    return CGFloat(truncating: first)
++  }
++
+   func getAvailableLenses() -> [String] {
+     guard let delegate else {
+       return []

@@ -53,6 +53,7 @@
     "@types/react": "~19.2.2",
     "eslint": "^9.0.0",
     "eslint-config-expo": "~57.0.1",
+    "patch-package": "^8.0.1",
     "typescript": "~6.0.3"
   },
   "scripts": {
@@ -63,7 +64,17 @@
     "web": "expo start --web",
     "lint": "expo lint",
     "build:ios": "npx eas-cli build --platform ios --profile production",
-    "submit:ios": "npx eas-cli submit --platform ios --profile production --latest"
+    "submit:ios": "npx eas-cli submit --platform ios --profile production --latest",
+    "postinstall": "patch-package"
   },
-  "private": true
+  "private": true,
+  "expo": {
+    "autolinking": {
+      "ios": {
+        "buildFromSource": [
+          "expo-camera"
+        ]
+      }
+    }
+  }
 }
