@@ -350,8 +350,8 @@ html[lang="zh-Hans"] .agency-full { letter-spacing: 0.06em; }
  * On Android the script opens it, because for that visitor it is the only
  * thing on the page they can act on.
  *
- * What is promised under the field is what the server does: one email, then
- * the address is deleted. It is written into the privacy policy as well.
+ * The promise, one email and then deletion, is made in the Android answer in
+ * the questions and in the privacy policy rather than under the field.
  */
 .android-box { margin-top: 10px; }
 .android-box summary {
@@ -378,10 +378,9 @@ html[lang="zh-Hans"] .agency-full { letter-spacing: 0.06em; }
   background: var(--ink); color: var(--paper);
 }
 .notify button:disabled { opacity: .55; cursor: progress; }
-.notify-note { margin-top: 10px; }
 .notify-status { margin-top: 8px; font-size: 0.9375rem; color: var(--ink); }
 .notify-status:empty { display: none; }
-.notify.done .notify-row, .notify.done .notify-note { display: none; }
+.notify.done .notify-row { display: none; }
 /* A field no person sees. Anything that fills it in is not a person. */
 .notify .trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 
@@ -683,7 +682,6 @@ function androidBox(c: Copy, lang: Lang): string {
             <button type="submit">${c.androidSubmit}</button>
           </div>
           <input class="trap" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <p class="notify-note meta">${c.androidNote}</p>
           <p class="notify-status" role="status" aria-live="polite"></p>
         </form>
       </details>`;
@@ -809,7 +807,9 @@ function body(c: Copy, lang: Lang): string {
     </div>
   </section>
 
-  <!-- Solution, continued. What separates this from a barcode lookup. -->
+  <!-- Solution, continued. What separates this from a barcode lookup. The
+       photo row that sat here went on 2026-09-23: "What happens to my photo?"
+       in the questions below says the same thing, with the policy link. -->
   <section class="band ruled">
     <div class="shell rows">
       <div class="row rise">
@@ -818,14 +818,6 @@ function body(c: Copy, lang: Lang): string {
           <p>${c.profilesBody}</p>
         </div>
         <div class="row-plate">${plate("bowls")}</div>
-      </div>
-
-      <div class="row flip rise">
-        <div>
-          <h3>${c.photoTitle}</h3>
-          <p>${c.photoBodyBefore}<a href="/privacy">${c.photoLink}</a>${c.photoBodyAfter}</p>
-        </div>
-        <div class="row-plate">${plate("privacy")}</div>
       </div>
     </div>
   </section>

@@ -109,7 +109,6 @@ export interface Copy {
   androidSummary: string;
   emailLabel: string;
   androidSubmit: string;
-  androidNote: string;
   androidThanks: string;
   androidInvalid: string;
   androidFailed: string;
@@ -134,11 +133,6 @@ export interface Copy {
 
   profilesTitle: string;
   profilesBody: string;
-
-  photoTitle: string;
-  photoBodyBefore: string;
-  photoLink: string;
-  photoBodyAfter: string;
 
   faqEyebrow: string;
   faqTitle: string;
@@ -199,7 +193,6 @@ const en: Copy = {
   androidSummary: "On Android? Get told when it’s ready.",
   emailLabel: "Email address",
   androidSubmit: "Notify me",
-  androidNote: "One email when it’s out, then we delete your address.",
   androidThanks: "Done. We’ll write once, when Revely is on Android.",
   androidInvalid: "That doesn’t look like an email address. Check it and try again.",
   androidFailed: "That didn’t go through. Try again in a moment.",
@@ -317,13 +310,6 @@ const en: Copy = {
     "Switch to another profile and the scan on screen is checked again " +
     "straight away. No second photo.",
 
-  photoTitle: "Your photo is used once, then it’s gone.",
-  photoBodyBefore:
-    "No advertising, no trackers, nothing sold. What we collect and every " +
-    "company that receives anything is written out in the ",
-  photoLink: "privacy policy",
-  photoBodyAfter: ".",
-
   faqEyebrow: "Questions",
   faqTitle: "Before you download.",
   faq: [
@@ -407,7 +393,6 @@ const es: Copy = {
   androidSummary: "¿Tienes Android? Te avisamos cuando esté lista.",
   emailLabel: "Correo electrónico",
   androidSubmit: "Avísame",
-  androidNote: "Un solo correo cuando salga, y después borramos tu dirección.",
   androidThanks: "Listo. Te escribiremos una vez, cuando Revely llegue a Android.",
   androidInvalid:
     "Eso no parece un correo electrónico. Revísalo y vuelve a intentarlo.",
@@ -529,13 +514,6 @@ const es: Copy = {
     "Cambia a otro perfil y el escaneo que tienes en pantalla se revisa de " +
     "nuevo al instante. Sin repetir la foto.",
 
-  photoTitle: "Tu foto se usa una vez y desaparece.",
-  photoBodyBefore:
-    "Sin publicidad, sin rastreadores, sin vender nada. Lo que recogemos y " +
-    "cada empresa que recibe algo está escrito en la ",
-  photoLink: "política de privacidad",
-  photoBodyAfter: ".",
-
   faqEyebrow: "Preguntas",
   faqTitle: "Antes de descargarla.",
   faq: [
@@ -620,7 +598,6 @@ const zh: Copy = {
   androidSummary: "用安卓手机？上线时通知你。",
   emailLabel: "邮箱地址",
   androidSubmit: "通知我",
-  androidNote: "上线时发一封邮件，然后删除你的地址。",
   androidThanks: "好了。Revely 上线安卓时，我们会给你发一封邮件。",
   androidInvalid: "这看起来不像邮箱地址，请检查后再试。",
   androidFailed: "没有提交成功，请稍后再试。",
@@ -714,13 +691,6 @@ const zh: Copy = {
 
   profilesTitle: "一张照片，每个人都有自己的答案。",
   profilesBody: "切换到另一份档案，屏幕上的扫描结果会立刻重新核对。不用再拍一次。",
-
-  photoTitle: "你的照片只用一次，然后就没了。",
-  photoBodyBefore:
-    "没有广告，没有追踪，什么都不出售。" +
-    "我们收集什么、以及每一家会收到任何东西的公司，都写在",
-  photoLink: "隐私政策",
-  photoBodyAfter: "里。",
 
   faqEyebrow: "常见问题",
   faqTitle: "下载之前。",
