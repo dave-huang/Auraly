@@ -30,7 +30,7 @@ import {
   matchCustomEntryByIdentity,
   matchProfileAllergen,
 } from '../server/services/concepts';
-import { getSubstanceRegistry } from '../server/services/substances/identity';
+import { eNumberKey, getSubstanceRegistry } from '../server/services/substances/identity';
 import { applyProfileToAnalysis } from '../server/services/personalRisk';
 import { MIN_LIST_FOR_RANK, isProminent, withLabelRanks } from '../server/services/labelRank';
 import {
@@ -187,6 +187,33 @@ for (const [shown, source] of [
       c.resolved?.substance.id === red3.resolved?.substance.id && c.decision.level === red3.decision.level,
       `"${name}" resolved to ${c.resolved?.substance.id ?? 'nothing'} at ${c.decision.level}; Red 3 is ${red3.resolved?.substance.id} at ${red3.decision.level}`);
   }
+}
+
+// ---------------------------------------------------------------------------
+// 2d. An E number resolves however the label spaces it.
+//
+// "E171", "E 171" and "E-171" are one additive. Normalized as ordinary names
+// the spaced and hyphenated forms became "e 171" against a registry keyed
+// "e171", so they resolved to nothing and the additive's record never applied.
+// Swept over every E number the registry holds, so a new one is covered the
+// day it is added. A name that merely contains a number is not an E number.
+// ---------------------------------------------------------------------------
+{
+  const registry = getSubstanceRegistry() as any;
+  const withE = [...registry.byId.values()].filter((sub: any) => sub.eNumber);
+  for (const sub of withE) {
+    const digits = String(sub.eNumber).replace(/^e\s*-?\s*/i, '');
+    for (const form of [`E${digits}`, `E ${digits}`, `E-${digits}`, `e${digits}`]) {
+      const hit = registry.resolve(form);
+      check(`e-number/${form}`, hit?.substance.id === sub.id,
+        `"${form}" resolved to ${hit?.substance.id ?? 'nothing'}, expected ${sub.id}`);
+    }
+  }
+  for (const notOne of ['E 330 citric acid', 'Evening primrose', 'E1']) {
+    check(`e-number/not/${notOne}`, eNumberKey(notOne) === null,
+      `"${notOne}" was read as an E number (${eNumberKey(notOne)})`);
+  }
+  notes.push(`e numbers: ${withE.length} checked in four spellings each`);
 }
 
 // ---------------------------------------------------------------------------

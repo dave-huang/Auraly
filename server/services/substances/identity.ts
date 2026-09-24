@@ -175,6 +175,24 @@ export function normalizeSubstanceName(raw: string): string {
     .replace(/\s+/g, ' ');
 }
 
+/**
+ * An E number in one canonical form, or null if the text is not one.
+ *
+ * Labels print the same number several ways: "E171", "E 171", "E-171",
+ * "e171". Normalizing as an ordinary name folds the hyphen into a space and
+ * keeps the space, so "E 171" became "e 171" while the registry held "e171",
+ * and every spaced or hyphenated E number on a label resolved to nothing.
+ * Suffixes are kept, because they name different additives: E160a is not
+ * E160b, and E160a(ii) is not E160a(i).
+ *
+ * Only a whole name that is nothing but an E number matches. "E 330 citric
+ * acid" is a name with a number in it, and it resolves (or fails) as a name.
+ */
+export function eNumberKey(raw: string): string | null {
+  const m = normalizeSubstanceName(raw).match(/^e ?(\d{3,4}) ?([a-z])?(?: ?([ivx]+))?$/);
+  return m ? `e${m[1]}${m[2] ?? ''}${m[3] ?? ''}` : null;
+}
+
 /** Normalize a CAS number to its canonical hyphenated form, or null. */
 export function normalizeCas(raw: string | null | undefined): string | null {
   if (!raw) return null;
@@ -289,7 +307,8 @@ export class SubstanceRegistry {
       this.idsByCas.set(cas, [...(this.idsByCas.get(cas) ?? []), substance.id]);
     }
     if (substance.eNumber) {
-      this.byENumber.set(normalizeSubstanceName(substance.eNumber), substance);
+      const key = eNumberKey(substance.eNumber);
+      if (key) this.byENumber.set(key, substance);
     }
   }
 
@@ -467,8 +486,9 @@ export class SubstanceRegistry {
       return { substance: hit.substance, via: hit.alias, how: 'exact' };
     }
 
-    // Bare E-number, e.g. a label that just prints "E129".
-    const eHit = this.byENumber.get(key);
+    // Bare E-number, e.g. a label that just prints "E129", "E 129" or "E-129".
+    const eKey = eNumberKey(trimmed);
+    const eHit = eKey ? this.byENumber.get(eKey) : undefined;
     if (eHit) {
       return {
         substance: eHit,
