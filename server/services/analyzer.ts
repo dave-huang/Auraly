@@ -1343,10 +1343,13 @@ export async function analyzeIngredientsParallel(
     for (const ingredient of batch) {
       const cached = await getCachedIngredientAnalysis(ingredient, productType, userLanguage, analysisVersion());
       if (cached) {
+        // Stamped with the name it was fetched by: rows cached before
+        // `sourceName` existed carry only the displayed name.
+        const data: Ingredient = JSON.parse(cached.analysis);
         cachedResults.push({
           name: ingredient,
           cached: true,
-          data: JSON.parse(cached.analysis)
+          data: { ...data, sourceName: data.sourceName ?? ingredient }
         });
         console.log(`[PARALLEL-BATCH-${batchIdx}] Cache HIT: ${ingredient} (${userLanguage})`);
       } else {
@@ -1486,6 +1489,16 @@ IMPORTANT: Return ONLY this JSON array, nothing else:
             name: normalizeIngredientCapitalization(result.name, userLanguage)
           };
         });
+
+        // Attach the name each row was asked about. Position is the only link
+        // on a Chinese or Spanish scan, where the model answers in another
+        // language, and it is trustworthy exactly when the counts agree; see
+        // orderBatchResults, which relies on the same rule. A batch that split
+        // or merged something keeps its displayed names and loses nothing it
+        // had before.
+        if (freshResults.length === missingIngredients.length) {
+          freshResults = freshResults.map((r, i) => ({ ...r, sourceName: missingIngredients[i] }));
+        }
         
         // Classify before caching, so the cached row carries the policy's level
         // rather than the model's, and stamp the row with the version that
@@ -1496,7 +1509,10 @@ IMPORTANT: Return ONLY this JSON array, nothing else:
         
         // Cache fresh results with language tag
         for (const result of freshResults) {
-          await setCachedIngredientAnalysis(result.name, productType, JSON.stringify(result), userLanguage, analysisVersion());
+          // Under the name lookups use. Keyed by the displayed name, a Chinese
+          // or Spanish row was written as "二氧化钛" and read as "Titanium
+          // Dioxide", so those languages never hit the cache at all.
+          await setCachedIngredientAnalysis(result.sourceName ?? result.name, productType, JSON.stringify(result), userLanguage, analysisVersion());
           console.log(`[PARALLEL-BATCH-${batchIdx}] Cached: ${result.name} (${userLanguage})`);
         }
         
@@ -1607,7 +1623,8 @@ IMPORTANT: Return ONLY this JSON array:
               {
                 ...singleResult,
                 riskLevel: normalizedRiskLevel as 'low' | 'moderate' | 'high',
-                name: normalizeIngredientCapitalization(singleResult.name, userLanguage)
+                name: normalizeIngredientCapitalization(singleResult.name, userLanguage),
+                sourceName: singleIngredient,
               },
               domainForProductType(productType),
             );
@@ -1617,7 +1634,7 @@ IMPORTANT: Return ONLY this JSON array:
             // writes to the same shared rows as the batch path above, so it
             // has to stamp them the same way or it reintroduces the bug on
             // exactly the ingredients that were hardest to analyse.
-            await setCachedIngredientAnalysis(normalized.name, productType, JSON.stringify(normalized), userLanguage, analysisVersion());
+            await setCachedIngredientAnalysis(singleIngredient, productType, JSON.stringify(normalized), userLanguage, analysisVersion());
             individualResults.push(normalized);
             console.log(`[PARALLEL-BATCH-${batchIdx}] Individual analysis succeeded: ${singleIngredient} → ${normalized.name}`);
             singleSuccess = true;

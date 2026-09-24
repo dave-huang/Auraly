@@ -805,6 +805,15 @@ export type RiskLevel = typeof riskLevels[number];
 // Ingredient analysis schema
 export const ingredientSchema = z.object({
   name: z.string(),
+  // The name the analyzer was ASKED about, as the label reader produced it:
+  // English, whatever language `name` is displayed in. Everything that looks
+  // an ingredient up (the substance registry, citations, the ingredient cache)
+  // must key on this, not on `name`. On a Chinese or Spanish scan `name` is
+  // "二氧化钛" or "Dióxido de titanio", which the registry has never heard of,
+  // so titanium dioxide lost its regulator's record and fell from Avoid to the
+  // model's own Caution depending only on the reader's language setting.
+  // Absent on rows analysed before 2026-09-24, where `name` is the fallback.
+  sourceName: z.string().optional(),
   riskLevel: z.enum(riskLevels),
   baseRiskLevel: z.enum(riskLevels).optional(), // Original AI-determined risk
   summary: z.string(),

@@ -145,6 +145,29 @@ for (const f of overrideFixtures) {
 }
 
 // ---------------------------------------------------------------------------
+// 2b. The same label gets the same record in every language.
+//
+// On a Chinese or Spanish scan the analyzer's `name` is in that language, and
+// the registry only knows English. Looked up by `name`, titanium dioxide was
+// Avoid in English and the model's Caution in Chinese, on the same photo. The
+// record is found by `sourceName`, the English name the analyzer was asked
+// about, and the displayed name must not change that.
+// ---------------------------------------------------------------------------
+for (const [shown, source] of [
+  ['二氧化钛', 'Titanium Dioxide'],
+  ['Dióxido de titanio', 'Titanium Dioxide'],
+  ['亚硝酸钠', 'Sodium Nitrite'],
+] as const) {
+  const english = applyPopulationRisk(ing(source, 'moderate'), food);
+  const translated = applyPopulationRisk({ ...ing(shown, 'moderate'), sourceName: source }, food);
+  check(`language/${source}->${shown}`,
+    translated.riskLevel === english.riskLevel && translated.riskSource === english.riskSource,
+    `shown as "${shown}" it rated ${translated.riskLevel} (${translated.riskSource}); in English ${english.riskLevel} (${english.riskSource})`);
+  check(`language/${source}->${shown}`, translated.name === shown,
+    `the displayed name must survive classification, got "${translated.name}"`);
+}
+
+// ---------------------------------------------------------------------------
 // 3. Personal risk raises and NEVER lowers.
 //
 // Swept over every level against a profile with an allergy to the ingredient.

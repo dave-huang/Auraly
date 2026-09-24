@@ -130,7 +130,10 @@ export function classifyIngredient(
  * safety claim to move.
  */
 export function applyPopulationRisk(ingredient: Ingredient, domain: ClassifyDomain): Ingredient {
-  const classification = classifyIngredient(ingredient.name, domain);
+  // By the name the ingredient was asked about, never the displayed one: see
+  // `sourceName` in shared/schema.ts. The registry is keyed in English, and
+  // the same label must get the same record in every language.
+  const classification = classifyIngredient(ingredient.sourceName ?? ingredient.name, domain);
   const { decision } = classification;
 
   // The MODEL's rating, read from its own field rather than from riskLevel.

@@ -57,7 +57,8 @@ function matchesAllergenEntry(
 export function annotateWithCitations(result: AnalysisResult): AnalysisResult {
   let any = false;
   const ingredients = result.ingredients.map(ing => {
-    const citations = getCitations(ing.name);
+    // English source name, for the same reason as the registry lookup.
+    const citations = getCitations(ing.sourceName ?? ing.name);
     if (citations.length === 0) return ing;
     any = true;
     return { ...ing, citations };
@@ -293,7 +294,7 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
 
       // The advisory's own source, plus anything the knowledge base holds for
       // this ingredient in this condition's context.
-      const kbCitations = getCitations(ing.name, [condition]);
+      const kbCitations = getCitations(readInEnglish ?? ing.sourceName ?? ing.name, [condition]);
 
       flags.push({
         ingredientName: ing.name,
