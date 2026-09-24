@@ -10,6 +10,9 @@ dist
 .env
 .env.*
 !.env.example
+# The original Replit secrets export, also gitignored. Docker does not read
+# .gitignore, so without this line it went to the builder on every deploy.
+secrets.env.txt
 
 # The mobile app is 4.7GB of node_modules and Xcode build output, and the
 # server does not import a line of it.
@@ -23,3 +26,7 @@ eval
 # Local scratch
 *.log
 .DS_Store
+
+# Claude Code's local settings and worktrees: whole copies of the repo, 78MB
+# of the 112MB build context, and nothing the server reads.
+.claude
