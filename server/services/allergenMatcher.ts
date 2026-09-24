@@ -71,7 +71,12 @@ export type MajorAllergen = typeof MAJOR_ALLERGENS[number];
 
 export const ALLERGEN_KEYWORDS: Record<MajorAllergen, string[]> = {
   milk: ['milk', 'whey', 'casein', 'lactose', 'butter', 'cream', 'cheese', 'yogurt', 'ghee', 'dairy', 'curd'],
-  egg: ['egg', 'albumin', 'albumen', 'ovalbumin', 'mayonnaise', 'meringue'],
+  // Lysozyme (E1105) is extracted from hen egg white and EU 1169/2011 makes it
+  // declarable as egg. Cheese labels list it with no separate egg line.
+  egg: [
+    'egg', 'albumin', 'albumen', 'ovalbumin', 'mayonnaise', 'meringue',
+    'lysozyme', 'e1105', 'e 1105',
+  ],
   fish: ['fish', 'anchovy', 'cod', 'salmon', 'tuna', 'tilapia', 'flounder', 'haddock', 'pollock', 'sardine', 'herring', 'mackerel', 'trout', 'halibut'],
   shellfish: ['shrimp', 'crab', 'lobster', 'prawn', 'crawfish', 'crayfish', 'krill'],
   tree_nuts: ['almond', 'cashew', 'walnut', 'pecan', 'pistachio', 'hazelnut', 'filbert', 'macadamia', 'brazil nut', 'pine nut', 'chestnut', 'coconut'],
@@ -232,7 +237,7 @@ export function detectAllergens(ingredients: string[]): Set<MajorAllergen> {
 // checks written against simplified text had said the vocabulary was fine.
 const DECLARATION_TERMS: Partial<Record<MajorAllergen, string[]>> = {
   milk: ['leche', 'lacteo', 'lactea', '牛奶', '乳', '乳成分', 'молоко', 'молока'],
-  egg: ['huevo', '鸡蛋', '雞蛋', '蛋', '卵', 'яйцо', 'яйца'],
+  egg: ['huevo', '鸡蛋', '雞蛋', '蛋', '卵', 'яйцо', 'яйца', '溶菌酶', 'lisozima'],
   fish: ['pescado', '鱼', '魚', 'рыба'],
   shellfish: [
     'marisco', 'camaron', 'gamba', '虾', '蝦', '蟹', '甲壳类', '甲殼類',

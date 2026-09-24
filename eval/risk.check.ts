@@ -897,6 +897,54 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
 }
 
 // ---------------------------------------------------------------------------
+// Lysozyme is egg.
+//
+// Food lysozyme (E1105) is extracted from hen egg white, and EU 1169/2011
+// requires it declared as egg. Until 2026-09-24 nothing in the egg vocabulary
+// named it, so a cheese listing "Lysozyme" with no separate egg line — the
+// usual way it is printed — raised nothing for an egg allergy.
+// ---------------------------------------------------------------------------
+{
+  const eggProfile = profile({ allergens: [{ allergen: 'egg', severity: 'allergy' }] });
+  const out = applyProfileToAnalysis(
+    result([ing('Milk', 'low'), ing('Salt', 'low'), ing('Lysozyme', 'low')]),
+    eggProfile,
+  );
+  check('lysozyme/flags-egg-allergy',
+    (out.personalFlags ?? []).some(f => f.type === 'allergen' && f.ingredientName === 'Lysozyme'),
+    '"Lysozyme" on a label with no egg declaration did not flag an egg allergy');
+
+  // Term pass, as labels print it in English and by E number, joined and spaced.
+  for (const name of ['Lysozyme', 'Egg White Lysozyme', 'E1105', 'E-1105']) {
+    check('lysozyme/term-match',
+      ingredientMatchesAllergen(name, 'egg'),
+      `"${name}" did not match egg`);
+  }
+
+  // Identity pass: names the term list does not hold resolve to the substance.
+  for (const name of ['溶菌酶', 'Lisozima']) {
+    const hit = matchProfileAllergen(name, 'egg');
+    check('lysozyme/identity-match',
+      hit?.via === 'identity',
+      `"${name}" matched egg via ${hit?.via ?? 'nothing'}, not identity`);
+  }
+
+  // A declaration line in Chinese or Spanish.
+  for (const term of ['溶菌酶', 'lisozima']) {
+    check('lysozyme/declaration',
+      allergensFromDeclaration([term]).has('egg'),
+      `declared "${term}" did not map to egg`);
+  }
+
+  // E110 is Sunset Yellow. The spaced E1105 keyword must not swallow it.
+  check('lysozyme/no-false-positive',
+    !ingredientMatchesAllergen('E110', 'egg') && !ingredientMatchesAllergen('E-110', 'egg'),
+    'Sunset Yellow (E110) matched egg');
+
+  notes.push('lysozyme flags egg by name, E number, identity and declaration');
+}
+
+// ---------------------------------------------------------------------------
 // Concept layer — dietary rules kept their two guards through the move.
 // ---------------------------------------------------------------------------
 {

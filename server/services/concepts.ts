@@ -67,7 +67,7 @@ import { matchesTerm } from './termMatch';
  */
 
 /** Bumped when a concept's membership changes. See the note on caching below. */
-export const CONCEPTS_VERSION = '2026-08-22.1';
+export const CONCEPTS_VERSION = '2026-09-24.1';
 
 /**
  * NOT part of the analysis cache key, deliberately.
@@ -188,15 +188,17 @@ const ALLERGEN_REGIMES: Record<string, Regime[]> = {
 /**
  * Registry names that denote a concept's substances.
  *
- * Only sulphites earns an entry today, and only for the one name the corpus
- * actually holds — see the coverage note at the top of this file. Every other
- * allergen is a food, and no amount of curation will give "peanut" a CAS
- * number. Entries here are asserted reachable by eval/risk.check.ts, so a
- * corpus change that drops one fails the build rather than silently turning
- * the pass off.
+ * Sulphites and egg earn entries, each for a name the corpus actually holds —
+ * see the coverage note at the top of this file. Egg's is lysozyme, the one egg
+ * protein that is also a food additive, so its Chinese and Spanish label names
+ * resolve without a keyword for each. Every other allergen is a food, and no
+ * amount of curation will give "peanut" a CAS number. Entries here are
+ * asserted reachable by eval/risk.check.ts, so a corpus change that drops one
+ * fails the build rather than silently turning the pass off.
  */
 const CONCEPT_IDENTIFIERS: Record<string, string[]> = {
   sulphites: ['sodium metabisulfite'],
+  egg: ['lysozyme'],
 };
 
 /** Exposed so eval/risk.check.ts can assert every identifier still resolves. */
