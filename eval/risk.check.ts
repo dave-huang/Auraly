@@ -1178,6 +1178,47 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
 }
 
 // ---------------------------------------------------------------------------
+// Source statements are translated, and translation never replaces them.
+//
+// scripts/translate-sources.ts writes a translation for every evidence,
+// knowledge-base and condition-advisory statement. An ingest adds statements
+// without translating them, and they then show in English, which is correct
+// but should not go unnoticed for long, so coverage below 100% is a note and
+// below 95% is a failure. A translation identical to its English, or a file
+// that no longer parses, is always a failure.
+// ---------------------------------------------------------------------------
+{
+  const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+  const dir = path.join(repo, 'server/data/substances/translations');
+  const evidenceDir = path.join(repo, 'server/data/substances/evidence');
+  const statements = new Set<string>();
+  for (const file of fs.readdirSync(evidenceDir).filter((f) => f.endsWith('.json'))) {
+    const data = JSON.parse(fs.readFileSync(path.join(evidenceDir, file), 'utf8'));
+    for (const r of (Array.isArray(data) ? data : data.records ?? []) as any[]) {
+      if (typeof r?.statement === 'string' && r.statement.trim()) statements.add(r.statement);
+    }
+  }
+  for (const lang of ['zh', 'es']) {
+    let map: Record<string, string> = {};
+    try {
+      map = JSON.parse(fs.readFileSync(path.join(dir, `${lang}.json`), 'utf8'));
+    } catch (e: any) {
+      check(`translations/${lang}`, false, `could not read ${lang}.json: ${e?.message}`);
+      continue;
+    }
+    const covered = [...statements].filter((st) => map[st]).length;
+    const share = covered / statements.size;
+    check(`translations/${lang}/coverage`, share >= 0.95,
+      `${covered} of ${statements.size} evidence statements translated; run scripts/translate-sources.ts`);
+    if (share < 1) notes.push(`translations: ${lang} is missing ${statements.size - covered} statement(s) added since the last run`);
+    const echoes = Object.entries(map).filter(([en, tr]) => en.trim() === tr.trim());
+    check(`translations/${lang}/not-echoed`, echoes.length === 0,
+      `${echoes.length} translation(s) are identical to the English, e.g. ${JSON.stringify(echoes[0]?.[0])}`);
+  }
+  notes.push(`translations: ${statements.size} evidence statements checked in zh and es`);
+}
+
+// ---------------------------------------------------------------------------
 
 for (const n of notes) console.log(`  · ${n}`);
 if (notes.length) console.log('');

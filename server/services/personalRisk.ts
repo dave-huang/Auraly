@@ -1,5 +1,6 @@
+import { translateStatement } from './substances/translations';
 import { profileConditions, profileDietary } from '@shared/schema';
-import type { AnalysisResult, PersonalFlag, Profile, RiskLevel } from '@shared/schema';
+import type { AnalysisResult, Citation, PersonalFlag, Profile, RiskLevel } from '@shared/schema';
 import { nearMissForAllergen } from './allergenMatcher';
 import { getConcept, matchConcept, matchProfileAllergen } from './concepts';
 import { advisoryCitation, impactToRisk, matchAdvisory } from './conditionAdvisories';
@@ -54,11 +55,20 @@ function matchesAllergenEntry(
  * ingredient that has an entry. Runs post-cache on every result, so cached
  * analyses pick up KB updates without re-analysis.
  */
+/** Citations with their statements translated into the result's language. */
+function localized(citations: Citation[], lang: string | undefined): Citation[] {
+  if (!lang || lang === 'en') return citations;
+  return citations.map((c) => {
+    const statementTranslated = translateStatement(c.statement, lang);
+    return statementTranslated ? { ...c, statementTranslated } : c;
+  });
+}
+
 export function annotateWithCitations(result: AnalysisResult): AnalysisResult {
   let any = false;
   const ingredients = result.ingredients.map(ing => {
     // English source name, for the same reason as the registry lookup.
-    const citations = getCitations(ing.sourceName ?? ing.name);
+    const citations = localized(getCitations(ing.sourceName ?? ing.name), result.language);
     if (citations.length === 0) return ing;
     any = true;
     return { ...ing, citations };
@@ -294,7 +304,7 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
 
       // The advisory's own source, plus anything the knowledge base holds for
       // this ingredient in this condition's context.
-      const kbCitations = getCitations(readInEnglish ?? ing.sourceName ?? ing.name, [condition]);
+      const kbCitations = localized(getCitations(readInEnglish ?? ing.sourceName ?? ing.name, [condition]), result.language);
 
       flags.push({
         ingredientName: ing.name,
@@ -307,7 +317,7 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
         reason: advisory.reason,
         reasonKey: advisory.reasonKey,
         reasonParams: { ingredient: ing.name, term },
-        citations: [advisoryCitation(advisory), ...kbCitations],
+        citations: localized([advisoryCitation(advisory)], result.language).concat(kbCitations),
       });
       raise(flagRisk);
       reasons.push(`${advisory.impact === 'avoid' ? 'Avoid' : 'Caution'} for ${condition}`);

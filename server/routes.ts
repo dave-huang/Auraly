@@ -9,6 +9,7 @@ import { setupRevenueCatWebhook } from "./revenueCatWebhook";
 import { registerLegalRoutes } from "./legal";
 import { registerHomeRoutes } from "./home";
 import { isLang } from "./siteCopy";
+import { translateStatement } from "./services/substances/translations";
 import { fetchSubscriber, RevenueCatNotConfigured } from "./services/revenueCatApi";
 import { resolveFromSubscriber } from "./services/revenueCatState";
 import { ENTITLEMENT_ID } from "@shared/products";
@@ -50,6 +51,8 @@ import {
   upsertProfileSchema,
   crashReports,
   crashReportInputSchema,
+  labelContextSchema,
+  type LabelContext,
   androidWaitlist,
   androidWaitlistInputSchema,
 } from "@shared/schema";
@@ -485,13 +488,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // does not carry a frozen copy, and the answer always reflects the corpus as
   // it stands today rather than as it stood when the photo was taken.
   //
-  // Source statements are returned VERBATIM and untranslated. They are quotations
-  // from regulatory documents, and paraphrasing a legal instrument into three
-  // languages is how a citation stops being a citation.
+  // Source statements are returned verbatim, always. Since 2026-09-24 a
+  // translation into ?lang= travels beside each one (`statementTranslated`),
+  // never in place of it, and the app shows it marked as a translation with the
+  // original a tap away. Most statements are sentences our ingest wrote from a
+  // register's fields, not quotations, and a reader of Chinese or Spanish was
+  // otherwise not reading the evidence at all. See substances/translations.ts.
+  //
+  // ?lang= is the language of the SCAN, which the app passes, not the app's
+  // current setting: a scan reopened from history reads in the language it was
+  // taken in.
   app.get('/api/substances/:substanceId/evidence', isAuthenticated, async (req: any, res) => {
     try {
       const substanceId = String(req.params.substanceId);
       const domain = req.query.domain === 'cosmetic' ? 'cosmetic' : 'food';
+      const lang = typeof req.query.lang === 'string' && isLang(req.query.lang) ? req.query.lang : 'en';
 
       const substance = getSubstanceRegistry().getById(substanceId);
       if (!substance) {
@@ -531,6 +542,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             : null,
         records: records.map(r => ({
           statement: r.statement,
+          statementTranslated: translateStatement(r.statement, lang),
           kind: r.kind,
           jurisdiction: r.jurisdiction,
           org: r.citation.org,
@@ -601,7 +613,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { language, profile: inlineProfile } = req.body ?? {};
 
-      let result = annotateWithCitations(demoAnalysis(language));
+      let result = annotateWithCitations({ ...demoAnalysis(language), language: language || 'en' });
       result = withLabelRanks(result);
 
       // Same two-way resolution as a real scan, minus the stored-profile path:
@@ -1052,8 +1064,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
           console.log(`[TIMING] [ANALYSIS-SUCCESS-${requestId}] Analysis completed in ${analysisDuration}s (total: ${totalDuration}s)`);
 
           // Attach knowledge-base citations post-cache so cached analyses
-          // pick up KB updates without re-analysis.
-          analysisResult = annotateWithCitations(analysisResult);
+          // pick up KB updates without re-analysis. Stamped with the language
+          // the result is written in first, so the citations are translated
+          // into it, and so the same scan reopened later still reads in it.
+          analysisResult = annotateWithCitations({ ...analysisResult, language: userLanguage });
 
           // Carry the label's own allergen declaration onto the result so
           // profile matching can use it (the analysis cache is keyed on
@@ -1165,6 +1179,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     detectedIngredients: z.array(z.string()),
     analysisResults: z.array(z.object({
       name: z.string(),
+      // The English name the row was analysed as. Saved because `name` is in
+      // the scan's language and every lookup on reopening is keyed in English;
+      // see `sourceName` on ingredientSchema.
+      sourceName: z.string().optional(),
       // Both carry the model's neutral rating. `riskLevel` stays for older
       // clients; `modelRiskLevel` is the one re-derivation reads, and having it
       // explicitly named is what stops a personalized level from being mistaken
@@ -1193,6 +1211,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     composition: z
       .array(z.object({ name: z.string(), parts: z.array(z.string()).default([]) }))
       .optional(),
+    /** Stored since 2026-09-24; see `labelContext` on scanHistory. */
+    labelContext: labelContextSchema.optional(),
   });
 
   // POST /api/history - Save a new scan to history
@@ -1220,6 +1240,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // an empty array would claim the label prints nothing, and the count
         // above would then disagree with it.
         composition: data.composition?.length ? data.composition : null,
+        labelContext: data.labelContext ?? null,
       };
       
       const scan = await storage.createScanHistory(scanData);
@@ -1268,13 +1289,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
   ) {
     const domain = domainForProductType(scan.productCategory ?? 'food');
     const stored: any[] = Array.isArray(scan.analysisResults) ? scan.analysisResults : [];
-    const ingredients: Ingredient[] = stored.map((ing) => applyPopulationRisk(ing, domain));
+    // The label facts the live result was scored with, so a reopened scan is
+    // the same scan. Null before 2026-09-24, and then it is the old behaviour.
+    const context = labelContextSchema.safeParse(scan.labelContext ?? {});
+    const label: LabelContext = context.success ? context.data : {};
+    const canonical = label.canonicalIngredients;
+    // Rows saved without their English name get it back from the English list,
+    // by position, and only when the two lists agree in length: the same rule
+    // the analyzer used to attach it in the first place.
+    const aligned = canonical && canonical.length === stored.length;
+    const ingredients: Ingredient[] = stored.map((ing, i) =>
+      applyPopulationRisk(
+        ing.sourceName || !aligned ? ing : { ...ing, sourceName: canonical![i] },
+        domain,
+      ),
+    );
     const asAnalysis = {
       productType: scan.productCategory,
       productName: scan.productName,
       ingredients,
       overallRisk: scan.overallRisk,
       analyzedAt: scan.createdAt.toISOString(),
+      ...label,
+      // The language the scan was TAKEN in, not the app's setting today: its
+      // ingredient text is in that language, so its sources should be too.
+      language: scan.language ?? 'en',
       // Absent on scans saved before the column existed, which is the same
       // thing a fresh OCR-fallback scan reports, so the card already knows
       // how to show a list with no structure behind it.

@@ -449,6 +449,20 @@ export const scanHistory = pgTable(
      * flat list, exactly as they did before this column existed.
      */
     composition: jsonb("composition"),
+    /**
+     * What the reader knew about the label that the ingredient rows do not
+     * carry: the English names the analysis was run on, the label's own
+     * allergen statement, the names as printed, the label's language, and how
+     * confident the read was. See `labelContextSchema`.
+     *
+     * Without it a reopened scan was a different scan. A Chinese scan's rows
+     * are in Chinese, so the substance registry and the allergen matcher, both
+     * keyed in English, found nothing: titanium dioxide fell from Avoid to
+     * Caution, a profile's allergy stopped matching, the label's CONTAINS line
+     * was forgotten, and a "Not sure" read came back with a confident verdict.
+     * Null for every scan saved before 2026-09-24.
+     */
+    labelContext: jsonb("label_context"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
   },
   (table) => [
@@ -733,9 +747,31 @@ export const upsertProfileSchema = z.object({
 export type UpsertProfileInput = z.infer<typeof upsertProfileSchema>;
 
 // A cited claim from the knowledge base attached to an ingredient or flag
+/**
+ * The label-level facts saved with a scan, in `scan_history.label_context`.
+ * Every field is what the live analysis result carried under the same name,
+ * so a reopened scan can be rebuilt from exactly the inputs it was scored on.
+ */
+export const labelContextSchema = z.object({
+  canonicalIngredients: z.array(z.string()).max(500).optional(),
+  declaredAllergens: z.object({
+    contains: z.array(z.string()).default([]),
+    mayContain: z.array(z.string()).default([]),
+  }).optional(),
+  originalIngredients: z.array(z.string()).max(500).optional(),
+  sourceLanguage: z.string().max(20).optional(),
+  readConfidence: z.enum(["high", "medium", "low"]).optional(),
+  lineCount: z.object({ read: z.number(), total: z.number() }).optional(),
+});
+export type LabelContext = z.infer<typeof labelContextSchema>;
+
 export const citationSchema = z.object({
   entryId: z.string(),
   statement: z.string(),
+  // `statement` in the result's language, from the prebuilt translations.
+  // Beside the original, never instead of it; absent in English and for any
+  // statement not yet translated. See server/services/substances/translations.ts.
+  statementTranslated: z.string().optional(),
   riskContext: z.string(),
   sources: z.array(z.object({
     org: z.string(),
@@ -1447,6 +1483,13 @@ export const analysisResultSchema = z.object({
   originalIngredients: z.array(z.string()).optional(),
   /** BCP-47-ish language of the label itself, e.g. "zh", "pt". */
   sourceLanguage: z.string().optional(),
+  /**
+   * The language this RESULT is written in: the app's setting when the scan
+   * was taken, not the label's. Ingredient text, and every translated source
+   * statement, follow it, so a scan reopened from history reads in the
+   * language it was taken in whatever the app is set to today.
+   */
+  language: z.string().optional(),
   /** How completely the label was read; drives the uncertain state. */
   readConfidence: z.enum(["high", "medium", "low"]).optional(),
   /**
