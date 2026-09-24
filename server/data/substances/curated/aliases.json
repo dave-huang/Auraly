@@ -1,6 +1,6 @@
 {
   "_metadata": {
-    "version": "curated-aliases-2026-09-24",
+    "version": "curated-aliases-2026-09-24.2",
     "updatedAt": "2026-09-24",
     "description": "Identifiers, names and whole-food substances a person recorded by hand, because no ingested source carried them in a form a label would print. `entries` corrects substances a publisher already supplied and may never name an id that does not exist. `creates` adds the whole foods no register covers: every source in this corpus lists things somebody regulates, so palm oil and butter — printed on more labels than any additive — were invisible. Applied by curate.ts."
   },
@@ -116,6 +116,816 @@
         "赤藓红钠",
         "Eritrosina"
       ]
+    },
+    {
+      "substanceId": "curcumin",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E100"
+    },
+    {
+      "substanceId": "riboflavin",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E101"
+    },
+    {
+      "substanceId": "carmine_coccus_cacti_l",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E120"
+    },
+    {
+      "substanceId": "amaranth",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E123"
+    },
+    {
+      "substanceId": "patent_blue_v",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E131"
+    },
+    {
+      "substanceId": "brilliant_blue_fcf",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E133"
+    },
+    {
+      "substanceId": "chlorophyll",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E140"
+    },
+    {
+      "substanceId": "green_s",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E142"
+    },
+    {
+      "substanceId": "plain_caramel",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E150a"
+    },
+    {
+      "substanceId": "ammonia_caramel",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E150c"
+    },
+    {
+      "substanceId": "sulphite_ammonia_caramel",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E150d"
+    },
+    {
+      "substanceId": "brilliant_black_bn",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E151"
+    },
+    {
+      "substanceId": "brown_ht",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E155"
+    },
+    {
+      "substanceId": "beta_carotene",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E160a"
+    },
+    {
+      "substanceId": "annatto",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E160b"
+    },
+    {
+      "substanceId": "paprika_extract",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E160c"
+    },
+    {
+      "substanceId": "lycopene",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E160d"
+    },
+    {
+      "substanceId": "beta_apo_8_carotenal",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E160e"
+    },
+    {
+      "substanceId": "lutein",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E161b"
+    },
+    {
+      "substanceId": "beetroot_red",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E162"
+    },
+    {
+      "substanceId": "anthocyanins_cyanidin_peonidin_malvidin_delphinidin_petunidi",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E163"
+    },
+    {
+      "substanceId": "calcium_carbonate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E170"
+    },
+    {
+      "substanceId": "iron_oxide",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E172"
+    },
+    {
+      "substanceId": "aluminium",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E173"
+    },
+    {
+      "substanceId": "silver_powder_100_nm_particle_diameter_1_mm",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E174"
+    },
+    {
+      "substanceId": "gold",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E175"
+    },
+    {
+      "substanceId": "sorbic_acid",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E200"
+    },
+    {
+      "substanceId": "potassium_sorbate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E202"
+    },
+    {
+      "substanceId": "calcium_sorbate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E203"
+    },
+    {
+      "substanceId": "benzoic_acid",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E210"
+    },
+    {
+      "substanceId": "sodium_benzoate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E211"
+    },
+    {
+      "substanceId": "potassium_benzoate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E212"
+    },
+    {
+      "substanceId": "calcium_benzoate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E213"
+    },
+    {
+      "substanceId": "sulfur_dioxide",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E220"
+    },
+    {
+      "substanceId": "sodium_sulfite",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E221"
+    },
+    {
+      "substanceId": "sodium_bisulfite",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E222"
+    },
+    {
+      "substanceId": "sodium_metabisulfite",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E223"
+    },
+    {
+      "substanceId": "potassium_metabisulfite",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E224"
+    },
+    {
+      "substanceId": "potassium_bisulfite",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E228"
+    },
+    {
+      "substanceId": "nisin",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E234"
+    },
+    {
+      "substanceId": "natamycin",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E235"
+    },
+    {
+      "substanceId": "methenamine",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E239"
+    },
+    {
+      "substanceId": "dimethyl_dicarbonate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E242"
+    },
+    {
+      "substanceId": "sodium_nitrate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E251"
+    },
+    {
+      "substanceId": "potassium_nitrate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E252"
+    },
+    {
+      "substanceId": "acetic_acid",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E260"
+    },
+    {
+      "substanceId": "potassium_acetate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E261"
+    },
+    {
+      "substanceId": "sodium_acetate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E262"
+    },
+    {
+      "substanceId": "calcium_acetate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E263"
+    },
+    {
+      "substanceId": "lactic_acid",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E270"
+    },
+    {
+      "substanceId": "propionic_acid",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E280"
+    },
+    {
+      "substanceId": "sodium_propionate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E281"
+    },
+    {
+      "substanceId": "calcium_propionate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E282"
+    },
+    {
+      "substanceId": "boric_acid",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E284"
+    },
+    {
+      "substanceId": "sodium_tetraborate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E285"
+    },
+    {
+      "substanceId": "carbon_dioxide",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E290"
+    },
+    {
+      "substanceId": "malic_acid",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E296"
+    },
+    {
+      "substanceId": "fumaric_acid",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E297"
+    },
+    {
+      "substanceId": "sodium_ascorbate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E301"
+    },
+    {
+      "substanceId": "calcium_ascorbate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E302"
+    },
+    {
+      "substanceId": "ascorbyl_palmitate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E304"
+    },
+    {
+      "substanceId": "propyl_gallate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E310"
+    },
+    {
+      "substanceId": "erythorbic_acid",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E315"
+    },
+    {
+      "substanceId": "sodium_erythorbate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E316"
+    },
+    {
+      "substanceId": "tert_butylhydroquinone",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E319"
+    },
+    {
+      "substanceId": "butylated_hydroxyanisole",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E320"
+    },
+    {
+      "substanceId": "2_6_di_tert_butyl_4_methylphenol",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E321"
+    },
+    {
+      "substanceId": "sodium_lactate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E325"
+    },
+    {
+      "substanceId": "potassium_lactate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E326"
+    },
+    {
+      "substanceId": "calcium_lactate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E327"
+    },
+    {
+      "substanceId": "trisodium_citrate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E331"
+    },
+    {
+      "substanceId": "potassium_citrate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E332"
+    },
+    {
+      "substanceId": "calcium_citrate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E333"
+    },
+    {
+      "substanceId": "tartaric_acid_l",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E334"
+    },
+    {
+      "substanceId": "sodium_tartrate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E335"
+    },
+    {
+      "substanceId": "phosphoric_acid",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E338"
+    },
+    {
+      "substanceId": "dipotassium_phosphate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E340"
+    },
+    {
+      "substanceId": "edta_calcium_disodium",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E385"
+    },
+    {
+      "substanceId": "rosemary_extract_rosmarinus_officinalis_l",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E392"
+    },
+    {
+      "substanceId": "alginic_acid",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E400"
+    },
+    {
+      "substanceId": "alginate_sodium",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E401"
+    },
+    {
+      "substanceId": "alginate_potassium",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E402"
+    },
+    {
+      "substanceId": "alginate_calcium",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E404"
+    },
+    {
+      "substanceId": "propylene_glycol_alginate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E405"
+    },
+    {
+      "substanceId": "agar_gelidium_spp",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E406"
+    },
+    {
+      "substanceId": "carrageenan",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E407"
+    },
+    {
+      "substanceId": "locust_bean_gum",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E410"
+    },
+    {
+      "substanceId": "guar_gum_cyamopsis_tetragonolobus_l",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E412"
+    },
+    {
+      "substanceId": "tragacanth_gum_astragalus_spp",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E413"
+    },
+    {
+      "substanceId": "acacia_gum_acacia_senegal_l_willd",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E414"
+    },
+    {
+      "substanceId": "xanthan_gum",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E415"
+    },
+    {
+      "substanceId": "karaya_gum_sterculia_urens_roxb",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E416"
+    },
+    {
+      "substanceId": "gellan_gum",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E418"
+    },
+    {
+      "substanceId": "mannitol",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E421"
+    },
+    {
+      "substanceId": "glycerin",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E422"
+    },
+    {
+      "substanceId": "polysorbate_20",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E432"
+    },
+    {
+      "substanceId": "polysorbate_80",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E433"
+    },
+    {
+      "substanceId": "polysorbate_60",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E435"
+    },
+    {
+      "substanceId": "pectin",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E440"
+    },
+    {
+      "substanceId": "sodium_acid_pyrophosphate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E450"
+    },
+    {
+      "substanceId": "sodium_tripolyphosphate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E451"
+    },
+    {
+      "substanceId": "sodium_hexametaphosphate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E452"
+    },
+    {
+      "substanceId": "cellulose_microcrystalline",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E460"
+    },
+    {
+      "substanceId": "cellulose_methyl",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E461"
+    },
+    {
+      "substanceId": "hydroxypropyl_cellulose",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E463"
+    },
+    {
+      "substanceId": "sodium_carboxymethyl_cellulose",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E466"
+    },
+    {
+      "substanceId": "magnesium_salts_of_fatty_acids",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E470b"
+    },
+    {
+      "substanceId": "mono_and_diglycerides",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E471"
+    },
+    {
+      "substanceId": "citric_acid_esters_of_mono_and_diglycerides_of_fatty_acids",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E472c"
+    },
+    {
+      "substanceId": "mono_and_diacetyl_tartaric_acid_esters_of_mono_and_diglyceri",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E472e"
+    },
+    {
+      "substanceId": "sucrose_esters_of_fatty_acids",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E473"
+    },
+    {
+      "substanceId": "polyglycerol_esters_of_fatty_acids",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E475"
+    },
+    {
+      "substanceId": "polyglycerol_polyricinoleate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E476"
+    },
+    {
+      "substanceId": "propane_1_2_diol_esters_of_fatty_acids",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E477"
+    },
+    {
+      "substanceId": "sodium_stearoyl_2_lactylate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E481"
+    },
+    {
+      "substanceId": "calcium_stearoyl_2_lactylate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E482"
+    },
+    {
+      "substanceId": "sorbitan_monostearate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E491"
+    },
+    {
+      "substanceId": "sodium_carbonate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E500"
+    },
+    {
+      "substanceId": "potassium_carbonate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E501"
+    },
+    {
+      "substanceId": "ammonium_carbonate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E503"
+    },
+    {
+      "substanceId": "magnesium_carbonate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E504"
+    },
+    {
+      "substanceId": "hydrochloric_acid",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E507"
+    },
+    {
+      "substanceId": "potassium_chloride",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E508"
+    },
+    {
+      "substanceId": "calcium_chloride",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E509"
+    },
+    {
+      "substanceId": "magnesium_chloride",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E511"
+    },
+    {
+      "substanceId": "calcium_sulfate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E516"
+    },
+    {
+      "substanceId": "sodium_hydroxide",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E524"
+    },
+    {
+      "substanceId": "potassium_hydroxide",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E525"
+    },
+    {
+      "substanceId": "calcium_hydroxide",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E526"
+    },
+    {
+      "substanceId": "silicon_dioxide",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E551"
+    },
+    {
+      "substanceId": "calcium_silicate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E552"
+    },
+    {
+      "substanceId": "talc",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E553b"
+    },
+    {
+      "substanceId": "fatty_acids",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E570"
+    },
+    {
+      "substanceId": "glucono_delta_lactone",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E575"
+    },
+    {
+      "substanceId": "calcium_gluconate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E578"
+    },
+    {
+      "substanceId": "glutamic_acid",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E620"
+    },
+    {
+      "substanceId": "monosodium_glutamate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E621"
+    },
+    {
+      "substanceId": "disodium_guanylate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E627"
+    },
+    {
+      "substanceId": "disodium_inosinate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E631"
+    },
+    {
+      "substanceId": "glycine",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E640"
+    },
+    {
+      "substanceId": "dimethyl_polysiloxane",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E900"
+    },
+    {
+      "substanceId": "beeswax",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E901"
+    },
+    {
+      "substanceId": "carnauba_wax_copernicia_cerifera_arruda_mart",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E903"
+    },
+    {
+      "substanceId": "shellac",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E904"
+    },
+    {
+      "substanceId": "microcrystalline_wax",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E905"
+    },
+    {
+      "substanceId": "l_cysteine",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E920"
+    },
+    {
+      "substanceId": "nitrogen",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E941"
+    },
+    {
+      "substanceId": "acesulfame_k",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E950"
+    },
+    {
+      "substanceId": "aspartame",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E951"
+    },
+    {
+      "substanceId": "sodium_cyclamate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E952"
+    },
+    {
+      "substanceId": "saccharin",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E954"
+    },
+    {
+      "substanceId": "sucralose",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E955"
+    },
+    {
+      "substanceId": "thaumatin",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E957"
+    },
+    {
+      "substanceId": "steviol_glycosides",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E960"
+    },
+    {
+      "substanceId": "neotame",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E961"
+    },
+    {
+      "substanceId": "xylitol",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E967"
+    },
+    {
+      "substanceId": "erythritol",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E968"
+    },
+    {
+      "substanceId": "advantame",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E969"
+    },
+    {
+      "substanceId": "polydextrose",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E1200"
+    },
+    {
+      "substanceId": "triethyl_citrate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E1505"
+    },
+    {
+      "substanceId": "triacetin_glycerol_triacetate",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E1518"
+    },
+    {
+      "substanceId": "propane_1_2_diol",
+      "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
+      "eNumber": "E1520"
     }
   ],
   "creates": [

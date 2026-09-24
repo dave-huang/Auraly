@@ -1,6 +1,6 @@
 {
   "_metadata": {
-    "version": "curated-nutrients-2026-08-12+cosing_annex_ii-2026-07-30+cosing_annex_iii-2026-07-30+cosing_annex_iv-2026-07-30+cosing_annex_v-2026-07-30+cosing_annex_vi-2026-07-30+prop65-2026-07-31+iarc-2026-08+fda_food_additives-2026-08+efsa_openfoodtox-2026-08+curated-aliases-2026-08-24+curated-aliases-2026-09-24#983cae5a7bc2",
+    "version": "curated-nutrients-2026-08-12+cosing_annex_ii-2026-07-30+cosing_annex_iii-2026-07-30+cosing_annex_iv-2026-07-30+cosing_annex_v-2026-07-30+cosing_annex_vi-2026-07-30+prop65-2026-07-31+iarc-2026-08+fda_food_additives-2026-08+efsa_openfoodtox-2026-08+curated-aliases-2026-08-24+curated-aliases-2026-09-24+curated-aliases-2026-09-24.2#99f0f0e7b06c",
     "updatedAt": "2026-09-24",
     "description": "Substance identity registry. Ingested source snapshots are the primary intended input (npm run substances:ingest). This first curated block exists because the hazard registers structurally cannot supply it: registers of prohibitions only list prohibited things, so nothing in them ever resolves an ordinary label term like 'sugar' or 'citric acid'. These entries carry the identities that health-guidance evidence attaches to. Aliases are EXACT-match after normalization, so each printed label form must be listed explicitly — an unlisted variant resolves to unidentified, which is the safe direction. 2026-08-12: added Chinese and Spanish label forms for every substance here. Cross-language scans were partly bypassing this registry — 白砂糖 resolved but bare 糖 did not — so a Chinese label fell back to the model for substances we hold records on. Partially-hydrogenated-oil forms are all explicitly PARTIAL; fully hydrogenated oil is a different ingredient and must not resolve here.",
     "reviewStatus": "ai_seeded",
@@ -16,7 +16,8 @@
       "fda_food_additives-2026-08",
       "efsa_openfoodtox-2026-08",
       "curated-aliases-2026-08-24",
-      "curated-aliases-2026-09-24"
+      "curated-aliases-2026-09-24",
+      "curated-aliases-2026-09-24.2"
     ]
   },
   "substances": [
@@ -2984,7 +2985,7 @@
       "name": "Butylated hydroxyanisole",
       "cas": "25013-16-5",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E320",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT, ANTIOXIDANT, DOUGH STRENGTHENER, FLAVOR ENHANCER, FLOUR TREATING AGENT, OXIDIZING OR REDUCING AGENT",
       "aliases": [
@@ -21173,7 +21174,7 @@
       "name": "Talc",
       "cas": "14807-96-6",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E553b",
       "inci": null,
       "category": "FORMULATION AID, MASTICATORY SUBSTANCE, NON-NUTRITIVE SWEETENER, PROCESSING AID, WASHING OR SURFACE REMOVAL AGENT",
       "aliases": [
@@ -22309,7 +22310,7 @@
       "name": "Aspartame",
       "cas": "22839-47-0",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E951",
       "inci": null,
       "category": "FLAVOR ENHANCER, NON-NUTRITIVE SWEETENER",
       "aliases": [
@@ -25790,7 +25791,7 @@
       "name": "Sulfur dioxide",
       "cas": "7446-09-5",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E220",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT, ANTIOXIDANT, COLOR OR COLORING ADJUNCT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT",
       "aliases": [
@@ -26046,7 +26047,7 @@
       "name": "Hydrochloric acid",
       "cas": "7647-01-0",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E507",
       "inci": null,
       "category": "FORMULATION AID, PH CONTROL AGENT",
       "aliases": [
@@ -27454,7 +27455,7 @@
       "name": "Amaranth",
       "cas": "915-67-3",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E123",
       "inci": null,
       "category": null,
       "aliases": [
@@ -54647,7 +54648,7 @@
       "name": "Calcium hydroxide",
       "cas": "1305-62-0",
       "ec": "215-137-3",
-      "eNumber": null,
+      "eNumber": "E526",
       "inci": "CALCIUM HYDROXIDE",
       "category": "FIRMING AGENT, NUTRIENT SUPPLEMENT, PH CONTROL AGENT, PROCESSING AID",
       "aliases": [
@@ -61193,7 +61194,7 @@
       "name": "2,6-Di-Tert-Butyl-4-Methylphenol",
       "cas": "128-37-0",
       "ec": "204-881-4",
-      "eNumber": null,
+      "eNumber": "E321",
       "inci": "Butylated Hydroxytoluene",
       "category": null,
       "aliases": [
@@ -62557,7 +62558,7 @@
       "name": "Silver (powder) [100 nm < particle diameter < 1 mm]",
       "cas": "7440-22-4",
       "ec": "231-131-3",
-      "eNumber": null,
+      "eNumber": "E174",
       "inci": "Silver",
       "category": null,
       "aliases": [
@@ -63637,7 +63638,7 @@
       "name": "beta Carotene",
       "cas": "7235-40-7",
       "ec": "230-636-6",
-      "eNumber": null,
+      "eNumber": "E160a",
       "inci": "CI 40800",
       "category": "ANTIOXIDANT, COLOR OR COLORING ADJUNCT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, NUTRIENT SUPPLEMENT, PROCESSING AID, SURFACE-FINISHING AGENT",
       "aliases": [
@@ -64543,7 +64544,7 @@
       "name": "Annatto",
       "cas": null,
       "ec": "215-735-4; 208-810-8; 230-248-7",
-      "eNumber": null,
+      "eNumber": "E160b",
       "inci": "CI 75120",
       "category": null,
       "aliases": [
@@ -64564,7 +64565,7 @@
       "name": "Lycopene",
       "cas": "502-65-8",
       "ec": "-",
-      "eNumber": null,
+      "eNumber": "E160d",
       "inci": "CI 75125",
       "category": null,
       "aliases": [
@@ -64711,7 +64712,7 @@
       "name": "Aluminium",
       "cas": "7429-90-5",
       "ec": "231-072-3",
-      "eNumber": null,
+      "eNumber": "E173",
       "inci": "CI 77000",
       "category": null,
       "aliases": [
@@ -64858,7 +64859,7 @@
       "name": "Calcium carbonate",
       "cas": "471-34-1",
       "ec": "207-439-9 / 215-279-6",
-      "eNumber": null,
+      "eNumber": "E170",
       "inci": "CI 77220",
       "category": "ANTICAKING AGENT OR FREE-FLOW AGENT, COLOR OR COLORING ADJUNCT, DRYING AGENT, FORMULATION AID, HUMECTANT, LEAVENING AGENT, LUBRICANT OR RELEASE AGENT, MASTICATORY SUBSTANCE, NUTRIENT SUPPLEMENT, PH CONTROL AGENT, PROCESSING AID",
       "aliases": [
@@ -64879,7 +64880,7 @@
       "name": "Calcium sulfate",
       "cas": "7778-18-9",
       "ec": "-",
-      "eNumber": null,
+      "eNumber": "E516",
       "inci": "CI 77231",
       "category": "ANTICAKING AGENT OR FREE-FLOW AGENT, DRYING AGENT, FORMULATION AID, LEAVENING AGENT, LUBRICANT OR RELEASE AGENT, MALTING OR FERMENTING AID, NUTRIENT SUPPLEMENT, PH CONTROL AGENT, PROCESSING AID, STABILIZER OR THICKENER",
       "aliases": [
@@ -65047,7 +65048,7 @@
       "name": "Gold",
       "cas": "7440-57-5",
       "ec": "231-165-9",
-      "eNumber": null,
+      "eNumber": "E175",
       "inci": "CI 77480",
       "category": null,
       "aliases": [
@@ -65068,7 +65069,7 @@
       "name": "Iron oxide",
       "cas": "1345-25-1",
       "ec": "215-721-8",
-      "eNumber": null,
+      "eNumber": "E172",
       "inci": "CI 77489",
       "category": "COLOR OR COLORING ADJUNCT, SURFACE-FINISHING AGENT",
       "aliases": [
@@ -65173,7 +65174,7 @@
       "name": "Magnesium carbonate",
       "cas": "39409-82-0",
       "ec": "208-915-9; 231-817-2",
-      "eNumber": null,
+      "eNumber": "E504",
       "inci": "CI 77713",
       "category": "ANTICAKING AGENT OR FREE-FLOW AGENT, DRYING AGENT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, FORMULATION AID, HUMECTANT, LUBRICANT OR RELEASE AGENT, NUTRIENT SUPPLEMENT, PH CONTROL AGENT, PROCESSING AID",
       "aliases": [
@@ -65278,7 +65279,7 @@
       "name": "Riboflavin",
       "cas": "83-88-5",
       "ec": "201-507-1 / 204-988-6",
-      "eNumber": null,
+      "eNumber": "E101",
       "inci": "LACTOFLAVIN",
       "category": "COLOR OR COLORING ADJUNCT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, NUTRIENT SUPPLEMENT",
       "aliases": [
@@ -65341,7 +65342,7 @@
       "name": "Beetroot red",
       "cas": null,
       "ec": "231-628-5; 289-609-2; 289-610-8",
-      "eNumber": null,
+      "eNumber": "E162",
       "inci": "BEETROOT RED",
       "category": null,
       "aliases": [
@@ -65357,7 +65358,7 @@
       "name": "Anthocyanins (Cyanidin, Peonidin, Malvidin, Delphinidin, Petunidin, Pelargonidin)",
       "cas": null,
       "ec": "208-438-6 / 205-125-6 / 211-403-8 / 208-437-0 / - / 205-127-7",
-      "eNumber": null,
+      "eNumber": "E163",
       "inci": "ANTHOCYANINS",
       "category": null,
       "aliases": [
@@ -66324,7 +66325,7 @@
       "name": "Methenamine",
       "cas": "100-97-0",
       "ec": "202-905-8",
-      "eNumber": null,
+      "eNumber": "E239",
       "inci": "METHENAMINE",
       "category": null,
       "aliases": [
@@ -67575,7 +67576,7 @@
       "name": "ACACIA, GUM (ACACIA SENEGAL (L.) WILLD.)",
       "cas": "9000-01-5",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E414",
       "inci": null,
       "category": "EMULSIFIER OR EMULSIFIER SALT, FLAVOR ENHANCER, FORMULATION AID, PROCESSING AID, PROPELLANT, SOLVENT OR VEHICLE, STABILIZER OR THICKENER, SURFACE-ACTIVE AGENT, TEXTURIZER",
       "aliases": [
@@ -67840,7 +67841,7 @@
       "name": "ACETIC ACID",
       "cas": "64-19-7",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E260",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, PH CONTROL AGENT",
       "aliases": [
@@ -68585,7 +68586,7 @@
       "name": "ADVANTAME",
       "cas": "714229-20-6",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E969",
       "inci": null,
       "category": "NON-NUTRITIVE SWEETENER",
       "aliases": [
@@ -68601,7 +68602,7 @@
       "name": "AGAR (GELIDIUM SPP.)",
       "cas": "9002-18-0",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E406",
       "inci": null,
       "category": "EMULSIFIER OR EMULSIFIER SALT, FLAVOR ENHANCER, PROCESSING AID, STABILIZER OR THICKENER, SURFACE-FINISHING AGENT, TEXTURIZER",
       "aliases": [
@@ -68895,7 +68896,7 @@
       "name": "ALGINATE, CALCIUM",
       "cas": "9005-35-0",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E404",
       "inci": null,
       "category": "EMULSIFIER OR EMULSIFIER SALT, FIRMING AGENT, FLAVOR ENHANCER, FORMULATION AID, PROCESSING AID, STABILIZER OR THICKENER, SURFACE-ACTIVE AGENT, TEXTURIZER",
       "aliases": [
@@ -68916,7 +68917,7 @@
       "name": "ALGINATE, POTASSIUM",
       "cas": "9005-36-1",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E402",
       "inci": null,
       "category": "EMULSIFIER OR EMULSIFIER SALT, FIRMING AGENT, FLAVOR ENHANCER, FORMULATION AID, PROCESSING AID, STABILIZER OR THICKENER, SURFACE-ACTIVE AGENT, TEXTURIZER",
       "aliases": [
@@ -68937,7 +68938,7 @@
       "name": "ALGINATE, SODIUM",
       "cas": "9005-38-3",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E401",
       "inci": null,
       "category": "EMULSIFIER OR EMULSIFIER SALT, FIRMING AGENT, FLAVOR ENHANCER, FORMULATION AID, PROCESSING AID, STABILIZER OR THICKENER, SURFACE-ACTIVE AGENT, TEXTURIZER",
       "aliases": [
@@ -68979,7 +68980,7 @@
       "name": "ALGINIC ACID",
       "cas": "9005-32-7",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E400",
       "inci": null,
       "category": "EMULSIFIER OR EMULSIFIER SALT, FORMULATION AID, STABILIZER OR THICKENER",
       "aliases": [
@@ -70547,7 +70548,7 @@
       "name": "AMMONIUM CARBONATE",
       "cas": "8000-73-5",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E503",
       "inci": null,
       "category": "LEAVENING AGENT, PH CONTROL AGENT",
       "aliases": [
@@ -71892,7 +71893,7 @@
       "name": "BETA-APO-8'-CAROTENAL",
       "cas": "1107-26-2",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E160e",
       "inci": null,
       "category": "COLOR OR COLORING ADJUNCT",
       "aliases": [
@@ -72212,7 +72213,7 @@
       "name": "ASCORBYL PALMITATE",
       "cas": "137-66-6",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E304",
       "inci": null,
       "category": "ANTIOXIDANT",
       "aliases": [
@@ -72935,7 +72936,7 @@
       "name": "BEESWAX",
       "cas": "8012-89-3",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E901",
       "inci": null,
       "category": "FLAVORING AGENT OR ADJUVANT, LUBRICANT OR RELEASE AGENT, SURFACE-FINISHING AGENT",
       "aliases": [
@@ -73068,7 +73069,7 @@
       "name": "BENZOIC ACID",
       "cas": "65-85-0",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E210",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT, FLAVORING AGENT OR ADJUVANT, PH CONTROL AGENT",
       "aliases": [
@@ -73883,7 +73884,7 @@
       "name": "BORIC ACID",
       "cas": "10043-35-3",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E284",
       "inci": null,
       "category": "LUBRICANT OR RELEASE AGENT",
       "aliases": [
@@ -75412,7 +75413,7 @@
       "name": "CALCIUM ACETATE",
       "cas": "62-54-4",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E263",
       "inci": null,
       "category": "COLOR OR COLORING ADJUNCT, FIRMING AGENT, FLAVORING AGENT OR ADJUVANT, PH CONTROL AGENT, PROCESSING AID, SEQUESTRANT, STABILIZER OR THICKENER, TEXTURIZER",
       "aliases": [
@@ -75428,7 +75429,7 @@
       "name": "CALCIUM ASCORBATE",
       "cas": "5743-27-1",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E302",
       "inci": null,
       "category": "ANTIOXIDANT",
       "aliases": [
@@ -75444,7 +75445,7 @@
       "name": "CALCIUM BENZOATE",
       "cas": "2090-05-3",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E213",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT",
       "aliases": [
@@ -75524,7 +75525,7 @@
       "name": "CALCIUM CHLORIDE",
       "cas": "10035-04-8",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E509",
       "inci": null,
       "category": "ANTICAKING AGENT OR FREE-FLOW AGENT, DRYING AGENT, ENZYME, FIRMING AGENT, FREEZING OR COOLING AGENT, DIRECT CONTACT, FUMIGANT, HUMECTANT, MALTING OR FERMENTING AID, PH CONTROL AGENT, PROCESSING",
       "aliases": [
@@ -75540,7 +75541,7 @@
       "name": "CALCIUM CITRATE",
       "cas": "813-94-5",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E333",
       "inci": null,
       "category": "FIRMING AGENT, NUTRIENT SUPPLEMENT, PH CONTROL AGENT, SEQUESTRANT",
       "aliases": [
@@ -75604,7 +75605,7 @@
       "name": "CALCIUM GLUCONATE",
       "cas": "299-28-5",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E578",
       "inci": null,
       "category": "FIRMING AGENT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, FORMULATION AID, NUTRIENT SUPPLEMENT, SEQUESTRANT, STABILIZER OR THICKENER, TEXTURIZER",
       "aliases": [
@@ -75684,7 +75685,7 @@
       "name": "CALCIUM LACTATE",
       "cas": "814-80-2",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E327",
       "inci": null,
       "category": "DOUGH STRENGTHENER, FIRMING AGENT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, LEAVENING AGENT, MALTING OR FERMENTING AID, NUTRIENT SUPPLEMENT, PH CONTROL AGENT, STABILIZER OR THICKENER",
       "aliases": [
@@ -75944,7 +75945,7 @@
       "name": "CALCIUM PROPIONATE",
       "cas": "4075-81-4",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E282",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT, ANTIOXIDANT",
       "aliases": [
@@ -75992,7 +75993,7 @@
       "name": "CALCIUM SILICATE",
       "cas": "1344-95-2",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E552",
       "inci": null,
       "category": "ANTICAKING AGENT OR FREE-FLOW AGENT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, FORMULATION AID, LUBRICANT OR RELEASE AGENT",
       "aliases": [
@@ -76008,7 +76009,7 @@
       "name": "CALCIUM SORBATE",
       "cas": "7492-55-9",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E203",
       "inci": null,
       "category": "PRESERVATIVE",
       "aliases": [
@@ -76040,7 +76041,7 @@
       "name": "CALCIUM STEAROYL-2-LACTYLATE",
       "cas": "5793-94-2",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E482",
       "inci": null,
       "category": "DOUGH STRENGTHENER, EMULSIFIER OR EMULSIFIER SALT, STABILIZER OR THICKENER, SURFACE-ACTIVE AGENT, TEXTURIZER",
       "aliases": [
@@ -76624,7 +76625,7 @@
       "name": "CARBON DIOXIDE",
       "cas": "124-38-9",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E290",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT, ANTIOXIDANT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, FORMULATION AID, FREEZING OR COOLING AGENT, DIRECT CONTACT, PH CONTROL AGENT, PROCESSING AID, PROPELLANT, SOLVENT",
       "aliases": [
@@ -76777,7 +76778,7 @@
       "name": "CARMINE (COCCUS CACTI L.)",
       "cas": "1390-65-4",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E120",
       "inci": null,
       "category": "COLOR OR COLORING ADJUNCT, FLAVORING AGENT OR ADJUVANT",
       "aliases": [
@@ -76798,7 +76799,7 @@
       "name": "CARNAUBA WAX (COPERNICIA CERIFERA (ARRUDA) MART.)",
       "cas": "8015-86-9",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E903",
       "inci": null,
       "category": "ANTICAKING AGENT OR FREE-FLOW AGENT, FORMULATION AID, LUBRICANT OR RELEASE AGENT, PH CONTROL AGENT, PROCESSING AID, SURFACE-FINISHING AGENT",
       "aliases": [
@@ -76866,7 +76867,7 @@
       "name": "CARRAGEENAN",
       "cas": "9000-07-1",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E407",
       "inci": null,
       "category": "ANTICAKING AGENT OR FREE-FLOW AGENT, DRYING AGENT, EMULSIFIER OR EMULSIFIER SALT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, FORMULATION AID, HUMECTANT, PROCESSING AID, STABILIZER OR THICKENER, TEXTURIZER",
       "aliases": [
@@ -77972,7 +77973,7 @@
       "name": "CELLULOSE, METHYL",
       "cas": "9004-67-5",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E461",
       "inci": null,
       "category": "EMULSIFIER OR EMULSIFIER SALT, FLAVOR ENHANCER, STABILIZER OR THICKENER",
       "aliases": [
@@ -78014,7 +78015,7 @@
       "name": "CELLULOSE, MICROCRYSTALLINE",
       "cas": null,
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E460",
       "inci": null,
       "category": "ANTICAKING AGENT OR FREE-FLOW AGENT, DRYING AGENT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, FORMULATION AID, HUMECTANT, STABILIZER OR THICKENER",
       "aliases": [
@@ -78783,7 +78784,7 @@
       "name": "CHLOROPHYLL",
       "cas": "1406-65-1",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E140",
       "inci": null,
       "category": null,
       "aliases": [
@@ -82242,7 +82243,7 @@
       "name": "L-CYSTEINE",
       "cas": "52-90-4",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E920",
       "inci": null,
       "category": "DOUGH STRENGTHENER, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, FLOUR TREATING AGENT, NUTRIENT SUPPLEMENT",
       "aliases": [
@@ -85199,7 +85200,7 @@
       "name": "DIMETHYL DICARBONATE",
       "cas": "4525-33-1",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E242",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT",
       "aliases": [
@@ -86623,7 +86624,7 @@
       "name": "DIPOTASSIUM PHOSPHATE",
       "cas": "7758-11-4",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E340",
       "inci": null,
       "category": "EMULSIFIER OR EMULSIFIER SALT, NUTRIENT SUPPLEMENT, PH CONTROL AGENT, SEQUESTRANT, STABILIZER OR THICKENER",
       "aliases": [
@@ -86740,7 +86741,7 @@
       "name": "DISODIUM GUANYLATE",
       "cas": "5550-12-9",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E627",
       "inci": null,
       "category": "FLAVORING AGENT OR ADJUVANT",
       "aliases": [
@@ -86756,7 +86757,7 @@
       "name": "DISODIUM INOSINATE",
       "cas": "4691-65-0",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E631",
       "inci": null,
       "category": "FLAVOR ENHANCER, STABILIZER OR THICKENER",
       "aliases": [
@@ -87370,7 +87371,7 @@
       "name": "EDTA, CALCIUM DISODIUM",
       "cas": "62-33-9",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E385",
       "inci": null,
       "category": "ANTIOXIDANT, COLOR OR COLORING ADJUNCT, FLAVOR ENHANCER, FUMIGANT, SEQUESTRANT",
       "aliases": [
@@ -87915,7 +87916,7 @@
       "name": "ERYTHORBIC ACID",
       "cas": "89-65-6",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E315",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT, ANTIOXIDANT, COLOR OR COLORING ADJUNCT, CURING OR PICKLING AGENT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT",
       "aliases": [
@@ -91543,7 +91544,7 @@
       "name": "FATTY ACIDS",
       "cas": "67254-79-9",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E570",
       "inci": null,
       "category": "FORMULATION AID, LUBRICANT OR RELEASE AGENT, SURFACE-ACTIVE AGENT, SURFACE-FINISHING AGENT",
       "aliases": [
@@ -92999,7 +93000,7 @@
       "name": "FUMARIC ACID",
       "cas": "110-17-8",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E297",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT, CURING OR PICKLING AGENT, FLAVORING AGENT OR ADJUVANT, LEAVENING AGENT, PH CONTROL AGENT",
       "aliases": [
@@ -93966,7 +93967,7 @@
       "name": "GELLAN GUM",
       "cas": "71010-52-1",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E418",
       "inci": null,
       "category": "STABILIZER OR THICKENER",
       "aliases": [
@@ -94779,7 +94780,7 @@
       "name": "GLUCONO-DELTA LACTONE",
       "cas": "90-80-2",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E575",
       "inci": null,
       "category": "CURING OR PICKLING AGENT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, FORMULATION AID, LEAVENING AGENT, PH CONTROL AGENT, SEQUESTRANT",
       "aliases": [
@@ -95120,7 +95121,7 @@
       "name": "GLYCERIN",
       "cas": "56-81-5",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E422",
       "inci": null,
       "category": "ANTICAKING AGENT OR FREE-FLOW AGENT, DRYING AGENT, EMULSIFIER OR EMULSIFIER SALT, HUMECTANT, MASTICATORY SUBSTANCE, NUTRITIVE SWEETENER, SOLVENT OR VEHICLE, STABILIZER OR THICKENER, TEXTURIZER",
       "aliases": [
@@ -95365,7 +95366,7 @@
       "name": "GLYCINE",
       "cas": "56-40-6",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E640",
       "inci": null,
       "category": "FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, NUTRIENT SUPPLEMENT",
       "aliases": [
@@ -95964,7 +95965,7 @@
       "name": "GUAR, GUM (CYAMOPSIS TETRAGONOLOBUS (L.))",
       "cas": "9000-30-0",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E412",
       "inci": null,
       "category": "ANTICAKING AGENT OR FREE-FLOW AGENT, DRYING AGENT, EMULSIFIER OR EMULSIFIER SALT, FIRMING AGENT, FLAVOR ENHANCER, FORMULATION AID, HUMECTANT, STABILIZER OR THICKENER, TEXTURIZER",
       "aliases": [
@@ -99890,7 +99891,7 @@
       "name": "HYDROXYPROPYL CELLULOSE",
       "cas": "9004-64-2",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E463",
       "inci": null,
       "category": "EMULSIFIER OR EMULSIFIER SALT, FORMULATION AID, STABILIZER OR THICKENER, TEXTURIZER",
       "aliases": [
@@ -102894,7 +102895,7 @@
       "name": "KARAYA, GUM (STERCULIA URENS ROXB.)",
       "cas": "9000-36-6",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E416",
       "inci": null,
       "category": "EMULSIFIER OR EMULSIFIER SALT, FLAVOR ENHANCER, FORMULATION AID, STABILIZER OR THICKENER, TEXTURIZER",
       "aliases": [
@@ -103182,7 +103183,7 @@
       "name": "LACTIC ACID",
       "cas": "50-21-5",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E270",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT, CURING OR PICKLING AGENT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, PH CONTROL AGENT, SOLVENT OR VEHICLE",
       "aliases": [
@@ -105216,7 +105217,7 @@
       "name": "MAGNESIUM CHLORIDE",
       "cas": "7786-30-3",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E511",
       "inci": null,
       "category": "COLOR OR COLORING ADJUNCT, FIRMING AGENT, FLAVORING AGENT OR ADJUVANT, NUTRIENT SUPPLEMENT",
       "aliases": [
@@ -105434,7 +105435,7 @@
       "name": "MAGNESIUM SALTS OF FATTY ACIDS",
       "cas": null,
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E470b",
       "inci": null,
       "category": "ANTICAKING AGENT OR FREE-FLOW AGENT, EMULSIFIER OR EMULSIFIER SALT, LUBRICANT OR RELEASE AGENT",
       "aliases": [
@@ -105535,7 +105536,7 @@
       "name": "MALIC ACID",
       "cas": "617-48-1",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E296",
       "inci": null,
       "category": "FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, PH CONTROL AGENT, SYNERGIST",
       "aliases": [
@@ -105827,7 +105828,7 @@
       "name": "MANNITOL",
       "cas": "69-65-8",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E421",
       "inci": null,
       "category": "ANTICAKING AGENT OR FREE-FLOW AGENT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, FORMULATION AID, LUBRICANT OR RELEASE AGENT, NON-NUTRITIVE SWEETENER, SOLVENT OR VEHICLE",
       "aliases": [
@@ -113856,7 +113857,7 @@
       "name": "MONO- AND DIGLYCERIDES",
       "cas": "67254-73-3",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E471",
       "inci": null,
       "category": "EMULSIFIER OR EMULSIFIER SALT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, LUBRICANT OR RELEASE AGENT, MASTICATORY SUBSTANCE, STABILIZER OR THICKENER, SURFACE-ACTIVE AGENT, TEXTURIZER",
       "aliases": [
@@ -114194,7 +114195,7 @@
       "name": "MONOSODIUM GLUTAMATE",
       "cas": "142-47-2",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E621",
       "inci": null,
       "category": "FLAVOR ENHANCER, NUTRIENT SUPPLEMENT, PH CONTROL AGENT, STABILIZER OR THICKENER",
       "aliases": [
@@ -114951,7 +114952,7 @@
       "name": "NATAMYCIN",
       "cas": "7681-93-8",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E235",
       "inci": null,
       "category": "FUMIGANT",
       "aliases": [
@@ -115031,7 +115032,7 @@
       "name": "NEOTAME",
       "cas": "165450-17-9",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E961",
       "inci": null,
       "category": "FLAVOR ENHANCER, NON-NUTRITIVE SWEETENER",
       "aliases": [
@@ -115423,7 +115424,7 @@
       "name": "NITROGEN",
       "cas": "7727-37-9",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E941",
       "inci": null,
       "category": "ANTIOXIDANT, FORMULATION AID, PROPELLANT",
       "aliases": [
@@ -119409,7 +119410,7 @@
       "name": "PECTIN",
       "cas": "9000-69-5",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E440",
       "inci": null,
       "category": "EMULSIFIER OR EMULSIFIER SALT, FIRMING AGENT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, SOLVENT OR VEHICLE, STABILIZER OR THICKENER, TEXTURIZER",
       "aliases": [
@@ -122011,7 +122012,7 @@
       "name": "PHOSPHORIC ACID",
       "cas": "7664-38-2",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E338",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, FUMIGANT, MALTING OR FERMENTING AID, NON-NUTRITIVE SWEETENER, PH CONTROL AGENT, SEQUESTRANT",
       "aliases": [
@@ -122766,7 +122767,7 @@
       "name": "POLYDEXTROSE",
       "cas": "68424-04-4",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E1200",
       "inci": null,
       "category": "FORMULATION AID, HUMECTANT, NUTRIENT SUPPLEMENT, STABILIZER OR THICKENER, TEXTURIZER",
       "aliases": [
@@ -122929,7 +122930,7 @@
       "name": "POLYGLYCEROL ESTERS OF FATTY ACIDS",
       "cas": null,
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E475",
       "inci": null,
       "category": "EMULSIFIER OR EMULSIFIER SALT, SOLVENT OR VEHICLE, STABILIZER OR THICKENER, SURFACE-ACTIVE AGENT",
       "aliases": [
@@ -123146,7 +123147,7 @@
       "name": "POLYSORBATE 20",
       "cas": "9005-64-5",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E432",
       "inci": null,
       "category": "BOILER WATER ADDITIVE, EMULSIFIER OR EMULSIFIER SALT, FLAVORING AGENT OR ADJUVANT, STABILIZER OR THICKENER, SURFACE-ACTIVE AGENT",
       "aliases": [
@@ -123162,7 +123163,7 @@
       "name": "POLYSORBATE 60",
       "cas": "9005-67-8",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E435",
       "inci": null,
       "category": "BOILER WATER ADDITIVE, EMULSIFIER OR EMULSIFIER SALT, FLAVORING AGENT OR ADJUVANT, STABILIZER OR THICKENER, SURFACE-ACTIVE AGENT",
       "aliases": [
@@ -123194,7 +123195,7 @@
       "name": "POLYSORBATE 80",
       "cas": "9005-65-6",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E433",
       "inci": null,
       "category": "COLOR OR COLORING ADJUNCT, EMULSIFIER OR EMULSIFIER SALT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, SOLVENT OR VEHICLE, STABILIZER OR THICKENER, SURFACE-ACTIVE AGENT",
       "aliases": [
@@ -123331,7 +123332,7 @@
       "name": "POTASSIUM ACETATE",
       "cas": "127-08-2",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E261",
       "inci": null,
       "category": "FLAVORING AGENT OR ADJUVANT",
       "aliases": [
@@ -123379,7 +123380,7 @@
       "name": "POTASSIUM BENZOATE",
       "cas": "582-25-2",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E212",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT",
       "aliases": [
@@ -123411,7 +123412,7 @@
       "name": "POTASSIUM BISULFITE",
       "cas": "7773-03-7",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E228",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT",
       "aliases": [
@@ -123491,7 +123492,7 @@
       "name": "POTASSIUM CARBONATE",
       "cas": "584-08-7",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E501",
       "inci": null,
       "category": "FLAVORING AGENT OR ADJUVANT, LEAVENING AGENT, NUTRIENT SUPPLEMENT, PH CONTROL AGENT, PROCESSING AID",
       "aliases": [
@@ -123523,7 +123524,7 @@
       "name": "POTASSIUM CHLORIDE",
       "cas": "7447-40-7",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E508",
       "inci": null,
       "category": "ENZYME, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, MALTING OR FERMENTING AID, NUTRIENT SUPPLEMENT, PH CONTROL AGENT, PROCESSING AID, STABILIZER OR THICKENER",
       "aliases": [
@@ -123539,7 +123540,7 @@
       "name": "POTASSIUM CITRATE",
       "cas": "6100-05-6",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E332",
       "inci": null,
       "category": "EMULSIFIER OR EMULSIFIER SALT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, NUTRIENT SUPPLEMENT, PH CONTROL AGENT, SEQUESTRANT",
       "aliases": [
@@ -123651,7 +123652,7 @@
       "name": "POTASSIUM HYDROXIDE",
       "cas": "1310-58-3",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E525",
       "inci": null,
       "category": "FORMULATION AID, FUMIGANT, PH CONTROL AGENT, PROCESSING AID, STABILIZER OR THICKENER, WASHING OR SURFACE REMOVAL AGENT",
       "aliases": [
@@ -123731,7 +123732,7 @@
       "name": "POTASSIUM LACTATE",
       "cas": "996-31-6",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E326",
       "inci": null,
       "category": "FLAVOR ENHANCER",
       "aliases": [
@@ -123763,7 +123764,7 @@
       "name": "POTASSIUM METABISULFITE",
       "cas": "16731-55-8",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E224",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT, ANTIOXIDANT, COLOR OR COLORING ADJUNCT, DOUGH STRENGTHENER, FLOUR TREATING AGENT, OXIDIZING OR REDUCING AGENT",
       "aliases": [
@@ -123811,7 +123812,7 @@
       "name": "POTASSIUM NITRATE",
       "cas": "7757-79-1",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E252",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT, COLOR OR COLORING ADJUNCT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT",
       "aliases": [
@@ -123997,7 +123998,7 @@
       "name": "POTASSIUM SORBATE",
       "cas": "24634-61-5",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E202",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT, ANTIOXIDANT, COLOR OR COLORING ADJUNCT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, NUTRIENT SUPPLEMENT, PH CONTROL AGENT",
       "aliases": [
@@ -124496,7 +124497,7 @@
       "name": "PROPIONIC ACID",
       "cas": "79-09-4",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E280",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT, FLAVORING AGENT OR ADJUVANT, PH CONTROL AGENT",
       "aliases": [
@@ -124831,7 +124832,7 @@
       "name": "PROPYLENE GLYCOL ALGINATE",
       "cas": "9005-37-2",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E405",
       "inci": null,
       "category": "EMULSIFIER OR EMULSIFIER SALT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, FORMULATION AID, PROCESSING AID, SOLVENT OR VEHICLE, STABILIZER OR THICKENER, SURFACE-ACTIVE AGENT, SURFACE-FINISHING AGENT",
       "aliases": [
@@ -125087,7 +125088,7 @@
       "name": "PROPYL GALLATE",
       "cas": "121-79-9",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E310",
       "inci": null,
       "category": "ANTIOXIDANT, FLAVORING AGENT OR ADJUVANT",
       "aliases": [
@@ -126729,7 +126730,7 @@
       "name": "ROSEMARY, EXTRACT (ROSMARINUS OFFICINALIS L.)",
       "cas": "84604-14-8",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E392",
       "inci": null,
       "category": "FLAVORING AGENT OR ADJUVANT",
       "aliases": [
@@ -127371,7 +127372,7 @@
       "name": "SACCHARIN",
       "cas": "81-07-2",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E954",
       "inci": null,
       "category": "NON-NUTRITIVE SWEETENER",
       "aliases": [
@@ -128440,7 +128441,7 @@
       "name": "SILICON DIOXIDE",
       "cas": "7631-86-9",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E551",
       "inci": null,
       "category": "ANTICAKING AGENT OR FREE-FLOW AGENT, ANTIOXIDANT, COLOR OR COLORING ADJUNCT, DRYING AGENT, EMULSIFIER OR EMULSIFIER SALT, FLAVORING AGENT OR ADJUVANT, FORMULATION AID, HUMECTANT, LUBRICANT OR RELEASE AGENT,",
       "aliases": [
@@ -128650,7 +128651,7 @@
       "name": "SODIUM ACETATE",
       "cas": null,
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E262",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT, FLAVORING AGENT OR ADJUVANT, PH CONTROL AGENT",
       "aliases": [
@@ -128666,7 +128667,7 @@
       "name": "SODIUM ACID PYROPHOSPHATE",
       "cas": "7758-16-9",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E450",
       "inci": null,
       "category": "COLOR OR COLORING ADJUNCT, DOUGH STRENGTHENER, EMULSIFIER OR EMULSIFIER SALT, FLAVORING AGENT OR ADJUVANT, FLOUR TREATING AGENT, FORMULATION AID, LEAVENING AGENT, OXIDIZING OR REDUCING AGENT, SEQUESTRANT",
       "aliases": [
@@ -128751,7 +128752,7 @@
       "name": "SODIUM ASCORBATE",
       "cas": "134-03-2",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E301",
       "inci": null,
       "category": "ANTIOXIDANT, COLOR OR COLORING ADJUNCT, DOUGH STRENGTHENER, FLOUR TREATING AGENT, LEAVENING AGENT, NUTRIENT SUPPLEMENT, OXIDIZING OR REDUCING AGENT, PROCESSING AID, SURFACE-FINISHING AGENT",
       "aliases": [
@@ -128767,7 +128768,7 @@
       "name": "SODIUM BENZOATE",
       "cas": "532-32-1",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E211",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT, ANTIOXIDANT, COLOR OR COLORING ADJUNCT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, FUMIGANT, PH CONTROL AGENT, SURFACE-ACTIVE AGENT",
       "aliases": [
@@ -128799,7 +128800,7 @@
       "name": "SODIUM BISULFITE",
       "cas": "7631-90-5",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E222",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT, ANTIOXIDANT, COLOR OR COLORING ADJUNCT, DOUGH STRENGTHENER, FLAVORING AGENT OR ADJUVANT, FLOUR TREATING AGENT, FORMULATION AID, PROCESSING AID, SURFACE-FINISHING AGENT, TEXTURIZER",
       "aliases": [
@@ -128884,7 +128885,7 @@
       "name": "SODIUM CARBONATE",
       "cas": "497-19-8",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E500",
       "inci": null,
       "category": "ANTIOXIDANT, CURING OR PICKLING AGENT, FLAVORING AGENT OR ADJUVANT, PH CONTROL AGENT, PROCESSING AID",
       "aliases": [
@@ -128978,7 +128979,7 @@
       "name": "SODIUM CYCLAMATE",
       "cas": "139-05-9",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E952",
       "inci": null,
       "category": "NON-NUTRITIVE SWEETENER",
       "aliases": [
@@ -129058,7 +129059,7 @@
       "name": "SODIUM ERYTHORBATE",
       "cas": "6381-77-7",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E316",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT, ANTIOXIDANT, COLOR OR COLORING ADJUNCT, DOUGH STRENGTHENER, FLOUR TREATING AGENT, OXIDIZING OR REDUCING AGENT, PROCESSING AID, SURFACE-FINISHING AGENT",
       "aliases": [
@@ -129170,7 +129171,7 @@
       "name": "SODIUM HEXAMETAPHOSPHATE",
       "cas": "10124-56-8",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E452",
       "inci": null,
       "category": "FLAVORING AGENT OR ADJUVANT",
       "aliases": [
@@ -129218,7 +129219,7 @@
       "name": "SODIUM HYDROXIDE",
       "cas": "1310-73-2",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E524",
       "inci": null,
       "category": "COLOR OR COLORING ADJUNCT, DOUGH STRENGTHENER, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, FLOUR TREATING AGENT, FUMIGANT, OXIDIZING OR REDUCING AGENT, PH CONTROL AGENT, PROCESSING AID, WASHING OR SURFACE REMOVAL AGENT",
       "aliases": [
@@ -129266,7 +129267,7 @@
       "name": "SODIUM LACTATE",
       "cas": "72-17-3",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E325",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT, EMULSIFIER OR EMULSIFIER SALT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, PH CONTROL AGENT, WASHING OR SURFACE REMOVAL AGENT",
       "aliases": [
@@ -129330,7 +129331,7 @@
       "name": "SODIUM METABISULFITE",
       "cas": "7681-57-4",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E223",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT, ANTIOXIDANT, COLOR OR COLORING ADJUNCT, DOUGH STRENGTHENER, FLOUR TREATING AGENT, FREEZING OR COOLING AGENT, DIRECT CONTACT, OXIDIZING OR REDUCING AGENT",
       "aliases": [
@@ -129474,7 +129475,7 @@
       "name": "SODIUM NITRATE",
       "cas": "7631-99-4",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E251",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT, COLOR OR COLORING ADJUNCT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, PROPELLANT",
       "aliases": [
@@ -129649,7 +129650,7 @@
       "name": "SODIUM PROPIONATE",
       "cas": "137-40-6",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E281",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT, FLAVORING AGENT OR ADJUVANT",
       "aliases": [
@@ -129761,7 +129762,7 @@
       "name": "SODIUM STEAROYL-2-LACTYLATE",
       "cas": "25383-99-7",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E481",
       "inci": null,
       "category": "DOUGH STRENGTHENER, EMULSIFIER OR EMULSIFIER SALT, FIRMING AGENT, FLOUR TREATING AGENT, OXIDIZING OR REDUCING AGENT, STABILIZER OR THICKENER, SURFACE-ACTIVE AGENT",
       "aliases": [
@@ -129825,7 +129826,7 @@
       "name": "SODIUM SULFITE",
       "cas": "7757-83-7",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E221",
       "inci": null,
       "category": "ANTIOXIDANT, COLOR OR COLORING ADJUNCT, DOUGH STRENGTHENER, FLOUR TREATING AGENT, FORMULATION AID, OXIDIZING OR REDUCING AGENT, PH CONTROL AGENT",
       "aliases": [
@@ -129841,7 +129842,7 @@
       "name": "SODIUM TARTRATE",
       "cas": "868-18-8",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E335",
       "inci": null,
       "category": "EMULSIFIER OR EMULSIFIER SALT, PH CONTROL AGENT, SEQUESTRANT",
       "aliases": [
@@ -129889,7 +129890,7 @@
       "name": "SODIUM TRIPOLYPHOSPHATE",
       "cas": "7758-29-4",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E451",
       "inci": null,
       "category": "ANTICAKING AGENT OR FREE-FLOW AGENT, ANTIOXIDANT, DRYING AGENT, EMULSIFIER OR EMULSIFIER SALT, HUMECTANT, PH CONTROL AGENT, SEQUESTRANT, STABILIZER OR THICKENER, TEXTURIZER",
       "aliases": [
@@ -129921,7 +129922,7 @@
       "name": "SORBIC ACID",
       "cas": "110-44-1",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E200",
       "inci": null,
       "category": "FLAVORING AGENT OR ADJUVANT",
       "aliases": [
@@ -129953,7 +129954,7 @@
       "name": "SORBITAN MONOSTEARATE",
       "cas": "1338-41-6",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E491",
       "inci": null,
       "category": "EMULSIFIER OR EMULSIFIER SALT, FLAVORING AGENT OR ADJUVANT, PROCESSING AID, SOLVENT OR VEHICLE, STABILIZER OR THICKENER, SURFACE-ACTIVE AGENT, SURFACE-FINISHING AGENT",
       "aliases": [
@@ -131316,7 +131317,7 @@
       "name": "SUCRALOSE",
       "cas": "56038-13-2",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E955",
       "inci": null,
       "category": "NUTRITIVE SWEETENER",
       "aliases": [
@@ -131986,7 +131987,7 @@
       "name": "TARTARIC ACID, L",
       "cas": "87-69-4",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E334",
       "inci": null,
       "category": "ANTICAKING AGENT OR FREE-FLOW AGENT, DRYING AGENT, FIRMING AGENT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, HUMECTANT, LEAVENING AGENT, PH CONTROL AGENT",
       "aliases": [
@@ -132352,7 +132353,7 @@
       "name": "TERT-BUTYLHYDROQUINONE",
       "cas": "1948-33-0",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E319",
       "inci": null,
       "category": "ANTIOXIDANT",
       "aliases": [
@@ -132794,7 +132795,7 @@
       "name": "THAUMATIN",
       "cas": "53850-34-3",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E957",
       "inci": null,
       "category": "FLAVORING AGENT OR ADJUVANT",
       "aliases": [
@@ -133663,7 +133664,7 @@
       "name": "TRAGACANTH, GUM (ASTRAGALUS SPP.)",
       "cas": "9000-65-1",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E413",
       "inci": null,
       "category": "EMULSIFIER OR EMULSIFIER SALT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, PROCESSING AID, SOLVENT OR VEHICLE, STABILIZER OR THICKENER, SURFACE-FINISHING AGENT",
       "aliases": [
@@ -134071,7 +134072,7 @@
       "name": "TRIACETIN (GLYCEROL TRIACETATE)",
       "cas": "102-76-1",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E1518",
       "inci": null,
       "category": "FLAVORING AGENT OR ADJUVANT, FORMULATION AID, HUMECTANT, MASTICATORY SUBSTANCE, PROCESSING AID, SOLVENT OR VEHICLE, SURFACE-FINISHING AGENT",
       "aliases": [
@@ -134220,7 +134221,7 @@
       "name": "TRIETHYL CITRATE",
       "cas": "77-93-0",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E1505",
       "inci": null,
       "category": "FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, FORMULATION AID, SEQUESTRANT, SOLVENT OR VEHICLE",
       "aliases": [
@@ -134876,7 +134877,7 @@
       "name": "TRISODIUM CITRATE",
       "cas": "68-04-2",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E331",
       "inci": null,
       "category": "COLOR OR COLORING ADJUNCT, EMULSIFIER OR EMULSIFIER SALT, FLAVORING AGENT OR ADJUVANT, MALTING OR FERMENTING AID, NUTRIENT SUPPLEMENT, PH CONTROL AGENT, SEQUESTRANT, STABILIZER OR THICKENER, SURFACE-ACTIVE AGENT",
       "aliases": [
@@ -136948,7 +136949,7 @@
       "name": "XANTHAN GUM",
       "cas": "11138-66-2",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E415",
       "inci": null,
       "category": "ANTICAKING AGENT OR FREE-FLOW AGENT, COLOR OR COLORING ADJUNCT, DRYING AGENT, EMULSIFIER OR EMULSIFIER SALT, FORMULATION AID, PROCESSING AID, SOLVENT OR VEHICLE, STABILIZER OR THICKENER, SURFACE-FINISHING AGENT, TEXTURIZER",
       "aliases": [
@@ -137043,7 +137044,7 @@
       "name": "XYLITOL",
       "cas": "87-99-0",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E967",
       "inci": null,
       "category": "HUMECTANT, NUTRITIVE SWEETENER",
       "aliases": [
@@ -137729,7 +137730,7 @@
       "name": "Sulphite ammonia caramel",
       "cas": null,
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E150d",
       "inci": null,
       "category": null,
       "aliases": [
@@ -138177,7 +138178,7 @@
       "name": "Paprika extract",
       "cas": null,
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E160c",
       "inci": null,
       "category": null,
       "aliases": [
@@ -138225,7 +138226,7 @@
       "name": "Steviol glycosides",
       "cas": null,
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E960",
       "inci": null,
       "category": null,
       "aliases": [
@@ -138321,7 +138322,7 @@
       "name": "Locust bean gum",
       "cas": "9000-40-2",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E410",
       "inci": null,
       "category": null,
       "aliases": [
@@ -138833,7 +138834,7 @@
       "name": "Lutein",
       "cas": "127-40-2",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E161b",
       "inci": null,
       "category": null,
       "aliases": [
@@ -139169,7 +139170,7 @@
       "name": "Glutamic acid",
       "cas": "56-86-0",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E620",
       "inci": null,
       "category": null,
       "aliases": [
@@ -140202,7 +140203,7 @@
       "name": "Sodium tetraborate",
       "cas": "1330-43-4",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E285",
       "inci": null,
       "category": null,
       "aliases": [
@@ -140410,7 +140411,7 @@
       "name": "Acesulfame K",
       "cas": "55589-62-3",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E950",
       "inci": null,
       "category": null,
       "aliases": [
@@ -140554,7 +140555,7 @@
       "name": "Brilliant Blue FCF",
       "cas": "3844-45-9",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E133",
       "inci": null,
       "category": null,
       "aliases": [
@@ -140906,7 +140907,7 @@
       "name": "Sucrose esters of fatty acids",
       "cas": null,
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E473",
       "inci": null,
       "category": null,
       "aliases": [
@@ -140954,7 +140955,7 @@
       "name": "Brilliant Black BN",
       "cas": "2519-30-4",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E151",
       "inci": null,
       "category": null,
       "aliases": [
@@ -141098,7 +141099,7 @@
       "name": "Erythritol",
       "cas": "149-32-6",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E968",
       "inci": null,
       "category": null,
       "aliases": [
@@ -141946,7 +141947,7 @@
       "name": "Sodium carboxymethyl cellulose",
       "cas": "9004-32-4",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E466",
       "inci": null,
       "category": null,
       "aliases": [
@@ -141962,7 +141963,7 @@
       "name": "Dimethyl polysiloxane",
       "cas": "63148-62-9",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E900",
       "inci": null,
       "category": null,
       "aliases": [
@@ -142826,7 +142827,7 @@
       "name": "Mono- and diacetyl tartaric acid esters of mono- and diglycerides of fatty acids",
       "cas": null,
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E472e",
       "inci": null,
       "category": null,
       "aliases": [
@@ -143455,7 +143456,7 @@
       "name": "Polyglycerol polyricinoleate",
       "cas": "68936-89-0",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E476",
       "inci": null,
       "category": null,
       "aliases": [
@@ -143631,7 +143632,7 @@
       "name": "Propane-1,2-diol",
       "cas": "57-55-6",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E1520",
       "inci": null,
       "category": null,
       "aliases": [
@@ -144015,7 +144016,7 @@
       "name": "Brown HT",
       "cas": "4553-89-3",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E155",
       "inci": null,
       "category": null,
       "aliases": [
@@ -144223,7 +144224,7 @@
       "name": "Nisin",
       "cas": "1414-45-5",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E234",
       "inci": null,
       "category": null,
       "aliases": [
@@ -145535,7 +145536,7 @@
       "name": "Plain caramel",
       "cas": null,
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E150a",
       "inci": null,
       "category": null,
       "aliases": [
@@ -145599,7 +145600,7 @@
       "name": "Propane-1,2-diol esters of fatty acids",
       "cas": null,
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E477",
       "inci": null,
       "category": null,
       "aliases": [
@@ -145999,7 +146000,7 @@
       "name": "Ammonia caramel",
       "cas": "8028-89-5",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E150c",
       "inci": null,
       "category": null,
       "aliases": [
@@ -146143,7 +146144,7 @@
       "name": "Microcrystalline wax",
       "cas": "63231-60-7",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E905",
       "inci": null,
       "category": null,
       "aliases": [
@@ -146703,7 +146704,7 @@
       "name": "Shellac",
       "cas": "9000-59-3",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E904",
       "inci": null,
       "category": null,
       "aliases": [
@@ -147135,7 +147136,7 @@
       "name": "Citric acid esters of mono- and diglycerides of fatty acids",
       "cas": null,
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E472c",
       "inci": null,
       "category": null,
       "aliases": [
@@ -147247,7 +147248,7 @@
       "name": "Green S",
       "cas": "3087-16-9",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E142",
       "inci": null,
       "category": null,
       "aliases": [
@@ -147716,7 +147717,7 @@
       "name": "Patent Blue V",
       "cas": "3536-49-0",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E131",
       "inci": null,
       "category": null,
       "aliases": [
@@ -148260,7 +148261,7 @@
       "name": "Curcumin",
       "cas": "458-37-7",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E100",
       "inci": null,
       "category": null,
       "aliases": [
