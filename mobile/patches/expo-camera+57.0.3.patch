@@ -24,10 +24,19 @@ index 89fdca0..c8f1b79 100644
        if self.backCameraLenses.contains(standardBack) {
          return standardBack
 diff --git a/node_modules/expo-camera/ios/Current/CameraSessionManager.swift b/node_modules/expo-camera/ios/Current/CameraSessionManager.swift
-index 403e033..b65593c 100644
+index 403e033..dd78dec 100644
 --- a/node_modules/expo-camera/ios/Current/CameraSessionManager.swift
 +++ b/node_modules/expo-camera/ios/Current/CameraSessionManager.swift
-@@ -217,13 +217,34 @@ class CameraSessionManager: NSObject, DeviceDiscoveryDelegate {
+@@ -31,6 +31,8 @@ class CameraSessionManager: NSObject, DeviceDiscoveryDelegate {
+   private let deviceDiscovery = DeviceDiscovery()
+ 
+   private var captureDeviceInput: AVCaptureDeviceInput?
++  /// Revely patch: see addDevice.
++  private var activeFormatObservation: NSKeyValueObservation?
+   private var photoOutput: AVCapturePhotoOutput?
+   private var videoFileOutput: AVCaptureMovieFileOutput?
+   private var runtimeErrorTask: Task<Void, Never>?
+@@ -217,13 +219,34 @@ class CameraSessionManager: NSObject, DeviceDiscoveryDelegate {
      do {
        try device.lockForConfiguration()
        defer { device.unlockForConfiguration() }
@@ -64,3 +73,29 @@ index 403e033..b65593c 100644
    func getAvailableLenses() -> [String] {
      guard let delegate else {
        return []
+@@ -352,6 +375,14 @@ class CameraSessionManager: NSObject, DeviceDiscoveryDelegate {
+         session.addInput(deviceInput)
+         captureDeviceInput = deviceInput
+         updateZoom()
++        // Revely patch: iOS resets videoZoomFactor to 1.0 whenever the active
++        // format changes, and setting the session preset after this device is
++        // added changes it. On the single wide lens 1.0 was the right answer
++        // anyway; on the virtual camera it is the 0.5x ultra-wide. So re-apply
++        // the zoom every time the format moves, from whatever caused it.
++        activeFormatObservation = device.observe(\.activeFormat, options: [.new]) { [weak self] _, _ in
++          self?.delegate?.sessionQueue.async { self?.updateZoom() }
++        }
+       }
+     } catch {
+       delegate.onMountError(["message": "Camera could not be started - \(error.localizedDescription)"])
+@@ -412,6 +443,10 @@ class CameraSessionManager: NSObject, DeviceDiscoveryDelegate {
+     configureResponsiveCapture(photoOutput)
+ 
+     session.commitConfiguration()
++    // Revely patch: the preset above has just reset the zoom; see addDevice.
++    // The observer catches this too, and asynchronously. This makes the
++    // first frame right rather than the second.
++    updateZoom()
+     addErrorNotification()
+     delegate.configurePreviewRotation()
+     delegate.barcodeScanner?.maybeStartBarcodeScanning()

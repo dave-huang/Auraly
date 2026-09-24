@@ -23,6 +23,11 @@ The patch makes expo-camera do the same:
   switch-over factor, the Camera app's "1x") rather than a factor of 1.0, which
   on these virtual cameras is the 0.5x ultra-wide. It also states `.auto`
   constituent switching, the mode that performs the macro swap.
+- The zoom is re-applied whenever the device's active format changes, and once
+  more after the session starts. iOS resets `videoZoomFactor` to 1.0 on every
+  format change, and setting the photo preset after the device is added is one.
+  Build 35 shipped without this and opened zoomed out at 0.5x: the zoom was
+  set correctly, then undone a moment later by the preset.
 
 expo-camera exposes neither choice to JavaScript: `selectedLens` matches
 localized device names, and its `zoom` prop is a fraction of a maximum that
