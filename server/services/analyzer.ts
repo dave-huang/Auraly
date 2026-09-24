@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import { openai } from '../openai';
 import { analysisResultSchema, type ProductType, type AnalysisResult, type RiskLevel, type Ingredient } from '@shared/schema';
 import { orderBatchResults } from './batchOrder';
-import { getCachedIngredientAnalysis, setCachedIngredientAnalysis } from './cache';
+import { anchorKey, getAnchorModelLevels, getCachedIngredientAnalysis, setCachedIngredientAnalysis } from './cache';
 import {
   applyPopulationRisk,
   domainForProductType,
@@ -1670,10 +1670,27 @@ IMPORTANT: Return ONLY this JSON array:
       return results;
     })),
   );
+  // One model level per ingredient in every language: see getAnchorModelLevels.
+  // Applied here, after the merge, so cached, fresh and individually retried
+  // rows are all held to it, and before re-classifying, so a record still
+  // decides wherever one exists. Only rows that know their English name take
+  // part; a fallback row has none and keeps its placeholder level.
+  const merged = allBatchResults.flat();
+  const anchors = await getAnchorModelLevels(
+    merged.flatMap((r) => (r.sourceName ? [r.sourceName] : [])),
+    productType,
+    analysisVersion(),
+  );
   // Re-classify everything after the merge, which also covers rows that came
   // back from the ingredient cache under an older policy version.
-  const allIngredients = allBatchResults
-    .flat()
+  const allIngredients = merged
+    .map((r) => {
+      const anchored = r.sourceName ? anchors.get(anchorKey(r.sourceName)) : undefined;
+      const own = r.modelRiskLevel ?? r.riskLevel;
+      if (!anchored || anchored === own) return r;
+      console.log(`[ANALYZER] "${r.sourceName}" ${userLanguage}:${own} → anchored:${anchored}`);
+      return { ...r, modelRiskLevel: anchored, riskLevel: anchored };
+    })
     .map((r) => applyPopulationRisk(r, domainForProductType(productType)));
   
   console.log(`[PARALLEL-ANALYZER] Merged ${allIngredients.length} total ingredients from ${batches.length} batches`);

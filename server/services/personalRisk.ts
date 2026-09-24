@@ -122,8 +122,11 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
     const matchedIndex = canonical.findIndex(name =>
       matchesAllergenEntry(name, entry.allergen, entry.keywords ?? []));
     const matchedCanonical = matchedIndex >= 0 ? canonical[matchedIndex] : undefined;
+    // A row whose own English name matches is flagged ON the row, in the loop
+    // below, and must not be flagged a second time here.
     const matchedLocalized = result.ingredients.some(ing =>
-      matchesAllergenEntry(ing.name, entry.allergen, entry.keywords ?? []));
+      matchesAllergenEntry(ing.name, entry.allergen, entry.keywords ?? []) ||
+      (ing.sourceName !== undefined && matchesAllergenEntry(ing.sourceName, entry.allergen, entry.keywords ?? [])));
 
     // This branch fires only for a translated label, where the English keyword
     // list matched the reader's canonical name and no localized row name did.
@@ -164,7 +167,8 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
         matchesAllergenEntry(d, entry.allergen, entry.keywords ?? []));
       const alreadyFlagged =
         result.ingredients.some(ing =>
-          matchesAllergenEntry(ing.name, entry.allergen, entry.keywords ?? [])) ||
+          matchesAllergenEntry(ing.name, entry.allergen, entry.keywords ?? []) ||
+          (ing.sourceName !== undefined && matchesAllergenEntry(ing.sourceName, entry.allergen, entry.keywords ?? []))) ||
         canonical.some(name =>
           matchesAllergenEntry(name, entry.allergen, entry.keywords ?? []));
 
@@ -223,7 +227,12 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
     // affirmative false statement, on the exact cross-language scan this app
     // exists for. The allergen loop above was fixed for this long ago; these
     // two were not.
-    const canonicalName = alignedByIndex ? canonical[ingIndex] : undefined;
+    //
+    // The row's own `sourceName` first: it is the name the analyzer was asked
+    // about, attached to this row and no other. The reader's list by position
+    // is the fallback for rows saved before it existed, and only holds when
+    // the two lists are the same length.
+    const canonicalName = ing.sourceName ?? (alignedByIndex ? canonical[ingIndex] : undefined);
     const readInEnglish = canonicalName && canonicalName !== ing.name ? canonicalName : undefined;
 
     // The universal level — risk to most people — is the floor. Personal
@@ -240,9 +249,22 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
     };
     const reasons: string[] = [];
 
-    // 1. Allergens — the highest-stakes match
+    // 1. Allergens — the highest-stakes match. In English as well as as
+    //    displayed: on a Chinese card the row reads 乳清, and a dairy
+    //    intolerance matched only the reader's list above, which flagged the
+    //    card but left the whey row itself green, "no concerns found", under a
+    //    verdict that said milk was found.
+    //
+    //    By the row's own `sourceName` only, never the reader's list by
+    //    position: a shifted list of the same length is exactly how Dextrin
+    //    and Maltose once read "matches Milk/Dairy" (see flag-row in
+    //    risk.check). A row without one is still caught by the loop above.
+    const sourceName = ing.sourceName && ing.sourceName !== ing.name ? ing.sourceName : undefined;
     for (const entry of profile.allergens ?? []) {
-      if (matchesAllergenEntry(ing.name, entry.allergen, entry.keywords ?? [])) {
+      if (
+        matchesAllergenEntry(ing.name, entry.allergen, entry.keywords ?? []) ||
+        (sourceName !== undefined && matchesAllergenEntry(sourceName, entry.allergen, entry.keywords ?? []))
+      ) {
         const severity = entry.severity;
         const flagRisk: RiskLevel = severity === 'intolerance' || severity === 'avoid' ? 'moderate' : 'high';
         flags.push({

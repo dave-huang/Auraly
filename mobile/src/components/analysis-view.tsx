@@ -93,22 +93,32 @@ interface Row {
 /**
  * Sort key for the ingredient list — lower sorts first.
  *
- * Deliberately ranks the two "nothing" states ABOVE `low` but below anything
- * assessed as a concern. An ingredient we could not identify is more
- * interesting than one a health authority has cleared, and less interesting
- * than one carrying an actual finding.
+ * Colour first, strictly: every red row, then every amber, then every green.
+ * The level is the one in force (`riskLevel` is already personal where a
+ * profile raised it), so a peanut allergy's red row and a dairy intolerance's
+ * amber one land in their own colour, and the list never shows an amber dot
+ * above a red one.
+ *
+ * Within a colour, the rows raised because of WHO this user is come first,
+ * allergens first among them — that is the part no other app can tell them,
+ * and sorting a vegan flag above a sesame match would put a preference ahead
+ * of a hospital visit. Then a match that changed nothing (a `verify` hedge),
+ * then the rest.
+ *
+ * This used to put every personal match above everything else. A whey row for
+ * a milk intolerance is amber, and it sat above Titanium Dioxide's red, which
+ * read as the list contradicting its own colours.
  */
 function rowWeight(row: Row): number {
-  // Anything raised because of WHO this user is comes first — that is the part
-  // no other app can tell them. Then everything else by level.
+  const level = row.ingredient.riskLevel;
+  const band = level === 'high' ? 0 : level === 'moderate' ? 1 : 2;
+  let within = 3;
   if (row.ingredient.personalRiskLevel) {
-    if (row.flag?.type === 'allergen' && row.flag.certainty !== 'verify') return 0;
-    return row.ingredient.personalRiskLevel === 'high' ? 1 : 2;
+    within = row.flag?.type === 'allergen' && row.flag.certainty !== 'verify' ? 0 : 1;
+  } else if (row.flag) {
+    within = 2;
   }
-  if (row.flag) return 3; // matched, but did not change the level (a `verify` hedge)
-  if (row.ingredient.riskLevel === 'high') return 4;
-  if (row.ingredient.riskLevel === 'moderate') return 5;
-  return 6;
+  return band * 4 + within;
 }
 
 export function AnalysisView({
@@ -188,12 +198,10 @@ export function AnalysisView({
 
   const rows = buildRows(result, flags, t, translated);
   // The list is the evidence for the verdict, so it is ordered by how much each
-  // row contributed to it.
+  // row contributed to it: by colour, personal matches first within one. See
+  // rowWeight.
   //
-  // Personal matches lead, allergens first among them: sorting a vegan flag
-  // above a sesame match would put a preference ahead of a hospital visit.
-  //
-  // Everything after that used to sit in plain label order, which meant risk
+  // Rows used to sit in plain label order, which meant risk
   // played NO part in the ordering at all. On any card without a personal match
   // — every card, for anyone whose profile did not happen to fire — the
   // ingredient that caused a Caution or Avoid verdict could sit seventh, below

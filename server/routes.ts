@@ -1322,10 +1322,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         : {}),
     } as any;
 
+    // Ranks again, from the label context, rather than only the ones saved on
+    // the rows: a scan saved before ranks could be found by English name has
+    // none on its translated rows, and the same label saved in English does.
+    const ranked = withLabelRanks(asAnalysis);
+
     if (profile) {
       // applyProfileToAnalysis sets overallRisk to the worst DISPLAYED level.
       return applyProfileToAnalysis(
-        opts.withCitations ? annotateWithCitations(asAnalysis) : asAnalysis,
+        opts.withCitations ? annotateWithCitations(ranked) : ranked,
         profile,
       );
     }
@@ -1335,7 +1340,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     // levels on scans taken months ago — so a frozen overall verdict can sit
     // above rows that no longer support it.
     const worst = ingredients.reduce<RiskLevel>((acc, i) => maxRisk(acc, i.riskLevel), 'low');
-    return { ...asAnalysis, overallRisk: ingredients.length > 0 ? worst : scan.overallRisk };
+    return { ...ranked, overallRisk: ingredients.length > 0 ? worst : scan.overallRisk };
   }
 
   // How many recent scans a personalized history view re-derives in one pass.

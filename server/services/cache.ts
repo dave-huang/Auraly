@@ -1,6 +1,6 @@
 import { db } from '../db';
-import { ingredientCache } from '@shared/schema';
-import { eq, and, sql } from 'drizzle-orm';
+import { ingredientCache, type RiskLevel } from '@shared/schema';
+import { eq, and, sql, inArray, asc } from 'drizzle-orm';
 
 /**
  * The shared ingredient cache. Cross-customer by design: an ingredient any
@@ -184,6 +184,68 @@ export async function setCachedIngredientAnalysis(
   } catch (error) {
     console.error('[CACHE] Error writing to database:', error);
   }
+}
+
+/**
+ * The model's level for each ingredient, as first assessed in ANY language.
+ *
+ * WHY A LEVEL IS NOT PER LANGUAGE
+ *
+ * Rows are keyed by language because the prose is: a Chinese reader gets a
+ * Chinese summary. The model writes the level in the same call, though, so an
+ * ingredient no record covers was rated once per language, and the ratings
+ * did not always agree. The same label read Beef Tallow as low in English and
+ * 牛脂 as moderate in Chinese, and the ingredient list came out in a
+ * different order in each. A level describes the substance, and the substance
+ * does not change with the reader's language.
+ *
+ * So every language takes the level from the OLDEST current row for that
+ * ingredient, whichever language wrote it. Oldest, because rows are updated in
+ * place and keep their creation time, which makes the anchor stable: the
+ * answer does not change with who scanned last. Rows from another analysis
+ * version are skipped for the same reason a read skips them.
+ *
+ * Keyed by the normalised English name, which is what rows are stored under.
+ */
+export async function getAnchorModelLevels(
+  ingredients: string[],
+  category: string,
+  version: string,
+): Promise<Map<string, RiskLevel>> {
+  const anchors = new Map<string, RiskLevel>();
+  const names = [...new Set(ingredients.map(normalizeIngredient).filter(Boolean))];
+  if (names.length === 0) return anchors;
+  try {
+    const rows = await db.select()
+      .from(ingredientCache)
+      .where(and(
+        inArray(ingredientCache.ingredient, names),
+        eq(ingredientCache.category, category),
+      ))
+      .orderBy(asc(ingredientCache.createdAt));
+    for (const row of rows) {
+      if (anchors.has(row.ingredient) || shouldRefreshCache(row.lastUpdated)) continue;
+      const envelope = readEnvelope(row.analysis);
+      if (!envelope || envelope.version !== version) continue;
+      try {
+        const data = JSON.parse(envelope.analysis);
+        const level = data?.modelRiskLevel ?? data?.riskLevel;
+        if (level === 'low' || level === 'moderate' || level === 'high') anchors.set(row.ingredient, level);
+      } catch {
+        // An unreadable row anchors nothing; the next oldest can.
+      }
+    }
+  } catch (error) {
+    // Without anchors each language keeps its own rating, which is how every
+    // scan behaved before this existed. Worse, but not wrong enough to fail on.
+    console.error('[CACHE] Error reading anchor levels:', error);
+  }
+  return anchors;
+}
+
+/** The key getAnchorModelLevels returns its map under. */
+export function anchorKey(ingredient: string): string {
+  return normalizeIngredient(ingredient);
 }
 
 /*

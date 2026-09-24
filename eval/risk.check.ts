@@ -1388,6 +1388,59 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
 }
 
 // ---------------------------------------------------------------------------
+// 2f. One label, two languages, one card.
+//
+// Reported 2026-09-24 on a Sam's Club label with a milk intolerance: in
+// English, Whey was amber "you · Milk / Dairy" and Sugar read "#1 of 44". In
+// Chinese the same saved scan showed 乳清 green, "no concerns found", under a
+// verdict saying milk was found, and 糖 had no position. Both lookups used the
+// displayed name. Rows now carry the English name they were analysed under,
+// and every personal and positional lookup reads it.
+// ---------------------------------------------------------------------------
+{
+  const milk = profile({ allergens: [{ allergen: 'milk', severity: 'intolerance' }] });
+  const printed = ['Sugar', 'Corn Syrup', 'Whey', 'Titanium Dioxide', 'Salt', 'Palm Oil'];
+  // A bracketed entry on the packet flattens into extra rows, so the analysed
+  // list is longer than the printed one and nothing lines up by position.
+  const english = [...printed, 'Soy Lecithin'];
+  const chinese = ['糖', '玉米糖浆', '乳清', '二氧化钛', '食盐', '棕榈油', '大豆卵磷脂'];
+  const composition = [
+    ...printed.slice(0, 5).map((name) => ({ name, parts: [] as string[] })),
+    { name: 'Palm Oil', parts: ['Soy Lecithin'] },
+  ];
+  const card = (names: string[], canonical: string[]) =>
+    withLabelRanks({
+      ...result(names.map((n, i) => ({ ...ing(n, 'low'), sourceName: english[i] }))),
+      canonicalIngredients: canonical,
+      composition,
+    } as AnalysisResult);
+
+  for (const canonical of [english, [...english, 'Extra']]) {
+    const en = applyProfileToAnalysis(card(english, canonical), milk);
+    const zh = applyProfileToAnalysis(card(chinese, canonical), milk);
+    const aligned = canonical.length === english.length ? 'aligned' : 'unaligned';
+    english.forEach((name, i) => {
+      const a = en.ingredients[i];
+      const b = zh.ingredients[i];
+      check(`one-card/${aligned}/${name}/level`,
+        a.riskLevel === b.riskLevel && a.personalRiskLevel === b.personalRiskLevel,
+        `English ${a.riskLevel}/${a.personalRiskLevel ?? '-'}, Chinese ${b.riskLevel}/${b.personalRiskLevel ?? '-'}`);
+      check(`one-card/${aligned}/${name}/rank`,
+        a.labelRank?.rank === b.labelRank?.rank,
+        `English #${a.labelRank?.rank ?? '-'}, Chinese #${b.labelRank?.rank ?? '-'}`);
+    });
+    const whey = zh.ingredients[2];
+    check(`one-card/${aligned}/whey-flagged-on-its-row`,
+      whey.personalRiskLevel === 'moderate' &&
+        (zh.personalFlags ?? []).some((f) => f.ingredientIndex === 2 && f.match === 'milk'),
+      `乳清 is ${whey.riskLevel}, flags ${JSON.stringify(zh.personalFlags)}`);
+    check(`one-card/${aligned}/whey-flagged-once`,
+      (zh.personalFlags ?? []).filter((f) => f.match === 'milk').length === 1,
+      `${(zh.personalFlags ?? []).filter((f) => f.match === 'milk').length} milk flags on the Chinese card`);
+  }
+}
+
+// ---------------------------------------------------------------------------
 
 for (const n of notes) console.log(`  · ${n}`);
 if (notes.length) console.log('');

@@ -83,9 +83,9 @@ export function isProminent(labelRank?: { rank: number; total: number }): boolea
  *  1. Equal lengths — the analyzer returned one ingredient per label entry, so
  *     index i is position i. This is the same weak-but-checkable assumption the
  *     bilingual row display already relies on.
- *  2. Name lookup — the ingredient's name appears verbatim in the reader's
- *     canonical list. Survives reordering, but not translation, since canonical
- *     names are English and `ingredients[].name` may be localized.
+ *  2. Name lookup — the ingredient's name, or the English `sourceName` it was
+ *     analysed under, appears verbatim in the reader's canonical list.
+ *     Survives reordering and translation.
  *
  * Neither available, or the reader gave us no canonical list: no rank. An
  * absent rank is correct and common; a wrong one puts "2nd ingredient" under
@@ -127,7 +127,14 @@ export function withLabelRanks(result: AnalysisResult): AnalysisResult {
     // so it has no position in `positionByName`. One that ALSO appears at top
     // level — salt inside the peanut butter and salt on its own — is found and
     // ranked, which is correct; the label really does print it there.
-    const rank = alignedByIndex ? i + 1 : positionByName.get(normalizeIngredientName(ing.name));
+    //
+    // By the English name as well as the displayed one: the printed list is
+    // the reader's English, so on a Chinese card 糖 found no position while
+    // Sugar on the English card of the same label read "#1 of 44".
+    const rank = alignedByIndex
+      ? i + 1
+      : positionByName.get(normalizeIngredientName(ing.name)) ??
+        (ing.sourceName ? positionByName.get(normalizeIngredientName(ing.sourceName)) : undefined);
     if (!rank) return ing;
     changed = true;
     return { ...ing, labelRank: { rank, total } };
