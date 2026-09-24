@@ -13,8 +13,13 @@ import { apiFetch } from './api';
 export type Jurisdiction = 'EU' | 'UK' | 'US' | 'US-CA' | 'CA' | 'AU' | 'INTL';
 
 export interface EvidenceRecordView {
-  /** The source's own words. Quoted verbatim, never translated. */
+  /** The source's own words, verbatim, in English. */
   statement: string;
+  /**
+   * `statement` in the scan's language, when one has been translated. Shown
+   * marked as a translation, with `statement` a tap away.
+   */
+  statementTranslated?: string | null;
   kind: string;
   jurisdiction: Jurisdiction;
   org: string;
@@ -38,8 +43,10 @@ export interface SubstanceEvidence {
 export function fetchSubstanceEvidence(
   substanceId: string,
   domain: 'food' | 'cosmetic',
+  /** The SCAN's language, not the app's current one; see IngredientFocus. */
+  lang: string = 'en',
 ): Promise<SubstanceEvidence> {
   return apiFetch<SubstanceEvidence>(
-    `/api/substances/${encodeURIComponent(substanceId)}/evidence?domain=${domain}`,
+    `/api/substances/${encodeURIComponent(substanceId)}/evidence?domain=${domain}&lang=${encodeURIComponent(lang)}`,
   );
 }

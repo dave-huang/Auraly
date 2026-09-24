@@ -221,6 +221,7 @@ export function AnalysisView({
       flag: row.flag,
       profileName: name,
       productType: result.productType,
+      language: result.language,
     });
     router.push('/ingredient');
   }

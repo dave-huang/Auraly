@@ -81,6 +81,9 @@ export function saveScan(params: {
       composition: result.composition,
       analysisResults: result.ingredients.map((i) => ({
         name: i.name,
+        // The English name the row was analysed as. `name` is in the scan's
+        // language, and reopening looks everything up in English.
+        sourceName: i.sourceName,
         // The MODEL's rating, not the level on screen.
         //
         // What is displayed may have been raised for this particular person —
@@ -101,6 +104,17 @@ export function saveScan(params: {
       })),
       overallRisk: result.overallRisk,
       language,
+      // What the verdict was scored on beyond the rows themselves. Without it
+      // a reopened Chinese scan lost its allergy matches, the label's CONTAINS
+      // line and its "Not sure" state, and came back as a different verdict.
+      labelContext: {
+        canonicalIngredients: result.canonicalIngredients,
+        declaredAllergens: result.declaredAllergens,
+        originalIngredients: result.originalIngredients,
+        sourceLanguage: result.sourceLanguage,
+        readConfidence: result.readConfidence,
+        lineCount: result.lineCount,
+      },
     }),
   });
 }
@@ -145,7 +159,16 @@ export function scanToAnalysisResult(scan: ScanHistory): AnalysisResult {
   const composition = Array.isArray(scan.composition)
     ? (scan.composition as AnalysisResult['composition'])
     : undefined;
+  // Saved since 2026-09-24, absent before. Only the fields the live result
+  // carried under the same names, so the card cannot tell the two apart.
+  const label = (scan.labelContext ?? {}) as Pick<
+    AnalysisResult,
+    'canonicalIngredients' | 'declaredAllergens' | 'originalIngredients' | 'sourceLanguage' | 'readConfidence' | 'lineCount'
+  >;
   return {
+    ...label,
+    // The language it was taken in; its text is in it, and so are its sources.
+    language: scan.language ?? 'en',
     productType: (scan.productCategory as ProductType) ?? 'food',
     productName: scanTitle(scan),
     ingredients: stored.map((i) => ({ ...i, category: i.category ?? null })),

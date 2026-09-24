@@ -20,6 +20,12 @@ export interface IngredientFocus {
    * the verdict was decided in.
    */
   productType?: ProductType;
+  /**
+   * The language the scan was taken in. Sources are shown translated into it,
+   * not into the app's current setting, so a scan reopened from history reads
+   * the way it did when it was taken.
+   */
+  language?: string;
 }
 
 let focused: IngredientFocus | null = null;

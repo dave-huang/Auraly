@@ -12,10 +12,12 @@ import { VerdictSeal } from '@/components/verdict-seal';
 import {
   Font,
   Gutter,
+  MIN_CONFIDENT_SEGMENTS,
   RISK_TO_VERDICT,
   Radius,
   Space,
   Type,
+  confidenceSegments,
   useSurface,
   useVerdictColors,
 } from '@/constants/design';
@@ -280,6 +282,15 @@ export default function HistoryScreen() {
                 {item.scans.map((scan) => {
                   const risk = (scan.overallRisk as RiskLevel) ?? 'low';
                   const tone = verdict[RISK_TO_VERDICT[risk]];
+                  // The tile says what the scan says when opened. A read too
+                  // poor to answer is "Not sure" there, in no verdict's ink, so
+                  // it cannot be Avoid here. Only scans saved since 2026-09-24
+                  // know their confidence; absence is not doubt.
+                  const segments = confidenceSegments(
+                    (scan.labelContext as { readConfidence?: 'high' | 'medium' | 'low' } | null)?.readConfidence,
+                  );
+                  const uncertain = segments !== null && segments < MIN_CONFIDENT_SEGMENTS;
+                  const ink = uncertain ? surface.inkMuted : tone.ink;
                   return (
                     <Pressable
                       key={scan.id}
@@ -317,11 +328,11 @@ export default function HistoryScreen() {
                           />
                         </>
                       ) : null}
-                      <View style={[styles.tileEdge, { backgroundColor: tone.ink }]} />
+                      <View style={[styles.tileEdge, { backgroundColor: uncertain ? surface.rule : ink }]} />
                       <View style={styles.tileBody}>
                         <VerdictSeal
-                          lines={[t(RISK_KEYS[risk]), '']}
-                          color={tone.ink}
+                          lines={[uncertain ? t('verdict.uncertain') : t(RISK_KEYS[risk]), '']}
+                          color={ink}
                           size={56}
                           still
                         />

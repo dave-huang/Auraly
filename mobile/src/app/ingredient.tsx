@@ -75,7 +75,7 @@ export default function IngredientScreen() {
     // reader's side.
     if (!substanceId) return;
     let live = true;
-    fetchSubstanceEvidence(substanceId, evidenceDomain)
+    fetchSubstanceEvidence(substanceId, evidenceDomain, focus?.language)
       .then((data) => live && setEvidence(data))
       // A failure leaves `evidence` null, which renders as the "not checked"
       // block — the same thing an empty corpus says, and equally true from
@@ -84,7 +84,7 @@ export default function IngredientScreen() {
     return () => {
       live = false;
     };
-  }, [substanceId, evidenceDomain]);
+  }, [substanceId, evidenceDomain, focus?.language]);
 
   useEffect(() => {
     // Aliases come from the server's matcher, not a copy in the app: a stale
@@ -189,11 +189,12 @@ export default function IngredientScreen() {
         {/* The regulatory record — why this ingredient carries the level it
             does, in the words of the bodies that decided it.
 
-            Statements are shown verbatim and untranslated on purpose. They are
-            quotations from regulatory instruments; paraphrasing one into three
-            languages is how a citation stops being a citation. The headings
-            around them are localized, so the screen still reads as the user's
-            language with quoted material inside it. */}
+            In the scan's language where a translation exists, marked as one,
+            with the English original a tap away. These were shown only in
+            English until 2026-09-24, on the reasoning that a translated
+            quotation is not a quotation; but most are sentences our ingest
+            wrote, and a Chinese reader shown English was not reading them. The
+            original stays one tap away because it is what can be checked. */}
         {evidence && evidence.records.length > 0 ? (
           <View style={[styles.section, { borderTopColor: surface.rule }]}>
             <ThemedText style={[Type.eyebrow, { color: surface.inkFaint }]}>
@@ -219,9 +220,7 @@ export default function IngredientScreen() {
 
             {evidence.records.map((record, i) => (
               <View key={`${record.org}-${i}`} style={styles.record}>
-                <ThemedText style={[Type.body, { color: surface.ink }]}>
-                  {record.statement}
-                </ThemedText>
+                <SourceStatement statement={record.statement} translated={record.statementTranslated} />
                 <Pressable
                   disabled={!record.url}
                   onPress={() => record.url && void Linking.openURL(record.url)}
@@ -291,9 +290,7 @@ export default function IngredientScreen() {
             </ThemedText>
             {citations.map((citation) => (
               <View key={citation.entryId} style={styles.citation}>
-                <ThemedText style={[Type.body, { color: surface.ink }]}>
-                  {citation.statement}
-                </ThemedText>
+                <SourceStatement statement={citation.statement} translated={citation.statementTranslated} />
                 {citation.sources.map((source, i) => (
                   <Pressable
                     key={`${citation.entryId}-${i}`}
@@ -352,6 +349,40 @@ export default function IngredientScreen() {
   );
 }
 
+/**
+ * A source's statement, in the scan's language when a translation exists.
+ *
+ * The translation is labelled as one and the English original is a tap away,
+ * never swapped for it: the original is the thing a reader can check against
+ * the register, and a translation that hid it would be claiming to be it.
+ */
+function SourceStatement({ statement, translated }: { statement: string; translated?: string | null }) {
+  const surface = useSurface();
+  const { t } = useTranslation();
+  const [showOriginal, setShowOriginal] = useState(false);
+  if (!translated) {
+    return <ThemedText style={[Type.body, { color: surface.ink }]}>{statement}</ThemedText>;
+  }
+  return (
+    <View style={styles.statement}>
+      <ThemedText style={[Type.body, { color: surface.ink }]}>{translated}</ThemedText>
+      {showOriginal ? (
+        <ThemedText style={[Type.body, { color: surface.inkMuted }]}>{statement}</ThemedText>
+      ) : null}
+      <Pressable
+        onPress={() => setShowOriginal((v) => !v)}
+        hitSlop={10}
+        accessibilityRole="button"
+        accessibilityState={{ expanded: showOriginal }}
+      >
+        <ThemedText style={[styles.source, { color: surface.inkFaint }]}>
+          {t('ingredient.translated')} · {t(showOriginal ? 'ingredient.hideOriginal' : 'ingredient.showOriginal')}
+        </ThemedText>
+      </Pressable>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   container: { flex: 1 },
   content: { padding: Gutter, gap: Space.xl, paddingBottom: Space.xxl },
@@ -369,6 +400,7 @@ const styles = StyleSheet.create({
   levelRow: { flexDirection: 'row', alignItems: 'baseline', gap: Space.md },
   levelLabel: { flex: 1 },
   citation: { gap: Space.xs, paddingTop: Space.sm },
+  statement: { gap: Space.xs },
   footnote: { paddingTop: Space.xs },
   source: { fontFamily: Font.mono, fontSize: 11, lineHeight: 16 },
   // The divergence sits in a bordered box rather than a coloured one: the three
