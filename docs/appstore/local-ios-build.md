@@ -247,6 +247,23 @@ with the variables exported, straight away.
 background, then runs the new bundle on the NEXT launch. Open, wait a few
 seconds, close fully, open again.
 
+**Publishing to a version that is not the one in `app.json`.** The update's
+runtime version is read from `version` in `app.json` at publish time. Once the
+next release has been bumped there (1.0.3 while 1.0.2 is the one on the App
+Store), a plain publish targets 1.0.3 and not one phone on 1.0.2 receives it,
+with nothing in the output to say so. First done on 24 September 2026. Set
+the version back for the publish only, check the output says the runtime you
+meant, and restore it:
+
+    sed -i '' 's/"version": "1.0.3"/"version": "1.0.2"/' app.json
+    npx eas-cli update --channel production --platform ios \
+      --environment production --message "..." --non-interactive
+    git checkout app.json
+
+This is only safe when every change since that binary is JavaScript. A change
+to native code, including a patch under `mobile/patches/`, is not in the old
+binary, and JavaScript that expects it would call into nothing.
+
 ## What still has to happen in App Store Connect
 
 Attaching the build, updating the App Review notes and submitting are covered in
