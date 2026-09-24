@@ -30,7 +30,7 @@ import {
   matchCustomEntryByIdentity,
   matchProfileAllergen,
 } from '../server/services/concepts';
-import { eNumberKey, getSubstanceRegistry } from '../server/services/substances/identity';
+import { additiveNumberKey, eNumberKey, getSubstanceRegistry } from '../server/services/substances/identity';
 import { applyProfileToAnalysis } from '../server/services/personalRisk';
 import { MIN_LIST_FOR_RANK, isProminent, withLabelRanks } from '../server/services/labelRank';
 import {
@@ -214,6 +214,43 @@ for (const [shown, source] of [
       `"${notOne}" was read as an E number (${eNumberKey(notOne)})`);
   }
   notes.push(`e numbers: ${withE.length} checked in four spellings each`);
+}
+
+// ---------------------------------------------------------------------------
+// 2e. INS numbers and Australian-style "Class (number)" references.
+//
+// INS is the Codex twin of E numbering and, for what this registry holds, the
+// same number, so it shares the E-number index. Every registered E number must
+// also resolve as "INS n", and as a bare number and a class-labelled one, the
+// way FSANZ labels print it. Where the two systems genuinely differ (307a-c,
+// 960a-d) the mapping is explicit, and pinned here. A class word with a name
+// instead of a number, a percentage, or a number below the additive series is
+// not an additive reference.
+// ---------------------------------------------------------------------------
+{
+  const registry = getSubstanceRegistry() as any;
+  const withE = [...registry.byId.values()].filter((sub: any) => sub.eNumber);
+  for (const sub of withE) {
+    const n = String(sub.eNumber).replace(/^e\s*-?\s*/i, '');
+    for (const form of [`INS ${n}`, `INS${n}`, `INS No. ${n}`, n, `Colour (${n})`]) {
+      const hit = registry.resolve(form);
+      check(`ins/${form}`, hit?.substance.id === sub.id,
+        `"${form}" resolved to ${hit?.substance.id ?? 'nothing'}, expected ${sub.id}`);
+    }
+  }
+  const divergent: [string, string][] = [
+    ['Antioxidant (307b)', 'E306'], ['INS 307a', 'E307'], ['307c', 'E307'], ['Sweetener (960a)', 'E960'],
+  ];
+  for (const [form, eNumber] of divergent) {
+    const hit = registry.resolve(form);
+    check(`ins/divergent/${form}`, hit?.substance.eNumber === eNumber,
+      `"${form}" resolved to ${hit?.substance.id ?? 'nothing'} (${hit?.substance.eNumber ?? '-'}), expected the ${eNumber} substance`);
+  }
+  for (const notOne of ['100% juice', 'Vitamin B12', 'Omega 3', '99', 'Thickener (xanthan gum)', 'Sugar 30%', 'INS']) {
+    check(`ins/not/${notOne}`, additiveNumberKey(notOne) === null,
+      `"${notOne}" was read as an additive number (${JSON.stringify(additiveNumberKey(notOne))})`);
+  }
+  notes.push(`ins numbers: ${withE.length} checked in five label forms each, plus ${divergent.length} INS/E divergences`);
 }
 
 // ---------------------------------------------------------------------------

@@ -30,6 +30,7 @@ export type AliasSource =
   | 'cosing' // EU Cosmetic Ingredient database (INCI ↔ CAS)
   | 'pubchem' // PubChem synonym list
   | 'eu_additives' // E-number ↔ name from the EU additive annexes
+  | 'codex_ins' // an INS number (Codex International Numbering System) read as its E number
   | 'prop65' // OEHHA chemical name
   | 'iarc' // IARC agent name
   | 'fda' // FDA Substances Added to Food inventory name
@@ -191,6 +192,72 @@ export function normalizeSubstanceName(raw: string): string {
 export function eNumberKey(raw: string): string | null {
   const m = normalizeSubstanceName(raw).match(/^e ?(\d{3,4}) ?([a-z])?(?: ?([ivx]+))?$/);
   return m ? `e${m[1]}${m[2] ?? ''}${m[3] ?? ''}` : null;
+}
+
+/**
+ * Words a label uses to introduce an additive by number, as in Australian and
+ * New Zealand labels: "Thickener (1422)", "Colour (102)", "Food acid (330)".
+ * The class word says what the additive does; the number says which one.
+ */
+const ADDITIVE_CLASSES = [
+  'colour', 'colours', 'color', 'colors', 'preservative', 'preservatives', 'emulsifier', 'emulsifiers',
+  'thickener', 'thickeners', 'vegetable gum', 'vegetable gums', 'stabiliser', 'stabilisers', 'stabilizer',
+  'stabilizers', 'antioxidant', 'antioxidants', 'food acid', 'food acids', 'acid', 'acidity regulator',
+  'acidity regulators', 'mineral salt', 'mineral salts', 'flavour enhancer', 'flavour enhancers',
+  'flavor enhancer', 'flavor enhancers', 'raising agent', 'raising agents', 'sweetener', 'sweeteners',
+  'humectant', 'humectants', 'gelling agent', 'gelling agents', 'anticaking agent', 'anti caking agent',
+  'anticaking agents', 'anti caking agents', 'firming agent', 'glazing agent', 'bulking agent',
+  'modified starch', 'emulsifying salt', 'emulsifying salts', 'propellant', 'packaging gas', 'enzyme',
+].sort((a, b) => b.length - a.length).join('|');
+
+const ADDITIVE_NUMBER = new RegExp(
+  // Optional class word, optional "E" or "INS" (with "no"), then the number,
+  // an optional letter and an optional Roman sub-index. Normalization has
+  // already turned every bracket, hyphen and full stop into a single space.
+  `^(?:(?:${ADDITIVE_CLASSES}) )?(?:(e|ins)(?: no)? ?)?(\\d{3,4}) ?([a-z])?(?: ?([ivx]+))?$`,
+);
+
+/**
+ * Where INS and E numbering part ways, keyed by the INS form, valued by the E
+ * number the registry holds. Short on purpose: for everything else the two
+ * systems use the same number, and a guessed mapping here would put one
+ * additive's verdict on another.
+ *
+ *   307a, 307c  d- and dl-alpha-tocopherol, which the EU numbers E307
+ *   307b        tocopherol concentrate, mixed: the EU's E306
+ *   960a-d      steviol glycosides by source; the registry holds them as E960
+ */
+const INS_TO_E: Record<string, string> = {
+  e307a: 'e307', e307b: 'e306', e307c: 'e307',
+  e960a: 'e960', e960b: 'e960', e960c: 'e960', e960d: 'e960',
+};
+
+/**
+ * The E-number key for any way a label refers to a food additive by number,
+ * or null if the text is not such a reference.
+ *
+ * INS numbers are the Codex twin of E numbers and, for everything in this
+ * registry, the same number: INS 171 and E171 are both titanium dioxide. So
+ * they share one index, the E-number one, and "INS 171" is looked up as e171.
+ * Labels print them as "INS 171", "INS No. 171", and in Australia and New
+ * Zealand as a class word with a bracketed number, "Thickener (1422)", or as
+ * the number alone.
+ *
+ * `how` says which it was, so the resolver can record where the number came
+ * from. A bare number is only ever looked up among numbers the registry
+ * holds, so it cannot turn an unknown string into a wrong substance.
+ */
+export function additiveNumberKey(raw: string): { key: string; kind: 'e' | 'ins' | 'bare' } | null {
+  const m = normalizeSubstanceName(raw).match(ADDITIVE_NUMBER);
+  if (!m) return null;
+  const [, prefix, digits, letter, roman] = m;
+  const n = Number(digits);
+  // The E and INS series run from 100; nothing below is an additive number.
+  if (n < 100) return null;
+  return {
+    key: `e${digits}${letter ?? ''}${roman ?? ''}`,
+    kind: prefix === 'e' ? 'e' : prefix === 'ins' ? 'ins' : 'bare',
+  };
 }
 
 /** Normalize a CAS number to its canonical hyphenated form, or null. */
@@ -486,15 +553,24 @@ export class SubstanceRegistry {
       return { substance: hit.substance, via: hit.alias, how: 'exact' };
     }
 
-    // Bare E-number, e.g. a label that just prints "E129", "E 129" or "E-129".
-    const eKey = eNumberKey(trimmed);
-    const eHit = eKey ? this.byENumber.get(eKey) : undefined;
-    if (eHit) {
-      return {
-        substance: eHit,
-        via: { name: trimmed, source: 'eu_additives', confidence: 1 },
-        how: 'identifier',
-      };
+    // An additive number: "E129", "E 129", "E-129", "INS 129", "Colour (129)".
+    // A Roman sub-index names a form of one additive rather than a different
+    // additive, so "160a(ii)" falls back to 160a when only that is held; the
+    // letter is never dropped, because 160a and 160b are different additives.
+    const ref = additiveNumberKey(trimmed);
+    if (ref) {
+      const base = ref.key.replace(/[ivx]+$/, '');
+      const eHit =
+        this.byENumber.get(ref.key) ??
+        this.byENumber.get(base) ??
+        (INS_TO_E[base] ? this.byENumber.get(INS_TO_E[base]) : undefined);
+      if (eHit) {
+        return {
+          substance: eHit,
+          via: { name: trimmed, source: ref.kind === 'ins' || ref.kind === 'bare' ? 'codex_ins' : 'eu_additives', confidence: 1 },
+          how: 'identifier',
+        };
+      }
     }
 
     return null;
