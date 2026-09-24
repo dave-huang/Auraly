@@ -34,6 +34,17 @@ export const maxRisk = (a: RiskLevel, b: RiskLevel): RiskLevel => (riskRank[a] >
 const impactFor = (risk: RiskLevel): 'avoid' | 'caution' => (risk === 'high' ? 'avoid' : 'caution');
 
 /**
+ * The matched name as a flag should print it.
+ *
+ * A term hit is already a lowercase keyword. An identity hit is the registry's
+ * name, which keeps its source's casing, and several sources print in capitals,
+ * so "contains EGG WHITE LYSOZYME" sat beside "contains gelatin". Only an
+ * all-capitals name is lowered; a mixed-case one is left as its source chose.
+ */
+const readableEvidence = (evidence: string): string =>
+  /\p{Ll}/u.test(evidence) ? evidence : evidence.toLowerCase();
+
+/**
  * Does this ingredient match a profile allergen entry?
  *
  * Thin wrapper so the boolean call sites below read as they did. The concept
@@ -262,8 +273,9 @@ export function applyProfileToAnalysis(result: AnalysisResult, profile: Profile)
         matchConcept(ing.name, spec),
         readInEnglish ? matchConcept(readInEnglish, spec) : undefined,
       );
-      const definite = hit?.certainty === 'definite' ? hit.evidence : undefined;
-      const verify = hit?.certainty === 'verify' ? hit.evidence : undefined;
+      const evidence = hit ? readableEvidence(hit.evidence) : undefined;
+      const definite = hit?.certainty === 'definite' ? evidence : undefined;
+      const verify = hit?.certainty === 'verify' ? evidence : undefined;
       if (definite) {
         flags.push({
           ingredientName: ing.name,

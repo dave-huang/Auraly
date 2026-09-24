@@ -1005,6 +1005,13 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
     (veganOut.personalFlags ?? []).some(f =>
       f.type === 'dietary' && f.ingredientName === '溶菌酶' && f.certainty === 'definite'),
     '"溶菌酶" did not raise a definite vegan flag');
+  // The registry holds the name as its source printed it, in capitals. The
+  // card reads "contains gelatin" for a term hit and must not shout this one.
+  const veganFlag = (veganOut.personalFlags ?? []).find(f => f.ingredientName === '溶菌酶');
+  check('lysozyme/vegan-flag-readable',
+    veganFlag?.reasonParams?.ingredient === 'egg white lysozyme' &&
+      veganFlag.reason === 'Not vegan (contains egg white lysozyme)',
+    `vegan flag reads "${veganFlag?.reason}"`);
 
   notes.push('lysozyme flags egg by name, E number, identity and declaration, and is not vegan');
 }
