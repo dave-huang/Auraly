@@ -1,6 +1,6 @@
 {
   "_metadata": {
-    "version": "curated-nutrients-2026-08-12+cosing_annex_ii-2026-07-30+cosing_annex_iii-2026-07-30+cosing_annex_iv-2026-07-30+cosing_annex_v-2026-07-30+cosing_annex_vi-2026-07-30+prop65-2026-07-31+iarc-2026-08+fda_food_additives-2026-08+efsa_openfoodtox-2026-08+curated-aliases-2026-08-24+curated-aliases-2026-09-24+curated-aliases-2026-09-24.2#99f0f0e7b06c",
+    "version": "curated-nutrients-2026-08-12+cosing_annex_ii-2026-07-30+cosing_annex_iii-2026-07-30+cosing_annex_iv-2026-07-30+cosing_annex_v-2026-07-30+cosing_annex_vi-2026-07-30+prop65-2026-07-31+iarc-2026-08+fda_food_additives-2026-08+efsa_openfoodtox-2026-08+curated-aliases-2026-08-24+curated-aliases-2026-09-24+curated-aliases-2026-09-24.2+curated-aliases-2026-09-24.3#0885c114df6b",
     "updatedAt": "2026-09-24",
     "description": "Substance identity registry. Ingested source snapshots are the primary intended input (npm run substances:ingest). This first curated block exists because the hazard registers structurally cannot supply it: registers of prohibitions only list prohibited things, so nothing in them ever resolves an ordinary label term like 'sugar' or 'citric acid'. These entries carry the identities that health-guidance evidence attaches to. Aliases are EXACT-match after normalization, so each printed label form must be listed explicitly — an unlisted variant resolves to unidentified, which is the safe direction. 2026-08-12: added Chinese and Spanish label forms for every substance here. Cross-language scans were partly bypassing this registry — 白砂糖 resolved but bare 糖 did not — so a Chinese label fell back to the model for substances we hold records on. Partially-hydrogenated-oil forms are all explicitly PARTIAL; fully hydrogenated oil is a different ingredient and must not resolve here.",
     "reviewStatus": "ai_seeded",
@@ -17,7 +17,8 @@
       "efsa_openfoodtox-2026-08",
       "curated-aliases-2026-08-24",
       "curated-aliases-2026-09-24",
-      "curated-aliases-2026-09-24.2"
+      "curated-aliases-2026-09-24.2",
+      "curated-aliases-2026-09-24.3"
     ]
   },
   "substances": [
@@ -75879,6 +75880,21 @@
           "name": "DIBASIC CALCIUM PHOSPHATE",
           "source": "fda",
           "confidence": 0.95
+        },
+        {
+          "name": "Dicalcium phosphate",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Calcium hydrogen phosphate",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "磷酸氢钙",
+          "source": "curated",
+          "confidence": 1
         }
       ]
     },
@@ -75900,6 +75916,21 @@
           "name": "MONOBASIC CALCIUM PHOSPHATE",
           "source": "fda",
           "confidence": 0.95
+        },
+        {
+          "name": "Monocalcium phosphate",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Calcium dihydrogen phosphate",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "磷酸二氢钙",
+          "source": "curated",
+          "confidence": 1
         }
       ]
     },
@@ -75908,7 +75939,7 @@
       "name": "CALCIUM PHOSPHATE, TRIBASIC",
       "cas": "7758-87-4",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E341",
       "inci": null,
       "category": "ANTICAKING AGENT OR FREE-FLOW AGENT, DRYING AGENT, EMULSIFIER OR EMULSIFIER SALT, FLAVORING AGENT OR ADJUVANT, FORMULATION AID, HUMECTANT, LEAVENING AGENT, NUTRIENT SUPPLEMENT, PH CONTROL AGENT, TEXTURIZER",
       "aliases": [
@@ -75921,6 +75952,16 @@
           "name": "TRIBASIC CALCIUM PHOSPHATE",
           "source": "fda",
           "confidence": 0.95
+        },
+        {
+          "name": "Tricalcium phosphate",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "磷酸三钙",
+          "source": "curated",
+          "confidence": 1
         }
       ]
     },
@@ -75977,7 +76018,7 @@
       "name": "CALCIUM SALTS OF FATTY ACIDS",
       "cas": null,
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E470a",
       "inci": null,
       "category": "ANTICAKING AGENT OR FREE-FLOW AGENT, EMULSIFIER OR EMULSIFIER SALT, LUBRICANT OR RELEASE AGENT",
       "aliases": [
@@ -87455,13 +87496,28 @@
       "name": "EGG WHITE LYSOZYME",
       "cas": "12650-88-3",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E1105",
       "inci": null,
       "category": "ANTIMICROBIAL AGENT, ENZYME",
       "aliases": [
         {
           "name": "EGG WHITE LYSOZYME",
           "source": "fda",
+          "confidence": 1
+        },
+        {
+          "name": "Lysozyme",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "溶菌酶",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Lisozima",
+          "source": "curated",
           "confidence": 1
         }
       ]
@@ -91675,7 +91731,7 @@
       "name": "FD&C BLUE NO. 2",
       "cas": "860-22-0",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E132",
       "inci": null,
       "category": "COLOR OR COLORING ADJUNCT",
       "aliases": [
@@ -91698,6 +91754,26 @@
           "name": "FD&C BLUE 2",
           "source": "fda",
           "confidence": 0.95
+        },
+        {
+          "name": "Indigotine",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Indigo carmine",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "靛蓝",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Indigotina",
+          "source": "curated",
+          "confidence": 1
         }
       ]
     },
@@ -99907,13 +99983,33 @@
       "name": "HYDROXYPROPYL METHYLCELLULOSE",
       "cas": "9004-65-3",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E464",
       "inci": null,
       "category": "ANTICAKING AGENT OR FREE-FLOW AGENT, DRYING AGENT, EMULSIFIER OR EMULSIFIER SALT, HUMECTANT, PROCESSING AID, STABILIZER OR THICKENER, SURFACE-FINISHING AGENT, TEXTURIZER",
       "aliases": [
         {
           "name": "HYDROXYPROPYL METHYLCELLULOSE",
           "source": "fda",
+          "confidence": 1
+        },
+        {
+          "name": "Hydroxypropyl methyl cellulose",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Hypromellose",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "羟丙基甲基纤维素",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Hidroxipropilmetilcelulosa",
+          "source": "curated",
           "confidence": 1
         }
       ]
@@ -100206,13 +100302,23 @@
       "name": "INVERTASE FROM SACCHAROMYCES CEREVISIAE",
       "cas": null,
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E1103",
       "inci": null,
       "category": "ENZYME, PROCESSING AID, STABILIZER OR THICKENER",
       "aliases": [
         {
           "name": "INVERTASE FROM SACCHAROMYCES CEREVISIAE",
           "source": "fda",
+          "confidence": 1
+        },
+        {
+          "name": "Invertase",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "转化酶",
+          "source": "curated",
           "confidence": 1
         }
       ]
@@ -115000,13 +115106,33 @@
       "name": "NEOHESPERIDIN DIHYDROCHALCONE",
       "cas": "20702-77-6",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E959",
       "inci": null,
       "category": "FLAVORING AGENT OR ADJUVANT",
       "aliases": [
         {
           "name": "NEOHESPERIDIN DIHYDROCHALCONE",
           "source": "fda",
+          "confidence": 1
+        },
+        {
+          "name": "Neohesperidin DC",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Neohesperidine DC",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Neohesperidine dihydrochalcone",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "新橙皮苷二氢查耳酮",
+          "source": "curated",
           "confidence": 1
         }
       ]
@@ -123372,6 +123498,21 @@
           "name": "POTASSIUM ACID TARTRATE",
           "source": "efsa",
           "confidence": 0.95
+        },
+        {
+          "name": "Cream of tartar",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Potassium bitartrate",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Potassium hydrogen tartrate",
+          "source": "curated",
+          "confidence": 1
         }
       ]
     },
@@ -128963,13 +129104,33 @@
       "name": "SODIUM COPPER CHLOROPHYLLIN",
       "cas": "28302-36-5",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E141",
       "inci": null,
       "category": "COLOR OR COLORING ADJUNCT",
       "aliases": [
         {
           "name": "SODIUM COPPER CHLOROPHYLLIN",
           "source": "fda",
+          "confidence": 1
+        },
+        {
+          "name": "Copper chlorophyllin",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Copper complexes of chlorophylls",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Copper complexes of chlorophyllins",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "叶绿素铜钠",
+          "source": "curated",
           "confidence": 1
         }
       ]
@@ -129555,7 +129716,7 @@
       "name": "SODIUM PHOSPHATE, DIBASIC",
       "cas": "7558-79-4",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E339",
       "inci": null,
       "category": "ANTICAKING AGENT OR FREE-FLOW AGENT, ANTIMICROBIAL AGENT, DRYING AGENT, EMULSIFIER OR EMULSIFIER SALT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, MALTING OR FERMENTING AID, PH CONTROL AGENT, STABILIZER OR THICKENER, TEXTURIZER",
       "aliases": [
@@ -129568,6 +129729,21 @@
           "name": "DIBASIC SODIUM PHOSPHATE",
           "source": "fda",
           "confidence": 0.95
+        },
+        {
+          "name": "Disodium phosphate",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Disodium hydrogen phosphate",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "磷酸氢二钠",
+          "source": "curated",
+          "confidence": 1
         }
       ]
     },
@@ -129589,6 +129765,21 @@
           "name": "MONOBASIC SODIUM PHOSPHATE",
           "source": "fda",
           "confidence": 0.95
+        },
+        {
+          "name": "Monosodium phosphate",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Sodium dihydrogen phosphate",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "磷酸二氢钠",
+          "source": "curated",
+          "confidence": 1
         }
       ]
     },
@@ -129610,6 +129801,16 @@
           "name": "TRIBASIC SODIUM PHOSPHATE",
           "source": "fda",
           "confidence": 0.95
+        },
+        {
+          "name": "Trisodium phosphate",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "磷酸三钠",
+          "source": "curated",
+          "confidence": 1
         }
       ]
     },
@@ -129970,13 +130171,33 @@
       "name": "D-SORBITOL",
       "cas": "50-70-4",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E420",
       "inci": null,
       "category": "COLOR OR COLORING ADJUNCT, DRYING AGENT, FLAVORING AGENT OR ADJUVANT, HUMECTANT, NUTRIENT SUPPLEMENT, NUTRITIVE SWEETENER, PH CONTROL AGENT, SOLVENT OR VEHICLE, STABILIZER OR THICKENER, TEXTURIZER",
       "aliases": [
         {
           "name": "D-SORBITOL",
           "source": "fda",
+          "confidence": 1
+        },
+        {
+          "name": "Sorbitol",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Sorbitol syrup",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "山梨糖醇",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "山梨醇",
+          "source": "curated",
           "confidence": 1
         }
       ]
@@ -130511,13 +130732,28 @@
       "name": "STARCH, FOOD, MODIFIED: ACETYLATED DISTARCH ADIPATE",
       "cas": "63798-35-6",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E1422",
       "inci": null,
       "category": "DOUGH STRENGTHENER",
       "aliases": [
         {
           "name": "STARCH, FOOD, MODIFIED: ACETYLATED DISTARCH ADIPATE",
           "source": "fda",
+          "confidence": 1
+        },
+        {
+          "name": "Acetylated distarch adipate",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "乙酰化双淀粉己二酸酯",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Adipato de dialmidón acetilado",
+          "source": "curated",
           "confidence": 1
         }
       ]
@@ -130559,13 +130795,28 @@
       "name": "STARCH, FOOD, MODIFIED: ACETYLATED DISTARCH PHOSPHATE",
       "cas": "68130-14-3",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E1414",
       "inci": null,
       "category": "STABILIZER OR THICKENER",
       "aliases": [
         {
           "name": "STARCH, FOOD, MODIFIED: ACETYLATED DISTARCH PHOSPHATE",
           "source": "fda",
+          "confidence": 1
+        },
+        {
+          "name": "Acetylated distarch phosphate",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "乙酰化双淀粉磷酸酯",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Fosfato de dialmidón acetilado",
+          "source": "curated",
           "confidence": 1
         }
       ]
@@ -130660,7 +130911,7 @@
       "name": "STARCH, FOOD, MODIFIED: DISTARCH PHOSPHATE (FROM SODIUM TRIMETAPHOSPHATE)",
       "cas": null,
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E1412",
       "inci": null,
       "category": "STABILIZER OR THICKENER",
       "aliases": [
@@ -130673,6 +130924,21 @@
           "name": "STARCH, FOOD, MODIFIED: DISTARCH PHOSPHATE",
           "source": "fda",
           "confidence": 0.95
+        },
+        {
+          "name": "Distarch phosphate",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "双淀粉磷酸酯",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Fosfato de dialmidón",
+          "source": "curated",
+          "confidence": 1
         }
       ]
     },
@@ -130713,13 +130979,28 @@
       "name": "STARCH, FOOD, MODIFIED: HYDROXYPROPYL DISTARCH PHOSPHATE",
       "cas": "53124-00-8",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E1442",
       "inci": null,
       "category": "STABILIZER OR THICKENER",
       "aliases": [
         {
           "name": "STARCH, FOOD, MODIFIED: HYDROXYPROPYL DISTARCH PHOSPHATE",
           "source": "fda",
+          "confidence": 1
+        },
+        {
+          "name": "Hydroxypropyl distarch phosphate",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "羟丙基双淀粉磷酸酯",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Fosfato de dialmidón hidroxipropilado",
+          "source": "curated",
           "confidence": 1
         }
       ]
@@ -130777,13 +131058,33 @@
       "name": "STARCH, FOOD, MODIFIED: OXIDIZED STARCHES",
       "cas": "65996-62-5",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E1404",
       "inci": null,
       "category": "STABILIZER OR THICKENER",
       "aliases": [
         {
           "name": "STARCH, FOOD, MODIFIED: OXIDIZED STARCHES",
           "source": "fda",
+          "confidence": 1
+        },
+        {
+          "name": "Oxidised starch",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Oxidized starch",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "氧化淀粉",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Almidón oxidado",
+          "source": "curated",
           "confidence": 1
         }
       ]
@@ -130825,13 +131126,33 @@
       "name": "STARCH, FOOD, MODIFIED: STARCH ACETATE",
       "cas": "9045-28-7",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E1420",
       "inci": null,
       "category": "STABILIZER OR THICKENER",
       "aliases": [
         {
           "name": "STARCH, FOOD, MODIFIED: STARCH ACETATE",
           "source": "fda",
+          "confidence": 1
+        },
+        {
+          "name": "Acetylated starch",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Starch acetate",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "乙酰化淀粉",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Almidón acetilado",
+          "source": "curated",
           "confidence": 1
         }
       ]
@@ -130873,13 +131194,38 @@
       "name": "STARCH, FOOD, MODIFIED: STARCH SODIUM OCTENYL SUCCINATE",
       "cas": "66829-29-6",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E1450",
       "inci": null,
       "category": "STABILIZER OR THICKENER",
       "aliases": [
         {
           "name": "STARCH, FOOD, MODIFIED: STARCH SODIUM OCTENYL SUCCINATE",
           "source": "fda",
+          "confidence": 1
+        },
+        {
+          "name": "Starch sodium octenyl succinate",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Sodium starch octenyl succinate",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Sodium octenyl succinate starch",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "淀粉辛烯基琥珀酸钠",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Octenil succinato sódico de almidón",
+          "source": "curated",
           "confidence": 1
         }
       ]
@@ -133340,13 +133686,33 @@
       "name": "TOCOPHEROLS",
       "cas": "1406-66-2",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E306",
       "inci": null,
       "category": "ANTIOXIDANT, FLAVOR ENHANCER, FLAVORING AGENT OR ADJUVANT, NUTRIENT SUPPLEMENT",
       "aliases": [
         {
           "name": "TOCOPHEROLS",
           "source": "fda",
+          "confidence": 1
+        },
+        {
+          "name": "Tocopherol-rich extract",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Mixed tocopherols",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "生育酚",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Tocoferoles",
+          "source": "curated",
           "confidence": 1
         }
       ]
@@ -143392,7 +143758,7 @@
       "name": "Potassium tartrates",
       "cas": "921-53-9",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E336",
       "inci": null,
       "category": null,
       "aliases": [
@@ -143400,6 +143766,16 @@
           "name": "Potassium tartrates",
           "source": "efsa",
           "confidence": 0.95
+        },
+        {
+          "name": "Potassium tartrate",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Dipotassium tartrate",
+          "source": "curated",
+          "confidence": 1
         }
       ]
     },
@@ -149260,6 +149636,492 @@
         },
         {
           "name": "Anhydrous Milk Fat",
+          "source": "curated",
+          "confidence": 1
+        }
+      ]
+    },
+    {
+      "id": "vegetable_carbon",
+      "name": "Vegetable carbon",
+      "cas": null,
+      "ec": null,
+      "eNumber": "E153",
+      "inci": null,
+      "category": "colour",
+      "aliases": [
+        {
+          "name": "Vegetable carbon",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Carbo medicinalis vegetabilis",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "植物炭黑",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Carbón vegetal",
+          "source": "curated",
+          "confidence": 1
+        }
+      ]
+    },
+    {
+      "id": "calcium_sulphite",
+      "name": "Calcium sulphite",
+      "cas": null,
+      "ec": null,
+      "eNumber": "E226",
+      "inci": null,
+      "category": "preservative",
+      "aliases": [
+        {
+          "name": "Calcium sulphite",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Calcium sulfite",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "亚硫酸钙",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Sulfito cálcico",
+          "source": "curated",
+          "confidence": 1
+        }
+      ]
+    },
+    {
+      "id": "alpha_tocopherol",
+      "name": "Alpha-tocopherol",
+      "cas": null,
+      "ec": null,
+      "eNumber": "E307",
+      "inci": null,
+      "category": "antioxidant",
+      "aliases": [
+        {
+          "name": "Alpha-tocopherol",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "α-tocopherol",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "dl-alpha-tocopherol",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "d-alpha-tocopherol",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "α-生育酚",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Alfa-tocoferol",
+          "source": "curated",
+          "confidence": 1
+        }
+      ]
+    },
+    {
+      "id": "gamma_tocopherol",
+      "name": "Gamma-tocopherol",
+      "cas": null,
+      "ec": null,
+      "eNumber": "E308",
+      "inci": null,
+      "category": "antioxidant",
+      "aliases": [
+        {
+          "name": "Gamma-tocopherol",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "γ-tocopherol",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "γ-生育酚",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Gamma-tocoferol",
+          "source": "curated",
+          "confidence": 1
+        }
+      ]
+    },
+    {
+      "id": "delta_tocopherol",
+      "name": "Delta-tocopherol",
+      "cas": null,
+      "ec": null,
+      "eNumber": "E309",
+      "inci": null,
+      "category": "antioxidant",
+      "aliases": [
+        {
+          "name": "Delta-tocopherol",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "δ-tocopherol",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "δ-生育酚",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Delta-tocoferol",
+          "source": "curated",
+          "confidence": 1
+        }
+      ]
+    },
+    {
+      "id": "tara_gum",
+      "name": "Tara gum",
+      "cas": null,
+      "ec": null,
+      "eNumber": "E417",
+      "inci": null,
+      "category": "thickener",
+      "aliases": [
+        {
+          "name": "Tara gum",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "刺云实胶",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Goma tara",
+          "source": "curated",
+          "confidence": 1
+        }
+      ]
+    },
+    {
+      "id": "ammonium_phosphatides",
+      "name": "Ammonium phosphatides",
+      "cas": null,
+      "ec": null,
+      "eNumber": "E442",
+      "inci": null,
+      "category": "emulsifier",
+      "aliases": [
+        {
+          "name": "Ammonium phosphatides",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Ammonium salts of phosphatidic acid",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "磷脂酸铵",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Fosfátidos de amonio",
+          "source": "curated",
+          "confidence": 1
+        }
+      ]
+    },
+    {
+      "id": "acetic_acid_esters_of_mono_and_diglycerides",
+      "name": "Acetic acid esters of mono- and diglycerides of fatty acids",
+      "cas": null,
+      "ec": null,
+      "eNumber": "E472a",
+      "inci": null,
+      "category": "emulsifier",
+      "aliases": [
+        {
+          "name": "Acetic acid esters of mono- and diglycerides of fatty acids",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Acetic acid esters of mono- and diglycerides",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "ACETEM",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "乙酸单双甘油脂肪酸酯",
+          "source": "curated",
+          "confidence": 1
+        }
+      ]
+    },
+    {
+      "id": "lactic_acid_esters_of_mono_and_diglycerides",
+      "name": "Lactic acid esters of mono- and diglycerides of fatty acids",
+      "cas": null,
+      "ec": null,
+      "eNumber": "E472b",
+      "inci": null,
+      "category": "emulsifier",
+      "aliases": [
+        {
+          "name": "Lactic acid esters of mono- and diglycerides of fatty acids",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Lactic acid esters of mono- and diglycerides",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "LACTEM",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "乳酸单双甘油脂肪酸酯",
+          "source": "curated",
+          "confidence": 1
+        }
+      ]
+    },
+    {
+      "id": "disodium_5_ribonucleotides",
+      "name": "Disodium 5'-ribonucleotides",
+      "cas": null,
+      "ec": null,
+      "eNumber": "E635",
+      "inci": null,
+      "category": "flavour enhancer",
+      "aliases": [
+        {
+          "name": "Disodium 5'-ribonucleotides",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Disodium ribonucleotides",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Disodium 5-ribonucleotide",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "I+G",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "呈味核苷酸二钠",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "5'-呈味核苷酸二钠",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Ribonucleótidos de sodio",
+          "source": "curated",
+          "confidence": 1
+        }
+      ]
+    },
+    {
+      "id": "argon",
+      "name": "Argon",
+      "cas": null,
+      "ec": null,
+      "eNumber": "E938",
+      "inci": null,
+      "category": "packaging gas",
+      "aliases": [
+        {
+          "name": "Argon",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "氩气",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Argón",
+          "source": "curated",
+          "confidence": 1
+        }
+      ]
+    },
+    {
+      "id": "oxygen",
+      "name": "Oxygen",
+      "cas": null,
+      "ec": null,
+      "eNumber": "E948",
+      "inci": null,
+      "category": "packaging gas",
+      "aliases": [
+        {
+          "name": "Oxygen",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Oxígeno",
+          "source": "curated",
+          "confidence": 1
+        }
+      ]
+    },
+    {
+      "id": "isomalt",
+      "name": "Isomalt",
+      "cas": null,
+      "ec": null,
+      "eNumber": "E953",
+      "inci": null,
+      "category": "sweetener",
+      "aliases": [
+        {
+          "name": "Isomalt",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Isomaltitol",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "异麦芽酮糖醇",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "异麦芽糖醇",
+          "source": "curated",
+          "confidence": 1
+        }
+      ]
+    },
+    {
+      "id": "aspartame_acesulfame_salt",
+      "name": "Salt of aspartame-acesulfame",
+      "cas": null,
+      "ec": null,
+      "eNumber": "E962",
+      "inci": null,
+      "category": "sweetener",
+      "aliases": [
+        {
+          "name": "Salt of aspartame-acesulfame",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Aspartame-acesulfame salt",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "阿斯巴甜-安赛蜜盐",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Sal de aspartamo-acesulfamo",
+          "source": "curated",
+          "confidence": 1
+        }
+      ]
+    },
+    {
+      "id": "maltitol",
+      "name": "Maltitol",
+      "cas": null,
+      "ec": null,
+      "eNumber": "E965",
+      "inci": null,
+      "category": "sweetener",
+      "aliases": [
+        {
+          "name": "Maltitol",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Maltitol syrup",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "麦芽糖醇",
+          "source": "curated",
+          "confidence": 1
+        }
+      ]
+    },
+    {
+      "id": "lactitol",
+      "name": "Lactitol",
+      "cas": null,
+      "ec": null,
+      "eNumber": "E966",
+      "inci": null,
+      "category": "sweetener",
+      "aliases": [
+        {
+          "name": "Lactitol",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "乳糖醇",
           "source": "curated",
           "confidence": 1
         }

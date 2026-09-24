@@ -1,6 +1,6 @@
 {
   "_metadata": {
-    "version": "curated-aliases-2026-09-24.2",
+    "version": "curated-aliases-2026-09-24.3",
     "updatedAt": "2026-09-24",
     "description": "Identifiers, names and whole-food substances a person recorded by hand, because no ingested source carried them in a form a label would print. `entries` corrects substances a publisher already supplied and may never name an id that does not exist. `creates` adds the whole foods no register covers: every source in this corpus lists things somebody regulates, so palm oil and butter — printed on more labels than any additive — were invisible. Applied by curate.ts."
   },
@@ -926,6 +926,243 @@
       "substanceId": "propane_1_2_diol",
       "why": "EU labels name additives by E number, and none of our sources carries them. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); where an EFSA opinion title names the same E number, its CAS was checked against this substance's.",
       "eNumber": "E1520"
+    },
+    {
+      "substanceId": "fd_c_blue_no_2",
+      "why": "EU labels name additives by E number. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II). On the FDA entry, which is the food additive; the EU cosmetics entry shares its CAS, so evidence still joins.",
+      "eNumber": "E132",
+      "aliases": [
+        "Indigotine",
+        "Indigo carmine",
+        "靛蓝",
+        "Indigotina"
+      ]
+    },
+    {
+      "substanceId": "sodium_copper_chlorophyllin",
+      "why": "EU labels name additives by E number. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); this substance was already in the corpus under another name, found by its CAS number, so the label forms are added to it.",
+      "eNumber": "E141",
+      "aliases": [
+        "Copper chlorophyllin",
+        "Copper complexes of chlorophylls",
+        "Copper complexes of chlorophyllins",
+        "叶绿素铜钠"
+      ]
+    },
+    {
+      "substanceId": "tocopherols",
+      "why": "EU labels name additives by E number. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); this substance was already in the corpus under another name, found by its CAS number, so the label forms are added to it.",
+      "eNumber": "E306",
+      "aliases": [
+        "Tocopherol-rich extract",
+        "Mixed tocopherols",
+        "Tocopherols",
+        "生育酚",
+        "Tocoferoles"
+      ]
+    },
+    {
+      "substanceId": "potassium_tartrates",
+      "why": "EU labels name additives by E number. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); this substance was already in the corpus under another name, found by its CAS number, so the label forms are added to it.",
+      "eNumber": "E336",
+      "aliases": [
+        "Potassium tartrate",
+        "Dipotassium tartrate"
+      ]
+    },
+    {
+      "substanceId": "potassium_acid_tartrate",
+      "why": "Label names for a substance the corpus holds only under its register name, so a label printing the common name found nothing.",
+      "aliases": [
+        "Cream of tartar",
+        "Potassium bitartrate",
+        "Potassium hydrogen tartrate"
+      ]
+    },
+    {
+      "substanceId": "sodium_phosphate_dibasic",
+      "why": "EU labels name additives by E number. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); this substance was already in the corpus under another name, found by its CAS number, so the label forms are added to it.",
+      "eNumber": "E339",
+      "aliases": [
+        "Disodium phosphate",
+        "Disodium hydrogen phosphate",
+        "磷酸氢二钠"
+      ]
+    },
+    {
+      "substanceId": "sodium_phosphate_monobasic",
+      "why": "Label names for a substance the corpus holds only under its register name, so a label printing the common name found nothing.",
+      "aliases": [
+        "Monosodium phosphate",
+        "Sodium dihydrogen phosphate",
+        "磷酸二氢钠"
+      ]
+    },
+    {
+      "substanceId": "sodium_phosphate_tribasic",
+      "why": "Label names for a substance the corpus holds only under its register name, so a label printing the common name found nothing.",
+      "aliases": [
+        "Trisodium phosphate",
+        "磷酸三钠"
+      ]
+    },
+    {
+      "substanceId": "calcium_phosphate_tribasic",
+      "why": "EU labels name additives by E number. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); this substance was already in the corpus under another name, found by its CAS number, so the label forms are added to it.",
+      "eNumber": "E341",
+      "aliases": [
+        "Tricalcium phosphate",
+        "磷酸三钙"
+      ]
+    },
+    {
+      "substanceId": "calcium_phosphate_dibasic",
+      "why": "Label names for a substance the corpus holds only under its register name, so a label printing the common name found nothing.",
+      "aliases": [
+        "Dicalcium phosphate",
+        "Calcium hydrogen phosphate",
+        "磷酸氢钙"
+      ]
+    },
+    {
+      "substanceId": "calcium_phosphate_monobasic",
+      "why": "Label names for a substance the corpus holds only under its register name, so a label printing the common name found nothing.",
+      "aliases": [
+        "Monocalcium phosphate",
+        "Calcium dihydrogen phosphate",
+        "磷酸二氢钙"
+      ]
+    },
+    {
+      "substanceId": "d_sorbitol",
+      "why": "EU labels name additives by E number. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); this substance was already in the corpus under another name, found by its CAS number, so the label forms are added to it.",
+      "eNumber": "E420",
+      "aliases": [
+        "Sorbitol",
+        "Sorbitol syrup",
+        "山梨糖醇",
+        "山梨醇"
+      ]
+    },
+    {
+      "substanceId": "hydroxypropyl_methylcellulose",
+      "why": "EU labels name additives by E number. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); this substance was already in the corpus under another name, found by its CAS number, so the label forms are added to it.",
+      "eNumber": "E464",
+      "aliases": [
+        "Hydroxypropyl methyl cellulose",
+        "Hypromellose",
+        "羟丙基甲基纤维素",
+        "Hidroxipropilmetilcelulosa"
+      ]
+    },
+    {
+      "substanceId": "calcium_salts_of_fatty_acids",
+      "why": "EU labels name additives by E number. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); this substance was already in the corpus under another name, found by its CAS number, so the label forms are added to it.",
+      "eNumber": "E470a"
+    },
+    {
+      "substanceId": "neohesperidin_dihydrochalcone",
+      "why": "EU labels name additives by E number. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); this substance was already in the corpus under another name, found by its CAS number, so the label forms are added to it.",
+      "eNumber": "E959",
+      "aliases": [
+        "Neohesperidin DC",
+        "Neohesperidine DC",
+        "Neohesperidine dihydrochalcone",
+        "新橙皮苷二氢查耳酮"
+      ]
+    },
+    {
+      "substanceId": "invertase_from_saccharomyces_cerevisiae",
+      "why": "EU labels name additives by E number. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); this substance was already in the corpus under another name, found by its CAS number, so the label forms are added to it.",
+      "eNumber": "E1103",
+      "aliases": [
+        "Invertase",
+        "转化酶"
+      ]
+    },
+    {
+      "substanceId": "egg_white_lysozyme",
+      "why": "EU labels name additives by E number. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); this substance was already in the corpus under another name, found by its CAS number, so the label forms are added to it.",
+      "eNumber": "E1105",
+      "aliases": [
+        "Lysozyme",
+        "溶菌酶",
+        "Lisozima"
+      ]
+    },
+    {
+      "substanceId": "starch_food_modified_oxidized_starches",
+      "why": "EU labels name additives by E number. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); this substance was already in the corpus under another name, found by its CAS number, so the label forms are added to it.",
+      "eNumber": "E1404",
+      "aliases": [
+        "Oxidised starch",
+        "Oxidized starch",
+        "氧化淀粉",
+        "Almidón oxidado"
+      ]
+    },
+    {
+      "substanceId": "starch_food_modified_distarch_phosphate_from_sodium_trimetap",
+      "why": "EU labels name additives by E number. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); this substance was already in the corpus under another name, found by its CAS number, so the label forms are added to it.",
+      "eNumber": "E1412",
+      "aliases": [
+        "Distarch phosphate",
+        "双淀粉磷酸酯",
+        "Fosfato de dialmidón"
+      ]
+    },
+    {
+      "substanceId": "starch_food_modified_acetylated_distarch_phosphate",
+      "why": "EU labels name additives by E number. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); this substance was already in the corpus under another name, found by its CAS number, so the label forms are added to it.",
+      "eNumber": "E1414",
+      "aliases": [
+        "Acetylated distarch phosphate",
+        "乙酰化双淀粉磷酸酯",
+        "Fosfato de dialmidón acetilado"
+      ]
+    },
+    {
+      "substanceId": "starch_food_modified_starch_acetate",
+      "why": "EU labels name additives by E number. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); this substance was already in the corpus under another name, found by its CAS number, so the label forms are added to it.",
+      "eNumber": "E1420",
+      "aliases": [
+        "Acetylated starch",
+        "Starch acetate",
+        "乙酰化淀粉",
+        "Almidón acetilado"
+      ]
+    },
+    {
+      "substanceId": "starch_food_modified_acetylated_distarch_adipate",
+      "why": "EU labels name additives by E number. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); this substance was already in the corpus under another name, found by its CAS number, so the label forms are added to it.",
+      "eNumber": "E1422",
+      "aliases": [
+        "Acetylated distarch adipate",
+        "乙酰化双淀粉己二酸酯",
+        "Adipato de dialmidón acetilado"
+      ]
+    },
+    {
+      "substanceId": "starch_food_modified_hydroxypropyl_distarch_phosphate",
+      "why": "EU labels name additives by E number. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); this substance was already in the corpus under another name, found by its CAS number, so the label forms are added to it.",
+      "eNumber": "E1442",
+      "aliases": [
+        "Hydroxypropyl distarch phosphate",
+        "羟丙基双淀粉磷酸酯",
+        "Fosfato de dialmidón hidroxipropilado"
+      ]
+    },
+    {
+      "substanceId": "starch_food_modified_starch_sodium_octenyl_succinate",
+      "why": "EU labels name additives by E number. From the EU Union list of food additives (Regulation (EC) No 1333/2008, Annex II); this substance was already in the corpus under another name, found by its CAS number, so the label forms are added to it.",
+      "eNumber": "E1450",
+      "aliases": [
+        "Starch sodium octenyl succinate",
+        "Sodium starch octenyl succinate",
+        "Sodium octenyl succinate starch",
+        "淀粉辛烯基琥珀酸钠",
+        "Octenil succinato sódico de almidón"
+      ]
     }
   ],
   "creates": [
@@ -976,6 +1213,212 @@
         "Milk Fat",
         "Butter Oil",
         "Anhydrous Milk Fat"
+      ]
+    },
+    {
+      "id": "vegetable_carbon",
+      "name": "Vegetable carbon",
+      "why": "A food additive on the EU Union list (Regulation (EC) No 1333/2008) that no source in this corpus carries, so a label naming it, by name or by E number, resolved to nothing. No CAS: none is recorded for it here, and a wrong one would join another chemical's evidence.",
+      "category": "colour",
+      "eNumber": "E153",
+      "aliases": [
+        "Vegetable carbon",
+        "Carbo medicinalis vegetabilis",
+        "植物炭黑",
+        "Carbón vegetal"
+      ]
+    },
+    {
+      "id": "calcium_sulphite",
+      "name": "Calcium sulphite",
+      "why": "A food additive on the EU Union list (Regulation (EC) No 1333/2008) that no source in this corpus carries, so a label naming it, by name or by E number, resolved to nothing. No CAS: none is recorded for it here, and a wrong one would join another chemical's evidence.",
+      "category": "preservative",
+      "eNumber": "E226",
+      "aliases": [
+        "Calcium sulphite",
+        "Calcium sulfite",
+        "亚硫酸钙",
+        "Sulfito cálcico"
+      ]
+    },
+    {
+      "id": "alpha_tocopherol",
+      "name": "Alpha-tocopherol",
+      "why": "A food additive on the EU Union list (Regulation (EC) No 1333/2008) that no source in this corpus carries, so a label naming it, by name or by E number, resolved to nothing. No CAS: none is recorded for it here, and a wrong one would join another chemical's evidence.",
+      "category": "antioxidant",
+      "eNumber": "E307",
+      "aliases": [
+        "Alpha-tocopherol",
+        "α-tocopherol",
+        "dl-alpha-tocopherol",
+        "d-alpha-tocopherol",
+        "α-生育酚",
+        "Alfa-tocoferol"
+      ]
+    },
+    {
+      "id": "gamma_tocopherol",
+      "name": "Gamma-tocopherol",
+      "why": "A food additive on the EU Union list (Regulation (EC) No 1333/2008) that no source in this corpus carries, so a label naming it, by name or by E number, resolved to nothing. No CAS: none is recorded for it here, and a wrong one would join another chemical's evidence.",
+      "category": "antioxidant",
+      "eNumber": "E308",
+      "aliases": [
+        "Gamma-tocopherol",
+        "γ-tocopherol",
+        "γ-生育酚",
+        "Gamma-tocoferol"
+      ]
+    },
+    {
+      "id": "delta_tocopherol",
+      "name": "Delta-tocopherol",
+      "why": "A food additive on the EU Union list (Regulation (EC) No 1333/2008) that no source in this corpus carries, so a label naming it, by name or by E number, resolved to nothing. No CAS: none is recorded for it here, and a wrong one would join another chemical's evidence.",
+      "category": "antioxidant",
+      "eNumber": "E309",
+      "aliases": [
+        "Delta-tocopherol",
+        "δ-tocopherol",
+        "δ-生育酚",
+        "Delta-tocoferol"
+      ]
+    },
+    {
+      "id": "tara_gum",
+      "name": "Tara gum",
+      "why": "A food additive on the EU Union list (Regulation (EC) No 1333/2008) that no source in this corpus carries, so a label naming it, by name or by E number, resolved to nothing. No CAS: none is recorded for it here, and a wrong one would join another chemical's evidence.",
+      "category": "thickener",
+      "eNumber": "E417",
+      "aliases": [
+        "Tara gum",
+        "刺云实胶",
+        "Goma tara"
+      ]
+    },
+    {
+      "id": "ammonium_phosphatides",
+      "name": "Ammonium phosphatides",
+      "why": "A food additive on the EU Union list (Regulation (EC) No 1333/2008) that no source in this corpus carries, so a label naming it, by name or by E number, resolved to nothing. No CAS: none is recorded for it here, and a wrong one would join another chemical's evidence.",
+      "category": "emulsifier",
+      "eNumber": "E442",
+      "aliases": [
+        "Ammonium phosphatides",
+        "Ammonium salts of phosphatidic acid",
+        "磷脂酸铵",
+        "Fosfátidos de amonio"
+      ]
+    },
+    {
+      "id": "acetic_acid_esters_of_mono_and_diglycerides",
+      "name": "Acetic acid esters of mono- and diglycerides of fatty acids",
+      "why": "A food additive on the EU Union list (Regulation (EC) No 1333/2008) that no source in this corpus carries, so a label naming it, by name or by E number, resolved to nothing. No CAS: none is recorded for it here, and a wrong one would join another chemical's evidence.",
+      "category": "emulsifier",
+      "eNumber": "E472a",
+      "aliases": [
+        "Acetic acid esters of mono- and diglycerides of fatty acids",
+        "Acetic acid esters of mono- and diglycerides",
+        "ACETEM",
+        "乙酸单双甘油脂肪酸酯"
+      ]
+    },
+    {
+      "id": "lactic_acid_esters_of_mono_and_diglycerides",
+      "name": "Lactic acid esters of mono- and diglycerides of fatty acids",
+      "why": "A food additive on the EU Union list (Regulation (EC) No 1333/2008) that no source in this corpus carries, so a label naming it, by name or by E number, resolved to nothing. No CAS: none is recorded for it here, and a wrong one would join another chemical's evidence.",
+      "category": "emulsifier",
+      "eNumber": "E472b",
+      "aliases": [
+        "Lactic acid esters of mono- and diglycerides of fatty acids",
+        "Lactic acid esters of mono- and diglycerides",
+        "LACTEM",
+        "乳酸单双甘油脂肪酸酯"
+      ]
+    },
+    {
+      "id": "disodium_5_ribonucleotides",
+      "name": "Disodium 5'-ribonucleotides",
+      "why": "A food additive on the EU Union list (Regulation (EC) No 1333/2008) that no source in this corpus carries, so a label naming it, by name or by E number, resolved to nothing. No CAS: none is recorded for it here, and a wrong one would join another chemical's evidence.",
+      "category": "flavour enhancer",
+      "eNumber": "E635",
+      "aliases": [
+        "Disodium 5'-ribonucleotides",
+        "Disodium ribonucleotides",
+        "Disodium 5-ribonucleotide",
+        "I+G",
+        "呈味核苷酸二钠",
+        "5'-呈味核苷酸二钠",
+        "Ribonucleótidos de sodio"
+      ]
+    },
+    {
+      "id": "argon",
+      "name": "Argon",
+      "why": "A food additive on the EU Union list (Regulation (EC) No 1333/2008) that no source in this corpus carries, so a label naming it, by name or by E number, resolved to nothing. No CAS: none is recorded for it here, and a wrong one would join another chemical's evidence.",
+      "category": "packaging gas",
+      "eNumber": "E938",
+      "aliases": [
+        "Argon",
+        "氩气",
+        "Argón"
+      ]
+    },
+    {
+      "id": "oxygen",
+      "name": "Oxygen",
+      "why": "A food additive on the EU Union list (Regulation (EC) No 1333/2008) that no source in this corpus carries, so a label naming it, by name or by E number, resolved to nothing. No CAS: none is recorded for it here, and a wrong one would join another chemical's evidence.",
+      "category": "packaging gas",
+      "eNumber": "E948",
+      "aliases": [
+        "Oxygen",
+        "Oxígeno"
+      ]
+    },
+    {
+      "id": "isomalt",
+      "name": "Isomalt",
+      "why": "A food additive on the EU Union list (Regulation (EC) No 1333/2008) that no source in this corpus carries, so a label naming it, by name or by E number, resolved to nothing. No CAS: none is recorded for it here, and a wrong one would join another chemical's evidence.",
+      "category": "sweetener",
+      "eNumber": "E953",
+      "aliases": [
+        "Isomalt",
+        "Isomaltitol",
+        "异麦芽酮糖醇",
+        "异麦芽糖醇"
+      ]
+    },
+    {
+      "id": "aspartame_acesulfame_salt",
+      "name": "Salt of aspartame-acesulfame",
+      "why": "A food additive on the EU Union list (Regulation (EC) No 1333/2008) that no source in this corpus carries, so a label naming it, by name or by E number, resolved to nothing. No CAS: none is recorded for it here, and a wrong one would join another chemical's evidence.",
+      "category": "sweetener",
+      "eNumber": "E962",
+      "aliases": [
+        "Salt of aspartame-acesulfame",
+        "Aspartame-acesulfame salt",
+        "阿斯巴甜-安赛蜜盐",
+        "Sal de aspartamo-acesulfamo"
+      ]
+    },
+    {
+      "id": "maltitol",
+      "name": "Maltitol",
+      "why": "A food additive on the EU Union list (Regulation (EC) No 1333/2008) that no source in this corpus carries, so a label naming it, by name or by E number, resolved to nothing. No CAS: none is recorded for it here, and a wrong one would join another chemical's evidence.",
+      "category": "sweetener",
+      "eNumber": "E965",
+      "aliases": [
+        "Maltitol",
+        "Maltitol syrup",
+        "麦芽糖醇"
+      ]
+    },
+    {
+      "id": "lactitol",
+      "name": "Lactitol",
+      "why": "A food additive on the EU Union list (Regulation (EC) No 1333/2008) that no source in this corpus carries, so a label naming it, by name or by E number, resolved to nothing. No CAS: none is recorded for it here, and a wrong one would join another chemical's evidence.",
+      "category": "sweetener",
+      "eNumber": "E966",
+      "aliases": [
+        "Lactitol",
+        "乳糖醇"
       ]
     }
   ]
