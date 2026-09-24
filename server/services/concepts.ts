@@ -67,7 +67,7 @@ import { matchesTerm } from './termMatch';
  */
 
 /** Bumped when a concept's membership changes. See the note on caching below. */
-export const CONCEPTS_VERSION = '2026-09-24.2';
+export const CONCEPTS_VERSION = '2026-09-24.3';
 
 /**
  * NOT part of the analysis cache key, deliberately.
@@ -188,17 +188,19 @@ const ALLERGEN_REGIMES: Record<string, Regime[]> = {
 /**
  * Registry names that denote a concept's substances.
  *
- * Sulphites and egg earn entries, each for a name the corpus actually holds —
- * see the coverage note at the top of this file. Egg's is lysozyme, the one egg
- * protein that is also a food additive, so its Chinese and Spanish label names
- * resolve without a keyword for each. Every other allergen is a food, and no
- * amount of curation will give "peanut" a CAS number. Entries here are
- * asserted reachable by eval/risk.check.ts, so a corpus change that drops one
- * fails the build rather than silently turning the pass off.
+ * Sulphites, egg and vegan earn entries, each for a name the corpus actually
+ * holds — see the coverage note at the top of this file. Egg's is lysozyme, the
+ * one egg protein that is also a food additive, so its Chinese and Spanish
+ * label names resolve without a keyword for each; vegan carries it for the same
+ * reason. Every other allergen is a food, and no amount of curation will give
+ * "peanut" a CAS number. Entries here are asserted reachable by
+ * eval/risk.check.ts, so a corpus change that drops one fails the build rather
+ * than silently turning the pass off.
  */
 const CONCEPT_IDENTIFIERS: Record<string, string[]> = {
   sulphites: ['sodium metabisulfite'],
   egg: ['lysozyme'],
+  vegan: ['lysozyme'],
 };
 
 /** Exposed so eval/risk.check.ts can assert every identifier still resolves. */
@@ -263,7 +265,7 @@ function buildRegistry(): Map<string, Concept> {
       verify: terms.verify,
       exclude: [],
       borrowAllergenExclusions: true,
-      identifiers: [],
+      identifiers: CONCEPT_IDENTIFIERS[rule] ?? [],
       declarableIn: [],
       determinability: CERTIFICATION_RULES.has(rule) ? 'certification' : 'ingredients',
     });

@@ -990,6 +990,22 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
       `"${name}" flagged as not vegetarian`);
   }
 
+  // Vegan by identity too, so a name the term list does not hold still flags.
+  for (const name of ['溶菌酶', 'Lisozima']) {
+    const hit = vegan ? matchConcept(name, vegan) : null;
+    check('lysozyme/vegan-identity',
+      hit?.via === 'identity' && hit.certainty === 'definite',
+      `"${name}" matched vegan via ${hit?.via ?? 'nothing'}, not identity`);
+  }
+  const veganOut = applyProfileToAnalysis(
+    result([ing('Milk', 'low'), ing('溶菌酶', 'low')]),
+    profile({ dietaryRules: ['vegan'] }),
+  );
+  check('lysozyme/vegan-flag',
+    (veganOut.personalFlags ?? []).some(f =>
+      f.type === 'dietary' && f.ingredientName === '溶菌酶' && f.certainty === 'definite'),
+    '"溶菌酶" did not raise a definite vegan flag');
+
   notes.push('lysozyme flags egg by name, E number, identity and declaration, and is not vegan');
 }
 
