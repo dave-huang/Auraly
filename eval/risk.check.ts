@@ -13,7 +13,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { applyPopulationRisk, domainForProductType } from '../server/services/substances/classify';
+import { applyPopulationRisk, classifyIngredient, domainForProductType } from '../server/services/substances/classify';
 import {
   ALLERGEN_KEYWORDS,
   MAJOR_ALLERGENS,
@@ -110,6 +110,8 @@ const overrideFixtures: Array<{
     why: 'no record is held, so the model level passes through untouched' },
   { name: 'Bacon', model: 'high', expected: 'high', source: 'model',
     why: 'the model may assert high with no record behind it' },
+  { name: 'Red 3', model: 'moderate', expected: 'high', source: 'record',
+    why: 'the FDA revoked its food authorisation in 2025; the inventory still lists it as permitted until 2027, and that permitted record alone rated it low' },
 ];
 
 for (const f of overrideFixtures) {
@@ -165,6 +167,26 @@ for (const [shown, source] of [
     `shown as "${shown}" it rated ${translated.riskLevel} (${translated.riskSource}); in English ${english.riskLevel} (${english.riskSource})`);
   check(`language/${source}->${shown}`, translated.name === shown,
     `the displayed name must survive classification, got "${translated.name}"`);
+}
+
+// ---------------------------------------------------------------------------
+// 2c. Red 3 is the same substance under every name a label prints it by.
+//
+// US labels say Red 3, EU labels E127 or erythrosine, Chinese labels 赤藓红.
+// Before the curated aliases only the US names resolved, so the FDA's
+// revocation reached an American label and not the same dye anywhere else.
+// Each name must land on the same record and the same rule.
+// ---------------------------------------------------------------------------
+{
+  const red3 = classifyIngredient('Red 3', 'food');
+  check('red3/record', red3.decision.decidedBy?.ruleId === 'high.prohibited_in_tracked_market',
+    `Red 3 decided by ${red3.decision.decidedBy?.ruleId ?? 'nothing'}, expected the FDA revocation (high.prohibited_in_tracked_market)`);
+  for (const name of ['FD&C Red No. 3', 'Erythrosine', 'E127', '赤藓红', 'Eritrosina']) {
+    const c = classifyIngredient(name, 'food');
+    check(`red3/${name}`,
+      c.resolved?.substance.id === red3.resolved?.substance.id && c.decision.level === red3.decision.level,
+      `"${name}" resolved to ${c.resolved?.substance.id ?? 'nothing'} at ${c.decision.level}; Red 3 is ${red3.resolved?.substance.id} at ${red3.decision.level}`);
+  }
 }
 
 // ---------------------------------------------------------------------------

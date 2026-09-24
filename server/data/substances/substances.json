@@ -1,7 +1,7 @@
 {
   "_metadata": {
-    "version": "curated-nutrients-2026-08-12+cosing_annex_ii-2026-07-30+cosing_annex_iii-2026-07-30+cosing_annex_iv-2026-07-30+cosing_annex_v-2026-07-30+cosing_annex_vi-2026-07-30+prop65-2026-07-31+iarc-2026-08+fda_food_additives-2026-08+efsa_openfoodtox-2026-08+curated-aliases-2026-08-24#fa89639aa19a",
-    "updatedAt": "2026-08-24",
+    "version": "curated-nutrients-2026-08-12+cosing_annex_ii-2026-07-30+cosing_annex_iii-2026-07-30+cosing_annex_iv-2026-07-30+cosing_annex_v-2026-07-30+cosing_annex_vi-2026-07-30+prop65-2026-07-31+iarc-2026-08+fda_food_additives-2026-08+efsa_openfoodtox-2026-08+curated-aliases-2026-08-24+curated-aliases-2026-09-24#983cae5a7bc2",
+    "updatedAt": "2026-09-24",
     "description": "Substance identity registry. Ingested source snapshots are the primary intended input (npm run substances:ingest). This first curated block exists because the hazard registers structurally cannot supply it: registers of prohibitions only list prohibited things, so nothing in them ever resolves an ordinary label term like 'sugar' or 'citric acid'. These entries carry the identities that health-guidance evidence attaches to. Aliases are EXACT-match after normalization, so each printed label form must be listed explicitly — an unlisted variant resolves to unidentified, which is the safe direction. 2026-08-12: added Chinese and Spanish label forms for every substance here. Cross-language scans were partly bypassing this registry — 白砂糖 resolved but bare 糖 did not — so a Chinese label fell back to the model for substances we hold records on. Partially-hydrogenated-oil forms are all explicitly PARTIAL; fully hydrogenated oil is a different ingredient and must not resolve here.",
     "reviewStatus": "ai_seeded",
     "sources": [
@@ -15,7 +15,8 @@
       "iarc-2026-08",
       "fda_food_additives-2026-08",
       "efsa_openfoodtox-2026-08",
-      "curated-aliases-2026-08-24"
+      "curated-aliases-2026-08-24",
+      "curated-aliases-2026-09-24"
     ]
   },
   "substances": [
@@ -91943,7 +91944,7 @@
       "name": "FD&C RED NO. 3",
       "cas": "16423-68-0",
       "ec": null,
-      "eNumber": null,
+      "eNumber": "E127",
       "inci": null,
       "category": "COLOR OR COLORING ADJUNCT, SOLVENT OR VEHICLE",
       "aliases": [
@@ -91966,6 +91967,31 @@
           "name": "FD&C RED 3",
           "source": "fda",
           "confidence": 0.95
+        },
+        {
+          "name": "Erythrosine",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Erythrosin",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "赤藓红",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "赤藓红钠",
+          "source": "curated",
+          "confidence": 1
+        },
+        {
+          "name": "Eritrosina",
+          "source": "curated",
+          "confidence": 1
         }
       ]
     },

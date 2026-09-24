@@ -1,7 +1,7 @@
 {
   "_metadata": {
-    "version": "curated-aliases-2026-08-24",
-    "updatedAt": "2026-08-24",
+    "version": "curated-aliases-2026-09-24",
+    "updatedAt": "2026-09-24",
     "description": "Identifiers, names and whole-food substances a person recorded by hand, because no ingested source carried them in a form a label would print. `entries` corrects substances a publisher already supplied and may never name an id that does not exist. `creates` adds the whole foods no register covers: every source in this corpus lists things somebody regulates, so palm oil and butter — printed on more labels than any additive — were invisible. Applied by curate.ts."
   },
   "entries": [
@@ -103,6 +103,18 @@
         "Virgin Coconut Oil",
         "Refined Coconut Oil",
         "Copra Oil"
+      ]
+    },
+    {
+      "substanceId": "fd_c_red_no_3",
+      "why": "The FDA revoked it for food in 2025, and labels outside the US print it as erythrosine or E127, neither of which resolved: an EU or Chinese label carrying it got no record at all. Not CI 45430: that is the cosmetic colour name, and the EU cosmetics annex already files it on its own entry.",
+      "eNumber": "E127",
+      "aliases": [
+        "Erythrosine",
+        "Erythrosin",
+        "赤藓红",
+        "赤藓红钠",
+        "Eritrosina"
       ]
     }
   ],
