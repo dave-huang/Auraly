@@ -67,7 +67,7 @@ import { matchesTerm } from './termMatch';
  */
 
 /** Bumped when a concept's membership changes. See the note on caching below. */
-export const CONCEPTS_VERSION = '2026-09-24.1';
+export const CONCEPTS_VERSION = '2026-09-24.2';
 
 /**
  * NOT part of the analysis cache key, deliberately.
@@ -216,7 +216,7 @@ const CERTIFICATION_RULES = new Set(['halal', 'kosher']);
 
 const DIETARY_TERMS: Record<string, { definite: string[]; verify: string[] }> = {
   vegan: {
-    definite: ['gelatin', 'carmine', 'cochineal', 'lard', 'tallow', 'honey', 'beeswax', 'lanolin', 'collagen', 'keratin', 'shellac', 'casein', 'whey', 'albumin', 'milk', 'egg', 'butter', 'cheese', 'cream', 'yogurt', 'fish', 'anchovy', 'meat', 'chicken', 'beef', 'pork', 'bone char', 'isinglass', 'squalene', 'ambergris', 'castoreum', 'silk'],
+    definite: ['gelatin', 'carmine', 'cochineal', 'lard', 'tallow', 'honey', 'beeswax', 'lanolin', 'collagen', 'keratin', 'shellac', 'casein', 'whey', 'albumin', 'milk', 'egg', 'butter', 'cheese', 'cream', 'yogurt', 'fish', 'anchovy', 'meat', 'chicken', 'beef', 'pork', 'bone char', 'isinglass', 'squalene', 'ambergris', 'castoreum', 'silk', 'lysozyme', 'e1105', 'e 1105'],
     verify: ['natural flavor', 'mono and diglycerides', 'enzymes', 'glycerin', 'stearic acid', 'lecithin', 'vitamin d3', 'lactic acid', 'sugar'],
   },
   vegetarian: {

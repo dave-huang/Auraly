@@ -978,7 +978,19 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
     !ingredientMatchesAllergen('E110', 'egg') && !ingredientMatchesAllergen('E-110', 'egg'),
     'Sunset Yellow (E110) matched egg');
 
-  notes.push('lysozyme flags egg by name, E number, identity and declaration');
+  // Egg, so not vegan. Vegetarian here means lacto-ovo, which egg is.
+  const vegan = getConcept('vegan');
+  const vegetarian = getConcept('vegetarian');
+  for (const name of ['Lysozyme', 'E1105', 'E-1105']) {
+    check('lysozyme/not-vegan',
+      !!vegan && matchConcept(name, vegan)?.certainty === 'definite',
+      `"${name}" does not read as definitely not vegan`);
+    check('lysozyme/still-vegetarian',
+      !!vegetarian && matchConcept(name, vegetarian) === null,
+      `"${name}" flagged as not vegetarian`);
+  }
+
+  notes.push('lysozyme flags egg by name, E number, identity and declaration, and is not vegan');
 }
 
 // ---------------------------------------------------------------------------
