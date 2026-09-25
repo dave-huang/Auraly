@@ -8,6 +8,7 @@ import { setupAuth, isAuthenticated } from "./localAuth";
 import { setupRevenueCatWebhook } from "./revenueCatWebhook";
 import { registerLegalRoutes } from "./legal";
 import { canonicalHost, registerHomeRoutes } from "./home";
+import { registerGuideRoutes } from "./guides";
 import { isLang } from "./siteCopy";
 import { translateStatement } from "./services/substances/translations";
 import { fetchSubscriber, RevenueCatNotConfigured } from "./services/revenueCatApi";
@@ -217,6 +218,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Same ordering rule as the legal pages: everything here has to be claimed
   // before serveStatic()'s catch-all. See server/home.ts.
   registerHomeRoutes(app);
+
+  // The guides at /en/guides. Same ordering rule. See server/guides.ts.
+  registerGuideRoutes(app);
 
   // Liveness. This is what the platform health check hits, and it answers 200
   // whenever the process can serve HTTP at all.

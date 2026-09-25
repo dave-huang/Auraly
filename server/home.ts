@@ -14,6 +14,7 @@ import {
   footerInner,
   lockupLink,
 } from "./siteTheme";
+import { GUIDE_PATHS } from "./guides";
 import {
   COPY,
   HTML_LANG,
@@ -1235,6 +1236,7 @@ const PAGE_PATHS = new Set([
   "/privacy",
   "/terms",
   "/health-data-privacy",
+  ...GUIDE_PATHS,
 ]);
 
 /**
@@ -1309,12 +1311,14 @@ const SITEMAP = (() => {
   const homes = SITE_LANGUAGES.map(
     (l) => `  <url>\n    <loc>${SITE_ORIGIN}/${l}</loc>\n${alternates}\n  </url>`,
   );
-  const legal = ["/privacy", "/terms", "/health-data-privacy"].map(
+  // English only, so no alternates. When a guide gains a translation it gains
+  // the same block the home pages have.
+  const single = [...GUIDE_PATHS, "/privacy", "/terms", "/health-data-privacy"].map(
     (p) => `  <url>\n    <loc>${SITE_ORIGIN}${p}</loc>\n  </url>`,
   );
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${[...homes, ...legal].join("\n")}
+${[...homes, ...single].join("\n")}
 </urlset>
 `;
 })();

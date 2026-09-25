@@ -77,7 +77,7 @@ const PRIVACY_UPDATED = "22 September 2026";
  * view follows the system theme and a document that is only legible in light
  * mode is a document half our readers cannot read.
  */
-const STYLE = `${FONT_FACES}
+export const DOC_STYLE = `${FONT_FACES}
 :root {${PAPER_TOKENS}${TYPE_TOKENS}}
 @media (prefers-color-scheme: dark) { :root {${LAMPLIGHT_TOKENS}} }
 
@@ -204,7 +204,7 @@ ${HEAD_COMMON}
 ${meta}
 <meta name="theme-color" content="#F6F1E7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#16130F" media="(prefers-color-scheme: dark)">
-<style>${STYLE}</style>
+<style>${DOC_STYLE}</style>
 </head>
 <body>
 <header class="top">

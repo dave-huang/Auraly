@@ -114,6 +114,8 @@ export function lockupLink(href: string, label: string): string {
 }
 
 export interface FooterCopy {
+  /** The guides are English only for now, and the label says so elsewhere. */
+  footGuides?: string;
   footPrivacy: string;
   footTerms: string;
   footHealth: string;
@@ -136,6 +138,7 @@ export interface FooterCopy {
  */
 export function footerInner(c: FooterCopy): string {
   return `    <ul class="foot-links">
+      ${c.footGuides ? `<li><a href="/en/guides">${c.footGuides}</a></li>` : ""}
       <li><a href="/privacy">${c.footPrivacy}</a></li>
       <li><a href="/terms">${c.footTerms}</a></li>
       <li><a href="/health-data-privacy">${c.footHealth}</a></li>
