@@ -60,10 +60,10 @@ const GOVERNING_LAW =
  * on the document that changed: a terms page claiming a new date for text
  * nobody touched sends readers hunting for a change that is not there.
  */
-const LAST_UPDATED = "8 September 2026";
+const LAST_UPDATED = "September 8, 2026";
 
 /** The Android waitlist on revely.life was added to the privacy policy. */
-const PRIVACY_UPDATED = "22 September 2026";
+const PRIVACY_UPDATED = "September 22, 2026";
 
 // ---------------------------------------------------------------------------
 // Page shell
@@ -360,7 +360,7 @@ run part of the service.</p>
 <table>
   <thead><tr><th>Who</th><th>What they receive</th><th>Why</th></tr></thead>
   <tbody>
-    <tr><td>OpenAI</td><td>Label photos and ingredient text</td><td>Reading labels and analysing ingredients. Sent through the business API, which does not use the data to train models.</td></tr>
+    <tr><td>OpenAI</td><td>Label photos and ingredient text</td><td>Reading labels and analyzing ingredients. Sent through the business API, which does not use the data to train models.</td></tr>
     <tr><td>Apple / Google</td><td>Your sign-in token</td><td>Verifying that you are who you signed in as. Verification only.</td></tr>
     <tr><td>Apple</td><td>Your payment</td><td>All subscription billing. We receive none of it.</td></tr>
     <tr><td>RevenueCat</td><td>Subscription status and an account identifier</td><td>Keeping entitlement correct across your devices.</td></tr>
@@ -575,7 +575,7 @@ days, and we will tell you why before the first period ends.</p>
 <h2>6. If we refuse</h2>
 <p>If we decline a request, we will tell you why, and you may appeal by
 replying to that message or writing again to
-<a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a> with the word "appeal".
+<a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a> with the word "appeal."
 We will decide the appeal and write to you within <strong>45 days</strong>,
 explaining the reasons.</p>
 <p>If we deny the appeal, you may submit a complaint to the Washington State
@@ -635,7 +635,7 @@ else's conclusion.</p>
 <p>We work hard to be right and to show our sources, but we cannot promise that
 every reading or every assessment is correct or complete. Ingredient science
 changes, authorities disagree with one another, and automated label reading is
-imperfect. You use Revely's output at your own judgement.</p>
+imperfect. You use Revely's output at your own judgment.</p>
 
 <h2>4. Your account</h2>
 <p>You sign in with Apple or Google. Keep your access to that account secure:
@@ -647,7 +647,7 @@ Account screen.</p>
 <p>Setting up a profile is free, and at the end of setup we show you a worked
 example: a real ingredient list, checked against the profile you have just
 built, so you can see what an answer looks like before deciding anything. It is
-labelled as an example wherever it appears.</p>
+labeled as an example wherever it appears.</p>
 <p>Scanning your own labels needs a subscription. The annual plan starts with a
 free trial, described in the next section.</p>
 
@@ -684,14 +684,14 @@ yours to submit. We may suspend accounts that do these things.</p>
 <h2>8. Our content</h2>
 <p>The app, its design, its writing, and its ingredient assessments belong to
 ${LEGAL_ENTITY} and are protected by copyright. You get a personal,
-non-exclusive, non-transferable licence to use Revely for your own purposes. Your
+non-exclusive, non-transferable license to use Revely for your own purposes. Your
 own content, your profiles and your scans, remains yours; you grant us only the
 permission needed to operate the service for you.</p>
 
 <h2>9. Ending things</h2>
 <p>You may stop using Revely and delete your account whenever you like. We may
 suspend or end access if these terms are broken, or if we discontinue the
-service. If we discontinue it, we will give reasonable notice and honour paid
+service. If we discontinue it, we will give reasonable notice and honor paid
 periods you have already bought.</p>
 
 <h2>10. Disclaimers and limits</h2>
