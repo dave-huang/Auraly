@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { apiFetch, getToken } from './api';
-import { restorePurchases, storeSaysEntitled } from './purchases';
+import { restorePurchases, storeSaysEntitled, storeWillRenew } from './purchases';
 import { cancelTrialReminder } from './trialReminder';
 
 /**
@@ -25,6 +25,13 @@ export interface Entitlement {
     expiresAt: string | null;
     active: boolean;
     trialUsed: boolean;
+    /**
+     * Whether Apple bills again at expiresAt. Filled in on the phone from the
+     * store by withRenewal(), never sent by the server. Only `false` changes
+     * anything: an unknown answer keeps the billing copy, because telling a
+     * person on a real trial that nothing will be charged is the worse error.
+     */
+    willRenew?: boolean | null;
   };
 }
 
@@ -40,6 +47,19 @@ export const ANONYMOUS_ENTITLEMENT: Entitlement = {
 
 export function fetchEntitlement(): Promise<Entitlement> {
   return apiFetch<Entitlement>('/api/account/scan-balance');
+}
+
+/**
+ * The server's answer, with the store's word on renewal added.
+ *
+ * Every screen that says "billing starts" or "renews" reads its entitlement
+ * through this, because the server alone cannot tell a free year that ends
+ * from a trial that turns into a charge.
+ */
+export async function withRenewal<T extends Entitlement>(entitlement: T): Promise<T> {
+  if (!entitlement.subscription.active) return entitlement;
+  const willRenew = await storeWillRenew();
+  return { ...entitlement, subscription: { ...entitlement.subscription, willRenew } };
 }
 
 /** Days left in a trial, rounded up. Zero when there is no trial running. */
@@ -166,7 +186,7 @@ export function useEntitlement(enabled = true) {
   const refresh = useCallback(async () => {
     if (!enabled) return;
     try {
-      const next = await fetchEntitlement();
+      const next = await withRenewal(await fetchEntitlement());
       setEntitlement(next);
       // Reconcile the Day 5 reminder against what the server says. This is the
       // one place that sees every entitlement change, whichever way it
@@ -174,7 +194,10 @@ export function useEntitlement(enabled = true) {
       // A subscriber who gets "your trial ends in 2 days" a month into paying
       // has been told something false by an app whose whole pitch is that it
       // does not do that.
-      if (next.subscription.status !== 'trialing') void cancelTrialReminder();
+      // A trial that will not bill has nothing to remind anyone about.
+      if (next.subscription.status !== 'trialing' || next.subscription.willRenew === false) {
+        void cancelTrialReminder();
+      }
     } catch {
       // Left null. Every caller treats null as "unknown", never as "blocked" —
       // a network blip must not put a paywall in front of a subscriber.

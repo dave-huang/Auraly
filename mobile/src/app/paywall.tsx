@@ -1236,6 +1236,10 @@ function SubscribedView({
   const { t } = useTranslation();
   const trialing = sub.status === 'trialing';
   const grace = sub.status === 'grace';
+  // A free year from a code, or a plan with renewal switched off: it ends, and
+  // nothing is billed. Only a definite answer from the store counts; see
+  // storeWillRenew.
+  const ending = sub.willRenew === false;
   const date = sub.expiresAt ? new Date(sub.expiresAt).toLocaleDateString() : null;
 
   return (
@@ -1253,7 +1257,7 @@ function SubscribedView({
             {grace
               ? t('paywall.graceTitle')
               : trialing
-                ? t('paywall.trialTitle')
+                ? t(ending ? 'paywall.freeTitle' : 'paywall.trialTitle')
                 : t('paywall.subscribedTitle')}
           </ThemedText>
           {/* The plan, then the date, as two lines rather than one sentence:
@@ -1268,8 +1272,12 @@ function SubscribedView({
                 grace
                   ? 'paywall.graceDetail'
                   : trialing
-                    ? 'paywall.trialChargeOn'
-                    : 'paywall.renewsOn',
+                    ? ending
+                      ? 'paywall.freeEndsOn'
+                      : 'paywall.trialChargeOn'
+                    : ending
+                      ? 'paywall.endsOn'
+                      : 'paywall.renewsOn',
                 { date },
               )}
             </ThemedText>

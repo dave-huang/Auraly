@@ -435,6 +435,28 @@ export async function trialAvailable(): Promise<boolean> {
   return plans.some((plan) => plan.trialDays > 0);
 }
 
+/**
+ * Whether Apple will bill this subscription again when the current period
+ * ends. Null when the store cannot say, or holds no active entitlement for the
+ * account signed in.
+ *
+ * Our server knows WHETHER someone is entitled and until when, but not this.
+ * RevenueCat calls the free year from an offer code a trial, so the server
+ * passes on "trialing", and the app told a friend who had redeemed VIP88
+ * "Billing starts 9/25/2027" about a year that never bills: the offer does not
+ * auto-renew. The same sentence reached anyone who cancelled a trial. The SDK
+ * has the answer already, per entitlement, and reading its cache is silent.
+ */
+export async function storeWillRenew(): Promise<boolean | null> {
+  if (!PURCHASES_ENABLED || !configured) return null;
+  try {
+    const active = (await Purchases.getCustomerInfo()).entitlements.active[ENTITLEMENT_ID];
+    return active ? active.willRenew : null;
+  } catch {
+    return null;
+  }
+}
+
 /** Whether the store currently believes this person is entitled. */
 export function storeSaysEntitled(info: CustomerInfo | null): boolean {
   if (!info) return false;

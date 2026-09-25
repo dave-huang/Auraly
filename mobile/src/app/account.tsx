@@ -8,7 +8,7 @@ import { Font, Gutter, Radius, Space, Type, useSurface, useVerdictColors } from 
 import { apiFetch } from '@/lib/api';
 import { HEALTH_DATA_URL, PRIVACY_URL, TERMS_URL } from '@/lib/config';
 import { useAuth } from '@/lib/auth-context';
-import { trialDaysRemaining, type Entitlement } from '@/lib/entitlement';
+import { trialDaysRemaining, withRenewal, type Entitlement } from '@/lib/entitlement';
 import { LANGUAGE_NAMES, SUPPORTED_LANGUAGES, useTranslation } from '@/lib/i18n';
 import { goBackOrHome } from '@/lib/navigation';
 import { openManageSubscriptions } from '@/lib/purchases';
@@ -53,6 +53,7 @@ export default function AccountScreen() {
     // Best effort: the screen's job is deletion and sign-out, and neither
     // depends on the balance loading.
     apiFetch<AccountDetails>('/api/account/scan-balance')
+      .then(withRenewal)
       .then(setDetails)
       .catch(() => setDetails(null));
   }, []);
@@ -87,6 +88,9 @@ export default function AccountScreen() {
   const purchased = details?.purchasedScanBalance ?? 0;
   const sub = details?.subscription;
   const trialDays = details ? trialDaysRemaining(details) : 0;
+  // Ends rather than bills: a redeemed code's free year, or a plan whose
+  // renewal was switched off. See storeWillRenew.
+  const ending = sub?.willRenew === false;
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: surface.paper }]}>
@@ -122,7 +126,7 @@ export default function AccountScreen() {
             </ThemedText>
             <ThemedText style={[Type.body, { color: surface.ink }]}>
               {sub?.status === 'trialing'
-                ? t('account.subTrialing', { days: trialDays })
+                ? t(ending ? 'account.subFreeAccess' : 'account.subTrialing', { days: trialDays })
                 : sub?.status === 'grace'
                   ? t('account.subGrace')
                   : sub?.active
@@ -131,9 +135,16 @@ export default function AccountScreen() {
             </ThemedText>
             {sub?.expiresAt && sub.active ? (
               <ThemedText style={[Type.meta, { color: surface.inkMuted }]}>
-                {t(sub.status === 'trialing' ? 'account.subChargeOn' : 'account.subRenewsOn', {
-                  date: new Date(sub.expiresAt).toLocaleDateString(),
-                })}
+                {t(
+                  sub.status === 'trialing'
+                    ? ending
+                      ? 'account.subEndsNoCharge'
+                      : 'account.subChargeOn'
+                    : ending
+                      ? 'account.subEndsOn'
+                      : 'account.subRenewsOn',
+                  { date: new Date(sub.expiresAt).toLocaleDateString() },
+                )}
               </ThemedText>
             ) : null}
           </View>
