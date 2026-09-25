@@ -24,6 +24,7 @@ import {
   AlreadySubscribedError,
   PurchaseCancelledError,
   ReceiptInUseError,
+  appleIdHasRevely,
   fetchStoreEntitled,
   getPlans,
   onStoreEntitled,
@@ -104,7 +105,7 @@ export default function PaywallScreen() {
   const surface = useSurface();
   const router = useRouter();
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
 
   /**
    * Whether this screen came up as a locked door or was opened deliberately.
@@ -131,6 +132,13 @@ export default function PaywallScreen() {
    * it into access. Never sell on top of that — see the mount effect below.
    */
   const [storeSubscribed, setStoreSubscribed] = useState(false);
+  /**
+   * The Apple ID on this phone already pays for Revely, and not through the
+   * account signed in now: a second Revely login on the same phone. See
+   * appleIdHasRevely. Selling here is what queued a second, paid plan behind
+   * the first, and a code sheet here can only fail.
+   */
+  const [heldElsewhere, setHeldElsewhere] = useState(false);
   const [checkingStore, setCheckingStore] = useState(PURCHASES_ENABLED);
 
   /**
@@ -230,8 +238,16 @@ export default function PaywallScreen() {
         //    one group, so buying the other one is a plan change, not a
         //    duplicate — which means nothing downstream can catch it either.
         //    It has to be caught before the tap.
-        if (!(await storeHasSubscription()) || cancelled) return;
-        setStoreSubscribed(true);
+        if (await storeHasSubscription()) {
+          if (!cancelled) setStoreSubscribed(true);
+          return;
+        }
+
+        // 3. Ask the Apple ID itself, which the two checks above cannot see:
+        //    they both look at the account signed in now. Read-only, so a
+        //    subscription on another Revely login stays where it is.
+        const held = await appleIdHasRevely();
+        if (!cancelled) setHeldElsewhere(held);
       } finally {
         if (!cancelled) setCheckingStore(false);
       }
@@ -394,6 +410,8 @@ export default function PaywallScreen() {
     // has no such step behind it and still goes to welcome, which is correct
     // for somebody who is not mid-flow.
     if (fromOnboarding) router.replace('/reminder');
+    // Straight from the demo, when there was no trial to describe.
+    else if (params.from === 'demo') router.replace('/demo');
     else if (gate) router.replace('/welcome');
     else goBackOrHome();
   }
@@ -425,6 +443,12 @@ export default function PaywallScreen() {
     if (!user) {
       awaitingAccount.current = true;
       setSigningIn(true);
+      return;
+    }
+    // Checked again at the tap, not only on arrival: this also runs as the
+    // resume after sign-in, which can beat the arrival check to it.
+    if (await appleIdHasRevely()) {
+      setHeldElsewhere(true);
       return;
     }
 
@@ -512,6 +536,12 @@ export default function PaywallScreen() {
     if (!user) {
       awaitingRedeem.current = true;
       setSigningIn(true);
+      return;
+    }
+    // An Apple ID that already has Revely cannot redeem a code for it: Apple
+    // answers "code limit reached" and the person lands back on the prices.
+    if (await appleIdHasRevely()) {
+      setHeldElsewhere(true);
       return;
     }
     redeemHandled.current = false;
@@ -733,6 +763,23 @@ export default function PaywallScreen() {
 
   if (subscribed && sub) {
     return <SubscribedView sub={sub} onClose={goBackOrHome} />;
+  }
+
+  // After the subscriber check, so signing into the login that holds it lands
+  // on what they have rather than on this.
+  if (heldElsewhere) {
+    return (
+      <ElsewhereView
+        signedIn={!!user}
+        onClose={leave}
+        onSwitch={() => void signOut()}
+        onSignedIn={(alreadyGranted) => {
+          // The login that holds it: straight in. Any other login stays here,
+          // and the arrival check puts this screen back up for it.
+          if (alreadyGranted) goHome();
+        }}
+      />
+    );
   }
 
   // The store knows about a subscription that our account does not. Showing
@@ -1078,6 +1125,76 @@ function RecoverView({
           >
             <ThemedText style={[styles.primaryLabel, { color: surface.paper }]}>
               {busy ? t('paywall.working') : t('paywall.foundRetry')}
+            </ThemedText>
+          </Pressable>
+        ) : (
+          <ProviderButtons onSignedIn={onSignedIn} />
+        )}
+
+        <View style={styles.legal}>
+          <LegalLink label={t('paywall.terms')} url={TERMS_URL} />
+          <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>·</ThemedText>
+          <LegalLink label={t('paywall.privacy')} url={PRIVACY_URL} />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+/**
+ * The Apple ID already pays for Revely, under a different Revely login.
+ *
+ * Only one way forward is offered: sign in with the login that holds it. The
+ * subscription is not moved to the account signed in now, even though
+ * RevenueCat could, because on a shared family Apple ID the other login may
+ * be somebody else's, and one tap here would take their access away. Restore
+ * on the paywall still moves it; that is a deliberate, named action.
+ *
+ * There is no price on this screen and no code link. Both can only end in
+ * Apple refusing, or in a second plan queued behind the first.
+ */
+function ElsewhereView({
+  signedIn,
+  onClose,
+  onSwitch,
+  onSignedIn,
+}: {
+  signedIn: boolean;
+  onClose: () => void;
+  /** Sign out, so the buttons for the other login appear. */
+  onSwitch: () => void;
+  onSignedIn: (alreadyGranted: boolean) => void;
+}) {
+  const surface = useSurface();
+  const { t } = useTranslation();
+
+  return (
+    <SafeAreaView style={[styles.container, { backgroundColor: surface.paper }]}>
+      <ScrollView contentContainerStyle={styles.content}>
+        <Pressable onPress={onClose} hitSlop={12} accessibilityRole="button">
+          <ThemedText style={[Type.meta, { color: surface.inkFaint }]}>
+            ✕ {t('common.back')}
+          </ThemedText>
+        </Pressable>
+
+        <View style={styles.head}>
+          <ApertureMark size={48} color={surface.ink} />
+          <ThemedText style={[Type.title, { color: surface.ink }]}>
+            {t('paywall.elsewhereTitle')}
+          </ThemedText>
+          <ThemedText style={[Type.reason, { color: surface.inkMuted }]}>
+            {signedIn ? t('paywall.elsewhereBody') : t('paywall.elsewhereBodySignedOut')}
+          </ThemedText>
+        </View>
+
+        {signedIn ? (
+          <Pressable
+            style={[styles.primary, { backgroundColor: surface.ink }]}
+            onPress={onSwitch}
+            accessibilityRole="button"
+          >
+            <ThemedText style={[styles.primaryLabel, { color: surface.paper }]}>
+              {t('paywall.elsewhereSwitch')}
             </ThemedText>
           </Pressable>
         ) : (

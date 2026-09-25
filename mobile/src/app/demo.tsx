@@ -18,6 +18,7 @@ import { ThemedText } from '@/components/themed-text';
 import { Font, Gutter, Paper, Radius, Space } from '@/constants/design';
 import { fetchDemoScan, type DemoScan } from '@/lib/demo';
 import { useTranslation } from '@/lib/i18n';
+import { trialAvailable } from '@/lib/purchases';
 import { useReducedMotion } from '@/lib/reduced-motion';
 
 // The example scan, shown once, between onboarding and the paywall.
@@ -162,8 +163,21 @@ export default function DemoScreen() {
   // failure. /trial names what a subscription includes and that nothing is
   // charged today, /reminder promises the warning before billing starts, and
   // then the paywall shows the price.
+  //
+  // Unless this Apple ID cannot have the trial, because it has subscribed
+  // before. Then both of those screens would be untrue ("Nothing is charged
+  // today", a reminder before a trial that will not happen), so the demo hands
+  // straight to the paywall, which shows the price. Asked on arrival, so the
+  // tap never waits on the store; an answer not back yet means the usual path.
+  const noTrial = useRef(false);
+  useEffect(() => {
+    void trialAvailable().then((available) => {
+      noTrial.current = !available;
+    });
+  }, []);
+
   function next() {
-    router.replace('/trial');
+    router.replace(noTrial.current ? '/paywall?gate=1&from=demo' : '/trial');
   }
 
   useEffect(() => {

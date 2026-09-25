@@ -6,6 +6,8 @@ import Purchases, {
   type PurchasesPackage,
 } from 'react-native-purchases';
 
+import { activeSubscriptions } from '../../modules/store-status';
+
 import {
   APPLE_SUBSCRIPTIONS_URL,
   ENTITLEMENT_ID,
@@ -397,6 +399,40 @@ export async function storeHasSubscription(): Promise<boolean> {
     // failed lookup must never hide the paywall from someone trying to buy.
     return false;
   }
+}
+
+/**
+ * Whether the Apple ID on this phone already pays for Revely, whoever is
+ * signed in.
+ *
+ * The question storeHasSubscription cannot answer. That one asks RevenueCat
+ * about the account signed in now, so a subscription bought under a
+ * different Revely login is invisible to it, and the paywall sold that
+ * person a second plan: Apple queued it to start when the first one ended.
+ * An offer code failed the same way, as "code limit reached".
+ *
+ * Read from StoreKit on the device (modules/store-status), never through a
+ * RevenueCat sync, because a sync would transfer the subscription to the
+ * account asking. False when this binary cannot tell, which is every build
+ * before 1.0.4: then the paywall behaves as it always has.
+ */
+export async function appleIdHasRevely(): Promise<boolean> {
+  if (!PURCHASES_ENABLED) return false;
+  const held = await activeSubscriptions();
+  if (!held) return false;
+  const ours = new Set<string>([PRODUCTS.annual, PRODUCTS.monthly]);
+  return held.some((sub) => ours.has(sub.productId));
+}
+
+/**
+ * Whether this Apple ID can still get the free trial, as far as Apple will
+ * say. True unless definitely not, for the reason withTrialEligibility keeps
+ * the trial on an unknown answer.
+ */
+export async function trialAvailable(): Promise<boolean> {
+  const plans = await getPlans();
+  if (plans.length === 0) return true;
+  return plans.some((plan) => plan.trialDays > 0);
 }
 
 /** Whether the store currently believes this person is entitled. */
