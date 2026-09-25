@@ -1,6 +1,6 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Alert, Linking, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Alert, AppState, Linking, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ApertureMark } from '@/components/aperture-mark';
@@ -24,6 +24,7 @@ import {
   AlreadySubscribedError,
   PurchaseCancelledError,
   ReceiptInUseError,
+  fetchStoreEntitled,
   getPlans,
   onStoreEntitled,
   openManageSubscriptions,
@@ -90,6 +91,15 @@ const ADVERTISED_TRIAL_DAYS = 7;
  */
 const RESUME_MS = 450;
 
+/**
+ * How long the paywall checks for a redeemed code after Apple's sheet closes,
+ * before it assumes the sheet was cancelled and shows the plans again. A
+ * redemption normally reaches RevenueCat in a second or two; the listener
+ * below still catches a later one.
+ */
+const REDEEM_CHECK_MS = 12_000;
+const REDEEM_POLL_MS = 1_500;
+
 export default function PaywallScreen() {
   const surface = useSurface();
   const router = useRouter();
@@ -146,7 +156,7 @@ export default function PaywallScreen() {
 
   const [plans, setPlans] = useState<PlanOffer[] | null>(null);
   const [selected, setSelected] = useState<'monthly' | 'annual'>('annual');
-  const [busy, setBusy] = useState<'purchase' | 'restore' | 'redeem' | null>(null);
+  const [busy, setBusy] = useState<'purchase' | 'restore' | null>(null);
 
   /**
    * An offer code redemption interrupted by sign-in, the same way a purchase
@@ -161,6 +171,22 @@ export default function PaywallScreen() {
    * as a transaction, not as an answer to the call that opened the sheet.
    */
   const [watchingRedeem, setWatchingRedeem] = useState(false);
+
+  /**
+   * What the screen shows once the code sheet has closed, in place of the
+   * plans. A person who has just redeemed a free year and lands back on a
+   * $39.99 price reads it as the code not working, so the prices go away for
+   * as long as there is any chance they no longer apply.
+   *
+   *   checking   the sheet closed, and we do not know yet whether a code was
+   *              redeemed or the sheet was cancelled. Offers a way back.
+   *   unlocking  the store says entitled; our server is catching up.
+   */
+  const [redeemPhase, setRedeemPhase] = useState<'checking' | 'unlocking' | null>(null);
+  const redeemHandled = useRef(false);
+  /** The code sheet is up, so the next return to the foreground is it closing
+   *  and not, say, Apple's purchase sheet closing later on. */
+  const codeSheetUp = useRef(false);
 
   useEffect(() => {
     void getPlans().then(setPlans);
@@ -488,10 +514,13 @@ export default function PaywallScreen() {
       setSigningIn(true);
       return;
     }
+    redeemHandled.current = false;
+    codeSheetUp.current = true;
     if (await presentRedeemSheet()) {
       setWatchingRedeem(true);
       return;
     }
+    codeSheetUp.current = false;
     Alert.alert(t('paywall.redeemUnavailableTitle'), t('paywall.redeemUnavailableBody'));
   }
 
@@ -551,29 +580,76 @@ export default function PaywallScreen() {
   /**
    * The redemption arriving. Same rule as a purchase: the store saying
    * entitled is only the signal to ask OUR server, which is what grants
-   * access. Handled once, however many updates the store sends after it.
+   * access. Handled once, however many updates the store sends after it, and
+   * whichever of the listener or the check below sees it first.
+   */
+  async function redeemed() {
+    if (redeemHandled.current) return;
+    redeemHandled.current = true;
+    setRedeemPhase('unlocking');
+    if (!(await awaitEntitlement())) {
+      // Redeemed, and our side has not caught up. Never "failed": the code is
+      // spent, and it will reach the account.
+      Alert.alert(t('paywall.redeemPendingTitle'), t('paywall.redeemPendingBody'));
+    }
+    goHome();
+  }
+
+  useEffect(() => {
+    if (!watchingRedeem) return;
+    return onStoreEntitled(() => void redeemed());
+    // redeemed is rebuilt every render and reads only refs and stable setters.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watchingRedeem]);
+
+  /**
+   * The sheet closing. Apple's code sheet takes the app out of the foreground
+   * while it is up, so coming back to `active` is the moment it closed, with a
+   * code redeemed or not; the sheet does not say which. From then the screen
+   * says it is checking, instead of showing prices that may no longer apply,
+   * and asks RevenueCat directly until it knows or the window runs out.
    */
   useEffect(() => {
     if (!watchingRedeem) return;
-    let handled = false;
-    return onStoreEntitled(() => {
-      if (handled) return;
-      handled = true;
-      void (async () => {
-        setBusy('redeem');
-        try {
-          if (!(await awaitEntitlement())) {
-            // Redeemed, and our side has not caught up. Never "failed": the
-            // code is spent, and it will reach the account.
-            Alert.alert(t('paywall.redeemPendingTitle'), t('paywall.redeemPendingBody'));
-          }
-          goHome();
-        } finally {
-          setBusy(null);
+    let away = codeSheetUp.current && AppState.currentState !== 'active';
+    let poll: ReturnType<typeof setInterval> | undefined;
+    let deadline: ReturnType<typeof setTimeout> | undefined;
+    const stop = () => {
+      if (poll) clearInterval(poll);
+      if (deadline) clearTimeout(deadline);
+      poll = deadline = undefined;
+    };
+    const sub = AppState.addEventListener('change', (state) => {
+      if (!codeSheetUp.current) return;
+      if (state !== 'active') {
+        away = true;
+        return;
+      }
+      if (!away) return;
+      away = false;
+      codeSheetUp.current = false;
+      if (redeemHandled.current) return;
+      stop();
+      setRedeemPhase('checking');
+      const check = async () => {
+        if (await fetchStoreEntitled()) {
+          stop();
+          void redeemed();
         }
-      })();
+      };
+      void check();
+      poll = setInterval(() => void check(), REDEEM_POLL_MS);
+      deadline = setTimeout(() => {
+        stop();
+        if (!redeemHandled.current) setRedeemPhase(null);
+      }, REDEEM_CHECK_MS);
     });
-  }, [watchingRedeem, t]);
+    return () => {
+      stop();
+      sub.remove();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watchingRedeem]);
 
   async function restore() {
     setBusy('restore');
@@ -619,6 +695,37 @@ export default function PaywallScreen() {
       <SafeAreaView style={[styles.container, { backgroundColor: surface.paper }]}>
         <View style={styles.waiting}>
           <ActivityIndicator color={surface.ink} />
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  // After Apple's code sheet: never the prices, which is what made a free
+  // year read as a failed one. See redeemPhase.
+  if (redeemPhase) {
+    const unlocking = redeemPhase === 'unlocking';
+    return (
+      <SafeAreaView style={[styles.container, { backgroundColor: surface.paper }]}>
+        <View style={styles.redeemWait}>
+          <ActivityIndicator color={surface.ink} />
+          <ThemedText style={[Type.title, styles.redeemWaitText, { color: surface.ink }]}>
+            {unlocking ? t('paywall.redeemUnlocking') : t('paywall.redeemChecking')}
+          </ThemedText>
+          <ThemedText style={[Type.body, styles.redeemWaitText, { color: surface.inkMuted }]}>
+            {unlocking ? t('paywall.redeemUnlockingBody') : t('paywall.redeemCheckingBody')}
+          </ThemedText>
+          {unlocking ? null : (
+            <Pressable
+              onPress={() => setRedeemPhase(null)}
+              hitSlop={12}
+              accessibilityRole="button"
+              style={styles.redeemWaitBack}
+            >
+              <ThemedText style={[styles.fineText, styles.link, { color: surface.inkMuted }]}>
+                {t('paywall.redeemBack')}
+              </ThemedText>
+            </Pressable>
+          )}
         </View>
       </SafeAreaView>
     );
@@ -876,7 +983,7 @@ export default function PaywallScreen() {
             accessibilityRole="button"
           >
             <ThemedText style={[styles.fineText, styles.link, { color: surface.inkMuted }]}>
-              {busy === 'redeem' ? t('paywall.working') : t('paywall.redeem')}
+              {t('paywall.redeem')}
             </ThemedText>
           </Pressable>
         </View>
@@ -1220,6 +1327,15 @@ const styles = StyleSheet.create({
   // screen's own 24pt gap would hold apart.
   footerLinks: { gap: Space.md },
   redeem: { alignSelf: 'center' },
+  redeemWait: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: Space.md,
+    paddingHorizontal: Gutter,
+  },
+  redeemWaitText: { textAlign: 'center' },
+  redeemWaitBack: { marginTop: Space.md },
   legal: {
     flexDirection: 'row',
     justifyContent: 'center',

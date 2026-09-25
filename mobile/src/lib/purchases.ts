@@ -319,6 +319,25 @@ export function onStoreEntitled(onEntitled: () => void): () => void {
 }
 
 /**
+ * Ask RevenueCat afresh whether this person is entitled, skipping the SDK's
+ * cache. Silent, like storeHasSubscription: no App Store prompt.
+ *
+ * For the moment Apple's code sheet closes. A redeemed code arrives as a
+ * transaction the SDK posts on its own, and the update listener fires when
+ * that finishes; asking directly means the paywall finds out as soon as
+ * RevenueCat knows, rather than whenever the push reaches it.
+ */
+export async function fetchStoreEntitled(): Promise<boolean> {
+  if (!PURCHASES_ENABLED || !configured) return false;
+  try {
+    await Purchases.invalidateCustomerInfoCache();
+    return storeSaysEntitled(await Purchases.getCustomerInfo());
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Whether the STORE already believes this device is subscribed.
  *
  * Cheap and silent — `getCustomerInfo` reads the SDK's cache and never shows
