@@ -203,6 +203,11 @@ xcarchive to `~/revely-builds/<version>-<build>/`, which is outside the working
 tree on purpose, in the same spirit as `~/revely-backups`. The xcarchive holds
 the dSYMs, which are the only way to read a crash report from that build later.
 
+Then delete `$OUT/dd`. It is the build cache, about 3 GB a release, and
+nothing reads it again: the archive and the IPA are what is worth keeping.
+Four of them left behind filled the disk on 24 September 2026, and the 1.0.4
+build stopped halfway with `No space left on device`.
+
 ## Publishing an over-the-air update
 
 Proven on 1.0.2 build 34, on 22 September 2026: the ingredient checklist was
