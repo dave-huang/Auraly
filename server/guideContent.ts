@@ -21,7 +21,9 @@
  *
  * If a sentence cannot be traced to a numbered source below it, it is either
  * the app describing itself or it should not be here. Quotations are verbatim,
- * including American spelling inside them.
+ * including the EU's British spelling inside them ("emphasised", "colour").
+ * Everything else is American English: spelling, dates written "January 15,
+ * 2027", and periods and commas inside the closing quotation mark.
  *
  * Voice: the onboarding voice, second person, contractions, curiosity rather
  * than fear. No em dashes in anything a reader sees.
@@ -110,7 +112,7 @@ export const GUIDES: Guide[] = [
     dek: "Every packaged food sold in the US or the EU lists its ingredients under the same few rules. Once you know them, the list tells you more than it seems to.",
     body: `
 <h2>The list is in order of weight</h2>
-<p>In the US, ingredients are listed “in descending order of predominance by weight”.${cite(1)} The EU rule is the same: “in descending order of weight, as recorded at the time of their use in the manufacture of the food”.${cite(2)}</p>
+<p>In the US, ingredients are listed “in descending order of predominance by weight.”${cite(1)} The EU rule is the same: “in descending order of weight, as recorded at the time of their use in the manufacture of the food.”${cite(2)}</p>
 <p>So the first ingredient is the one there’s most of, and the last is the one there’s least of. When you’re comparing two similar products, start with the first few lines.</p>
 
 <h2>One ingredient can be split across the list</h2>
@@ -118,22 +120,22 @@ export const GUIDES: Guide[] = [
 <p>It’s worth reading to the end before deciding how far down something is. <a href="/en/guides/names-for-sugar">Here are the names sugar goes by.</a></p>
 
 <h2>Allergens are marked, and the style depends on where it’s sold</h2>
-<p>A US label names the source of a major allergen in one of two ways: in parentheses after the ingredient, as in “whey (milk)” or “flour (wheat)”, or in a line straight after the list, such as “Contains wheat, milk, and soy.”${cite(3)}</p>
-<p>An EU label does it inside the list itself. The allergen has to be “emphasised through a typeset that clearly distinguishes it from the rest of the list of ingredients, for example by means of the font, style or background colour”.${cite(2)} You’ll usually see it in bold.</p>
-<p>The two don’t cover the same allergens, either. The US names 9 and the EU names 14. <a href="/en/guides/allergen-labelling-us-and-eu">Here’s how they compare.</a></p>
+<p>A US label names the source of a major allergen in one of two ways: in parentheses after the ingredient, as in “whey (milk)” or “flour (wheat),” or in a line right after the list, such as “Contains wheat, milk, and soy.”${cite(3)}</p>
+<p>An EU label does it inside the list itself. The allergen has to be “emphasised through a typeset that clearly distinguishes it from the rest of the list of ingredients, for example by means of the font, style or background colour.”${cite(2)} You’ll usually see it in bold.</p>
+<p>The two don’t cover the same allergens, either. The US names 9 and the EU names 14. <a href="/en/guides/allergen-labeling-us-and-eu">Here’s how they compare.</a></p>
 
 <h2>“May contain” is voluntary</h2>
-<p>Lines like “may contain nuts” or “made in a facility that also handles nuts” are about cross-contact, not about the recipe. In the US, the FDA says these statements “are not required by law”.${cite(3)}</p>
+<p>Lines like “may contain nuts” or “made in a facility that also handles nuts” are about cross-contact, not about the recipe. In the US, the FDA says these statements “are not required by law.”${cite(3)}</p>
 <p>That cuts both ways. A product without one isn’t promising anything. If an allergy is serious, no warning isn’t the same as a guarantee.</p>
 
 <h2>The language follows the shop, not the factory</h2>
-<p>EU law requires the mandatory information to appear “in a language easily understood by the consumers of the Member States where a food is marketed”.${cite(2)} That’s why imported food in Europe often has a translated sticker on it.</p>
+<p>EU law requires the mandatory information to appear “in a language easily understood by the consumers of the Member States where a food is marketed.”${cite(2)} That’s why imported food in Europe often has a translated sticker on it.</p>
 <p>Shop abroad, or in an import aisle at home, and you can easily be holding a list in a language you don’t read at all.</p>
 `,
     inRevely:
       "Revely reads ingredient lists in most languages and shows the original next to a translation in yours. It marks where each ingredient sits on the list, and when a health authority has said something about one, it tells you who.",
     sources: [US_101_4, EU_1169, FDA_ALLERGIES],
-    related: ["names-for-sugar", "allergen-labelling-us-and-eu", "salt-and-sodium"],
+    related: ["names-for-sugar", "allergen-labeling-us-and-eu", "salt-and-sodium"],
     published: PUBLISHED,
     modified: PUBLISHED,
   },
@@ -146,7 +148,7 @@ export const GUIDES: Guide[] = [
     dek: "Look for the word “sugar” and you’ll miss a lot of it. Here are the other names it goes by, and what the World Health Organization says about how much to have.",
     body: `
 <h2>What WHO counts</h2>
-<p>WHO’s advice is about <em>free sugars</em>, which it defines as “monosaccharides and disaccharides (e.g. sucrose, fructose, glucose) added to foods and beverages by the manufacturer, cook or consumer, and sugars naturally present in honey, syrups, fruit juices and fruit juice concentrates”.${cite(1)}</p>
+<p>WHO’s advice is about <em>free sugars</em>, which it defines as “monosaccharides and disaccharides (e.g. sucrose, fructose, glucose) added to foods and beverages by the manufacturer, cook or consumer, and sugars naturally present in honey, syrups, fruit juices and fruit juice concentrates.”${cite(1)}</p>
 <p>So honey, syrups and fruit juice concentrate all count, however natural they sound.</p>
 
 <h2>How much</h2>
@@ -177,7 +179,7 @@ export const GUIDES: Guide[] = [
 <p>Ingredients are listed by weight, heaviest first.${cite(2, 3)} A product that uses three kinds of sugar lists each one separately, and each sits lower than all three together would. So it’s worth counting the sugars, not only checking whether sugar comes first. <a href="/en/guides/how-to-read-an-ingredient-list">More on reading the order.</a></p>
 `,
     inRevely:
-      "Revely recognises these sugars in any language the label is printed in, shows where each one sits on the list, and quotes what WHO says about them.",
+      "Revely recognizes these sugars in any language the label is printed in, shows where each one sits on the list, and quotes what WHO says about them.",
     sources: [WHO_HEALTHY_DIET, US_101_4, EU_1169],
     related: ["how-to-read-an-ingredient-list", "salt-and-sodium", "partially-hydrogenated-oil"],
     published: PUBLISHED,
@@ -185,14 +187,14 @@ export const GUIDES: Guide[] = [
   },
 
   {
-    slug: "food-colour-warnings",
-    title: "The six food colours that need a warning in Europe",
+    slug: "food-color-warnings",
+    title: "The six food colors that need a warning in Europe",
     description:
-      "In the EU, six artificial colours must carry a warning about children’s activity and attention. Here are the six, their US names, and what happened to Red 3.",
-    dek: "In the EU, six colours can only be used if the label carries a warning. Three of them are sold in the US under other names, with no warning at all.",
+      "In the EU, six artificial colors must carry a warning about children’s activity and attention. Here are the six, their US names, and what happened to Red 3.",
+    dek: "In the EU, six colors can only be used if the label carries a warning. Three of them are sold in the US under other names, with no warning at all.",
     body: `
 <h2>The warning</h2>
-<p>Under EU law, a food containing any of these colours must say it “may have an adverse effect on activity and attention in children”, next to the colour’s name or E number.${cite(1)}</p>
+<p>Under EU law, a food containing any of these colors must say it “may have an adverse effect on activity and attention in children,” next to the color’s name or E number.${cite(1)}</p>
 <div class="scroll">
 <table>
   <thead><tr><th scope="col">E number</th><th scope="col">Name</th><th scope="col">US name</th></tr></thead>
@@ -206,14 +208,14 @@ export const GUIDES: Guide[] = [
   </tbody>
 </table>
 </div>
-<p>A warning isn’t a ban. These colours are still permitted in the EU. The label just has to say so, which makes them easy to spot on a European pack. On a US pack, look for the names in the last column instead, often shortened to Yellow 5, Yellow 6 or Red 40.</p>
+<p>A warning isn’t a ban. These colors are still permitted in the EU. The label just has to say so, which makes them easy to spot on a European package. On a US package, look for the names in the last column instead, often shortened to Yellow 5, Yellow 6 or Red 40.</p>
 
 <h2>What happened to Red 3 in the US</h2>
-<p>A different colour, FD&amp;C Red No. 3, also called erythrosine, is on its way out of US food. In January 2025 the FDA revoked its authorisation for use in food and ingested drugs. For food, the order takes effect on 15 January 2027, which is the deadline for reformulating.${cite(2)}</p>
-<p>The reason is legal as much as scientific. US law doesn’t allow a colour to be authorised once it’s been found to cause cancer in animals. The FDA found that Red No. 3 “can induce cancer in male rats, through a rat specific hormonal mechanism”.${cite(2)}</p>
+<p>A different color, FD&amp;C Red No. 3, also called erythrosine, is on its way out of US food. In January 2025 the FDA revoked its authorization for use in food and ingested drugs. For food, the order takes effect on January 15, 2027, which is the deadline for reformulating.${cite(2)}</p>
+<p>The reason is legal as much as scientific. US law doesn’t allow a color to be authorized once it’s been found to cause cancer in animals. The FDA found that Red No. 3 “can induce cancer in male rats, through a rat specific hormonal mechanism.”${cite(2)}</p>
 `,
     inRevely:
-      "Revely recognises these colours whether the label says tartrazine, E102 or Yellow 5, and shows you the warning and who requires it.",
+      "Revely recognizes these colors whether the label says tartrazine, E102 or Yellow 5, and shows you the warning and who requires it.",
     sources: [
       {
         org: "European Union",
@@ -242,14 +244,14 @@ export const GUIDES: Guide[] = [
     dek: "If a label lists partially hydrogenated oil, you’re looking at the main source of the trans fat WHO wants gone from food.",
     body: `
 <h2>What it is</h2>
-<p>Partially hydrogenating a liquid oil makes it more solid. It also makes trans fat. In WHO’s words, “trans fat is produced industrially by the partial hydrogenation of any liquid oils”.${cite(1)}</p>
+<p>Partially hydrogenating a liquid oil makes it more solid. It also makes trans fat. In WHO’s words, “trans fat is produced industrially by the partial hydrogenation of any liquid oils.”${cite(1)}</p>
 
 <h2>What WHO says</h2>
-<p>WHO calls for industrially produced trans fat to be eliminated, and notes it “can be eliminated and replaced with healthier fats or oils”. For adults, it recommends keeping trans fat to “less than 1% of total energy intake, which is less than 2.2 g per day for a 2000-calorie diet.”${cite(1)}</p>
+<p>WHO calls for industrially produced trans fat to be eliminated, and notes it “can be eliminated and replaced with healthier fats or oils.” For adults, it recommends keeping trans fat to “less than 1% of total energy intake, which is less than 2.2 g per day for a 2000-calorie diet.”${cite(1)}</p>
 <p>It’s direct about why: high intake of trans fat “increases the risk of death from any cause by 34%, coronary heart disease deaths by 28%, and coronary heart disease by 21%.”${cite(1)}</p>
 
 <h2>What the US decided</h2>
-<p>In 2015 the FDA determined that partially hydrogenated oils are no longer “generally recognized as safe (GRAS) for any use in human food”. In 2023 it revoked the last remaining authorisations, for uses in margarine, shortening and bread, concluding that “these uses of PHOs may be injurious to health”. That took effect on 22 December 2023.${cite(2)}</p>
+<p>In 2015 the FDA determined that partially hydrogenated oils are no longer “generally recognized as safe (GRAS) for any use in human food.” In 2023 it revoked the last remaining authorizations, for uses in margarine, shortening and bread, concluding that “these uses of PHOs may be injurious to health.” That took effect on December 22, 2023.${cite(2)}</p>
 
 <h2>Fully hydrogenated is a different ingredient</h2>
 <p>The US decisions are about <em>partially</em> hydrogenated oils. Fully hydrogenated oil is a separate ingredient, and isn’t what they cover. So read the word before “hydrogenated” carefully.</p>
@@ -270,7 +272,7 @@ export const GUIDES: Guide[] = [
         url: "https://www.federalregister.gov/documents/2023/08/09/2023-16725/revocation-of-uses-of-partially-hydrogenated-oils-in-foods",
       },
     ],
-    related: ["names-for-sugar", "salt-and-sodium", "food-colour-warnings"],
+    related: ["names-for-sugar", "salt-and-sodium", "food-color-warnings"],
     published: PUBLISHED,
     modified: PUBLISHED,
   },
@@ -283,11 +285,11 @@ export const GUIDES: Guide[] = [
     dek: "European labels give you salt. American labels give you sodium. They aren’t the same number, and the conversion is simple once you know it.",
     body: `
 <h2>What WHO recommends</h2>
-<p>For adults, WHO recommends “less than 2000 mg/day of sodium (equivalent to &lt; 5 g/day salt, or approximately one teaspoon)”. For children aged 2 to 15, it recommends adjusting that downward based on how much energy they need.${cite(1)}</p>
-<p>WHO’s concern is blood pressure: “the primary health effect associated with diets high in sodium is raised blood pressure”. It also notes that in many countries “a significant proportion of sodium in the diet comes from processed foods.”${cite(1)}</p>
+<p>For adults, WHO recommends “less than 2000 mg/day of sodium (equivalent to &lt; 5 g/day salt, or approximately one teaspoon).” For children aged 2 to 15, it recommends adjusting that downward based on how much energy they need.${cite(1)}</p>
+<p>WHO’s concern is blood pressure: “the primary health effect associated with diets high in sodium is raised blood pressure.” It also notes that in many countries “a significant proportion of sodium in the diet comes from processed foods.”${cite(1)}</p>
 
 <h2>Turning one into the other</h2>
-<p>EU labels declare salt, and the law defines it as “the salt equivalent content calculated using the formula: salt = sodium × 2,5”.${cite(2)} US labels list sodium in milligrams.</p>
+<p>EU labels declare salt, and the law defines it as “the salt equivalent content calculated using the formula: salt = sodium × 2,5.”${cite(2)} US labels list sodium in milligrams.</p>
 <div class="callout">
   <p><strong>Sodium × 2.5 = salt.</strong> Salt ÷ 2.5 = sodium.</p>
   <p>So a US label showing 600 mg of sodium is 1.5 g of salt, which is 30% of WHO’s 5 g. An EU label showing 1 g of salt is 400 mg of sodium.</p>
@@ -318,7 +320,7 @@ export const GUIDES: Guide[] = [
   },
 
   {
-    slug: "allergen-labelling-us-and-eu",
+    slug: "allergen-labeling-us-and-eu",
     title: "Which allergens a label has to name, in the US and the EU",
     description:
       "The US requires 9 major allergens to be declared and the EU 14. Here’s the full comparison, and the two that can hide under “spice” on a US label.",
@@ -337,25 +339,25 @@ export const GUIDES: Guide[] = [
     <tr><td>Peanuts</td><td>Yes</td><td>Yes</td></tr>
     <tr><td>Wheat</td><td>Yes</td><td>As part of cereals containing gluten: wheat, rye, barley, oats, spelt and kamut</td></tr>
     <tr><td>Soy</td><td>Yes</td><td>Yes</td></tr>
-    <tr><td>Sesame</td><td>Yes, since 1 January 2023</td><td>Yes</td></tr>
+    <tr><td>Sesame</td><td>Yes, since January 1, 2023</td><td>Yes</td></tr>
     <tr><td>Celery</td><td>Not required</td><td>Yes</td></tr>
     <tr><td>Mustard</td><td>Not required</td><td>Yes</td></tr>
     <tr><td>Lupin</td><td>Not required</td><td>Yes</td></tr>
     <tr><td>Molluscs, such as mussels, oysters and squid</td><td>Not required</td><td>Yes</td></tr>
-    <tr><td>Sulphites</td><td>Declared at 10 ppm or more, though not a major allergen</td><td>Yes, above 10 mg/kg</td></tr>
+    <tr><td>Sulfites</td><td>Declared at 10 ppm or more, though not a major allergen</td><td>Yes, above 10 mg/kg</td></tr>
   </tbody>
 </table>
 </div>
-<p>The US list comes from the Food Allergen Labeling and Consumer Protection Act, which named eight foods, and the FASTER Act, which made sesame the ninth from 1 January 2023. US labels must also name the type of tree nut and the species of fish or crustacean.${cite(1)} The EU list is Annex II of its food information regulation.${cite(2)}</p>
+<p>The US list comes from the Food Allergen Labeling and Consumer Protection Act, which named eight foods, and the FASTER Act, which made sesame the ninth from January 1, 2023. US labels must also name the type of tree nut and the species of fish or crustacean.${cite(1)} The EU list is Annex II of its food information regulation.${cite(2)}</p>
 
 <h2>Two that can hide under “spice” in the US</h2>
-<p>Under US rules, celery seed and mustard flour both count as spices, and spices can be declared on the ingredient list simply as “spice”.${cite(3)} Neither celery nor mustard is a major allergen in the US, so when they’re used as a spice, nothing requires them to be named. On an EU label, both would have to be named and emphasised.</p>
+<p>Under US rules, celery seed and mustard flour both count as spices, and spices can be declared on the ingredient list simply as “spice.”${cite(3)} Neither celery nor mustard is a major allergen in the US, so when they’re used as a spice, nothing requires them to be named. On an EU label, both would have to be named and emphasized.</p>
 
-<h2>Colours from insects, in the US</h2>
-<p>The FDA also requires cochineal extract and carmine, red colours made from insects, to be declared on the label of all food and cosmetic products, because they’ve been identified as allergenic.${cite(1)}</p>
+<h2>Colors from insects, in the US</h2>
+<p>The FDA also requires cochineal extract and carmine, red colors made from insects, to be declared on the label of all food and cosmetic products, because they’ve been identified as allergenic.${cite(1)}</p>
 
 <h2>How they’re shown</h2>
-<p>A US label names the allergen in parentheses after an ingredient or in a “Contains” line. An EU label emphasises it inside the ingredient list, usually in bold. <a href="/en/guides/how-to-read-an-ingredient-list">More on reading a label.</a></p>
+<p>A US label names the allergen in parentheses after an ingredient or in a “Contains” line. An EU label emphasizes it inside the ingredient list, usually in bold. <a href="/en/guides/how-to-read-an-ingredient-list">More on reading a label.</a></p>
 `,
     inRevely:
       "Revely checks every label against the allergens you set, including all 14 of the EU’s and buckwheat, and knows their other names, like whey for milk and tahini for sesame.",
@@ -368,7 +370,7 @@ export const GUIDES: Guide[] = [
         url: "https://www.ecfr.gov/current/title-21/chapter-I/subchapter-B/part-101/subpart-B/section-101.22",
       },
     ],
-    related: ["how-to-read-an-ingredient-list", "food-colour-warnings", "names-for-sugar"],
+    related: ["how-to-read-an-ingredient-list", "food-color-warnings", "names-for-sugar"],
     published: PUBLISHED,
     modified: PUBLISHED,
   },

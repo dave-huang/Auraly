@@ -26,7 +26,7 @@ import { HEAD_COMMON, SITE_ORIGIN, footerInner, lockupLink } from "./siteTheme";
 
 const APP_STORE_URL = "https://apps.apple.com/app/id6799481205";
 const ORG = `${SITE_ORIGIN}/#organization`;
-const CHECKED = "25 September 2026";
+const CHECKED = "September 25, 2026";
 
 /** Every guide URL, for the sitemap and canonicalHost(). */
 export const GUIDE_PATHS: readonly string[] = [
@@ -281,7 +281,7 @@ function indexPage(): string {
     ],
     main: `<div class="masthead">
   <p class="eyebrow">Guides</p>
-  <h1>Read the label, not the front of the pack</h1>
+  <h1>Read the label, not the front of the package</h1>
   <p class="dek">What the rules say about ingredient lists, and what health authorities say about what’s on them. Every claim links to its source.</p>
 </div>
 <ul class="cards">
@@ -289,6 +289,18 @@ function indexPage(): string {
 </ul>`,
   });
 }
+
+/**
+ * Guides that have changed address, old slug to new. Permanent, and kept for
+ * good: Google was asked to index the old addresses, and a redirect is how a
+ * link to one still counts towards the page.
+ *
+ * The first two moved to American spelling on 2026-09-25.
+ */
+const MOVED: ReadonlyMap<string, string> = new Map([
+  ["food-colour-warnings", "food-color-warnings"],
+  ["allergen-labelling-us-and-eu", "allergen-labeling-us-and-eu"],
+]);
 
 /** Rendered once at boot, like the home page. */
 const INDEX = indexPage();
@@ -301,6 +313,8 @@ const PAGES: ReadonlyMap<string, string> = new Map(GUIDES.map((g) => [g.slug, gu
 export function registerGuideRoutes(app: Express): void {
   app.get("/en/guides", (_req, res) => res.type("html").send(INDEX));
   app.get("/en/guides/:slug", (req, res) => {
+    const moved = MOVED.get(req.params.slug);
+    if (moved) return res.redirect(301, `/en/guides/${moved}`);
     const page = PAGES.get(req.params.slug);
     if (!page) return res.status(404).type("html").send(NOT_FOUND);
     res.type("html").send(page);
