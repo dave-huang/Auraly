@@ -40,6 +40,18 @@ export interface GuideSource {
    */
   year?: number;
   url: string;
+  /** Said after the title when the source is not in the page's language. */
+  note?: string;
+}
+
+/** Everything about a guide that is written in one language. */
+export interface GuideText {
+  title: string;
+  description: string;
+  dek: string;
+  body: string;
+  inRevely: string;
+  sources: GuideSource[];
 }
 
 export interface Guide {
@@ -61,12 +73,18 @@ export interface Guide {
   modified: string;
 }
 
-/** A citation marker pointing at the numbered source list. */
-function cite(...n: number[]): string {
-  return n
-    .map((i) => `<sup class="cite"><a href="#source-${i}" aria-label="Source ${i}">${i}</a></sup>`)
-    .join("");
+/**
+ * Citation markers pointing at the numbered source list, labeled for screen
+ * readers in the page's language.
+ */
+export function citeWith(label: string): (...n: number[]) => string {
+  return (...n: number[]) =>
+    n
+      .map((i) => `<sup class="cite"><a href="#source-${i}" aria-label="${label} ${i}">${i}</a></sup>`)
+      .join("");
 }
+
+const cite = citeWith("Source");
 
 // ---------------------------------------------------------------------------
 // Sources used by more than one guide

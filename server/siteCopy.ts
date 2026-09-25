@@ -568,7 +568,7 @@ const es: Copy = {
   closeLede:
     "Crea un perfil, mira un escaneo de ejemplo y llévatelo a la compra.",
 
-  footGuides: "Guías (en inglés)",
+  footGuides: "Guías",
   footPrivacy: "Política de Privacidad",
   footTerms: "Términos de Uso",
   footHealth: "Política de Privacidad de Datos de Salud del Consumidor",
@@ -740,7 +740,7 @@ const zh: Copy = {
   closeTitle: "吃什么心里有数。",
   closeLede: "建一份档案，看一次示例扫描，然后带着它去买东西。",
 
-  footGuides: "指南（英文）",
+  footGuides: "指南",
   footPrivacy: "隐私政策",
   footTerms: "使用条款",
   footHealth: "消费者健康数据隐私政策",

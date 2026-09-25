@@ -1,12 +1,15 @@
 import type { Express } from "express";
 
-import { GUIDES, GUIDES_BY_SLUG, type Guide } from "./guideContent";
+import { GUIDES, GUIDES_BY_SLUG, type Guide, type GuideText } from "./guideContent";
+import { GUIDES_ES } from "./guideContent.es";
+import { GUIDES_ZH } from "./guideContent.zh";
 import { DOC_STYLE, NOT_FOUND } from "./legal";
-import { COPY } from "./siteCopy";
+import { COPY, HTML_LANG, LANGUAGE_NAMES, SITE_LANGUAGES, type Lang } from "./siteCopy";
 import { HEAD_COMMON, SITE_ORIGIN, footerInner, lockupLink } from "./siteTheme";
 
 /**
- * The guides: /en/guides, and one page per guide under it.
+ * The guides: /en/guides, /zh/guides and /es/guides, and one page per guide
+ * under each.
  *
  * These exist to be found. The home page can only rank for "Revely"; the
  * questions people actually type ("names for sugar on a label", "what is E102")
@@ -16,23 +19,103 @@ import { HEAD_COMMON, SITE_ORIGIN, footerInner, lockupLink } from "./siteTheme";
  * Built on the legal documents' stylesheet rather than the home page's, for
  * the same reason those are: a long read wants one column and the system's
  * light and dark themes, and the home page is deliberately a single-theme
- * poster. The content lives in guideContent.ts, with the rules every sentence
- * in it has to follow.
+ * poster. The content lives in guideContent.ts (English, and the rules every
+ * sentence has to follow) and guideContent.zh.ts / guideContent.es.ts.
  *
- * English only for now. Under /en/ so that Chinese and Spanish can sit beside
- * it at /zh/guides and /es/guides later with hreflang between them, without
- * moving a URL that has already been indexed.
+ * Every language uses the English slug, so one guide is one slug everywhere
+ * and the hreflang set is just the three prefixes.
  */
 
 const APP_STORE_URL = "https://apps.apple.com/app/id6799481205";
 const ORG = `${SITE_ORIGIN}/#organization`;
-const CHECKED = "September 25, 2026";
 
-/** Every guide URL, for the sitemap and canonicalHost(). */
-export const GUIDE_PATHS: readonly string[] = [
-  "/en/guides",
-  ...GUIDES.map((g) => `/en/guides/${g.slug}`),
-];
+/** The written text of every guide, per language. English carries the meta. */
+const TEXT: Record<Lang, Record<string, GuideText>> = {
+  en: Object.fromEntries(GUIDES.map((g) => [g.slug, g])),
+  zh: GUIDES_ZH,
+  es: GUIDES_ES,
+};
+
+const OG_LOCALE: Record<Lang, string> = { en: "en_US", zh: "zh_CN", es: "es_ES" };
+
+/** Short enough for a phone's header; the full name is the accessible label. */
+const LANG_SHORT: Record<Lang, string> = { en: "EN", zh: "中文", es: "ES" };
+
+/** The page furniture, per language. Content strings live with the content. */
+const UI: Record<
+  Lang,
+  {
+    guide: string;
+    guides: string;
+    inRevely: string;
+    sources: string;
+    related: string;
+    checked: string;
+    checkedAll: string;
+    indexTitle: string;
+    indexH1: string;
+    indexDescription: string;
+    languages: string;
+  }
+> = {
+  en: {
+    guide: "Guide",
+    guides: "Guides",
+    inRevely: "In Revely",
+    sources: "Sources",
+    related: "Related guides",
+    checked: "Sources checked September 25, 2026",
+    checkedAll: "Every source above was checked against the published text on September 25, 2026.",
+    indexTitle: "Guides to reading food labels",
+    indexH1: "Read the label, not the front of the package",
+    indexDescription:
+      "What the rules say about ingredient lists, and what health authorities say about what’s on them. Every claim links to its source.",
+    languages: "Language",
+  },
+  zh: {
+    guide: "指南",
+    guides: "指南",
+    inRevely: "在 Revely 中",
+    sources: "来源",
+    related: "相关指南",
+    checked: "来源核对于 2026 年 9 月 25 日",
+    checkedAll: "以上所有来源均已于 2026 年 9 月 25 日与公开发布的原文核对。",
+    indexTitle: "读懂食品标签的指南",
+    indexH1: "看配料表，而不是包装正面",
+    indexDescription: "关于配料表的规定，以及卫生机构对其中成分的说法。每一条说法都附有来源链接。",
+    languages: "语言",
+  },
+  es: {
+    guide: "Guía",
+    guides: "Guías",
+    inRevely: "En Revely",
+    sources: "Fuentes",
+    related: "Guías relacionadas",
+    checked: "Fuentes comprobadas el 25 de septiembre de 2026",
+    checkedAll: "Todas las fuentes anteriores se comprobaron con el texto publicado el 25 de septiembre de 2026.",
+    indexTitle: "Guías para leer etiquetas de alimentos",
+    indexH1: "Lee la etiqueta, no la parte delantera del envase",
+    indexDescription:
+      "Lo que dicen las normas sobre las listas de ingredientes y lo que dicen las autoridades sanitarias sobre lo que contienen. Cada afirmación enlaza a su fuente.",
+    languages: "Idioma",
+  },
+};
+
+/** One guide in every language, or the index in every language. */
+function pathsFor(slug: string | null): Record<Lang, string> {
+  const tail = slug ? `/guides/${slug}` : "/guides";
+  return { en: `/en${tail}`, zh: `/zh${tail}`, es: `/es${tail}` };
+}
+
+/** Every guide URL, for canonicalHost(). */
+export const GUIDE_PATHS: readonly string[] = [null, ...GUIDES.map((g) => g.slug)].flatMap((slug) =>
+  Object.values(pathsFor(slug)),
+);
+
+/** The same URLs grouped as translations of each other, for the sitemap. */
+export const GUIDE_ALTERNATES: readonly Record<Lang, string>[] = [null, ...GUIDES.map((g) => g.slug)].map(
+  pathsFor,
+);
 
 const GUIDE_STYLE = `
 .top .shell { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
@@ -76,6 +159,13 @@ td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; white-spa
 .cards .t { display: block; color: var(--ink); font-weight: 600; font-size: 1.125rem; line-height: 1.35; letter-spacing: -0.01em; margin-bottom: 6px; text-wrap: balance; }
 .cards .d { display: block; font-size: 0.9375rem; line-height: 1.55; }
 .related .cards .t { font-size: 1rem; }
+
+.top nav { display: flex; align-items: center; gap: 18px; white-space: nowrap; }
+.top nav .langs { display: flex; gap: 10px; font-family: var(--mono); font-size: 0.75rem; }
+.top nav .langs a[aria-current] { text-decoration: underline; text-underline-offset: 4px; }
+/* The display tracking is tuned for Latin; CJK fills its em box and wants none. */
+:lang(zh) h1, :lang(zh) h2, :lang(zh) .cards .t { letter-spacing: 0; }
+:lang(zh) .dek { line-height: 1.7; }
 `;
 
 function escapeAttr(s: string): string {
@@ -86,19 +176,20 @@ function jsonLd(data: unknown): string {
   return `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, "\\u003c")}</script>`;
 }
 
-function badge(): string {
+function badge(lang: Lang): string {
   // The black badge on paper, the white one by lamplight. Apple supplies both,
   // and a black badge on the dark ground is a hole in the page.
   return `<a class="badge" href="${APP_STORE_URL}">
     <picture>
       <source srcset="/media/appstore-badge-white.svg" media="(prefers-color-scheme: dark)">
-      <img src="/media/appstore-badge-black.svg" width="132" height="44" alt="Download on the App Store">
+      <img src="/media/appstore-badge-black.svg" width="132" height="44" alt="${escapeAttr(COPY[lang].badgeAlt)}">
     </picture>
   </a>`;
 }
 
 function shell(opts: {
-  path: string;
+  lang: Lang;
+  paths: Record<Lang, string>;
   title: string;
   description: string;
   ogType: "article" | "website";
@@ -106,23 +197,34 @@ function shell(opts: {
   current: "index" | "guide";
   main: string;
 }): string {
-  const url = `${SITE_ORIGIN}${opts.path}`;
+  const { lang, paths } = opts;
+  const url = `${SITE_ORIGIN}${paths[lang]}`;
+  const ui = UI[lang];
+  const alternates = SITE_LANGUAGES.map(
+    (l) => `<link rel="alternate" hreflang="${HTML_LANG[l]}" href="${SITE_ORIGIN}${paths[l]}">`,
+  ).join("\n");
+  const langLinks = SITE_LANGUAGES.map(
+    (l) =>
+      `<a href="${paths[l]}" hreflang="${HTML_LANG[l]}" lang="${HTML_LANG[l]}" aria-label="${LANGUAGE_NAMES[l]}"${l === lang ? ' aria-current="true"' : ""}>${LANG_SHORT[l]}</a>`,
+  ).join("");
   return `<!doctype html>
-<html lang="en">
+<html lang="${HTML_LANG[lang]}">
 <head>
 ${HEAD_COMMON}
 <title>${opts.title}</title>
 <meta name="description" content="${escapeAttr(opts.description)}">
 <link rel="canonical" href="${url}">
+${alternates}
+<link rel="alternate" hreflang="x-default" href="${SITE_ORIGIN}${paths.en}">
 <meta name="theme-color" content="#F6F1E7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#16130F" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="${opts.ogType}">
 <meta property="og:url" content="${url}">
 <meta property="og:site_name" content="Revely">
-<meta property="og:locale" content="en_US">
+<meta property="og:locale" content="${OG_LOCALE[lang]}">
 <meta property="og:title" content="${escapeAttr(opts.title)}">
 <meta property="og:description" content="${escapeAttr(opts.description)}">
-<meta property="og:image" content="${SITE_ORIGIN}/media/og-card-en.png">
+<meta property="og:image" content="${SITE_ORIGIN}/media/og-card-${lang}.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -132,8 +234,11 @@ ${opts.schema.map(jsonLd).join("\n")}
 <body>
 <header class="top">
   <div class="shell">
-    ${lockupLink("/en", COPY.en.homeLabel)}
-    <nav aria-label="Site"><a href="/en/guides"${opts.current === "index" ? ' aria-current="page"' : ""}>Guides</a></nav>
+    ${lockupLink(`/${lang}`, COPY[lang].homeLabel)}
+    <nav aria-label="${ui.guides}">
+      <a href="/${lang}/guides"${opts.current === "index" ? ' aria-current="page"' : ""}>${ui.guides}</a>
+      <span class="langs" role="group" aria-label="${ui.languages}">${langLinks}</span>
+    </nav>
   </div>
 </header>
 <main class="shell">
@@ -141,15 +246,16 @@ ${opts.main}
 </main>
 <footer class="foot">
   <div class="shell">
-${footerInner(COPY.en)}
+${footerInner(COPY[lang], `/${lang}/guides`)}
   </div>
 </footer>
 </body>
 </html>`;
 }
 
-function card(g: Guide): string {
-  return `<li><a href="/en/guides/${g.slug}"><span class="t">${g.title}</span><span class="d">${g.description}</span></a></li>`;
+function card(lang: Lang, slug: string): string {
+  const g = TEXT[lang][slug];
+  return `<li><a href="/${lang}/guides/${slug}"><span class="t">${g.title}</span><span class="d">${g.description}</span></a></li>`;
 }
 
 function breadcrumbs(items: { name: string; path: string }[]): unknown {
@@ -165,18 +271,20 @@ function breadcrumbs(items: { name: string; path: string }[]): unknown {
   };
 }
 
-function guidePage(g: Guide): string {
-  const path = `/en/guides/${g.slug}`;
+function guidePage(meta: Guide, lang: Lang): string {
+  const g = TEXT[lang][meta.slug];
+  const ui = UI[lang];
+  const paths = pathsFor(meta.slug);
+  const path = paths[lang];
   const sources = g.sources
     .map(
       (s, i) =>
-        `<li id="source-${i + 1}"><span class="org">${s.org}</span>. <a href="${s.url}" rel="noopener">${s.title}</a>${s.year ? `, ${s.year}` : ""}.</li>`,
+        `<li id="source-${i + 1}"><span class="org">${s.org}</span>. <a href="${s.url}" rel="noopener">${s.title}</a>${s.year ? `, ${s.year}` : ""}${s.note ? ` ${s.note}` : ""}.</li>`,
     )
     .join("\n    ");
-  const related = g.related
-    .map((slug) => GUIDES_BY_SLUG.get(slug))
-    .filter((r): r is Guide => Boolean(r))
-    .map(card)
+  const related = meta.related
+    .filter((slug) => GUIDES_BY_SLUG.has(slug))
+    .map((slug) => card(lang, slug))
     .join("\n    ");
 
   const article = {
@@ -184,12 +292,12 @@ function guidePage(g: Guide): string {
     "@type": "Article",
     headline: g.title,
     description: g.description,
-    inLanguage: "en",
+    inLanguage: HTML_LANG[lang],
     url: `${SITE_ORIGIN}${path}`,
     mainEntityOfPage: `${SITE_ORIGIN}${path}`,
-    datePublished: g.published,
-    dateModified: g.modified,
-    image: `${SITE_ORIGIN}/media/og-card-en.png`,
+    datePublished: meta.published,
+    dateModified: meta.modified,
+    image: `${SITE_ORIGIN}/media/og-card-${lang}.png`,
     author: { "@id": ORG },
     publisher: { "@id": ORG },
     citation: g.sources.map((s) => ({
@@ -201,7 +309,8 @@ function guidePage(g: Guide): string {
   };
 
   return shell({
-    path,
+    lang,
+    paths,
     title: `${g.title} · Revely`,
     description: g.description,
     ogType: "article",
@@ -209,34 +318,34 @@ function guidePage(g: Guide): string {
     schema: [
       article,
       breadcrumbs([
-        { name: "Revely", path: "/en" },
-        { name: "Guides", path: "/en/guides" },
+        { name: "Revely", path: `/${lang}` },
+        { name: ui.guides, path: `/${lang}/guides` },
         { name: g.title, path },
       ]),
     ],
     main: `<div class="masthead">
-  <p class="eyebrow"><a href="/en/guides">Guide</a></p>
+  <p class="eyebrow"><a href="/${lang}/guides">${ui.guide}</a></p>
   <h1>${g.title}</h1>
   <p class="dek">${g.dek}</p>
-  <p class="updated">Sources checked ${CHECKED}</p>
+  <p class="updated">${ui.checked}</p>
 </div>
 <article>
 ${g.body}
 </article>
-<aside class="callout app" aria-label="In Revely">
-  <p class="eyebrow">In Revely</p>
+<aside class="callout app" aria-label="${ui.inRevely}">
+  <p class="eyebrow">${ui.inRevely}</p>
   <p>${g.inRevely}</p>
-  ${badge()}
+  ${badge(lang)}
 </aside>
 <section class="sources" aria-labelledby="sources-h">
-  <h2 id="sources-h">Sources</h2>
+  <h2 id="sources-h">${ui.sources}</h2>
   <ol>
     ${sources}
   </ol>
-  <p class="checked">Every source above was checked against the published text on ${CHECKED}.</p>
+  <p class="checked">${ui.checkedAll}</p>
 </section>
 <section class="related" aria-labelledby="related-h">
-  <h2 id="related-h">Related guides</h2>
+  <h2 id="related-h">${ui.related}</h2>
   <ul class="cards">
     ${related}
   </ul>
@@ -244,48 +353,48 @@ ${g.body}
   });
 }
 
-function indexPage(): string {
-  const path = "/en/guides";
-  const title = "Guides to reading food labels · Revely";
-  const description =
-    "What the rules say about ingredient lists, and what health authorities say about what’s on them. Every claim links to its source.";
+function indexPage(lang: Lang): string {
+  const ui = UI[lang];
+  const paths = pathsFor(null);
+  const path = paths[lang];
   return shell({
-    path,
-    title,
-    description,
+    lang,
+    paths,
+    title: `${ui.indexTitle} · Revely`,
+    description: ui.indexDescription,
     ogType: "website",
     current: "index",
     schema: [
       {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
-        name: "Guides to reading food labels",
-        description,
+        name: ui.indexTitle,
+        description: ui.indexDescription,
         url: `${SITE_ORIGIN}${path}`,
-        inLanguage: "en",
+        inLanguage: HTML_LANG[lang],
         publisher: { "@id": ORG },
         mainEntity: {
           "@type": "ItemList",
           itemListElement: GUIDES.map((g, i) => ({
             "@type": "ListItem",
             position: i + 1,
-            url: `${SITE_ORIGIN}/en/guides/${g.slug}`,
-            name: g.title,
+            url: `${SITE_ORIGIN}/${lang}/guides/${g.slug}`,
+            name: TEXT[lang][g.slug].title,
           })),
         },
       },
       breadcrumbs([
-        { name: "Revely", path: "/en" },
-        { name: "Guides", path },
+        { name: "Revely", path: `/${lang}` },
+        { name: ui.guides, path },
       ]),
     ],
     main: `<div class="masthead">
-  <p class="eyebrow">Guides</p>
-  <h1>Read the label, not the front of the package</h1>
-  <p class="dek">What the rules say about ingredient lists, and what health authorities say about what’s on them. Every claim links to its source.</p>
+  <p class="eyebrow">${ui.guides}</p>
+  <h1>${ui.indexH1}</h1>
+  <p class="dek">${ui.indexDescription}</p>
 </div>
 <ul class="cards">
-  ${GUIDES.map(card).join("\n  ")}
+  ${GUIDES.map((g) => card(lang, g.slug)).join("\n  ")}
 </ul>`,
   });
 }
@@ -302,21 +411,47 @@ const MOVED: ReadonlyMap<string, string> = new Map([
   ["allergen-labelling-us-and-eu", "allergen-labeling-us-and-eu"],
 ]);
 
+// A guide missing a translation is a build error, not a 404 in production.
+for (const lang of SITE_LANGUAGES) {
+  for (const g of GUIDES) {
+    if (!TEXT[lang][g.slug]) throw new Error(`guide ${g.slug} has no ${lang} text`);
+  }
+}
+
 /** Rendered once at boot, like the home page. */
-const INDEX = indexPage();
-const PAGES: ReadonlyMap<string, string> = new Map(GUIDES.map((g) => [g.slug, guidePage(g)]));
+const INDEX: Record<Lang, string> = {
+  en: indexPage("en"),
+  zh: indexPage("zh"),
+  es: indexPage("es"),
+};
+const PAGES: Record<Lang, ReadonlyMap<string, string>> = {
+  en: new Map(GUIDES.map((g) => [g.slug, guidePage(g, "en")])),
+  zh: new Map(GUIDES.map((g) => [g.slug, guidePage(g, "zh")])),
+  es: new Map(GUIDES.map((g) => [g.slug, guidePage(g, "es")])),
+};
+
+function serveGuide(lang: Lang) {
+  return (req: { params: { slug: string } }, res: any) => {
+    const moved = MOVED.get(req.params.slug);
+    if (moved) return res.redirect(301, `/${lang}/guides/${moved}`);
+    const page = PAGES[lang].get(req.params.slug);
+    if (!page) return res.status(404).type("html").send(NOT_FOUND);
+    res.type("html").send(page);
+  };
+}
 
 /**
  * Mount the guides. Before serveStatic(), whose catch-all would otherwise
  * answer first; see registerHomeRoutes().
+ *
+ * Written out per language rather than looped, so the route audit in
+ * eval/auth.check.ts can read each path; see the same note in home.ts.
  */
 export function registerGuideRoutes(app: Express): void {
-  app.get("/en/guides", (_req, res) => res.type("html").send(INDEX));
-  app.get("/en/guides/:slug", (req, res) => {
-    const moved = MOVED.get(req.params.slug);
-    if (moved) return res.redirect(301, `/en/guides/${moved}`);
-    const page = PAGES.get(req.params.slug);
-    if (!page) return res.status(404).type("html").send(NOT_FOUND);
-    res.type("html").send(page);
-  });
+  app.get("/en/guides", (_req, res) => res.type("html").send(INDEX.en));
+  app.get("/zh/guides", (_req, res) => res.type("html").send(INDEX.zh));
+  app.get("/es/guides", (_req, res) => res.type("html").send(INDEX.es));
+  app.get("/en/guides/:slug", serveGuide("en"));
+  app.get("/zh/guides/:slug", serveGuide("zh"));
+  app.get("/es/guides/:slug", serveGuide("es"));
 }

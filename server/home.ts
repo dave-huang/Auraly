@@ -14,7 +14,7 @@ import {
   footerInner,
   lockupLink,
 } from "./siteTheme";
-import { GUIDE_PATHS } from "./guides";
+import { GUIDE_ALTERNATES, GUIDE_PATHS } from "./guides";
 import {
   COPY,
   HTML_LANG,
@@ -956,7 +956,7 @@ function body(c: Copy, lang: Lang): string {
 
 <footer class="foot">
   <div class="shell">
-${footerInner(c)}
+${footerInner(c, `/${lang}/guides`)}
   </div>
 </footer>
 
@@ -1302,23 +1302,26 @@ Sitemap: ${SITE_ORIGIN}/sitemap.xml
  * deploy is one Google learns to ignore.
  */
 const SITEMAP = (() => {
-  const alternates = [
-    ...SITE_LANGUAGES.map(
-      (l) => `    <xhtml:link rel="alternate" hreflang="${HTML_LANG[l]}" href="${SITE_ORIGIN}/${l}"/>`,
-    ),
-    `    <xhtml:link rel="alternate" hreflang="x-default" href="${SITE_ORIGIN}/en"/>`,
-  ].join("\n");
-  const homes = SITE_LANGUAGES.map(
-    (l) => `  <url>\n    <loc>${SITE_ORIGIN}/${l}</loc>\n${alternates}\n  </url>`,
-  );
-  // English only, so no alternates. When a guide gains a translation it gains
-  // the same block the home pages have.
-  const single = [...GUIDE_PATHS, "/privacy", "/terms", "/health-data-privacy"].map(
+  const group = (paths: Record<Lang, string>) => {
+    const links = [
+      ...SITE_LANGUAGES.map(
+        (l) => `    <xhtml:link rel="alternate" hreflang="${HTML_LANG[l]}" href="${SITE_ORIGIN}${paths[l]}"/>`,
+      ),
+      `    <xhtml:link rel="alternate" hreflang="x-default" href="${SITE_ORIGIN}${paths.en}"/>`,
+    ].join("\n");
+    return SITE_LANGUAGES.map(
+      (l) => `  <url>\n    <loc>${SITE_ORIGIN}${paths[l]}</loc>\n${links}\n  </url>`,
+    );
+  };
+  const homes = group({ en: "/en", zh: "/zh", es: "/es" });
+  const guides = GUIDE_ALTERNATES.flatMap(group);
+  // The legal documents are English only, so they carry no alternates.
+  const legal = ["/privacy", "/terms", "/health-data-privacy"].map(
     (p) => `  <url>\n    <loc>${SITE_ORIGIN}${p}</loc>\n  </url>`,
   );
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${[...homes, ...single].join("\n")}
+${[...homes, ...guides, ...legal].join("\n")}
 </urlset>
 `;
 })();
