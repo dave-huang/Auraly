@@ -944,7 +944,11 @@ export default function PaywallScreen() {
         </Pressable>
 
         <ThemedText style={[styles.fineText, { color: surface.inkFaint }]}>
-          {hasTrial ? t('paywall.fine', { days: trialDays }) : t('paywall.fineNoTrial')}
+          {hasTrial
+            ? t('paywall.fine', { days: trialDays })
+            : selected === 'annual'
+              ? t('paywall.fineNoTrialAnnual')
+              : t('paywall.fineNoTrial')}
         </ThemedText>
 
         {/*

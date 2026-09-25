@@ -1,5 +1,6 @@
 import { Linking } from 'react-native';
 import Purchases, {
+  INTRO_ELIGIBILITY_STATUS,
   PURCHASES_ERROR_CODE,
   type CustomerInfo,
   type PurchasesPackage,
@@ -141,10 +142,44 @@ export async function getPlans(): Promise<PlanOffer[]> {
     }
     // Annual first: it is the plan being recommended, and the one whose saving
     // only reads as a saving when the monthly price sits next to it.
-    return offers.sort((a, b) => (a.plan === 'annual' ? -1 : 1));
+    return (await withTrialEligibility(offers)).sort((a, b) => (a.plan === 'annual' ? -1 : 1));
   } catch (error) {
     console.warn('[PURCHASES] getOfferings failed', error);
     return [];
+  }
+}
+
+/**
+ * Drop the trial from any plan this Apple ID cannot get it on.
+ *
+ * `introPrice` says what the PRODUCT offers. Apple gives it only to an Apple
+ * ID that has never subscribed in the group, so to anyone who has, the
+ * paywall promised "Start your 7-day free trial" and Apple's sheet then
+ * charged in full, or queued a paid plan behind a subscription they already
+ * held. Found by someone testing an offer code on an Apple ID that had
+ * redeemed one already.
+ *
+ * Silent: Apple answers from the Apple ID without a prompt, and nothing moves
+ * between accounts. Only a definite INELIGIBLE removes the trial. UNKNOWN keeps
+ * it, because a wrong "no trial" would talk a new customer out of a free week,
+ * and Apple's own sheet states the real terms either way.
+ */
+async function withTrialEligibility(offers: PlanOffer[]): Promise<PlanOffer[]> {
+  const withTrial = offers.filter((o) => o.trialDays > 0);
+  if (withTrial.length === 0) return offers;
+  try {
+    const eligibility = await Purchases.checkTrialOrIntroductoryPriceEligibility(
+      withTrial.map((o) => o.pkg.product.identifier),
+    );
+    return offers.map((o) =>
+      eligibility[o.pkg.product.identifier]?.status ===
+      INTRO_ELIGIBILITY_STATUS.INTRO_ELIGIBILITY_STATUS_INELIGIBLE
+        ? { ...o, trialDays: 0 }
+        : o,
+    );
+  } catch (error) {
+    console.warn('[PURCHASES] trial eligibility check failed', error);
+    return offers;
   }
 }
 
