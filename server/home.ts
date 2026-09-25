@@ -1,12 +1,15 @@
-import type { Express } from "express";
+import type { Express, NextFunction, Request, Response } from "express";
 import express from "express";
 import path from "path";
 
 import {
+  CONTACT_EMAIL,
   FONT_FACES,
   HEAD_COMMON,
+  LEGAL_ENTITY,
   LOCKUP,
   PAPER_TOKENS,
+  SITE_ORIGIN,
   TYPE_TOKENS,
   footerInner,
   lockupLink,
@@ -63,9 +66,6 @@ import {
  */
 
 const APP_STORE_URL = "https://apps.apple.com/app/id6799481205";
-
-/** Absolute, because canonical, hreflang and og:url all have to be. */
-const SITE_ORIGIN = "https://revely.life";
 
 /**
  * Open Graph wants a territory with the language. These are the ones the app
@@ -711,6 +711,59 @@ function faqSchema(c: Copy, lang: Lang): string {
   return `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, "\\u003c")}</script>`;
 }
 
+/**
+ * Who and what this site is, for search engines.
+ *
+ * Mostly for the name. "Revely" is also a 1981 song with a lot of pages about
+ * it, and this is how Google learns the word can mean an iPhone app with its
+ * own site, logo and publisher. The WebSite entry is what Google reads for the
+ * site name it prints above a result.
+ *
+ * No rating and no price. Google shows an app's stars only with a rating, and
+ * there is no honest one to give it yet; a price would have to be a single
+ * number for a subscription priced in every currency.
+ */
+function siteSchema(c: Copy, lang: Lang): string {
+  const org = `${SITE_ORIGIN}/#organization`;
+  const data = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": org,
+        name: "Revely",
+        legalName: LEGAL_ENTITY,
+        url: `${SITE_ORIGIN}/`,
+        logo: `${SITE_ORIGIN}/media/apple-touch-icon.png`,
+        email: CONTACT_EMAIL,
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${SITE_ORIGIN}/#website`,
+        name: "Revely",
+        url: `${SITE_ORIGIN}/`,
+        publisher: { "@id": org },
+        inLanguage: SITE_LANGUAGES.map((l) => HTML_LANG[l]),
+      },
+      {
+        "@type": "MobileApplication",
+        "@id": `${SITE_ORIGIN}/#app`,
+        name: "Revely",
+        operatingSystem: "iOS",
+        applicationCategory: "HealthApplication",
+        description: c.description,
+        url: `${SITE_ORIGIN}/${lang}`,
+        installUrl: APP_STORE_URL,
+        sameAs: [APP_STORE_URL],
+        image: `${SITE_ORIGIN}/media/og-card-${lang}.png`,
+        inLanguage: SITE_LANGUAGES.map((l) => HTML_LANG[l]),
+        publisher: { "@id": org },
+      },
+    ],
+  };
+  return `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, "\\u003c")}</script>`;
+}
+
 /** The page, in one language. */
 function body(c: Copy, lang: Lang): string {
   return `
@@ -1120,6 +1173,7 @@ ${SITE_LANGUAGES.filter((l) => l !== lang)
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+${siteSchema(c, lang)}
 ${faqSchema(c, lang)}
 <style>${STYLE}</style>
 </head>
@@ -1167,6 +1221,105 @@ function negotiate(header: string | undefined): Lang {
 }
 
 /**
+ * Every path that serves a page, spelled the one way it is indexed.
+ *
+ * The legal documents are here too although legal.ts serves them, because a
+ * duplicate of the privacy policy is as much a duplicate as one of the home
+ * page.
+ */
+const PAGE_PATHS = new Set([
+  "/",
+  "/en",
+  "/es",
+  "/zh",
+  "/privacy",
+  "/terms",
+  "/health-data-privacy",
+]);
+
+/**
+ * One address per page.
+ *
+ * The same server answers on revely.life, www.revely.life and
+ * revely-api.fly.dev, and Express matches paths without regard to case or a
+ * trailing slash, so /en, /EN and /en/ on three hosts were nine copies of one
+ * page. The canonical tag already told Google which to keep; a permanent
+ * redirect means it never has to guess, and a link someone shares with the
+ * wrong spelling still counts towards the right page.
+ *
+ *   www.revely.life, anything    -> revely.life, same path
+ *   *.fly.dev, a page            -> revely.life, that page
+ *   any host, /EN or /en/        -> /en
+ *
+ * Only pages move on fly.dev. That host is the API the app talks to, and an
+ * /api request, or anything that is not a GET, must never be redirected: a
+ * 301 turns a POST into a GET and the body is lost. Local development keeps
+ * its own host and only has its spelling tidied.
+ *
+ * Mounted from routes.ts ahead of every page, the legal ones included.
+ */
+export function canonicalHost(req: Request, res: Response, next: NextFunction): void {
+  if (req.method !== "GET" && req.method !== "HEAD") return next();
+
+  const host = (req.headers.host ?? "").toLowerCase().split(":")[0];
+  if (host === "www.revely.life") {
+    return res.redirect(301, `${SITE_ORIGIN}${req.originalUrl}`);
+  }
+
+  const lower = req.path.toLowerCase();
+  const page = lower.length > 1 ? lower.replace(/\/+$/, "") : lower;
+  if (!PAGE_PATHS.has(page)) return next();
+
+  const q = req.originalUrl.indexOf("?");
+  const query = q === -1 ? "" : req.originalUrl.slice(q);
+
+  if (host.endsWith(".fly.dev")) {
+    return res.redirect(301, `${SITE_ORIGIN}${page}${query}`);
+  }
+  if (page !== req.path) return res.redirect(301, `${page}${query}`);
+  next();
+}
+
+/**
+ * Where crawlers may go. Everywhere but the API, which has nothing to index
+ * and answers most requests with 401.
+ */
+const ROBOTS = `User-agent: *
+Disallow: /api/
+Allow: /
+
+Sitemap: ${SITE_ORIGIN}/sitemap.xml
+`;
+
+/**
+ * Every page there is, so none has to be found by following a link.
+ *
+ * Each language lists its siblings as well, which says the same thing as the
+ * hreflang tags in the pages themselves; Google accepts either and reads both.
+ * No lastmod: the pages are rendered at boot, and a date that changes on every
+ * deploy is one Google learns to ignore.
+ */
+const SITEMAP = (() => {
+  const alternates = [
+    ...SITE_LANGUAGES.map(
+      (l) => `    <xhtml:link rel="alternate" hreflang="${HTML_LANG[l]}" href="${SITE_ORIGIN}/${l}"/>`,
+    ),
+    `    <xhtml:link rel="alternate" hreflang="x-default" href="${SITE_ORIGIN}/en"/>`,
+  ].join("\n");
+  const homes = SITE_LANGUAGES.map(
+    (l) => `  <url>\n    <loc>${SITE_ORIGIN}/${l}</loc>\n${alternates}\n  </url>`,
+  );
+  const legal = ["/privacy", "/terms", "/health-data-privacy"].map(
+    (p) => `  <url>\n    <loc>${SITE_ORIGIN}${p}</loc>\n  </url>`,
+  );
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${[...homes, ...legal].join("\n")}
+</urlset>
+`;
+})();
+
+/**
  * Mount the home page and the images it needs.
  *
  * Registered before `serveStatic()` for the same reason the legal routes are:
@@ -1195,6 +1348,15 @@ export function registerHomeRoutes(app: Express): void {
   // audit in eval/auth.check.ts can see them. It reads the source for literal
   // paths, which is the right way round: a route it cannot name is a route
   // nobody is checking is public on purpose.
+  app.get("/robots.txt", (_req, res) => {
+    res.setHeader("Cache-Control", "public, max-age=86400");
+    res.type("text/plain").send(ROBOTS);
+  });
+  app.get("/sitemap.xml", (_req, res) => {
+    res.setHeader("Cache-Control", "public, max-age=86400");
+    res.type("application/xml").send(SITEMAP);
+  });
+
   app.get("/en", (_req, res) => res.type("html").send(PAGES.en));
   app.get("/es", (_req, res) => res.type("html").send(PAGES.es));
   app.get("/zh", (_req, res) => res.type("html").send(PAGES.zh));

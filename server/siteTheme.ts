@@ -37,6 +37,15 @@ export const CONTACT_EMAIL =
   process.env.LEGAL_CONTACT_EMAIL || "hello@dozylabs.net";
 
 /**
+ * The one address the site is indexed under.
+ *
+ * Absolute, because canonical, hreflang, og:url and the sitemap all have to
+ * be. The same server also answers on www.revely.life and revely-api.fly.dev;
+ * see canonicalHost() in home.ts for what happens to those.
+ */
+export const SITE_ORIGIN = "https://revely.life";
+
+/**
  * Self-hosted, and cut to Latin by scripts/build-web-assets.py.
  *
  * Not fonts.googleapis.com. These pages are where we tell people which

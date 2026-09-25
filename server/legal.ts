@@ -8,6 +8,7 @@ import {
   LEGAL_ENTITY,
   lockupLink,
   PAPER_TOKENS,
+  SITE_ORIGIN,
   TYPE_TOKENS,
   footerInner,
 } from "./siteTheme";
@@ -193,13 +194,14 @@ th {
  * like leaving the site. The lockup goes back to the home page, which is the
  * only navigation a legal document should have.
  */
-function shell(title: string, description: string, head: string, body: string): string {
+function shell(title: string, description: string, head: string, body: string, meta = ""): string {
   return `<!doctype html>
 <html lang="en">
 <head>
 ${HEAD_COMMON}
 <title>${title}</title>
 <meta name="description" content="${description}">
+${meta}
 <meta name="theme-color" content="#F6F1E7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#16130F" media="(prefers-color-scheme: dark)">
 <style>${STYLE}</style>
@@ -223,14 +225,27 @@ ${footerInner(COPY.en)}
 </html>`;
 }
 
-/** A legal document: title, and the date it last changed. */
-function page(title: string, description: string, body: string, updated = LAST_UPDATED): string {
+/**
+ * A legal document: where it lives, its title, and the date it last changed.
+ *
+ * The path becomes the canonical URL, always on revely.life, so the copies
+ * this server also answers on (revely-api.fly.dev, a trailing slash, a capital
+ * letter) are never indexed as documents of their own.
+ */
+function page(
+  path: string,
+  title: string,
+  description: string,
+  body: string,
+  updated = LAST_UPDATED,
+): string {
   return shell(
     `${title} · Revely`,
     description,
     `  <h1>${title}</h1>
   <p class="updated">Last updated ${updated}</p>`,
     body,
+    `<link rel="canonical" href="${SITE_ORIGIN}${path}">`,
   );
 }
 
@@ -239,6 +254,7 @@ function page(title: string, description: string, body: string, updated = LAST_U
 // ---------------------------------------------------------------------------
 
 const PRIVACY = page(
+  "/privacy",
   "Privacy Policy",
   "What Revely collects, what it never collects, how long it is kept, and every company that receives anything.",
   `
@@ -449,6 +465,7 @@ Revely afterwards means the new version applies.</p>
  * party and make this section false.
  */
 const HEALTH_DATA = page(
+  "/health-data-privacy",
   "Consumer Health Data Privacy Policy",
   "The consumer health data disclosures required by the Washington My Health My Data Act.",
   `
@@ -576,6 +593,7 @@ We will include that link in any denial we send you.</p>
 // ---------------------------------------------------------------------------
 
 const TERMS = page(
+  "/terms",
   "Terms of Use",
   "The agreement for using Revely, including what it is not: a medical device, or a substitute for advice from a clinician.",
   `
@@ -708,6 +726,34 @@ you rights that cannot be overridden.</p>
 <h2>14. Contact</h2>
 <p>${LEGAL_ENTITY}, <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a></p>
 `,
+);
+
+// ---------------------------------------------------------------------------
+// Not found
+// ---------------------------------------------------------------------------
+
+/**
+ * What a person sees at an address that does not exist.
+ *
+ * It used to be the API's `{"message":"Not found"}`, which is right for the
+ * app and a dead end for anyone who typed a URL or followed an old link. The
+ * status is still 404, set by the caller, and the page asks not to be indexed
+ * so a mistyped link never turns up in search as a page of the site.
+ *
+ * English only, like the documents above, but it names the home page in all
+ * three languages, which is the one thing a lost reader needs.
+ */
+export const NOT_FOUND = shell(
+  "Page not found · Revely",
+  "There is no page at this address.",
+  `  <h1>Page not found</h1>`,
+  `
+<p>There is nothing at this address. It may have moved, or the link may have a
+typo in it.</p>
+<p>The home page is in <a href="/en">English</a>, <a href="/es" lang="es">español</a>
+and <a href="/zh" lang="zh-Hans">中文</a>.</p>
+`,
+  `<meta name="robots" content="noindex">`,
 );
 
 // ---------------------------------------------------------------------------

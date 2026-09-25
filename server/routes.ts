@@ -7,7 +7,7 @@ import { eq, sql, gte, and, count, desc, inArray } from "drizzle-orm";
 import { setupAuth, isAuthenticated } from "./localAuth";
 import { setupRevenueCatWebhook } from "./revenueCatWebhook";
 import { registerLegalRoutes } from "./legal";
-import { registerHomeRoutes } from "./home";
+import { canonicalHost, registerHomeRoutes } from "./home";
 import { isLang } from "./siteCopy";
 import { translateStatement } from "./services/substances/translations";
 import { fetchSubscriber, RevenueCatNotConfigured } from "./services/revenueCatApi";
@@ -204,6 +204,10 @@ setInterval(() => {
 const upload = multer({ storage: multer.memoryStorage() });
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // One address per page: www and the fly.dev host send pages to revely.life,
+  // and /EN or /en/ go to /en. Ahead of every page below. See server/home.ts.
+  app.use(canonicalHost);
+
   // Privacy policy and terms of use. Registered first because they are two of
   // the URLs an App Store submission is rejected for missing, and because the
   // paywall links to them (Guideline 3.1.2). See server/legal.ts.

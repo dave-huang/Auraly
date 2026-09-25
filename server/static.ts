@@ -2,6 +2,8 @@ import express, { type Express } from "express";
 import fs from "fs";
 import path from "path";
 
+import { NOT_FOUND } from "./legal";
+
 // Everything here is safe to run in production.
 //
 // It was split out of `server/vite.ts` because that module imports `vite` and
@@ -31,8 +33,14 @@ export function serveStatic(app: Express) {
   // production purely to satisfy a file check, so serve the API and say so.
   if (!fs.existsSync(distPath)) {
     log("no web bundle at dist/public — serving API only");
-    app.use("*", (_req, res) => {
-      res.status(404).json({ message: "Not found" });
+    // The app gets JSON, a person gets a page. Anything outside /api is an
+    // address someone typed or followed, and a bare JSON error is a dead end.
+    app.use("*", (req, res) => {
+      if (req.originalUrl.startsWith("/api/") || req.originalUrl === "/api") {
+        res.status(404).json({ message: "Not found" });
+        return;
+      }
+      res.status(404).type("html").send(NOT_FOUND);
     });
     return;
   }
