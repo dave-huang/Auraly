@@ -103,9 +103,11 @@ function loadAdditives(): Additive[] {
       const records = evidence
         .forSubstancesInDomain(registry.sameSubstanceIds(s.id), "food")
         .filter((r) => {
-          // The Prop 65 ingest kept chemicals OEHHA has since delisted, under
-          // ids like "saccharin_delisted_april_6_2001_click_here_…", as if
-          // they were still listed. Never repeat that here.
+          // Belt and braces: until 2026-09-26 the Prop 65 ingest kept
+          // chemicals OEHHA had delisted, under ids like
+          // "saccharin_delisted_april_6_2001_click_here_…", as if still listed.
+          // The ingest now skips them (ingest/prop65.ts); this keeps a page
+          // from ever repeating one if an old snapshot is re-ingested.
           if (r.substanceId.includes("delisted")) return false;
           const key = `${r.source}|${r.kind}|${r.statement}`;
           if (seen.has(key)) return false;

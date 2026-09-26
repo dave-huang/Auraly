@@ -1,7 +1,7 @@
 {
   "_metadata": {
-    "version": "curated-nutrients-2026-08-12+cosing_annex_ii-2026-07-30+cosing_annex_iii-2026-07-30+cosing_annex_iv-2026-07-30+cosing_annex_v-2026-07-30+cosing_annex_vi-2026-07-30+prop65-2026-07-31+iarc-2026-08+fda_food_additives-2026-08+efsa_openfoodtox-2026-08+curated-aliases-2026-08-24+curated-aliases-2026-09-24+curated-aliases-2026-09-24.2+curated-aliases-2026-09-24.3#0885c114df6b",
-    "updatedAt": "2026-09-24",
+    "version": "curated-nutrients-2026-08-12+cosing_annex_ii-2026-07-30+cosing_annex_iii-2026-07-30+cosing_annex_iv-2026-07-30+cosing_annex_v-2026-07-30+cosing_annex_vi-2026-07-30+prop65-2026-07-31+iarc-2026-08+fda_food_additives-2026-08+efsa_openfoodtox-2026-08+curated-aliases-2026-08-24+curated-aliases-2026-09-24+curated-aliases-2026-09-24.2+curated-aliases-2026-09-24.3+prop65-2026-07-31.1+prop65-delisted-removed-2026-09-26#d43d5099090b",
+    "updatedAt": "2026-09-26",
     "description": "Substance identity registry. Ingested source snapshots are the primary intended input (npm run substances:ingest). This first curated block exists because the hazard registers structurally cannot supply it: registers of prohibitions only list prohibited things, so nothing in them ever resolves an ordinary label term like 'sugar' or 'citric acid'. These entries carry the identities that health-guidance evidence attaches to. Aliases are EXACT-match after normalization, so each printed label form must be listed explicitly — an unlisted variant resolves to unidentified, which is the safe direction. 2026-08-12: added Chinese and Spanish label forms for every substance here. Cross-language scans were partly bypassing this registry — 白砂糖 resolved but bare 糖 did not — so a Chinese label fell back to the model for substances we hold records on. Partially-hydrogenated-oil forms are all explicitly PARTIAL; fully hydrogenated oil is a different ingredient and must not resolve here.",
     "reviewStatus": "ai_seeded",
     "sources": [
@@ -18,7 +18,9 @@
       "curated-aliases-2026-08-24",
       "curated-aliases-2026-09-24",
       "curated-aliases-2026-09-24.2",
-      "curated-aliases-2026-09-24.3"
+      "curated-aliases-2026-09-24.3",
+      "prop65-2026-07-31.1",
+      "prop65-delisted-removed-2026-09-26"
     ]
   },
   "substances": [
@@ -1052,8 +1054,8 @@
       "aliases": [
         {
           "name": "Acetochlor",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -1281,22 +1283,6 @@
       "aliases": [
         {
           "name": "All-trans retinoic acid",
-          "source": "prop65",
-          "confidence": 1
-        }
-      ]
-    },
-    {
-      "id": "allyl_chloride_delisted_october_29_1999_click_here_for_the_b",
-      "name": "Allyl chloride  Delisted October 29, 1999 [Click here for the basis for delisting]",
-      "cas": "107-05-1",
-      "ec": null,
-      "eNumber": null,
-      "inci": null,
-      "category": null,
-      "aliases": [
-        {
-          "name": "Allyl chloride  Delisted October 29, 1999 [Click here for the basis for delisting]",
           "source": "prop65",
           "confidence": 1
         }
@@ -1649,8 +1635,8 @@
       "aliases": [
         {
           "name": "Amitrole",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -1681,22 +1667,6 @@
       "aliases": [
         {
           "name": "Amsacrine",
-          "source": "prop65",
-          "confidence": 1
-        }
-      ]
-    },
-    {
-      "id": "tert_amyl_methyl_ether_delisted_december_13_2013_click_here_",
-      "name": "tert-Amyl methyl ether  Delisted December 13, 2013 [Click here for the basis for delisting]",
-      "cas": "994-05-8",
-      "ec": null,
-      "eNumber": null,
-      "inci": null,
-      "category": null,
-      "aliases": [
-        {
-          "name": "tert-Amyl methyl ether  Delisted December 13, 2013 [Click here for the basis for delisting]",
           "source": "prop65",
           "confidence": 1
         }
@@ -2912,8 +2882,8 @@
       "aliases": [
         {
           "name": "Bromoxynil",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -2928,8 +2898,8 @@
       "aliases": [
         {
           "name": "Bromoxynil octanoate",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -3024,22 +2994,6 @@
       "aliases": [
         {
           "name": "1-Butyl glycidyl ether",
-          "source": "prop65",
-          "confidence": 1
-        }
-      ]
-    },
-    {
-      "id": "n_butyl_glycidyl_ether_delisted_april_4_2014_click_here_for_",
-      "name": "n-Butyl glycidyl ether Delisted April 4, 2014 [Click here for the basis for delisting]",
-      "cas": "2426-08-6",
-      "ec": null,
-      "eNumber": null,
-      "inci": null,
-      "category": null,
-      "aliases": [
-        {
-          "name": "n-Butyl glycidyl ether Delisted April 4, 2014 [Click here for the basis for delisting]",
           "source": "prop65",
           "confidence": 1
         }
@@ -3168,8 +3122,8 @@
       "aliases": [
         {
           "name": "Captan",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -3200,8 +3154,8 @@
       "aliases": [
         {
           "name": "Carbaryl",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -3462,22 +3416,6 @@
       ]
     },
     {
-      "id": "chloramphenicol_delisted_january_4_2013_click_here_for_the_b",
-      "name": "Chloramphenicol Delisted January 4, 2013 [Click here for the basis for delisting]",
-      "cas": "56-75-7",
-      "ec": null,
-      "eNumber": null,
-      "inci": null,
-      "category": null,
-      "aliases": [
-        {
-          "name": "Chloramphenicol Delisted January 4, 2013 [Click here for the basis for delisting]",
-          "source": "prop65",
-          "confidence": 1
-        }
-      ]
-    },
-    {
       "id": "chloramphenicol_sodium_succinate",
       "name": "Chloramphenicol sodium succinate",
       "cas": "982-57-0",
@@ -3648,22 +3586,6 @@
       "aliases": [
         {
           "name": "p-Chloroaniline hydrochloride",
-          "source": "prop65",
-          "confidence": 1
-        }
-      ]
-    },
-    {
-      "id": "chlorodibromomethane_delisted_october_29_1999_click_here_for",
-      "name": "Chlorodibromomethane  Delisted October 29, 1999 [Click here for the basis for delisting]",
-      "cas": "124-48-1",
-      "ec": null,
-      "eNumber": null,
-      "inci": null,
-      "category": null,
-      "aliases": [
-        {
-          "name": "Chlorodibromomethane  Delisted October 29, 1999 [Click here for the basis for delisting]",
           "source": "prop65",
           "confidence": 1
         }
@@ -3877,8 +3799,8 @@
       "aliases": [
         {
           "name": "Chlorothalonil",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -4005,22 +3927,6 @@
       "aliases": [
         {
           "name": "Chlorpyrifos",
-          "source": "efsa",
-          "confidence": 0.95
-        }
-      ]
-    },
-    {
-      "id": "chlorsulfuron_delisted_june_6_2014_click_here_for_the_basis_",
-      "name": "Chlorsulfuron Delisted June 6, 2014 [Click here for the basis for delisting]",
-      "cas": "64902-72-3",
-      "ec": null,
-      "eNumber": null,
-      "inci": null,
-      "category": null,
-      "aliases": [
-        {
-          "name": "Chlorsulfuron Delisted June 6, 2014 [Click here for the basis for delisting]",
           "source": "prop65",
           "confidence": 1
         }
@@ -4640,22 +4546,6 @@
       ]
     },
     {
-      "id": "cyclohexanol_delisted_january_25_2002_click_here_for_the_bas",
-      "name": "Cyclohexanol  Delisted January 25, 2002 [Click here for the basis for delisting]",
-      "cas": "108-93-0",
-      "ec": null,
-      "eNumber": null,
-      "inci": null,
-      "category": null,
-      "aliases": [
-        {
-          "name": "Cyclohexanol  Delisted January 25, 2002 [Click here for the basis for delisting]",
-          "source": "prop65",
-          "confidence": 1
-        }
-      ]
-    },
-    {
       "id": "cycloheximide",
       "name": "Cycloheximide",
       "cas": "66-81-9",
@@ -4863,8 +4753,8 @@
       "aliases": [
         {
           "name": "Daminozide",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -5183,22 +5073,6 @@
       "aliases": [
         {
           "name": "2,4-Diaminotoluene",
-          "source": "prop65",
-          "confidence": 1
-        }
-      ]
-    },
-    {
-      "id": "diaminotoluene_mixed_delisted_november_20_2015_click_here_fo",
-      "name": "Diaminotoluene (mixed) Delisted November, 20 2015 [Click here for the basis for delisting]",
-      "cas": null,
-      "ec": null,
-      "eNumber": null,
-      "inci": null,
-      "category": null,
-      "aliases": [
-        {
-          "name": "Diaminotoluene (mixed) Delisted November, 20 2015 [Click here for the basis for delisting]",
           "source": "prop65",
           "confidence": 1
         }
@@ -5764,8 +5638,8 @@
       "aliases": [
         {
           "name": "1,3-Dichloropropene",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -5780,8 +5654,8 @@
       "aliases": [
         {
           "name": "Diclofop-methyl",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -5812,22 +5686,6 @@
       "aliases": [
         {
           "name": "Dieldrin",
-          "source": "prop65",
-          "confidence": 1
-        }
-      ]
-    },
-    {
-      "id": "dienestrol_delisted_january_4_2013_click_here_for_the_basis_",
-      "name": "Dienestrol Delisted January 4, 2013 [Click here for the basis for delisting]",
-      "cas": "84-17-3",
-      "ec": null,
-      "eNumber": null,
-      "inci": null,
-      "category": null,
-      "aliases": [
-        {
-          "name": "Dienestrol Delisted January 4, 2013 [Click here for the basis for delisting]",
           "source": "prop65",
           "confidence": 1
         }
@@ -6004,22 +5862,6 @@
       "aliases": [
         {
           "name": "Diflunisal",
-          "source": "prop65",
-          "confidence": 1
-        }
-      ]
-    },
-    {
-      "id": "diglycidyl_ether_delisted_april_4_2014_click_here_for_the_ba",
-      "name": "Diglycidyl ether Delisted April 4, 2014 [Click here for the basis for delisting]",
-      "cas": "2238-07-5",
-      "ec": null,
-      "eNumber": null,
-      "inci": null,
-      "category": null,
-      "aliases": [
-        {
-          "name": "Diglycidyl ether Delisted April 4, 2014 [Click here for the basis for delisting]",
           "source": "prop65",
           "confidence": 1
         }
@@ -6873,8 +6715,8 @@
       "aliases": [
         {
           "name": "Diuron",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -6953,22 +6795,6 @@
       "aliases": [
         {
           "name": "Doxycycline monohydrate (internal use)",
-          "source": "prop65",
-          "confidence": 1
-        }
-      ]
-    },
-    {
-      "id": "2_4_dp_dichloroprop_delisted_january_25_2002_click_here_for_",
-      "name": "2,4-DP (dichloroprop)  Delisted January 25, 2002 [Click here for the basis for delisting]",
-      "cas": "120-36-5",
-      "ec": null,
-      "eNumber": null,
-      "inci": null,
-      "category": null,
-      "aliases": [
-        {
-          "name": "2,4-DP (dichloroprop)  Delisted January 25, 2002 [Click here for the basis for delisting]",
           "source": "prop65",
           "confidence": 1
         }
@@ -7065,8 +6891,8 @@
       "aliases": [
         {
           "name": "Epoxiconazole",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -7295,22 +7121,6 @@
       ]
     },
     {
-      "id": "ethyl_tert_butyl_ether_delisted_december_13_2013_click_here_",
-      "name": "Ethyl-tert-butyl ether  Delisted December 13, 2013 [Click here for the basis for delisting]",
-      "cas": "637-92-3",
-      "ec": null,
-      "eNumber": null,
-      "inci": null,
-      "category": null,
-      "aliases": [
-        {
-          "name": "Ethyl-tert-butyl ether  Delisted December 13, 2013 [Click here for the basis for delisting]",
-          "source": "prop65",
-          "confidence": 1
-        }
-      ]
-    },
-    {
       "id": "ethyl_dipropylthiocarbamate",
       "name": "Ethyl dipropylthiocarbamate",
       "cas": "759-94-4",
@@ -7519,22 +7329,6 @@
       ]
     },
     {
-      "id": "2_ethylhexanoic_acid_delisted_december_13_2013_click_here_fo",
-      "name": "2-Ethylhexanoic acid  Delisted December 13, 2013 [Click here for the basis for delisting]",
-      "cas": "149-57-5",
-      "ec": null,
-      "eNumber": null,
-      "inci": null,
-      "category": null,
-      "aliases": [
-        {
-          "name": "2-Ethylhexanoic acid  Delisted December 13, 2013 [Click here for the basis for delisting]",
-          "source": "prop65",
-          "confidence": 1
-        }
-      ]
-    },
-    {
       "id": "2_ethylhexyl_acrylate",
       "name": "2-Ethylhexyl acrylate",
       "cas": "103-11-7",
@@ -7662,8 +7456,8 @@
       "aliases": [
         {
           "name": "Fenoxycarb",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -7859,8 +7653,8 @@
       "aliases": [
         {
           "name": "Folpet",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -8200,8 +7994,8 @@
       "aliases": [
         {
           "name": "Glyphosate",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -8877,8 +8671,8 @@
       "aliases": [
         {
           "name": "Imazalil",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -8962,8 +8756,8 @@
       "aliases": [
         {
           "name": "Iprodione",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -8978,8 +8772,8 @@
       "aliases": [
         {
           "name": "Iprovalicarb",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -9047,22 +8841,6 @@
       "aliases": [
         {
           "name": "Isopyrazam",
-          "source": "efsa",
-          "confidence": 0.95
-        }
-      ]
-    },
-    {
-      "id": "isosafrole_delisted_december_8_2006_click_here_for_the_basis",
-      "name": "Isosafrole Delisted December 8, 2006 [Click here for the basis for delisting]",
-      "cas": "120-58-1",
-      "ec": null,
-      "eNumber": null,
-      "inci": null,
-      "category": null,
-      "aliases": [
-        {
-          "name": "Isosafrole Delisted December 8, 2006 [Click here for the basis for delisting]",
           "source": "prop65",
           "confidence": 1
         }
@@ -9095,8 +8873,8 @@
       "aliases": [
         {
           "name": "Isoxaflutole",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -9111,8 +8889,8 @@
       "aliases": [
         {
           "name": "Kresoxim-methyl",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -9351,8 +9129,8 @@
       "aliases": [
         {
           "name": "Linuron",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -9447,8 +9225,8 @@
       "aliases": [
         {
           "name": "Malathion",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -9479,8 +9257,8 @@
       "aliases": [
         {
           "name": "Mancozeb",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -9655,8 +9433,8 @@
       "aliases": [
         {
           "name": "Mepanipyrim",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -10327,22 +10105,6 @@
       ]
     },
     {
-      "id": "methyl_isopropyl_ketone_delisted_april_4_2014_click_for_the_",
-      "name": "Methyl isopropyl ketone Delisted April 4, 2014 [Click for the basis for delisting]",
-      "cas": "563-80-4",
-      "ec": null,
-      "eNumber": null,
-      "inci": null,
-      "category": null,
-      "aliases": [
-        {
-          "name": "Methyl isopropyl ketone Delisted April 4, 2014 [Click for the basis for delisting]",
-          "source": "prop65",
-          "confidence": 1
-        }
-      ]
-    },
-    {
       "id": "methyl_mercury",
       "name": "Methyl mercury",
       "cas": null,
@@ -10519,22 +10281,6 @@
       ]
     },
     {
-      "id": "α_methyl_styrene_delisted_april_4_2014_click_for_the_basis_f",
-      "name": "α-Methyl styrene Delisted April 4, 2014 [Click for the basis for delisting]",
-      "cas": "98-83-9",
-      "ec": null,
-      "eNumber": null,
-      "inci": null,
-      "category": null,
-      "aliases": [
-        {
-          "name": "α-Methyl styrene Delisted April 4, 2014 [Click for the basis for delisting]",
-          "source": "prop65",
-          "confidence": 1
-        }
-      ]
-    },
-    {
       "id": "methyltestosterone",
       "name": "Methyltestosterone",
       "cas": "58-18-4",
@@ -10577,8 +10323,8 @@
       "aliases": [
         {
           "name": "Metiram",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -10881,8 +10627,8 @@
       "aliases": [
         {
           "name": "Myclobutanil",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -11238,8 +10984,8 @@
       "aliases": [
         {
           "name": "Nicotine",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -11366,22 +11112,6 @@
       "aliases": [
         {
           "name": "5-Nitroacenaphthene",
-          "source": "prop65",
-          "confidence": 1
-        }
-      ]
-    },
-    {
-      "id": "5_nitro_o_anisidine_delisted_december_8_2006_click_here_for_",
-      "name": "5-Nitro-o-anisidine Delisted December 8, 2006 [Click here for the basis for delisting]",
-      "cas": "99-59-2",
-      "ec": null,
-      "eNumber": null,
-      "inci": null,
-      "category": null,
-      "aliases": [
-        {
-          "name": "5-Nitro-o-anisidine Delisted December 8, 2006 [Click here for the basis for delisting]",
           "source": "prop65",
           "confidence": 1
         }
@@ -12405,8 +12135,8 @@
       "aliases": [
         {
           "name": "Oryzalin",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -12421,8 +12151,8 @@
       "aliases": [
         {
           "name": "Oxadiazon",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -12437,22 +12167,6 @@
       "aliases": [
         {
           "name": "Oxazepam",
-          "source": "prop65",
-          "confidence": 1
-        }
-      ]
-    },
-    {
-      "id": "p_p_oxybis_benzenesulfonyl_hydrazide_delisted_december_13_20",
-      "name": "p,p'-Oxybis(benzenesulfonyl hydrazide)  Delisted December 13, 2013 [Click here for the basis for delisting]",
-      "cas": "80-51-3",
-      "ec": null,
-      "eNumber": null,
-      "inci": null,
-      "category": null,
-      "aliases": [
-        {
-          "name": "p,p'-Oxybis(benzenesulfonyl hydrazide)  Delisted December 13, 2013 [Click here for the basis for delisting]",
           "source": "prop65",
           "confidence": 1
         }
@@ -13040,22 +12754,6 @@
       ]
     },
     {
-      "id": "phenyl_glycidyl_ether_delisted_april_4_2014_click_here_for_t",
-      "name": "Phenyl glycidyl ether   \nDelisted April 4, 2014 [Click here  for the basis for delisting]",
-      "cas": "122-60-1",
-      "ec": null,
-      "eNumber": null,
-      "inci": null,
-      "category": null,
-      "aliases": [
-        {
-          "name": "Phenyl glycidyl ether   \nDelisted April 4, 2014 [Click here  for the basis for delisting]",
-          "source": "prop65",
-          "confidence": 1
-        }
-      ]
-    },
-    {
       "id": "phenylhydrazine_and_its_salts",
       "name": "Phenylhydrazine and its salts",
       "cas": null,
@@ -13226,8 +12924,8 @@
       "aliases": [
         {
           "name": "Pirimicarb",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -13706,8 +13404,8 @@
       "aliases": [
         {
           "name": "Pymetrozine",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -13920,38 +13618,6 @@
       ]
     },
     {
-      "id": "saccharin_delisted_april_6_2001_click_here_for_the_basis_for",
-      "name": "Saccharin  Delisted April 6, 2001  [Click here for the basis for delisting]",
-      "cas": "81-07-2",
-      "ec": null,
-      "eNumber": null,
-      "inci": null,
-      "category": null,
-      "aliases": [
-        {
-          "name": "Saccharin  Delisted April 6, 2001  [Click here for the basis for delisting]",
-          "source": "prop65",
-          "confidence": 1
-        }
-      ]
-    },
-    {
-      "id": "saccharin_sodium_delisted_january_17_2003_click_here_for_the",
-      "name": "Saccharin, sodium  Delisted January 17, 2003 [Click here for the basis for delisting]",
-      "cas": "128-44-9",
-      "ec": null,
-      "eNumber": null,
-      "inci": null,
-      "category": null,
-      "aliases": [
-        {
-          "name": "Saccharin, sodium  Delisted January 17, 2003 [Click here for the basis for delisting]",
-          "source": "prop65",
-          "confidence": 1
-        }
-      ]
-    },
-    {
       "id": "safrole",
       "name": "Safrole",
       "cas": "94-59-7",
@@ -14010,8 +13676,8 @@
       "aliases": [
         {
           "name": "Sedaxane",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -14180,8 +13846,8 @@
       "aliases": [
         {
           "name": "Spirodiclofen",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -14889,8 +14555,8 @@
       "aliases": [
         {
           "name": "Thiodicarb",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -15140,22 +14806,6 @@
       ]
     },
     {
-      "id": "para_toluidine_delisted_october_29_1999_click_here_for_the_b",
-      "name": "para-Toluidine  Delisted October 29, 1999 [Click here for the basis for delisting]",
-      "cas": "106-49-0",
-      "ec": null,
-      "eNumber": null,
-      "inci": null,
-      "category": null,
-      "aliases": [
-        {
-          "name": "para-Toluidine  Delisted October 29, 1999 [Click here for the basis for delisting]",
-          "source": "prop65",
-          "confidence": 1
-        }
-      ]
-    },
-    {
       "id": "topiramate",
       "name": "Topiramate",
       "cas": "97240-79-4",
@@ -15230,8 +14880,8 @@
       "aliases": [
         {
           "name": "Triadimefon",
-          "source": "efsa",
-          "confidence": 0.95
+          "source": "prop65",
+          "confidence": 1
         }
       ]
     },
@@ -15428,22 +15078,6 @@
       ]
     },
     {
-      "id": "1_3_5_triglycidyl_s_triazinetrione_delisted_december_13_2013",
-      "name": "1,3,5-Triglycidyl-s-triazinetrione  Delisted December 13, 2013 [Click here for the basis for delisting]",
-      "cas": "2451-62-9",
-      "ec": null,
-      "eNumber": null,
-      "inci": null,
-      "category": null,
-      "aliases": [
-        {
-          "name": "1,3,5-Triglycidyl-s-triazinetrione  Delisted December 13, 2013 [Click here for the basis for delisting]",
-          "source": "prop65",
-          "confidence": 1
-        }
-      ]
-    },
-    {
       "id": "trilostane",
       "name": "Trilostane",
       "cas": "13647-35-3",
@@ -15582,22 +15216,6 @@
       "aliases": [
         {
           "name": "Triphenyltin hydroxide",
-          "source": "prop65",
-          "confidence": 1
-        }
-      ]
-    },
-    {
-      "id": "tris_aziridinyl_p_benzoquinone_triaziquone_delisted_december",
-      "name": "Tris(aziridinyl)-p-benzoquinone (Triaziquone) Delisted December 8, 2006 [Click here for the basis for delisting]",
-      "cas": "68-76-8",
-      "ec": null,
-      "eNumber": null,
-      "inci": null,
-      "category": null,
-      "aliases": [
-        {
-          "name": "Tris(aziridinyl)-p-benzoquinone (Triaziquone) Delisted December 8, 2006 [Click here for the basis for delisting]",
           "source": "prop65",
           "confidence": 1
         }
@@ -16179,22 +15797,6 @@
       "aliases": [
         {
           "name": "Zileuton",
-          "source": "prop65",
-          "confidence": 1
-        }
-      ]
-    },
-    {
-      "id": "zineb_delisted_october_29_1999_click_here_for_the_basis_for_",
-      "name": "Zineb  Delisted October 29, 1999 [Click here for the basis for delisting]",
-      "cas": "12122-67-7",
-      "ec": null,
-      "eNumber": null,
-      "inci": null,
-      "category": null,
-      "aliases": [
-        {
-          "name": "Zineb  Delisted October 29, 1999 [Click here for the basis for delisting]",
           "source": "prop65",
           "confidence": 1
         }

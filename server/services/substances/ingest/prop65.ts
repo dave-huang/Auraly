@@ -43,6 +43,18 @@ export const prop65Adapter: SourceAdapter = {
         return;
       }
 
+      // OEHHA keeps delisted chemicals on the list it publishes, with the
+      // delisting written into the name: "Saccharin  Delisted April 6, 2001
+      // [Click here for the basis for delisting]". Until 2026-09-26 these were
+      // ingested as current listings, under ids like
+      // "saccharin_delisted_april_6_2001_click_here_…", which the registry then
+      // tied back to the real chemical by CAS. Saccharin read as a Prop 65
+      // carcinogen 25 years after California said it was not.
+      if (/\bdelisted\b/i.test(name)) {
+        skipped.push({ row: index + 2, reason: 'delisted by OEHHA', raw: name });
+        return;
+      }
+
       const cas = normalizeCas(row[COL_CAS]);
       const id = slugifySubstanceId(name);
 
