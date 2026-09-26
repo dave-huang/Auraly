@@ -10,6 +10,8 @@ import { registerLegalRoutes } from "./legal";
 import { canonicalHost, registerHomeRoutes } from "./home";
 import { registerGuideRoutes } from "./guides";
 import { registerAllergenRoutes } from "./allergens";
+import { registerAdditiveRoutes } from "./additives";
+import { registerLearnRoutes } from "./learn";
 import { isLang } from "./siteCopy";
 import { translateStatement } from "./services/substances/translations";
 import { fetchSubscriber, RevenueCatNotConfigured } from "./services/revenueCatApi";
@@ -225,6 +227,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // The allergen pages at /en/allergens. Same ordering rule. See server/allergens.ts.
   registerAllergenRoutes(app);
+
+  // /en/additives and the Learn index. Same ordering rule. See server/additives.ts
+  // and server/learn.ts.
+  registerAdditiveRoutes(app);
+  registerLearnRoutes(app);
 
   // Liveness. This is what the platform health check hits, and it answers 200
   // whenever the process can serve HTTP at all.

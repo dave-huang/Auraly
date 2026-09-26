@@ -14,7 +14,9 @@ import {
   footerInner,
   lockupLink,
 } from "./siteTheme";
+import { additivePaths } from "./additives";
 import { ALLERGEN_PATHS } from "./allergens";
+import { LEARN_PATHS } from "./learn";
 import { GUIDE_ALTERNATES, GUIDE_PATHS } from "./guides";
 import {
   COPY,
@@ -957,7 +959,7 @@ function body(c: Copy, lang: Lang): string {
 
 <footer class="foot">
   <div class="shell">
-${footerInner(c, `/${lang}/guides`)}
+${footerInner(c, `/${lang}/learn`)}
   </div>
 </footer>
 
@@ -1239,7 +1241,17 @@ const PAGE_PATHS = new Set([
   "/health-data-privacy",
   ...GUIDE_PATHS,
   ...ALLERGEN_PATHS,
+  ...Object.values(LEARN_PATHS),
 ]);
+
+/**
+ * The additive pages are generated from the registry on first use, so they
+ * are matched by prefix rather than listed. An unknown slug still reaches the
+ * route, which answers 404 or redirects a bare E number to its page.
+ */
+function isPagePath(page: string): boolean {
+  return PAGE_PATHS.has(page) || page === "/en/additives" || page.startsWith("/en/additives/");
+}
 
 /**
  * One address per page.
@@ -1272,7 +1284,7 @@ export function canonicalHost(req: Request, res: Response, next: NextFunction): 
 
   const lower = req.path.toLowerCase();
   const page = lower.length > 1 ? lower.replace(/\/+$/, "") : lower;
-  if (!PAGE_PATHS.has(page)) return next();
+  if (!isPagePath(page)) return next();
 
   const q = req.originalUrl.indexOf("?");
   const query = q === -1 ? "" : req.originalUrl.slice(q);
@@ -1303,7 +1315,9 @@ Sitemap: ${SITE_ORIGIN}/sitemap.xml
  * No lastmod: the pages are rendered at boot, and a date that changes on every
  * deploy is one Google learns to ignore.
  */
-const SITEMAP = (() => {
+let sitemapCache: string | null = null;
+function sitemap(): string {
+  if (sitemapCache) return sitemapCache;
   const group = (paths: Record<Lang, string>) => {
     const links = [
       ...SITE_LANGUAGES.map(
@@ -1316,18 +1330,19 @@ const SITEMAP = (() => {
     );
   };
   const homes = group({ en: "/en", zh: "/zh", es: "/es" });
-  const guides = GUIDE_ALTERNATES.flatMap(group);
+  const guides = [...GUIDE_ALTERNATES, LEARN_PATHS].flatMap(group);
   // English only, so no alternates: the allergen pages until they are
   // translated, and the legal documents for good.
-  const legal = [...ALLERGEN_PATHS, "/privacy", "/terms", "/health-data-privacy"].map(
+  const legal = [...ALLERGEN_PATHS, ...additivePaths(), "/privacy", "/terms", "/health-data-privacy"].map(
     (p) => `  <url>\n    <loc>${SITE_ORIGIN}${p}</loc>\n  </url>`,
   );
-  return `<?xml version="1.0" encoding="UTF-8"?>
+  sitemapCache = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${[...homes, ...guides, ...legal].join("\n")}
 </urlset>
 `;
-})();
+  return sitemapCache;
+}
 
 /**
  * Mount the home page and the images it needs.
@@ -1364,7 +1379,7 @@ export function registerHomeRoutes(app: Express): void {
   });
   app.get("/sitemap.xml", (_req, res) => {
     res.setHeader("Cache-Control", "public, max-age=86400");
-    res.type("application/xml").send(SITEMAP);
+    res.type("application/xml").send(sitemap());
   });
 
   app.get("/en", (_req, res) => res.type("html").send(PAGES.en));

@@ -362,7 +362,7 @@ const en: Copy = {
   closeTitle: "Know what you’re eating.",
   closeLede: "Set up a profile, see an example scan, and take it to the shops.",
 
-  footGuides: "Guides",
+  footGuides: "Learn",
   footPrivacy: "Privacy Policy",
   footTerms: "Terms of Use",
   footHealth: "Consumer Health Data Privacy Policy",
@@ -568,7 +568,7 @@ const es: Copy = {
   closeLede:
     "Crea un perfil, mira un escaneo de ejemplo y llévatelo a la compra.",
 
-  footGuides: "Guías",
+  footGuides: "Aprende",
   footPrivacy: "Política de Privacidad",
   footTerms: "Términos de Uso",
   footHealth: "Política de Privacidad de Datos de Salud del Consumidor",
@@ -740,7 +740,7 @@ const zh: Copy = {
   closeTitle: "吃什么心里有数。",
   closeLede: "建一份档案，看一次示例扫描，然后带着它去买东西。",
 
-  footGuides: "指南",
+  footGuides: "科普",
   footPrivacy: "隐私政策",
   footTerms: "使用条款",
   footHealth: "消费者健康数据隐私政策",

@@ -114,7 +114,7 @@ export function lockupLink(href: string, label: string): string {
 }
 
 export interface FooterCopy {
-  /** The label for the guides link; the link goes to the page's own language. */
+  /** The label for the Learn link; it goes to the Learn index in the page's language. */
   footGuides?: string;
   footPrivacy: string;
   footTerms: string;
@@ -136,9 +136,9 @@ export interface FooterCopy {
  * language they were not reading a moment ago, without warning, is worse than
  * telling them first.
  */
-export function footerInner(c: FooterCopy, guidesHref = "/en/guides"): string {
+export function footerInner(c: FooterCopy, learnHref = "/en/learn"): string {
   return `    <ul class="foot-links">
-      ${c.footGuides ? `<li><a href="${guidesHref}">${c.footGuides}</a></li>` : ""}
+      ${c.footGuides ? `<li><a href="${learnHref}">${c.footGuides}</a></li>` : ""}
       <li><a href="/privacy">${c.footPrivacy}</a></li>
       <li><a href="/terms">${c.footTerms}</a></li>
       <li><a href="/health-data-privacy">${c.footHealth}</a></li>

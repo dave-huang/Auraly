@@ -58,6 +58,10 @@ export const UI: Record<
     languages: string;
     allergens: string;
     site: string;
+    additives: string;
+    learn: string;
+    allTopics: string;
+    inEnglish: string;
   }
 > = {
   en: {
@@ -75,6 +79,10 @@ export const UI: Record<
     languages: "Language",
     allergens: "Allergens",
     site: "Site",
+    additives: "Additives",
+    learn: "Learn",
+    allTopics: "All topics",
+    inEnglish: "",
   },
   zh: {
     guide: "指南",
@@ -90,6 +98,10 @@ export const UI: Record<
     languages: "语言",
     allergens: "过敏原",
     site: "网站",
+    additives: "食品添加剂",
+    learn: "科普",
+    allTopics: "全部内容",
+    inEnglish: "英文",
   },
   es: {
     guide: "Guía",
@@ -106,6 +118,10 @@ export const UI: Record<
     languages: "Idioma",
     allergens: "Alérgenos",
     site: "Sitio",
+    additives: "Aditivos",
+    learn: "Aprende",
+    allTopics: "Todos los temas",
+    inEnglish: "en inglés",
   },
 };
 
@@ -171,6 +187,16 @@ td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; white-spa
 .top nav { display: flex; align-items: center; gap: 16px; white-space: nowrap; }
 .top nav .langs { display: flex; gap: 10px; font-family: var(--mono); font-size: 0.75rem; }
 .top nav .langs a[aria-current] { text-decoration: underline; text-underline-offset: 4px; }
+.learn { position: relative; }
+.learn summary { list-style: none; cursor: pointer; font-size: 0.9375rem; color: var(--ink-muted); }
+.learn summary::-webkit-details-marker { display: none; }
+.learn summary::after { content: ""; display: inline-block; width: 6px; height: 6px; margin-left: 7px; border: solid currentColor; border-width: 0 1.5px 1.5px 0; transform: translateY(-3px) rotate(45deg); }
+.learn[open] summary { color: var(--ink); }
+.learn .menu { position: absolute; right: 0; top: calc(100% + 12px); z-index: 20; display: grid; min-width: 220px; padding: 6px 0; background: var(--card); border: 1px solid var(--rule); box-shadow: 0 8px 24px rgba(22, 19, 15, 0.12); }
+.learn .menu a { padding: 9px 16px; font-size: 0.9375rem; color: var(--ink); text-decoration: none; white-space: nowrap; }
+.learn .menu a:hover, .learn .menu a:focus-visible { background: var(--sunk); }
+.learn .menu a[aria-current] { font-weight: 600; }
+.learn .menu .note { font-family: var(--mono); font-size: 0.6875rem; color: var(--ink-faint); margin-left: 4px; }
 /* The display tracking is tuned for Latin; CJK fills its em box and wants none. */
 :lang(zh) h1, :lang(zh) h2, :lang(zh) .cards .t { letter-spacing: 0; }
 :lang(zh) .dek { line-height: 1.7; }
@@ -200,9 +226,13 @@ export function badge(lang: Lang): string {
  * is only drawn in a language the section has, so a Chinese page never sends
  * its reader to an English index without saying so.
  */
-export const SECTION_LANGS: Record<"guides" | "allergens", readonly Lang[]> = {
+export type Section = "guides" | "allergens" | "additives" | "learn";
+
+export const SECTION_LANGS: Record<Section, readonly Lang[]> = {
   guides: SITE_LANGUAGES,
   allergens: ["en"],
+  additives: ["en"],
+  learn: SITE_LANGUAGES,
 };
 
 /**
@@ -219,7 +249,7 @@ export function renderPage(opts: {
   description: string;
   ogType: "article" | "website";
   schema: unknown[];
-  section: "guides" | "allergens";
+  section: Section;
   isIndex: boolean;
   main: string;
   /** Page-type CSS, appended after the shared stylesheet. */
@@ -247,10 +277,24 @@ export function renderPage(opts: {
           )
           .join("")}</span>`
       : "";
-  const navLink = (section: "guides" | "allergens", label: string) =>
-    SECTION_LANGS[section].includes(lang)
-      ? `<a href="/${lang}/${section}"${opts.section === section && opts.isIndex ? ' aria-current="page"' : ""}>${label}</a>`
-      : "";
+  // The Learn menu: every section, in this language where it exists and in
+  // English, marked as such, where it does not yet. A <details> so it opens
+  // and closes without script; the script below only closes it on an outside
+  // tap. The Learn index is the menu's first item and its no-JS fallback.
+  const menuItem = (section: Exclude<Section, "learn">, label: string) => {
+    const here = SECTION_LANGS[section].includes(lang);
+    const current = opts.section === section && opts.isIndex ? ' aria-current="page"' : "";
+    return `<a href="/${here ? lang : "en"}/${section}"${current}>${label}${here ? "" : ` <span class="note">${ui.inEnglish}</span>`}</a>`;
+  };
+  const learnMenu = `<details class="learn">
+        <summary>${ui.learn}</summary>
+        <div class="menu">
+          <a href="/${lang}/learn"${opts.section === "learn" ? ' aria-current="page"' : ""}>${ui.allTopics}</a>
+          ${menuItem("guides", ui.guides)}
+          ${menuItem("allergens", ui.allergens)}
+          ${menuItem("additives", ui.additives)}
+        </div>
+      </details>`;
   return `<!doctype html>
 <html lang="${HTML_LANG[lang]}">
 <head>
@@ -279,8 +323,7 @@ ${opts.schema.map(jsonLd).join("\n")}
   <div class="shell">
     ${lockupLink(`/${lang}`, COPY[lang].homeLabel)}
     <nav aria-label="${ui.site}">
-      ${navLink("guides", ui.guides)}
-      ${navLink("allergens", ui.allergens)}
+      ${learnMenu}
       ${langLinks}
     </nav>
   </div>
@@ -290,9 +333,19 @@ ${opts.main}
 </main>
 <footer class="foot">
   <div class="shell">
-${footerInner(COPY[lang], `/${lang}/guides`)}
+${footerInner(COPY[lang], `/${lang}/learn`)}
   </div>
 </footer>
+<script>
+document.addEventListener("click", function (e) {
+  document.querySelectorAll("details.learn[open]").forEach(function (d) {
+    if (!d.contains(e.target)) d.removeAttribute("open");
+  });
+});
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape") document.querySelectorAll("details.learn[open]").forEach(function (d) { d.removeAttribute("open"); });
+});
+</script>
 </body>
 </html>`;
 }

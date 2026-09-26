@@ -72,6 +72,11 @@ const INTENTIONALLY_PUBLIC: Record<string, string> = {
   'GET /en/guides/:slug': 'one guide. Looked up in a fixed in-memory map; an unknown slug gets the not-found page. Reads nothing',
   'GET /en/allergens': 'the index of the allergen pages. A fixed page that reads nothing',
   'GET /en/allergens/:slug': 'one allergen page. Looked up in a fixed in-memory map; an unknown slug gets the not-found page. Reads nothing',
+  'GET /en/additives': 'the E-number index, generated from the substance registry at first request. Reads no user data',
+  'GET /en/additives/:slug': 'one additive page, from the registry and evidence store. Reads no user data; an unknown slug is a 404',
+  'GET /en/learn': 'the index of every content section. A fixed page that reads nothing',
+  'GET /zh/learn': 'the same, in Chinese',
+  'GET /es/learn': 'the same, in Spanish',
   'GET /robots.txt': 'tells search engines what to crawl; a fixed string that reads nothing',
   'GET /sitemap.xml': 'lists the site\'s pages for search engines; a fixed string that reads nothing',
   'GET /get': 'the short link the site\'s QR code encodes. Redirects to the App Store, or an Android phone to the waitlist; reads nothing',
@@ -226,6 +231,8 @@ const routes = [
   ...findRoutes('server/home.ts'),
   ...findRoutes('server/guides.ts'),
   ...findRoutes('server/allergens.ts'),
+  ...findRoutes('server/additives.ts'),
+  ...findRoutes('server/learn.ts'),
 ];
 
 console.log(`\n[AUTH] ${routes.length} routes found`);
