@@ -55,6 +55,10 @@ export const GUIDES_ZH: Record<string, GuideText> = {
 <p>每种配料单独排位。一款产品如果同时用了糖、葡萄糖浆和蜂蜜，这三样会分别列出，而每一样都比三者加起来轻，所以各自都比单用一种糖时排得更靠后。</p>
 <p>判断某样东西排在多靠后之前，值得把整张表读完。<a href="/zh/guides/names-for-sugar">这里是糖的各种名称。</a></p>
 
+<h2>添加剂按用途标注</h2>
+<p>在欧盟，属于着色剂、防腐剂、乳化剂等类别的添加剂，必须先写类别名称，再写具体名称，或在适当时写 E 编号。${cite(2)} 所以欧洲的标签会先说明添加剂的用途，再写它的名称或编号，例如“preservative: E211”（防腐剂：E211）。</p>
+<p><a href="/zh/additives">查一查标签上的 E 编号。</a></p>
+
 <h2>过敏原会被标出，方式取决于在哪里销售</h2>
 <p>美国标签用两种方式之一注明主要过敏原的来源：在配料后面加括号，例如“whey (milk)”（乳清（牛奶））或“flour (wheat)”（面粉（小麦））；或者在配料表后紧接一行，例如“Contains wheat, milk, and soy.”（含有小麦、牛奶和大豆）。${cite(3)}</p>
 <p>欧盟标签则直接在配料表里标出：过敏原的名称必须用与其他配料明显不同的字体、样式或背景颜色加以突出。${cite(2)} 你通常会看到它是粗体。</p>
@@ -135,19 +139,19 @@ export const GUIDES_ZH: Record<string, GuideText> = {
 <table>
   <thead><tr><th scope="col">E 编号</th><th scope="col">名称</th><th scope="col">美国名称</th></tr></thead>
   <tbody>
-    <tr><td class="num">E102</td><td>柠檬黄</td><td>FD&amp;C Yellow No. 5</td></tr>
-    <tr><td class="num">E104</td><td>喹啉黄</td><td>没有 FD&amp;C 名称</td></tr>
-    <tr><td class="num">E110</td><td>日落黄</td><td>FD&amp;C Yellow No. 6</td></tr>
-    <tr><td class="num">E122</td><td>偶氮玉红</td><td>没有 FD&amp;C 名称</td></tr>
-    <tr><td class="num">E124</td><td>胭脂红</td><td>没有 FD&amp;C 名称</td></tr>
-    <tr><td class="num">E129</td><td>诱惑红</td><td>FD&amp;C Red No. 40</td></tr>
+    <tr><td class="num">E102</td><td><a href="/zh/additives/e102-tartrazine">柠檬黄</a></td><td>FD&amp;C Yellow No. 5</td></tr>
+    <tr><td class="num">E104</td><td><a href="/zh/additives/e104-quinoline-yellow">喹啉黄</a></td><td>没有 FD&amp;C 名称</td></tr>
+    <tr><td class="num">E110</td><td><a href="/zh/additives/e110-sunset-yellow-fcf">日落黄</a></td><td>FD&amp;C Yellow No. 6</td></tr>
+    <tr><td class="num">E122</td><td><a href="/zh/additives/e122-carmoisine">偶氮玉红</a></td><td>没有 FD&amp;C 名称</td></tr>
+    <tr><td class="num">E124</td><td><a href="/zh/additives/e124-ponceau-4r">胭脂红</a></td><td>没有 FD&amp;C 名称</td></tr>
+    <tr><td class="num">E129</td><td><a href="/zh/additives/e129-allura-red-ac">诱惑红</a></td><td>FD&amp;C Red No. 40</td></tr>
   </tbody>
 </table>
 </div>
 <p>警示不等于禁用。这些色素在欧盟仍然允许使用，只是标签必须说明，所以在欧洲的包装上很容易发现。在美国的包装上，要找的是最后一列的名称，常简写为 Yellow 5、Yellow 6 或 Red 40。</p>
 
 <h2>赤藓红在美国的遭遇</h2>
-<p>另一种色素 FD&amp;C Red No. 3，也叫赤藓红，正在退出美国食品。2025 年 1 月，FDA 撤销了它在食品和口服药物中的使用许可。对食品而言，这项命令于 2027 年 1 月 15 日生效，也就是重新调整配方的最后期限。${cite(2)}</p>
+<p>另一种色素 FD&amp;C Red No. 3，也叫<a href="/zh/additives/e127-erythrosine">赤藓红</a>，正在退出美国食品。2025 年 1 月，FDA 撤销了它在食品和口服药物中的使用许可。对食品而言，这项命令于 2027 年 1 月 15 日生效，也就是重新调整配方的最后期限。${cite(2)}</p>
 <p>原因既关乎科学，也关乎法律。美国法律规定，一种色素一旦被发现会使动物致癌，就不能再获批准。FDA 认定，Red No. 3 会通过一种大鼠特有的激素机制诱发雄性大鼠患癌。${cite(2)}</p>
 `,
     inRevely:

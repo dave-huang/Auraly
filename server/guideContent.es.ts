@@ -56,6 +56,10 @@ export const GUIDES_ES: Record<string, GuideText> = {
 <p>Cada ingrediente ocupa su propio lugar en ese orden. Un producto endulzado con azúcar, jarabe de glucosa y miel enumera los tres por separado, y cada uno pesa menos que los tres juntos. Por eso cada uno aparece más abajo de lo que aparecería un solo azúcar.</p>
 <p>Vale la pena leer hasta el final antes de decidir lo abajo que está algo. <a href="/es/guides/names-for-sugar">Estos son los nombres del azúcar.</a></p>
 
+<h2>Los aditivos se nombran por su función</h2>
+<p>En la UE, los aditivos de categorías como colorantes, conservantes o emulgentes “deberán designarse mediante la denominación de dicha categoría, seguida por su denominación específica o, si procede, por el número E”.${cite(2)} Por eso una etiqueta europea dice primero para qué sirve el aditivo y después su nombre o su número, como en “conservante: E211”.</p>
+<p><a href="/es/additives">Busca un número E de una etiqueta.</a></p>
+
 <h2>Los alérgenos se señalan, y el estilo depende de dónde se venda</h2>
 <p>Una etiqueta de EE. UU. indica el origen de un alérgeno principal de una de dos maneras: entre paréntesis después del ingrediente, como en “whey (milk)” (suero de leche (leche)) o “flour (wheat)” (harina (trigo)), o en una línea justo después de la lista, como “Contains wheat, milk, and soy.” (Contiene trigo, leche y soja).${cite(3)}</p>
 <p>Una etiqueta de la UE lo hace dentro de la propia lista. El nombre del alérgeno “se destacará mediante una composición tipográfica que la diferencie claramente del resto de la lista de ingredientes, por ejemplo mediante el tipo de letra, el estilo o el color de fondo”.${cite(2)} Normalmente lo verás en negrita.</p>
@@ -136,19 +140,19 @@ export const GUIDES_ES: Record<string, GuideText> = {
 <table>
   <thead><tr><th scope="col">Número E</th><th scope="col">Nombre</th><th scope="col">Nombre en EE. UU.</th></tr></thead>
   <tbody>
-    <tr><td class="num">E102</td><td>Tartracina</td><td>FD&amp;C Yellow No. 5</td></tr>
-    <tr><td class="num">E104</td><td>Amarillo de quinoleína</td><td>Sin nombre FD&amp;C</td></tr>
-    <tr><td class="num">E110</td><td>Amarillo anaranjado</td><td>FD&amp;C Yellow No. 6</td></tr>
-    <tr><td class="num">E122</td><td>Carmoisina</td><td>Sin nombre FD&amp;C</td></tr>
-    <tr><td class="num">E124</td><td>Rojo cochinilla A</td><td>Sin nombre FD&amp;C</td></tr>
-    <tr><td class="num">E129</td><td>Rojo allura AC</td><td>FD&amp;C Red No. 40</td></tr>
+    <tr><td class="num">E102</td><td><a href="/es/additives/e102-tartrazine">Tartracina</a></td><td>FD&amp;C Yellow No. 5</td></tr>
+    <tr><td class="num">E104</td><td><a href="/es/additives/e104-quinoline-yellow">Amarillo de quinoleína</a></td><td>Sin nombre FD&amp;C</td></tr>
+    <tr><td class="num">E110</td><td><a href="/es/additives/e110-sunset-yellow-fcf">Amarillo anaranjado</a></td><td>FD&amp;C Yellow No. 6</td></tr>
+    <tr><td class="num">E122</td><td><a href="/es/additives/e122-carmoisine">Carmoisina</a></td><td>Sin nombre FD&amp;C</td></tr>
+    <tr><td class="num">E124</td><td><a href="/es/additives/e124-ponceau-4r">Rojo cochinilla A</a></td><td>Sin nombre FD&amp;C</td></tr>
+    <tr><td class="num">E129</td><td><a href="/es/additives/e129-allura-red-ac">Rojo allura AC</a></td><td>FD&amp;C Red No. 40</td></tr>
   </tbody>
 </table>
 </div>
 <p>Una advertencia no es una prohibición. Estos colorantes siguen permitidos en la UE; la etiqueta solo tiene que avisar, y eso los hace fáciles de encontrar en un envase europeo. En un envase de EE. UU., busca los nombres de la última columna, a menudo abreviados como Yellow 5, Yellow 6 o Red 40.</p>
 
 <h2>Qué pasó con el rojo 3 en EE. UU.</h2>
-<p>Otro colorante, el FD&amp;C Red No. 3, también llamado eritrosina, está saliendo de los alimentos en EE. UU. En enero de 2025 la FDA revocó su autorización para alimentos y medicamentos de uso oral. Para los alimentos, la orden entra en vigor el 15 de enero de 2027, que es el plazo para cambiar la receta.${cite(2)}</p>
+<p>Otro colorante, el FD&amp;C Red No. 3, también llamado <a href="/es/additives/e127-erythrosine">eritrosina</a>, está saliendo de los alimentos en EE. UU. En enero de 2025 la FDA revocó su autorización para alimentos y medicamentos de uso oral. Para los alimentos, la orden entra en vigor el 15 de enero de 2027, que es el plazo para cambiar la receta.${cite(2)}</p>
 <p>El motivo es tanto legal como científico. La ley de EE. UU. no permite autorizar un colorante si se ha comprobado que causa cáncer en animales. La FDA concluyó que el rojo 3 puede inducir cáncer en ratas macho mediante un mecanismo hormonal propio de las ratas.${cite(2)}</p>
 `,
     inRevely:

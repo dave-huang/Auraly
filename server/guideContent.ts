@@ -137,6 +137,10 @@ export const GUIDES: Guide[] = [
 <p>Each ingredient takes its own place in that order. A product sweetened with sugar, glucose syrup and honey lists all three separately, and each one weighs less than the three together would. So each sits further down the list than a single sugar would have.</p>
 <p>It’s worth reading to the end before deciding how far down something is. <a href="/en/guides/names-for-sugar">Here are the names sugar goes by.</a></p>
 
+<h2>Additives are named by what they do</h2>
+<p>In the EU, additives in categories such as colors, preservatives and emulsifiers “must be designated by the name of that category, followed by their specific name or, if appropriate, E number.”${cite(2)} So a European label says what an additive is for, then gives its name or its number, as in “preservative: E211.”</p>
+<p><a href="/en/additives">Look up an E number on a label.</a></p>
+
 <h2>Allergens are marked, and the style depends on where it’s sold</h2>
 <p>A US label names the source of a major allergen in one of two ways: in parentheses after the ingredient, as in “whey (milk)” or “flour (wheat),” or in a line right after the list, such as “Contains wheat, milk, and soy.”${cite(3)}</p>
 <p>An EU label does it inside the list itself. The allergen has to be “emphasised through a typeset that clearly distinguishes it from the rest of the list of ingredients, for example by means of the font, style or background colour.”${cite(2)} You’ll usually see it in bold.</p>
@@ -155,7 +159,7 @@ export const GUIDES: Guide[] = [
     sources: [US_101_4, EU_1169, FDA_ALLERGIES],
     related: ["names-for-sugar", "allergen-labeling-us-and-eu", "salt-and-sodium"],
     published: PUBLISHED,
-    modified: PUBLISHED,
+    modified: "2026-09-26",
   },
 
   {
@@ -217,19 +221,19 @@ export const GUIDES: Guide[] = [
 <table>
   <thead><tr><th scope="col">E number</th><th scope="col">Name</th><th scope="col">US name</th></tr></thead>
   <tbody>
-    <tr><td class="num">E102</td><td>Tartrazine</td><td>FD&amp;C Yellow No. 5</td></tr>
-    <tr><td class="num">E104</td><td>Quinoline yellow</td><td>No FD&amp;C name</td></tr>
-    <tr><td class="num">E110</td><td>Sunset yellow</td><td>FD&amp;C Yellow No. 6</td></tr>
-    <tr><td class="num">E122</td><td>Carmoisine</td><td>No FD&amp;C name</td></tr>
-    <tr><td class="num">E124</td><td>Ponceau 4R</td><td>No FD&amp;C name</td></tr>
-    <tr><td class="num">E129</td><td>Allura red</td><td>FD&amp;C Red No. 40</td></tr>
+    <tr><td class="num">E102</td><td><a href="/en/additives/e102-tartrazine">Tartrazine</a></td><td>FD&amp;C Yellow No. 5</td></tr>
+    <tr><td class="num">E104</td><td><a href="/en/additives/e104-quinoline-yellow">Quinoline yellow</a></td><td>No FD&amp;C name</td></tr>
+    <tr><td class="num">E110</td><td><a href="/en/additives/e110-sunset-yellow-fcf">Sunset yellow</a></td><td>FD&amp;C Yellow No. 6</td></tr>
+    <tr><td class="num">E122</td><td><a href="/en/additives/e122-carmoisine">Carmoisine</a></td><td>No FD&amp;C name</td></tr>
+    <tr><td class="num">E124</td><td><a href="/en/additives/e124-ponceau-4r">Ponceau 4R</a></td><td>No FD&amp;C name</td></tr>
+    <tr><td class="num">E129</td><td><a href="/en/additives/e129-allura-red-ac">Allura red</a></td><td>FD&amp;C Red No. 40</td></tr>
   </tbody>
 </table>
 </div>
 <p>A warning isn’t a ban. These colors are still permitted in the EU. The label just has to say so, which makes them easy to spot on a European package. On a US package, look for the names in the last column instead, often shortened to Yellow 5, Yellow 6 or Red 40.</p>
 
 <h2>What happened to Red 3 in the US</h2>
-<p>A different color, FD&amp;C Red No. 3, also called erythrosine, is on its way out of US food. In January 2025 the FDA revoked its authorization for use in food and ingested drugs. For food, the order takes effect on January 15, 2027, which is the deadline for reformulating.${cite(2)}</p>
+<p>A different color, FD&amp;C Red No. 3, also called <a href="/en/additives/e127-erythrosine">erythrosine</a>, is on its way out of US food. In January 2025 the FDA revoked its authorization for use in food and ingested drugs. For food, the order takes effect on January 15, 2027, which is the deadline for reformulating.${cite(2)}</p>
 <p>The reason is legal as much as scientific. US law doesn’t allow a color to be authorized once it’s been found to cause cancer in animals. The FDA found that Red No. 3 “can induce cancer in male rats, through a rat specific hormonal mechanism.”${cite(2)}</p>
 `,
     inRevely:
