@@ -192,7 +192,7 @@ export const ALLERGEN_PAGES: AllergenPage[] = [
       { term: "Isinglass", note: "Gelatin from fish, used to clear some beers and wines." },
     ],
     notIt: [{ term: "Swedish Fish", note: "A candy. There’s no fish in it." }],
-    elsewhere: { es: "pescado", zh: "鱼、魚", ja: "さけ、さば (salmon, mackerel)" },
+    elsewhere: { es: "pescado", zh: "鱼、魚", ja: "さけ、さば、いくら" },
     law: {
       us: "A major food allergen.[[fda]] The label has to name the species, such as “cod,” not just “fish.”[[fda-qa]]",
       eu: "One of the 14 allergens: “Fish and products thereof.” Fish gelatin used to carry vitamins or carotenoids, and fish gelatin or isinglass used to clear beer and wine, are exempt.[[eu]]",
@@ -252,7 +252,7 @@ export const ALLERGEN_PAGES: AllergenPage[] = [
       { term: "Mollusc, mollusk" },
     ],
     notIt: [{ term: "Oyster mushroom", note: "A mushroom, named for its shape." }],
-    elsewhere: { es: "molusco, ostra, calamar", zh: "贝类、牡蛎、蚵", ja: "あわび、いか (abalone, squid)" },
+    elsewhere: { es: "molusco, ostra, calamar", zh: "贝类、牡蛎、蚵", ja: "あわび、いか" },
     law: {
       us: NOT_US,
       eu: "One of the 14 allergens: “Molluscs and products thereof.”[[eu]]",
@@ -535,6 +535,27 @@ export const ALLERGEN_PAGES: AllergenPage[] = [
     related: ["wheat", "soy", "eggs"],
   },
 ];
+
+/**
+ * One allergen page in another language.
+ *
+ * The names stay in English, because they are what the scanner matches and
+ * what an English-language label prints; `names` and `notIt` hold one note per
+ * English entry, in order, and each note starts with the name in the page's
+ * language. eval/allergen-pages.check.ts holds the lengths equal.
+ */
+export interface AllergenText {
+  noun: string;
+  label: string;
+  title: string;
+  description: string;
+  dek: string;
+  names: string[];
+  notIt?: string[];
+  law: { us: string; eu: string; jp: string };
+  status: { us: string; eu: string; jp: string };
+  more?: string;
+}
 
 export const ALLERGEN_PAGES_BY_SLUG: ReadonlyMap<string, AllergenPage> = new Map(
   ALLERGEN_PAGES.map((p) => [p.slug, p]),

@@ -15,7 +15,7 @@ import {
   lockupLink,
 } from "./siteTheme";
 import { additivePaths } from "./additives";
-import { ALLERGEN_PATHS } from "./allergens";
+import { ALLERGEN_ALTERNATES, ALLERGEN_PATHS } from "./allergens";
 import { LEARN_PATHS } from "./learn";
 import { GUIDE_ALTERNATES, GUIDE_PATHS } from "./guides";
 import {
@@ -1330,10 +1330,10 @@ function sitemap(): string {
     );
   };
   const homes = group({ en: "/en", zh: "/zh", es: "/es" });
-  const guides = [...GUIDE_ALTERNATES, LEARN_PATHS].flatMap(group);
-  // English only, so no alternates: the allergen pages until they are
+  const guides = [...GUIDE_ALTERNATES, ...ALLERGEN_ALTERNATES, LEARN_PATHS].flatMap(group);
+  // English only, so no alternates: the additive pages until they are
   // translated, and the legal documents for good.
-  const legal = [...ALLERGEN_PATHS, ...additivePaths(), "/privacy", "/terms", "/health-data-privacy"].map(
+  const legal = [...additivePaths(), "/privacy", "/terms", "/health-data-privacy"].map(
     (p) => `  <url>\n    <loc>${SITE_ORIGIN}${p}</loc>\n  </url>`,
   );
   sitemapCache = `<?xml version="1.0" encoding="UTF-8"?>

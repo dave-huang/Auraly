@@ -14,6 +14,8 @@
  * Run: npm run allergen-pages:check
  */
 import { ALLERGEN_PAGES } from '../server/allergenContent';
+import { ALLERGENS_ES } from '../server/allergenContent.es';
+import { ALLERGENS_ZH } from '../server/allergenContent.zh';
 import {
   ALLERGEN_KEYWORDS,
   ingredientMatchesAllergen,
@@ -63,6 +65,21 @@ for (const page of ALLERGEN_PAGES) {
 
   const text = JSON.stringify(page);
   if (text.includes('—')) failures.push(`${page.slug}: contains an em dash`);
+
+  // The translations carry one note per English name, in order. A list out of
+  // step would pin a Chinese note to the wrong English name.
+  for (const [lang, all] of [['zh', ALLERGENS_ZH], ['es', ALLERGENS_ES]] as const) {
+    const t = all[page.slug];
+    if (!t) { failures.push(`${page.slug}: no ${lang} translation`); continue; }
+    if (t.names.length !== page.names.length) failures.push(`${page.slug} (${lang}): ${t.names.length} name notes for ${page.names.length} names`);
+    if ((t.notIt?.length ?? 0) !== (page.notIt?.length ?? 0)) failures.push(`${page.slug} (${lang}): look-alike notes out of step`);
+    const tt = JSON.stringify(t);
+    if (/—/.test(tt)) failures.push(`${page.slug} (${lang}): contains an em dash`);
+    for (const key of ['us', 'eu', 'jp'] as const) {
+      const cites = (s: string) => (s.match(/\[\[[a-z0-9-]+\]\]/g) ?? []).sort().join();
+      if (cites(t.law[key]) !== cites(page.law[key])) failures.push(`${page.slug} (${lang}): law.${key} cites different sources from English`);
+    }
+  }
 }
 
 console.log(`[ALLERGEN PAGES] ${ALLERGEN_PAGES.length} pages checked against the matcher`);
