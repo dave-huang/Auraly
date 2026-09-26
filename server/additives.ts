@@ -36,6 +36,7 @@ import { badge, breadcrumbs, escapeAttr, renderPage, UI } from "./guides";
 import { NOT_FOUND } from "./legal";
 import { getEvidenceStore, type EvidenceRecord } from "./services/substances/evidence";
 import { getSubstanceRegistry } from "./services/substances/identity";
+import { sideAssessment } from "./services/substances/ingest/efsa";
 import { HTML_LANG, SITE_LANGUAGES, type Lang } from "./siteCopy";
 import { SITE_ORIGIN } from "./siteTheme";
 
@@ -142,17 +143,21 @@ function loadAdditives(): Additive[] {
           seen.add(key);
           return true;
         });
-      const hasPage = records.some((r) => r.source !== "fda_food_additives");
-      return {
+      const additive: Additive = {
         id: s.id,
         e,
         name,
         aliases: readableAliases((s.aliases ?? []).map((a) => a.name), name, e),
         category: s.category ?? null,
         records,
-        hasPage,
+        hasPage: false,
         slug: slugFor(e, name),
       };
+      // The gate counts what the page would actually say, so a record that
+      // sentence() leaves out (an ADI from a pet-food opinion, say) cannot
+      // hold a page open on its own.
+      additive.hasPage = records.some((r) => r.source !== "fda_food_additives" && sentence(additive, r, "en") !== null);
+      return additive;
     })
     .sort((a, b) => eSort(a.e, b.e));
 }
@@ -442,6 +447,7 @@ function sentence(a: Additive, r: EvidenceRecord, lang: Lang): { html: string; s
     case "guidance_value": {
       const g = r.guidance;
       if (!g || g.unit !== "mg/kg bw/day") return null;
+      if (!efsaSpeaksToFood(r)) return null;
       const value = lang === "en" ? String(g.value) : num(g.value, lang, 4);
       return { html: say.adi(value, when, kg70(g.value, lang)), source: cite };
     }
@@ -471,6 +477,23 @@ function sentence(a: Additive, r: EvidenceRecord, lang: Lang): { html: string; s
     default:
       return null;
   }
+}
+
+/**
+ * Whether an EFSA ADI is EFSA's position on the substance as food. The
+ * ingest prefers such a row whenever EFSA has one (ingest/efsa.ts); what is
+ * left here is a substance whose only ADI came from assessing it as a feed
+ * additive (Patent Blue V, for pets), a pesticide residue (phosphoric acid,
+ * under an opinion about phosphonates, a different chemical), a previous
+ * cargo in a food tanker (carnauba and microcrystalline wax), or a row with no
+ * opinion named at all. "EFSA set an acceptable daily intake" over any of
+ * those citations misleads, so the page says nothing rather than that.
+ */
+function efsaSpeaksToFood(r: EvidenceRecord): boolean {
+  const title = r.citation?.title ?? "";
+  if (title === "an EFSA scientific opinion") return false;
+  const domain = r.statement.match(/in its assessment of (.+?), in "/)?.[1] ?? "";
+  return !sideAssessment(domain, title);
 }
 
 const ORDER = ["prohibited", "warning_required", "health_guidance", "guidance_value", "under_review", "permitted", "no_concern_at_typical_exposure", "hazard_classification", "carcinogen_listing"];
@@ -811,7 +834,7 @@ function indexPage(all: Additive[], lang: Lang): string {
         const english =
           lang !== "en" && name.toLowerCase() !== a.name.toLowerCase() ? ` <span class="meta" lang="en">${a.name}</span>` : "";
         const q = searchKey(`${a.e} ${a.e.slice(1)} ${name} ${a.name} ${a.aliases.join(" ")}`);
-        return `<tr data-q="${escapeAttr(q)}"><td>${a.e}</td><td>${shown}${english}</td></tr>`;
+        return `<tr id="${a.e.toLowerCase()}" data-q="${escapeAttr(q)}"><td>${a.e}</td><td>${shown}${english}</td></tr>`;
       })
       .join("\n    ")}
   </tbody>
@@ -929,8 +952,14 @@ function serve(lang: Lang) {
     const page = pages[lang].get(req.params.slug);
     if (page) return res.type("html").send(page);
     // A bare E number, "/en/additives/e407", goes to its page.
-    const byE = all.find((a) => a.hasPage && a.e.toLowerCase() === req.params.slug.toLowerCase());
+    const slug = req.params.slug.toLowerCase();
+    const byE = all.find((a) => a.hasPage && a.e.toLowerCase() === slug);
     if (byE) return res.redirect(301, `/${lang}/additives/${byE.slug}`);
+    // A page that no longer exists, because the record that held it open
+    // turned out not to be about food (2026-09-26: E131, E338, E903, E904,
+    // E905), goes to its row in the index, which still names it.
+    const retired = all.find((a) => !a.hasPage && a.slug === slug);
+    if (retired) return res.redirect(301, `/${lang}/additives#${retired.e.toLowerCase()}`);
     res.status(404).type("html").send(NOT_FOUND);
   };
 }

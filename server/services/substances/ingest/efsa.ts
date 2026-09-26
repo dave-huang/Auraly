@@ -66,6 +66,48 @@ function parseValue(raw: string): number | null {
   return Number(value.toPrecision(6));
 }
 
+/**
+ * What an assessment was FOR, from EFSA's "Food domain" column and, because
+ * that column is sometimes blank or "other:" even on a food additive
+ * re-evaluation (acesulfame K 2020, neotame 2025), from the opinion's title.
+ *
+ * A side assessment is about something other than people eating the
+ * substance as a food ingredient: a feed additive (often for pets), a
+ * pesticide residue, a contaminant, a previous cargo in a food tanker. Its
+ * ADI may be a real human value, but it is not EFSA's position on the
+ * substance as food, and a reader shown "EFSA set an acceptable daily intake"
+ * above a citation about cat food is right to distrust the page.
+ *
+ * "Food and feed additives" in a title is a food assessment (EFSA's 2013
+ * statement on Allura Red covers both), so the feed patterns are specific.
+ */
+const SIDE_DOMAINS = new Set([
+  'pesticides',
+  'sensory additives',
+  'zootechnical additives',
+  'nutritional additives',
+  'technological additives',
+  'cocciodiostats / hormones / histomonostats',
+  'processing contaminants',
+  'natural plant product contaminants',
+  'persistent organic pollutants',
+  'food contact materials',
+]);
+const SIDE_TITLE =
+  /\bin feed\b|as (a )?feed additive|feed additive for|feedingstuff|for (cats|dogs|chickens|pigs|piglets|poultry|rabbits|turkeys|all animal)|animal species|pesticide|\bMRLs?\b|maximum residue|previous cargoes/i;
+const FOOD_DOMAINS = new Set(['food additives', 'flavourings', 'nutrient sources']);
+const FOOD_TITLE = /food additive|flavouring group|\(E ?\d{3}/i;
+
+/** A side assessment, by EFSA's domain (may be blank) and the opinion's title. */
+export function sideAssessment(domain: string, title: string): boolean {
+  return SIDE_DOMAINS.has(domain) || SIDE_TITLE.test(title);
+}
+
+function assessedAsFood(domain: string, title: string): boolean {
+  if (sideAssessment(domain, title)) return false;
+  return FOOD_DOMAINS.has(domain) || FOOD_TITLE.test(title);
+}
+
 export const efsaOpenFoodToxAdapter: SourceAdapter = {
   source: 'efsa_openfoodtox',
   label: 'EFSA OpenFoodTox',
@@ -75,6 +117,7 @@ export const efsaOpenFoodToxAdapter: SourceAdapter = {
   parse(rows: Record<string, string>[], meta: SnapshotMeta): IngestResult {
     const substances = new Map<string, any>();
     const candidates: EvidenceRecord[] = [];
+    const domains = new Map<EvidenceRecord, string>();
     const skipped: IngestResult['skipped'] = [];
     const review: NonNullable<IngestResult['review']> = [];
 
@@ -134,7 +177,7 @@ export const efsaOpenFoodToxAdapter: SourceAdapter = {
       const bounded = row[COL_LOWER]?.trim() && row[COL_UPPER]?.trim() ? ' (range)' : '';
       const domain = row[COL_DOMAIN]?.trim();
 
-      candidates.push({
+      const record: EvidenceRecord = {
         substanceId: id,
         source: 'efsa_openfoodtox',
         kind: 'guidance_value',
@@ -150,7 +193,9 @@ export const efsaOpenFoodToxAdapter: SourceAdapter = {
         sourceVersion: meta.version,
         fetchedAt: meta.fetchedAt,
         citation,
-      });
+      };
+      candidates.push(record);
+      domains.set(record, domain ?? '');
     });
 
     // One ADI per substance: the most recent.
@@ -164,8 +209,29 @@ export const efsaOpenFoodToxAdapter: SourceAdapter = {
     // one is EFSA's position and the older ones are superseded, so only the
     // newest survives. Undated values lose to dated ones, and a true tie goes
     // to the lower number, which is the more protective of the two.
-    const newest = new Map<string, EvidenceRecord>();
+    //
+    // But only among assessments of the same kind. Until 2026-09-26 the newest
+    // row won whatever it assessed, and for a food additive that was often a
+    // pet-food opinion: tartrazine's ADI was quoted as 10, from "Safety and
+    // efficacy of tartrazine (E 102) for cats and dogs...", when EFSA's own
+    // re-evaluation of it as a food additive set 7.5. So when EFSA has assessed
+    // a substance as food (see assessedAsFood), assessments of it as a feed
+    // additive, a pesticide or a contaminant are set aside first. A substance
+    // EFSA only ever assessed as a pesticide keeps its newest row, as before.
+    const bySubstance = new Map<string, EvidenceRecord[]>();
     for (const record of candidates) {
+      const list = bySubstance.get(record.substanceId) ?? [];
+      list.push(record);
+      bySubstance.set(record.substanceId, list);
+    }
+    const side = (r: EvidenceRecord) => sideAssessment(domains.get(r) ?? '', r.citation?.title ?? '');
+    const food = (r: EvidenceRecord) => assessedAsFood(domains.get(r) ?? '', r.citation?.title ?? '');
+    const eligible = Array.from(bySubstance.values()).flatMap((list) =>
+      list.some(food) ? list.filter((r) => !side(r)) : list,
+    );
+
+    const newest = new Map<string, EvidenceRecord>();
+    for (const record of eligible) {
       const held = newest.get(record.substanceId);
       if (!held) {
         newest.set(record.substanceId, record);
