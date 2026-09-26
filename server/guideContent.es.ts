@@ -285,6 +285,7 @@ export const GUIDES_ES: Record<string, GuideText> = {
 
 <h2>Cómo se muestran</h2>
 <p>Una etiqueta de EE. UU. nombra el alérgeno entre paréntesis después de un ingrediente o en una línea “Contains”. Una etiqueta de la UE lo destaca dentro de la lista de ingredientes, normalmente en negrita. <a href="/es/guides/how-to-read-an-ingredient-list">Más sobre cómo leer una etiqueta.</a></p>
+<p><a href="/es/allergens">Todos los nombres de cada alérgeno en una etiqueta.</a></p>
 `,
     inRevely:
       "Revely comprueba cada etiqueta con los alérgenos que elijas, incluidos los 14 de la UE y el trigo sarraceno, y conoce sus otros nombres, como suero de leche para la leche o tahini para el sésamo.",

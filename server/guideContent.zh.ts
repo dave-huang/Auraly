@@ -282,6 +282,7 @@ export const GUIDES_ZH: Record<string, GuideText> = {
 
 <h2>标注方式</h2>
 <p>美国标签会在配料后面加括号，或用“Contains”一行注明过敏原。欧盟标签则在配料表中把它突出显示，通常是粗体。<a href="/zh/guides/how-to-read-an-ingredient-list">更多关于读标签的说明。</a></p>
+<p><a href="/zh/allergens">每种过敏原在标签上的各种名称。</a></p>
 `,
     inRevely:
       "Revely 会根据你设置的过敏原检查每一张标签，包括欧盟的全部 14 种以及荞麦，也认得它们的别名，比如乳清对应牛奶，芝麻酱对应芝麻。",
