@@ -262,20 +262,20 @@ export const GUIDES_ES: Record<string, GuideText> = {
 <table>
   <thead><tr><th scope="col">Alérgeno</th><th scope="col">EE. UU.</th><th scope="col">UE</th></tr></thead>
   <tbody>
-    <tr><td>Leche</td><td>Sí</td><td>Sí</td></tr>
-    <tr><td>Huevos</td><td>Sí</td><td>Sí</td></tr>
-    <tr><td>Pescado</td><td>Sí, con la especie</td><td>Sí</td></tr>
-    <tr><td>Crustáceos, como cangrejo, langosta y camarón</td><td>Sí, con la especie</td><td>Sí</td></tr>
-    <tr><td>Frutos de cáscara</td><td>Sí, con el tipo de fruto</td><td>Sí: almendras, avellanas, nueces, anacardos, pacanas, nueces de Brasil, pistachos y nueces de macadamia</td></tr>
-    <tr><td>Cacahuetes o maní</td><td>Sí</td><td>Sí</td></tr>
-    <tr><td>Trigo</td><td>Sí</td><td>Dentro de los cereales que contienen gluten: trigo, centeno, cebada, avena, espelta y kamut</td></tr>
-    <tr><td>Soja</td><td>Sí</td><td>Sí</td></tr>
-    <tr><td>Sésamo</td><td>Sí, desde el 1 de enero de 2023</td><td>Sí</td></tr>
-    <tr><td>Apio</td><td>No obligatorio</td><td>Sí</td></tr>
-    <tr><td>Mostaza</td><td>No obligatorio</td><td>Sí</td></tr>
-    <tr><td>Altramuces</td><td>No obligatorio</td><td>Sí</td></tr>
-    <tr><td>Moluscos, como mejillones, ostras y calamares</td><td>No obligatorio</td><td>Sí</td></tr>
-    <tr><td>Sulfitos</td><td>Se declaran a partir de 10 ppm, aunque no son un alérgeno principal</td><td>Sí, por encima de 10 mg/kg</td></tr>
+    <tr><td><a href="/es/allergens/milk">Leche</a></td><td>Sí</td><td>Sí</td></tr>
+    <tr><td><a href="/es/allergens/eggs">Huevos</a></td><td>Sí</td><td>Sí</td></tr>
+    <tr><td><a href="/es/allergens/fish">Pescado</a></td><td>Sí, con la especie</td><td>Sí</td></tr>
+    <tr><td><a href="/es/allergens/shellfish">Crustáceos</a>, como cangrejo, langosta y camarón</td><td>Sí, con la especie</td><td>Sí</td></tr>
+    <tr><td><a href="/es/allergens/tree-nuts">Frutos de cáscara</a></td><td>Sí, con el tipo de fruto</td><td>Sí: almendras, avellanas, nueces, anacardos, pacanas, nueces de Brasil, pistachos y nueces de macadamia</td></tr>
+    <tr><td><a href="/es/allergens/peanuts">Cacahuetes o maní</a></td><td>Sí</td><td>Sí</td></tr>
+    <tr><td><a href="/es/allergens/wheat">Trigo</a></td><td>Sí</td><td>Dentro de los cereales que contienen gluten: trigo, centeno, cebada, avena, espelta y kamut</td></tr>
+    <tr><td><a href="/es/allergens/soy">Soja</a></td><td>Sí</td><td>Sí</td></tr>
+    <tr><td><a href="/es/allergens/sesame">Sésamo</a></td><td>Sí, desde el 1 de enero de 2023</td><td>Sí</td></tr>
+    <tr><td><a href="/es/allergens/celery">Apio</a></td><td>No obligatorio</td><td>Sí</td></tr>
+    <tr><td><a href="/es/allergens/mustard">Mostaza</a></td><td>No obligatorio</td><td>Sí</td></tr>
+    <tr><td><a href="/es/allergens/lupin">Altramuces</a></td><td>No obligatorio</td><td>Sí</td></tr>
+    <tr><td><a href="/es/allergens/mollusks">Moluscos</a>, como mejillones, ostras y calamares</td><td>No obligatorio</td><td>Sí</td></tr>
+    <tr><td><a href="/es/allergens/sulfites">Sulfitos</a></td><td>Se declaran a partir de 10 ppm, aunque no son un alérgeno principal</td><td>Sí, por encima de 10 mg/kg</td></tr>
   </tbody>
 </table>
 </div>

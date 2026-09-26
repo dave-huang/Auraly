@@ -259,20 +259,20 @@ export const GUIDES_ZH: Record<string, GuideText> = {
 <table>
   <thead><tr><th scope="col">过敏原</th><th scope="col">美国</th><th scope="col">欧盟</th></tr></thead>
   <tbody>
-    <tr><td>牛奶</td><td>是</td><td>是</td></tr>
-    <tr><td>蛋</td><td>是</td><td>是</td></tr>
-    <tr><td>鱼</td><td>是，并注明鱼的种类</td><td>是</td></tr>
-    <tr><td>甲壳类，如蟹、龙虾和虾</td><td>是，并注明种类</td><td>是</td></tr>
-    <tr><td>树坚果</td><td>是，并注明坚果种类</td><td>是：杏仁、榛子、核桃、腰果、碧根果、巴西坚果、开心果和夏威夷果</td></tr>
-    <tr><td>花生</td><td>是</td><td>是</td></tr>
-    <tr><td>小麦</td><td>是</td><td>归入含麸质谷物：小麦、黑麦、大麦、燕麦、斯佩尔特小麦和卡姆小麦</td></tr>
-    <tr><td>大豆</td><td>是</td><td>是</td></tr>
-    <tr><td>芝麻</td><td>是，自 2023 年 1 月 1 日起</td><td>是</td></tr>
-    <tr><td>芹菜</td><td>不要求</td><td>是</td></tr>
-    <tr><td>芥末</td><td>不要求</td><td>是</td></tr>
-    <tr><td>羽扇豆</td><td>不要求</td><td>是</td></tr>
-    <tr><td>软体动物，如贻贝、牡蛎和鱿鱼</td><td>不要求</td><td>是</td></tr>
-    <tr><td>亚硫酸盐</td><td>含量达到 10 ppm 或以上时须标明，但不属于主要过敏原</td><td>是，超过 10 mg/kg 时</td></tr>
+    <tr><td><a href="/zh/allergens/milk">牛奶</a></td><td>是</td><td>是</td></tr>
+    <tr><td><a href="/zh/allergens/eggs">蛋</a></td><td>是</td><td>是</td></tr>
+    <tr><td><a href="/zh/allergens/fish">鱼</a></td><td>是，并注明鱼的种类</td><td>是</td></tr>
+    <tr><td><a href="/zh/allergens/shellfish">甲壳类</a>，如蟹、龙虾和虾</td><td>是，并注明种类</td><td>是</td></tr>
+    <tr><td><a href="/zh/allergens/tree-nuts">树坚果</a></td><td>是，并注明坚果种类</td><td>是：杏仁、榛子、核桃、腰果、碧根果、巴西坚果、开心果和夏威夷果</td></tr>
+    <tr><td><a href="/zh/allergens/peanuts">花生</a></td><td>是</td><td>是</td></tr>
+    <tr><td><a href="/zh/allergens/wheat">小麦</a></td><td>是</td><td>归入含麸质谷物：小麦、黑麦、大麦、燕麦、斯佩尔特小麦和卡姆小麦</td></tr>
+    <tr><td><a href="/zh/allergens/soy">大豆</a></td><td>是</td><td>是</td></tr>
+    <tr><td><a href="/zh/allergens/sesame">芝麻</a></td><td>是，自 2023 年 1 月 1 日起</td><td>是</td></tr>
+    <tr><td><a href="/zh/allergens/celery">芹菜</a></td><td>不要求</td><td>是</td></tr>
+    <tr><td><a href="/zh/allergens/mustard">芥末</a></td><td>不要求</td><td>是</td></tr>
+    <tr><td><a href="/zh/allergens/lupin">羽扇豆</a></td><td>不要求</td><td>是</td></tr>
+    <tr><td><a href="/zh/allergens/mollusks">软体动物</a>，如贻贝、牡蛎和鱿鱼</td><td>不要求</td><td>是</td></tr>
+    <tr><td><a href="/zh/allergens/sulfites">亚硫酸盐</a></td><td>含量达到 10 ppm 或以上时须标明，但不属于主要过敏原</td><td>是，超过 10 mg/kg 时</td></tr>
   </tbody>
 </table>
 </div>

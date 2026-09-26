@@ -353,20 +353,20 @@ export const GUIDES: Guide[] = [
 <table>
   <thead><tr><th scope="col">Allergen</th><th scope="col">US</th><th scope="col">EU</th></tr></thead>
   <tbody>
-    <tr><td>Milk</td><td>Yes</td><td>Yes</td></tr>
-    <tr><td>Eggs</td><td>Yes</td><td>Yes</td></tr>
-    <tr><td>Fish</td><td>Yes, with the species</td><td>Yes</td></tr>
-    <tr><td>Crustaceans, such as crab, lobster and shrimp</td><td>Yes, with the species</td><td>Yes</td></tr>
-    <tr><td>Tree nuts</td><td>Yes, with the type of nut</td><td>Yes: almonds, hazelnuts, walnuts, cashews, pecans, Brazil nuts, pistachios and macadamias</td></tr>
-    <tr><td>Peanuts</td><td>Yes</td><td>Yes</td></tr>
-    <tr><td>Wheat</td><td>Yes</td><td>As part of cereals containing gluten: wheat, rye, barley, oats, spelt and kamut</td></tr>
-    <tr><td>Soy</td><td>Yes</td><td>Yes</td></tr>
-    <tr><td>Sesame</td><td>Yes, since January 1, 2023</td><td>Yes</td></tr>
-    <tr><td>Celery</td><td>Not required</td><td>Yes</td></tr>
-    <tr><td>Mustard</td><td>Not required</td><td>Yes</td></tr>
-    <tr><td>Lupin</td><td>Not required</td><td>Yes</td></tr>
-    <tr><td>Molluscs, such as mussels, oysters and squid</td><td>Not required</td><td>Yes</td></tr>
-    <tr><td>Sulfites</td><td>Declared at 10 ppm or more, though not a major allergen</td><td>Yes, above 10 mg/kg</td></tr>
+    <tr><td><a href="/en/allergens/milk">Milk</a></td><td>Yes</td><td>Yes</td></tr>
+    <tr><td><a href="/en/allergens/eggs">Eggs</a></td><td>Yes</td><td>Yes</td></tr>
+    <tr><td><a href="/en/allergens/fish">Fish</a></td><td>Yes, with the species</td><td>Yes</td></tr>
+    <tr><td><a href="/en/allergens/shellfish">Crustaceans</a>, such as crab, lobster and shrimp</td><td>Yes, with the species</td><td>Yes</td></tr>
+    <tr><td><a href="/en/allergens/tree-nuts">Tree nuts</a></td><td>Yes, with the type of nut</td><td>Yes: almonds, hazelnuts, walnuts, cashews, pecans, Brazil nuts, pistachios and macadamias</td></tr>
+    <tr><td><a href="/en/allergens/peanuts">Peanuts</a></td><td>Yes</td><td>Yes</td></tr>
+    <tr><td><a href="/en/allergens/wheat">Wheat</a></td><td>Yes</td><td>As part of cereals containing gluten: wheat, rye, barley, oats, spelt and kamut</td></tr>
+    <tr><td><a href="/en/allergens/soy">Soy</a></td><td>Yes</td><td>Yes</td></tr>
+    <tr><td><a href="/en/allergens/sesame">Sesame</a></td><td>Yes, since January 1, 2023</td><td>Yes</td></tr>
+    <tr><td><a href="/en/allergens/celery">Celery</a></td><td>Not required</td><td>Yes</td></tr>
+    <tr><td><a href="/en/allergens/mustard">Mustard</a></td><td>Not required</td><td>Yes</td></tr>
+    <tr><td><a href="/en/allergens/lupin">Lupin</a></td><td>Not required</td><td>Yes</td></tr>
+    <tr><td><a href="/en/allergens/mollusks">Mollusks</a>, such as mussels, oysters and squid</td><td>Not required</td><td>Yes</td></tr>
+    <tr><td><a href="/en/allergens/sulfites">Sulfites</a></td><td>Declared at 10 ppm or more, though not a major allergen</td><td>Yes, above 10 mg/kg</td></tr>
   </tbody>
 </table>
 </div>
