@@ -827,6 +827,11 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
     ['Lupin Flour', 'lupin'],
     ['Buckwheat Flour', 'buckwheat'],
     ['Soba Noodles', 'buckwheat'],
+    // Added 2026-09-26, when the allergen pages were written from this list.
+    ['Surimi', 'fish'],
+    ['Isinglass', 'fish'],
+    ['Kasha', 'buckwheat'],
+    ['Dried Whole Egg', 'egg'],
   ];
   for (const [name, allergen] of hits) {
     check('allergen-match/detects',
@@ -847,6 +852,13 @@ for (const name of ['Formaldehyde', 'Hydroquinone']) {
     ['Shrimp Paste', 'molluscs', 'a shrimp is not a mollusc'],
     // Sulfate is not sulfite. SLS is in half the bathroom.
     ['Sodium Lauryl Sulfate', 'sulphites', 'a sulfate is not a sulphite'],
+    // Substring lookalikes found writing the allergen pages, 2026-09-26.
+    ['Bean Curd', 'milk', 'bean curd is tofu'],
+    ['Butternut Squash', 'milk', 'a squash is not butter'],
+    ['Eggplant', 'egg', 'a vegetable'],
+    ['Egg-Free Pasta', 'egg', 'a "free" claim is not a hit'],
+    ['Eggless Mayonnaise', 'egg', 'an "eggless" claim is not a hit'],
+    ['Water Chestnut', 'tree_nuts', 'an aquatic vegetable'],
   ];
   for (const [name, allergen, why] of misses) {
     check('allergen-match/no-false-positive',

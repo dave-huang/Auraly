@@ -77,7 +77,9 @@ export const ALLERGEN_KEYWORDS: Record<MajorAllergen, string[]> = {
     'egg', 'albumin', 'albumen', 'ovalbumin', 'mayonnaise', 'meringue',
     'lysozyme', 'e1105', 'e 1105',
   ],
-  fish: ['fish', 'anchovy', 'cod', 'salmon', 'tuna', 'tilapia', 'flounder', 'haddock', 'pollock', 'sardine', 'herring', 'mackerel', 'trout', 'halibut'],
+  // Surimi is shaped fish paste, usually pollock, sold as imitation crab.
+  // Isinglass is gelatin from fish swim bladders, used to clear beer and wine.
+  fish: ['fish', 'anchovy', 'cod', 'salmon', 'tuna', 'tilapia', 'flounder', 'haddock', 'pollock', 'sardine', 'herring', 'mackerel', 'trout', 'halibut', 'surimi', 'isinglass'],
   shellfish: ['shrimp', 'crab', 'lobster', 'prawn', 'crawfish', 'crayfish', 'krill'],
   tree_nuts: ['almond', 'cashew', 'walnut', 'pecan', 'pistachio', 'hazelnut', 'filbert', 'macadamia', 'brazil nut', 'pine nut', 'chestnut', 'coconut'],
   peanut: ['peanut', 'arachis', 'groundnut'],
@@ -101,7 +103,8 @@ export const ALLERGEN_KEYWORDS: Record<MajorAllergen, string[]> = {
   mustard: ['mustard', 'sinapis', 'brassica juncea', 'brassica nigra'],
   celery: ['celery', 'celeriac', 'apium graveolens'],
   lupin: ['lupin', 'lupinus'],
-  buckwheat: ['buckwheat', 'soba', 'fagopyrum'],
+  // Kasha is roasted buckwheat groats.
+  buckwheat: ['buckwheat', 'soba', 'fagopyrum', 'kasha'],
 };
 
 // Keyword hits that do NOT indicate the allergen: plant "butters"/"milks"
@@ -112,8 +115,19 @@ export const ALLERGEN_EXCLUSIONS: Partial<Record<MajorAllergen, RegExp[]>> = {
     /\bcream of tartar\b/,
     /\bcoconut (milk|cream)\b/, // coconut milk/cream is not dairy
     /\b(soy|oat|almond|rice) milk\b/,   // plant milks are not dairy
+    /\bbean curd\b/,                   // tofu: soy, and "curd" is the only hit
+    /\bbutternut\b/,                   // the squash; "butter" is the only hit
+  ],
+  // "egg" is a substring of the vegetable, and of labels saying there is none.
+  egg: [
+    /\beggplants?\b/,
+    /\beggless\b/,
+    /\beggs? free\b/,
+    /\b(no|without|free of|free from)\s+(added\s+)?eggs?\b/,
   ],
   fish: [/\bswedish fish\b/],
+  // An aquatic vegetable; "chestnut" is the only hit.
+  tree_nuts: [/\bwater chestnuts?\b/],
   // Buckwheat is not wheat, and is not even a grass. This exclusion existed
   // nowhere before buckwheat was matchable, so "buckwheat flour" — the whole
   // point of a soba noodle — raised a wheat allergy flag on every label that

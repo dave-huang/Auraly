@@ -25,7 +25,7 @@ import type { GuideSource } from "./guideContent";
  * THE NAMES LIST IS THE MATCHER. Every term in `names` contains a keyword the
  * app matches for that allergen, and every keyword appears in some term; see
  * eval/allergen-pages.check.ts. A name the app does not catch is not listed
- * here, even when it is true (surimi is fish), because the "In Revely" box
+ * here, even when it is true, because the "In Revely" box
  * promises the app flags these. Gaps are fixed in allergenMatcher.ts first.
  *
  * American English. No em dashes in anything a reader sees.
@@ -117,6 +117,8 @@ export const ALLERGEN_PAGES: AllergenPage[] = [
       { term: "Coconut milk, coconut cream", note: "Made from coconut." },
       { term: "Soy, oat, almond and rice milk", note: "Plant drinks. Check them for their own allergens." },
       { term: "Cream of tartar", note: "A baking powder ingredient that comes from winemaking." },
+      { term: "Bean curd", note: "Another name for tofu, which is soy." },
+      { term: "Butternut squash", note: "A vegetable." },
     ],
     elsewhere: { es: "leche, lácteo, suero de leche", zh: "牛奶、乳、乳成分", ja: "乳、乳成分" },
     law: {
@@ -152,6 +154,10 @@ export const ALLERGEN_PAGES: AllergenPage[] = [
       { term: "Meringue", note: "Whipped egg white." },
       { term: "Lysozyme, E1105", note: "An enzyme made from egg white, used in some cheeses and wines." },
     ],
+    notIt: [
+      { term: "Eggplant", note: "A vegetable." },
+      { term: "“Egg-free,” “eggless”", note: "Claims, not ingredients. Revely doesn’t count them." },
+    ],
     elsewhere: { es: "huevo, lisozima", zh: "蛋、鸡蛋、溶菌酶", ja: "卵、たまご、玉子" },
     law: {
       us: "A major food allergen.[[fda]] The FDA counts eggs from chickens, ducks, geese, quail and other fowl, and eggs from another bird should name it, as in “ovalbumin (duck egg).”[[fda-qa]]",
@@ -182,6 +188,8 @@ export const ALLERGEN_PAGES: AllergenPage[] = [
       { term: "Salmon, trout" },
       { term: "Tuna, mackerel, sardine, herring" },
       { term: "Tilapia" },
+      { term: "Surimi", note: "Shaped fish paste, usually pollock, sold as imitation crab." },
+      { term: "Isinglass", note: "Gelatin from fish, used to clear some beers and wines." },
     ],
     notIt: [{ term: "Swedish Fish", note: "A candy. There’s no fish in it." }],
     elsewhere: { es: "pescado", zh: "鱼、魚", ja: "さけ、さば (salmon, mackerel)" },
@@ -279,6 +287,7 @@ export const ALLERGEN_PAGES: AllergenPage[] = [
     notIt: [
       { term: "Peanut", note: "A legume, and a separate allergen." },
       { term: "Nutmeg", note: "A spice. Not on the US or EU list." },
+      { term: "Water chestnut", note: "A vegetable that grows in water." },
     ],
     elsewhere: { es: "frutos de cáscara, nuez, almendra, avellana, anacardo", zh: "坚果、堅果、核桃、腰果", ja: "くるみ、カシューナッツ" },
     law: {
@@ -513,6 +522,7 @@ export const ALLERGEN_PAGES: AllergenPage[] = [
       { term: "Buckwheat, buckwheat flour" },
       { term: "Soba", note: "Japanese buckwheat noodles, which often contain wheat too." },
       { term: "Fagopyrum", note: "The Latin name." },
+      { term: "Kasha", note: "Roasted buckwheat groats." },
     ],
     notIt: [{ term: "Wheat", note: "Not related, despite the name. A separate allergen." }],
     elsewhere: { es: "alforfón, trigo sarraceno", zh: "荞麦、蕎麥", ja: "そば" },

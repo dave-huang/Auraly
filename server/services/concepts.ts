@@ -67,7 +67,7 @@ import { matchesTerm } from './termMatch';
  */
 
 /** Bumped when a concept's membership changes. See the note on caching below. */
-export const CONCEPTS_VERSION = '2026-09-24.3';
+export const CONCEPTS_VERSION = '2026-09-26.1';
 
 /**
  * NOT part of the analysis cache key, deliberately.
