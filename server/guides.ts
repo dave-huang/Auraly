@@ -42,7 +42,7 @@ const OG_LOCALE: Record<Lang, string> = { en: "en_US", zh: "zh_CN", es: "es_ES" 
 const LANG_SHORT: Record<Lang, string> = { en: "EN", zh: "中文", es: "ES" };
 
 /** The page furniture, per language. Content strings live with the content. */
-const UI: Record<
+export const UI: Record<
   Lang,
   {
     guide: string;
@@ -56,6 +56,8 @@ const UI: Record<
     indexH1: string;
     indexDescription: string;
     languages: string;
+    allergens: string;
+    site: string;
   }
 > = {
   en: {
@@ -71,6 +73,8 @@ const UI: Record<
     indexDescription:
       "What the rules say about ingredient lists, and what health authorities say about what’s on them. Every claim links to its source.",
     languages: "Language",
+    allergens: "Allergens",
+    site: "Site",
   },
   zh: {
     guide: "指南",
@@ -84,6 +88,8 @@ const UI: Record<
     indexH1: "看配料表，而不是包装正面",
     indexDescription: "关于配料表的规定，以及卫生机构对其中成分的说法。每一条说法都附有来源链接。",
     languages: "语言",
+    allergens: "过敏原",
+    site: "网站",
   },
   es: {
     guide: "Guía",
@@ -98,6 +104,8 @@ const UI: Record<
     indexDescription:
       "Lo que dicen las normas sobre las listas de ingredientes y lo que dicen las autoridades sanitarias sobre lo que contienen. Cada afirmación enlaza a su fuente.",
     languages: "Idioma",
+    allergens: "Alérgenos",
+    site: "Sitio",
   },
 };
 
@@ -160,7 +168,7 @@ td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; white-spa
 .cards .d { display: block; font-size: 0.9375rem; line-height: 1.55; }
 .related .cards .t { font-size: 1rem; }
 
-.top nav { display: flex; align-items: center; gap: 18px; white-space: nowrap; }
+.top nav { display: flex; align-items: center; gap: 16px; white-space: nowrap; }
 .top nav .langs { display: flex; gap: 10px; font-family: var(--mono); font-size: 0.75rem; }
 .top nav .langs a[aria-current] { text-decoration: underline; text-underline-offset: 4px; }
 /* The display tracking is tuned for Latin; CJK fills its em box and wants none. */
@@ -168,7 +176,7 @@ td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; white-spa
 :lang(zh) .dek { line-height: 1.7; }
 `;
 
-function escapeAttr(s: string): string {
+export function escapeAttr(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
 }
 
@@ -176,7 +184,7 @@ function jsonLd(data: unknown): string {
   return `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, "\\u003c")}</script>`;
 }
 
-function badge(lang: Lang): string {
+export function badge(lang: Lang): string {
   // The black badge on paper, the white one by lamplight. Apple supplies both,
   // and a black badge on the dark ground is a hole in the page.
   return `<a class="badge" href="${APP_STORE_URL}">
@@ -187,26 +195,62 @@ function badge(lang: Lang): string {
   </a>`;
 }
 
-function shell(opts: {
+/**
+ * The sections the header links to, and the languages each exists in. A link
+ * is only drawn in a language the section has, so a Chinese page never sends
+ * its reader to an English index without saying so.
+ */
+export const SECTION_LANGS: Record<"guides" | "allergens", readonly Lang[]> = {
+  guides: SITE_LANGUAGES,
+  allergens: ["en"],
+};
+
+/**
+ * The document every guide and allergen page is poured into.
+ *
+ * `paths` names the page in each language it exists in; hreflang, the
+ * language switcher and x-default all come from it, so a page that exists
+ * only in English simply has one entry.
+ */
+export function renderPage(opts: {
   lang: Lang;
-  paths: Record<Lang, string>;
+  paths: Partial<Record<Lang, string>>;
   title: string;
   description: string;
   ogType: "article" | "website";
   schema: unknown[];
-  current: "index" | "guide";
+  section: "guides" | "allergens";
+  isIndex: boolean;
   main: string;
+  /** Page-type CSS, appended after the shared stylesheet. */
+  style?: string;
 }): string {
   const { lang, paths } = opts;
   const url = `${SITE_ORIGIN}${paths[lang]}`;
   const ui = UI[lang];
-  const alternates = SITE_LANGUAGES.map(
-    (l) => `<link rel="alternate" hreflang="${HTML_LANG[l]}" href="${SITE_ORIGIN}${paths[l]}">`,
-  ).join("\n");
-  const langLinks = SITE_LANGUAGES.map(
-    (l) =>
-      `<a href="${paths[l]}" hreflang="${HTML_LANG[l]}" lang="${HTML_LANG[l]}" aria-label="${LANGUAGE_NAMES[l]}"${l === lang ? ' aria-current="true"' : ""}>${LANG_SHORT[l]}</a>`,
-  ).join("");
+  const available = SITE_LANGUAGES.filter((l) => paths[l]);
+  const alternates =
+    available.length > 1
+      ? [
+          ...available.map(
+            (l) => `<link rel="alternate" hreflang="${HTML_LANG[l]}" href="${SITE_ORIGIN}${paths[l]}">`,
+          ),
+          `<link rel="alternate" hreflang="x-default" href="${SITE_ORIGIN}${paths.en ?? paths[lang]}">`,
+        ].join("\n")
+      : "";
+  const langLinks =
+    available.length > 1
+      ? `<span class="langs" role="group" aria-label="${ui.languages}">${available
+          .map(
+            (l) =>
+              `<a href="${paths[l]}" hreflang="${HTML_LANG[l]}" lang="${HTML_LANG[l]}" aria-label="${LANGUAGE_NAMES[l]}"${l === lang ? ' aria-current="true"' : ""}>${LANG_SHORT[l]}</a>`,
+          )
+          .join("")}</span>`
+      : "";
+  const navLink = (section: "guides" | "allergens", label: string) =>
+    SECTION_LANGS[section].includes(lang)
+      ? `<a href="/${lang}/${section}"${opts.section === section && opts.isIndex ? ' aria-current="page"' : ""}>${label}</a>`
+      : "";
   return `<!doctype html>
 <html lang="${HTML_LANG[lang]}">
 <head>
@@ -215,7 +259,6 @@ ${HEAD_COMMON}
 <meta name="description" content="${escapeAttr(opts.description)}">
 <link rel="canonical" href="${url}">
 ${alternates}
-<link rel="alternate" hreflang="x-default" href="${SITE_ORIGIN}${paths.en}">
 <meta name="theme-color" content="#F6F1E7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#16130F" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="${opts.ogType}">
@@ -229,15 +272,16 @@ ${alternates}
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 ${opts.schema.map(jsonLd).join("\n")}
-<style>${DOC_STYLE}${GUIDE_STYLE}</style>
+<style>${DOC_STYLE}${GUIDE_STYLE}${opts.style ?? ""}</style>
 </head>
 <body>
 <header class="top">
   <div class="shell">
     ${lockupLink(`/${lang}`, COPY[lang].homeLabel)}
-    <nav aria-label="${ui.guides}">
-      <a href="/${lang}/guides"${opts.current === "index" ? ' aria-current="page"' : ""}>${ui.guides}</a>
-      <span class="langs" role="group" aria-label="${ui.languages}">${langLinks}</span>
+    <nav aria-label="${ui.site}">
+      ${navLink("guides", ui.guides)}
+      ${navLink("allergens", ui.allergens)}
+      ${langLinks}
     </nav>
   </div>
 </header>
@@ -258,7 +302,7 @@ function card(lang: Lang, slug: string): string {
   return `<li><a href="/${lang}/guides/${slug}"><span class="t">${g.title}</span><span class="d">${g.description}</span></a></li>`;
 }
 
-function breadcrumbs(items: { name: string; path: string }[]): unknown {
+export function breadcrumbs(items: { name: string; path: string }[]): unknown {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -308,13 +352,14 @@ function guidePage(meta: Guide, lang: Lang): string {
     })),
   };
 
-  return shell({
+  return renderPage({
     lang,
     paths,
     title: `${g.title} · Revely`,
     description: g.description,
     ogType: "article",
-    current: "guide",
+    section: "guides",
+    isIndex: false,
     schema: [
       article,
       breadcrumbs([
@@ -357,13 +402,14 @@ function indexPage(lang: Lang): string {
   const ui = UI[lang];
   const paths = pathsFor(null);
   const path = paths[lang];
-  return shell({
+  return renderPage({
     lang,
     paths,
     title: `${ui.indexTitle} · Revely`,
     description: ui.indexDescription,
     ogType: "website",
-    current: "index",
+    section: "guides",
+    isIndex: true,
     schema: [
       {
         "@context": "https://schema.org",

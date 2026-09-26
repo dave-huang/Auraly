@@ -14,6 +14,7 @@ import {
   footerInner,
   lockupLink,
 } from "./siteTheme";
+import { ALLERGEN_PATHS } from "./allergens";
 import { GUIDE_ALTERNATES, GUIDE_PATHS } from "./guides";
 import {
   COPY,
@@ -1237,6 +1238,7 @@ const PAGE_PATHS = new Set([
   "/terms",
   "/health-data-privacy",
   ...GUIDE_PATHS,
+  ...ALLERGEN_PATHS,
 ]);
 
 /**
@@ -1315,8 +1317,9 @@ const SITEMAP = (() => {
   };
   const homes = group({ en: "/en", zh: "/zh", es: "/es" });
   const guides = GUIDE_ALTERNATES.flatMap(group);
-  // The legal documents are English only, so they carry no alternates.
-  const legal = ["/privacy", "/terms", "/health-data-privacy"].map(
+  // English only, so no alternates: the allergen pages until they are
+  // translated, and the legal documents for good.
+  const legal = [...ALLERGEN_PATHS, "/privacy", "/terms", "/health-data-privacy"].map(
     (p) => `  <url>\n    <loc>${SITE_ORIGIN}${p}</loc>\n  </url>`,
   );
   return `<?xml version="1.0" encoding="UTF-8"?>

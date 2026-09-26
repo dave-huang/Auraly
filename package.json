@@ -20,7 +20,8 @@
     "substances:check": "tsx server/services/substances/check.ts",
     "scans:backfill": "tsx server/scripts/backfillModelRisk.ts",
     "entitlement:check": "tsx eval/entitlement.check.ts",
-    "demo:check": "tsx eval/demo.check.ts"
+    "demo:check": "tsx eval/demo.check.ts",
+    "allergen-pages:check": "tsx eval/allergen-pages.check.ts"
   },
   "dependencies": {
     "@capacitor/app": "^8.1.0",

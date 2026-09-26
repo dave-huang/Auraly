@@ -98,6 +98,10 @@ body {
   flex-direction: column;
 }
 main { flex: 1 0 auto; }
+/* Auto margins in a flex column opt out of stretching, so without a width the
+   column sizes to its widest content: one wide table and the whole page
+   scrolls sideways on a phone instead of the table scrolling in its .scroll. */
+main.shell { width: 100%; }
 .foot { flex: none; }
 
 .shell { max-width: 42rem; margin: 0 auto; padding-inline: 24px; }

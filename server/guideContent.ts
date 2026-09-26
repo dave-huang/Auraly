@@ -376,6 +376,7 @@ export const GUIDES: Guide[] = [
 
 <h2>How they’re shown</h2>
 <p>A US label names the allergen in parentheses after an ingredient or in a “Contains” line. An EU label emphasizes it inside the ingredient list, usually in bold. <a href="/en/guides/how-to-read-an-ingredient-list">More on reading a label.</a></p>
+<p><a href="/en/allergens">Every name each allergen goes by on a label.</a></p>
 `,
     inRevely:
       "Revely checks every label against the allergens you set, including all 14 of the EU’s and buckwheat, and knows their other names, like whey for milk and tahini for sesame.",
