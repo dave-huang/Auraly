@@ -231,7 +231,7 @@ export type Section = "guides" | "allergens" | "additives" | "learn";
 export const SECTION_LANGS: Record<Section, readonly Lang[]> = {
   guides: SITE_LANGUAGES,
   allergens: SITE_LANGUAGES,
-  additives: ["en"],
+  additives: SITE_LANGUAGES,
   learn: SITE_LANGUAGES,
 };
 

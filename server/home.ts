@@ -14,7 +14,7 @@ import {
   footerInner,
   lockupLink,
 } from "./siteTheme";
-import { additivePaths } from "./additives";
+import { additiveAlternates } from "./additives";
 import { ALLERGEN_ALTERNATES, ALLERGEN_PATHS } from "./allergens";
 import { LEARN_PATHS } from "./learn";
 import { GUIDE_ALTERNATES, GUIDE_PATHS } from "./guides";
@@ -1250,7 +1250,7 @@ const PAGE_PATHS = new Set([
  * route, which answers 404 or redirects a bare E number to its page.
  */
 function isPagePath(page: string): boolean {
-  return PAGE_PATHS.has(page) || page === "/en/additives" || page.startsWith("/en/additives/");
+  return PAGE_PATHS.has(page) || /^\/(en|zh|es)\/additives(\/|$)/.test(page);
 }
 
 /**
@@ -1330,10 +1330,9 @@ function sitemap(): string {
     );
   };
   const homes = group({ en: "/en", zh: "/zh", es: "/es" });
-  const guides = [...GUIDE_ALTERNATES, ...ALLERGEN_ALTERNATES, LEARN_PATHS].flatMap(group);
-  // English only, so no alternates: the additive pages until they are
-  // translated, and the legal documents for good.
-  const legal = [...additivePaths(), "/privacy", "/terms", "/health-data-privacy"].map(
+  const guides = [...GUIDE_ALTERNATES, ...ALLERGEN_ALTERNATES, ...additiveAlternates(), LEARN_PATHS].flatMap(group);
+  // English only, so no alternates: the legal documents.
+  const legal = ["/privacy", "/terms", "/health-data-privacy"].map(
     (p) => `  <url>\n    <loc>${SITE_ORIGIN}${p}</loc>\n  </url>`,
   );
   sitemapCache = `<?xml version="1.0" encoding="UTF-8"?>
