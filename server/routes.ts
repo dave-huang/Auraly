@@ -153,6 +153,16 @@ function principalKey(principal: ScanPrincipal | undefined): string {
   return principal.kind === 'user' ? `user:${principal.userId}` : `device:${principal.deviceId}`;
 }
 
+/** Scan failure codes the app knows how to explain; see the scan's catch. */
+const OWN_SCAN_ERROR_CODES = new Set<unknown>(['no_label_found']);
+
+/** What the app shows when a scan fails on our side, in the scan's language. */
+function scanUnavailable(language: unknown): string {
+  if (language === 'zh') return '我们这边出了问题。请过几分钟再试。';
+  if (language === 'es') return 'Algo falló de nuestro lado. Inténtalo de nuevo en unos minutos.';
+  return 'Something went wrong on our side. Try again in a few minutes.';
+}
+
 // Global OCR cache - keyed by image content hash (language-independent)
 interface OCRCacheEntry {
   text: string;
@@ -1179,10 +1189,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       } catch (error: any) {
         console.error(`[SCAN-AND-ANALYZE-FAILED-${requestId}] Error:`, error.message);
         analysisRequest.status = 'failed';
-        analysisRequest.error = error.message || 'Failed to analyze image. Please try again.';
-        // Only errors that carry their own code get one — an unrecognised
-        // failure must not be dressed up as a known, user-fixable one.
-        analysisRequest.errorCode = typeof error?.code === 'string' ? error.code : undefined;
+        // Only Revely's own codes pass through. A provider's error carries a
+        // code too (OpenAI's 401 is "invalid_api_key"), and its message is
+        // provider prose: on 2026-09-27 that put "401 Incorrect API key
+        // provided: sk-proj-…" on users' screens. Anything else is ours to
+        // fix, not the person's, so it is logged above and the app gets a
+        // sentence in their language, which it shows as-is.
+        const code = OWN_SCAN_ERROR_CODES.has(error?.code) ? (error.code as string) : undefined;
+        analysisRequest.error = code ? error.message : scanUnavailable(body.userLanguage);
+        analysisRequest.errorCode = code ?? 'scan_unavailable';
         analysisRequest.timestamp = Date.now();
       }
     })();
