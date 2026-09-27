@@ -1,5 +1,6 @@
 import type { Express } from "express";
 
+import { consentBlock } from "./analytics";
 import { GUIDES, GUIDES_BY_SLUG, type Guide, type GuideText } from "./guideContent";
 import { GUIDES_ES } from "./guideContent.es";
 import { GUIDES_ZH } from "./guideContent.zh";
@@ -345,7 +346,7 @@ document.addEventListener("click", function (e) {
 document.addEventListener("keydown", function (e) {
   if (e.key === "Escape") document.querySelectorAll("details.learn[open]").forEach(function (d) { d.removeAttribute("open"); });
 });
-</script>
+</script>${consentBlock(lang)}
 </body>
 </html>`;
 }

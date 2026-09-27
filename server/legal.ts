@@ -1,5 +1,6 @@
 import type { Express } from "express";
 
+import { MEASUREMENT_ID, REQUIRE_CONSENT, consentBlock } from "./analytics";
 import {
   CONTACT_EMAIL,
   FONT_FACES,
@@ -62,8 +63,18 @@ const GOVERNING_LAW =
  */
 const LAST_UPDATED = "September 8, 2026";
 
-/** The Android waitlist on revely.life was added to the privacy policy. */
-const PRIVACY_UPDATED = "September 22, 2026";
+/**
+ * Google Analytics on revely.life (analytics.ts). Every sentence about it in
+ * both policies is switched by the same Measurement ID that switches the tag
+ * on, so the policies can never describe analytics that is not running, or
+ * leave out analytics that is. Set this to the day the ID goes in.
+ */
+const ANALYTICS_ADDED = "September 26, 2026";
+
+/** The Android waitlist on revely.life was added to the privacy policy, then analytics. */
+const PRIVACY_UPDATED = MEASUREMENT_ID ? ANALYTICS_ADDED : "September 22, 2026";
+
+const WITH_ANALYTICS = (text: string) => (MEASUREMENT_ID ? text : "");
 
 // ---------------------------------------------------------------------------
 // Page shell
@@ -224,7 +235,7 @@ ${body}
   <div class="shell">
 ${footerInner(COPY.en)}
   </div>
-</footer>
+</footer>${consentBlock("en")}
 </body>
 </html>`;
 }
@@ -344,7 +355,29 @@ be told when there is one, we keep that address and the language you were
 reading the page in, and nothing else. It is not linked to an account. We use it
 to send <strong>one email</strong>, when the Android app is released, and then we
 delete it. It is never used for anything else, and you can ask us to delete it
-sooner by writing to <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a>.</p>
+sooner by writing to <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a>.</p>${WITH_ANALYTICS(`
+
+<h3 id="analytics">When you read revely.life</h3>
+<p>${REQUIRE_CONSENT
+  ? `If you choose <strong>Allow analytics</strong> in the banner on revely.life, we
+use Google Analytics`
+  : `We use Google Analytics on revely.life`} to count visits, so we know which pages are useful. Google
+receives the address of each page you read and of the page that sent you there,
+your browser, device type and screen size, your language, and an approximate
+location that it works out from your IP address. Google Analytics does not
+store the IP address itself. It sets cookies on revely.life that let it tell one
+visit from the next.</p>
+<p>${REQUIRE_CONSENT
+  ? `Nothing is sent until you choose Allow, and if you choose No thanks, nothing is
+sent at all. You can change your answer at any time from <strong>Analytics
+settings</strong> at the bottom of every page, and turning analytics off deletes
+its cookies.`
+  : `If you would rather not be counted, choose <strong>Analytics settings</strong>
+at the bottom of any page, then <strong>No thanks</strong>. That turns analytics
+off in that browser and deletes its cookies.`} We have turned off Google signals and every advertising feature, so
+none of this is used for ads or to follow you onto other sites. The app is not
+involved: nothing from the app, your account, your profiles or your scans is
+sent to Google Analytics.</p>`)}
 
 <h2>What we never do</h2>
 <ul>
@@ -369,7 +402,8 @@ run part of the service.</p>
     <tr><td>Apple</td><td>Your payment</td><td>All subscription billing. We receive none of it.</td></tr>
     <tr><td>RevenueCat</td><td>Subscription status and an account identifier</td><td>Keeping entitlement correct across your devices.</td></tr>
     <tr><td>Neon</td><td>The database contents</td><td>Hosting the database.</td></tr>
-    <tr><td>Fly.io</td><td>Traffic to the service</td><td>Running the servers.</td></tr>
+    <tr><td>Fly.io</td><td>Traffic to the service</td><td>Running the servers.</td></tr>${WITH_ANALYTICS(`
+    <tr><td>Google (Analytics)</td><td>On revely.life, ${REQUIRE_CONSENT ? "only if you allow it" : "unless you turn it off"}: the pages you read, your browser and device, and an approximate location</td><td>Counting visits to the website. Advertising features are off.</td></tr>`)}
   </tbody>
 </table>
 </div>
@@ -386,7 +420,9 @@ from elsewhere, your information is transferred there to run the service.</p>
   and then discarded. Crash reports lose their link to your account when the
   account is deleted; product events do the same.</li>
   <li><strong>An Android waitlist address:</strong> until the one email it was
-  left for has been sent, then deleted.</li>
+  left for has been sent, then deleted.</li>${WITH_ANALYTICS(`
+  <li><strong>Website analytics:</strong> Google Analytics keeps it for 14
+  months, then deletes it.</li>`)}
   <li><strong>Backups:</strong> deletions reach our backups as those backups
   age out on their normal schedule.</li>
 </ul>
@@ -533,7 +569,19 @@ provider.</strong> A scan sends the label photo to OpenAI, which reads the
 ingredients out of it. Matching those ingredients against your profile happens
 afterwards on our own servers. OpenAI does not receive your allergies, your
 conditions, your dietary rules, or your identity.</p>
-<p><strong>We do not sell consumer health data</strong> as the My Health My
+${WITH_ANALYTICS(`<p><strong>The website.</strong> ${REQUIRE_CONSENT
+  ? "If you allow analytics on revely.life, Google Analytics"
+  : "revely.life uses Google Analytics, which"} receives the address of each page you read there. Some of those pages
+are about a particular allergen or condition, so the pages you read could
+suggest a health interest. ${REQUIRE_CONSENT
+  ? `Nothing is collected or shared until you choose
+<strong>Allow analytics</strong> in the banner, which asks before anything is
+sent, and you can withdraw that consent at any time from Analytics settings at
+the bottom of every page.`
+  : `You can turn this off at any time from <strong>Analytics
+settings</strong> at the bottom of every page.`} Nothing from the app, your profiles or your scans is
+ever sent to Google Analytics.</p>
+`)}<p><strong>We do not sell consumer health data</strong> as the My Health My
 Data Act defines selling, and we have never done so. If that ever changes, the
 Act requires us to obtain your signed authorization first, separately from any
 other consent.</p>
@@ -544,14 +592,15 @@ other consent.</p>
   <thead><tr><th>Category of recipient</th><th>Who</th><th>What they do with it</th></tr></thead>
   <tbody>
     <tr><td>Database hosting</td><td>Neon Inc.</td><td>Stores the database on our instructions. No independent use.</td></tr>
-    <tr><td>Application hosting</td><td>Fly.io Inc.</td><td>Runs our servers, so the data passes through their infrastructure. No independent use.</td></tr>
+    <tr><td>Application hosting</td><td>Fly.io Inc.</td><td>Runs our servers, so the data passes through their infrastructure. No independent use.</td></tr>${WITH_ANALYTICS(`
+    <tr><td>Website analytics</td><td>Google LLC</td><td>Counts visits to revely.life from the pages you read there, ${REQUIRE_CONSENT ? "only if you allow it" : "unless you turn it off"}. Advertising features are off. Never receives anything from the app.</td></tr>`)}
   </tbody>
 </table>
 </div>
 <p>That is the complete list. ${LEGAL_ENTITY} has no affiliates, and no
-advertiser, analytics provider, data broker, or marketing partner receives
+advertiser, ${MEASUREMENT_ID ? "" : "analytics provider, "}data broker, or marketing partner receives
 consumer health data from us.</p>
-<p>Our other providers (OpenAI, Apple, Google and RevenueCat) receive no
+<p>Our other providers (OpenAI, Apple, ${MEASUREMENT_ID ? "RevenueCat, and Google for sign-in" : "Google and RevenueCat"}) receive no
 consumer health data. What each of them does receive is described in
 our <a href="/privacy">general Privacy Policy</a>.</p>
 
@@ -590,6 +639,7 @@ We will include that link in any denial we send you.</p>
 <h2>7. Contact</h2>
 <p>${LEGAL_ENTITY}, <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a></p>
 `,
+  MEASUREMENT_ID ? ANALYTICS_ADDED : LAST_UPDATED,
 );
 
 // ---------------------------------------------------------------------------

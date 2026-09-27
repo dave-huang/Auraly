@@ -2,6 +2,7 @@ import type { Express, NextFunction, Request, Response } from "express";
 import express from "express";
 import path from "path";
 
+import { consentBlock } from "./analytics";
 import {
   CONTACT_EMAIL,
   FONT_FACES,
@@ -1182,7 +1183,7 @@ ${faqSchema(c, lang)}
 <style>${STYLE}</style>
 </head>
 <body>
-${body(c, lang)}
+${body(c, lang)}${consentBlock(lang)}
 </body>
 </html>`;
 }
