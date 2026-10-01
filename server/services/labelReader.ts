@@ -15,15 +15,22 @@ import { completeIngredientsInBuffer } from './partialJson';
 // Three readers are implemented here; only OpenAI is called. See
 // DEFAULT_PROVIDER_CHAIN below for why, and for how to turn the others back on.
 
-// gpt-6-luna since 2026-09-22, chosen for speed with its accuracy cost known.
-// Measured against gpt-5.6-luna over three paired passes of every eval case:
-// reading 21.4s -> 14.8s median, whole scan 26.4s -> 17.8s. Ingredient recall
-// fell 98.4% -> 93.2%, all of it on the Chinese labels, and it missed the
-// Spartak bar's soy declaration in 2 of 3 passes (gpt-5.6-luna: 0 of 3).
-// "[LABEL-READER] No allergen statement" in the logs is how that shows up in
-// production. Setting LABEL_VISION_MODEL_OPENAI=gpt-5.6-luna reverts it
-// without a code change.
-const VISION_MODEL_OPENAI = process.env.LABEL_VISION_MODEL_OPENAI || 'gpt-6-luna';
+// gpt-6.1-sol at low reasoning since 2026-10-01, chosen for cost with its
+// speed cost known. History: gpt-6-luna (2026-09-22) was fast but self-rated
+// Chinese reads `low`, which the app shows as "Not sure"; gpt-6-sol replaced
+// it on 2026-09-24. Measured against gpt-6-sol over three passes of every
+// eval case at phone size: ingredient recall 98.2% -> 97.5% (the gap is
+// naming variants, e.g. "Monosodium L-Glutamate"), no allergen misses
+// either side, every read self-rated `high`. Cost per read 2.4c -> 1.6c, but
+// the median read went 18.9s -> 24.3s and the Japanese curry box 29-44s ->
+// 54-69s. 6.1 at default reasoning was slower still (29.7s) and dearer.
+//
+// Both are env-overridable, so reverting needs no deploy:
+//   fly secrets set LABEL_VISION_MODEL_OPENAI=gpt-6-sol LABEL_READER_REASONING=default
+// "default" sends no reasoning_effort at all, which is how gpt-6-sol was
+// measured; low was never measured on any other model.
+const VISION_MODEL_OPENAI = process.env.LABEL_VISION_MODEL_OPENAI || 'gpt-6.1-sol';
+const READER_REASONING = process.env.LABEL_READER_REASONING || 'low';
 const VISION_MODEL_GEMINI = process.env.LABEL_VISION_MODEL_GEMINI || 'gemini-3-flash-preview';
 
 /**
@@ -382,6 +389,7 @@ async function readWithOpenAI(
       ],
     }],
     response_format: { type: 'json_object' as const },
+    ...(READER_REASONING !== 'default' ? { reasoning_effort: READER_REASONING as 'low' } : {}),
   };
 
   // Without a listener, nothing would be done with the chunks, and a single
