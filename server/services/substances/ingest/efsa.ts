@@ -96,6 +96,25 @@ const SIDE_DOMAINS = new Set([
 const SIDE_TITLE =
   /\bin feed\b|as (a )?feed additive|feed additive for|feedingstuff|for (cats|dogs|chickens|pigs|piglets|poultry|rabbits|turkeys|all animal)|animal species|pesticide|\bMRLs?\b|maximum residue|previous cargoes/i;
 const FOOD_DOMAINS = new Set(['food additives', 'flavourings', 'nutrient sources']);
+
+/**
+ * Food ingredients whose only EFSA ADI comes from a side assessment, and so
+ * survives the food-first rule below (that rule only sets side rows aside
+ * when a food row exists). Shown under an ingredient on a label, each one
+ * reads as EFSA's position on eating it, and none is. Withheld at Dave's
+ * request on 2026-10-01; the website already declined to quote them.
+ *
+ * Kept narrow on purpose: about 670 other records are side assessments too,
+ * nearly all pesticides that never appear on an ingredient list.
+ */
+const WITHHELD: Record<string, string> = {
+  phosphoric_acid: 'a pesticide MRL opinion on potassium phosphonates in citrus',
+  patent_blue_v: 'a feed-additive opinion for non food-producing animals',
+  patent_blue_v_sodium_salt: 'a feed-additive opinion for non food-producing animals',
+  carnauba_wax: 'a previous-cargo opinion for tankers carrying edible oils',
+  microcrystalline_wax: 'a previous-cargo opinion for tankers carrying edible oils',
+  shellac: 'an untitled row with no opinion, date or DOI to cite',
+};
 const FOOD_TITLE = /food additive|flavouring group|\(E ?\d{3}/i;
 
 /** A side assessment, by EFSA's domain (may be blank) and the opinion's title. */
@@ -242,6 +261,10 @@ export const efsaOpenFoodToxAdapter: SourceAdapter = {
       const supersedes =
         a > b || (a === b && (record.guidance?.value ?? 0) < (held.guidance?.value ?? 0));
       if (supersedes) newest.set(record.substanceId, record);
+    }
+
+    for (const [id, reason] of Object.entries(WITHHELD)) {
+      if (newest.delete(id)) skipped.push({ row: 0, reason: `withheld: its only ADI is from ${reason}`, raw: id });
     }
 
     return {

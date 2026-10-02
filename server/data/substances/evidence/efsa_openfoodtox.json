@@ -1,8 +1,8 @@
 {
   "_metadata": {
     "version": "efsa_openfoodtox-2026-08.1",
-    "updatedAt": "2026-09-26",
-    "description": "EFSA OpenFoodTox snapshot 2026-08.1, ingested 2026-09-26."
+    "updatedAt": "2026-10-01",
+    "description": "EFSA OpenFoodTox snapshot 2026-08.1, ingested 2026-09-26. Six side-assessment ADIs withheld 2026-10-01 (see WITHHELD in ingest/efsa.ts)."
   },
   "records": [
     {
@@ -9442,28 +9442,6 @@
       }
     },
     {
-      "substanceId": "phosphoric_acid",
-      "source": "efsa_openfoodtox",
-      "kind": "guidance_value",
-      "jurisdiction": "EU",
-      "domain": "food",
-      "guidance": {
-        "kind": "ADI",
-        "value": 2.25,
-        "unit": "mg/kg bw/day"
-      },
-      "statement": "EFSA established an acceptable daily intake of 2.25 mg/kg bw/day in its assessment of pesticides, in \"Modification of the existing MRLs for potassium phosphonates in lemons, limes and mandarins and in herbal infusions from leaves and herbs\".",
-      "determinedOn": "2021-05-26",
-      "sourceVersion": "2026-08.1",
-      "fetchedAt": "2026-08-24",
-      "citation": {
-        "org": "EFSA",
-        "title": "Modification of the existing MRLs for potassium phosphonates in lemons, limes and mandarins and in herbal infusions from leaves and herbs",
-        "year": 2021,
-        "url": "https://doi.org/10.2903/j.efsa.2021.6673"
-      }
-    },
-    {
       "substanceId": "butane_1_3_diol",
       "source": "efsa_openfoodtox",
       "kind": "guidance_value",
@@ -12192,28 +12170,6 @@
       }
     },
     {
-      "substanceId": "patent_blue_v_sodium_salt",
-      "source": "efsa_openfoodtox",
-      "kind": "guidance_value",
-      "jurisdiction": "EU",
-      "domain": "food",
-      "guidance": {
-        "kind": "ADI",
-        "value": 5,
-        "unit": "mg/kg bw/day"
-      },
-      "statement": "EFSA established an acceptable daily intake of 5 mg/kg bw/day in its assessment of sensory additives, in \"Scientific Opinion on the safety and efficacy of Patent Blue V (E 131) as feed additive for non food-producing animals\".",
-      "determinedOn": "2013-01-31",
-      "sourceVersion": "2026-08.1",
-      "fetchedAt": "2026-08-24",
-      "citation": {
-        "org": "EFSA",
-        "title": "Scientific Opinion on the safety and efficacy of Patent Blue V (E 131) as feed additive for non food-producing animals",
-        "year": 2013,
-        "url": "https://doi.org/10.2903/j.efsa.2013.3108"
-      }
-    },
-    {
       "substanceId": "2rs_2_chloro_3_2_chloro_5_4_difluoromethyl_5_oxo_4_5_dihydro",
       "source": "efsa_openfoodtox",
       "kind": "guidance_value",
@@ -12651,28 +12607,6 @@
         "title": "Peer review of the pesticide risk assessment for the active substance metazachlor in light of confirmatory data submitted",
         "year": 2017,
         "url": "https://doi.org/10.2903/j.efsa.2017.4833"
-      }
-    },
-    {
-      "substanceId": "carnauba_wax",
-      "source": "efsa_openfoodtox",
-      "kind": "guidance_value",
-      "jurisdiction": "EU",
-      "domain": "food",
-      "guidance": {
-        "kind": "ADI",
-        "value": 7,
-        "unit": "mg/kg bw"
-      },
-      "statement": "EFSA established an acceptable daily intake of 7 mg/kg bw in its assessment of processing contaminants, in \"Scientific Opinion on the evaluation of the substances currently on the list in the annex to Commission Directive 96/3/EC as acceptable previous cargoes for edible fats and oils - Part III of III.\".",
-      "determinedOn": "2012-11-22",
-      "sourceVersion": "2026-08.1",
-      "fetchedAt": "2026-08-24",
-      "citation": {
-        "org": "EFSA",
-        "title": "Scientific Opinion on the evaluation of the substances currently on the list in the annex to Commission Directive 96/3/EC as acceptable previous cargoes for edible fats and oils - Part III of III.",
-        "year": 2012,
-        "url": "https://doi.org/10.2903/j.efsa.2012.2984"
       }
     },
     {
@@ -13223,28 +13157,6 @@
         "title": "Peer review of the pesticide risk assessment of the active substance 8-hydroxyquinoline",
         "year": 2016,
         "url": "https://doi.org/10.2903/j.efsa.2016.4493"
-      }
-    },
-    {
-      "substanceId": "microcrystalline_wax",
-      "source": "efsa_openfoodtox",
-      "kind": "guidance_value",
-      "jurisdiction": "EU",
-      "domain": "food",
-      "guidance": {
-        "kind": "ADI",
-        "value": 20,
-        "unit": "mg/kg bw"
-      },
-      "statement": "EFSA established an acceptable daily intake of 20 mg/kg bw in its assessment of processing contaminants, in \"Scientific Opinion on the evaluation of the substances currently on the list in the annex to Commission Directive 96/3/EC as acceptable previous cargoes for edible fats and oils - Part III of III.\".",
-      "determinedOn": "2012-11-22",
-      "sourceVersion": "2026-08.1",
-      "fetchedAt": "2026-08-24",
-      "citation": {
-        "org": "EFSA",
-        "title": "Scientific Opinion on the evaluation of the substances currently on the list in the annex to Commission Directive 96/3/EC as acceptable previous cargoes for edible fats and oils - Part III of III.",
-        "year": 2012,
-        "url": "https://doi.org/10.2903/j.efsa.2012.2984"
       }
     },
     {
@@ -14081,26 +13993,6 @@
         "title": "Peer review of the pesticide risk assessment of the active substance BAS 750 F (mefentrifluconazole)",
         "year": 2018,
         "url": "https://doi.org/10.2903/j.efsa.2018.5379"
-      }
-    },
-    {
-      "substanceId": "shellac",
-      "source": "efsa_openfoodtox",
-      "kind": "guidance_value",
-      "jurisdiction": "EU",
-      "domain": "food",
-      "guidance": {
-        "kind": "ADI",
-        "value": 4,
-        "unit": "mg/kg bw/day"
-      },
-      "statement": "EFSA established an acceptable daily intake of 4 mg/kg bw/day, in \"an EFSA scientific opinion\".",
-      "sourceVersion": "2026-08.1",
-      "fetchedAt": "2026-08-24",
-      "citation": {
-        "org": "EFSA",
-        "title": "an EFSA scientific opinion",
-        "url": "https://zenodo.org/records/19388272"
       }
     },
     {
@@ -15507,28 +15399,6 @@
         "title": "Statement on the safety of synthetic zeaxanthin as an ingredient in food supplements",
         "year": 2012,
         "url": "https://doi.org/10.2903/j.efsa.2012.2891"
-      }
-    },
-    {
-      "substanceId": "patent_blue_v",
-      "source": "efsa_openfoodtox",
-      "kind": "guidance_value",
-      "jurisdiction": "EU",
-      "domain": "food",
-      "guidance": {
-        "kind": "ADI",
-        "value": 5,
-        "unit": "mg/kg bw/day"
-      },
-      "statement": "EFSA established an acceptable daily intake of 5 mg/kg bw/day in its assessment of sensory additives, in \"Scientific Opinion on the safety and efficacy of Patent Blue V (E 131) as feed additive for non food-producing animals\".",
-      "determinedOn": "2013-01-31",
-      "sourceVersion": "2026-08.1",
-      "fetchedAt": "2026-08-24",
-      "citation": {
-        "org": "EFSA",
-        "title": "Scientific Opinion on the safety and efficacy of Patent Blue V (E 131) as feed additive for non food-producing animals",
-        "year": 2013,
-        "url": "https://doi.org/10.2903/j.efsa.2013.3108"
       }
     },
     {
