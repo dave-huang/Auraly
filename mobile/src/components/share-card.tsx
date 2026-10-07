@@ -144,6 +144,10 @@ export function ShareCard({
           <View style={styles.storyMain}>
             <Seal lines={sealLines} color={tone.ink} size={120} />
             <ThemedText
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.4}
+              maxFontSizeMultiplier={1.3}
               style={[styles.word, verdictTextStyle(word), styles.wordStory, { color: tone.ink }]}
             >
               {word}
@@ -156,7 +160,13 @@ export function ShareCard({
           <>
             <View style={styles.feedHead}>
               <View style={styles.feedHeadText}>
-                <ThemedText style={[styles.word, verdictTextStyle(word), { color: tone.ink }]}>
+                <ThemedText
+                  numberOfLines={1}
+                  adjustsFontSizeToFit
+                  minimumFontScale={0.4}
+                  maxFontSizeMultiplier={1.3}
+                  style={[styles.word, verdictTextStyle(word), { color: tone.ink }]}
+                >
                   {word}
                 </ThemedText>
                 <ThemedText style={styles.reason} numberOfLines={3}>

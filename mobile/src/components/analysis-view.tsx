@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import type { ReactNode } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 
 import { ApertureMark } from '@/components/aperture-mark';
 import { ApertureFrame, ResolveIn } from '@/components/aperture-reveal';
@@ -168,6 +168,10 @@ export function AnalysisView({
   const { t } = useTranslation();
   const surface = useSurface();
   const verdictColors = useVerdictColors();
+  // At the accessibility text sizes the seal beside the verdict squeezes the
+  // reason into a column a few letters wide, so the seal drops below instead.
+  const { fontScale } = useWindowDimensions();
+  const stackSeal = fontScale >= 1.6;
 
   const { word, why, sealLines, uncertain, unsettled, segments, allergenFlags, otherFlags } =
     useVerdictCopy(result, profileName);
@@ -266,9 +270,18 @@ export function AnalysisView({
           </ThemedText>
         </Pressable>
 
-        <View style={styles.verdictRow}>
-          <View style={styles.verdictText}>
+        <View style={[styles.verdictRow, stackSeal && styles.verdictStacked]}>
+          <View style={stackSeal ? styles.verdictTextStacked : styles.verdictText}>
+            {/* One line, shrunk to fit. The word is one display-size word
+                beside the seal, and with the phone's text size turned up it
+                no longer fit: iOS broke "Caution" mid-word on an iPhone 16.
+                It is already display size, so it grows only a little with the
+                text setting; past that, shrinking to fit renders it blank. */}
             <ThemedText
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.4}
+              maxFontSizeMultiplier={1.3}
               style={[
                 Type.verdict,
                 verdictTextStyle(word),
@@ -883,6 +896,8 @@ const styles = StyleSheet.create({
   chipText: { fontFamily: Font.mono, fontSize: 11, lineHeight: 15, flexShrink: 1 },
   verdictRow: { flexDirection: 'row', alignItems: 'flex-start', gap: Space.md },
   verdictText: { flex: 1 },
+  verdictStacked: { flexDirection: 'column' },
+  verdictTextStacked: { alignSelf: 'stretch' },
   why: { marginTop: Space.xs },
 
   block: { padding: Space.xl, gap: Space.md, borderTopWidth: StyleSheet.hairlineWidth },
